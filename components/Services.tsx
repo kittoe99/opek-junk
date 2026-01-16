@@ -5,7 +5,7 @@ const serviceItems = [
   {
     title: "Residential Junk Removal",
     icon: Warehouse,
-    description: "Clear out your attic, garage, or basement. We handle couches, mattresses, appliances, and general household clutter. We don't just dump; we donate and recycle over 60% of what we haul."
+    description: "Clear out your attic, garage, or basement. We handle couches, mattresses, appliances, and general household clutter. We donate and recycle over 60% of what we haul."
   },
   {
     title: "Commercial & Office Hauling",
@@ -30,59 +30,73 @@ const serviceItems = [
 ];
 
 export const Services: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section id="services" className="py-32 bg-[#fcfcfc] overflow-hidden">
+    <section id="services" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           
           {/* Content Side */}
           <div className="flex flex-col">
-            <div className="mb-8">
-              <span className="bg-black text-white text-[10px] font-black px-3 py-1 uppercase tracking-[0.3em] mb-4 inline-block">Professional Solutions</span>
-              <h2 className="text-5xl md:text-6xl font-black text-black leading-none mb-6 tracking-tighter uppercase">
-                We handle the heavy lifting.
+            <div className="mb-10">
+              <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+                Our Services
+              </span>
+              <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
+                We handle the <span className="text-gray-400">heavy lifting.</span>
               </h2>
-              <p className="text-gray-500 text-lg font-medium leading-relaxed max-w-xl">
-                Opek is built on the belief that junk removal should be transparent, professional, and eco-conscious. No hidden fees, just hard work.
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Transparent pricing. Professional service. Eco-conscious disposal. No hidden fees, just hard work.
               </p>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-3">
               {serviceItems.map((item, index) => (
                 <div 
                   key={index} 
-                  className={`border-l-4 transition-all duration-300 ${openIndex === index ? 'border-black bg-white shadow-xl translate-x-2' : 'border-gray-200 hover:border-gray-400 bg-transparent'}`}
+                  className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
+                    openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                  }`}
                 >
                   <button
                     onClick={() => toggleAccordion(index)}
-                    className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                    className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
                     aria-expanded={openIndex === index}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-2 rounded ${openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
+                      <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                        openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
+                      }`}>
                         <item.icon size={20} />
                       </div>
-                      <span className={`font-black text-xl uppercase tracking-tight ${openIndex === index ? 'text-black' : 'text-gray-600'}`}>
+                      <span className={`font-bold text-base transition-colors ${
+                        openIndex === index ? 'text-black' : 'text-gray-700'
+                      }`}>
                         {item.title}
                       </span>
                     </div>
-                    {openIndex === index ? (
-                      <Minus size={20} className="text-black" />
-                    ) : (
-                      <Plus size={20} className="text-gray-300" />
-                    )}
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
+                    }`}>
+                      {openIndex === index ? (
+                        <Minus size={16} />
+                      ) : (
+                        <Plus size={16} />
+                      )}
+                    </div>
                   </button>
                   <div 
-                    className={`grid transition-all duration-300 ease-in-out ${openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                    }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-6 pb-8 text-gray-500 font-medium leading-relaxed pl-16">
+                      <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
                         {item.description}
                       </p>
                     </div>
@@ -92,38 +106,30 @@ export const Services: React.FC = () => {
             </div>
           </div>
 
-          {/* Image Side - Industrial Look */}
-          <div className="relative h-full hidden lg:block">
-             <div className="absolute inset-0 bg-gray-200 transform translate-x-4 translate-y-4 -z-10"></div>
-             <div className="relative aspect-[4/5] overflow-hidden border-4 border-black group">
+          {/* Image Side */}
+          <div className="relative hidden lg:block">
+            <div className="sticky top-32">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
                   src="https://images.unsplash.com/photo-1590650046871-92c887180603?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Industrial warehouse or cleared garage" 
-                  className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-1000"
+                  alt="Professional junk removal service" 
+                  className="w-full h-full object-cover"
                 />
                 
-                {/* Floating "Blueprint" Info Box */}
-                <div className="absolute top-10 left-10 bg-black text-white p-8 max-w-xs shadow-2xl">
-                   <div className="flex items-center gap-2 mb-4 border-b border-white/20 pb-4">
-                      <div className="w-3 h-3 bg-white rounded-full"></div>
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em]">Project: Denver South</span>
-                   </div>
-                   <h4 className="text-2xl font-black mb-2 uppercase leading-none italic">Clear space <br/> guaranteed.</h4>
-                   <p className="text-gray-400 text-xs font-bold leading-relaxed uppercase">
-                     Full site cleanout performed in under 4 hours. No debris left behind.
-                   </p>
+                {/* Overlay Card */}
+                <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-black text-white rounded-xl flex items-center justify-center font-black text-xl">
+                      60%
+                    </div>
+                    <div>
+                      <p className="font-bold text-black">Recycled & Donated</p>
+                      <p className="text-gray-600 text-sm">We responsibly dispose of your items</p>
+                    </div>
+                  </div>
                 </div>
-
-                {/* Local Area Stamp */}
-                <div className="absolute bottom-10 right-10 flex flex-col items-end">
-                   <div className="bg-white px-4 py-2 border-2 border-black font-black uppercase text-xs tracking-widest -rotate-6">
-                      Est. 2018
-                   </div>
-                   <div className="bg-black text-white px-4 py-2 border-2 border-black font-black uppercase text-xs tracking-widest mt-2">
-                      Local Denver Team
-                   </div>
-                </div>
-             </div>
+              </div>
+            </div>
           </div>
 
         </div>

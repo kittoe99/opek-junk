@@ -19,9 +19,9 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
             </div>
 
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
-              We Haul Your Junk.
+              Junk gone.
               <br/>
-              You Reclaim Your Space.
+              Today.
             </h1>
             
             <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
@@ -61,31 +61,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
             </div>
           </div>
 
-        </div>
-      </div>
-
-      {/* Floating Industrial Stats - Fixed height and positioning */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-8 hidden lg:block z-20">
-        <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-          <div className="flex flex-col">
-            <span className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-1">Jobs Completed</span>
-            <span className="text-3xl font-black text-black leading-none tabular-nums">4,281+</span>
-          </div>
-          <div className="h-10 w-px bg-gray-200"></div>
-          <div className="flex flex-col">
-            <span className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-1">Lbs Recycled</span>
-            <span className="text-3xl font-black text-black leading-none tabular-nums">1.28M+</span>
-          </div>
-          <div className="h-10 w-px bg-gray-200"></div>
-          <div className="flex flex-col">
-            <span className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-1">Avg Response</span>
-            <span className="text-3xl font-black text-black leading-none tabular-nums">&lt; 15 MIN</span>
-          </div>
-          <div className="h-10 w-px bg-gray-200"></div>
-          <div className="flex flex-col">
-            <span className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-1">Area Covered</span>
-            <span className="text-3xl font-black text-black leading-none tabular-nums">50 MILES</span>
-          </div>
         </div>
       </div>
 

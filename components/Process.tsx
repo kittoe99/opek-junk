@@ -25,74 +25,67 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   ];
 
   return (
-    <section id="process" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="process" className="py-24 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* Left Column - Image */}
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-            <img 
-              src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop" 
-              alt="Junk removal process" 
-              className="w-full h-full object-cover"
-            />
-          </div>
+        {/* Header - Centered */}
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+            How it Works
+          </span>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
+            Point. Price. <span className="text-gray-400">Gone.</span>
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Three simple steps to a clutter-free space
+          </p>
+        </div>
 
-          {/* Right Column - Content */}
-          <div>
-            {/* Header */}
-            <div className="mb-12">
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-3 block">How it Works</span>
-              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">
-                Point. Price. <span className="text-gray-400">Gone.</span>
-              </h2>
-            </div>
-
-            {/* Steps */}
-            <div className="space-y-8 mb-12">
-              {steps.map((step, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="w-12 h-12 bg-black text-white flex items-center justify-center shrink-0">
-                    <step.icon size={24} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">
-                      Step {index + 1}
-                    </div>
-                    <h3 className="text-lg font-black uppercase mb-2 tracking-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
+        {/* Steps - Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {steps.map((step, index) => (
+            <div 
+              key={index} 
+              className="group bg-white p-8 rounded-2xl border-2 border-gray-100 hover:border-black hover:shadow-xl transition-all duration-300"
+            >
+              {/* Step Number */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-14 h-14 bg-gray-100 group-hover:bg-black text-gray-400 group-hover:text-white rounded-xl flex items-center justify-center transition-all duration-300">
+                  <step.icon size={28} />
                 </div>
-              ))}
-            </div>
-
-            {/* Sustainability Note */}
-            <div className="pt-8 border-t border-gray-200">
-              <div className="flex items-center gap-3 text-sm mb-8">
-                <div className="w-10 h-10 border-2 border-black/10 flex items-center justify-center font-black text-xs shrink-0">
-                  70%
-                </div>
-                <p className="text-gray-600">
-                  We recycle up to 70% of debris collected from Denver Metro sites.
-                </p>
+                <span className="text-5xl font-black text-gray-100 group-hover:text-gray-200 transition-colors">
+                  0{index + 1}
+                </span>
               </div>
               
-              {/* CTA Button */}
-              <button 
-                onClick={onGetQuote}
-                className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
-              >
-                Get Your Quote
-                <ArrowRight size={20} />
-              </button>
+              <h3 className="text-xl font-black mb-3 tracking-tight">
+                {step.title}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {step.desc}
+              </p>
             </div>
-          </div>
+          ))}
+        </div>
 
+        {/* Bottom Section */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-white rounded-2xl border-2 border-gray-100">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-xl flex items-center justify-center font-black text-xl">
+              70%
+            </div>
+            <p className="text-gray-600 max-w-sm">
+              We recycle up to <strong className="text-black">70% of debris</strong> collected from Denver Metro sites.
+            </p>
+          </div>
+          
+          <button 
+            onClick={onGetQuote}
+            className="px-8 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2 whitespace-nowrap"
+          >
+            Get Your Quote
+            <ArrowRight size={20} />
+          </button>
         </div>
 
       </div>
