@@ -15,7 +15,7 @@ interface ServiceAreaProps {
 
 export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
   return (
-    <section id="service-area" className="py-24 bg-gray-50 text-black border-t border-gray-200">
+    <section id="service-area" className="py-16 md:py-24 lg:py-32 bg-gray-50 text-black border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
