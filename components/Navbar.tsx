@@ -150,96 +150,74 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu - Premium Design */}
+      {/* Mobile Menu - Minimalistic Dropdown */}
       <div 
-        className={`fixed top-0 right-0 bottom-0 w-full max-w-sm bg-gradient-to-b from-black via-gray-900 to-black z-[50] shadow-2xl transition-transform duration-500 ease-out ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-[72px] left-0 right-0 bg-white shadow-lg z-[50] transition-all duration-300 ease-out md:hidden ${
+          isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'
         }`}
       >
-        {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-0 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
-        
-        <div className="flex flex-col h-full relative">
-          {/* Close Button */}
-          <button 
-            onClick={() => setIsMenuOpen(false)}
-            className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-          >
-            <X size={24} />
-          </button>
-
-          {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto px-6 pt-20 pb-4">
-            <div className="space-y-1">
-              {navLinks.map((link, idx) => (
-                <div key={link.name} className={`transform transition-all duration-500 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`} style={{ transitionDelay: `${idx * 100}ms` }}>
-                  {link.hasMega ? (
-                    <div>
-                      <button
-                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full text-left px-4 py-4 text-2xl font-black uppercase tracking-tight text-white hover:text-white/80 transition-all flex items-center justify-between group"
-                      >
-                        <span>{link.name}</span>
-                        <div className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-all duration-300 ${mobileServicesOpen ? 'rotate-180 bg-white/20' : ''}`}>
-                          <ChevronDown size={18} className="text-white/80" />
-                        </div>
-                      </button>
-                      
-                      {/* Mobile Services Submenu */}
-                      <div className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="py-2 pl-4 space-y-1 border-l-2 border-white/20 ml-4">
-                          {serviceItems.map((item) => (
-                            <button
-                              key={item.name}
-                              onClick={() => {
-                                setMobileServicesOpen(false);
-                                handleLinkClick(link);
-                              }}
-                              className="w-full text-left px-4 py-3 rounded-lg hover:bg-white/10 transition-colors group"
-                            >
-                              <div className="text-sm font-bold text-white/90 group-hover:text-white">{item.name}</div>
-                            </button>
-                          ))}
-                        </div>
+        <nav className="px-6 py-6">
+          <div className="space-y-1">
+            {navLinks.map((link) => (
+              <div key={link.name}>
+                {link.hasMega ? (
+                  <div>
+                    <button
+                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                      className="w-full text-center py-3 text-sm font-bold uppercase tracking-wider text-black hover:text-gray-600 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <span>{link.name}</span>
+                      <ChevronDown size={14} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {/* Mobile Services Submenu */}
+                    <div className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                      <div className="py-2 space-y-1">
+                        {serviceItems.map((item) => (
+                          <button
+                            key={item.name}
+                            onClick={() => {
+                              setMobileServicesOpen(false);
+                              handleLinkClick(link);
+                            }}
+                            className="w-full text-center py-2 text-xs text-gray-600 hover:text-black transition-colors"
+                          >
+                            {item.name}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => handleLinkClick(link)}
-                      className="w-full text-left px-4 py-4 text-2xl font-black uppercase tracking-tight text-white hover:text-white/80 transition-all"
-                    >
-                      {link.name}
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </nav>
-
-          {/* Bottom Section */}
-          <div className="p-8 space-y-6">
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleLinkClick(link)}
+                    className="w-full text-center py-3 text-sm font-bold uppercase tracking-wider text-black hover:text-gray-600 transition-colors"
+                  >
+                    {link.name}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* CTA Button */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 onNavigate('quote');
               }}
-              className="w-full py-5 bg-white text-black font-black text-lg uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-xl shadow-lg flex items-center justify-center gap-3"
+              className="w-full py-3 bg-black text-white text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-lg"
             >
               Get A Quote
-              <ArrowRight size={22} />
             </button>
-            
-            <div className="text-center">
-              <p className="text-white/40 text-xs font-medium uppercase tracking-wider">Denver Metro Area</p>
-            </div>
           </div>
-        </div>
+        </nav>
       </div>
 
       {/* Mobile Overlay */}
       <div 
-        className={`fixed inset-0 bg-black/50 z-[45] transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 bg-black/20 z-[45] transition-opacity duration-300 md:hidden ${
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={() => setIsMenuOpen(false)}
