@@ -171,21 +171,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <X size={24} />
           </button>
 
-          {/* Sidebar Header */}
-          <div className="p-8 pt-20">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white text-black flex items-center justify-center rounded-xl">
-                <Trash2 size={28} />
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-black text-3xl tracking-tighter uppercase text-white">OPEK</span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/50">Junk Removal</span>
-              </div>
-            </div>
-          </div>
-
           {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto px-6 py-4">
+          <nav className="flex-1 overflow-y-auto px-6 pt-20 pb-4">
             <div className="space-y-1">
               {navLinks.map((link, idx) => (
                 <div key={link.name} className={`transform transition-all duration-500 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`} style={{ transitionDelay: `${idx * 100}ms` }}>
