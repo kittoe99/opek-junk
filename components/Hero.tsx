@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
           <div className="lg:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1590650046871-92c887180603?q=80&w=2070&auto=format&fit=crop" 
+                src="/assets/junk-removal.png" 
                 alt="Professional junk removal truck" 
                 className="w-full h-full object-cover"
               />
