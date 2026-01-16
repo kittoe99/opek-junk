@@ -152,37 +152,44 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu - Enhanced */}
+      {/* Mobile Sidebar Menu - Redesigned */}
       <div 
-        className={`fixed top-0 right-0 bottom-0 w-80 bg-gradient-to-br from-white to-gray-50 z-[50] shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 bottom-0 w-72 bg-black z-[50] shadow-2xl transition-transform duration-300 ease-out ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-gray-200 bg-white">
-            <h2 className="text-2xl font-black uppercase tracking-tight text-black">Menu</h2>
-            <p className="text-xs text-gray-500 mt-1 font-medium">Navigate our services</p>
+          <div className="p-6 border-b border-white/10">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-white text-black flex items-center justify-center">
+                <Trash2 size={20} />
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-black text-xl tracking-tighter uppercase text-white">OPEK</span>
+                <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/40">Junk Removal</span>
+              </div>
+            </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto py-4">
-            <div className="space-y-1 px-3">
+          <nav className="flex-1 overflow-y-auto py-6">
+            <div className="space-y-2 px-4">
               {navLinks.map((link) => (
                 <div key={link.name}>
                   {link.hasMega ? (
                     <div>
                       <button
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full text-left px-4 py-4 text-base font-bold uppercase tracking-wider text-gray-900 hover:bg-white rounded-lg transition-all flex items-center justify-between group"
+                        className="w-full text-left px-4 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 rounded-lg transition-all flex items-center justify-between group"
                       >
                         <span>{link.name}</span>
-                        <ChevronDown size={18} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={16} className={`transition-transform duration-300 text-white/60 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
                       </button>
                       
                       {/* Mobile Services Submenu */}
                       <div className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="py-2 px-2 space-y-1">
+                        <div className="py-2 space-y-1">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -190,10 +197,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                                 setMobileServicesOpen(false);
                                 handleLinkClick(link);
                               }}
-                              className="w-full text-left px-4 py-3 rounded-lg hover:bg-white transition-colors group"
+                              className="w-full text-left px-4 py-2.5 ml-4 rounded-lg hover:bg-white/10 transition-colors group border-l-2 border-white/20"
                             >
-                              <div className="text-sm font-bold text-gray-800 group-hover:text-black mb-0.5">{item.name}</div>
-                              <div className="text-xs text-gray-500">{item.desc}</div>
+                              <div className="text-xs font-bold text-white/90 group-hover:text-white mb-0.5">{item.name}</div>
+                              <div className="text-[10px] text-white/50 leading-tight">{item.desc}</div>
                             </button>
                           ))}
                         </div>
@@ -202,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link)}
-                      className="w-full text-left px-4 py-4 text-base font-bold uppercase tracking-wider text-gray-900 hover:bg-white rounded-lg transition-all"
+                      className="w-full text-left px-4 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 rounded-lg transition-all"
                     >
                       {link.name}
                     </button>
@@ -212,34 +219,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             </div>
           </nav>
 
-          {/* Bottom Section */}
-          <div className="p-6 border-t border-gray-200 space-y-4 bg-white">
+          {/* Bottom CTA */}
+          <div className="p-6 border-t border-white/10">
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 onNavigate('quote');
               }}
-              className="w-full py-4 bg-black text-white font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-lg shadow-lg flex items-center justify-center gap-2"
+              className="w-full py-4 bg-white text-black font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg shadow-lg flex items-center justify-center gap-2"
             >
               Get A Quote
               <ArrowRight size={18} />
             </button>
-            
-            {/* Contact Info */}
-            <div className="pt-4 space-y-3 border-t border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs font-bold">📞</span>
-                </div>
-                <p className="text-sm text-gray-700 font-bold">(303) 555-0199</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs font-bold">✉️</span>
-                </div>
-                <p className="text-sm text-gray-700 font-bold">hello@opekjunk.com</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
