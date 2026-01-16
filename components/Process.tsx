@@ -69,8 +69,17 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-white rounded-2xl border-2 border-gray-100">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-white rounded-2xl border-2 border-gray-100 relative overflow-hidden">
+          {/* Subtle background image for mobile */}
+          <div className="absolute inset-0 opacity-5 md:opacity-0">
+            <img 
+              src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop" 
+              alt="" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          <div className="relative z-10 flex items-center gap-4">
             <div className="w-16 h-16 bg-green-50 text-green-600 rounded-xl flex items-center justify-center font-black text-xl">
               70%
             </div>
@@ -81,7 +90,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
           
           <button 
             onClick={onGetQuote}
-            className="px-8 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2 whitespace-nowrap"
+            className="relative z-10 px-8 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2 whitespace-nowrap"
           >
             Get Your Quote
             <ArrowRight size={20} />
