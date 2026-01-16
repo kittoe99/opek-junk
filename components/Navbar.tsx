@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             {currentView !== 'quote' && (
               <button 
                 onClick={() => onNavigate('quote')}
-                className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-black text-white hover:bg-gray-800"
+                className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-black text-white hover:bg-gray-800 rounded-lg shadow-md"
               >
                 Get Estimate
               </button>
@@ -105,43 +105,72 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
       </nav>
 
-      {/* Full Screen Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Redesigned */}
       <div 
-        className={`fixed inset-0 bg-white z-[50] flex flex-col justify-center px-8 transition-transform duration-700 cubic-bezier(0.7, 0, 0.3, 1) ${
-          isMenuOpen ? 'translate-y-0' : '-translate-y-full'
+        className={`fixed inset-0 bg-black z-[50] flex flex-col transition-all duration-500 ease-out ${
+          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
-        <div className="flex flex-col space-y-8 max-w-lg mx-auto w-full">
-          {navLinks.map((link, idx) => (
-            <button
-              key={link.name}
-              onClick={() => handleLinkClick(link)}
-              className={`text-5xl font-black italic uppercase text-left text-black tracking-tighter transition-all duration-700 transform ${
-                isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-              }`}
-              style={{ transitionDelay: `${idx * 100}ms` }}
-            >
-              {link.name}
-            </button>
-          ))}
-          
-          {currentView !== 'quote' && (
-            <div 
-              className={`pt-8 transition-all duration-700 delay-400 transform ${
-                isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-              }`}
-            >
-               <button
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, white 2px, white 4px)',
+          }} />
+        </div>
+
+        <div className="relative flex flex-col justify-between h-full px-6 py-24">
+          {/* Navigation Links */}
+          <nav className="flex flex-col space-y-6">
+            {navLinks.map((link, idx) => (
+              <button
+                key={link.name}
+                onClick={() => handleLinkClick(link)}
+                className={`group text-left transition-all duration-500 transform ${
+                  isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
+                }`}
+                style={{ transitionDelay: `${idx * 80}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-1 h-12 bg-white transition-all duration-300 group-hover:h-16 group-hover:bg-gray-300" />
+                  <span className="text-4xl md:text-5xl font-black uppercase text-white tracking-tight group-hover:translate-x-2 transition-transform duration-300">
+                    {link.name}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </nav>
+
+          {/* Bottom Section */}
+          <div className={`space-y-6 transition-all duration-500 delay-300 transform ${
+            isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}>
+            {currentView !== 'quote' && (
+              <button
                 onClick={() => {
                   setIsMenuOpen(false);
                   onNavigate('quote');
                 }}
-                className="w-full py-6 bg-black text-white text-xl font-black uppercase italic flex items-center justify-center gap-3 active:scale-95 transition-transform"
+                className="w-full py-5 bg-white text-black font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg shadow-lg flex items-center justify-center gap-3"
               >
-                Instant Quote <ArrowRight size={24} />
+                Get Your Quote
+                <ArrowRight size={20} />
               </button>
+            )}
+            
+            {/* Contact Info */}
+            <div className="pt-6 border-t border-white/20">
+              <div className="text-white/60 text-sm font-medium space-y-2">
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-white/60 rounded-full" />
+                  (303) 555-0199
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-white/60 rounded-full" />
+                  hello@opekjunk.com
+                </p>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
