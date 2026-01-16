@@ -152,44 +152,58 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu - Redesigned */}
+      {/* Mobile Sidebar Menu - Premium Design */}
       <div 
-        className={`fixed top-0 right-0 bottom-0 w-72 bg-black z-[50] shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 bottom-0 w-full max-w-sm bg-gradient-to-b from-black via-gray-900 to-black z-[50] shadow-2xl transition-transform duration-500 ease-out ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex flex-col h-full">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-0 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
+        
+        <div className="flex flex-col h-full relative">
+          {/* Close Button */}
+          <button 
+            onClick={() => setIsMenuOpen(false)}
+            className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          >
+            <X size={24} />
+          </button>
+
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-white text-black flex items-center justify-center">
-                <Trash2 size={20} />
+          <div className="p-8 pt-20">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white text-black flex items-center justify-center rounded-xl">
+                <Trash2 size={28} />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-black text-xl tracking-tighter uppercase text-white">OPEK</span>
-                <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/40">Junk Removal</span>
+                <span className="font-black text-3xl tracking-tighter uppercase text-white">OPEK</span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/50">Junk Removal</span>
               </div>
             </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto py-6">
-            <div className="space-y-2 px-4">
-              {navLinks.map((link) => (
-                <div key={link.name}>
+          <nav className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="space-y-1">
+              {navLinks.map((link, idx) => (
+                <div key={link.name} className={`transform transition-all duration-500 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`} style={{ transitionDelay: `${idx * 100}ms` }}>
                   {link.hasMega ? (
                     <div>
                       <button
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full text-left px-4 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 rounded-lg transition-all flex items-center justify-between group"
+                        className="w-full text-left px-4 py-4 text-2xl font-black uppercase tracking-tight text-white hover:text-white/80 transition-all flex items-center justify-between group"
                       >
                         <span>{link.name}</span>
-                        <ChevronDown size={16} className={`transition-transform duration-300 text-white/60 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                        <div className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-all duration-300 ${mobileServicesOpen ? 'rotate-180 bg-white/20' : ''}`}>
+                          <ChevronDown size={18} className="text-white/80" />
+                        </div>
                       </button>
                       
                       {/* Mobile Services Submenu */}
                       <div className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="py-2 space-y-1">
+                        <div className="py-2 pl-4 space-y-1 border-l-2 border-white/20 ml-4">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -197,10 +211,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                                 setMobileServicesOpen(false);
                                 handleLinkClick(link);
                               }}
-                              className="w-full text-left px-4 py-2.5 ml-4 rounded-lg hover:bg-white/10 transition-colors group border-l-2 border-white/20"
+                              className="w-full text-left px-4 py-3 rounded-lg hover:bg-white/10 transition-colors group"
                             >
-                              <div className="text-xs font-bold text-white/90 group-hover:text-white mb-0.5">{item.name}</div>
-                              <div className="text-[10px] text-white/50 leading-tight">{item.desc}</div>
+                              <div className="text-sm font-bold text-white/90 group-hover:text-white">{item.name}</div>
                             </button>
                           ))}
                         </div>
@@ -209,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link)}
-                      className="w-full text-left px-4 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 rounded-lg transition-all"
+                      className="w-full text-left px-4 py-4 text-2xl font-black uppercase tracking-tight text-white hover:text-white/80 transition-all"
                     >
                       {link.name}
                     </button>
@@ -219,18 +232,22 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             </div>
           </nav>
 
-          {/* Bottom CTA */}
-          <div className="p-6 border-t border-white/10">
+          {/* Bottom Section */}
+          <div className="p-8 space-y-6">
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 onNavigate('quote');
               }}
-              className="w-full py-4 bg-white text-black font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg shadow-lg flex items-center justify-center gap-2"
+              className="w-full py-5 bg-white text-black font-black text-lg uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-xl shadow-lg flex items-center justify-center gap-3"
             >
               Get A Quote
-              <ArrowRight size={18} />
+              <ArrowRight size={22} />
             </button>
+            
+            <div className="text-center">
+              <p className="text-white/40 text-xs font-medium uppercase tracking-wider">Denver Metro Area</p>
+            </div>
           </div>
         </div>
       </div>
