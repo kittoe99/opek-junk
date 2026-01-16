@@ -69,46 +69,8 @@ export const ContactPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
           
-          {/* Contact Info */}
-          <div className="lg:col-span-2 space-y-8">
-            <div>
-              <h2 className="text-2xl font-black mb-8">Get In Touch</h2>
-              
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-black text-white flex items-center justify-center shrink-0">
-                    <Phone size={20} />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg">(303) 555-0199</div>
-                    <div className="text-sm text-gray-600">Mon-Sat: 7am-7pm</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-black text-white flex items-center justify-center shrink-0">
-                    <Mail size={20} />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg">hello@opekjunk.com</div>
-                    <div className="text-sm text-gray-600">Response within 30 min</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-black text-white flex items-center justify-center shrink-0">
-                    <Clock size={20} />
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg">Business Hours</div>
-                    <div className="text-sm text-gray-600">Mon-Sat: 7:00am - 7:00pm</div>
-                    <div className="text-sm text-gray-600">Sun: Emergency only</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Image */}
+          {/* Image */}
+          <div className="lg:col-span-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <img 
                 src="/opek2.png" 

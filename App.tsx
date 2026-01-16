@@ -7,12 +7,13 @@ import { ServiceArea } from './components/ServiceArea';
 import { Footer } from './components/Footer';
 import { QuotePage } from './components/QuotePage';
 import { ContactPage } from './components/ContactPage';
+import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'quote' | 'contact'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'quote' | 'contact' | 'booking'>('home');
 
-  const handleNavigate = (view: 'home' | 'quote' | 'contact', sectionId?: string) => {
+  const handleNavigate = (view: 'home' | 'quote' | 'contact' | 'booking', sectionId?: string) => {
     setCurrentView(view);
     
     // If going to home and a section is requested, scroll to it after render
@@ -39,6 +40,8 @@ function App() {
         return <QuotePage />;
       case 'contact':
         return <ContactPage />;
+      case 'booking':
+        return <BookingPage />;
       default:
         return (
           <>
@@ -46,7 +49,7 @@ function App() {
             <Services />
             <Process onGetQuote={() => handleNavigate('quote')} />
             <ServiceArea onGetQuote={() => handleNavigate('quote')} />
-            <QuickActionBar onBookOnline={() => handleNavigate('quote')} />
+            <QuickActionBar onBookOnline={() => handleNavigate('booking')} />
           </>
         );
     }

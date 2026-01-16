@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Trash2, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
-  currentView: 'home' | 'quote' | 'contact';
-  onNavigate: (view: 'home' | 'quote' | 'contact', sectionId?: string) => void;
+  currentView: 'home' | 'quote' | 'contact' | 'booking';
+  onNavigate: (view: 'home' | 'quote' | 'contact' | 'booking', sectionId?: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   const navLinks = [
     { name: 'Services', sectionId: 'services', type: 'home' as const, hasMega: true },
     { name: 'Contact', type: 'contact' as const },
-    { name: 'Book Online', type: 'quote' as const },
+    { name: 'Book Online', type: 'booking' as const },
   ];
 
   const serviceItems = [
@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
     { name: 'Yard Waste', desc: 'Landscaping debris removal' },
   ];
 
-  const handleLinkClick = (link: { name: string, sectionId?: string, type: 'home' | 'quote' | 'contact' }) => {
+  const handleLinkClick = (link: { name: string, sectionId?: string, type: 'home' | 'quote' | 'contact' | 'booking' }) => {
     setIsMenuOpen(false);
     onNavigate(link.type, link.sectionId);
   };
