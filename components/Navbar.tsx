@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Trash2, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
+import { Menu, X, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
   currentView: 'home' | 'quote' | 'contact' | 'booking';
@@ -63,24 +63,22 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           
-          {/* Logo Section - Industrial Rebrand */}
+          {/* Logo */}
           <div 
             className="flex items-center gap-3 cursor-pointer group z-[70]" 
             onClick={handleLogoClick}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-black text-white transition-all duration-300">
-              {isStandalonePage && !isMenuOpen ? (
+            {isStandalonePage && !isMenuOpen ? (
+              <div className="w-12 h-12 flex items-center justify-center bg-black text-white transition-all duration-300">
                 <ArrowLeft size={24} />
-              ) : (
-                <Trash2 size={24} className="group-hover:-rotate-12 transition-transform duration-300" />
-              )}
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-black text-2xl tracking-tighter uppercase text-black transition-colors duration-300">
-                OPEK
-              </span>
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400">Junk Removal</span>
-            </div>
+              </div>
+            ) : (
+              <img
+                src="/logo1.png"
+                alt="OPEK Junk Removal"
+                className="h-10 w-auto"
+              />
+            )}
           </div>
 
           {/* Desktop Navigation */}
