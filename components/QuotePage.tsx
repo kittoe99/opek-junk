@@ -110,29 +110,29 @@ export const QuotePage: React.FC = () => {
   // Initial selection screen
   if (!selectedOption) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen pt-32 pb-20 bg-white flex items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-black mb-4">Get a Quote</h1>
-            <p className="text-gray-600 text-lg">Choose how you'd like to receive your estimate</p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-black mb-3">Get a Quote</h1>
+            <p className="text-gray-600">Choose your method</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {/* AI Option */}
             <button
               onClick={() => setSelectedOption('ai')}
-              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
+              className="group p-6 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
             >
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Camera size={32} />
+              <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
+                <Camera size={28} />
               </div>
-              <h3 className="text-2xl font-black mb-3">AI Photo Estimate</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Upload a photo and get an instant price estimate powered by AI. Perfect for quick quotes.
+              <h3 className="text-xl font-black mb-2">AI Photo Estimate</h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Instant pricing from a photo
               </p>
               <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
-                Get Instant Quote
+                Continue
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </button>
@@ -140,34 +140,20 @@ export const QuotePage: React.FC = () => {
             {/* Manual Option */}
             <button
               onClick={() => setSelectedOption('manual')}
-              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
+              className="group p-6 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
             >
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <CheckCircle size={32} />
+              <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
+                <CheckCircle size={28} />
               </div>
-              <h3 className="text-2xl font-black mb-3">Schedule Visit</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Request an in-person visit for accurate pricing. Best for large jobs or complex situations.
+              <h3 className="text-xl font-black mb-2">Schedule Visit</h3>
+              <p className="text-gray-600 text-sm mb-4">
+                In-person quote for accuracy
               </p>
               <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
-                Schedule Appointment
+                Continue
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </button>
-          </div>
-
-          {/* Image */}
-          <div className="relative aspect-[21/9] overflow-hidden rounded-2xl max-w-4xl mx-auto">
-            <img 
-              src="/opek2.png" 
-              alt="Professional junk removal service" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-              <p className="text-white text-sm md:text-base font-bold text-center">
-                Fast, reliable service with transparent pricing
-              </p>
-            </div>
           </div>
         </div>
       </div>
