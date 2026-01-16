@@ -2,7 +2,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { QuoteEstimate } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAiClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error('Missing API key');
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 /**
  * Analyzes an image of junk/waste and provides a cost estimate.
@@ -26,6 +32,7 @@ export const getJunkQuote = async (base64Image: string, mimeType: string): Promi
   `;
 
   try {
+    const ai = getAiClient();
     // Always use gemini-3-flash-preview for basic multimodal reasoning tasks
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
