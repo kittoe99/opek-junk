@@ -73,13 +73,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                 <ArrowLeft size={24} />
               </div>
             ) : (
-              <div className="bg-white border-2 border-gray-200 rounded-lg px-3 py-2 md:bg-transparent md:border-0 md:px-0 md:py-0">
-                <img
-                  src="/logo1.png"
-                  alt="OPEK Junk Removal"
-                  className="h-8 w-auto object-contain md:h-10"
-                />
-              </div>
+              <img
+                src="/logo1.png"
+                alt="OPEK Junk Removal"
+                className="h-12 w-auto object-contain md:h-14"
+              />
             )}
           </div>
 
