@@ -7,6 +7,7 @@ import { ServiceArea } from './components/ServiceArea';
 import { Footer } from './components/Footer';
 import { QuotePage } from './components/QuotePage';
 import { ContactPage } from './components/ContactPage';
+import { QuickActionBar } from './components/QuickActionBar';
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'quote' | 'contact'>('home');
@@ -45,6 +46,7 @@ function App() {
             <Services />
             <Process onGetQuote={() => handleNavigate('quote')} />
             <ServiceArea onGetQuote={() => handleNavigate('quote')} />
+            <QuickActionBar onBookOnline={() => handleNavigate('quote')} />
           </>
         );
     }

@@ -110,7 +110,7 @@ export const QuotePage: React.FC = () => {
   // Initial selection screen
   if (!selectedOption) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-white flex items-center">
+      <div className="min-h-screen pt-32 pb-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           
           <div className="text-center mb-12">
@@ -118,7 +118,7 @@ export const QuotePage: React.FC = () => {
             <p className="text-gray-600">Choose your method</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
             {/* AI Option */}
             <button
               onClick={() => setSelectedOption('ai')}
@@ -154,6 +154,20 @@ export const QuotePage: React.FC = () => {
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </button>
+          </div>
+
+          {/* Image */}
+          <div className="relative aspect-[21/9] overflow-hidden rounded-2xl max-w-3xl mx-auto">
+            <img 
+              src="/opek2.png" 
+              alt="Professional junk removal service" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+              <p className="text-white text-sm md:text-base font-bold text-center">
+                Fast, reliable service with transparent pricing
+              </p>
+            </div>
           </div>
         </div>
       </div>
