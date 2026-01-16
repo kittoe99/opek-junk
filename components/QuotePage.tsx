@@ -118,11 +118,11 @@ export const QuotePage: React.FC = () => {
             <p className="text-gray-600 text-lg">Choose how you'd like to receive your estimate</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             {/* AI Option */}
             <button
               onClick={() => setSelectedOption('ai')}
-              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg"
+              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
             >
               <div className="w-16 h-16 bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Camera size={32} />
@@ -140,7 +140,7 @@ export const QuotePage: React.FC = () => {
             {/* Manual Option */}
             <button
               onClick={() => setSelectedOption('manual')}
-              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg"
+              className="group p-8 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
             >
               <div className="w-16 h-16 bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <CheckCircle size={32} />
@@ -154,6 +154,20 @@ export const QuotePage: React.FC = () => {
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </button>
+          </div>
+
+          {/* Image */}
+          <div className="relative aspect-[21/9] overflow-hidden rounded-2xl max-w-4xl mx-auto">
+            <img 
+              src="/opek2.png" 
+              alt="Professional junk removal service" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+              <p className="text-white text-sm md:text-base font-bold text-center">
+                Fast, reliable service with transparent pricing
+              </p>
+            </div>
           </div>
         </div>
       </div>

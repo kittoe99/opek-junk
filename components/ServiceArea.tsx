@@ -55,6 +55,20 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
                  Contact Support <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
                </a>
             </div>
+
+            {/* Image */}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl mt-8">
+              <img 
+                src="/junk-removal.png" 
+                alt="Junk removal service in Denver area" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4">
+                <p className="text-white text-sm font-bold">
+                  Serving the entire Denver Metro area with fast, reliable service
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Right Column: Cities List */}
