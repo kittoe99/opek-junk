@@ -111,7 +111,7 @@ export const Services: React.FC = () => {
             <div className="sticky top-32">
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
-                  src="/assets/opek2.png" 
+                  src="/opek2.png" 
                   alt="Professional junk removal service" 
                   className="w-full h-full object-cover"
                 />

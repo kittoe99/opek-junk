@@ -73,7 +73,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
           {/* Subtle background image for mobile */}
           <div className="absolute inset-0 opacity-5 md:opacity-0">
             <img 
-              src="/assets/junk-removal.png" 
+              src="/junk-removal.png" 
               alt="" 
               className="w-full h-full object-cover"
             />
