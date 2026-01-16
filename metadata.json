@@ -1,0 +1,7 @@
+{
+  "name": "Opek Junk Removal",
+  "description": "Professional junk removal services with AI-powered instant quote estimation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
