@@ -31,7 +31,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
                 <span className="text-gray-400">Coast to Coast</span>
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed font-light mb-6">
-                We operate nationwide across the United States. From residential homes to commercial properties, we are your trusted junk removal experts.
+                Our platform connects you with vetted junk removal professionals nationwide. From residential homes to commercial properties, we help you find the right service provider in your area.
               </p>
               
               <button 
@@ -46,10 +46,10 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div className="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 transition-shadow hover:shadow-md">
                <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
                  <MapPin className="text-gray-400" size={20}/>
-                 Need Service?
+                 How It Works
                </h3>
                <p className="text-gray-600 mb-6">
-                 We serve all major cities and surrounding areas nationwide. Contact us to schedule service in your area.
+                 Enter your location and job details. We'll instantly connect you with qualified service providers in your area who are ready to help.
                </p>
                <a href="mailto:hello@opekjunk.com" className="text-black font-bold hover:underline decoration-2 underline-offset-4 inline-flex items-center group">
                  Contact Support <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
@@ -65,7 +65,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
               />
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4">
                 <p className="text-white text-sm font-bold">
-                  Serving communities nationwide with fast, reliable service
+                  Connecting you with trusted professionals nationwide
                 </p>
               </div>
             </div>

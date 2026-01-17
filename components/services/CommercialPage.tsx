@@ -24,7 +24,7 @@ export const CommercialPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Professional junk removal for businesses nationwide. We handle office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
+                Connect with commercial junk removal specialists in your area. Our network handles office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -141,21 +141,21 @@ export const CommercialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK Junk Removal provides professional commercial junk removal services nationwide. From office moves to retail renovations, we handle all commercial debris.
+              OPEK connects businesses with professional commercial junk removal providers nationwide. From office moves to retail renovations, our platform helps you find the right service partner.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <h3 className="text-xl font-black text-black mb-3">How It Works</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Full-service commercial junk removal including office furniture, equipment, and debris. After-hours and weekend service available. Minimal disruption to your business operations.
+                  Submit your commercial project details. We match you with local providers specializing in office furniture, equipment, and debris removal. After-hours and weekend service available with minimal disruption.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <h3 className="text-xl font-black text-black mb-3">Our Network</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Licensed and insured for commercial properties. Volume pricing and recurring service discounts. Professional, uniformed team. Free on-site quotes.
+                  All providers are licensed and insured for commercial properties. Access volume pricing and recurring service options. Professional teams ready to serve your business needs.
                 </p>
               </div>
             </div>
@@ -173,9 +173,9 @@ export const CommercialPage: React.FC = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Network</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              We serve businesses across the United States. From coast to coast, OPEK is ready to help with your commercial junk removal needs. Contact us today for a free quote in your area.
+              Our platform connects businesses with independent service providers across the United States. From coast to coast, we help you find qualified commercial junk removal specialists in your area. Get matched today.
             </p>
           </div>
 

@@ -39,7 +39,7 @@ export const ResidentialPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Professional junk removal for homes nationwide. We handle furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
+                Connect with trusted junk removal professionals in your area. Our network handles furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -157,21 +157,21 @@ export const ResidentialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK Junk Removal provides professional residential junk removal services nationwide. We handle everything from single items to complete home cleanouts.
+              OPEK connects homeowners with professional junk removal providers nationwide. Our platform makes it easy to find qualified service professionals for everything from single items to complete home cleanouts.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <h3 className="text-xl font-black text-black mb-3">How It Works</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Full-service junk removal including furniture, appliances, electronics, and household clutter. We handle all loading, hauling, and cleanup. Same-day service available in most areas.
+                  Submit your job details and location. We instantly match you with vetted local providers who handle furniture, appliances, electronics, and household clutter. Get quotes and book same-day service in most areas.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <h3 className="text-xl font-black text-black mb-3">Our Network</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Transparent pricing with no hidden fees. Licensed and insured. Over 60% of items donated or recycled. Professional, uniformed team. Free on-site quotes.
+                  All providers are licensed and insured. Transparent pricing with no hidden fees. Most prioritize eco-friendly disposal with donation and recycling. Professional service you can trust.
                 </p>
               </div>
             </div>
@@ -189,9 +189,9 @@ export const ResidentialPage: React.FC = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Network</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              We serve communities across the United States. From coast to coast, OPEK is ready to help with your residential junk removal needs. Contact us today for a free quote in your area.
+              Our platform connects customers with independent service providers across the United States. From coast to coast, we help you find trusted professionals in your area. Get matched with local providers today.
             </p>
           </div>
 

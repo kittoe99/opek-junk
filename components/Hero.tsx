@@ -25,7 +25,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
             </h1>
             
             <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-              Industrial-grade removal for the loads standard services won't touch. Same-day pickup across the United States.
+              We connect you with trusted, local junk removal professionals in your area. Get instant quotes and same-day service across the United States.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
