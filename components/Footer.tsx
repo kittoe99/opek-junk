@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
                <span className="font-black text-2xl text-white tracking-tighter uppercase">OPEK</span>
             </div>
             <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-xs">
-              Denver's premier industrial-grade junk removal service. We specialize in hard-to-move items and large-scale property clearing.
+              Connecting customers with trusted junk removal professionals nationwide. Your platform for finding qualified service providers.
             </p>
             <div className="mt-8 flex justify-center md:justify-start gap-4">
               <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
@@ -33,21 +33,21 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-black uppercase text-xs tracking-[0.3em] mb-8">Navigation</h4>
             <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
-              <li><a href="#" className="hover:text-white transition-colors">Our Services</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
               <li><a href="#process" className="hover:text-white transition-colors">How it Works</a></li>
-              <li><a href="#service-area" className="hover:text-white transition-colors">Service Area</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+              <li><a href="#service-area" className="hover:text-white transition-colors">Coverage</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Become a Provider</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-black uppercase text-xs tracking-[0.3em] mb-8">Service Zone</h4>
+            <h4 className="text-white font-black uppercase text-xs tracking-[0.3em] mb-8">Coverage</h4>
             <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
-              <li>Denver Metro</li>
-              <li>Boulder</li>
-              <li>Aurora</li>
-              <li>Lakewood</li>
-              <li>Castle Rock</li>
+              <li>Nationwide</li>
+              <li>All 50 States</li>
+              <li>Major Cities</li>
+              <li>Local Providers</li>
+              <li>24/7 Matching</li>
             </ul>
           </div>
 
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
         
         <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
-            &copy; {new Date().getFullYear()} Opek Industrial Junk Removal LLC. Licensed & Insured.
+            &copy; {new Date().getFullYear()} Opek Junk Removal Platform. Connecting You With Licensed & Insured Providers.
           </p>
           <div className="flex gap-8">
              <a href="#" className="text-gray-600 hover:text-white text-[10px] font-black uppercase tracking-[0.3em]">Privacy</a>
