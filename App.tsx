@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
@@ -9,60 +10,71 @@ import { QuotePage } from './components/QuotePage';
 import { ContactPage } from './components/ContactPage';
 import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
+import { ResidentialPage } from './components/services/ResidentialPage';
+import { CommercialPage } from './components/services/CommercialPage';
+import { ConstructionPage } from './components/services/ConstructionPage';
+import { EWastePage } from './components/services/EWastePage';
+import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 
-function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'quote' | 'contact' | 'booking'>('home');
+function ScrollToTop() {
+  const { pathname } = useLocation();
 
-  const handleNavigate = (view: 'home' | 'quote' | 'contact' | 'booking', sectionId?: string) => {
-    setCurrentView(view);
-    
-    // If going to home and a section is requested, scroll to it after render
-    if (view === 'home') {
-      if (sectionId) {
-        setTimeout(() => {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 100);
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    } else {
-      // If going to other pages, scroll top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  return null;
+}
+
+function HomePage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
-  };
-
-  const renderView = () => {
-    switch(currentView) {
-      case 'quote':
-        return <QuotePage />;
-      case 'contact':
-        return <ContactPage />;
-      case 'booking':
-        return <BookingPage />;
-      default:
-        return (
-          <>
-            <Hero onGetQuote={() => handleNavigate('quote')} />
-            <Services />
-            <Process onGetQuote={() => handleNavigate('quote')} />
-            <ServiceArea onGetQuote={() => handleNavigate('quote')} />
-            <QuickActionBar onBookOnline={() => handleNavigate('booking')} />
-          </>
-        );
-    }
-  };
+  }, [location]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 selection:bg-black selection:text-white">
-      <Navbar currentView={currentView} onNavigate={handleNavigate} />
-      
-      {renderView()}
-      
-      <Footer />
-    </div>
+    <>
+      <Hero onGetQuote={() => navigate('/quote')} />
+      <Services />
+      <Process onGetQuote={() => navigate('/quote')} />
+      <ServiceArea onGetQuote={() => navigate('/quote')} />
+      <QuickActionBar onBookOnline={() => navigate('/booking')} />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-white text-gray-900 selection:bg-black selection:text-white">
+        <ScrollToTop />
+        <Navbar />
+        
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/quote" element={<QuotePage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/booking" element={<BookingPage />} />
+          <Route path="/services/residential" element={<ResidentialPage />} />
+          <Route path="/services/commercial" element={<CommercialPage />} />
+          <Route path="/services/construction" element={<ConstructionPage />} />
+          <Route path="/services/e-waste" element={<EWastePage />} />
+          <Route path="/services/property-cleanout" element={<PropertyCleanoutPage />} />
+        </Routes>
+        
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

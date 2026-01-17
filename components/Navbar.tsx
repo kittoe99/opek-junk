@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-interface NavbarProps {
-  currentView: 'home' | 'quote' | 'contact' | 'booking';
-  onNavigate: (view: 'home' | 'quote' | 'contact' | 'booking', sectionId?: string) => void;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
+export const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentView = location.pathname === '/' ? 'home' : location.pathname.slice(1) as 'quote' | 'contact' | 'booking';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
@@ -30,28 +29,27 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   }, [isMenuOpen]);
 
   const navLinks = [
-    { name: 'Services', sectionId: 'services', type: 'home' as const, hasMega: true },
-    { name: 'Contact', type: 'contact' as const },
-    { name: 'Book Online', type: 'booking' as const },
+    { name: 'Services', path: '/#services', hasMega: true },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Book Online', path: '/booking' },
   ];
 
   const serviceItems = [
-    { name: 'Residential Junk Removal', desc: 'Home cleanouts and decluttering' },
-    { name: 'Commercial Services', desc: 'Office and retail space clearing' },
-    { name: 'Construction Debris', desc: 'Post-construction cleanup' },
-    { name: 'Appliance Removal', desc: 'Large appliance hauling' },
-    { name: 'Furniture Disposal', desc: 'Old furniture removal' },
-    { name: 'Yard Waste', desc: 'Landscaping debris removal' },
+    { name: 'Residential Junk Removal', desc: 'Home cleanouts and decluttering', path: '/services/residential' },
+    { name: 'Commercial Services', desc: 'Office and retail space clearing', path: '/services/commercial' },
+    { name: 'Construction Debris', desc: 'Post-construction cleanup', path: '/services/construction' },
+    { name: 'E-Waste & Appliance Recycling', desc: 'Responsible electronics disposal', path: '/services/e-waste' },
+    { name: 'Full Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout' },
   ];
 
-  const handleLinkClick = (link: { name: string, sectionId?: string, type: 'home' | 'quote' | 'contact' | 'booking' }) => {
+  const handleLinkClick = (path: string) => {
     setIsMenuOpen(false);
-    onNavigate(link.type, link.sectionId);
+    navigate(path);
   };
 
   const handleLogoClick = () => {
     setIsMenuOpen(false);
-    onNavigate('home');
+    navigate('/');
   };
 
   const isStandalonePage = currentView === 'quote' || currentView === 'contact';
@@ -91,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                     onMouseLeave={() => setShowServicesMega(false)}
                   >
                     <button 
-                      onClick={() => handleLinkClick(link)}
+                      onClick={() => handleLinkClick(link.path)}
                       className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black flex items-center gap-1"
                     >
                       {link.name}
@@ -108,7 +106,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                               key={item.name}
                               onClick={() => {
                                 setShowServicesMega(false);
-                                handleLinkClick(link);
+                                handleLinkClick(item.path);
                               }}
                               className="text-left p-4 rounded-lg hover:bg-gray-50 transition-colors group"
                             >
@@ -122,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   </div>
                 ) : (
                   <button 
-                    onClick={() => handleLinkClick(link)}
+                    onClick={() => handleLinkClick(link.path)}
                     className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black"
                   >
                     {link.name}
@@ -133,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             ))}
             
             <button 
-              onClick={() => onNavigate('quote')}
+              onClick={() => navigate('/quote')}
               className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-black text-white hover:bg-gray-800 rounded-lg shadow-md"
             >
               Get A Quote
@@ -178,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                             key={item.name}
                             onClick={() => {
                               setMobileServicesOpen(false);
-                              handleLinkClick(link);
+                              handleLinkClick(item.path);
                             }}
                             className="w-full text-center py-2 text-xs text-gray-600 hover:text-black transition-colors"
                           >
@@ -190,7 +188,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   </div>
                 ) : (
                   <button
-                    onClick={() => handleLinkClick(link)}
+                    onClick={() => handleLinkClick(link.path)}
                     className="w-full text-center py-3 text-sm font-bold uppercase tracking-wider text-black hover:text-gray-600 transition-colors"
                   >
                     {link.name}
@@ -205,7 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <button
               onClick={() => {
                 setIsMenuOpen(false);
-                onNavigate('quote');
+                navigate('/quote');
               }}
               className="w-full py-3 bg-black text-white text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-lg"
             >
