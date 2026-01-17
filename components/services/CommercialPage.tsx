@@ -1,201 +1,203 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Truck, CheckCircle, Clock, Shield, Users } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export const CommercialPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6 rounded-xl">
-            <Truck size={40} />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black mb-6">Commercial & Office Hauling</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Moving offices or upgrading equipment? We remove desks, cubicles, monitors, and filing cabinets 
-            with minimal disruption to your business operations.
-          </p>
-        </div>
+    <div className="min-h-screen bg-white">
+      
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-20 md:pb-32">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Left Column */}
+            <div className="lg:col-span-7">
+              <div className="mb-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Commercial Junk Removal Denver</span>
+              </div>
 
-        {/* Image */}
-        <div className="relative aspect-[21/9] overflow-hidden rounded-2xl mb-16 max-w-5xl mx-auto">
-          <img 
-            src="/opek2.png" 
-            alt="Commercial junk removal service" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-            <p className="text-white text-lg font-bold text-center">
-              Trusted by Denver businesses since 2018
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
+                Commercial Junk Removal Denver
+              </h1>
+              
+              <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
+                Professional junk removal for Denver businesses. We handle office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => navigate('/quote')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                >
+                  Get Free Quote
+                </button>
+                <button 
+                  onClick={() => navigate('/contact')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                >
+                  Call (303) 555-0199
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column - Image */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <img 
+                  src="/opek2.png" 
+                  alt="Commercial junk removal service in Denver" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle2 size={18}/>
+                    <span className="text-sm font-bold">After-Hours Available • Licensed & Insured • Zero Disruption</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* What We Remove Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="mb-12">
+            <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+              What We Remove
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
+              Commercial <span className="text-gray-400">items.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Office Furniture</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Desks & Workstations</li>
+                <li>• Cubicles & Partitions</li>
+                <li>• Conference Tables</li>
+                <li>• Office Chairs</li>
+                <li>• Filing Cabinets</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Equipment</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Computers & Monitors</li>
+                <li>• Printers & Copiers</li>
+                <li>• Servers & IT Equipment</li>
+                <li>• Phone Systems</li>
+                <li>• Networking Gear</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Storage</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Shelving Units</li>
+                <li>• Storage Boxes</li>
+                <li>• Archive Materials</li>
+                <li>• Warehouse Pallets</li>
+                <li>• Display Fixtures</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">General Items</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Office Supplies</li>
+                <li>• Retail Fixtures</li>
+                <li>• Signage</li>
+                <li>• Packaging Materials</li>
+                <li>• Miscellaneous Debris</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-600 text-sm">
+              Flexible scheduling including after-hours and weekends. Volume discounts available.
             </p>
           </div>
-        </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Clock size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Flexible Scheduling</h3>
-            <p className="text-gray-600 text-sm">After-hours and weekend service available</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Shield size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Fully Insured</h3>
-            <p className="text-gray-600 text-sm">Licensed and insured for commercial properties</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Users size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Professional Team</h3>
-            <p className="text-gray-600 text-sm">Uniformed, background-checked crew members</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <CheckCircle size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Zero Disruption</h3>
-            <p className="text-gray-600 text-sm">Minimal impact on your daily operations</p>
-          </div>
         </div>
+      </section>
 
-        {/* What We Remove */}
-        <div className="bg-gray-50 p-12 rounded-2xl mb-16">
-          <h2 className="text-3xl font-black mb-8 text-center">Commercial Items We Handle</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-bold text-lg mb-3">Office Furniture</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Desks & Workstations</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Cubicles & Partitions</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Conference Tables</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Office Chairs</span>
-                </li>
-              </ul>
-            </div>
+      {/* Content Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Denver</h2>
             
-            <div>
-              <h3 className="font-bold text-lg mb-3">Equipment</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Computers & Monitors</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Printers & Copiers</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Servers & IT Equipment</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Phone Systems</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-3">Storage & Filing</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Filing Cabinets</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Shelving Units</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Storage Boxes</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Archive Materials</span>
-                </li>
-              </ul>
+            <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+              OPEK Junk Removal provides professional commercial junk removal services throughout the Denver Metro area. From office moves to retail renovations, we handle all commercial debris.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Full-service commercial junk removal including office furniture, equipment, and debris. After-hours and weekend service available. Minimal disruption to your business operations.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Licensed and insured for commercial properties. Volume pricing and recurring service discounts. Professional, uniformed team. Free on-site quotes.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Industries Served */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-black mb-12 text-center">Industries We Serve</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Corporate Offices</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Retail Stores</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Warehouses</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Medical Facilities</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Schools</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Restaurants</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Hotels</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl text-center">
-              <p className="font-bold">Gyms</p>
+          {/* Single Image */}
+          <div className="my-12 max-w-5xl mx-auto">
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+              <img 
+                src="/opek2.png" 
+                alt="Commercial junk removal service in Denver" 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
-        </div>
 
-        {/* CTA Section */}
-        <div className="bg-black text-white p-12 rounded-2xl text-center">
-          <h2 className="text-3xl md:text-4xl font-black mb-4">Need a Commercial Quote?</h2>
-          <p className="text-gray-300 mb-8 text-lg">
-            Contact us for volume pricing and recurring service discounts.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-black text-black mb-6">Service Areas</h3>
+            <p className="text-gray-700 leading-relaxed mb-10">
+              We serve businesses throughout the Denver Metro area including Aurora, Lakewood, Boulder, Castle Rock, and surrounding communities. Contact us today for a free commercial quote.
+            </p>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t-2 border-gray-200 max-w-4xl mx-auto">
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-4 bg-white text-black font-bold uppercase hover:bg-gray-100 transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
             >
               Get Free Quote
             </button>
             <button 
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 border-2 border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
             >
               Contact Us
             </button>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
     </div>
   );
 };

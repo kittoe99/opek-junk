@@ -35,18 +35,12 @@ export const ResidentialPage: React.FC = () => {
               </div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
-                Professional Home Junk Removal in Denver
+                Home Junk Removal Denver
               </h1>
               
-              <div className="space-y-4 mb-8 max-w-lg">
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  OPEK Junk Removal provides comprehensive residential junk removal services throughout the Denver Metro area. From single-item pickups to complete home cleanouts, our professional team handles every job with efficiency and care.
-                </p>
-                
-                <p className="text-base text-gray-600 leading-relaxed">
-                  We specialize in removing furniture, appliances, electronics, yard waste, and general household clutter. Our same-day service is available across Denver, Aurora, Lakewood, Boulder, and surrounding areas. With transparent pricing and eco-friendly disposal practices, we make junk removal simple and stress-free.
-                </p>
-              </div>
+              <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
+                Professional junk removal for Denver homes. We handle furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
+              </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
@@ -94,11 +88,8 @@ export const ResidentialPage: React.FC = () => {
               What We Remove
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-              Items We <span className="text-gray-400">Haul Away</span>
+              We haul <span className="text-gray-400">everything.</span>
             </h2>
-            <p className="text-gray-600 text-lg leading-relaxed max-w-3xl">
-              From furniture to appliances, we handle virtually any unwanted item from your Denver home.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -158,32 +149,32 @@ export const ResidentialPage: React.FC = () => {
         </div>
       </section>
 
-      {/* SEO Content Section */}
+      {/* Content Section */}
       <section className="py-16 md:py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Professional Residential Junk Removal Services in Denver</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Denver</h2>
             
-            <p className="text-gray-700 leading-relaxed mb-6 text-lg">
-              When it comes to residential junk removal in Denver, homeowners need a service that's reliable, efficient, and environmentally responsible. OPEK Junk Removal has been serving the Greater Denver Metro area since 2018, providing comprehensive junk hauling solutions for homes of all sizes. Whether you're decluttering a single room, clearing out an entire basement, or preparing for a move, our professional team handles every job with the same level of care and attention to detail.
+            <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+              OPEK Junk Removal serves the Greater Denver Metro area with professional residential junk removal services. We handle everything from single items to complete home cleanouts.
             </p>
 
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Why Choose Professional Junk Removal?</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Many homeowners underestimate the time, effort, and physical demands of removing large items and accumulated clutter. Professional residential junk removal services save you valuable time and prevent potential injuries from lifting heavy furniture or appliances. Our trained crew comes equipped with the proper tools, vehicles, and expertise to safely remove items from any location in your home, including tight spaces, staircases, and second-story rooms.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Full-service junk removal including furniture, appliances, electronics, and household clutter. We handle all loading, hauling, and cleanup. Same-day service available across Denver, Aurora, Lakewood, and Boulder.
+                </p>
+              </div>
 
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Beyond convenience, professional junk removal ensures proper disposal and recycling. At OPEK, we're committed to environmental responsibility—over 60% of the items we collect are either donated to local charities or sent to recycling facilities. This means your old furniture, appliances, and household items get a second life instead of ending up in a landfill.
-            </p>
-
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Same-Day Junk Removal in Denver</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              We understand that junk removal needs can arise unexpectedly. That's why OPEK offers same-day service throughout the Denver Metro area, including Aurora, Lakewood, Boulder, and Castle Rock. Whether you're dealing with a last-minute move, preparing for guests, or simply ready to reclaim your space today, our team can accommodate urgent requests. Just give us a call or book online, and we'll provide you with a convenient time window that fits your schedule.
-            </p>
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Transparent pricing with no hidden fees. Licensed and insured. Over 60% of items donated or recycled. Professional, uniformed team. Free on-site quotes.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Single Image */}
@@ -191,49 +182,16 @@ export const ResidentialPage: React.FC = () => {
             <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
               <img 
                 src="/opek2.png" 
-                alt="Same-day junk removal service in Denver Metro area" 
+                alt="Professional junk removal service in Denver" 
                 className="w-full h-full object-cover"
               />
             </div>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Transparent Pricing with No Hidden Fees</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              One of the most common concerns homeowners have about junk removal is pricing uncertainty. At OPEK, we believe in complete transparency. Our pricing is based on the volume of items you need removed—you only pay for the space your junk takes up in our truck. Before we begin any work, we provide a free, no-obligation quote on-site. Once you approve the price, we get to work immediately. There are no hidden fees, no surprise charges, and no pressure to accept our quote.
-            </p>
-
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Full-Service Residential Cleanouts</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Our residential junk removal service is truly full-service. We handle all the heavy lifting, loading, hauling, and cleanup. You don't need to move items to your curb or driveway—we'll go wherever the junk is located. Our team will navigate stairs, tight hallways, and challenging spaces to remove items safely and efficiently. After we're done, we sweep the area clean, leaving your space ready for its next chapter.
-            </p>
-
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Common residential junk removal projects include garage cleanouts, basement clearing, attic decluttering, estate cleanouts, foreclosure cleanups, hoarding situations, moving preparation, and post-renovation debris removal. No job is too big or too small for our experienced team.
-            </p>
-
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Eco-Friendly Disposal Practices</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Environmental responsibility is at the core of our business. We partner with local donation centers, recycling facilities, and proper disposal sites to ensure your unwanted items are handled responsibly. Furniture in good condition is donated to organizations that help families in need. Appliances are recycled according to Colorado environmental regulations, with refrigerants and hazardous materials properly extracted. Electronics are sent to certified e-waste recycling centers. Only items that cannot be donated or recycled are taken to licensed disposal facilities.
-            </p>
-
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Licensed, Insured, and Professional</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              OPEK Junk Removal is fully licensed and insured, giving you peace of mind that your property is protected during the removal process. Our team members are background-checked, uniformed professionals who treat your home with respect. We take care to protect floors, walls, and doorways while removing items, and we're experienced in handling delicate situations with discretion and professionalism.
-            </p>
-
-            <h3 className="text-2xl font-black text-black mb-4 mt-10">Serving the Greater Denver Metro Area</h3>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Our residential junk removal services cover the entire Denver Metro area and surrounding communities. Whether you're in downtown Denver, the suburbs, or outlying areas within a 50-mile radius, OPEK is ready to help. We're familiar with local regulations, donation centers, and recycling facilities, ensuring efficient service no matter where you're located.
-            </p>
-
+            <h3 className="text-2xl font-black text-black mb-6">Service Areas</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              Ready to reclaim your space? Contact OPEK Junk Removal today for a free quote. Our friendly team is standing by to answer your questions and schedule your residential junk removal service at a time that's convenient for you.
+              We serve the entire Denver Metro area including Aurora, Lakewood, Boulder, Castle Rock, and surrounding communities within a 50-mile radius. Contact us today for a free quote.
             </p>
           </div>
 
