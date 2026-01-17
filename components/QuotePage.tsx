@@ -94,7 +94,7 @@ export const QuotePage: React.FC = () => {
           </div>
           <h2 className="text-4xl font-black mb-4">Request Received</h2>
           <p className="text-gray-600 mb-8">
-            We'll contact you within 15 minutes to confirm your {selectedOption === 'ai' ? 'estimate' : 'appointment'}.
+            You'll be contacted by matched service providers within 15 minutes to confirm your {selectedOption === 'ai' ? 'estimate' : 'appointment'}.
           </p>
           <button 
             onClick={() => window.location.reload()}

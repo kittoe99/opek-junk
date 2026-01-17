@@ -10,9 +10,9 @@ export const Contact: React.FC = () => {
           
           {/* Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 tracking-tight">Schedule Your Visit</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 tracking-tight">Get Connected</h2>
             <p className="text-gray-600 text-lg mb-12">
-              Fill out the form to book your free in-home estimate. We'll get back to you shortly to confirm your appointment.
+              Fill out the form to get matched with local service providers. You'll receive quotes and can book appointments directly.
             </p>
 
             <div className="space-y-8">
@@ -43,7 +43,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg text-gray-900">Service Area</h4>
-                  <p className="text-gray-600">Greater Denver Metro Area</p>
+                  <p className="text-gray-600">Nationwide Coverage</p>
                 </div>
               </div>
             </div>

@@ -56,7 +56,7 @@ export const BookingPage: React.FC = () => {
           </div>
           <h2 className="text-4xl font-black mb-4">Booking Confirmed!</h2>
           <p className="text-gray-600 mb-8">
-            We'll contact you within 15 minutes to confirm your appointment details.
+            Matched service providers will contact you within 15 minutes to confirm your appointment details.
           </p>
           <button 
             onClick={() => window.location.reload()}

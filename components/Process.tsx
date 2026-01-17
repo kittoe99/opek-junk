@@ -10,17 +10,17 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
     {
       icon: Camera,
       title: "PHOTO ESTIMATE",
-      desc: "Snap a quick photo of the debris. Our system analyzes the volume and gives you a range instantly."
+      desc: "Snap a quick photo of the debris. Get matched with local providers who analyze the volume and provide instant quotes."
     },
     {
       icon: ClipboardCheck,
       title: "UPFRONT QUOTE",
-      desc: "We confirm the volume on-site and hand you a fixed price. No surcharges, no hidden fees, no games."
+      desc: "Providers confirm the volume on-site and give you a fixed price. No surcharges, no hidden fees, no games."
     },
     {
       icon: Truck,
       title: "HEAVY LIFTING",
-      desc: "We haul it, we sort it, we sweep it. You just point—we handle the rest of the dirty work."
+      desc: "Providers haul it, sort it, and sweep it. You just point—they handle the rest of the dirty work."
     }
   ];
 
@@ -84,7 +84,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
               70%
             </div>
             <p className="text-gray-600 max-w-sm">
-              We recycle up to <strong className="text-black">70% of debris</strong> collected from Denver Metro sites.
+              Network providers recycle up to <strong className="text-black">70% of debris</strong> collected nationwide.
             </p>
           </div>
           

@@ -45,7 +45,7 @@ export const ContactPage: React.FC = () => {
           </div>
           <h2 className="text-4xl font-black mb-4">Message Sent</h2>
           <p className="text-gray-600 mb-8">
-            We'll respond within 30 minutes during business hours.
+            Our team will connect you with service providers within 30 minutes during business hours.
           </p>
           <button 
             onClick={() => window.location.reload()}

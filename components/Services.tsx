@@ -5,27 +5,27 @@ const serviceItems = [
   {
     title: "Residential Junk Removal",
     icon: Warehouse,
-    description: "Clear out your attic, garage, or basement. We handle couches, mattresses, appliances, and general household clutter. We donate and recycle over 60% of what we haul."
+    description: "Clear out your attic, garage, or basement. Local providers handle couches, mattresses, appliances, and general household clutter. Most donate and recycle over 60% of items hauled."
   },
   {
     title: "Commercial & Office Hauling",
     icon: Truck,
-    description: "Moving offices or upgrading equipment? We remove desks, cubicles, monitors, and filing cabinets with minimal disruption to your business operations."
+    description: "Moving offices or upgrading equipment? Connect with providers who remove desks, cubicles, monitors, and filing cabinets with minimal disruption to your business operations."
   },
   {
     title: "Construction Debris & Remodel",
     icon: HardHat,
-    description: "Keep your site OSHA-ready. We haul away drywall, wood, tile, flooring, and metal scraps. Available for one-time pick-ups or recurring site maintenance."
+    description: "Keep your site OSHA-ready. Find providers who haul away drywall, wood, tile, flooring, and metal scraps. Available for one-time pick-ups or recurring site maintenance."
   },
   {
     title: "E-Waste & Appliance Recycling",
     icon: Recycle,
-    description: "Responsible disposal of CRT monitors, servers, refrigerators, and stoves. We adhere to all Colorado state environmental regulations for hazardous materials."
+    description: "Responsible disposal of CRT monitors, servers, refrigerators, and stoves. Network providers adhere to all state environmental regulations for hazardous materials."
   },
   {
     title: "Full Property Cleanouts",
     icon: Trash,
-    description: "Estate clearing, rental move-outs, and hoarding situations handled with professional discretion and extreme efficiency. We leave the space broom-swept."
+    description: "Estate clearing, rental move-outs, and hoarding situations handled with professional discretion and extreme efficiency. Providers leave the space broom-swept."
   }
 ];
 
@@ -45,13 +45,13 @@ export const Services: React.FC = () => {
           <div className="flex flex-col">
             <div className="mb-10">
               <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-                Our Services
+                Available Services
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-                We handle the <span className="text-gray-400">heavy lifting.</span>
+                Providers handle the <span className="text-gray-400">heavy lifting.</span>
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
-                Transparent pricing. Professional service. Eco-conscious disposal. No hidden fees, just hard work.
+                Transparent pricing. Professional service. Eco-conscious disposal. Connect with trusted professionals in your area.
               </p>
             </div>
 
@@ -124,7 +124,7 @@ export const Services: React.FC = () => {
                     </div>
                     <div>
                       <p className="font-bold text-black">Recycled & Donated</p>
-                      <p className="text-gray-600 text-sm">We responsibly dispose of your items</p>
+                      <p className="text-gray-600 text-sm">Providers responsibly dispose of items</p>
                     </div>
                   </div>
                 </div>
