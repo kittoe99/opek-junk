@@ -16,15 +16,15 @@ export const CommercialPage: React.FC = () => {
             {/* Left Column */}
             <div className="lg:col-span-7">
               <div className="mb-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Commercial Junk Removal Denver</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Commercial Junk Removal Nationwide</span>
               </div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
-                Commercial Junk Removal Denver
+                Commercial Junk Removal
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Professional junk removal for Denver businesses. We handle office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
+                Professional junk removal for businesses nationwide. We handle office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -48,7 +48,7 @@ export const CommercialPage: React.FC = () => {
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img 
                   src="/opek2.png" 
-                  alt="Commercial junk removal service in Denver" 
+                  alt="Commercial junk removal service nationwide" 
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
@@ -138,10 +138,10 @@ export const CommercialPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Denver</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK Junk Removal provides professional commercial junk removal services throughout the Denver Metro area. From office moves to retail renovations, we handle all commercial debris.
+              OPEK Junk Removal provides professional commercial junk removal services nationwide. From office moves to retail renovations, we handle all commercial debris.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -166,16 +166,16 @@ export const CommercialPage: React.FC = () => {
             <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
               <img 
                 src="/opek2.png" 
-                alt="Commercial junk removal service in Denver" 
+                alt="Commercial junk removal service nationwide" 
                 className="w-full h-full object-cover"
               />
             </div>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Service Areas</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              We serve businesses throughout the Denver Metro area including Aurora, Lakewood, Boulder, Castle Rock, and surrounding communities. Contact us today for a free commercial quote.
+              We serve businesses across the United States. From coast to coast, OPEK is ready to help with your commercial junk removal needs. Contact us today for a free quote in your area.
             </p>
           </div>
 

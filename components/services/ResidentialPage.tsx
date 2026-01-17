@@ -31,15 +31,15 @@ export const ResidentialPage: React.FC = () => {
             {/* Left Column */}
             <div className="lg:col-span-7">
               <div className="mb-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Residential Junk Removal Denver</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Residential Junk Removal Nationwide</span>
               </div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
-                Home Junk Removal Denver
+                Residential Junk Removal
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Professional junk removal for Denver homes. We handle furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
+                Professional junk removal for homes nationwide. We handle furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -63,7 +63,7 @@ export const ResidentialPage: React.FC = () => {
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img 
                   src="/opek2.png" 
-                  alt="Professional residential junk removal service in Denver" 
+                  alt="Professional residential junk removal service nationwide" 
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
@@ -154,17 +154,17 @@ export const ResidentialPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Denver</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK Junk Removal serves the Greater Denver Metro area with professional residential junk removal services. We handle everything from single items to complete home cleanouts.
+              OPEK Junk Removal provides professional residential junk removal services nationwide. We handle everything from single items to complete home cleanouts.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
                 <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Full-service junk removal including furniture, appliances, electronics, and household clutter. We handle all loading, hauling, and cleanup. Same-day service available across Denver, Aurora, Lakewood, and Boulder.
+                  Full-service junk removal including furniture, appliances, electronics, and household clutter. We handle all loading, hauling, and cleanup. Same-day service available in most areas.
                 </p>
               </div>
 
@@ -182,16 +182,16 @@ export const ResidentialPage: React.FC = () => {
             <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
               <img 
                 src="/opek2.png" 
-                alt="Professional junk removal service in Denver" 
+                alt="Professional junk removal service nationwide" 
                 className="w-full h-full object-cover"
               />
             </div>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Service Areas</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              We serve the entire Denver Metro area including Aurora, Lakewood, Boulder, Castle Rock, and surrounding communities within a 50-mile radius. Contact us today for a free quote.
+              We serve communities across the United States. From coast to coast, OPEK is ready to help with your residential junk removal needs. Contact us today for a free quote in your area.
             </p>
           </div>
 

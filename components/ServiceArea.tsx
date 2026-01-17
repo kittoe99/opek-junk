@@ -2,11 +2,11 @@ import React from 'react';
 import { MapPin, ArrowRight, Navigation } from 'lucide-react';
 
 const cities = [
-  "Denver", "Aurora", "Lakewood", "Thornton", "Arvada",
-  "Westminster", "Centennial", "Boulder", "Highlands Ranch", "Greeley",
-  "Longmont", "Loveland", "Broomfield", "Castle Rock", "Commerce City",
-  "Parker", "Littleton", "Northglenn", "Brighton", "Englewood",
-  "Wheat Ridge", "Golden", "Lafayette", "Louisville", "Erie"
+  "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+  "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+  "Austin", "Jacksonville", "Fort Worth", "Columbus", "Charlotte",
+  "San Francisco", "Indianapolis", "Seattle", "Denver", "Washington DC",
+  "Boston", "Nashville", "Detroit", "Portland", "Las Vegas"
 ];
 
 interface ServiceAreaProps {
@@ -24,14 +24,14 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-xs font-bold uppercase tracking-wider mb-6">
                 <Navigation size={12} />
-                <span>Service Radius</span>
+                <span>Nationwide Coverage</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
-                Serving Denver & <br/>
-                <span className="text-gray-400">Surrounding Areas</span>
+                Serving All 50 States <br/>
+                <span className="text-gray-400">Coast to Coast</span>
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed font-light mb-6">
-                We operate within a 50-mile radius of downtown Denver. From residential driveways to commercial lots, we are your local junk removal experts.
+                We operate nationwide across the United States. From residential homes to commercial properties, we are your trusted junk removal experts.
               </p>
               
               <button 
@@ -46,10 +46,10 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div className="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 transition-shadow hover:shadow-md">
                <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
                  <MapPin className="text-gray-400" size={20}/>
-                 Outside our range?
+                 Need Service?
                </h3>
                <p className="text-gray-600 mb-6">
-                 We occasionally travel further for larger jobs. Contact us to discuss your specific needs.
+                 We serve all major cities and surrounding areas nationwide. Contact us to schedule service in your area.
                </p>
                <a href="mailto:hello@opekjunk.com" className="text-black font-bold hover:underline decoration-2 underline-offset-4 inline-flex items-center group">
                  Contact Support <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
@@ -60,12 +60,12 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl mt-8">
               <img 
                 src="/junk-removal.png" 
-                alt="Junk removal service in Denver area" 
+                alt="Junk removal service nationwide" 
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4">
                 <p className="text-white text-sm font-bold">
-                  Serving the entire Denver Metro area with fast, reliable service
+                  Serving communities nationwide with fast, reliable service
                 </p>
               </div>
             </div>
@@ -88,8 +88,8 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
                  ))}
                </div>
                <div className="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center text-xs font-bold text-gray-400 tracking-wider uppercase">
-                  <span>Colorado Based</span>
-                  <span>50 Mile Zone</span>
+                  <span>Nationwide Service</span>
+                  <span>All 50 States</span>
                </div>
             </div>
           </div>

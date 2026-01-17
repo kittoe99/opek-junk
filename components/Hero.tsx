@@ -15,7 +15,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
           {/* Left Column - Heading & CTA */}
           <div className="lg:col-span-7">
             <div className="mb-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Denver Metro</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Nationwide Service</span>
             </div>
 
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
@@ -25,7 +25,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
             </h1>
             
             <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-              Industrial-grade removal for the loads standard services won't touch. Same-day pickup across Greater Denver.
+              Industrial-grade removal for the loads standard services won't touch. Same-day pickup across the United States.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
