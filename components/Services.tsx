@@ -51,7 +51,7 @@ export const Services: React.FC = () => {
                 Find local <span className="text-gray-400">providers.</span>
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
-                Get matched with trusted professionals in your area.
+                Trusted professionals in your area.
               </p>
             </div>
 

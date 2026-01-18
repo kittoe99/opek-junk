@@ -25,7 +25,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
             </h1>
             
             <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-              We connect you with trusted, local junk removal professionals in your area. Get instant quotes and same-day service across the United States.
+              Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">

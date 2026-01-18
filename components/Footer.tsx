@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
                <span className="font-black text-2xl text-white tracking-tighter uppercase">OPEK</span>
             </div>
             <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-xs">
-              Connecting customers with trusted junk removal professionals nationwide. Your platform for finding qualified service providers.
+              Professional junk removal services nationwide. Trusted local providers for residential and commercial needs.
             </p>
             <div className="mt-8 flex justify-center md:justify-start gap-4">
               <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
@@ -46,8 +46,8 @@ export const Footer: React.FC = () => {
               <li>Nationwide</li>
               <li>All 50 States</li>
               <li>Major Cities</li>
-              <li>Local Providers</li>
-              <li>24/7 Matching</li>
+              <li>Same-Day Service</li>
+              <li>24/7 Availability</li>
             </ul>
           </div>
 
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
         
         <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
-            &copy; {new Date().getFullYear()} Opek Junk Removal Platform. Connecting You With Licensed & Insured Providers.
+            &copy; {new Date().getFullYear()} Opek Junk Removal. Licensed & Insured Professionals Nationwide.
           </p>
           <div className="flex gap-8">
              <a href="#" className="text-gray-600 hover:text-white text-[10px] font-black uppercase tracking-[0.3em]">Privacy</a>

@@ -31,7 +31,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
                 <span className="text-gray-400">Coast to Coast</span>
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed font-light mb-6">
-                Our platform connects you with vetted junk removal professionals nationwide. From residential homes to commercial properties, we help you find the right service provider in your area.
+                Professional junk removal services nationwide. From residential homes to commercial properties, serving your area with trusted local professionals.
               </p>
               
               <button 
@@ -49,7 +49,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
                  How It Works
                </h3>
                <p className="text-gray-600 mb-6">
-                 Enter your location and job details. We'll instantly connect you with qualified service providers in your area who are ready to help.
+                 Enter your location and job details. Get connected with qualified professionals in your area ready to help.
                </p>
                <a href="mailto:hello@opekjunk.com" className="text-black font-bold hover:underline decoration-2 underline-offset-4 inline-flex items-center group">
                  Contact Support <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>

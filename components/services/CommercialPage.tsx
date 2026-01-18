@@ -141,21 +141,21 @@ export const CommercialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK connects businesses with professional commercial junk removal providers nationwide. From office moves to retail renovations, our platform helps you find the right service partner.
+              Professional commercial junk removal services for businesses nationwide. From office moves to retail renovations, efficient and reliable service.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">How It Works</h3>
+                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Submit your commercial project details. We match you with local providers specializing in office furniture, equipment, and debris removal. After-hours and weekend service available with minimal disruption.
+                  Office furniture, equipment, and commercial debris removal. After-hours and weekend service available with minimal disruption to your operations.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Network</h3>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  All providers are licensed and insured for commercial properties. Access volume pricing and recurring service options. Professional teams ready to serve your business needs.
+                  Licensed and insured for commercial properties. Volume pricing and recurring service options. Professional teams ready to serve your business.
                 </p>
               </div>
             </div>
@@ -173,9 +173,9 @@ export const CommercialPage: React.FC = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Nationwide Network</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              Our platform connects businesses with independent service providers across the United States. From coast to coast, we help you find qualified commercial junk removal specialists in your area. Get matched today.
+              Commercial junk removal services across the United States. From coast to coast, qualified professionals ready to serve your business. Contact us for service in your area.
             </p>
           </div>
 

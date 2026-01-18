@@ -10,9 +10,9 @@ export const Contact: React.FC = () => {
           
           {/* Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 tracking-tight">Get Connected</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 tracking-tight">Get Your Quote</h2>
             <p className="text-gray-600 text-lg mb-12">
-              Fill out the form to get matched with local service providers. You'll receive quotes and can book appointments directly.
+              Fill out the form to receive quotes from local professionals. Book your service directly.
             </p>
 
             <div className="space-y-8">

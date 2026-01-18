@@ -157,21 +157,21 @@ export const ResidentialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              OPEK connects homeowners with professional junk removal providers nationwide. Our platform makes it easy to find qualified service professionals for everything from single items to complete home cleanouts.
+              Professional junk removal services for homeowners nationwide. From single items to complete home cleanouts, get the help you need.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">How It Works</h3>
+                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Submit your job details and location. We instantly match you with vetted local providers who handle furniture, appliances, electronics, and household clutter. Get quotes and book same-day service in most areas.
+                  Furniture, appliances, electronics, and household clutter removal. Same-day service available in most areas with transparent pricing.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Network</h3>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  All providers are licensed and insured. Transparent pricing with no hidden fees. Most prioritize eco-friendly disposal with donation and recycling. Professional service you can trust.
+                  Licensed and insured professionals. No hidden fees. Eco-friendly disposal with donation and recycling. Trusted service nationwide.
                 </p>
               </div>
             </div>
@@ -189,9 +189,9 @@ export const ResidentialPage: React.FC = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-black mb-6">Nationwide Network</h3>
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
             <p className="text-gray-700 leading-relaxed mb-10">
-              Our platform connects customers with independent service providers across the United States. From coast to coast, we help you find trusted professionals in your area. Get matched with local providers today.
+              Professional junk removal services across the United States. From coast to coast, trusted local professionals ready to help. Contact us for service in your area.
             </p>
           </div>
 
