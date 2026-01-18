@@ -127,8 +127,7 @@ export const BookingPage: React.FC = () => {
             {currentStep === 1 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider flex items-center gap-2">
-                    <User size={16} />
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
                     Full Name
                   </label>
                   <input 
@@ -141,8 +140,7 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider flex items-center gap-2">
-                    <Mail size={16} />
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
                     Email
                   </label>
                   <input 
@@ -156,8 +154,7 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider flex items-center gap-2">
-                    <Phone size={16} />
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
                     Phone Number
                   </label>
                   <input 
@@ -184,8 +181,7 @@ export const BookingPage: React.FC = () => {
             {currentStep === 2 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider flex items-center gap-2">
-                    <MapPin size={16} />
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
                     Service Address
                   </label>
                   <input 
@@ -262,8 +258,7 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider flex items-center gap-2">
-                    <Calendar size={16} />
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
                     Preferred Date
                   </label>
                   <input 

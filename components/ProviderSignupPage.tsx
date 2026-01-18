@@ -152,8 +152,7 @@ export const ProviderSignupPage: React.FC = () => {
             
             {/* Personal Information */}
             <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <User size={24} />
+              <h2 className="text-2xl font-black mb-6">
                 Personal Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -221,8 +220,7 @@ export const ProviderSignupPage: React.FC = () => {
 
             {/* Service Area */}
             <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <MapPin size={24} />
+              <h2 className="text-2xl font-black mb-6">
                 Service Area
               </h2>
               <div>
@@ -244,8 +242,7 @@ export const ProviderSignupPage: React.FC = () => {
 
             {/* Vehicle Information */}
             <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <Truck size={24} />
+              <h2 className="text-2xl font-black mb-6">
                 Vehicle Information
               </h2>
               <div>
@@ -267,8 +264,7 @@ export const ProviderSignupPage: React.FC = () => {
 
             {/* Schedule Availability */}
             <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <Calendar size={24} />
+              <h2 className="text-2xl font-black mb-6">
                 Schedule Availability
               </h2>
               <div>
