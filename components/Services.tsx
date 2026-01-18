@@ -48,7 +48,7 @@ export const Services: React.FC = () => {
                 Services
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-                Find local <span className="text-gray-400">providers.</span>
+                Professional <span className="text-gray-400">service.</span>
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Trusted professionals in your area.
