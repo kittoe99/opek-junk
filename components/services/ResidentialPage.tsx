@@ -39,7 +39,7 @@ export const ResidentialPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Connect with trusted junk removal professionals in your area. Our network handles furniture, appliances, electronics, and household clutter. Same-day service available with transparent pricing and eco-friendly disposal.
+                Residential junk removal made simple. Furniture, appliances, electronics, and household clutter—same-day options and transparent pricing nationwide, with trusted local pros.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -88,7 +88,7 @@ export const ResidentialPage: React.FC = () => {
               What We Remove
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-              We haul <span className="text-gray-400">everything.</span>
+              Common <span className="text-gray-400">items.</span>
             </h2>
           </div>
 
@@ -142,7 +142,7 @@ export const ResidentialPage: React.FC = () => {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm">
-              Over 60% of items are donated or recycled. We handle almost everything except hazardous materials.
+              Over 60% of items are donated or recycled. Most items are accepted except hazardous materials.
             </p>
           </div>
 
@@ -162,9 +162,9 @@ export const ResidentialPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <h3 className="text-xl font-black text-black mb-3">Service Options</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Furniture, appliances, electronics, and household clutter removal. Same-day service available in most areas with transparent pricing.
+                  Single-item pickups, room cleanouts, garages, basements, and full home cleanouts. Same-day service available in most areas with transparent pricing.
                 </p>
               </div>
 
