@@ -1,246 +1,204 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Recycle, CheckCircle, Shield, Leaf, Award } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export const EWastePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6 rounded-xl">
-            <Recycle size={40} />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black mb-6">E-Waste & Appliance Recycling</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Responsible disposal of electronics and appliances. We adhere to all Colorado state environmental 
-            regulations for hazardous materials and ensure proper recycling.
-          </p>
-        </div>
+    <div className="min-h-screen bg-white">
+      
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-20 md:pb-32">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Left Column */}
+            <div className="lg:col-span-7">
+              <div className="mb-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">E-Waste Recycling Nationwide</span>
+              </div>
 
-        {/* Image */}
-        <div className="relative aspect-[21/9] overflow-hidden rounded-2xl mb-16 max-w-5xl mx-auto">
-          <img 
-            src="/opek2.png" 
-            alt="E-waste recycling service" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-            <p className="text-white text-lg font-bold text-center">
-              Certified e-waste recycling partner
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
+                E-Waste & Appliance Recycling
+              </h1>
+              
+              <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
+                E-waste recycling near you—fast, upfront pricing for electronics, computers, appliances, and tech equipment. Eco-friendly disposal nationwide with trusted local pros.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => navigate('/quote')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                >
+                  Get Free Quote
+                </button>
+                <button 
+                  onClick={() => navigate('/contact')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                >
+                  Call (303) 555-0199
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column - Image */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <img 
+                  src="/opek2.png" 
+                  alt="Professional e-waste recycling service nationwide" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle2 size={18}/>
+                    <span className="text-sm font-bold">Eco-Friendly • Certified Recycling • Licensed & Insured</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* What We Remove Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="mb-12">
+            <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+              What We Remove
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
+              Common <span className="text-gray-400">items.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Computers & Devices</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Desktop Computers</li>
+                <li>• Laptops & Tablets</li>
+                <li>• Monitors & Screens</li>
+                <li>• Keyboards & Mice</li>
+                <li>• Hard Drives</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Appliances</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Refrigerators</li>
+                <li>• Washers & Dryers</li>
+                <li>• Stoves & Ovens</li>
+                <li>• Dishwashers</li>
+                <li>• Microwaves</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Electronics</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• TVs & Displays</li>
+                <li>• Printers & Scanners</li>
+                <li>• Stereo Equipment</li>
+                <li>• Gaming Consoles</li>
+                <li>• Cable Boxes</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Office Equipment</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Copiers & Fax Machines</li>
+                <li>• Servers & Networking</li>
+                <li>• Phone Systems</li>
+                <li>• Batteries & UPS</li>
+                <li>• Cables & Accessories</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-600 text-sm">
+              Certified e-waste recycling. Environmentally responsible disposal. Data destruction available.
             </p>
           </div>
-        </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Shield size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Certified Disposal</h3>
-            <p className="text-gray-600 text-sm">EPA-compliant recycling processes</p>
-          </div>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Leaf size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Eco-Friendly</h3>
-            <p className="text-gray-600 text-sm">Zero landfill commitment for electronics</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Award size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Data Security</h3>
-            <p className="text-gray-600 text-sm">Secure data destruction available</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <CheckCircle size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Free Pickup</h3>
-            <p className="text-gray-600 text-sm">No charge for large appliances</p>
-          </div>
-        </div>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">E-Waste & Appliance Recycling Services</h2>
+            
+            <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+              Need e-waste recycling fast? Book electronics, computers, and appliance pickup nationwide. Ideal for office upgrades, home cleanouts, tech refreshes, and responsible disposal.
+            </p>
 
-        {/* What We Recycle */}
-        <div className="bg-gray-50 p-12 rounded-2xl mb-16">
-          <h2 className="text-3xl font-black mb-8 text-center">What We Recycle</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-bold text-lg mb-3">Electronics</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Computers & Laptops</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Monitors & TVs</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Printers & Scanners</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Servers & Networking</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-3">Large Appliances</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Refrigerators & Freezers</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Washers & Dryers</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Stoves & Ovens</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Dishwashers</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-3">Small Electronics</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Cell Phones & Tablets</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Microwaves</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Audio Equipment</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Gaming Consoles</span>
-                </li>
-              </ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Service Options</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Single-item pickups, bulk electronics removal, office equipment disposal, and appliance recycling. Upfront pricing with same-day availability in most areas.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Certified recycling partners. Licensed and insured professionals. Environmentally responsible disposal. Data security options available. Reliable scheduling and clear communication.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Why Proper E-Waste Disposal Matters */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-black mb-12 text-center">Why Proper E-Waste Disposal Matters</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white border-2 border-gray-200 p-8 rounded-xl">
-              <h3 className="font-black text-xl mb-4">Environmental Protection</h3>
-              <p className="text-gray-600">
-                Electronics contain hazardous materials like lead, mercury, and cadmium. Improper disposal can 
-                contaminate soil and water. We ensure these materials are handled safely and recycled properly.
-              </p>
-            </div>
-            
-            <div className="bg-white border-2 border-gray-200 p-8 rounded-xl">
-              <h3 className="font-black text-xl mb-4">Resource Recovery</h3>
-              <p className="text-gray-600">
-                Electronics contain valuable materials like gold, silver, and copper. Through proper recycling, 
-                we recover these resources and reduce the need for new mining operations.
-              </p>
-            </div>
-            
-            <div className="bg-white border-2 border-gray-200 p-8 rounded-xl">
-              <h3 className="font-black text-xl mb-4">Data Security</h3>
-              <p className="text-gray-600">
-                Old computers and phones may contain sensitive personal or business data. We offer certified 
-                data destruction services to protect your privacy and comply with regulations.
-              </p>
-            </div>
-            
-            <div className="bg-white border-2 border-gray-200 p-8 rounded-xl">
-              <h3 className="font-black text-xl mb-4">Legal Compliance</h3>
-              <p className="text-gray-600">
-                Colorado has strict e-waste disposal laws. We ensure full compliance with state and federal 
-                regulations, protecting you from potential fines and liability.
-              </p>
+          {/* Single Image */}
+          <div className="my-12 max-w-5xl mx-auto">
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+              <img 
+                src="/opek2.png" 
+                alt="Professional e-waste recycling service nationwide" 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
-        </div>
 
-        {/* Recycling Process */}
-        <div className="bg-gray-50 p-12 rounded-2xl mb-16">
-          <h2 className="text-3xl font-black mb-12 text-center">Our Recycling Process</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                1
-              </div>
-              <h3 className="font-black text-lg mb-2">Collection</h3>
-              <p className="text-gray-600 text-sm">We pick up your electronics and appliances</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                2
-              </div>
-              <h3 className="font-black text-lg mb-2">Sorting</h3>
-              <p className="text-gray-600 text-sm">Items are categorized by material type</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                3
-              </div>
-              <h3 className="font-black text-lg mb-2">Processing</h3>
-              <p className="text-gray-600 text-sm">Materials are safely dismantled and separated</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                4
-              </div>
-              <h3 className="font-black text-lg mb-2">Recycling</h3>
-              <p className="text-gray-600 text-sm">Materials sent to certified recycling facilities</p>
-            </div>
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
+            <p className="text-gray-700 leading-relaxed mb-10">
+              E-waste recycling services across the United States. From coast to coast, trusted local professionals ready to help. Contact us for service in your area.
+            </p>
           </div>
-        </div>
 
-        {/* CTA Section */}
-        <div className="bg-black text-white p-12 rounded-2xl text-center">
-          <h2 className="text-3xl md:text-4xl font-black mb-4">Recycle Responsibly Today</h2>
-          <p className="text-gray-300 mb-8 text-lg">
-            Free pickup for large appliances. Competitive pricing for e-waste recycling.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t-2 border-gray-200 max-w-4xl mx-auto">
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-4 bg-white text-black font-bold uppercase hover:bg-gray-100 transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
             >
               Get Free Quote
             </button>
             <button 
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 border-2 border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
             >
               Contact Us
             </button>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
     </div>
   );
 };

@@ -24,7 +24,7 @@ export const CommercialPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Connect with commercial junk removal specialists in your area. Our network handles office furniture, equipment, and commercial debris. Flexible scheduling with minimal disruption to operations.
+                Commercial junk removal near you—fast, upfront pricing for office furniture, equipment removal, and commercial debris. After-hours and weekend options nationwide with trusted local pros.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -73,7 +73,7 @@ export const CommercialPage: React.FC = () => {
               What We Remove
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-              Commercial <span className="text-gray-400">items.</span>
+              Common <span className="text-gray-400">items.</span>
             </h2>
           </div>
 
@@ -126,7 +126,7 @@ export const CommercialPage: React.FC = () => {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm">
-              Flexible scheduling including after-hours and weekends. Volume discounts available.
+              After-hours and weekend scheduling available. Volume discounts for recurring service.
             </p>
           </div>
 
@@ -141,21 +141,21 @@ export const CommercialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Commercial Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              Professional commercial junk removal services for businesses nationwide. From office moves to retail renovations, efficient and reliable service.
+              Need commercial junk removal fast? Book office furniture, equipment, and commercial debris pickup nationwide. Ideal for office moves, retail renovations, warehouse cleanouts, and business relocations.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-black text-black mb-3">Our Services</h3>
+                <h3 className="text-xl font-black text-black mb-3">Service Options</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Office furniture, equipment, and commercial debris removal. After-hours and weekend service available with minimal disruption to your operations.
+                  Single-item pickups, office cleanouts, warehouse clearing, and full commercial property cleanouts. Upfront pricing with after-hours availability to minimize business disruption.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Licensed and insured for commercial properties. Volume pricing and recurring service options. Professional teams ready to serve your business.
+                  Licensed and insured professionals. Volume pricing and recurring service discounts. Minimal disruption with flexible scheduling. Reliable coordination and clear communication.
                 </p>
               </div>
             </div>

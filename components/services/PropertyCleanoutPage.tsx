@@ -1,230 +1,204 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trash, CheckCircle, Heart, Clock, Shield } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export const PropertyCleanoutPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6 rounded-xl">
-            <Trash size={40} />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black mb-6">Full Property Cleanouts</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Estate clearing, rental move-outs, and hoarding situations handled with professional discretion 
-            and extreme efficiency. We leave the space broom-swept and ready.
-          </p>
-        </div>
+    <div className="min-h-screen bg-white">
+      
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-20 md:pb-32">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Left Column */}
+            <div className="lg:col-span-7">
+              <div className="mb-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Property Cleanout Services Nationwide</span>
+              </div>
 
-        {/* Image */}
-        <div className="relative aspect-[21/9] overflow-hidden rounded-2xl mb-16 max-w-5xl mx-auto">
-          <img 
-            src="/opek2.png" 
-            alt="Property cleanout service" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-            <p className="text-white text-lg font-bold text-center">
-              Compassionate service for difficult situations
-            </p>
-          </div>
-        </div>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05]">
+                Property Cleanout Services
+              </h1>
+              
+              <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
+                Property cleanout services near you—fast, upfront pricing for estate cleanouts, foreclosures, and move-outs. Professional and discreet service nationwide with trusted local pros.
+              </p>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Heart size={24} />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => navigate('/quote')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                >
+                  Get Free Quote
+                </button>
+                <button 
+                  onClick={() => navigate('/contact')}
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                >
+                  Call (303) 555-0199
+                </button>
+              </div>
             </div>
-            <h3 className="font-black text-lg mb-2">Compassionate</h3>
-            <p className="text-gray-600 text-sm">Respectful handling of personal belongings</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Shield size={24} />
+
+            {/* Right Column - Image */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <img 
+                  src="/opek2.png" 
+                  alt="Professional property cleanout service nationwide" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle2 size={18}/>
+                    <span className="text-sm font-bold">Discreet Service • Full Cleanouts • Licensed & Insured</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h3 className="font-black text-lg mb-2">Discreet Service</h3>
-            <p className="text-gray-600 text-sm">Professional and confidential handling</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <Clock size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Fast Turnaround</h3>
-            <p className="text-gray-600 text-sm">Complete cleanouts in 1-3 days</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mb-4 rounded-lg">
-              <CheckCircle size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Broom-Swept</h3>
-            <p className="text-gray-600 text-sm">Property left clean and ready</p>
+
           </div>
         </div>
+      </section>
 
-        {/* Services We Provide */}
-        <div className="bg-gray-50 p-12 rounded-2xl mb-16">
-          <h2 className="text-3xl font-black mb-8 text-center">Cleanout Services We Provide</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-bold text-lg mb-3">Estate Cleanouts</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Full home clearing</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Donation coordination</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Valuables identification</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Respectful handling</span>
-                </li>
+      {/* What We Remove Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="mb-12">
+            <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+              What We Remove
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
+              Common <span className="text-gray-400">situations.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Estate Cleanouts</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Full Home Clearing</li>
+                <li>• Personal Belongings</li>
+                <li>• Furniture & Appliances</li>
+                <li>• Garage & Basement</li>
+                <li>• Donation Coordination</li>
               </ul>
             </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-3">Rental Turnovers</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Abandoned property removal</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Fast turnaround times</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Move-out cleanouts</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Property ready for next tenant</span>
-                </li>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Foreclosures</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Bank-Owned Properties</li>
+                <li>• Abandoned Items</li>
+                <li>• Trash-Out Service</li>
+                <li>• Broom-Swept Finish</li>
+                <li>• Fast Turnaround</li>
               </ul>
             </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-3">Hoarding Situations</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Non-judgmental approach</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Systematic clearing</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Biohazard certified</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-black" />
-                  <span>Complete restoration</span>
-                </li>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Move-Outs</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Rental Cleanouts</li>
+                <li>• Unwanted Items</li>
+                <li>• Apartment Clearing</li>
+                <li>• Storage Unit Cleanouts</li>
+                <li>• Same-Day Service</li>
               </ul>
             </div>
-          </div>
-        </div>
 
-        {/* Our Process */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-black mb-12 text-center">Our Cleanout Process</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                1
-              </div>
-              <h3 className="font-black text-lg mb-2">Assessment</h3>
-              <p className="text-gray-600 text-sm">We visit the property and provide a detailed quote</p>
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="font-black text-lg mb-4">Hoarding Situations</h3>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li>• Compassionate Service</li>
+                <li>• Systematic Clearing</li>
+                <li>• Discreet Handling</li>
+                <li>• Biohazard Certified</li>
+                <li>• Professional Support</li>
+              </ul>
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                2
-              </div>
-              <h3 className="font-black text-lg mb-2">Planning</h3>
-              <p className="text-gray-600 text-sm">We create a timeline and coordinate logistics</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                3
-              </div>
-              <h3 className="font-black text-lg mb-2">Execution</h3>
-              <p className="text-gray-600 text-sm">Our team systematically clears the property</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-full font-black text-2xl">
-                4
-              </div>
-              <h3 className="font-black text-lg mb-2">Final Sweep</h3>
-              <p className="text-gray-600 text-sm">Property is cleaned and ready for next use</p>
-            </div>
-          </div>
-        </div>
 
-        {/* Special Situations */}
-        <div className="bg-white border-2 border-gray-200 p-12 rounded-2xl mb-16">
-          <h2 className="text-3xl font-black mb-8 text-center">Handling Sensitive Situations</h2>
-          <div className="max-w-3xl mx-auto space-y-6 text-gray-600">
-            <p className="leading-relaxed">
-              We understand that property cleanouts often occur during difficult times. Whether you're dealing 
-              with the loss of a loved one, helping a family member, or managing a challenging rental situation, 
-              our team approaches every job with empathy and professionalism.
-            </p>
-            <p className="leading-relaxed">
-              Our crew is trained to handle sensitive situations with discretion. We can help identify items 
-              of value, coordinate donations to local charities, and ensure that personal belongings are 
-              treated with respect throughout the process.
-            </p>
-            <p className="leading-relaxed">
-              For hoarding situations, we work with compassion and understanding. Our team is experienced in 
-              systematic clearing while maintaining the dignity of all involved. We're also certified to handle 
-              biohazard situations when necessary.
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-600 text-sm">
+              Professional and discreet service. Donation and recycling prioritized. Broom-swept finish.
             </p>
           </div>
-        </div>
 
-        {/* CTA Section */}
-        <div className="bg-black text-white p-12 rounded-2xl text-center">
-          <h2 className="text-3xl md:text-4xl font-black mb-4">Need a Property Cleanout?</h2>
-          <p className="text-gray-300 mb-8 text-lg">
-            We're here to help during difficult times. Compassionate, professional service guaranteed.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="py-16 md:py-24 lg:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Property Cleanout Services</h2>
+            
+            <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+              Need property cleanout services fast? Book estate, foreclosure, and move-out cleanout services nationwide. Ideal for estate clearing, rental turnovers, foreclosures, and hoarding situations.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Service Options</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Full property cleanouts, estate clearing, foreclosure trash-outs, and hoarding support. Upfront pricing with same-day availability in most areas.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Licensed and insured professionals. Discreet and compassionate service. Donation and recycling prioritized. Biohazard certified teams available. Reliable scheduling and clear communication.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Single Image */}
+          <div className="my-12 max-w-5xl mx-auto">
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+              <img 
+                src="/opek2.png" 
+                alt="Professional property cleanout service nationwide" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-black text-black mb-6">Nationwide Service</h3>
+            <p className="text-gray-700 leading-relaxed mb-10">
+              Property cleanout services across the United States. From coast to coast, trusted local professionals ready to help. Contact us for service in your area.
+            </p>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t-2 border-gray-200 max-w-4xl mx-auto">
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-4 bg-white text-black font-bold uppercase hover:bg-gray-100 transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
             >
               Get Free Quote
             </button>
             <button 
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 border-2 border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-colors rounded-lg"
+              className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
             >
               Contact Us
             </button>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
     </div>
   );
 };
