@@ -129,6 +129,23 @@ export const ProviderSignupPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Image Section */}
+        <div className="my-12 max-w-5xl mx-auto">
+          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+            <img 
+              src="/opek2.png" 
+              alt="Professional junk removal provider with truck" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+              <div className="flex items-center gap-3 text-white justify-center">
+                <CheckCircle2 size={18}/>
+                <span className="text-sm font-bold">Licensed Providers • Nationwide Network • Flexible Earnings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Form */}
         <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 md:p-12">
           <form onSubmit={handleSubmit} className="space-y-8">
