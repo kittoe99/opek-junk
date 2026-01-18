@@ -39,7 +39,7 @@ export const ResidentialPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-                Residential junk removal made simple. Furniture, appliances, electronics, and household clutter—same-day options and transparent pricing nationwide, with trusted local pros.
+                Residential junk removal near you—fast, upfront pricing for furniture removal, appliance pickup, and household junk. Same-day and next-day options nationwide with trusted local pros.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -142,7 +142,7 @@ export const ResidentialPage: React.FC = () => {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm">
-              Over 60% of items are donated or recycled. Most items are accepted except hazardous materials.
+              Over 60% of items are donated or recycled. Most items are accepted, excluding hazardous materials.
             </p>
           </div>
 
@@ -157,21 +157,21 @@ export const ResidentialPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">Residential Junk Removal Services</h2>
             
             <p className="text-gray-700 leading-relaxed mb-8 text-lg">
-              Professional junk removal services for homeowners nationwide. From single items to complete home cleanouts, get the help you need.
+              Need residential junk removal fast? Book furniture, appliance, and household junk pickup nationwide. Ideal for move-outs, garage cleanouts, downsizing, and decluttering.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
                 <h3 className="text-xl font-black text-black mb-3">Service Options</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Single-item pickups, room cleanouts, garages, basements, and full home cleanouts. Same-day service available in most areas with transparent pricing.
+                  Single-item pickups, room cleanouts, garages, basements, and full home cleanouts. Upfront pricing with same-day availability in most areas.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-xl font-black text-black mb-3">Why Choose Us</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Licensed and insured professionals. No hidden fees. Eco-friendly disposal with donation and recycling. Trusted service nationwide.
+                  Licensed and insured professionals. No hidden fees. Donation and recycling prioritized whenever possible. Reliable scheduling and clear communication.
                 </p>
               </div>
             </div>
