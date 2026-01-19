@@ -36,9 +36,9 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
               
               <button 
                 onClick={onGetQuote}
-                className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
               >
-                Get Free Quote
+                Check Your Area
                 <ArrowRight size={20} />
               </button>
             </div>

@@ -171,7 +171,7 @@ export const BookingPage: React.FC = () => {
           </p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg"
+            className="px-8 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg"
           >
             Book Another Service
           </button>
