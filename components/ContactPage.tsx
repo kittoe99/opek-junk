@@ -77,7 +77,7 @@ export const ContactPage: React.FC = () => {
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-8 py-3 bg-black text-white font-bold uppercase tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+            className="px-6 py-3 bg-black text-white font-bold uppercase tracking-wider rounded-lg hover:bg-gray-800 transition-colors text-sm"
           >
             Return Home
           </button>

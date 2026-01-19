@@ -30,13 +30,13 @@ export const PropertyCleanoutPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
                   onClick={() => navigate('/quote')}
-                  className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                  className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
                 >
                   Get Free Quote
                 </button>
                 <button 
                   onClick={() => navigate('/contact')}
-                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                  className="px-6 py-3 text-sm font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
                 >
                   Call (303) 555-0199
                 </button>
@@ -184,13 +184,13 @@ export const PropertyCleanoutPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t-2 border-gray-200 max-w-4xl mx-auto">
             <button 
               onClick={() => navigate('/quote')}
-              className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+              className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
             >
               Get Free Quote
             </button>
             <button 
               onClick={() => navigate('/contact')}
-              className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+              className="px-6 py-3 text-sm font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
             >
               Contact Us
             </button>
