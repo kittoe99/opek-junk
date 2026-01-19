@@ -33,13 +33,13 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
                 onClick={onGetQuote}
                 className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
               >
-                Get Quote Now
+                View Pricing
               </button>
               <button 
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth'})}
                 className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
               >
-                Our Services
+                Book Online
               </button>
             </div>
           </div>
