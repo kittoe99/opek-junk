@@ -13,22 +13,27 @@ export async function getJunkQuoteFromPhoto(base64Image: string, mimeType: strin
     dangerouslyAllowBrowser: true // Only for development, use server-side in production
   });
 
-  const prompt = `You are a professional junk removal estimator. Analyze this photo and provide:
+  const prompt = `You are a professional junk removal estimator. Follow this DECISION TREE to provide accurate quotes:
 
-1. A detailed list of all visible items that need to be removed
-2. An estimated volume based on load size
-3. A price range estimate with exactly $50 difference between min and max
+STEP 1: IDENTIFY THE TYPE
+Analyze the photo and classify as ONE of these types:
+1. HOUSEHOLD JUNK: Mixed household items (furniture, boxes, general clutter, appliances, etc.)
+2. HEAVY DEBRIS: Construction materials, concrete, dirt, rocks, heavy building materials
+3. INDIVIDUAL BULKY ITEMS: 1-3 specific large items (sofa, mattress, appliance, etc.)
 
-Use these 2026 pricing guidelines:
+STEP 2: APPLY APPROPRIATE PRICING METHOD
 
-LOAD SIZE PRICING:
-- Minimum Load (Single item / up to 2 yd³): $85 – $150
+If HOUSEHOLD JUNK → Use VOLUME-BASED PRICING:
+- Minimum Load (up to 2 yd³): $85 – $150
 - 1/4 Truck (3 – 4 yd³): $175 – $275
 - 1/2 Truck (6 – 8 yd³): $325 – $475
 - 3/4 Truck (9 – 11 yd³): $475 – $625
 - Full Truck (12 – 15 yd³): $650 – $850
 
-SPECIFIC ITEM PRICING (for reference):
+If HEAVY DEBRIS → Use BED LOAD PRICING:
+(Note: Bed load pricing not yet provided - use volume-based as fallback)
+
+If INDIVIDUAL BULKY ITEMS → Use ITEM-SPECIFIC PRICING:
 - Mattress/Box Spring: $80 – $150 per set
 - Sofa/Couch: $100 – $225 (Sectionals: $250+)
 - Refrigerator/Freezer: $90 – $180 (includes Freon disposal)
@@ -37,23 +42,21 @@ SPECIFIC ITEM PRICING (for reference):
 - Tires: $15 – $30 each (with rims: $40+)
 - Television (CRT/Old): $60 – $110
 
-Instructions:
-- Identify all visible items
-- Estimate total volume in cubic yards
-- Select appropriate load size category
-- Calculate price range with EXACTLY $50 difference between min and max
-- If multiple specific items, sum their individual ranges
-- Ensure final range stays within the load size category pricing
+STEP 3: CALCULATE FINAL QUOTE
+- List all visible items
+- Apply the appropriate pricing method based on type
+- Ensure price range has EXACTLY $50 difference between min and max
+- For multiple items, sum their ranges appropriately
 
 Respond in this exact JSON format:
 {
   "items": ["item 1", "item 2", "item 3"],
-  "estimatedVolume": "Load size description (e.g., '1/4 Truck (3-4 yd³)', 'Minimum Load (up to 2 yd³)')",
+  "estimatedVolume": "Load size or item description (e.g., '1/4 Truck (3-4 yd³)', 'Sofa + Mattress', 'Minimum Load (up to 2 yd³)')",
   "priceRange": {
     "min": 175,
     "max": 225
   },
-  "summary": "Brief explanation of the estimate"
+  "summary": "Brief explanation mentioning the type identified and pricing method used"
 }`;
 
   try {
