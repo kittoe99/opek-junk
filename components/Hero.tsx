@@ -28,16 +28,16 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
               Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-row gap-3">
               <button 
                 onClick={onGetQuote}
-                className="px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
               >
                 View Pricing
               </button>
               <button 
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth'})}
-                className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                className="px-6 py-3 text-sm font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
               >
                 Book Online
               </button>
