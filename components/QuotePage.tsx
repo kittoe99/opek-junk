@@ -3,11 +3,14 @@ import { Camera, Upload, Loader2, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { QuoteEstimate, LoadingState } from '../types';
+import { supabase } from '../lib/supabase';
 
 export const QuotePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
 
   // AI State
@@ -55,9 +58,35 @@ export const QuotePage: React.FC = () => {
     }
   };
 
-  const handleManualSubmit = (e: React.FormEvent) => {
+  const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('schedule_visits')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            zip_code: formData.zipCode,
+            preferred_date: formData.date,
+            details: formData.details,
+            status: 'pending'
+          }
+        ]);
+
+      if (insertError) throw insertError;
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error('Error submitting schedule visit:', err);
+      setError(err.message || 'Failed to submit request. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   const handleNextStep = (e: React.FormEvent) => {
@@ -495,20 +524,28 @@ export const QuotePage: React.FC = () => {
                   )}
                 </div>
 
+                {error && (
+                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm font-bold">{error}</p>
+                  </div>
+                )}
+
                 <div className="flex gap-4">
                   <button 
                     type="button"
                     onClick={handlePrevStep}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg"
+                    disabled={submitting}
+                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Back
                   </button>
                   <button 
                     type="button"
                     onClick={handleManualSubmit}
-                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                    disabled={submitting}
+                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    Confirm & Submit
+                    {submitting ? 'Submitting...' : 'Confirm & Submit'}
                   </button>
                 </div>
               </div>

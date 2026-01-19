@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Truck, MapPin, Calendar, User } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export const ProviderSignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export const ProviderSignupPage: React.FC = () => {
     additionalInfo: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const vehicleTypes = [
     'Pickup Truck',
@@ -54,13 +57,41 @@ export const ProviderSignupPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Provider signup form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      navigate('/');
-    }, 3000);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('provider_signups')
+        .insert([
+          {
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            phone: formData.phone,
+            service_area: formData.serviceArea,
+            vehicle_type: formData.vehicleType,
+            availability: {
+              schedule: formData.scheduleAvailability,
+              businessName: formData.businessName,
+              additionalInfo: formData.additionalInfo
+            },
+            status: 'pending'
+          }
+        ]);
+
+      if (insertError) throw insertError;
+
+      setSubmitted(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    } catch (err: any) {
+      console.error('Error submitting provider signup:', err);
+      setError(err.message || 'Failed to submit application. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -301,13 +332,20 @@ export const ProviderSignupPage: React.FC = () => {
               />
             </div>
 
+            {error && (
+              <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                <p className="text-red-700 text-sm font-bold">{error}</p>
+              </div>
+            )}
+
             {/* Submit Button */}
             <div className="pt-6 border-t-2 border-gray-200">
               <button
                 type="submit"
-                className="w-full px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                disabled={submitting}
+                className="w-full px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Submit Application
+                {submitting ? 'Submitting...' : 'Submit Application'}
               </button>
               <p className="text-sm text-gray-500 text-center mt-4">
                 By submitting, you agree to our provider terms and conditions
