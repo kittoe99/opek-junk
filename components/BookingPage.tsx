@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle, Calendar, MapPin, User, Mail, Phone } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowRight, ArrowLeft, CheckCircle, Calendar, MapPin, User, Mail, Phone, Upload, Loader2, Camera } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import { QuoteEstimate } from '../types';
+import { QuoteEstimate, LoadingState } from '../types';
+import { getJunkQuoteFromPhoto } from '../services/openaiService';
 
 export const BookingPage: React.FC = () => {
   const location = useLocation();
   const estimateData = location.state as { estimate?: QuoteEstimate; image?: string } | null;
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
+  const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,22 +33,63 @@ export const BookingPage: React.FC = () => {
   });
   const [zipError, setZipError] = useState<string>('');
 
-  // Pre-fill estimate data if available
+  // Pre-fill estimate data if available from QuotePage
   useEffect(() => {
     if (estimateData?.estimate) {
-      const { estimate, image } = estimateData;
+      const { estimate: est, image: img } = estimateData;
+      setEstimate(est);
+      setImage(img || null);
+      setLoadingState(LoadingState.SUCCESS);
       setFormData(prev => ({
         ...prev,
-        estimatedItems: estimate.itemsDetected,
-        estimatedVolume: estimate.estimatedVolume,
-        priceRangeMin: estimate.priceRange.min,
-        priceRangeMax: estimate.priceRange.max,
-        estimateSummary: estimate.summary,
-        photoUrl: image || '',
-        details: `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nPrice Range: $${estimate.priceRange.min} - $${estimate.priceRange.max}`
+        estimatedItems: est.itemsDetected,
+        estimatedVolume: est.estimatedVolume,
+        priceRangeMin: est.priceRange.min,
+        priceRangeMax: est.priceRange.max,
+        estimateSummary: est.summary,
+        photoUrl: img || '',
+        details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nPrice Range: $${est.priceRange.min} - $${est.priceRange.max}`
       }));
+      setCurrentStep(2); // Skip to step 2 if coming from quote page
     }
   }, [estimateData]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+        setEstimate(null);
+        setLoadingState(LoadingState.IDLE);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAnalyze = async () => {
+    if (!image) return;
+    setLoadingState(LoadingState.ANALYZING);
+    try {
+      const base64Data = image.split(',')[1];
+      const mimeType = image.split(';')[0].split(':')[1];
+      const result = await getJunkQuoteFromPhoto(base64Data, mimeType);
+      setEstimate(result);
+      setFormData(prev => ({
+        ...prev,
+        estimatedItems: result.itemsDetected,
+        estimatedVolume: result.estimatedVolume,
+        priceRangeMin: result.priceRange.min,
+        priceRangeMax: result.priceRange.max,
+        estimateSummary: result.summary,
+        photoUrl: image,
+        details: `Items: ${result.itemsDetected.join(', ')}\nEstimated Volume: ${result.estimatedVolume}\nPrice Range: $${result.priceRange.min} - $${result.priceRange.max}`
+      }));
+      setLoadingState(LoadingState.SUCCESS);
+    } catch (error) {
+      setLoadingState(LoadingState.ERROR);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -58,9 +104,9 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (currentStep < 3) {
+  const handleNextStep = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -159,7 +205,7 @@ export const BookingPage: React.FC = () => {
 
             {/* Step Indicator */}
             <div className="flex items-center justify-center mb-12">
-              {[1, 2, 3].map((step) => (
+              {[1, 2, 3, 4].map((step) => (
                 <React.Fragment key={step}>
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${
@@ -170,10 +216,10 @@ export const BookingPage: React.FC = () => {
                     <span className={`text-xs font-bold mt-2 uppercase tracking-wider ${
                       currentStep >= step ? 'text-black' : 'text-gray-400'
                     }`}>
-                      {step === 1 ? 'Contact' : step === 2 ? 'Location' : 'Details'}
+                      {step === 1 ? 'Photo' : step === 2 ? 'Contact' : step === 3 ? 'Location' : 'Details'}
                     </span>
                   </div>
-                  {step < 3 && (
+                  {step < 4 && (
                     <div className={`w-16 h-0.5 mx-2 mb-6 transition-colors ${
                       currentStep > step ? 'bg-black' : 'bg-gray-200'
                     }`} />
@@ -182,8 +228,109 @@ export const BookingPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Step 1: Contact Info */}
+            {/* Step 1: Photo Upload & Estimate */}
             {currentStep === 1 && (
+              <div className="space-y-6">
+                {!image ? (
+                  <div 
+                    className="border-2 border-dashed border-gray-300 p-16 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Upload size={32} className="text-gray-400" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Upload Photo</h3>
+                    <p className="text-gray-600 mb-2">Click to upload a photo of your junk</p>
+                    <p className="text-sm text-gray-400">JPG or PNG, max 10MB</p>
+                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="relative border-2 border-gray-200 rounded-lg overflow-hidden">
+                      <img src={image} alt="Upload" className="w-full" />
+                      {loadingState !== LoadingState.ANALYZING && (
+                        <button 
+                          onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }} 
+                          className="absolute top-4 right-4 bg-white text-black px-4 py-2 text-sm font-bold shadow-lg hover:bg-gray-100 transition-colors rounded-lg"
+                        >
+                          Change Photo
+                        </button>
+                      )}
+                    </div>
+
+                    {loadingState === LoadingState.IDLE && (
+                      <button 
+                        onClick={handleAnalyze}
+                        className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                      >
+                        Analyze Photo
+                      </button>
+                    )}
+
+                    {loadingState === LoadingState.ANALYZING && (
+                      <div className="py-12 text-center">
+                        <Loader2 size={48} className="animate-spin mx-auto mb-4" />
+                        <p className="text-gray-600">Analyzing your photo...</p>
+                      </div>
+                    )}
+
+                    {loadingState === LoadingState.SUCCESS && estimate && (
+                      <div className="bg-gray-50 p-8 border-2 border-gray-200 rounded-lg">
+                        <div className="mb-6">
+                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Items Detected</div>
+                          <ul className="space-y-2">
+                            {estimate.itemsDetected.map((item, index) => (
+                              <li key={index} className="flex items-start gap-2">
+                                <span className="text-black mt-1">•</span>
+                                <span className="text-gray-700">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="mb-6 pt-6 border-t border-gray-300">
+                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Estimated Volume</div>
+                          <div className="text-3xl font-black">{estimate.estimatedVolume}</div>
+                        </div>
+                        <div className="mb-6">
+                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Price Range</div>
+                          <div className="text-4xl font-black">
+                            ${estimate.priceRange.min} - ${estimate.priceRange.max}
+                          </div>
+                        </div>
+                        <div className="mb-8 pb-6 border-b border-gray-300">
+                          <p className="text-gray-700 leading-relaxed">{estimate.summary}</p>
+                        </div>
+                        <button 
+                          onClick={() => handleNextStep()}
+                          className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                        >
+                          Continue to Booking
+                          <ArrowRight size={20} />
+                        </button>
+                        <p className="text-xs text-gray-500 text-center mt-4">
+                          * Final price confirmed on-site
+                        </p>
+                      </div>
+                    )}
+
+                    {loadingState === LoadingState.ERROR && (
+                      <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 text-center">
+                        <p className="text-red-700 font-bold mb-4">Failed to analyze photo</p>
+                        <button 
+                          onClick={handleAnalyze}
+                          className="px-6 py-2 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
+                        >
+                          Try Again
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Step 2: Contact Info */}
+            {currentStep === 2 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
@@ -236,8 +383,8 @@ export const BookingPage: React.FC = () => {
               </form>
             )}
 
-            {/* Step 2: Location */}
-            {currentStep === 2 && (
+            {/* Step 3: Location */}
+            {currentStep === 3 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
@@ -294,8 +441,8 @@ export const BookingPage: React.FC = () => {
               </form>
             )}
 
-            {/* Step 3: Service Details */}
-            {currentStep === 3 && (
+            {/* Step 4: Service Details */}
+            {currentStep === 4 && (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
