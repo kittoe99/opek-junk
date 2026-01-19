@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Upload, Loader2, CheckCircle } from 'lucide-react';
-import { getJunkQuote } from '../services/geminiService';
+import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { QuoteEstimate, LoadingState } from '../types';
 
 export const QuotePage: React.FC = () => {
@@ -45,7 +45,7 @@ export const QuotePage: React.FC = () => {
     try {
       const base64Data = image.split(',')[1];
       const mimeType = image.split(';')[0].split(':')[1];
-      const result = await getJunkQuote(base64Data, mimeType);
+      const result = await getJunkQuoteFromPhoto(base64Data, mimeType);
       setEstimate(result);
       setLoadingState(LoadingState.SUCCESS);
     } catch (error) {
@@ -241,6 +241,17 @@ export const QuotePage: React.FC = () => {
                 {loadingState === LoadingState.SUCCESS && estimate && (
                   <div className="bg-gray-50 p-8 border-2 border-gray-200 rounded-lg">
                     <div className="mb-6">
+                      <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Items Detected</div>
+                      <ul className="space-y-2">
+                        {estimate.itemsDetected.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <span className="text-black mt-1">•</span>
+                            <span className="text-gray-700">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="mb-6 pt-6 border-t border-gray-300">
                       <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Estimated Volume</div>
                       <div className="text-3xl font-black">{estimate.estimatedVolume}</div>
                     </div>
