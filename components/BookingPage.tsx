@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, Calendar, MapPin, User, Mail, Phone } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { QuoteEstimate } from '../types';
 
 export const BookingPage: React.FC = () => {
+  const location = useLocation();
+  const estimateData = location.state as { estimate?: QuoteEstimate; image?: string } | null;
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -12,9 +17,33 @@ export const BookingPage: React.FC = () => {
     zipCode: '',
     date: '',
     serviceType: 'Residential Junk Removal',
-    details: ''
+    details: '',
+    // Estimate fields
+    estimatedItems: [] as string[],
+    estimatedVolume: '',
+    priceRangeMin: 0,
+    priceRangeMax: 0,
+    estimateSummary: '',
+    photoUrl: ''
   });
   const [zipError, setZipError] = useState<string>('');
+
+  // Pre-fill estimate data if available
+  useEffect(() => {
+    if (estimateData?.estimate) {
+      const { estimate, image } = estimateData;
+      setFormData(prev => ({
+        ...prev,
+        estimatedItems: estimate.itemsDetected,
+        estimatedVolume: estimate.estimatedVolume,
+        priceRangeMin: estimate.priceRange.min,
+        priceRangeMax: estimate.priceRange.max,
+        estimateSummary: estimate.summary,
+        photoUrl: image || '',
+        details: `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nPrice Range: $${estimate.priceRange.min} - $${estimate.priceRange.max}`
+      }));
+    }
+  }, [estimateData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -98,6 +127,36 @@ export const BookingPage: React.FC = () => {
 
           {/* Booking Form */}
           <div className="lg:col-span-3">
+            
+            {/* Estimate Summary (if available) */}
+            {estimateData?.estimate && (
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6 mb-8">
+                <h3 className="text-lg font-black mb-4">Your Estimate</h3>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Estimated Volume</div>
+                    <div className="font-bold">{formData.estimatedVolume}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price Range</div>
+                    <div className="font-bold text-lg">${formData.priceRangeMin} - ${formData.priceRangeMax}</div>
+                  </div>
+                </div>
+                {formData.estimatedItems.length > 0 && (
+                  <div>
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Items Detected</div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.estimatedItems.map((item, index) => (
+                        <span key={index} className="px-3 py-1 bg-white border border-gray-300 rounded-full text-sm">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Step Indicator */}
             <div className="flex items-center justify-center mb-12">
               {[1, 2, 3].map((step) => (

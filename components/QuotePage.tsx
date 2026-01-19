@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Upload, Loader2, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { QuoteEstimate, LoadingState } from '../types';
 
 export const QuotePage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -265,7 +267,7 @@ export const QuotePage: React.FC = () => {
                       <p className="text-gray-700 leading-relaxed">{estimate.summary}</p>
                     </div>
                     <button 
-                      onClick={() => setSubmitted(true)}
+                      onClick={() => navigate('/booking', { state: { estimate, image } })}
                       className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md"
                     >
                       Confirm Booking

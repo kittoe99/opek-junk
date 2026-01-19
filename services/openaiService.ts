@@ -45,7 +45,7 @@ If INDIVIDUAL BULKY ITEMS → Use ITEM-SPECIFIC PRICING:
 STEP 3: CALCULATE FINAL QUOTE
 - List all visible items
 - Apply the appropriate pricing method based on type
-- Ensure price range has EXACTLY $50 difference between min and max
+- Ensure price range has EXACTLY $80 difference between min and max
 - For multiple items, sum their ranges appropriately
 
 Respond in this exact JSON format:
@@ -54,7 +54,7 @@ Respond in this exact JSON format:
   "estimatedVolume": "Load size or item description (e.g., '1/4 Truck (3-4 yd³)', 'Sofa + Mattress', 'Minimum Load (up to 2 yd³)')",
   "priceRange": {
     "min": 175,
-    "max": 225
+    "max": 255
   },
   "summary": "Brief explanation mentioning the type identified and pricing method used"
 }`;
@@ -95,11 +95,11 @@ Respond in this exact JSON format:
       throw new Error('Invalid response format from AI');
     }
 
-    // Ensure price range is exactly $50 apart
+    // Ensure price range is exactly $80 apart
     const priceDiff = result.priceRange.max - result.priceRange.min;
-    if (priceDiff !== 50) {
-      // Adjust to ensure $50 difference
-      result.priceRange.max = result.priceRange.min + 50;
+    if (priceDiff !== 80) {
+      // Adjust to ensure $80 difference
+      result.priceRange.max = result.priceRange.min + 80;
     }
 
     return {
