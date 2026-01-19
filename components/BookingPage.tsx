@@ -3,6 +3,7 @@ import { ArrowRight, ArrowLeft, CheckCircle, Calendar, MapPin, User, Mail, Phone
 import { useLocation } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
+import { supabase } from '../lib/supabase';
 
 export const BookingPage: React.FC = () => {
   const location = useLocation();
@@ -11,6 +12,8 @@ export const BookingPage: React.FC = () => {
   
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
@@ -117,9 +120,42 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('bookings')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            zip_code: formData.zipCode,
+            service_type: formData.serviceType,
+            preferred_date: formData.date,
+            details: formData.details,
+            estimated_items: formData.estimatedItems,
+            estimated_volume: formData.estimatedVolume,
+            price_range_min: formData.priceRangeMin,
+            price_range_max: formData.priceRangeMax,
+            estimate_summary: formData.estimateSummary,
+            photo_url: formData.photoUrl,
+            status: 'pending'
+          }
+        ]);
+
+      if (insertError) throw insertError;
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error('Error submitting booking:', err);
+      setError(err.message || 'Failed to submit booking. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -523,21 +559,29 @@ export const BookingPage: React.FC = () => {
                   </div>
                 </div>
 
+                {error && (
+                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm font-bold">{error}</p>
+                  </div>
+                )}
+
                 <div className="flex gap-4">
                   <button 
                     type="button"
                     onClick={handlePrevStep}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                    disabled={submitting}
+                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ArrowLeft size={20} />
                     Back
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                    disabled={submitting}
+                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    Confirm Booking
-                    <CheckCircle size={20} />
+                    {submitting ? 'Submitting...' : 'Confirm Booking'}
+                    {!submitting && <CheckCircle size={20} />}
                   </button>
                 </div>
               </form>

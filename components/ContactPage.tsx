@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Phone, Mail, Clock } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ export const ContactPage: React.FC = () => {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const subjectOptions = [
     'General Inquiry',
@@ -31,13 +34,34 @@ export const ContactPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      navigate('/');
-    }, 3000);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('contacts')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: `${formData.subject}: ${formData.message}`
+          }
+        ]);
+
+      if (insertError) throw insertError;
+
+      setSubmitted(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    } catch (err: any) {
+      console.error('Error submitting contact form:', err);
+      setError(err.message || 'Failed to submit form. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -205,12 +229,19 @@ export const ContactPage: React.FC = () => {
               />
             </div>
 
+            {error && (
+              <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                <p className="text-red-700 text-sm font-bold">{error}</p>
+              </div>
+            )}
+
             <div className="pt-6 border-t-2 border-gray-200">
               <button
                 type="submit"
-                className="w-full px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                disabled={submitting}
+                className="w-full px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Send Message
+                {submitting ? 'Sending...' : 'Send Message'}
               </button>
               <p className="text-sm text-gray-500 text-center mt-4">
                 We'll respond within 30 minutes during business hours
