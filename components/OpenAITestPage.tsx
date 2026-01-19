@@ -53,7 +53,7 @@ export const OpenAITestPage: React.FC = () => {
             Test OpenAI Connection
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Verify that OpenAI GPT-4 is properly connected to the application.
+            Verify that OpenAI GPT-5.2 is properly connected to the application.
           </p>
         </div>
 
