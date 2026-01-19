@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import OpenAI from 'openai';
 
 export const OpenAITestPage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -18,21 +19,40 @@ export const OpenAITestPage: React.FC = () => {
     setResponse(null);
 
     try {
-      const res = await fetch('/api/test-openai', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to connect to OpenAI');
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      
+      if (!apiKey) {
+        throw new Error('VITE_OPENAI_API_KEY not found in environment variables');
       }
 
-      setResponse(data);
+      const openai = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true // Only for testing, use server-side in production
+      });
+
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-5.2',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant testing the OpenAI API connection.'
+          },
+          {
+            role: 'user',
+            content: message
+          }
+        ],
+        max_tokens: 150,
+      });
+
+      const reply = completion.choices[0]?.message?.content || 'No response';
+
+      setResponse({
+        success: true,
+        reply,
+        model: completion.model,
+        usage: completion.usage,
+      });
     } catch (err: any) {
       setError(err.message || 'Failed to test OpenAI connection');
     } finally {
