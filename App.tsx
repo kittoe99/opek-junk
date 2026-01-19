@@ -16,6 +16,7 @@ import { ConstructionPage } from './components/services/ConstructionPage';
 import { EWastePage } from './components/services/EWastePage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
+import { OpenAITestPage } from './components/OpenAITestPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -72,6 +73,7 @@ function App() {
           <Route path="/services/e-waste" element={<EWastePage />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPage />} />
           <Route path="/provider-signup" element={<ProviderSignupPage />} />
+          <Route path="/test-openai" element={<OpenAITestPage />} />
         </Routes>
         
         <Footer />
