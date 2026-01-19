@@ -42,7 +42,7 @@ export const OpenAITestPage: React.FC = () => {
             content: message
           }
         ],
-        max_tokens: 150,
+        max_completion_tokens: 150,
       });
 
       const reply = completion.choices[0]?.message?.content || 'No response';
