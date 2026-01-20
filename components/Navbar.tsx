@@ -25,28 +25,32 @@ export const Navbar: React.FC = () => {
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // Try ipapi.co first (most reliable)
-      const response = await fetch('https://ipapi.co/json/');
-      const data = await response.json();
+      // Use ipapi.com (no rate limits for basic usage)
+      const response = await fetch('https://ipapi.com/ip_api.php?ip=');
+      const text = await response.text();
       
-      console.log('Location API response:', data);
+      console.log('Location API response:', text);
       
-      if (data.city && data.region_code) {
-        setUserCity(`${data.city}, ${data.region_code}`);
-        console.log('Location set:', `${data.city}, ${data.region_code}`);
-      } else if (data.city && data.region) {
-        setUserCity(`${data.city}, ${data.region}`);
-        console.log('Location set (alt):', `${data.city}, ${data.region}`);
+      // Parse the response (format: city,region,country)
+      const parts = text.split(',');
+      if (parts.length >= 2 && parts[0] && parts[1]) {
+        const city = parts[0].trim();
+        const region = parts[1].trim();
+        setUserCity(`${city}, ${region}`);
+        console.log('Location set:', `${city}, ${region}`);
       } else {
-        // Fallback to freeipapi.com
+        // Fallback to ipwhois.app
         console.log('Trying fallback API...');
-        const fallbackResponse = await fetch('https://freeipapi.com/api/json');
+        const fallbackResponse = await fetch('https://ipwho.is/');
         const fallbackData = await fallbackResponse.json();
         console.log('Fallback API response:', fallbackData);
         
-        if (fallbackData.cityName && fallbackData.regionName) {
-          setUserCity(`${fallbackData.cityName}, ${fallbackData.regionName}`);
-          console.log('Fallback location set:', `${fallbackData.cityName}, ${fallbackData.regionName}`);
+        if (fallbackData.city && fallbackData.region_code) {
+          setUserCity(`${fallbackData.city}, ${fallbackData.region_code}`);
+          console.log('Fallback location set:', `${fallbackData.city}, ${fallbackData.region_code}`);
+        } else if (fallbackData.city && fallbackData.region) {
+          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+          console.log('Fallback location set (alt):', `${fallbackData.city}, ${fallbackData.region}`);
         } else {
           // Set default location if all fails
           setUserCity('Your Location');
