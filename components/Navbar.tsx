@@ -11,6 +11,7 @@ export const Navbar: React.FC = () => {
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [userCity, setUserCity] = useState<string>('');
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,37 +22,41 @@ export const Navbar: React.FC = () => {
   }, []);
 
   // Fetch user's city based on IP address with improved accuracy
-  useEffect(() => {
-    const fetchUserLocation = async () => {
-      try {
-        // Try ipapi.co first (more accurate)
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        
-        if (data.city && data.region_code) {
-          setUserCity(`${data.city}, ${data.region_code}`);
-        } else {
-          // Fallback to ip-api.com if first fails
-          const fallbackResponse = await fetch('http://ip-api.com/json/');
-          const fallbackData = await fallbackResponse.json();
-          if (fallbackData.city && fallbackData.region) {
-            setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch location:', error);
-        // Try fallback on error
-        try {
-          const fallbackResponse = await fetch('http://ip-api.com/json/');
-          const fallbackData = await fallbackResponse.json();
-          if (fallbackData.city && fallbackData.region) {
-            setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
-          }
-        } catch (fallbackError) {
-          console.error('Fallback location fetch failed:', fallbackError);
+  const fetchUserLocation = async () => {
+    setIsDetectingLocation(true);
+    try {
+      // Try ipapi.co first (more accurate)
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      
+      if (data.city && data.region_code) {
+        setUserCity(`${data.city}, ${data.region_code}`);
+      } else {
+        // Fallback to ip-api.com if first fails
+        const fallbackResponse = await fetch('http://ip-api.com/json/');
+        const fallbackData = await fallbackResponse.json();
+        if (fallbackData.city && fallbackData.region) {
+          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
         }
       }
-    };
+    } catch (error) {
+      console.error('Failed to fetch location:', error);
+      // Try fallback on error
+      try {
+        const fallbackResponse = await fetch('http://ip-api.com/json/');
+        const fallbackData = await fallbackResponse.json();
+        if (fallbackData.city && fallbackData.region) {
+          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+        }
+      } catch (fallbackError) {
+        console.error('Fallback location fetch failed:', fallbackError);
+      }
+    } finally {
+      setIsDetectingLocation(false);
+    }
+  };
+
+  useEffect(() => {
     fetchUserLocation();
   }, []);
 
@@ -115,19 +120,36 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Middle Section - Location (Desktop & Mobile) */}
-          {userCity && (
-            <button
-              onClick={() => navigate('/#service-area')}
-              className="absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group"
-            >
-              <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
-              <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">{userCity}</span>
-            </button>
-          )}
-
           {/* Right Section - Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Location - Desktop (closer to nav) */}
+            {userCity && (
+              <button
+                onClick={fetchUserLocation}
+                disabled={isDetectingLocation}
+                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+              >
+                <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
+                <span className="text-xs font-bold uppercase tracking-wider underline underline-offset-4">
+                  {isDetectingLocation ? 'Detecting...' : userCity}
+                </span>
+              </button>
+            )}
+            
+            {/* Mobile Location - Centered */}
+            {userCity && (
+              <button
+                onClick={fetchUserLocation}
+                disabled={isDetectingLocation}
+                className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+              >
+                <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
+                <span className="text-xs font-bold uppercase tracking-wider underline underline-offset-4">
+                  {isDetectingLocation ? 'Detecting...' : userCity}
+                </span>
+              </button>
+            )}
+            
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.hasMega ? (
