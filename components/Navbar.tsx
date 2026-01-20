@@ -25,32 +25,38 @@ export const Navbar: React.FC = () => {
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // Try ipapi.co first (more accurate)
+      // Try ipapi.co first (most reliable)
       const response = await fetch('https://ipapi.co/json/');
       const data = await response.json();
       
+      console.log('Location API response:', data);
+      
       if (data.city && data.region_code) {
         setUserCity(`${data.city}, ${data.region_code}`);
+        console.log('Location set:', `${data.city}, ${data.region_code}`);
+      } else if (data.city && data.region) {
+        setUserCity(`${data.city}, ${data.region}`);
+        console.log('Location set (alt):', `${data.city}, ${data.region}`);
       } else {
-        // Fallback to ipgeolocation.io if first fails
-        const fallbackResponse = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=');
+        // Fallback to freeipapi.com
+        console.log('Trying fallback API...');
+        const fallbackResponse = await fetch('https://freeipapi.com/api/json');
         const fallbackData = await fallbackResponse.json();
-        if (fallbackData.city && fallbackData.state_code) {
-          setUserCity(`${fallbackData.city}, ${fallbackData.state_code}`);
+        console.log('Fallback API response:', fallbackData);
+        
+        if (fallbackData.cityName && fallbackData.regionName) {
+          setUserCity(`${fallbackData.cityName}, ${fallbackData.regionName}`);
+          console.log('Fallback location set:', `${fallbackData.cityName}, ${fallbackData.regionName}`);
+        } else {
+          // Set default location if all fails
+          setUserCity('Your Location');
+          console.log('Using default location');
         }
       }
     } catch (error) {
       console.error('Failed to fetch location:', error);
-      // Try alternative HTTPS fallback on error
-      try {
-        const fallbackResponse = await fetch('https://freeipapi.com/api/json');
-        const fallbackData = await fallbackResponse.json();
-        if (fallbackData.cityName && fallbackData.regionName) {
-          setUserCity(`${fallbackData.cityName}, ${fallbackData.regionName}`);
-        }
-      } catch (fallbackError) {
-        console.error('Fallback location fetch failed:', fallbackError);
-      }
+      // Set default location on error
+      setUserCity('Your Location');
     } finally {
       setIsDetectingLocation(false);
     }
