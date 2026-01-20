@@ -32,21 +32,21 @@ export const Navbar: React.FC = () => {
       if (data.city && data.region_code) {
         setUserCity(`${data.city}, ${data.region_code}`);
       } else {
-        // Fallback to ip-api.com if first fails
-        const fallbackResponse = await fetch('http://ip-api.com/json/');
+        // Fallback to ipgeolocation.io if first fails
+        const fallbackResponse = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=');
         const fallbackData = await fallbackResponse.json();
-        if (fallbackData.city && fallbackData.region) {
-          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+        if (fallbackData.city && fallbackData.state_code) {
+          setUserCity(`${fallbackData.city}, ${fallbackData.state_code}`);
         }
       }
     } catch (error) {
       console.error('Failed to fetch location:', error);
-      // Try fallback on error
+      // Try alternative HTTPS fallback on error
       try {
-        const fallbackResponse = await fetch('http://ip-api.com/json/');
+        const fallbackResponse = await fetch('https://freeipapi.com/api/json');
         const fallbackData = await fallbackResponse.json();
-        if (fallbackData.city && fallbackData.region) {
-          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+        if (fallbackData.cityName && fallbackData.regionName) {
+          setUserCity(`${fallbackData.cityName}, ${fallbackData.regionName}`);
         }
       } catch (fallbackError) {
         console.error('Fallback location fetch failed:', fallbackError);
