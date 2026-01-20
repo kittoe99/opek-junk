@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -17,6 +17,7 @@ import { EWastePage } from './components/services/EWastePage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
+import { ZipCheckModal } from './components/ZipCheckModal';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -31,6 +32,7 @@ function ScrollToTop() {
 function HomePage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isZipModalOpen, setIsZipModalOpen] = useState(false);
 
   useEffect(() => {
     const hash = location.hash.replace('#', '');
@@ -49,8 +51,14 @@ function HomePage() {
       <Hero onGetQuote={() => navigate('/quote')} />
       <Services />
       <Process onGetQuote={() => navigate('/quote')} />
-      <ServiceArea onGetQuote={() => navigate('/quote')} />
+      <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
       <QuickActionBar onBookOnline={() => navigate('/booking')} />
+      
+      <ZipCheckModal 
+        isOpen={isZipModalOpen}
+        onClose={() => setIsZipModalOpen(false)}
+        onGetQuote={() => navigate('/quote')}
+      />
     </>
   );
 }
