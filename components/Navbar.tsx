@@ -38,9 +38,9 @@ export const Navbar: React.FC = () => {
       
       console.log('Geolocation response:', geoData);
       
-      if (geoData.success && geoData.city && geoData.region) {
-        setUserCity(`${geoData.city}, ${geoData.region}`);
-        console.log('Location set:', `${geoData.city}, ${geoData.region}`);
+      if (geoData.success && geoData.city && geoData.region_code) {
+        setUserCity(`${geoData.city}, ${geoData.region_code}`);
+        console.log('Location set:', `${geoData.city}, ${geoData.region_code}`);
       } else {
         // Set default location if API fails
         setUserCity('Your Location');
