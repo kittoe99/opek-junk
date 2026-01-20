@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
+import { Menu, X, ArrowLeft, ArrowRight, ChevronDown, MapPin } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -10,6 +10,7 @@ export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [userCity, setUserCity] = useState<string>('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,22 @@ export const Navbar: React.FC = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch user's city based on IP address
+  useEffect(() => {
+    const fetchUserLocation = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        if (data.city && data.region_code) {
+          setUserCity(`${data.city}, ${data.region_code}`);
+        }
+      } catch (error) {
+        console.error('Failed to fetch location:', error);
+      }
+    };
+    fetchUserLocation();
   }, []);
 
   // Lock body scroll when mobile menu is open
@@ -61,9 +78,17 @@ export const Navbar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           
+          {/* Location Display - Mobile & Desktop */}
+          {userCity && (
+            <div className="absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 md:order-first md:mr-auto flex items-center gap-1.5 text-gray-600">
+              <MapPin size={14} className="text-gray-400" />
+              <span className="text-xs font-bold uppercase tracking-wider">{userCity}</span>
+            </div>
+          )}
+          
           {/* Logo */}
           <div 
-            className="flex items-center gap-3 cursor-pointer group z-[70]" 
+            className="flex items-center gap-3 cursor-pointer group z-[70] md:mx-auto" 
             onClick={handleLogoClick}
           >
             {isStandalonePage && !isMenuOpen ? (
