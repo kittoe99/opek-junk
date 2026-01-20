@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Bar - Desktop Only */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 px-6">
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 py-1.5 px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
           {userCity && (
             <button
@@ -117,7 +117,7 @@ export const Navbar: React.FC = () => {
 
       {/* Main Navbar */}
       <nav 
-        className="fixed md:top-[32px] top-0 left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
+        className="fixed top-0 md:top-[28px] left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
@@ -140,20 +140,20 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Location - Centered (Mobile Only) */}
-          <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[65]">
-            {userCity && (
+          {userCity ? (
+            <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
               >
                 <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
                 <span className="text-xs font-bold uppercase tracking-wider underline underline-offset-4">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
               </button>
-            )}
-          </div>
+            </div>
+          ) : null}
 
           {/* Right Section - Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
