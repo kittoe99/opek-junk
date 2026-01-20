@@ -20,17 +20,36 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch user's city based on IP address
+  // Fetch user's city based on IP address with improved accuracy
   useEffect(() => {
     const fetchUserLocation = async () => {
       try {
+        // Try ipapi.co first (more accurate)
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
+        
         if (data.city && data.region_code) {
           setUserCity(`${data.city}, ${data.region_code}`);
+        } else {
+          // Fallback to ip-api.com if first fails
+          const fallbackResponse = await fetch('http://ip-api.com/json/');
+          const fallbackData = await fallbackResponse.json();
+          if (fallbackData.city && fallbackData.region) {
+            setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch location:', error);
+        // Try fallback on error
+        try {
+          const fallbackResponse = await fetch('http://ip-api.com/json/');
+          const fallbackData = await fallbackResponse.json();
+          if (fallbackData.city && fallbackData.region) {
+            setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
+          }
+        } catch (fallbackError) {
+          console.error('Fallback location fetch failed:', fallbackError);
+        }
       }
     };
     fetchUserLocation();
@@ -76,33 +95,13 @@ export const Navbar: React.FC = () => {
       <nav 
         className="fixed top-0 left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
       >
-        <div className="max-w-7xl mx-auto flex items-center">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           
-          {/* Left Section - Location (Desktop) */}
-          <div className="hidden md:flex md:flex-1 items-center">
-            {userCity && (
-              <div className="flex items-center gap-1.5 text-gray-600">
-                <MapPin size={14} className="text-gray-400" />
-                <span className="text-xs font-bold uppercase tracking-wider">{userCity}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Center Section - Logo & Mobile Location */}
-          <div className="flex-1 md:flex-initial flex justify-center items-center relative">
-            {/* Mobile Location - Centered above logo */}
-            {userCity && (
-              <div className="md:hidden absolute -top-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-gray-600">
-                <MapPin size={12} className="text-gray-400" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">{userCity}</span>
-              </div>
-            )}
-            
-            {/* Logo */}
-            <div 
-              className="flex items-center gap-3 cursor-pointer group z-[70]" 
-              onClick={handleLogoClick}
-            >
+          {/* Left Section - Logo */}
+          <div 
+            className="flex items-center gap-3 cursor-pointer group z-[70]" 
+            onClick={handleLogoClick}
+          >
             {isStandalonePage && !isMenuOpen ? (
               <div className="w-12 h-12 flex items-center justify-center bg-black text-white transition-all duration-300">
                 <ArrowLeft size={24} />
@@ -114,11 +113,21 @@ export const Navbar: React.FC = () => {
                 className="h-12 w-auto object-contain md:h-14"
               />
             )}
-            </div>
           </div>
 
+          {/* Middle Section - Location (Desktop & Mobile) */}
+          {userCity && (
+            <button
+              onClick={() => navigate('/#service-area')}
+              className="absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group"
+            >
+              <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
+              <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">{userCity}</span>
+            </button>
+          )}
+
           {/* Right Section - Desktop Navigation */}
-          <div className="hidden md:flex md:flex-1 items-center justify-end space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.hasMega ? (
