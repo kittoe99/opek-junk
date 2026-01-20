@@ -25,37 +25,26 @@ export const Navbar: React.FC = () => {
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // Use ipapi.com (no rate limits for basic usage)
-      const response = await fetch('https://ipapi.com/ip_api.php?ip=');
-      const text = await response.text();
+      // Get IP first, then use it for geolocation
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const userIp = ipData.ip;
       
-      console.log('Location API response:', text);
+      console.log('User IP:', userIp);
       
-      // Parse the response (format: city,region,country)
-      const parts = text.split(',');
-      if (parts.length >= 2 && parts[0] && parts[1]) {
-        const city = parts[0].trim();
-        const region = parts[1].trim();
-        setUserCity(`${city}, ${region}`);
-        console.log('Location set:', `${city}, ${region}`);
+      // Use ipwho.is with the IP (free, unlimited, HTTPS)
+      const geoResponse = await fetch(`https://ipwho.is/${userIp}`);
+      const geoData = await geoResponse.json();
+      
+      console.log('Geolocation response:', geoData);
+      
+      if (geoData.success && geoData.city && geoData.region) {
+        setUserCity(`${geoData.city}, ${geoData.region}`);
+        console.log('Location set:', `${geoData.city}, ${geoData.region}`);
       } else {
-        // Fallback to ipwhois.app
-        console.log('Trying fallback API...');
-        const fallbackResponse = await fetch('https://ipwho.is/');
-        const fallbackData = await fallbackResponse.json();
-        console.log('Fallback API response:', fallbackData);
-        
-        if (fallbackData.city && fallbackData.region_code) {
-          setUserCity(`${fallbackData.city}, ${fallbackData.region_code}`);
-          console.log('Fallback location set:', `${fallbackData.city}, ${fallbackData.region_code}`);
-        } else if (fallbackData.city && fallbackData.region) {
-          setUserCity(`${fallbackData.city}, ${fallbackData.region}`);
-          console.log('Fallback location set (alt):', `${fallbackData.city}, ${fallbackData.region}`);
-        } else {
-          // Set default location if all fails
-          setUserCity('Your Location');
-          console.log('Using default location');
-        }
+        // Set default location if API fails
+        setUserCity('Your Location');
+        console.log('Using default location - API returned:', geoData);
       }
     } catch (error) {
       console.error('Failed to fetch location:', error);
@@ -117,7 +106,7 @@ export const Navbar: React.FC = () => {
               className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
             >
               <MapPin size={12} className="text-gray-400 group-hover:text-black transition-colors" />
-              <span className="text-[11px] font-bold uppercase tracking-wider underline underline-offset-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
                 {isDetectingLocation ? 'Detecting...' : userCity}
               </span>
             </button>
@@ -158,7 +147,7 @@ export const Navbar: React.FC = () => {
                 className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
               >
                 <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
-                <span className="text-xs font-bold uppercase tracking-wider underline underline-offset-4">
+                <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
               </button>
