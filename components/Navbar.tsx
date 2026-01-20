@@ -76,21 +76,33 @@ export const Navbar: React.FC = () => {
       <nav 
         className="fixed top-0 left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex items-center">
           
-          {/* Location Display - Mobile & Desktop */}
-          {userCity && (
-            <div className="absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 md:order-first md:mr-auto flex items-center gap-1.5 text-gray-600">
-              <MapPin size={14} className="text-gray-400" />
-              <span className="text-xs font-bold uppercase tracking-wider">{userCity}</span>
-            </div>
-          )}
-          
-          {/* Logo */}
-          <div 
-            className="flex items-center gap-3 cursor-pointer group z-[70] md:mx-auto" 
-            onClick={handleLogoClick}
-          >
+          {/* Left Section - Location (Desktop) */}
+          <div className="hidden md:flex md:flex-1 items-center">
+            {userCity && (
+              <div className="flex items-center gap-1.5 text-gray-600">
+                <MapPin size={14} className="text-gray-400" />
+                <span className="text-xs font-bold uppercase tracking-wider">{userCity}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Center Section - Logo & Mobile Location */}
+          <div className="flex-1 md:flex-initial flex justify-center items-center relative">
+            {/* Mobile Location - Centered above logo */}
+            {userCity && (
+              <div className="md:hidden absolute -top-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-gray-600">
+                <MapPin size={12} className="text-gray-400" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">{userCity}</span>
+              </div>
+            )}
+            
+            {/* Logo */}
+            <div 
+              className="flex items-center gap-3 cursor-pointer group z-[70]" 
+              onClick={handleLogoClick}
+            >
             {isStandalonePage && !isMenuOpen ? (
               <div className="w-12 h-12 flex items-center justify-center bg-black text-white transition-all duration-300">
                 <ArrowLeft size={24} />
@@ -102,10 +114,11 @@ export const Navbar: React.FC = () => {
                 className="h-12 w-auto object-contain md:h-14"
               />
             )}
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Right Section - Desktop Navigation */}
+          <div className="hidden md:flex md:flex-1 items-center justify-end space-x-8">
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.hasMega ? (
