@@ -18,6 +18,7 @@ export const QuotePage: React.FC = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   // Manual Form State
   const [formData, setFormData] = useState({ 
@@ -31,16 +32,62 @@ export const QuotePage: React.FC = () => {
   });
   const [zipError, setZipError] = useState<string>('');
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Max dimensions
+          const maxWidth = 1920;
+          const maxHeight = 1920;
+          
+          // Calculate new dimensions
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          // Compress to JPEG with 0.8 quality
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
+      try {
+        const compressedImage = await compressImage(file);
+        setImage(compressedImage);
         setEstimate(null);
         setLoadingState(LoadingState.IDLE);
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        console.error('Error compressing image:', error);
+      }
     }
   };
 
@@ -227,17 +274,46 @@ export const QuotePage: React.FC = () => {
           <div>
 
             {!image ? (
-              <div 
-                className="border-2 border-dashed border-gray-300 p-16 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Upload size={32} className="text-gray-400" />
+              <div className="space-y-4">
+                {/* Camera Capture */}
+                <div 
+                  className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                  onClick={() => cameraInputRef.current?.click()}
+                >
+                  <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Camera size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Take Photo</h3>
+                  <p className="text-gray-600">Use your camera to capture the junk</p>
+                  <input 
+                    type="file" 
+                    ref={cameraInputRef} 
+                    className="hidden" 
+                    accept="image/*" 
+                    capture="environment"
+                    onChange={handleFileChange} 
+                  />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Upload Photo</h3>
-                <p className="text-gray-600 mb-2">Click to upload a photo of your junk</p>
-                <p className="text-sm text-gray-400">JPG or PNG, max 10MB</p>
-                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+
+                {/* Divider */}
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 h-px bg-gray-300"></div>
+                  <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">Or</span>
+                  <div className="flex-1 h-px bg-gray-300"></div>
+                </div>
+
+                {/* File Upload */}
+                <div 
+                  className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Upload size={32} className="text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Upload Photo</h3>
+                  <p className="text-gray-600">Choose a photo from your device</p>
+                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                </div>
               </div>
             ) : (
               <div className="space-y-6">
