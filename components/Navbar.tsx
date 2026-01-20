@@ -98,8 +98,8 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Bar - Desktop Only */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 border-b border-gray-200 py-2 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-end">
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 py-2 px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-center">
           {userCity && (
             <button
               onClick={fetchUserLocation}
@@ -144,7 +144,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={fetchUserLocation}
               disabled={isDetectingLocation}
-              className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+              className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50 z-[70]"
             >
               <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
               <span className="text-xs font-bold uppercase tracking-wider underline underline-offset-4">
