@@ -80,6 +80,7 @@ export const Navbar: React.FC = () => {
     { name: 'Construction Debris', desc: 'Post-construction cleanup', path: '/services/construction' },
     { name: 'E-Waste & Appliance Recycling', desc: 'Responsible electronics disposal', path: '/services/e-waste' },
     { name: 'Full Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout' },
+    { name: 'Dumpster Rental', desc: 'Flexible sizes for any project', path: '/services/dumpster-rental' },
   ];
 
   const handleLinkClick = (path: string) => {
