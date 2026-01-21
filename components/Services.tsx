@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat } from 'lucide-react';
+import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container } from 'lucide-react';
 
 const serviceItems = [
   {
@@ -26,6 +26,11 @@ const serviceItems = [
     title: "Property Cleanouts",
     icon: Trash,
     description: "Estate clearing, move-outs, and hoarding situations. Professional and discreet."
+  },
+  {
+    title: "Dumpster Rental",
+    icon: Container,
+    description: "Multiple sizes available for any project. Flexible rental periods with fast delivery and pickup."
   }
 ];
 

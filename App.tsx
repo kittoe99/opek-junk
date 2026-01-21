@@ -15,6 +15,7 @@ import { CommercialPage } from './components/services/CommercialPage';
 import { ConstructionPage } from './components/services/ConstructionPage';
 import { EWastePage } from './components/services/EWastePage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
+import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
@@ -80,6 +81,7 @@ function App() {
           <Route path="/services/construction" element={<ConstructionPage />} />
           <Route path="/services/e-waste" element={<EWastePage />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPage />} />
+          <Route path="/services/dumpster-rental" element={<DumpsterRentalPage />} />
           <Route path="/provider-signup" element={<ProviderSignupPage />} />
           <Route path="/test-openai" element={<OpenAITestPage />} />
         </Routes>
