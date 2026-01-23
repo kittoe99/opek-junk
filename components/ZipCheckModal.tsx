@@ -77,7 +77,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
       {/* Modal */}
       <div className="fixed inset-0 z-[101] flex items-center justify-center p-4">
         <div 
-          className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-scale-in"
+          className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
@@ -114,7 +114,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                       }
                     }}
                     placeholder="ZIP code"
-                    className="w-full px-4 py-3 text-center text-lg font-bold border border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 text-center text-lg font-bold border border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors shadow-sm"
                   />
                   {error && (
                     <p className="text-red-600 text-xs mt-2">{error}</p>
@@ -148,7 +148,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 <h2 className="text-2xl font-black mb-2">We Service Your Area</h2>
                 
                 {/* Location Display */}
-                <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                <div className="bg-gray-50 rounded-lg p-3 mb-6 shadow-sm">
                   <div className="flex items-center justify-center gap-2 text-base font-bold">
                     <MapPin size={16} className="text-gray-400" />
                     <span>{city}, {state}</span>
@@ -159,7 +159,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 {/* Get Quote Button */}
                 <button
                   onClick={handleGetQuote}
-                  className="w-full px-6 py-3 bg-black text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+                  className="w-full px-6 py-3 bg-black text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-gray-800 transition-colors shadow-md"
                 >
                   Get A Quote
                 </button>

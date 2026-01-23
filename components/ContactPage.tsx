@@ -124,7 +124,7 @@ export const ContactPage: React.FC = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md">
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div className="mb-6">
