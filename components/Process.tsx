@@ -69,35 +69,6 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 relative overflow-hidden mt-16">
-          {/* Subtle background image for mobile */}
-          <div className="absolute inset-0 opacity-5 md:opacity-0">
-            <img 
-              src="/junk-removal.png" 
-              alt="" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="w-16 h-16 bg-gray-100 text-gray-900 rounded-xl flex items-center justify-center font-black text-xl">
-              70%
-            </div>
-            <p className="text-gray-600 max-w-sm">
-              Up to <strong className="text-black">70% of debris</strong> recycled and donated nationwide.
-            </p>
-          </div>
-          
-          <button 
-            onClick={onGetQuote}
-            className="relative z-10 px-8 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2 whitespace-nowrap"
-          >
-            Get Your Quote
-            <ArrowRight size={20} />
-          </button>
-        </div>
-
       </div>
     </section>
   );
