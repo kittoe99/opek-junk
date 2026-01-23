@@ -25,15 +25,15 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   ];
 
   return (
-    <section id="process" className="py-16 md:py-24 lg:py-32 bg-white">
+    <section id="process" className="py-12 md:py-16 lg:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header - Centered */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-4 tracking-tight">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-3 md:mb-4 tracking-tight">
             How It Works
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-sm md:text-base lg:text-lg max-w-2xl mx-auto">
             Point. Price. <span className="text-gray-400">Gone.</span> Three simple steps to a clutter-free space
           </p>
         </div>
@@ -42,13 +42,14 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
           {/* Timeline line */}
           <div className="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-gray-200"></div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {steps.map((step, index) => (
               <div key={index} className="relative">
                 <div className="flex flex-col items-center text-center">
                   {/* Icon circle */}
-                  <div className="relative z-10 w-24 h-24 bg-white border-2 border-black rounded-full flex items-center justify-center mb-6">
-                    <step.icon size={36} className="text-black" strokeWidth={2} />
+                  <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 bg-white border-2 border-black rounded-full flex items-center justify-center mb-4 md:mb-6">
+                    <step.icon size={28} className="text-black md:hidden" strokeWidth={2} />
+                    <step.icon size={36} className="text-black hidden md:block" strokeWidth={2} />
                   </div>
                   
                   {/* Step number */}
@@ -57,7 +58,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
                   </div>
                   
                   {/* Content */}
-                  <h3 className="text-xl font-black text-gray-900 mb-2">
+                  <h3 className="text-lg md:text-xl font-black text-gray-900 mb-2">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 text-sm">

@@ -87,30 +87,30 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-16">
+    <div className="min-h-screen bg-white pt-24 pb-12 md:pt-32 md:pb-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Back Button */}
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-6 group"
+          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-4 md:mb-6 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-medium">Back</span>
         </button>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-black text-black mb-3">
+        <div className="text-center mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-2 md:mb-3">
             Contact Us
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm md:text-base text-gray-600">
             Get quotes from local professionals nationwide.
           </p>
         </div>
 
         {/* Quick Info Banner */}
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8 text-center shadow-sm">
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 md:p-6 mb-6 md:mb-8 text-center shadow-sm">
           <p className="text-gray-600 text-sm mb-3">
             Need immediate assistance? We're here to help connect you with local professionals.
           </p>
@@ -133,11 +133,11 @@ export const ContactPage: React.FC = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-md">
           <form onSubmit={handleSubmit} className="space-y-4">
             
-            <div className="mb-6">
-              <h2 className="text-xl font-black mb-1">Send Us a Message</h2>
+            <div className="mb-4 md:mb-6">
+              <h2 className="text-lg md:text-xl font-black mb-1">Send Us a Message</h2>
               <p className="text-gray-600 text-sm">Fill out the form and we'll get back to you shortly.</p>
             </div>
 

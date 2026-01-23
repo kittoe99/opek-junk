@@ -228,15 +228,15 @@ export const BookingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-16 bg-white">
+    <div className="min-h-screen pt-24 pb-12 md:pt-32 md:pb-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-black mb-2">Book Your Service</h1>
-          <p className="text-gray-600">Complete the form to schedule your junk removal</p>
+        <div className="text-center mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2">Book Your Service</h1>
+          <p className="text-sm md:text-base text-gray-600">Complete the form to schedule your junk removal</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
           
           {/* Image */}
           <div className="lg:col-span-2">
@@ -287,16 +287,16 @@ export const BookingPage: React.FC = () => {
             )}
 
             {/* Step Indicator */}
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center justify-center mb-6 md:mb-8">
               {[1, 2, 3, 4].map((step) => (
                 <React.Fragment key={step}>
                   <div className="flex flex-col items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
+                    <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-colors ${
                       currentStep >= step ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
                     }`}>
                       {step}
                     </div>
-                    <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wider ${
+                    <span className={`text-[9px] md:text-[10px] font-bold mt-1.5 uppercase tracking-wider ${
                       currentStep >= step ? 'text-black' : 'text-gray-400'
                     }`}>
                       {step === 1 ? 'Photo' : step === 2 ? 'Contact' : step === 3 ? 'Location' : 'Details'}

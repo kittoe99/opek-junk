@@ -8,7 +8,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-20 md:pb-32">
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-24 pb-12 md:pt-32 md:pb-32">
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
@@ -18,26 +18,26 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Nationwide Service</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-black tracking-tight mb-6 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black tracking-tight mb-4 md:mb-6 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
               Junk gone.
               <br/>
               Today.
             </h1>
             
-            <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 md:mb-8 max-w-lg leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
               Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
-            <div className="flex flex-row gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
               <button 
                 onClick={onGetQuote}
-                className="px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
               >
                 View Pricing
               </button>
               <button 
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth'})}
-                className="px-6 py-3 text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
               >
                 Book Online
               </button>
