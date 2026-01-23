@@ -221,7 +221,7 @@ export const ContactPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
