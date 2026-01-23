@@ -65,7 +65,7 @@ export const DumpsterRentalPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => navigate('/booking')}
-                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
+                  className="px-10 py-4 text-base font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg"
                 >
                   Book Now
                 </button>

@@ -114,7 +114,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                       }
                     }}
                     placeholder="ZIP code"
-                    className="w-full px-4 py-3 text-center text-lg font-bold border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 text-center text-lg font-bold border border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
                   />
                   {error && (
                     <p className="text-red-600 text-xs mt-2">{error}</p>

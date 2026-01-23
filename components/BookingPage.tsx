@@ -259,7 +259,7 @@ export const BookingPage: React.FC = () => {
             
             {/* Estimate Summary (if available) */}
             {estimateData?.estimate && (
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 mb-6">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                 <h3 className="text-base font-black mb-3">Your Estimate</h3>
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
@@ -358,7 +358,7 @@ export const BookingPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="relative border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <div className="relative border border-gray-200 rounded-lg overflow-hidden">
                       <img src={image} alt="Upload" className="w-full" />
                       {loadingState !== LoadingState.ANALYZING && (
                         <button 
@@ -387,7 +387,7 @@ export const BookingPage: React.FC = () => {
                     )}
 
                     {loadingState === LoadingState.SUCCESS && estimate && (
-                      <div className="bg-gray-50 p-5 border-2 border-gray-200 rounded-lg">
+                      <div className="bg-gray-50 p-5 border border-gray-200 rounded-lg">
                         <div className="mb-4">
                           <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Items Detected</div>
                           <ul className="space-y-1.5">
@@ -426,7 +426,7 @@ export const BookingPage: React.FC = () => {
                     )}
 
                     {loadingState === LoadingState.ERROR && (
-                      <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 text-center">
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                         <p className="text-red-700 text-sm font-bold mb-3">Failed to analyze photo</p>
                         <button 
                           onClick={handleAnalyze}
@@ -453,7 +453,7 @@ export const BookingPage: React.FC = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
@@ -467,7 +467,7 @@ export const BookingPage: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     type="email"
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
@@ -481,7 +481,7 @@ export const BookingPage: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     type="tel"
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
@@ -507,7 +507,7 @@ export const BookingPage: React.FC = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
@@ -522,7 +522,7 @@ export const BookingPage: React.FC = () => {
                     required
                     pattern="80\d{3}"
                     placeholder="80xxx"
-                    className={`w-full border-2 px-3 py-2.5 text-sm focus:outline-none transition-colors rounded-lg ${
+                    className={`w-full border px-3 py-2.5 text-sm focus:outline-none transition-colors rounded-lg ${
                       zipError ? 'border-red-500' : 'border-gray-200 focus:border-black'
                     }`}
                   />
@@ -536,7 +536,7 @@ export const BookingPage: React.FC = () => {
                   <button 
                     type="button"
                     onClick={handlePrevStep}
-                    className="flex-1 py-3 border-2 border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                    className="flex-1 py-3 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
                   >
                     <ArrowLeft size={18} />
                     Back
@@ -564,7 +564,7 @@ export const BookingPage: React.FC = () => {
                     name="serviceType"
                     value={formData.serviceType}
                     onChange={handleInputChange}
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   >
                     <option>Residential Junk Removal</option>
                     <option>Commercial Services</option>
@@ -586,7 +586,7 @@ export const BookingPage: React.FC = () => {
                     required
                     type="date"
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
@@ -600,12 +600,12 @@ export const BookingPage: React.FC = () => {
                     onChange={handleInputChange}
                     rows={3}
                     placeholder="Tell us about the items you need removed..."
-                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   ></textarea>
                 </div>
 
                 {/* Review Section */}
-                <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h3 className="text-sm font-black mb-3">Review Your Information</h3>
                   <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between">
@@ -636,7 +636,7 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 {error && (
-                  <div className="p-3 bg-red-50 border-2 border-red-200 rounded-lg">
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-red-700 text-xs font-bold">{error}</p>
                   </div>
                 )}
@@ -646,7 +646,7 @@ export const BookingPage: React.FC = () => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={submitting}
-                    className="flex-1 py-3 border-2 border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 py-3 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ArrowLeft size={18} />
                     Back

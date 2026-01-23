@@ -128,7 +128,7 @@ export const ContactPage: React.FC = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white border-2 border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div className="mb-6">
@@ -201,13 +201,13 @@ export const ContactPage: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 rows={4}
-                className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none"
                 placeholder="Tell us about your junk removal needs..."
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-50 border-2 border-red-200 rounded-lg">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-700 text-xs font-bold">{error}</p>
               </div>
             )}
