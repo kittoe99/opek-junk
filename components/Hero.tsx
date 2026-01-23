@@ -28,7 +28,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
               Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
+            <div className="flex flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
               <button 
                 onClick={onGetQuote}
                 className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
