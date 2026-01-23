@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container } from 'lucide-react';
+import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container, ChevronDown } from 'lucide-react';
 
 const serviceItems = [
   {
@@ -36,10 +36,13 @@ const serviceItems = [
 
 export const Services: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const displayedServices = showAll ? serviceItems : serviceItems.slice(0, 3);
 
   return (
     <section id="services" className="py-16 md:py-24 lg:py-32 bg-gray-50">
@@ -61,7 +64,7 @@ export const Services: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {serviceItems.map((item, index) => (
+              {displayedServices.map((item, index) => (
                 <div 
                   key={index} 
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
@@ -108,6 +111,18 @@ export const Services: React.FC = () => {
                   </div>
                 </div>
               ))}
+              
+              {/* Show More/Less Button - Only on Mobile */}
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="lg:hidden w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-gray-600 hover:text-black transition-colors"
+              >
+                <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
+                <ChevronDown 
+                  size={18} 
+                  className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
+                />
+              </button>
             </div>
           </div>
 
