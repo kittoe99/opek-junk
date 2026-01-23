@@ -207,18 +207,18 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-white flex items-center justify-center">
-        <div className="max-w-lg mx-auto px-4 text-center">
-          <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6 rounded-lg">
-            <CheckCircle size={40} />
+      <div className="min-h-screen pt-24 pb-16 bg-white flex items-center justify-center">
+        <div className="max-w-md mx-auto px-4 text-center">
+          <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
+            <CheckCircle size={32} />
           </div>
-          <h2 className="text-4xl font-black mb-4">Booking Confirmed!</h2>
-          <p className="text-gray-600 mb-8">
+          <h2 className="text-3xl font-black mb-3">Booking Confirmed!</h2>
+          <p className="text-gray-600 mb-6 text-sm">
             Matched service providers will contact you within 15 minutes to confirm your appointment details.
           </p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-8 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg"
+            className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs hover:bg-gray-800 transition-colors rounded-lg"
           >
             Book Another Service
           </button>
@@ -228,15 +228,15 @@ export const BookingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-white">
+    <div className="min-h-screen pt-24 pb-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Book Your Service</h1>
-          <p className="text-gray-600 text-lg">Complete the form to schedule your junk removal</p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-black mb-2">Book Your Service</h1>
+          <p className="text-gray-600">Complete the form to schedule your junk removal</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           
           {/* Image */}
           <div className="lg:col-span-2">
@@ -246,8 +246,8 @@ export const BookingPage: React.FC = () => {
                 alt="Professional junk removal service" 
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-                <p className="text-white text-sm font-bold">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4">
+                <p className="text-white text-xs font-bold">
                   Fast, professional service across Denver Metro
                 </p>
               </div>
@@ -259,24 +259,24 @@ export const BookingPage: React.FC = () => {
             
             {/* Estimate Summary (if available) */}
             {estimateData?.estimate && (
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6 mb-8">
-                <h3 className="text-lg font-black mb-4">Your Estimate</h3>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 mb-6">
+                <h3 className="text-base font-black mb-3">Your Estimate</h3>
+                <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Estimated Volume</div>
-                    <div className="font-bold">{formData.estimatedVolume}</div>
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Estimated Volume</div>
+                    <div className="font-bold text-sm">{formData.estimatedVolume}</div>
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price Range</div>
-                    <div className="font-bold text-lg">${formData.priceRangeMin} - ${formData.priceRangeMax}</div>
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Price Range</div>
+                    <div className="font-bold">${formData.priceRangeMin} - ${formData.priceRangeMax}</div>
                   </div>
                 </div>
                 {formData.estimatedItems.length > 0 && (
                   <div>
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Items Detected</div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Items Detected</div>
+                    <div className="flex flex-wrap gap-1.5">
                       {formData.estimatedItems.map((item, index) => (
-                        <span key={index} className="px-3 py-1 bg-white border border-gray-300 rounded-full text-sm">
+                        <span key={index} className="px-2.5 py-0.5 bg-white border border-gray-300 rounded-full text-xs">
                           {item}
                         </span>
                       ))}
@@ -287,23 +287,23 @@ export const BookingPage: React.FC = () => {
             )}
 
             {/* Step Indicator */}
-            <div className="flex items-center justify-center mb-12">
+            <div className="flex items-center justify-center mb-8">
               {[1, 2, 3, 4].map((step) => (
                 <React.Fragment key={step}>
                   <div className="flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
                       currentStep >= step ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
                     }`}>
                       {step}
                     </div>
-                    <span className={`text-xs font-bold mt-2 uppercase tracking-wider ${
+                    <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wider ${
                       currentStep >= step ? 'text-black' : 'text-gray-400'
                     }`}>
                       {step === 1 ? 'Photo' : step === 2 ? 'Contact' : step === 3 ? 'Location' : 'Details'}
                     </span>
                   </div>
                   {step < 4 && (
-                    <div className={`w-16 h-0.5 mx-2 mb-6 transition-colors ${
+                    <div className={`w-12 h-0.5 mx-2 mb-5 transition-colors ${
                       currentStep > step ? 'bg-black' : 'bg-gray-200'
                     }`} />
                   )}
@@ -313,19 +313,19 @@ export const BookingPage: React.FC = () => {
 
             {/* Step 1: Photo Upload & Estimate */}
             {currentStep === 1 && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {!image ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {/* Camera Capture */}
                     <div 
-                      className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                      className="border-2 border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                       onClick={() => cameraInputRef.current?.click()}
                     >
-                      <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Camera size={32} className="text-white" />
+                      <div className="w-14 h-14 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Camera size={24} className="text-white" />
                       </div>
-                      <h3 className="text-xl font-bold mb-2">Take Photo</h3>
-                      <p className="text-gray-600">Use your camera to capture the junk</p>
+                      <h3 className="text-base font-bold mb-1">Take Photo</h3>
+                      <p className="text-gray-600 text-sm">Use your camera to capture the junk</p>
                       <input 
                         type="file" 
                         ref={cameraInputRef} 
@@ -345,25 +345,25 @@ export const BookingPage: React.FC = () => {
 
                     {/* File Upload */}
                     <div 
-                      className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                      className="border-2 border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Upload size={32} className="text-gray-400" />
+                      <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Upload size={24} className="text-gray-400" />
                       </div>
-                      <h3 className="text-xl font-bold mb-2">Upload Photo</h3>
-                      <p className="text-gray-600">Choose a photo from your device</p>
+                      <h3 className="text-base font-bold mb-1">Upload Photo</h3>
+                      <p className="text-gray-600 text-sm">Choose a photo from your device</p>
                       <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div className="relative border-2 border-gray-200 rounded-lg overflow-hidden">
                       <img src={image} alt="Upload" className="w-full" />
                       {loadingState !== LoadingState.ANALYZING && (
                         <button 
                           onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }} 
-                          className="absolute top-4 right-4 bg-white text-black px-4 py-2 text-sm font-bold shadow-lg hover:bg-gray-100 transition-colors rounded-lg"
+                          className="absolute top-3 right-3 bg-white text-black px-3 py-1.5 text-xs font-bold shadow-lg hover:bg-gray-100 transition-colors rounded-lg"
                         >
                           Change Photo
                         </button>
@@ -373,64 +373,64 @@ export const BookingPage: React.FC = () => {
                     {loadingState === LoadingState.IDLE && (
                       <button 
                         onClick={handleAnalyze}
-                        className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                        className="w-full py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg shadow-md"
                       >
                         Analyze Photo
                       </button>
                     )}
 
                     {loadingState === LoadingState.ANALYZING && (
-                      <div className="py-12 text-center">
-                        <Loader2 size={48} className="animate-spin mx-auto mb-4" />
-                        <p className="text-gray-600">Analyzing your photo...</p>
+                      <div className="py-8 text-center">
+                        <Loader2 size={40} className="animate-spin mx-auto mb-3" />
+                        <p className="text-gray-600 text-sm">Analyzing your photo...</p>
                       </div>
                     )}
 
                     {loadingState === LoadingState.SUCCESS && estimate && (
-                      <div className="bg-gray-50 p-8 border-2 border-gray-200 rounded-lg">
-                        <div className="mb-6">
-                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Items Detected</div>
-                          <ul className="space-y-2">
+                      <div className="bg-gray-50 p-5 border-2 border-gray-200 rounded-lg">
+                        <div className="mb-4">
+                          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Items Detected</div>
+                          <ul className="space-y-1.5">
                             {estimate.itemsDetected.map((item, index) => (
                               <li key={index} className="flex items-start gap-2">
-                                <span className="text-black mt-1">•</span>
-                                <span className="text-gray-700">{item}</span>
+                                <span className="text-black mt-0.5">•</span>
+                                <span className="text-gray-700 text-sm">{item}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
-                        <div className="mb-6 pt-6 border-t border-gray-300">
-                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Estimated Volume</div>
-                          <div className="text-3xl font-black">{estimate.estimatedVolume}</div>
+                        <div className="mb-4 pt-4 border-t border-gray-300">
+                          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Estimated Volume</div>
+                          <div className="text-2xl font-black">{estimate.estimatedVolume}</div>
                         </div>
-                        <div className="mb-6">
-                          <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Price Range</div>
-                          <div className="text-4xl font-black">
+                        <div className="mb-4">
+                          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price Range</div>
+                          <div className="text-3xl font-black">
                             ${estimate.priceRange.min} - ${estimate.priceRange.max}
                           </div>
                         </div>
-                        <div className="mb-8 pb-6 border-b border-gray-300">
-                          <p className="text-gray-700 leading-relaxed">{estimate.summary}</p>
+                        <div className="mb-5 pb-4 border-b border-gray-300">
+                          <p className="text-gray-700 text-sm leading-relaxed">{estimate.summary}</p>
                         </div>
                         <button 
                           onClick={() => handleNextStep()}
-                          className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                          className="w-full py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
                         >
                           Continue to Booking
-                          <ArrowRight size={20} />
+                          <ArrowRight size={18} />
                         </button>
-                        <p className="text-xs text-gray-500 text-center mt-4">
+                        <p className="text-[10px] text-gray-500 text-center mt-3">
                           * Final price confirmed on-site
                         </p>
                       </div>
                     )}
 
                     {loadingState === LoadingState.ERROR && (
-                      <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 text-center">
-                        <p className="text-red-700 font-bold mb-4">Failed to analyze photo</p>
+                      <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 text-center">
+                        <p className="text-red-700 text-sm font-bold mb-3">Failed to analyze photo</p>
                         <button 
                           onClick={handleAnalyze}
-                          className="px-6 py-2 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
+                          className="px-5 py-2 bg-black text-white font-bold uppercase text-xs hover:bg-gray-800 transition-colors rounded-lg"
                         >
                           Try Again
                         </button>
@@ -443,9 +443,9 @@ export const BookingPage: React.FC = () => {
 
             {/* Step 2: Contact Info */}
             {currentStep === 2 && (
-              <form onSubmit={handleNextStep} className="space-y-6">
+              <form onSubmit={handleNextStep} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Full Name
                   </label>
                   <input 
@@ -453,12 +453,12 @@ export const BookingPage: React.FC = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Email
                   </label>
                   <input 
@@ -467,12 +467,12 @@ export const BookingPage: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     type="email"
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Phone Number
                   </label>
                   <input 
@@ -481,25 +481,25 @@ export const BookingPage: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     type="tel"
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
                 <button 
                   type="submit"
-                  className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
                 >
                   Next Step
-                  <ArrowRight size={20} />
+                  <ArrowRight size={18} />
                 </button>
               </form>
             )}
 
             {/* Step 3: Location */}
             {currentStep === 3 && (
-              <form onSubmit={handleNextStep} className="space-y-6">
+              <form onSubmit={handleNextStep} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Service Address
                   </label>
                   <input 
@@ -507,12 +507,12 @@ export const BookingPage: React.FC = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Zip Code
                   </label>
                   <input 
@@ -522,32 +522,32 @@ export const BookingPage: React.FC = () => {
                     required
                     pattern="80\d{3}"
                     placeholder="80xxx"
-                    className={`w-full border-2 px-4 py-3 focus:outline-none transition-colors rounded-lg ${
+                    className={`w-full border-2 px-3 py-2.5 text-sm focus:outline-none transition-colors rounded-lg ${
                       zipError ? 'border-red-500' : 'border-gray-200 focus:border-black'
                     }`}
                   />
                   {zipError && (
-                    <p className="text-red-500 text-sm mt-2 font-medium">{zipError}</p>
+                    <p className="text-red-500 text-xs mt-1.5 font-medium">{zipError}</p>
                   )}
-                  <p className="text-xs text-gray-500 mt-2">We serve the Denver Metro area (80xxx zip codes)</p>
+                  <p className="text-[10px] text-gray-500 mt-1.5">We serve the Denver Metro area (80xxx zip codes)</p>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                   <button 
                     type="button"
                     onClick={handlePrevStep}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                    className="flex-1 py-3 border-2 border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
                   >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={18} />
                     Back
                   </button>
                   <button 
                     type="submit"
                     disabled={!!zipError}
-                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors disabled:bg-gray-400 rounded-lg shadow-md flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors disabled:bg-gray-400 rounded-lg shadow-md flex items-center justify-center gap-2"
                   >
                     Next Step
-                    <ArrowRight size={20} />
+                    <ArrowRight size={18} />
                   </button>
                 </div>
               </form>
@@ -555,16 +555,16 @@ export const BookingPage: React.FC = () => {
 
             {/* Step 4: Service Details */}
             {currentStep === 4 && (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Service Type
                   </label>
                   <select 
                     name="serviceType"
                     value={formData.serviceType}
                     onChange={handleInputChange}
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   >
                     <option>Residential Junk Removal</option>
                     <option>Commercial Services</option>
@@ -576,7 +576,7 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Preferred Date
                   </label>
                   <input 
@@ -586,28 +586,28 @@ export const BookingPage: React.FC = () => {
                     required
                     type="date"
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
                     Additional Details
                   </label>
                   <textarea 
                     name="details"
                     value={formData.details}
                     onChange={handleInputChange}
-                    rows={4}
+                    rows={3}
                     placeholder="Tell us about the items you need removed..."
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg"
+                    className="w-full border-2 border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg"
                   ></textarea>
                 </div>
 
                 {/* Review Section */}
-                <div className="bg-gray-50 p-6 rounded-lg border-2 border-gray-200">
-                  <h3 className="text-lg font-black mb-4">Review Your Information</h3>
-                  <div className="space-y-2 text-sm">
+                <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+                  <h3 className="text-sm font-black mb-3">Review Your Information</h3>
+                  <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Name:</span>
                       <span className="font-bold">{formData.name}</span>
@@ -636,28 +636,28 @@ export const BookingPage: React.FC = () => {
                 </div>
 
                 {error && (
-                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                    <p className="text-red-700 text-sm font-bold">{error}</p>
+                  <div className="p-3 bg-red-50 border-2 border-red-200 rounded-lg">
+                    <p className="text-red-700 text-xs font-bold">{error}</p>
                   </div>
                 )}
 
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                   <button 
                     type="button"
                     onClick={handlePrevStep}
                     disabled={submitting}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 py-3 border-2 border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={18} />
                     Back
                   </button>
                   <button 
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="flex-1 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {submitting ? 'Submitting...' : 'Confirm Booking'}
-                    {!submitting && <CheckCircle size={20} />}
+                    {!submitting && <CheckCircle size={18} />}
                   </button>
                 </div>
               </form>
