@@ -42,7 +42,8 @@ export const Services: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const displayedServices = showAll ? serviceItems : serviceItems.slice(0, 3);
+  // On desktop (lg and above), always show all services. On mobile, use showAll state
+  const displayedServices = serviceItems;
 
   return (
     <section id="services" className="py-16 md:py-24 lg:py-32 bg-gray-50">
@@ -64,7 +65,60 @@ export const Services: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {displayedServices.map((item, index) => (
+              {/* Desktop: show all services */}
+              <div className="hidden lg:block space-y-3">
+                {serviceItems.map((item, index) => (
+                  <div 
+                    key={index} 
+                    className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
+                      openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                    }`}
+                  >
+                    <button
+                      onClick={() => toggleAccordion(index)}
+                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
+                      aria-expanded={openIndex === index}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                          openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
+                        }`}>
+                          <item.icon size={20} />
+                        </div>
+                        <span className={`font-bold text-base transition-colors ${
+                          openIndex === index ? 'text-black' : 'text-gray-700'
+                        }`}>
+                          {item.title}
+                        </span>
+                      </div>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
+                      }`}>
+                        {openIndex === index ? (
+                          <Minus size={16} />
+                        ) : (
+                          <Plus size={16} />
+                        )}
+                      </div>
+                    </button>
+                    <div 
+                      className={`grid transition-all duration-300 ease-in-out ${
+                        openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobile: show 3 initially with show more button */}
+              <div className="lg:hidden space-y-3">
+                {(showAll ? serviceItems : serviceItems.slice(0, 3)).map((item, index) => (
                 <div 
                   key={index} 
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
@@ -110,19 +164,20 @@ export const Services: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              ))}
-              
-              {/* Show More/Less Button - Only on Mobile */}
-              <button
-                onClick={() => setShowAll(!showAll)}
-                className="lg:hidden w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-gray-600 hover:text-black transition-colors"
-              >
-                <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
-                <ChevronDown 
-                  size={18} 
-                  className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
-                />
-              </button>
+                ))}
+                
+                {/* Show More/Less Button - Mobile Only */}
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-gray-600 hover:text-black transition-colors"
+                >
+                  <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
+                  <ChevronDown 
+                    size={18} 
+                    className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
 

@@ -63,10 +63,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
 
         </div>
       </div>
-
-      <div className="absolute bottom-12 md:bottom-40 left-1/2 transform -translate-x-1/2 text-white/10 lg:hidden">
-        <ChevronDown size={32} className="animate-bounce" />
-      </div>
     </section>
   );
 };
