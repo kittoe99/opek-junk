@@ -150,7 +150,7 @@ export const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                   placeholder="John Smith"
                 />
               </div>
@@ -162,7 +162,7 @@ export const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                   placeholder="john@example.com"
                 />
               </div>
@@ -177,7 +177,7 @@ export const ContactPage: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                   placeholder="(303) 555-0199"
                 />
               </div>
@@ -188,7 +188,7 @@ export const ContactPage: React.FC = () => {
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                 >
                   <option value="">Select a subject</option>
                   {subjectOptions.map(option => (
@@ -206,7 +206,7 @@ export const ContactPage: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 rows={4}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                 placeholder="Tell us about your junk removal needs..."
               />
             </div>
@@ -221,7 +221,7 @@ export const ContactPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full px-6 py-3 text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
