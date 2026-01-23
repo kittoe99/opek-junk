@@ -37,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
               </button>
               <button 
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth'})}
-                className="px-6 py-3 text-sm font-bold uppercase tracking-wider border-2 border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg"
+                className="px-6 py-3 text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
               >
                 Book Online
               </button>

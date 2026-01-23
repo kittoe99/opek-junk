@@ -277,7 +277,7 @@ export const QuotePage: React.FC = () => {
               <div className="space-y-4">
                 {/* Camera Capture */}
                 <div 
-                  className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                  className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg shadow-sm"
                   onClick={() => cameraInputRef.current?.click()}
                 >
                   <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
@@ -304,7 +304,7 @@ export const QuotePage: React.FC = () => {
 
                 {/* File Upload */}
                 <div 
-                  className="border-2 border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                  className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg shadow-sm"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -317,7 +317,7 @@ export const QuotePage: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="relative border-2 border-gray-200 rounded-lg overflow-hidden">
+                <div className="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                   <img src={image} alt="Upload" className="w-full" />
                   {loadingState !== LoadingState.ANALYZING && (
                     <button 
@@ -346,7 +346,7 @@ export const QuotePage: React.FC = () => {
                 )}
 
                 {loadingState === LoadingState.SUCCESS && estimate && (
-                  <div className="bg-gray-50 p-8 border-2 border-gray-200 rounded-lg">
+                  <div className="bg-gray-50 p-8 border border-gray-200 rounded-lg shadow-sm">
                     <div className="mb-6">
                       <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Items Detected</div>
                       <ul className="space-y-2">
@@ -433,7 +433,7 @@ export const QuotePage: React.FC = () => {
                     pattern="80\d{3}"
                     placeholder="80xxx"
                     maxLength={5}
-                    className={`w-full border-2 px-4 py-4 text-lg focus:outline-none transition-colors rounded-lg ${
+                    className={`w-full border px-4 py-4 text-lg focus:outline-none transition-colors rounded-lg shadow-sm ${
                       zipError ? 'border-red-500' : 'border-gray-200 focus:border-black'
                     }`}
                   />
@@ -463,7 +463,7 @@ export const QuotePage: React.FC = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
                 
@@ -476,7 +476,7 @@ export const QuotePage: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required 
-                      className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                      className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                     />
                   </div>
                   <div>
@@ -487,7 +487,7 @@ export const QuotePage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required 
-                      className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                      className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                     />
                   </div>
                 </div>
@@ -511,7 +511,7 @@ export const QuotePage: React.FC = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
 
@@ -523,7 +523,7 @@ export const QuotePage: React.FC = () => {
                     value={formData.date}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
 
@@ -535,7 +535,7 @@ export const QuotePage: React.FC = () => {
                     value={formData.details}
                     onChange={handleInputChange}
                     placeholder="Describe what needs to be removed"
-                    className="w-full border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg" 
+                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   ></textarea>
                 </div>
 
@@ -543,7 +543,7 @@ export const QuotePage: React.FC = () => {
                   <button 
                     type="button"
                     onClick={handlePrevStep}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg"
+                    className="flex-1 py-4 border border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg shadow-sm"
                   >
                     Back
                   </button>
@@ -560,7 +560,7 @@ export const QuotePage: React.FC = () => {
             {/* Step 4: Review & Submit */}
             {currentStep === 4 && (
               <div className="space-y-6">
-                <div className="bg-gray-50 p-6 rounded-lg border-2 border-gray-200 space-y-4">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 space-y-4 shadow-sm">
                   <h3 className="text-xl font-black mb-4">Review Your Information</h3>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -601,7 +601,7 @@ export const QuotePage: React.FC = () => {
                 </div>
 
                 {error && (
-                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg shadow-sm">
                     <p className="text-red-700 text-sm font-bold">{error}</p>
                   </div>
                 )}
@@ -611,7 +611,7 @@ export const QuotePage: React.FC = () => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={submitting}
-                    className="flex-1 py-4 border-2 border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 py-4 border border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Back
                   </button>
