@@ -100,30 +100,26 @@ export const ContactPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Contact Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-gray-50 p-4 rounded-xl text-center">
-            <div className="w-10 h-10 bg-black text-white flex items-center justify-center mx-auto mb-3 rounded-lg">
-              <Phone size={20} />
+        {/* Quick Info Banner */}
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8 text-center shadow-sm">
+          <p className="text-gray-600 text-sm mb-3">
+            Need immediate assistance? We're here to help connect you with local professionals.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <Phone size={16} className="text-gray-500" />
+              <span className="font-bold">(303) 555-0199</span>
             </div>
-            <h3 className="font-black text-sm mb-1">Call Us</h3>
-            <p className="text-gray-600 text-sm">(303) 555-0199</p>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-xl text-center">
-            <div className="w-10 h-10 bg-black text-white flex items-center justify-center mx-auto mb-3 rounded-lg">
-              <Mail size={20} />
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <Mail size={16} className="text-gray-500" />
+              <span className="font-bold">hello@opekjunk.com</span>
             </div>
-            <h3 className="font-black text-sm mb-1">Email Us</h3>
-            <p className="text-gray-600 text-sm">hello@opekjunk.com</p>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-xl text-center">
-            <div className="w-10 h-10 bg-black text-white flex items-center justify-center mx-auto mb-3 rounded-lg">
-              <Clock size={20} />
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <Clock size={16} className="text-gray-500" />
+              <span className="font-bold">24/7 Available</span>
             </div>
-            <h3 className="font-black text-sm mb-1">24/7 Service</h3>
-            <p className="text-gray-600 text-sm">Same-day available</p>
           </div>
         </div>
 

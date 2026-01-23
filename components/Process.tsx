@@ -47,8 +47,8 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
               <div key={index} className="relative">
                 <div className="flex flex-col items-center text-center">
                   {/* Icon circle */}
-                  <div className="relative z-10 w-24 h-24 bg-white border-4 border-black rounded-full flex items-center justify-center mb-6">
-                    <step.icon size={36} className="text-black" strokeWidth={2.5} />
+                  <div className="relative z-10 w-24 h-24 bg-white border-2 border-black rounded-full flex items-center justify-center mb-6">
+                    <step.icon size={36} className="text-black" strokeWidth={2} />
                   </div>
                   
                   {/* Step number */}
