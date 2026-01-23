@@ -200,7 +200,7 @@ export const QuotePage: React.FC = () => {
             {/* AI Option */}
             <button
               onClick={() => setSelectedOption('ai')}
-              className="group p-6 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
+              className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
             >
               <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
                 <Camera size={28} />
@@ -218,7 +218,7 @@ export const QuotePage: React.FC = () => {
             {/* Manual Option */}
             <button
               onClick={() => setSelectedOption('manual')}
-              className="group p-6 border-2 border-gray-200 hover:border-black transition-all text-left bg-white hover:shadow-lg rounded-lg"
+              className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
             >
               <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
                 <CheckCircle size={28} />

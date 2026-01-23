@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Phone, Mail, Clock } from 'lucide-react';
+import { CheckCircle2, Phone, Mail, Clock, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export const ContactPage: React.FC = () => {
@@ -90,6 +90,15 @@ export const ContactPage: React.FC = () => {
     <div className="min-h-screen bg-white pt-32 pb-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Back Button */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-6 group"
+        >
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-black text-black mb-3">

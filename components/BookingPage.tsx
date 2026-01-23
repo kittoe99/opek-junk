@@ -318,7 +318,7 @@ export const BookingPage: React.FC = () => {
                   <div className="space-y-3">
                     {/* Camera Capture */}
                     <div 
-                      className="border-2 border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                      className="border border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg shadow-sm"
                       onClick={() => cameraInputRef.current?.click()}
                     >
                       <div className="w-14 h-14 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
@@ -345,7 +345,7 @@ export const BookingPage: React.FC = () => {
 
                     {/* File Upload */}
                     <div 
-                      className="border-2 border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                      className="border border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg shadow-sm"
                       onClick={() => fileInputRef.current?.click()}
                     >
                       <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
