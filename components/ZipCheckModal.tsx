@@ -92,19 +92,14 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
           <div className="text-center">
             {!isValidated ? (
               <>
-                {/* Icon */}
-                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
-                  <MapPin size={32} className="text-white" />
-                </div>
-
                 {/* Title */}
-                <h2 className="text-3xl font-black mb-2">Check Your Area</h2>
-                <p className="text-gray-600 mb-8">
-                  Enter your ZIP code to see if we service your area
+                <h2 className="text-2xl font-black mb-2">Check Your Area</h2>
+                <p className="text-gray-600 text-sm mb-6">
+                  Enter your ZIP code
                 </p>
 
                 {/* Zip Input */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <input
                     type="text"
                     maxLength={5}
@@ -118,11 +113,11 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                         handleZipCheck();
                       }
                     }}
-                    placeholder="Enter ZIP code"
-                    className="w-full px-6 py-4 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
+                    placeholder="ZIP code"
+                    className="w-full px-4 py-3 text-center text-lg font-bold border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
                   />
                   {error && (
-                    <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
+                    <p className="text-red-600 text-xs mt-2">{error}</p>
                   )}
                 </div>
 
@@ -130,11 +125,11 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 <button
                   onClick={handleZipCheck}
                   disabled={isLoading || zipCode.length !== 5}
-                  className="w-full px-6 py-4 bg-black text-white font-bold uppercase tracking-wider rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 shadow-md hover:shadow-xl"
+                  className="w-full px-6 py-3 bg-black text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <Loader2 size={20} className="animate-spin" />
+                      <Loader2 size={16} className="animate-spin" />
                       Checking...
                     </span>
                   ) : (
@@ -145,29 +140,26 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
             ) : (
               <>
                 {/* Success Icon */}
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
-                  <CheckCircle size={32} className="text-white" />
+                <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle size={24} className="text-white" />
                 </div>
 
                 {/* Success Message */}
-                <h2 className="text-3xl font-black mb-2">Great News!</h2>
-                <p className="text-gray-600 mb-2">
-                  We service your area
-                </p>
+                <h2 className="text-2xl font-black mb-2">We Service Your Area</h2>
                 
                 {/* Location Display */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-8">
-                  <div className="flex items-center justify-center gap-2 text-xl font-bold">
-                    <MapPin size={20} className="text-gray-400" />
+                <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                  <div className="flex items-center justify-center gap-2 text-base font-bold">
+                    <MapPin size={16} className="text-gray-400" />
                     <span>{city}, {state}</span>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">ZIP: {zipCode}</p>
+                  <p className="text-xs text-gray-500 mt-1">ZIP: {zipCode}</p>
                 </div>
 
                 {/* Get Quote Button */}
                 <button
                   onClick={handleGetQuote}
-                  className="w-full px-6 py-4 bg-black text-white font-bold uppercase tracking-wider rounded-lg hover:bg-gray-800 transition-all duration-300 hover:scale-105 shadow-md hover:shadow-xl"
+                  className="w-full px-6 py-3 bg-black text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   Get A Quote
                 </button>
@@ -180,7 +172,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     setState('');
                     setIsValidated(false);
                   }}
-                  className="w-full mt-3 px-6 py-3 text-gray-600 font-medium hover:text-black transition-colors"
+                  className="w-full mt-2 px-6 py-2 text-gray-600 text-sm hover:text-black transition-colors"
                 >
                   Check Another ZIP Code
                 </button>
