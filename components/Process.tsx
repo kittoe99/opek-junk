@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, ClipboardCheck, Truck, ArrowRight } from 'lucide-react';
+import { Smartphone, Receipt, Trash2, ArrowRight } from 'lucide-react';
 
 interface ProcessProps {
   onGetQuote?: () => void;
@@ -8,68 +8,69 @@ interface ProcessProps {
 export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      icon: Camera,
+      icon: Smartphone,
       title: "PHOTO ESTIMATE",
       desc: "Snap a quick photo of your junk. Get instant volume analysis and pricing from local professionals."
     },
     {
-      icon: ClipboardCheck,
+      icon: Receipt,
       title: "UPFRONT QUOTE",
       desc: "On-site confirmation with a fixed price. No surcharges, no hidden fees, no games."
     },
     {
-      icon: Truck,
+      icon: Trash2,
       title: "HEAVY LIFTING",
       desc: "Professional hauling, sorting, and cleanup. You just point—the team handles the rest."
     }
   ];
 
   return (
-    <section id="process" className="py-16 md:py-24 lg:py-32 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="process" className="py-16 md:py-24 lg:py-32 bg-white">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header - Centered */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-            How it Works
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
-            Point. Price. <span className="text-gray-400">Gone.</span>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-4 tracking-tight">
+            How It Works
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Three simple steps to a clutter-free space
+            Point. Price. <span className="text-gray-400">Gone.</span> Three simple steps to a clutter-free space
           </p>
         </div>
 
-        {/* Steps - Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {steps.map((step, index) => (
-            <div 
-              key={index} 
-              className="group bg-white p-8 rounded-2xl border-2 border-gray-100 hover:border-black hover:shadow-xl transition-all duration-300"
-            >
-              {/* Step Number */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-14 h-14 bg-gray-100 group-hover:bg-black text-gray-400 group-hover:text-white rounded-xl flex items-center justify-center transition-all duration-300">
-                  <step.icon size={28} />
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-gray-200"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+            {steps.map((step, index) => (
+              <div key={index} className="relative">
+                <div className="flex flex-col items-center text-center">
+                  {/* Icon circle */}
+                  <div className="relative z-10 w-24 h-24 bg-white border-4 border-black rounded-full flex items-center justify-center mb-6">
+                    <step.icon size={36} className="text-black" strokeWidth={2.5} />
+                  </div>
+                  
+                  {/* Step number */}
+                  <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-black text-sm z-20">
+                    {index + 1}
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-black text-gray-900 mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {step.desc}
+                  </p>
                 </div>
-                <span className="text-5xl font-black text-gray-100 group-hover:text-gray-200 transition-colors">
-                  0{index + 1}
-                </span>
               </div>
-              
-              <h3 className="text-xl font-black mb-3 tracking-tight">
-                {step.title}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {step.desc}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-white rounded-2xl border-2 border-gray-100 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 relative overflow-hidden mt-16">
           {/* Subtle background image for mobile */}
           <div className="absolute inset-0 opacity-5 md:opacity-0">
             <img 
@@ -80,7 +81,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
           </div>
           
           <div className="relative z-10 flex items-center gap-4">
-            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-xl flex items-center justify-center font-black text-xl">
+            <div className="w-16 h-16 bg-gray-100 text-gray-900 rounded-xl flex items-center justify-center font-black text-xl">
               70%
             </div>
             <p className="text-gray-600 max-w-sm">
