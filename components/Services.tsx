@@ -182,9 +182,9 @@ export const Services: React.FC = () => {
           </div>
 
           {/* Image Side */}
-          <div className="relative mt-12 lg:mt-0">
+          <div className="relative mt-8 lg:mt-0 hidden md:block">
             <div className="sticky top-32">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+              <div className="relative aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
                   src="/opek2.png" 
                   alt="Professional junk removal service" 

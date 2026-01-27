@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Phone, Mail, Clock, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { MobileAppDownload } from './MobileAppDownload';
 
 export const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -234,6 +235,8 @@ export const ContactPage: React.FC = () => {
         </div>
 
       </div>
+      
+      <MobileAppDownload />
     </div>
   );
 };
