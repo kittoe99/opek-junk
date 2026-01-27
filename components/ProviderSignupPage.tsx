@@ -117,11 +117,11 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white pt-20 lg:pt-0">
       <div className="grid grid-cols-1 lg:grid-cols-5">
         
         {/* Left Sidebar - Benefits */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-black to-gray-900 text-white p-8 md:p-12 lg:p-16">
+        <div className="lg:col-span-2 bg-gradient-to-br from-black to-gray-900 text-white p-8 md:p-12 lg:p-16 pt-24 lg:pt-16">
           <div className="max-w-md mx-auto lg:mx-0">
             <span className="inline-block px-4 py-2 bg-white/10 text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
               Provider Network
@@ -187,7 +187,7 @@ export const ProviderSignupPage: React.FC = () => {
         </div>
 
         {/* Right Side - Form */}
-        <div className="lg:col-span-3 p-8 md:p-12 lg:p-16">
+        <div className="lg:col-span-3 p-8 md:p-12 lg:p-16 pt-24 lg:pt-16">
           <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-8">
             

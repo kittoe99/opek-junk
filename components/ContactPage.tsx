@@ -87,11 +87,11 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pt-20 lg:pt-0">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         
         {/* Left Side - Image & Info */}
-        <div className="relative bg-black text-white p-8 md:p-12 lg:p-16 flex flex-col justify-between">
+        <div className="relative bg-black text-white p-8 md:p-12 lg:p-16 flex flex-col justify-between pt-24 lg:pt-16">
           <div>
             {/* Back Button */}
             <button
@@ -157,7 +157,7 @@ export const ContactPage: React.FC = () => {
         </div>
 
         {/* Right Side - Form */}
-        <div className="bg-white p-8 md:p-12 lg:p-16 flex items-center">
+        <div className="bg-white p-8 md:p-12 lg:p-16 flex items-center pt-24 lg:pt-16">
           <div className="w-full max-w-xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
             
