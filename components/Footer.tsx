@@ -1,12 +1,13 @@
 import React from 'react';
-import { Trash2, Phone, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Trash2, Phone, Mail, Apple, Smartphone } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#0a0a0a] border-t border-white/5 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           
+          {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
                <div className="w-10 h-10 bg-white text-black flex items-center justify-center">
@@ -19,6 +20,7 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
+          {/* Quick Links */}
           <div>
             <h4 className="text-white font-black uppercase text-xs tracking-wider mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-500">
@@ -29,6 +31,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
             <h4 className="text-white font-black uppercase text-xs tracking-wider mb-4">Contact</h4>
             <div className="space-y-3 text-sm">
@@ -40,6 +43,30 @@ export const Footer: React.FC = () => {
                   <Mail size={16} className="text-gray-500" />
                   <span className="text-white">hello@opekjunk.com</span>
                </div>
+            </div>
+          </div>
+
+          {/* Mobile App */}
+          <div>
+            <h4 className="text-white font-black uppercase text-xs tracking-wider mb-4">Download Our App</h4>
+            <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+              Book and track services on the go
+            </p>
+            <div className="space-y-2">
+              <button className="w-full flex items-center justify-start gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                <Apple size={18} />
+                <div className="text-left">
+                  <div className="text-[9px] font-normal">Download on</div>
+                  <div className="text-xs font-bold leading-tight">App Store</div>
+                </div>
+              </button>
+              <button className="w-full flex items-center justify-start gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                <Smartphone size={18} />
+                <div className="text-left">
+                  <div className="text-[9px] font-normal">Get it on</div>
+                  <div className="text-xs font-bold leading-tight">Google Play</div>
+                </div>
+              </button>
             </div>
           </div>
         </div>

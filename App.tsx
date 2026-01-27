@@ -19,7 +19,6 @@ import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
-import { MobileAppDownload } from './components/MobileAppDownload';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -54,7 +53,6 @@ function HomePage() {
       <Services />
       <Process onGetQuote={() => navigate('/quote')} />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
-      <MobileAppDownload />
       <QuickActionBar onBookOnline={() => navigate('/booking')} />
       
       <ZipCheckModal 
