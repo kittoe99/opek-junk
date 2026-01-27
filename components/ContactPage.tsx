@@ -109,30 +109,32 @@ export const ContactPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Contact Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Phone size={20} className="text-black" />
+        {/* Hero Image */}
+        <div className="mb-12">
+          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+            <img 
+              src="/opek2.png" 
+              alt="Professional junk removal service" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-white text-center md:text-left">
+                <div className="flex items-center gap-2">
+                  <Phone size={18} />
+                  <span className="text-sm font-bold">(303) 555-0199</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Mail size={18} />
+                  <span className="text-sm font-bold">hello@opekjunk.com</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Clock size={18} />
+                  <span className="text-sm font-bold">24/7 Service</span>
+                </div>
+              </div>
             </div>
-            <div className="text-xs text-gray-500 mb-1 uppercase tracking-wider font-bold">Call Us</div>
-            <div className="text-lg font-black">(303) 555-0199</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Mail size={20} className="text-black" />
-            </div>
-            <div className="text-xs text-gray-500 mb-1 uppercase tracking-wider font-bold">Email Us</div>
-            <div className="text-lg font-black">hello@opekjunk.com</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Clock size={20} className="text-black" />
-            </div>
-            <div className="text-xs text-gray-500 mb-1 uppercase tracking-wider font-bold">Availability</div>
-            <div className="text-lg font-black">24/7 Service</div>
           </div>
         </div>
 

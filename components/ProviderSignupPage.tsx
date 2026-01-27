@@ -133,47 +133,36 @@ export const ProviderSignupPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <User size={20} className="text-black" />
-            </div>
-            <h3 className="font-black text-lg mb-2">More Customers</h3>
-            <p className="text-gray-600 text-sm">Access to nationwide customer base</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Calendar size={20} className="text-black" />
-            </div>
-            <h3 className="font-black text-lg mb-2">Flexible Schedule</h3>
-            <p className="text-gray-600 text-sm">Work on your own terms</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Truck size={20} className="text-black" />
-            </div>
-            <h3 className="font-black text-lg mb-2">Grow Your Business</h3>
-            <p className="text-gray-600 text-sm">Scale with reliable bookings</p>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="bg-white rounded-xl border border-gray-200 p-8 mb-12 shadow-sm">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-3xl font-black mb-1">500+</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">Providers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-black mb-1">50+</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">Cities</div>
-            </div>
-            <div>
-              <div className="text-3xl font-black mb-1">24/7</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">Support</div>
+        {/* Hero Image */}
+        <div className="mb-12">
+          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+            <img 
+              src="/opek2.png" 
+              alt="Professional junk removal provider" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-white text-center md:text-left">
+                <div className="flex items-center gap-2">
+                  <User size={18} />
+                  <span className="text-sm font-bold">500+ Providers</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <MapPin size={18} />
+                  <span className="text-sm font-bold">50+ Cities</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Calendar size={18} />
+                  <span className="text-sm font-bold">Flexible Schedule</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Truck size={18} />
+                  <span className="text-sm font-bold">Grow Your Business</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
