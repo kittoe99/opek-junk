@@ -96,18 +96,18 @@ export const ProviderSignupPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 size={40} />
           </div>
-          <h2 className="text-3xl font-black mb-4">Application Submitted!</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-3xl font-black text-white mb-4">Application Submitted!</h2>
+          <p className="text-gray-300 mb-6">
             Thank you for your interest in joining the OPEK provider network. Our team will review your application and contact you within 1-2 business days.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-8 py-3 bg-black text-white font-bold uppercase tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+            className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-white text-black hover:bg-gray-100 transition-colors rounded-lg shadow-md"
           >
             Return Home
           </button>
@@ -117,68 +117,78 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="grid grid-cols-1 lg:grid-cols-5">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-            Provider Network
-          </span>
-          <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-            Join Our Provider Network
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
-          </p>
-        </div>
+        {/* Left Sidebar - Benefits */}
+        <div className="lg:col-span-2 bg-gradient-to-br from-black to-gray-900 text-white p-8 md:p-12 lg:p-16">
+          <div className="max-w-md mx-auto lg:mx-0">
+            <span className="inline-block px-4 py-2 bg-white/10 text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+              Provider Network
+            </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
+              Join Our Provider Network
+            </h1>
+            <p className="text-gray-300 text-base md:text-lg mb-12 leading-relaxed">
+              Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
+            </p>
 
-        {/* Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gray-50 p-6 rounded-xl text-center">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
-              <User size={24} />
+            {/* Benefits */}
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <User size={20} />
+                </div>
+                <div>
+                  <h3 className="font-black text-lg mb-1">More Customers</h3>
+                  <p className="text-gray-400 text-sm">Access to nationwide customer base</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Calendar size={20} />
+                </div>
+                <div>
+                  <h3 className="font-black text-lg mb-1">Flexible Schedule</h3>
+                  <p className="text-gray-400 text-sm">Work on your own terms</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Truck size={20} />
+                </div>
+                <div>
+                  <h3 className="font-black text-lg mb-1">Grow Your Business</h3>
+                  <p className="text-gray-400 text-sm">Scale with reliable bookings</p>
+                </div>
+              </div>
             </div>
-            <h3 className="font-black text-lg mb-2">More Customers</h3>
-            <p className="text-gray-600 text-sm">Access to nationwide customer base</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl text-center">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
-              <Calendar size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Flexible Schedule</h3>
-            <p className="text-gray-600 text-sm">Work on your own terms</p>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl text-center">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
-              <Truck size={24} />
-            </div>
-            <h3 className="font-black text-lg mb-2">Grow Your Business</h3>
-            <p className="text-gray-600 text-sm">Scale with reliable bookings</p>
-          </div>
-        </div>
 
-        {/* Image Section */}
-        <div className="my-12 max-w-5xl mx-auto">
-          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
-            <img 
-              src="/opek2.png" 
-              alt="Professional junk removal provider with truck" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-              <div className="flex items-center gap-3 text-white justify-center">
-                <CheckCircle2 size={18}/>
-                <span className="text-sm font-bold">Licensed Providers • Nationwide Network • Flexible Earnings</span>
+            {/* Bottom Stats */}
+            <div className="mt-12 pt-8 border-t border-white/10">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-black mb-1">500+</div>
+                  <div className="text-xs text-gray-400 uppercase tracking-wider">Providers</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black mb-1">50+</div>
+                  <div className="text-xs text-gray-400 uppercase tracking-wider">Cities</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black mb-1">24/7</div>
+                  <div className="text-xs text-gray-400 uppercase tracking-wider">Support</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Form */}
-        <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 md:p-12">
+        {/* Right Side - Form */}
+        <div className="lg:col-span-3 p-8 md:p-12 lg:p-16">
+          <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-8">
             
             {/* Personal Information */}
@@ -339,11 +349,11 @@ export const ProviderSignupPage: React.FC = () => {
             )}
 
             {/* Submit Button */}
-            <div className="pt-6 border-t-2 border-gray-200">
+            <div className="pt-6 border-t border-gray-200">
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full px-10 py-4 text-base font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting...' : 'Submit Application'}
               </button>
@@ -353,6 +363,7 @@ export const ProviderSignupPage: React.FC = () => {
             </div>
 
           </form>
+          </div>
         </div>
 
       </div>

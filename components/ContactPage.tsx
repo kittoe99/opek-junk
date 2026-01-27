@@ -87,53 +87,78 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-24 pb-12 md:pt-32 md:pb-16">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         
-        {/* Back Button */}
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-4 md:mb-6 group"
-        >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+        {/* Left Side - Image & Info */}
+        <div className="relative bg-black text-white p-8 md:p-12 lg:p-16 flex flex-col justify-between">
+          <div>
+            {/* Back Button */}
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-12 group"
+            >
+              <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+              <span className="text-sm font-medium">Back</span>
+            </button>
 
-        {/* Header */}
-        <div className="text-center mb-6 md:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-2 md:mb-3">
-            Contact Us
-          </h1>
-          <p className="text-sm md:text-base text-gray-600">
-            Get quotes from local professionals nationwide.
-          </p>
-        </div>
+            {/* Header */}
+            <div className="mb-12">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight">
+                Let's Talk
+              </h1>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Connect with local junk removal professionals. We're here to help clear your space.
+              </p>
+            </div>
 
-        {/* Quick Info Banner */}
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 md:p-6 mb-6 md:mb-8 text-center shadow-sm">
-          <p className="text-gray-600 text-sm mb-3">
-            Need immediate assistance? We're here to help connect you with local professionals.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <Phone size={16} className="text-gray-500" />
-              <span className="font-bold">(303) 555-0199</span>
+            {/* Contact Info */}
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone size={20} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400 mb-1">Call Us</div>
+                  <div className="text-xl font-bold">(303) 555-0199</div>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail size={20} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400 mb-1">Email Us</div>
+                  <div className="text-xl font-bold">hello@opekjunk.com</div>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Clock size={20} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400 mb-1">Availability</div>
+                  <div className="text-xl font-bold">24/7 Service</div>
+                  <div className="text-sm text-gray-400 mt-1">Same-day pickup available</div>
+                </div>
+              </div>
             </div>
-            <span className="text-gray-300">•</span>
-            <div className="flex items-center gap-2">
-              <Mail size={16} className="text-gray-500" />
-              <span className="font-bold">hello@opekjunk.com</span>
-            </div>
-            <span className="text-gray-300">•</span>
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-gray-500" />
-              <span className="font-bold">24/7 Available</span>
-            </div>
+          </div>
+
+          {/* Bottom Decoration */}
+          <div className="hidden lg:block">
+            <div className="w-24 h-1 bg-white/20 mb-4"></div>
+            <p className="text-sm text-gray-400">
+              Trusted by thousands of customers nationwide
+            </p>
           </div>
         </div>
 
-        {/* Contact Form */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-md">
+        {/* Right Side - Form */}
+        <div className="bg-white p-8 md:p-12 lg:p-16 flex items-center">
+          <div className="w-full max-w-xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div className="mb-4 md:mb-6">
@@ -231,6 +256,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
           </form>
+          </div>
         </div>
 
       </div>
