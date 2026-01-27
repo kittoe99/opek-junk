@@ -90,15 +90,6 @@ export const ContactPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 pt-32 md:pt-40">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         
-        {/* Back Button */}
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-8 group"
-        >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
-
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
