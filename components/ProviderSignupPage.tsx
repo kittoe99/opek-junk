@@ -190,61 +190,61 @@ export const ProviderSignupPage: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold mb-2">First Name *</label>
+                  <label className="block text-xs font-bold mb-1.5">First Name *</label>
                   <input
                     type="text"
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                     placeholder="John"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold mb-2">Last Name *</label>
+                  <label className="block text-xs font-bold mb-1.5">Last Name *</label>
                   <input
                     type="text"
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                     placeholder="Smith"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold mb-2">Email *</label>
+                  <label className="block text-xs font-bold mb-1.5">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                     placeholder="john@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold mb-2">Phone *</label>
+                  <label className="block text-xs font-bold mb-1.5">Phone *</label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                     placeholder="(303) 555-0199"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-bold mb-2">Business Name (Optional)</label>
+                  <label className="block text-xs font-bold mb-1.5">Business Name (Optional)</label>
                   <input
                     type="text"
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                     placeholder="Your Business Name"
                   />
                 </div>
@@ -257,14 +257,14 @@ export const ProviderSignupPage: React.FC = () => {
                 Service Area
               </h2>
               <div>
-                <label className="block text-sm font-bold mb-2">Primary Service Area *</label>
+                <label className="block text-xs font-bold mb-1.5">Primary Service Area *</label>
                 <input
                   type="text"
                   name="serviceArea"
                   value={formData.serviceArea}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                   placeholder="e.g., Denver Metro Area, Los Angeles County, etc."
                 />
                 <p className="text-sm text-gray-500 mt-2">
@@ -279,13 +279,13 @@ export const ProviderSignupPage: React.FC = () => {
                 Vehicle Information
               </h2>
               <div>
-                <label className="block text-sm font-bold mb-2">Vehicle Type *</label>
+                <label className="block text-xs font-bold mb-1.5">Vehicle Type *</label>
                 <select
                   name="vehicleType"
                   value={formData.vehicleType}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                 >
                   <option value="">Select vehicle type</option>
                   {vehicleTypes.map(type => (
@@ -301,12 +301,12 @@ export const ProviderSignupPage: React.FC = () => {
                 Schedule Availability
               </h2>
               <div>
-                <label className="block text-sm font-bold mb-4">When are you typically available? (Select all that apply) *</label>
+                <label className="block text-xs font-bold mb-4">When are you typically available? (Select all that apply) *</label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {scheduleOptions.map(option => (
                     <label
                       key={option}
-                      className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-black transition-colors"
+                      className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-black transition-colors"
                     >
                       <input
                         type="checkbox"
@@ -323,20 +323,20 @@ export const ProviderSignupPage: React.FC = () => {
 
             {/* Additional Information */}
             <div>
-              <label className="block text-sm font-bold mb-2">Additional Information (Optional)</label>
+              <label className="block text-xs font-bold mb-1.5">Additional Information (Optional)</label>
               <textarea
                 name="additionalInfo"
                 value={formData.additionalInfo}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                 placeholder="Tell us about your experience, equipment, certifications, or anything else you'd like us to know..."
               />
             </div>
 
             {error && (
-              <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                <p className="text-red-700 text-sm font-bold">{error}</p>
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-700 text-xs font-bold">{error}</p>
               </div>
             )}
 

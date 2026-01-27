@@ -424,7 +424,7 @@ export const QuotePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Zip Code</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Zip Code</label>
                   <input 
                     name="zipCode"
                     value={formData.zipCode}
@@ -457,37 +457,37 @@ export const QuotePage: React.FC = () => {
             {currentStep === 2 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Name</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Name</label>
                   <input 
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Email</label>
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Email</label>
                     <input 
                       name="email"
                       type="email" 
                       value={formData.email}
                       onChange={handleInputChange}
                       required 
-                      className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                      className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Phone</label>
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Phone</label>
                     <input 
                       name="phone"
                       type="tel" 
                       value={formData.phone}
                       onChange={handleInputChange}
                       required 
-                      className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                      className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                     />
                   </div>
                 </div>
@@ -505,37 +505,37 @@ export const QuotePage: React.FC = () => {
             {currentStep === 3 && (
               <form onSubmit={handleNextStep} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Address</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Address</label>
                   <input 
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Preferred Date</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Preferred Date</label>
                   <input 
                     name="date"
                     type="date" 
                     value={formData.date}
                     onChange={handleInputChange}
                     required 
-                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Details</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Details</label>
                   <textarea 
                     name="details"
                     rows={4} 
                     value={formData.details}
                     onChange={handleInputChange}
                     placeholder="Describe what needs to be removed"
-                    className="w-full border border-gray-200 px-4 py-3 focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" 
                   ></textarea>
                 </div>
 
