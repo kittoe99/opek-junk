@@ -38,7 +38,7 @@ export const DumpsterRentalPage: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-white overflow-hidden">
+      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
@@ -48,11 +48,11 @@ export const DumpsterRentalPage: React.FC = () => {
                 Dumpster Rental
               </span>
 
-              <h1 className="text-5xl md:text-6xl font-black text-black tracking-tight mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
                 Dumpster Rental
               </h1>
               
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6 md:mb-8">
                 Flexible dumpster rental solutions for any project size. From small home cleanouts to large construction sites, delivered fast with transparent pricing.
               </p>
 
@@ -73,7 +73,7 @@ export const DumpsterRentalPage: React.FC = () => {
             </div>
 
             {/* Right Column - Image */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
+            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
                 src="/junk-removal.png" 
                 alt="Professional dumpster rental service" 

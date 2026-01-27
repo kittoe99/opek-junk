@@ -53,15 +53,15 @@ export const Footer: React.FC = () => {
               Book and track services on the go
             </p>
             <div className="space-y-2">
-              <button className="w-full flex items-center justify-start gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
-                <Apple size={18} />
+              <button className="inline-flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                <Apple size={16} />
                 <div className="text-left">
                   <div className="text-[9px] font-normal">Download on</div>
                   <div className="text-xs font-bold leading-tight">App Store</div>
                 </div>
               </button>
-              <button className="w-full flex items-center justify-start gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
-                <Smartphone size={18} />
+              <button className="inline-flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                <Smartphone size={16} />
                 <div className="text-left">
                   <div className="text-[9px] font-normal">Get it on</div>
                   <div className="text-xs font-bold leading-tight">Google Play</div>

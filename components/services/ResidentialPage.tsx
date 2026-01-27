@@ -12,7 +12,7 @@ export const ResidentialPage: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-white overflow-hidden">
+      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
@@ -22,11 +22,11 @@ export const ResidentialPage: React.FC = () => {
                 Residential Services
               </span>
 
-              <h1 className="text-5xl md:text-6xl font-black text-black tracking-tight mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
                 Residential Junk Removal
               </h1>
               
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6 md:mb-8">
                 Fast, upfront pricing for furniture removal, appliance pickup, and household junk. Same-day and next-day options nationwide.
               </p>
 
@@ -47,7 +47,7 @@ export const ResidentialPage: React.FC = () => {
             </div>
 
             {/* Right Column - Image */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
+            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
                 src="/opek2.png" 
                 alt="Professional residential junk removal service" 
@@ -66,21 +66,21 @@ export const ResidentialPage: React.FC = () => {
       </section>
 
       {/* What We Remove Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
+      <section className="py-12 md:py-16 lg:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-black leading-tight mb-3 md:mb-4 tracking-tight">
               What We Remove
             </h2>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-sm md:text-base lg:text-lg">
               From furniture to appliances, we handle it all
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             
-            <div className="bg-white p-6 rounded-2xl border border-gray-100">
+            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
               <h3 className="font-black text-lg mb-4">Furniture</h3>
               <ul className="space-y-2 text-gray-600 text-sm">
                 <li>• Couches & Sofas</li>
@@ -91,7 +91,7 @@ export const ResidentialPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-gray-100">
+            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
               <h3 className="font-black text-lg mb-4">Appliances</h3>
               <ul className="space-y-2 text-gray-600 text-sm">
                 <li>• Refrigerators & Freezers</li>
@@ -102,7 +102,7 @@ export const ResidentialPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-gray-100">
+            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
               <h3 className="font-black text-lg mb-4">Electronics</h3>
               <ul className="space-y-2 text-gray-600 text-sm">
                 <li>• TVs & Monitors</li>
@@ -113,7 +113,7 @@ export const ResidentialPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-gray-100">
+            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
               <h3 className="font-black text-lg mb-4">General Items</h3>
               <ul className="space-y-2 text-gray-600 text-sm">
                 <li>• Boxes & Clutter</li>
@@ -130,18 +130,18 @@ export const ResidentialPage: React.FC = () => {
       </section>
 
       {/* Content Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <h2 className="text-3xl md:text-4xl font-black text-black mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-4 md:mb-6">
             Professional Residential Junk Removal
           </h2>
           
-          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+          <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4 md:mb-6">
             Whether you're moving, downsizing, or simply decluttering, our residential junk removal service makes it easy to clear out unwanted items. We handle everything from single-item pickups to full home cleanouts.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <h3 className="text-xl font-black text-black mb-3">Fast & Convenient</h3>
               <p className="text-gray-600 leading-relaxed">
