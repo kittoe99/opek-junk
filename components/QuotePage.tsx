@@ -165,7 +165,7 @@ export const QuotePage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-white flex items-center justify-center">
+      <div className="min-h-screen pt-40 pb-20 bg-white flex items-center justify-center">
         <div className="max-w-lg mx-auto px-4 text-center">
           <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={40} />
@@ -188,7 +188,7 @@ export const QuotePage: React.FC = () => {
   // Initial selection screen
   if (!selectedOption) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-white">
+      <div className="min-h-screen pt-40 pb-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           
           <div className="text-center mb-12">
@@ -253,7 +253,7 @@ export const QuotePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-white">
+    <div className="min-h-screen pt-40 pb-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <button

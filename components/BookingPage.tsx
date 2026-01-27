@@ -207,7 +207,7 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen pt-24 pb-16 bg-white flex items-center justify-center">
+      <div className="min-h-screen pt-40 pb-16 bg-white flex items-center justify-center">
         <div className="max-w-md mx-auto px-4 text-center">
           <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
             <CheckCircle size={32} />
@@ -228,7 +228,7 @@ export const BookingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12 md:pt-32 md:pb-16 bg-white">
+    <div className="min-h-screen pt-32 pb-12 md:pt-40 md:pb-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-6 md:mb-8">
