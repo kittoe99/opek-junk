@@ -117,78 +117,70 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white pt-20 lg:pt-0">
-      <div className="grid grid-cols-1 lg:grid-cols-5">
+    <div className="min-h-screen bg-gray-50 pt-32 md:pt-40">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         
-        {/* Left Sidebar - Benefits */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-black to-gray-900 text-white p-8 md:p-12 lg:p-16 pt-24 lg:pt-16">
-          <div className="max-w-md mx-auto lg:mx-0">
-            <span className="inline-block px-4 py-2 bg-white/10 text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-              Provider Network
-            </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
-              Join Our Provider Network
-            </h1>
-            <p className="text-gray-300 text-base md:text-lg mb-12 leading-relaxed">
-              Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
-            </p>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+            Provider Network
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
+            Join Our Provider Network
+          </h1>
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+            Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
+          </p>
+        </div>
 
-            {/* Benefits */}
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <User size={20} />
-                </div>
-                <div>
-                  <h3 className="font-black text-lg mb-1">More Customers</h3>
-                  <p className="text-gray-400 text-sm">Access to nationwide customer base</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Calendar size={20} />
-                </div>
-                <div>
-                  <h3 className="font-black text-lg mb-1">Flexible Schedule</h3>
-                  <p className="text-gray-400 text-sm">Work on your own terms</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Truck size={20} />
-                </div>
-                <div>
-                  <h3 className="font-black text-lg mb-1">Grow Your Business</h3>
-                  <p className="text-gray-400 text-sm">Scale with reliable bookings</p>
-                </div>
-              </div>
+        {/* Benefits */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <User size={20} className="text-black" />
             </div>
+            <h3 className="font-black text-lg mb-2">More Customers</h3>
+            <p className="text-gray-600 text-sm">Access to nationwide customer base</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Calendar size={20} className="text-black" />
+            </div>
+            <h3 className="font-black text-lg mb-2">Flexible Schedule</h3>
+            <p className="text-gray-600 text-sm">Work on your own terms</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm">
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Truck size={20} className="text-black" />
+            </div>
+            <h3 className="font-black text-lg mb-2">Grow Your Business</h3>
+            <p className="text-gray-600 text-sm">Scale with reliable bookings</p>
+          </div>
+        </div>
 
-            {/* Bottom Stats */}
-            <div className="mt-12 pt-8 border-t border-white/10">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-black mb-1">500+</div>
-                  <div className="text-xs text-gray-400 uppercase tracking-wider">Providers</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black mb-1">50+</div>
-                  <div className="text-xs text-gray-400 uppercase tracking-wider">Cities</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black mb-1">24/7</div>
-                  <div className="text-xs text-gray-400 uppercase tracking-wider">Support</div>
-                </div>
-              </div>
+        {/* Stats */}
+        <div className="bg-white rounded-xl border border-gray-200 p-8 mb-12 shadow-sm">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-3xl font-black mb-1">500+</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">Providers</div>
+            </div>
+            <div>
+              <div className="text-3xl font-black mb-1">50+</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">Cities</div>
+            </div>
+            <div>
+              <div className="text-3xl font-black mb-1">24/7</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">Support</div>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="lg:col-span-3 p-8 md:p-12 lg:p-16 pt-24 lg:pt-16">
-          <div className="max-w-2xl mx-auto">
+        {/* Form */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
+          <div className="max-w-3xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-8">
             
             {/* Personal Information */}
