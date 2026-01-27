@@ -45,8 +45,8 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
           </div>
 
           {/* Right Column - Image */}
-          <div className="lg:col-span-5 animate-fade-in hidden sm:block" style={{animationDelay: '0.4s'}}>
-            <div className="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
+          <div className="lg:col-span-5 animate-fade-in" style={{animationDelay: '0.4s'}}>
+            <div className="relative aspect-[3/2] sm:aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
               <img 
                 src="/junk-removal.png" 
                 alt="Professional junk removal truck" 

@@ -239,8 +239,8 @@ export const BookingPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
           
           {/* Image */}
-          <div className="lg:col-span-2 hidden lg:block">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sticky top-32">
+          <div className="lg:col-span-2">
+            <div className="relative aspect-[3/2] lg:aspect-[4/3] overflow-hidden rounded-2xl sticky top-32">
               <img 
                 src="/junk-removal.png" 
                 alt="Professional junk removal service" 
