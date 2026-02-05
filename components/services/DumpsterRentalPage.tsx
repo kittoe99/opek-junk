@@ -36,7 +36,7 @@ export const DumpsterRentalPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white pt-[72px] md:pt-[92px]">
+    <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
       
       {/* Breadcrumb Navigation */}
       <Breadcrumb items={[
