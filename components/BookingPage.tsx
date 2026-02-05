@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { supabase } from '../lib/supabase';
+import { Breadcrumb } from './Breadcrumb';
 
 export const BookingPage: React.FC = () => {
   const location = useLocation();
@@ -207,7 +208,9 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen pt-40 pb-16 bg-white flex items-center justify-center">
+      <div className="min-h-screen pt-[88px] md:pt-[108px] pb-16 bg-white">
+        <Breadcrumb items={[{ label: 'Book Online' }]} />
+        <div className="flex items-center justify-center">
         <div className="max-w-md mx-auto px-4 text-center">
           <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
             <CheckCircle size={32} />
@@ -218,17 +221,19 @@ export const BookingPage: React.FC = () => {
           </p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs hover:bg-gray-800 transition-colors rounded-lg"
+            className="px-6 py-3 bg-black text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
           >
             Book Another Service
           </button>
+        </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-12 md:pt-40 md:pb-16 bg-white">
+    <div className="min-h-screen pt-[88px] md:pt-[108px] pb-12 md:pb-16 bg-white">
+      <Breadcrumb items={[{ label: 'Book Online' }]} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-6 md:mb-8">

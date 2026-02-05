@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Phone, Mail, Clock, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { Breadcrumb } from './Breadcrumb';
 
 export const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,8 +67,10 @@ export const ContactPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center">
+      <div className="min-h-screen bg-white pt-[88px] md:pt-[108px] px-4">
+        <Breadcrumb items={[{ label: 'Contact Us' }]} />
+        <div className="flex items-center justify-center">
+          <div className="max-w-md w-full text-center">
           <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 size={32} />
           </div>
@@ -82,12 +85,14 @@ export const ContactPage: React.FC = () => {
             Return Home
           </button>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32 md:pt-40">
+    <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
+      <Breadcrumb items={[{ label: 'Contact Us' }]} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         
         {/* Header */}
