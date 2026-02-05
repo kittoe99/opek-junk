@@ -13,8 +13,8 @@ interface BreadcrumbProps {
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
-    <nav aria-label="Breadcrumb" className="bg-gray-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <nav aria-label="Breadcrumb" className="border-b border-gray-200 pt-2 pb-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ol className="flex items-center space-x-2 text-sm">
           {/* Home Link */}
           <li>
