@@ -19,6 +19,7 @@ import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
+import { SEO, seoConfig } from './components/SEO';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,6 +50,7 @@ function HomePage() {
 
   return (
     <>
+      <SEO {...seoConfig.home} />
       <Hero 
         onGetQuote={() => navigate('/quote')} 
         onBookOnline={() => navigate('/booking')}
@@ -67,6 +69,96 @@ function HomePage() {
   );
 }
 
+function QuotePageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.quote} />
+      <QuotePage />
+    </>
+  );
+}
+
+function ContactPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.contact} />
+      <ContactPage />
+    </>
+  );
+}
+
+function BookingPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.booking} />
+      <BookingPage />
+    </>
+  );
+}
+
+function ResidentialPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.residential} />
+      <ResidentialPage />
+    </>
+  );
+}
+
+function CommercialPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.commercial} />
+      <CommercialPage />
+    </>
+  );
+}
+
+function ConstructionPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.construction} />
+      <ConstructionPage />
+    </>
+  );
+}
+
+function EWastePageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.ewaste} />
+      <EWastePage />
+    </>
+  );
+}
+
+function PropertyCleanoutPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.propertyCleanout} />
+      <PropertyCleanoutPage />
+    </>
+  );
+}
+
+function DumpsterRentalPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.dumpsterRental} />
+      <DumpsterRentalPage />
+    </>
+  );
+}
+
+function ProviderSignupPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.providerSignup} />
+      <ProviderSignupPage />
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -76,16 +168,16 @@ function App() {
         
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/quote" element={<QuotePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/booking" element={<BookingPage />} />
-          <Route path="/services/residential" element={<ResidentialPage />} />
-          <Route path="/services/commercial" element={<CommercialPage />} />
-          <Route path="/services/construction" element={<ConstructionPage />} />
-          <Route path="/services/e-waste" element={<EWastePage />} />
-          <Route path="/services/property-cleanout" element={<PropertyCleanoutPage />} />
-          <Route path="/services/dumpster-rental" element={<DumpsterRentalPage />} />
-          <Route path="/provider-signup" element={<ProviderSignupPage />} />
+          <Route path="/quote" element={<QuotePageWithSEO />} />
+          <Route path="/contact" element={<ContactPageWithSEO />} />
+          <Route path="/booking" element={<BookingPageWithSEO />} />
+          <Route path="/services/residential" element={<ResidentialPageWithSEO />} />
+          <Route path="/services/commercial" element={<CommercialPageWithSEO />} />
+          <Route path="/services/construction" element={<ConstructionPageWithSEO />} />
+          <Route path="/services/e-waste" element={<EWastePageWithSEO />} />
+          <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
+          <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
+          <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/test-openai" element={<OpenAITestPage />} />
         </Routes>
         

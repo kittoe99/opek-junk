@@ -210,19 +210,6 @@ export const Services: React.FC = () => {
                   alt="Professional junk removal team at work" 
                   className="w-full h-full object-cover"
                 />
-                
-                {/* Overlay Card */}
-                <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-black text-white rounded-xl flex items-center justify-center font-black text-xl">
-                      60%
-                    </div>
-                    <div>
-                      <p className="font-bold text-black">Recycled & Donated</p>
-                      <p className="text-gray-600 text-sm">Providers responsibly dispose of items</p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

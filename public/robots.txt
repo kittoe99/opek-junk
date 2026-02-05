@@ -1,0 +1,15 @@
+# robots.txt for OPEK Junk Removal
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow admin or sensitive areas (if any)
+Disallow: /api/
+Disallow: /.env
+
+# Sitemap location
+Sitemap: https://opekjunk.com/sitemap.xml
+
+# Crawl-delay (optional, helps prevent server overload)
+Crawl-delay: 1
