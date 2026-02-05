@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import { Process } from '../Process';
 import { ServiceArea } from '../ServiceArea';
+import { Breadcrumb } from '../Breadcrumb';
 
 export const ResidentialPage: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +11,12 @@ export const ResidentialPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb items={[
+        { label: 'Services', path: '/#services' },
+        { label: 'Residential Junk Removal' }
+      ]} />
       
       {/* Hero Section */}
       <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">

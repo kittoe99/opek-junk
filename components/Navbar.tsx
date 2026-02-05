@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowLeft, ArrowRight, ChevronDown, MapPin } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentView = location.pathname === '/' ? 'home' : location.pathname.slice(1) as 'quote' | 'contact' | 'booking';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
@@ -93,8 +92,6 @@ export const Navbar: React.FC = () => {
     navigate('/');
   };
 
-  const isStandalonePage = currentView === 'quote' || currentView === 'contact';
-
   return (
     <>
       {/* Top Bar - Desktop Only */}
@@ -126,17 +123,11 @@ export const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group z-[70]" 
             onClick={handleLogoClick}
           >
-            {isStandalonePage && !isMenuOpen ? (
-              <div className="w-12 h-12 flex items-center justify-center bg-black text-white transition-all duration-300">
-                <ArrowLeft size={24} />
-              </div>
-            ) : (
-              <img
-                src="/logo1.png"
-                alt="OPEK Junk Removal"
-                className="h-12 w-auto object-contain md:h-14"
-              />
-            )}
+            <img
+              src="/logo1.png"
+              alt="Opek Junk Removal"
+              className="h-12 w-auto object-contain md:h-14"
+            />
           </div>
 
           {/* Mobile Location - Centered (Mobile Only) */}
