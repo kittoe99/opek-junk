@@ -99,7 +99,7 @@ export const ProviderSignupPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 pt-[88px] md:pt-[108px] px-4">
         <Breadcrumb items={[{ label: 'Become a Provider' }]} />
-        <div className="flex items-center justify-center">
+        <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
         <div className="max-w-md w-full text-center">
           <div className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 size={40} />
@@ -123,6 +123,7 @@ export const ProviderSignupPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
       <Breadcrumb items={[{ label: 'Become a Provider' }]} />
+      <div className="py-16 md:py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         
         {/* Header */}
@@ -351,8 +352,8 @@ export const ProviderSignupPage: React.FC = () => {
           </form>
           </div>
         </div>
-
+      </div>
       </div>
     </div>
-  );
-};
+  </div>
+);

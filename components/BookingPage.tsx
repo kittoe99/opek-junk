@@ -210,7 +210,7 @@ export const BookingPage: React.FC = () => {
     return (
       <div className="min-h-screen pt-[88px] md:pt-[108px] pb-16 bg-white">
         <Breadcrumb items={[{ label: 'Book Online' }]} />
-        <div className="flex items-center justify-center">
+        <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
         <div className="max-w-md mx-auto px-4 text-center">
           <div className="w-16 h-16 bg-black text-white flex items-center justify-center mx-auto mb-4 rounded-lg">
             <CheckCircle size={32} />
@@ -234,6 +234,7 @@ export const BookingPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-[88px] md:pt-[108px] pb-12 md:pb-16 bg-white">
       <Breadcrumb items={[{ label: 'Book Online' }]} />
+      <div className="py-16 md:py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-6 md:mb-8">
@@ -670,6 +671,8 @@ export const BookingPage: React.FC = () => {
           </div>
 
         </div>
+
+      </div>
       </div>
     </div>
   );
