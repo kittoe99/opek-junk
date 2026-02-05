@@ -9,7 +9,7 @@ export const CommercialPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pt-[72px] md:pt-[92px]">
       
       {/* Breadcrumb Navigation */}
       <Breadcrumb items={[
