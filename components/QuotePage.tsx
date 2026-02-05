@@ -334,6 +334,7 @@ export const QuotePage: React.FC = () => {
 
       <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
         <Breadcrumb items={[{ label: 'Get a Quote' }]} />
+        <section className="py-16 md:py-20 lg:py-32">
         <div className="flex items-center justify-center">
           <div className="max-w-lg mx-auto px-4 text-center">
 
@@ -367,6 +368,7 @@ export const QuotePage: React.FC = () => {
           </button>
 
         </div>
+        </section>
 
       </div>
 
@@ -384,7 +386,7 @@ export const QuotePage: React.FC = () => {
 
       <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
         <Breadcrumb items={[{ label: 'Get a Quote' }]} />
-
+        <section className="py-16 md:py-20 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
           
@@ -502,6 +504,7 @@ export const QuotePage: React.FC = () => {
           </div>
 
         </div>
+        </section>
 
       </div>
 
@@ -515,7 +518,7 @@ export const QuotePage: React.FC = () => {
 
     <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
       <Breadcrumb items={[{ label: 'Get a Quote' }]} />
-
+      <section className="py-16 md:py-20 lg:py-32">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         
@@ -1267,6 +1270,7 @@ export const QuotePage: React.FC = () => {
 
 
       </div>
+      </section>
 
     </div>
 

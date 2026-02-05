@@ -13,10 +13,7 @@ export const Footer: React.FC = () => {
           {/* Brand - Takes 4 columns */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-6">
-               <div className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-lg">
-                  <Trash2 size={28} strokeWidth={2.5} />
-               </div>
-               <span className="font-black text-3xl text-white tracking-tight">OPEK</span>
+               <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-12 w-auto object-contain" />
             </div>
             <p className="text-gray-400 text-base leading-relaxed mb-6">
               Professional junk removal services connecting you with trusted providers nationwide.
