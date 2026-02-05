@@ -355,5 +355,5 @@ export const ProviderSignupPage: React.FC = () => {
       </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
