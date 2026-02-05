@@ -49,7 +49,10 @@ function HomePage() {
 
   return (
     <>
-      <Hero onGetQuote={() => navigate('/quote')} />
+      <Hero 
+        onGetQuote={() => navigate('/quote')} 
+        onBookOnline={() => navigate('/booking')}
+      />
       <Services />
       <Process onGetQuote={() => navigate('/quote')} />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />

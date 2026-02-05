@@ -1,40 +1,48 @@
 import React, { useState } from 'react';
 import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
   {
     title: "Residential Junk Removal",
     icon: Warehouse,
-    description: "Furniture, appliances, electronics, and household clutter. Local providers in your area."
+    description: "Furniture, appliances, electronics, and household clutter. Local providers in your area.",
+    path: "/services/residential"
   },
   {
     title: "Commercial & Office Hauling",
     icon: Truck,
-    description: "Office furniture, equipment, and commercial debris. Minimal business disruption."
+    description: "Office furniture, equipment, and commercial debris. Minimal business disruption.",
+    path: "/services/commercial"
   },
   {
     title: "Construction Debris",
     icon: HardHat,
-    description: "Drywall, wood, tile, flooring, and metal scraps. One-time or recurring service."
+    description: "Drywall, wood, tile, flooring, and metal scraps. One-time or recurring service.",
+    path: "/services/construction"
   },
   {
     title: "E-Waste & Appliances",
     icon: Recycle,
-    description: "Electronics, monitors, refrigerators, and stoves. Eco-friendly disposal."
+    description: "Electronics, monitors, refrigerators, and stoves. Eco-friendly disposal.",
+    path: "/services/e-waste"
   },
   {
     title: "Property Cleanouts",
     icon: Trash,
-    description: "Estate clearing, move-outs, and hoarding situations. Professional and discreet."
+    description: "Estate clearing, move-outs, and hoarding situations. Professional and discreet.",
+    path: "/services/property-cleanout"
   },
   {
     title: "Dumpster Rental",
     icon: Container,
-    description: "Multiple sizes available for any project. Flexible rental periods with fast delivery and pickup."
+    description: "Multiple sizes available for any project. Flexible rental periods with fast delivery and pickup.",
+    path: "/services/dumpster-rental"
   }
 ];
 
 export const Services: React.FC = () => {
+  const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
 
@@ -75,8 +83,14 @@ export const Services: React.FC = () => {
                     }`}
                   >
                     <button
-                      onClick={() => toggleAccordion(index)}
-                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
+                      onClick={() => {
+                        if (openIndex === index) {
+                          navigate(item.path);
+                        } else {
+                          toggleAccordion(index);
+                        }
+                      }}
+                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
                       aria-expanded={openIndex === index}
                     >
                       <div className="flex items-center gap-4">
@@ -126,8 +140,14 @@ export const Services: React.FC = () => {
                   }`}
                 >
                   <button
-                    onClick={() => toggleAccordion(index)}
-                    className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
+                    onClick={() => {
+                      if (openIndex === index) {
+                        navigate(item.path);
+                      } else {
+                        toggleAccordion(index);
+                      }
+                    }}
+                    className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
                     aria-expanded={openIndex === index}
                   >
                     <div className="flex items-center gap-4">
@@ -186,8 +206,8 @@ export const Services: React.FC = () => {
             <div className="sticky top-32">
               <div className="relative aspect-[3/2] md:aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
-                  src="/opek2.png" 
-                  alt="Professional junk removal service" 
+                  src="/workers-opek.png" 
+                  alt="Professional junk removal team at work" 
                   className="w-full h-full object-cover"
                 />
                 

@@ -4,9 +4,10 @@ import { Button } from './Button';
 
 interface HeroProps {
   onGetQuote: () => void;
+  onBookOnline?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
+export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-12 md:pt-40 md:pb-32">
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -36,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
                 View Pricing
               </button>
               <button 
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth'})}
+                onClick={onBookOnline}
                 className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
               >
                 Book Online

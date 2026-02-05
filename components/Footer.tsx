@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trash2, Phone, Mail, Apple, Smartphone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
@@ -34,10 +35,10 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2">
             <h4 className="text-white font-black text-sm uppercase tracking-wider mb-6">Services</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">Residential</a></li>
-              <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">Commercial</a></li>
-              <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">Construction</a></li>
-              <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">E-Waste</a></li>
+              <li><Link to="/services/residential" className="text-gray-400 hover:text-white transition-colors">Residential</Link></li>
+              <li><Link to="/services/commercial" className="text-gray-400 hover:text-white transition-colors">Commercial</Link></li>
+              <li><Link to="/services/construction" className="text-gray-400 hover:text-white transition-colors">Construction</Link></li>
+              <li><Link to="/services/e-waste" className="text-gray-400 hover:text-white transition-colors">E-Waste</Link></li>
             </ul>
           </div>
 
@@ -45,10 +46,10 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2">
             <h4 className="text-white font-black text-sm uppercase tracking-wider mb-6">Company</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#process" className="text-gray-400 hover:text-white transition-colors">How it Works</a></li>
-              <li><a href="#service-area" className="text-gray-400 hover:text-white transition-colors">Coverage</a></li>
-              <li><a href="/provider-signup" className="text-gray-400 hover:text-white transition-colors">Become a Provider</a></li>
-              <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+              <li><Link to="/#process" className="text-gray-400 hover:text-white transition-colors">How it Works</Link></li>
+              <li><Link to="/#service-area" className="text-gray-400 hover:text-white transition-colors">Coverage</Link></li>
+              <li><Link to="/provider-signup" className="text-gray-400 hover:text-white transition-colors">Become a Provider</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 

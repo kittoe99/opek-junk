@@ -22,7 +22,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
           {/* Left Column: Image */}
           <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden rounded-3xl shadow-2xl order-2 lg:order-1">
             <img 
-              src="/junk-removal.png" 
+              src="/estimates (1).png" 
               alt="Nationwide junk removal service" 
               className="w-full h-full object-cover"
             />
