@@ -70,17 +70,17 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage 
     // Update canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', `https://opekjunk.com${location.pathname}`);
+      canonical.setAttribute('href', `https://opekjunkremoval.com${location.pathname}`);
     }
 
     // Update OG URL
     let ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', `https://opekjunk.com${location.pathname}`);
+      ogUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
     }
     let twitterUrl = document.querySelector('meta[property="twitter:url"]');
     if (twitterUrl) {
-      twitterUrl.setAttribute('content', `https://opekjunk.com${location.pathname}`);
+      twitterUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
     }
   }, [title, description, keywords, ogImage, location.pathname]);
 
