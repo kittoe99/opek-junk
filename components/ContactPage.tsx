@@ -123,7 +123,7 @@ export const ContactPage: React.FC = () => {
                 <span className="hidden md:block text-white/40">•</span>
                 <div className="flex items-center gap-2">
                   <Mail size={18} />
-                  <span className="text-sm font-bold">hello@opekjunk.com</span>
+                  <span className="text-sm font-bold">Support@opekjunkremoval.com</span>
                 </div>
                 <span className="hidden md:block text-white/40">•</span>
                 <div className="flex items-center gap-2">

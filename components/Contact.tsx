@@ -33,7 +33,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg text-gray-900">Email</h4>
-                  <p className="text-gray-600">hello@opekjunk.com</p>
+                  <p className="text-gray-600">Support@opekjunkremoval.com</p>
                 </div>
               </div>
 

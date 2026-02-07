@@ -177,7 +177,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                     "{estimate.summary}"
                   </p>
 
-                  <Button fullWidth onClick={() => window.location.href = 'mailto:hello@opekjunk.com?subject=Junk Removal Booking'}>
+                  <Button fullWidth onClick={() => window.location.href = 'mailto:Support@opekjunkremoval.com?subject=Junk Removal Booking'}>
                     Book Now
                   </Button>
                   <p className="text-xs text-center text-gray-400 mt-3">
