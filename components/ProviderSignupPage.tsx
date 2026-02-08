@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Truck, MapPin, Calendar, User } from 'lucide-react';
+import { CheckCircle2, Truck, MapPin, Calendar, User, DollarSign, TrendingUp, Headphones, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -97,7 +97,7 @@ export const ProviderSignupPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 pt-[88px] md:pt-[108px] px-4">
+      <div className="min-h-screen bg-black pt-[88px] md:pt-[108px] px-4">
         <Breadcrumb items={[{ label: 'Become a Provider' }]} />
         <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
         <div className="max-w-md w-full text-center">
@@ -106,7 +106,7 @@ export const ProviderSignupPage: React.FC = () => {
           </div>
           <h2 className="text-3xl font-black text-white mb-4">Application Submitted!</h2>
           <p className="text-gray-300 mb-6">
-            Thank you for your interest in joining the OPEK provider network. Our team will review your application and contact you within 1-2 business days.
+            Thank you for your interest in joining the Opek provider network. Our team will review your application and contact you within 1-2 business days.
           </p>
           <button
             onClick={() => navigate('/')}
@@ -121,60 +121,99 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
+    <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
       <Breadcrumb items={[{ label: 'Become a Provider' }]} />
-      <div className="py-16 md:py-20 lg:py-32">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-            Provider Network
-          </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
-            Join Our Provider Network
-          </h1>
-          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
-          </p>
-        </div>
 
-        {/* Hero Image */}
-        <div className="mb-12">
-          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
-            <img 
-              src="/opek2.webp" 
-              loading="lazy"
-              alt="Professional junk removal provider" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-white text-center md:text-left">
-                <div className="flex items-center gap-2">
-                  <User size={18} />
-                  <span className="text-sm font-bold">500+ Providers</span>
+      {/* Hero Section */}
+      <section className="bg-black text-white py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="inline-block px-3 py-1.5 bg-white/10 text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6 border border-white/20">
+                Provider Network
+              </span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 leading-tight">
+                Grow your business with Opek.
+              </h1>
+              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+                Join a nationwide network of trusted junk removal providers. We bring the customers — you deliver the service. Set your own schedule, keep more of what you earn.
+              </p>
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="text-2xl md:text-3xl font-black text-white">500+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Providers</div>
                 </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <MapPin size={18} />
-                  <span className="text-sm font-bold">50+ Cities</span>
+                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="text-2xl md:text-3xl font-black text-white">50+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Cities</div>
                 </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Calendar size={18} />
-                  <span className="text-sm font-bold">Flexible Schedule</span>
-                </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Truck size={18} />
-                  <span className="text-sm font-bold">Grow Your Business</span>
+                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="text-2xl md:text-3xl font-black text-white">10K+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Jobs / Month</div>
                 </div>
               </div>
             </div>
+            {/* Image */}
+            <div className="hidden lg:block relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <img 
+                src="/workers-opek.webp" 
+                loading="lazy"
+                alt="Professional junk removal provider team" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Form */}
+      {/* Benefits Section */}
+      <section className="py-12 md:py-16 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">Why providers choose Opek</h2>
+            <p className="text-gray-500 text-sm">Everything you need to grow your hauling business.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
+              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
+                <DollarSign size={18} />
+              </div>
+              <h3 className="font-bold text-sm mb-1.5">Competitive Pay</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Keep more of what you earn with transparent, competitive payouts on every job.</p>
+            </div>
+            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
+              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
+                <Clock size={18} />
+              </div>
+              <h3 className="font-bold text-sm mb-1.5">Flexible Schedule</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Work when you want. Set your own availability and accept jobs that fit your schedule.</p>
+            </div>
+            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
+              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
+                <TrendingUp size={18} />
+              </div>
+              <h3 className="font-bold text-sm mb-1.5">Steady Leads</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">We handle marketing and customer acquisition so you can focus on the work.</p>
+            </div>
+            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
+              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
+                <Headphones size={18} />
+              </div>
+              <h3 className="font-bold text-sm mb-1.5">Dedicated Support</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Our provider support team is available 7 days a week to help you succeed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Form Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">Apply to join</h2>
+            <p className="text-gray-500 text-sm">Fill out the form below and our team will be in touch within 1-2 business days.</p>
+          </div>
         <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
           <div className="max-w-3xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -353,8 +392,8 @@ export const ProviderSignupPage: React.FC = () => {
           </form>
           </div>
         </div>
-      </div>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

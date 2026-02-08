@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Phone, Mail, Clock, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Phone, Mail, Clock, MessageSquare, Shield, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -76,7 +76,7 @@ export const ContactPage: React.FC = () => {
           </div>
           <h2 className="text-2xl font-black mb-3">Message Received!</h2>
           <p className="text-gray-600 text-sm mb-6">
-            Thank you for contacting OPEK. We'll respond within 30 minutes during business hours.
+            Thank you for contacting Opek. We'll respond within 30 minutes during business hours.
           </p>
           <button
             onClick={() => navigate('/')}
@@ -91,52 +91,103 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
+    <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
       <Breadcrumb items={[{ label: 'Contact Us' }]} />
-      <div className="py-16 md:py-20 lg:py-32">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
-            Get In Touch
-          </h1>
-          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Connect with local junk removal professionals. We're here to help clear your space.
-          </p>
-        </div>
 
-        {/* Hero Image */}
-        <div className="mb-12">
-          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
-            <img 
-              src="/opek2.webp" 
-              loading="lazy"
-              alt="Professional junk removal service" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-white text-center md:text-left">
-                <div className="flex items-center gap-2">
-                  <Phone size={18} />
-                  <span className="text-sm font-bold">(303) 555-0199</span>
+      {/* Hero Section */}
+      <section className="bg-black text-white py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 block">Contact Us</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 leading-tight">
+                We're here to help clear your space.
+              </h1>
+              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+                Have a question about our services? Need a custom quote? Our team responds within 30 minutes during business hours.
+              </p>
+              {/* Contact Cards */}
+              <div className="space-y-3">
+                <a href="tel:(303)555-0199" className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
+                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
+                    <Phone size={18} />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Call Us</div>
+                    <div className="text-white font-bold">(303) 555-0199</div>
+                  </div>
+                </a>
+                <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
+                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
+                    <Mail size={18} />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Email</div>
+                    <div className="text-white font-bold">Support@opekjunkremoval.com</div>
+                  </div>
+                </a>
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Hours</div>
+                    <div className="text-white font-bold">7 Days a Week, 7AM - 7PM</div>
+                  </div>
                 </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Mail size={18} />
-                  <span className="text-sm font-bold">Support@opekjunkremoval.com</span>
-                </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Clock size={18} />
-                  <span className="text-sm font-bold">24/7 Service</span>
-                </div>
+              </div>
+            </div>
+            {/* Image */}
+            <div className="hidden lg:block relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <img 
+                src="/opek2.webp" 
+                loading="lazy"
+                alt="Professional junk removal service" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                <Zap size={18} className="text-black" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-black">Fast Response</div>
+                <div className="text-xs text-gray-500">Reply within 30 minutes</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                <Shield size={18} className="text-black" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-black">Licensed & Insured</div>
+                <div className="text-xs text-gray-500">Fully covered professionals</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                <MessageSquare size={18} className="text-black" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-black">No Obligation</div>
+                <div className="text-xs text-gray-500">Free quotes, no pressure</div>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Form */}
+      {/* Form Section */}
+      <section className="py-16 md:py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
           <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -238,9 +289,8 @@ export const ContactPage: React.FC = () => {
           </form>
           </div>
         </div>
-
-      </div>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };
