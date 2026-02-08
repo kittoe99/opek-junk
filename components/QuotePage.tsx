@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2, Search, List, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
@@ -169,6 +169,25 @@ export const QuotePage: React.FC = () => {
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
   const [manualNewItemName, setManualNewItemName] = useState('');
+
+  // Scroll refs
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const selectedItemsRef = useRef<HTMLDivElement>(null);
+  const contentTopRef = useRef<HTMLDivElement>(null);
+
+  // ── Smooth scroll helper ──
+  const scrollToElement = useCallback((el: HTMLElement | null, offset = -100) => {
+    if (!el) return;
+    setTimeout(() => {
+      const top = el.getBoundingClientRect().top + window.scrollY + offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }, 50);
+  }, []);
+
+  // Auto-scroll to top when step changes
+  useEffect(() => {
+    scrollToElement(contentTopRef.current, -120);
+  }, [aiStep, manualStep, selectedOption, scrollToElement]);
 
   // ── Shared helpers ──
   const compressImage = (file: File): Promise<string> => {
@@ -476,7 +495,7 @@ export const QuotePage: React.FC = () => {
             ← Back to options
           </button>
 
-          <div className="text-center mb-12">
+          <div ref={contentTopRef} className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-black mb-4">
               {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Select Your Items'}
             </h1>
@@ -680,9 +699,15 @@ export const QuotePage: React.FC = () => {
                       const isExpanded = expandedCategory === category.label || catalogSearch.trim() !== '';
                       const selectedInCategory = category.items.filter(i => isItemSelected(i.name)).length;
                       return (
-                        <div key={category.label}>
+                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }}>
                           <button
-                            onClick={() => setExpandedCategory(isExpanded && !catalogSearch ? null : category.label)}
+                            onClick={() => {
+                              const newCat = isExpanded && !catalogSearch ? null : category.label;
+                              setExpandedCategory(newCat);
+                              if (newCat) {
+                                setTimeout(() => scrollToElement(categoryRefs.current[category.label], -20), 80);
+                              }
+                            }}
                             className="w-full flex items-center justify-between px-4 py-3.5 bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200 text-left"
                           >
                             <div className="flex items-center gap-2.5">
@@ -755,7 +780,7 @@ export const QuotePage: React.FC = () => {
 
                   {/* Selected items summary */}
                   {selectedItems.length > 0 && (
-                    <div className="space-y-3">
+                    <div ref={selectedItemsRef} className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Your Items ({totalSelectedCount})</span>
                         <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors">
