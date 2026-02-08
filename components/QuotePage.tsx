@@ -1,20 +1,184 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2 } from 'lucide-react';
+import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2, Search, List } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
+// ── Item Catalog ──
+interface CatalogItem {
+  name: string;
+}
+interface CatalogCategory {
+  label: string;
+  emoji: string;
+  items: CatalogItem[];
+}
+
+const ITEM_CATALOG: CatalogCategory[] = [
+  {
+    label: 'Furniture',
+    emoji: '🛋️',
+    items: [
+      { name: 'Sofa / Couch' },
+      { name: 'Loveseat' },
+      { name: 'Recliner' },
+      { name: 'Armchair' },
+      { name: 'Ottoman' },
+      { name: 'Dining Table' },
+      { name: 'Dining Chair' },
+      { name: 'Coffee Table' },
+      { name: 'End Table' },
+      { name: 'TV Stand / Entertainment Center' },
+      { name: 'Bookshelf' },
+      { name: 'Desk' },
+      { name: 'Office Chair' },
+      { name: 'Filing Cabinet' },
+      { name: 'Dresser' },
+      { name: 'Nightstand' },
+      { name: 'Bed Frame (Twin)' },
+      { name: 'Bed Frame (Full)' },
+      { name: 'Bed Frame (Queen)' },
+      { name: 'Bed Frame (King)' },
+      { name: 'Mattress (Twin)' },
+      { name: 'Mattress (Full)' },
+      { name: 'Mattress (Queen)' },
+      { name: 'Mattress (King)' },
+      { name: 'Box Spring' },
+      { name: 'Futon' },
+      { name: 'Bunk Bed' },
+      { name: 'Crib' },
+      { name: 'Wardrobe / Armoire' },
+      { name: 'China Cabinet' },
+      { name: 'Patio Furniture Set' },
+      { name: 'Outdoor Table' },
+      { name: 'Outdoor Chair' },
+    ],
+  },
+  {
+    label: 'Appliances',
+    emoji: '🔌',
+    items: [
+      { name: 'Refrigerator' },
+      { name: 'Freezer' },
+      { name: 'Washing Machine' },
+      { name: 'Dryer' },
+      { name: 'Dishwasher' },
+      { name: 'Oven / Stove' },
+      { name: 'Microwave' },
+      { name: 'Window AC Unit' },
+      { name: 'Portable AC Unit' },
+      { name: 'Water Heater' },
+      { name: 'Dehumidifier' },
+      { name: 'Space Heater' },
+      { name: 'Vacuum Cleaner' },
+      { name: 'Treadmill' },
+      { name: 'Elliptical Machine' },
+      { name: 'Exercise Bike' },
+      { name: 'Weight Bench' },
+    ],
+  },
+  {
+    label: 'Electronics',
+    emoji: '📺',
+    items: [
+      { name: 'TV (Small, under 40")' },
+      { name: 'TV (Large, 40"+)' },
+      { name: 'Computer Monitor' },
+      { name: 'Desktop Computer' },
+      { name: 'Laptop' },
+      { name: 'Printer / Scanner' },
+      { name: 'Stereo / Speaker System' },
+      { name: 'Gaming Console' },
+      { name: 'Old Electronics Box' },
+    ],
+  },
+  {
+    label: 'Yard & Outdoor',
+    emoji: '🌳',
+    items: [
+      { name: 'Lawn Mower' },
+      { name: 'Grill / BBQ' },
+      { name: 'Trampoline' },
+      { name: 'Swing Set' },
+      { name: 'Hot Tub / Spa' },
+      { name: 'Shed (Small)' },
+      { name: 'Fencing (per section)' },
+      { name: 'Tree Branches / Brush Pile' },
+      { name: 'Potting Soil / Dirt Pile' },
+      { name: 'Patio Umbrella' },
+      { name: 'Garden Hose / Tools' },
+      { name: 'Wheelbarrow' },
+      { name: 'Firewood Pile' },
+      { name: 'Playground Equipment' },
+    ],
+  },
+  {
+    label: 'Construction & Debris',
+    emoji: '🔨',
+    items: [
+      { name: 'Drywall / Sheetrock' },
+      { name: 'Lumber / Wood Pile' },
+      { name: 'Carpet / Padding' },
+      { name: 'Tile / Flooring' },
+      { name: 'Concrete / Brick' },
+      { name: 'Roofing Shingles' },
+      { name: 'Windows / Doors' },
+      { name: 'Cabinets' },
+      { name: 'Countertop' },
+      { name: 'Bathtub' },
+      { name: 'Toilet' },
+      { name: 'Sink' },
+      { name: 'Paint Cans' },
+      { name: 'Insulation' },
+    ],
+  },
+  {
+    label: 'Garage & Storage',
+    emoji: '🏠',
+    items: [
+      { name: 'Tires (each)' },
+      { name: 'Car Battery' },
+      { name: 'Bicycle' },
+      { name: 'Tool Chest / Toolbox' },
+      { name: 'Workbench' },
+      { name: 'Shelving Unit' },
+      { name: 'Storage Bins / Boxes' },
+      { name: 'Old Clothing Bags' },
+      { name: 'Suitcase / Luggage' },
+      { name: 'Sports Equipment' },
+      { name: 'Kids Toys (bag/box)' },
+      { name: 'Holiday Decorations (box)' },
+    ],
+  },
+  {
+    label: 'Miscellaneous',
+    emoji: '📦',
+    items: [
+      { name: 'Piano / Organ' },
+      { name: 'Pool Table' },
+      { name: 'Foosball / Air Hockey Table' },
+      { name: 'Aquarium / Fish Tank' },
+      { name: 'Drum Set' },
+      { name: 'Rug (Large)' },
+      { name: 'Mirror (Large)' },
+      { name: 'Chandelier / Light Fixture' },
+      { name: 'Blinds / Curtain Rods' },
+      { name: 'Bags of Trash' },
+      { name: 'Boxes of Junk' },
+      { name: 'Miscellaneous Item' },
+    ],
+  },
+];
+
 export const QuotePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentStep, setCurrentStep] = useState(1);
 
-  // AI State
+  // AI Photo State
   const [image, setImage] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [detectedItems, setDetectedItems] = useState<DetectedItem[]>([]);
@@ -26,12 +190,16 @@ export const QuotePage: React.FC = () => {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
 
-  // Manual Form State
-  const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', address: '', zipCode: '', date: '', details: ''
-  });
-  const [zipError, setZipError] = useState<string>('');
+  // Item Selection State
+  const [selectedItems, setSelectedItems] = useState<DetectedItem[]>([]);
+  const [catalogSearch, setCatalogSearch] = useState('');
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(ITEM_CATALOG[0].label);
+  const [manualStep, setManualStep] = useState<'select' | 'result'>('select');
+  const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
+  const [manualPricingLoading, setManualPricingLoading] = useState(false);
+  const [manualNewItemName, setManualNewItemName] = useState('');
 
+  // ── Shared helpers ──
   const compressImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -52,8 +220,7 @@ export const QuotePage: React.FC = () => {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, width, height);
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          resolve(compressedDataUrl);
+          resolve(canvas.toDataURL('image/jpeg', 0.8));
         };
         img.onerror = reject;
         img.src = e.target?.result as string;
@@ -63,6 +230,7 @@ export const QuotePage: React.FC = () => {
     });
   };
 
+  // ── AI Photo handlers ──
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -72,8 +240,8 @@ export const QuotePage: React.FC = () => {
         setEstimate(null);
         setDetectedItems([]);
         setLoadingState(LoadingState.IDLE);
-      } catch (error) {
-        console.error('Error compressing image:', error);
+      } catch (err) {
+        console.error('Error compressing image:', err);
       }
     }
   };
@@ -88,7 +256,7 @@ export const QuotePage: React.FC = () => {
       setDetectedItems(items);
       setAiStep('items');
       setLoadingState(LoadingState.SUCCESS);
-    } catch (error) {
+    } catch {
       setLoadingState(LoadingState.ERROR);
     }
   };
@@ -106,8 +274,8 @@ export const QuotePage: React.FC = () => {
         summary: price.summary,
       });
       setAiStep('result');
-    } catch (error) {
-      console.error('Pricing error:', error);
+    } catch (err) {
+      console.error('Pricing error:', err);
     } finally {
       setPricingLoading(false);
     }
@@ -130,54 +298,111 @@ export const QuotePage: React.FC = () => {
     setNewItemName('');
   };
 
-  const handleManualSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    try {
-      const { error: insertError } = await supabase
-        .from('schedule_visits')
-        .insert([{
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          zip_code: formData.zipCode,
-          preferred_date: formData.date,
-          details: formData.details,
-          status: 'pending'
-        }]);
-      if (insertError) throw insertError;
-      setSubmitted(true);
-    } catch (err: any) {
-      console.error('Error submitting schedule visit:', err);
-      setError(err.message || 'Failed to submit request. Please try again.');
-      setSubmitting(false);
-    }
-  };
-
-  const handleNextStep = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
-  };
-
-  const handlePrevStep = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (name === 'zipCode') {
-      if (value && !/^80\d{3}$/.test(value)) {
-        setZipError('Please enter a valid Denver area zip code (80xxx)');
-      } else {
-        setZipError('');
+  // ── Item Selection handlers ──
+  const toggleCatalogItem = (itemName: string) => {
+    setSelectedItems(prev => {
+      const existing = prev.find(i => i.name === itemName);
+      if (existing) {
+        return prev.filter(i => i.name !== itemName);
       }
+      return [...prev, { id: `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, name: itemName, quantity: 1 }];
+    });
+  };
+
+  const updateSelectedQuantity = (id: string, delta: number) => {
+    setSelectedItems(prev => prev.map(item =>
+      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+    ));
+  };
+
+  const removeSelectedItem = (id: string) => {
+    setSelectedItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const addManualSelectedItem = () => {
+    const name = manualNewItemName.trim();
+    if (!name) return;
+    setSelectedItems(prev => [...prev, { id: `custom-${Date.now()}`, name, quantity: 1 }]);
+    setManualNewItemName('');
+  };
+
+  const handleGetManualPrice = async () => {
+    if (selectedItems.length === 0) return;
+    setManualPricingLoading(true);
+    try {
+      const price = await getPriceForItems(selectedItems);
+      setManualPriceEstimate(price);
+      setEstimate({
+        itemsDetected: selectedItems.map(i => `${i.quantity}x ${i.name}`),
+        estimatedVolume: price.estimatedVolume,
+        priceRange: price.priceRange,
+        summary: price.summary,
+      });
+      setManualStep('result');
+    } catch (err) {
+      console.error('Pricing error:', err);
+    } finally {
+      setManualPricingLoading(false);
     }
   };
 
-  // --- Submitted screen ---
+  const isItemSelected = (itemName: string) => selectedItems.some(i => i.name === itemName);
+
+  const filteredCatalog = catalogSearch.trim()
+    ? ITEM_CATALOG.map(cat => ({
+        ...cat,
+        items: cat.items.filter(i => i.name.toLowerCase().includes(catalogSearch.toLowerCase())),
+      })).filter(cat => cat.items.length > 0)
+    : ITEM_CATALOG;
+
+  const totalSelectedCount = selectedItems.reduce((sum, i) => sum + i.quantity, 0);
+
+  // ── Shared price result renderer ──
+  const renderPriceResult = (
+    items: DetectedItem[],
+    price: PriceEstimate,
+    onEditBack: () => void,
+    backLabel: string
+  ) => (
+    <div className="space-y-6">
+      <div className="bg-gray-50 p-6 md:p-8 border border-gray-200 rounded-lg">
+        <div className="mb-6">
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+            Items ({items.reduce((sum, i) => sum + i.quantity, 0)})
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {items.map((item) => (
+              <span key={item.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700">
+                {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
+                {item.name}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="border-t border-gray-200 pt-6 mb-6">
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Estimated Volume</div>
+          <div className="text-2xl font-black">{price.estimatedVolume}</div>
+        </div>
+        <div className="mb-6">
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Price Range</div>
+          <div className="text-4xl font-black">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
+        </div>
+        <p className="text-sm text-gray-600 leading-relaxed mb-6 pb-6 border-b border-gray-200">{price.summary}</p>
+        <button
+          onClick={() => navigate('/booking', { state: { estimate, image } })}
+          className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
+        >
+          Confirm Booking
+        </button>
+        <p className="text-xs text-gray-400 text-center mt-3">* Final price confirmed on-site</p>
+      </div>
+      <button onClick={onEditBack} className="w-full py-3 text-sm font-bold text-gray-500 hover:text-black transition-colors">
+        ← {backLabel}
+      </button>
+    </div>
+  );
+
+  // ── Submitted screen ──
   if (submitted) {
     return (
       <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
@@ -190,7 +415,7 @@ export const QuotePage: React.FC = () => {
               </div>
               <h2 className="text-4xl font-black mb-4">Request Received</h2>
               <p className="text-gray-600 mb-8">
-                You'll be contacted by matched service providers within 15 minutes to confirm your {selectedOption === 'ai' ? 'estimate' : 'appointment'}.
+                You'll be contacted within 15 minutes to confirm your estimate.
               </p>
               <button
                 onClick={() => window.location.reload()}
@@ -205,7 +430,7 @@ export const QuotePage: React.FC = () => {
     );
   }
 
-  // --- Selection screen ---
+  // ── Selection screen ──
   if (!selectedOption) {
     return (
       <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
@@ -225,7 +450,7 @@ export const QuotePage: React.FC = () => {
                   <Camera size={28} />
                 </div>
                 <h3 className="text-xl font-black mb-2">AI Photo Estimate</h3>
-                <p className="text-gray-600 text-sm mb-4">Instant pricing from a photo</p>
+                <p className="text-gray-600 text-sm mb-4">Snap a photo for instant AI pricing</p>
                 <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
                   Continue
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -236,10 +461,10 @@ export const QuotePage: React.FC = () => {
                 className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
               >
                 <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
-                  <CheckCircle size={28} />
+                  <List size={28} />
                 </div>
-                <h3 className="text-xl font-black mb-2">Schedule Visit</h3>
-                <p className="text-gray-600 text-sm mb-4">In-person quote for accuracy</p>
+                <h3 className="text-xl font-black mb-2">Select Your Items</h3>
+                <p className="text-gray-600 text-sm mb-4">Pick items from our catalog for a quote</p>
                 <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
                   Continue
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -258,7 +483,7 @@ export const QuotePage: React.FC = () => {
     );
   }
 
-  // --- Main flow ---
+  // ── Main flow ──
   return (
     <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
       <Breadcrumb items={[{ label: 'Get a Quote' }]} />
@@ -273,11 +498,14 @@ export const QuotePage: React.FC = () => {
 
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-black mb-4">
-              {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Schedule Visit'}
+              {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Select Your Items'}
             </h1>
+            {selectedOption === 'manual' && manualStep === 'select' && (
+              <p className="text-gray-500">Browse categories, pick items, then get your AI-powered estimate</p>
+            )}
           </div>
 
-          {/* ===== AI CONTENT ===== */}
+          {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (
             <div>
               {/* Step indicator */}
@@ -348,10 +576,7 @@ export const QuotePage: React.FC = () => {
                         )}
                       </div>
                       {loadingState === LoadingState.IDLE && (
-                        <button
-                          onClick={handleAnalyze}
-                          className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
-                        >
+                        <button onClick={handleAnalyze} className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg">
                           Analyze Photo
                         </button>
                       )}
@@ -412,26 +637,15 @@ export const QuotePage: React.FC = () => {
                       placeholder="Add an item (e.g. Old Desk)"
                       className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
                     />
-                    <button
-                      onClick={addManualItem}
-                      disabled={!newItemName.trim()}
-                      className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                    >
+                    <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                       <Plus size={16} />
                     </button>
                   </div>
                   <div className="flex gap-3">
-                    <button
-                      onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }}
-                      className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg"
-                    >
+                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg">
                       Back
                     </button>
-                    <button
-                      onClick={handleGetPrice}
-                      disabled={detectedItems.length === 0}
-                      className="flex-1 py-3.5 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
-                    >
+                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed">
                       Get Estimate
                     </button>
                   </div>
@@ -447,211 +661,163 @@ export const QuotePage: React.FC = () => {
               )}
 
               {/* Step 3: Price Result */}
-              {aiStep === 'result' && priceEstimate && (
-                <div className="space-y-6">
-                  <div className="bg-gray-50 p-6 md:p-8 border border-gray-200 rounded-lg">
-                    <div className="mb-6">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Items ({detectedItems.reduce((sum, i) => sum + i.quantity, 0)})</div>
-                      <div className="flex flex-wrap gap-2">
-                        {detectedItems.map((item) => (
-                          <span key={item.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700">
-                            {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
-                            {item.name}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="border-t border-gray-200 pt-6 mb-6">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Estimated Volume</div>
-                      <div className="text-2xl font-black">{priceEstimate.estimatedVolume}</div>
-                    </div>
-                    <div className="mb-6">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Price Range</div>
-                      <div className="text-4xl font-black">${priceEstimate.priceRange.min} &ndash; ${priceEstimate.priceRange.max}</div>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed mb-6 pb-6 border-b border-gray-200">{priceEstimate.summary}</p>
-                    <button
-                      onClick={() => navigate('/booking', { state: { estimate, image } })}
-                      className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
-                    >
-                      Confirm Booking
-                    </button>
-                    <p className="text-xs text-gray-400 text-center mt-3">* Final price confirmed on-site</p>
-                  </div>
-                  <button
-                    onClick={() => { setAiStep('items'); setPriceEstimate(null); }}
-                    className="w-full py-3 text-sm font-bold text-gray-500 hover:text-black transition-colors"
-                  >
-                    ← Edit items and re-estimate
-                  </button>
-                </div>
+              {aiStep === 'result' && priceEstimate && renderPriceResult(
+                detectedItems,
+                priceEstimate,
+                () => { setAiStep('items'); setPriceEstimate(null); },
+                'Edit items and re-estimate'
               )}
             </div>
           )}
 
-          {/* ===== MANUAL CONTENT ===== */}
+          {/* ===== ITEM SELECTION CONTENT ===== */}
           {selectedOption === 'manual' && (
             <div>
-              {/* Step Indicator */}
-              <div className="flex items-center justify-center mb-12">
-                {[1, 2, 3, 4].map((step) => (
-                  <React.Fragment key={step}>
-                    <div className="flex flex-col items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${
-                        currentStep >= step ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
-                      }`}>
-                        {step}
-                      </div>
-                      <span className={`text-xs font-bold mt-2 uppercase tracking-wider ${
-                        currentStep >= step ? 'text-black' : 'text-gray-400'
-                      }`}>
-                        {step === 1 ? 'Zip Code' : step === 2 ? 'Contact' : step === 3 ? 'Details' : 'Review'}
-                      </span>
-                    </div>
-                    {step < 4 && (
-                      <div className={`w-16 h-0.5 mx-2 mb-6 transition-colors ${
-                        currentStep > step ? 'bg-black' : 'bg-gray-200'
-                      }`} />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-
-              {/* Step 1: Zip Code */}
-              {currentStep === 1 && (
-                <form onSubmit={handleNextStep} className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h3 className="text-2xl font-black mb-3">Check Service Availability</h3>
-                    <p className="text-gray-600">Enter your zip code to verify we service your area</p>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Zip Code</label>
-                    <input
-                      name="zipCode"
-                      value={formData.zipCode}
-                      onChange={handleInputChange}
-                      required
-                      pattern="80\d{3}"
-                      placeholder="80xxx"
-                      maxLength={5}
-                      className={`w-full border px-4 py-4 text-lg focus:outline-none transition-colors rounded-lg shadow-sm ${
-                        zipError ? 'border-red-500' : 'border-gray-200 focus:border-black'
-                      }`}
-                    />
-                    {zipError && <p className="text-red-500 text-sm mt-2 font-medium">{zipError}</p>}
-                    <p className="text-gray-500 text-sm mt-2">We serve Denver area zip codes (80xxx within 50-mile radius)</p>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={!!zipError || !formData.zipCode}
-                    className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    Verify & Continue
-                  </button>
-                </form>
-              )}
-
-              {/* Step 2: Contact Info */}
-              {currentStep === 2 && (
-                <form onSubmit={handleNextStep} className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Name</label>
-                    <input name="name" value={formData.name} onChange={handleInputChange} required className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Email</label>
-                      <input name="email" type="email" value={formData.email} onChange={handleInputChange} required className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Phone</label>
-                      <input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} required className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" />
-                    </div>
-                  </div>
-                  <button type="submit" className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md">
-                    Next Step
-                  </button>
-                </form>
-              )}
-
-              {/* Step 3: Service Details */}
-              {currentStep === 3 && (
-                <form onSubmit={handleNextStep} className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Address</label>
-                    <input name="address" value={formData.address} onChange={handleInputChange} required className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Preferred Date</label>
-                    <input name="date" type="date" value={formData.date} onChange={handleInputChange} required className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Details</label>
-                    <textarea name="details" rows={4} value={formData.details} onChange={handleInputChange} placeholder="Describe what needs to be removed" className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-lg shadow-sm"></textarea>
-                  </div>
-                  <div className="flex gap-4">
-                    <button type="button" onClick={handlePrevStep} className="flex-1 py-4 border border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg shadow-sm">
-                      Back
-                    </button>
-                    <button type="submit" className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md">
-                      Next Step
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {/* Step 4: Review & Submit */}
-              {currentStep === 4 && (
+              {/* Selection step */}
+              {manualStep === 'select' && !manualPricingLoading && (
                 <div className="space-y-6">
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 space-y-4 shadow-sm">
-                    <h3 className="text-xl font-black mb-4">Review Your Information</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Name</div>
-                        <div className="font-bold">{formData.name}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Email</div>
-                        <div className="font-bold">{formData.email}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Phone</div>
-                        <div className="font-bold">{formData.phone}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Date</div>
-                        <div className="font-bold">{formData.date}</div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Address</div>
-                      <div className="font-bold">{formData.address}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Zip Code</div>
-                      <div className="font-bold">{formData.zipCode}</div>
-                    </div>
-                    {formData.details && (
-                      <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Details</div>
-                        <div className="text-gray-700">{formData.details}</div>
-                      </div>
-                    )}
+                  {/* Search */}
+                  <div className="relative">
+                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      value={catalogSearch}
+                      onChange={(e) => setCatalogSearch(e.target.value)}
+                      placeholder="Search items..."
+                      className="w-full border border-gray-200 pl-10 pr-4 py-3 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                    />
                   </div>
-                  {error && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg shadow-sm">
-                      <p className="text-red-700 text-sm font-bold">{error}</p>
+
+                  {/* Category accordion */}
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    {filteredCatalog.map((category) => {
+                      const isExpanded = expandedCategory === category.label || catalogSearch.trim() !== '';
+                      const selectedInCategory = category.items.filter(i => isItemSelected(i.name)).length;
+                      return (
+                        <div key={category.label}>
+                          <button
+                            onClick={() => setExpandedCategory(isExpanded && !catalogSearch ? null : category.label)}
+                            className="w-full flex items-center justify-between px-4 py-3.5 bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200 text-left"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <span className="text-lg">{category.emoji}</span>
+                              <span className="text-sm font-bold text-gray-800">{category.label}</span>
+                              {selectedInCategory > 0 && (
+                                <span className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                  {selectedInCategory}
+                                </span>
+                              )}
+                            </div>
+                            <span className={`text-gray-400 text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
+                          </button>
+                          {isExpanded && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 divide-gray-100">
+                              {category.items.map((item) => {
+                                const selected = isItemSelected(item.name);
+                                return (
+                                  <button
+                                    key={item.name}
+                                    onClick={() => toggleCatalogItem(item.name)}
+                                    className={`flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-50 sm:border-r sm:border-gray-50 ${
+                                      selected
+                                        ? 'bg-black/5 font-semibold text-black'
+                                        : 'hover:bg-gray-50 text-gray-700'
+                                    }`}
+                                  >
+                                    <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                                      selected ? 'bg-black border-black' : 'border-gray-300'
+                                    }`}>
+                                      {selected && <CheckCircle size={12} className="text-white" />}
+                                    </div>
+                                    <span className="truncate">{item.name}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Custom item entry */}
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Don't see your item?</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={manualNewItemName}
+                        onChange={(e) => setManualNewItemName(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
+                        placeholder="Type item name and add"
+                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                      />
+                      <button
+                        onClick={addManualSelectedItem}
+                        disabled={!manualNewItemName.trim()}
+                        className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Selected items summary */}
+                  {selectedItems.length > 0 && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Your Items ({totalSelectedCount})</span>
+                        <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors">
+                          Clear All
+                        </button>
+                      </div>
+                      <div className="divide-y divide-gray-100">
+                        {selectedItems.map((item) => (
+                          <div key={item.id} className="flex items-center justify-between py-2">
+                            <span className="text-sm font-medium text-gray-800 flex-1 mr-3 truncate">{item.name}</span>
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                                <Minus size={14} className="text-gray-500" />
+                              </button>
+                              <span className="w-6 text-center text-sm font-bold">{item.quantity}</span>
+                              <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                                <Plus size={14} className="text-gray-500" />
+                              </button>
+                              <button onClick={() => removeSelectedItem(item.id)} className="w-7 h-7 rounded-md flex items-center justify-center hover:bg-red-50 transition-colors ml-1">
+                                <Trash2 size={14} className="text-red-400" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
-                  <div className="flex gap-4">
-                    <button type="button" onClick={handlePrevStep} disabled={submitting} className="flex-1 py-4 border border-black text-black font-bold uppercase hover:bg-black hover:text-white transition-colors rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                      Back
-                    </button>
-                    <button type="button" onClick={handleManualSubmit} disabled={submitting} className="flex-1 py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed">
-                      {submitting ? 'Submitting...' : 'Confirm & Submit'}
-                    </button>
-                  </div>
+
+                  {/* Get Estimate button */}
+                  <button
+                    onClick={handleGetManualPrice}
+                    disabled={selectedItems.length === 0}
+                    className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    {selectedItems.length === 0 ? 'Select items to continue' : `Get Estimate (${totalSelectedCount} item${totalSelectedCount !== 1 ? 's' : ''})`}
+                  </button>
                 </div>
+              )}
+
+              {/* Pricing loading */}
+              {manualPricingLoading && (
+                <div className="py-16 text-center">
+                  <Loader2 size={48} className="animate-spin mx-auto mb-4" />
+                  <p className="text-gray-600">Calculating your estimate...</p>
+                </div>
+              )}
+
+              {/* Price result */}
+              {manualStep === 'result' && manualPriceEstimate && renderPriceResult(
+                selectedItems,
+                manualPriceEstimate,
+                () => { setManualStep('select'); setManualPriceEstimate(null); },
+                'Edit items and re-estimate'
               )}
             </div>
           )}
