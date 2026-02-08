@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Smartphone } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -309,6 +309,13 @@ export const Navbar: React.FC = () => {
                 className="w-full flex items-center px-3 py-3.5 rounded-xl text-sm font-bold text-gray-500 hover:text-black hover:bg-gray-50 transition-colors"
               >
                 Become a Provider
+              </button>
+              <button
+                onClick={() => handleLinkClick('#')}
+                className="w-full flex items-center gap-3 px-2 py-3 text-sm font-bold text-black hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                <Smartphone size={18} className="text-gray-400" />
+                Download Our App
               </button>
             </div>
           </nav>
