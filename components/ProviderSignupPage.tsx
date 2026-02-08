@@ -143,7 +143,8 @@ export const ProviderSignupPage: React.FC = () => {
         <div className="mb-12">
           <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
             <img 
-              src="/opek2.png" 
+              src="/opek2.webp" 
+              loading="lazy"
               alt="Professional junk removal provider" 
               className="w-full h-full object-cover"
             />

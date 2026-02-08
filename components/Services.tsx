@@ -206,7 +206,8 @@ export const Services: React.FC = () => {
             <div className="sticky top-32">
               <div className="relative aspect-[3/2] md:aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
-                  src="/workers-opek.png" 
+                  src="/workers-opek.webp"
+                  loading="lazy" 
                   alt="Professional junk removal team at work" 
                   className="w-full h-full object-cover"
                 />

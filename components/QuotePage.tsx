@@ -483,7 +483,9 @@ export const QuotePage: React.FC = () => {
 
             <img 
 
-              src="/opek2.png" 
+              src="/opek2.webp" 
+
+              loading="lazy"
 
               alt="Professional junk removal service" 
 

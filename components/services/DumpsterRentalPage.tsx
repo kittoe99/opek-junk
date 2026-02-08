@@ -82,7 +82,8 @@ export const DumpsterRentalPage: React.FC = () => {
             {/* Right Column - Image */}
             <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
-                src="/junk-removal.png" 
+                src="/junk-removal.webp" 
+                loading="lazy"
                 alt="Professional dumpster rental service" 
                 className="w-full h-full object-cover"
               />

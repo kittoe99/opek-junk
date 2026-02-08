@@ -110,7 +110,8 @@ export const ContactPage: React.FC = () => {
         <div className="mb-12">
           <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
             <img 
-              src="/opek2.png" 
+              src="/opek2.webp" 
+              loading="lazy"
               alt="Professional junk removal service" 
               className="w-full h-full object-cover"
             />

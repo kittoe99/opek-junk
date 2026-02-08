@@ -49,7 +49,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
           <div className="lg:col-span-5 animate-fade-in" style={{animationDelay: '0.4s'}}>
             <div className="relative aspect-[3/2] sm:aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
               <img 
-                src="/junk-removal.png" 
+                src="/junk-removal.webp" 
                 alt="Professional junk removal truck" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />

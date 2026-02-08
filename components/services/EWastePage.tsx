@@ -55,8 +55,9 @@ export const EWastePage: React.FC = () => {
             {/* Right Column - Image */}
             <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
-                src="/opek2.png" 
-                alt="Professional e-waste recycling service" 
+                src="/opek2.webp"
+                loading="lazy"
+                alt="Professional e-waste recycling service"
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">

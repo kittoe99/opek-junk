@@ -248,7 +248,8 @@ export const BookingPage: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="relative aspect-[3/2] lg:aspect-[4/3] overflow-hidden rounded-2xl sticky top-32">
               <img 
-                src="/junk-removal.png" 
+                src="/junk-removal.webp" 
+                loading="lazy"
                 alt="Professional junk removal service" 
                 className="w-full h-full object-cover"
               />
