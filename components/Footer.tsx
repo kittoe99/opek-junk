@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-4">
             <div className="mb-5">
-              <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-20 w-auto object-contain" />
+              <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-40 w-auto object-contain" />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
               Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
