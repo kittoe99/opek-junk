@@ -269,6 +269,15 @@ export const QuotePage: React.FC = () => {
     setNewItemName('');
   };
 
+  // ── Image lookup helper ──
+  const getItemImage = (itemName: string): string => {
+    for (const cat of ITEM_CATALOG) {
+      const found = cat.items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
+      if (found) return found.image;
+    }
+    return '/items/misc-item.svg';
+  };
+
   // ── Item Selection handlers ──
   const toggleCatalogItem = (itemName: string) => {
     setSelectedItems(prev => {
@@ -580,37 +589,43 @@ export const QuotePage: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  <div className="border border-gray-200 rounded-lg divide-y divide-gray-100">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                     {detectedItems.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between px-4 py-3">
-                        <span className="text-sm font-medium text-gray-800 flex-1 mr-3">{item.name}</span>
-                        <div className="flex items-center gap-2">
-                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Minus size={14} className="text-gray-500" />
+                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-black bg-black/5 shadow-sm text-center">
+                        <button onClick={() => removeItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                          <Trash2 size={10} className="text-red-500" />
+                        </button>
+                        <div className="w-12 h-12 rounded-lg bg-black/10 flex items-center justify-center">
+                          <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
+                        </div>
+                        <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
+                        <div className="flex items-center gap-1.5">
+                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                            <Minus size={12} className="text-gray-500" />
                           </button>
-                          <span className="w-6 text-center text-sm font-bold">{item.quantity}</span>
-                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Plus size={14} className="text-gray-500" />
-                          </button>
-                          <button onClick={() => removeItem(item.id)} className="w-7 h-7 rounded-md flex items-center justify-center hover:bg-red-50 transition-colors ml-1">
-                            <Trash2 size={14} className="text-red-400" />
+                          <span className="w-5 text-center text-xs font-bold">{item.quantity}</span>
+                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                            <Plus size={12} className="text-gray-500" />
                           </button>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={newItemName}
-                      onChange={(e) => setNewItemName(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
-                      placeholder="Add an item (e.g. Old Desk)"
-                      className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
-                    />
-                    <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                      <Plus size={16} />
-                    </button>
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Add an item</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newItemName}
+                        onChange={(e) => setNewItemName(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
+                        placeholder="e.g. Old Desk"
+                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                      />
+                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                        <Plus size={16} />
+                      </button>
+                    </div>
                   </div>
                   <div className="flex gap-3">
                     <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg">
@@ -740,27 +755,30 @@ export const QuotePage: React.FC = () => {
 
                   {/* Selected items summary */}
                   {selectedItems.length > 0 && (
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Your Items ({totalSelectedCount})</span>
                         <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors">
                           Clear All
                         </button>
                       </div>
-                      <div className="divide-y divide-gray-100">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                         {selectedItems.map((item) => (
-                          <div key={item.id} className="flex items-center justify-between py-2">
-                            <span className="text-sm font-medium text-gray-800 flex-1 mr-3 truncate">{item.name}</span>
-                            <div className="flex items-center gap-2">
-                              <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                                <Minus size={14} className="text-gray-500" />
+                          <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-black bg-black/5 shadow-sm text-center">
+                            <button onClick={() => removeSelectedItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                              <Trash2 size={10} className="text-red-500" />
+                            </button>
+                            <div className="w-12 h-12 rounded-lg bg-black/10 flex items-center justify-center">
+                              <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
+                            </div>
+                            <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
+                            <div className="flex items-center gap-1.5">
+                              <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                                <Minus size={12} className="text-gray-500" />
                               </button>
-                              <span className="w-6 text-center text-sm font-bold">{item.quantity}</span>
-                              <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                                <Plus size={14} className="text-gray-500" />
-                              </button>
-                              <button onClick={() => removeSelectedItem(item.id)} className="w-7 h-7 rounded-md flex items-center justify-center hover:bg-red-50 transition-colors ml-1">
-                                <Trash2 size={14} className="text-red-400" />
+                              <span className="w-5 text-center text-xs font-bold">{item.quantity}</span>
+                              <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
+                                <Plus size={12} className="text-gray-500" />
                               </button>
                             </div>
                           </div>
