@@ -1,40 +1,11 @@
 import React from 'react';
-import { Phone, Mail, MapPin, ArrowRight, Apple, Smartphone } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Phone, Mail, MapPin, Apple, Smartphone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
-  const navigate = useNavigate();
 
   return (
     <footer className="bg-black">
-      {/* CTA Banner */}
-      <div className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2">Ready to clear the clutter?</h3>
-              <p className="text-gray-400 text-sm md:text-base">Get a free quote in under 60 seconds.</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-              <button
-                onClick={() => navigate('/quote')}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-black text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-gray-100 transition-colors"
-              >
-                Get A Quote
-                <ArrowRight size={16} />
-              </button>
-              <a
-                href="tel:(303)555-0199"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-gray-700 text-white text-sm font-bold uppercase tracking-wider rounded-xl hover:border-gray-500 hover:bg-gray-900 transition-colors"
-              >
-                <Phone size={16} />
-                Call Now
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">

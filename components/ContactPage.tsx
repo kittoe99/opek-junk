@@ -108,28 +108,28 @@ export const ContactPage: React.FC = () => {
 
         {/* Hero Image */}
         <div className="mb-12">
-          <div className="relative aspect-[21/9] overflow-hidden rounded-xl">
+          <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-xl">
             <img 
               src="/opek2.webp" 
               loading="lazy"
               alt="Professional junk removal service" 
               className="w-full h-full object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-white text-center md:text-left">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 sm:p-6">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-8 text-white text-center md:text-left">
                 <div className="flex items-center gap-2">
-                  <Phone size={18} />
-                  <span className="text-sm font-bold">(303) 555-0199</span>
+                  <Phone size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">(303) 555-0199</span>
                 </div>
                 <span className="hidden md:block text-white/40">•</span>
                 <div className="flex items-center gap-2">
-                  <Mail size={18} />
-                  <span className="text-sm font-bold">Support@opekjunkremoval.com</span>
+                  <Mail size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">Support@opekjunkremoval.com</span>
                 </div>
                 <span className="hidden md:block text-white/40">•</span>
                 <div className="flex items-center gap-2">
-                  <Clock size={18} />
-                  <span className="text-sm font-bold">24/7 Service</span>
+                  <Clock size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">24/7 Service</span>
                 </div>
               </div>
             </div>
