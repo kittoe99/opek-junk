@@ -682,28 +682,30 @@ export const QuotePage: React.FC = () => {
                             <ChevronDown size={16} className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                           </button>
                           {isExpanded && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 divide-gray-100">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 p-3">
                               {category.items.map((item) => {
                                 const selected = isItemSelected(item.name);
                                 return (
                                   <button
                                     key={item.name}
                                     onClick={() => toggleCatalogItem(item.name)}
-                                    className={`flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-50 sm:border-r sm:border-gray-50 ${
+                                    className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all text-center ${
                                       selected
-                                        ? 'bg-black/5 font-semibold text-black'
-                                        : 'hover:bg-gray-50 text-gray-700'
+                                        ? 'border-black bg-black/5 shadow-sm'
+                                        : 'border-gray-100 bg-white hover:border-gray-300 hover:shadow-sm'
                                     }`}
                                   >
-                                    <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                                      selected ? 'bg-black border-black' : 'border-gray-300'
+                                    {selected && (
+                                      <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-black rounded-full flex items-center justify-center">
+                                        <CheckCircle size={12} className="text-white" />
+                                      </div>
+                                    )}
+                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                                      selected ? 'bg-black/10' : 'bg-gray-100'
                                     }`}>
-                                      {selected && <CheckCircle size={12} className="text-white" />}
+                                      <img src={item.image} alt={item.name} className="w-7 h-7" />
                                     </div>
-                                    <div className="w-8 h-8 flex-shrink-0 bg-gray-100 rounded flex items-center justify-center">
-                                      <img src={item.image} alt={item.name} className="w-5 h-5" />
-                                    </div>
-                                    <span className="truncate">{item.name}</span>
+                                    <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
                                   </button>
                                 );
                               })}
