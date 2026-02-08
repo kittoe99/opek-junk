@@ -94,102 +94,78 @@ export const ContactPage: React.FC = () => {
     <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
       <Breadcrumb items={[{ label: 'Contact Us' }]} />
 
-      {/* Hero Section */}
-      <section className="bg-black text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - matches service page style */}
+      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Column */}
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 block">Contact Us</span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 leading-tight">
-                We're here to help clear your space.
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 block">
+                Talk to our team
+              </span>
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
+                Let's get your<br/>space cleared.
               </h1>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
-                Have a question about our services? Need a custom quote? Our team responds within 30 minutes during business hours.
+              
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+                Questions about pricing, scheduling, or what we can haul? Drop us a line — we respond within 30 minutes during business hours.
               </p>
-              {/* Contact Cards */}
-              <div className="space-y-3">
-                <a href="tel:(303)555-0199" className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
-                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
-                    <Phone size={18} />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Call Us</div>
-                    <div className="text-white font-bold">(303) 555-0199</div>
-                  </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                <a 
+                  href="tel:(303)555-0199"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center justify-center gap-2"
+                >
+                  <Phone size={16} />
+                  (303) 555-0199
                 </a>
-                <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
-                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
-                    <Mail size={18} />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Email</div>
-                    <div className="text-white font-bold">Support@opekjunkremoval.com</div>
-                  </div>
+                <a 
+                  href="mailto:Support@opekjunkremoval.com"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg shadow-sm inline-flex items-center justify-center gap-2"
+                >
+                  <Mail size={16} />
+                  Email Us
                 </a>
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div className="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shrink-0">
-                    <Clock size={18} />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Hours</div>
-                    <div className="text-white font-bold">7 Days a Week, 7AM - 7PM</div>
-                  </div>
-                </div>
+              </div>
+
+              {/* Quick info */}
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
+                <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-black" /> Same-day callbacks</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-black" /> No obligation quotes</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-black" /> 7 days a week</span>
               </div>
             </div>
-            {/* Image */}
-            <div className="hidden lg:block relative aspect-[4/3] overflow-hidden rounded-2xl">
+
+            {/* Right Column - Image */}
+            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
                 src="/opek2.webp" 
                 loading="lazy"
-                alt="Professional junk removal service" 
+                alt="Opek junk removal crew loading a truck" 
                 className="w-full h-full object-cover"
               />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle2 size={18}/>
+                  <span className="text-sm font-bold">Licensed & Insured • Eco-Friendly Disposal</span>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                <Zap size={18} className="text-black" />
-              </div>
-              <div>
-                <div className="text-sm font-bold text-black">Fast Response</div>
-                <div className="text-xs text-gray-500">Reply within 30 minutes</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                <Shield size={18} className="text-black" />
-              </div>
-              <div>
-                <div className="text-sm font-bold text-black">Licensed & Insured</div>
-                <div className="text-xs text-gray-500">Fully covered professionals</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                <MessageSquare size={18} className="text-black" />
-              </div>
-              <div>
-                <div className="text-sm font-bold text-black">No Obligation</div>
-                <div className="text-xs text-gray-500">Free quotes, no pressure</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Form + Sidebar Section */}
+      <section className="py-12 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-      {/* Form Section */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
-          <div className="max-w-2xl mx-auto">
+            {/* Form Column */}
+            <div className="lg:col-span-7">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-10 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div className="mb-4 md:mb-6">
@@ -287,8 +263,80 @@ export const ContactPage: React.FC = () => {
             </div>
 
           </form>
+              </div>
+            </div>
+
+            {/* Sidebar Column */}
+            <div className="lg:col-span-5">
+              <div className="sticky top-32 space-y-6">
+
+                {/* Direct Contact */}
+                <div className="bg-black rounded-2xl p-6 md:p-8 text-white">
+                  <h3 className="font-black text-lg mb-1">Prefer to talk?</h3>
+                  <p className="text-gray-400 text-sm mb-6">Skip the form — reach us directly.</p>
+                  <div className="space-y-4">
+                    <a href="tel:(303)555-0199" className="flex items-center gap-3 group">
+                      <div className="w-10 h-10 rounded-lg bg-white/10 group-hover:bg-white/20 flex items-center justify-center transition-colors shrink-0">
+                        <Phone size={16} />
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Phone</div>
+                        <div className="font-bold text-sm">(303) 555-0199</div>
+                      </div>
+                    </a>
+                    <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-3 group">
+                      <div className="w-10 h-10 rounded-lg bg-white/10 group-hover:bg-white/20 flex items-center justify-center transition-colors shrink-0">
+                        <Mail size={16} />
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Email</div>
+                        <div className="font-bold text-sm">Support@opekjunkremoval.com</div>
+                      </div>
+                    </a>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                        <Clock size={16} />
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Hours</div>
+                        <div className="font-bold text-sm">7AM – 7PM, 7 Days</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* What to expect */}
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+                  <h3 className="font-black text-sm mb-4">What happens next?</h3>
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center shrink-0 text-xs font-black">1</div>
+                      <div>
+                        <div className="text-sm font-bold">We receive your message</div>
+                        <div className="text-xs text-gray-500">Your inquiry goes straight to our local team.</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center shrink-0 text-xs font-black">2</div>
+                      <div>
+                        <div className="text-sm font-bold">We respond fast</div>
+                        <div className="text-xs text-gray-500">Expect a call or email within 30 minutes.</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center shrink-0 text-xs font-black">3</div>
+                      <div>
+                        <div className="text-sm font-bold">Get a free quote</div>
+                        <div className="text-xs text-gray-500">No obligation. Transparent pricing upfront.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
-        </div>
         </div>
       </section>
     </div>

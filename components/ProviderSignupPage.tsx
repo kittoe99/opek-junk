@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Truck, MapPin, Calendar, User, DollarSign, TrendingUp, Headphones, Clock } from 'lucide-react';
+import { CheckCircle2, Phone } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -124,95 +124,117 @@ export const ProviderSignupPage: React.FC = () => {
     <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
       <Breadcrumb items={[{ label: 'Become a Provider' }]} />
 
-      {/* Hero Section */}
-      <section className="bg-black text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - matches service page style */}
+      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Column */}
             <div>
-              <span className="inline-block px-3 py-1.5 bg-white/10 text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6 border border-white/20">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 block">
                 Provider Network
               </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 leading-tight">
-                Grow your business with Opek.
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
+                You haul.<br/>We fill your calendar.
               </h1>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
-                Join a nationwide network of trusted junk removal providers. We bring the customers — you deliver the service. Set your own schedule, keep more of what you earn.
+              
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+                Own a truck? Already running jobs? Opek sends you pre-booked, pre-priced customers in your area. No cold calls, no chasing leads — just show up and get paid.
               </p>
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div className="text-2xl md:text-3xl font-black text-white">500+</div>
-                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Providers</div>
+
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                <a 
+                  href="#apply"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center justify-center gap-2"
+                >
+                  Apply Now
+                </a>
+                <a 
+                  href="tel:(303)555-0199"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg shadow-sm inline-flex items-center justify-center gap-2"
+                >
+                  <Phone size={16} />
+                  Talk to Recruiting
+                </a>
+              </div>
+
+              {/* Stats inline */}
+              <div className="flex flex-wrap gap-x-8 gap-y-3">
+                <div>
+                  <div className="text-2xl md:text-3xl font-black text-black">500+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Active Providers</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div className="text-2xl md:text-3xl font-black text-white">50+</div>
-                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Cities</div>
+                <div>
+                  <div className="text-2xl md:text-3xl font-black text-black">50+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Markets</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div className="text-2xl md:text-3xl font-black text-white">10K+</div>
-                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Jobs / Month</div>
+                <div>
+                  <div className="text-2xl md:text-3xl font-black text-black">10K+</div>
+                  <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Jobs / Month</div>
                 </div>
               </div>
             </div>
-            {/* Image */}
-            <div className="hidden lg:block relative aspect-[4/3] overflow-hidden rounded-2xl">
+
+            {/* Right Column - Image */}
+            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
               <img 
                 src="/workers-opek.webp" 
                 loading="lazy"
-                alt="Professional junk removal provider team" 
+                alt="Opek junk removal provider team on the job" 
                 className="w-full h-full object-cover"
               />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle2 size={18}/>
+                  <span className="text-sm font-bold">Be Your Own Boss • Set Your Schedule • Keep More Earnings</span>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-12 md:py-16 border-b border-gray-100">
+      {/* How it works for providers */}
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">Why providers choose Opek</h2>
-            <p className="text-gray-500 text-sm">Everything you need to grow your hauling business.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">How it works</h2>
+            <p className="text-gray-500 text-sm">From signup to your first job in under 48 hours.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
-              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
-                <DollarSign size={18} />
-              </div>
-              <h3 className="font-bold text-sm mb-1.5">Competitive Pay</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">Keep more of what you earn with transparent, competitive payouts on every job.</p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-black mb-4">1</div>
+              <h3 className="font-black text-sm mb-1.5">Apply below</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Takes 5 minutes. Tell us about your truck, your area, and your availability.</p>
             </div>
-            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
-              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
-                <Clock size={18} />
-              </div>
-              <h3 className="font-bold text-sm mb-1.5">Flexible Schedule</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">Work when you want. Set your own availability and accept jobs that fit your schedule.</p>
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-black mb-4">2</div>
+              <h3 className="font-black text-sm mb-1.5">Get approved</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">We verify your info and insurance. Most providers are approved within 1-2 days.</p>
             </div>
-            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
-              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
-                <TrendingUp size={18} />
-              </div>
-              <h3 className="font-bold text-sm mb-1.5">Steady Leads</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">We handle marketing and customer acquisition so you can focus on the work.</p>
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-black mb-4">3</div>
+              <h3 className="font-black text-sm mb-1.5">Receive jobs</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Customers book through Opek. You get notified with job details, address, and pricing.</p>
             </div>
-            <div className="p-5 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
-              <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
-                <Headphones size={18} />
-              </div>
-              <h3 className="font-bold text-sm mb-1.5">Dedicated Support</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">Our provider support team is available 7 days a week to help you succeed.</p>
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-black mb-4">4</div>
+              <h3 className="font-black text-sm mb-1.5">Get paid</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">Complete the job, confirm pickup, and get paid directly. No invoicing, no chasing.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Form Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section id="apply" className="py-16 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">Apply to join</h2>
-            <p className="text-gray-500 text-sm">Fill out the form below and our team will be in touch within 1-2 business days.</p>
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 block">Step 1 of 1</span>
+            <h2 className="text-2xl md:text-3xl font-black text-black mb-2">Apply to join the network</h2>
+            <p className="text-gray-500 text-sm">5 minutes. No fees. We'll be in touch within 1-2 business days.</p>
           </div>
         <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
           <div className="max-w-3xl mx-auto">
