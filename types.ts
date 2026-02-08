@@ -5,6 +5,21 @@ export interface ServiceItem {
   iconName: 'Armchair' | 'Refrigerator' | 'Trash2' | 'Construction' | 'Trees' | 'PackageOpen';
 }
 
+export interface DetectedItem {
+  id: string;
+  name: string;
+  quantity: number;
+}
+
+export interface PriceEstimate {
+  estimatedVolume: string;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  summary: string;
+}
+
 export interface QuoteEstimate {
   itemsDetected: string[];
   estimatedVolume: string;
