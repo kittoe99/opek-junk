@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2, Search, List } from 'lucide-react';
+import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2, Search, List, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -12,14 +12,14 @@ interface CatalogItem {
 }
 interface CatalogCategory {
   label: string;
-  emoji: string;
+  icon: React.ReactNode;
   items: CatalogItem[];
 }
 
 const ITEM_CATALOG: CatalogCategory[] = [
   {
     label: 'Furniture',
-    emoji: '🛋️',
+    icon: <Armchair size={18} />,
     items: [
       { name: 'Sofa / Couch' },
       { name: 'Loveseat' },
@@ -58,7 +58,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Appliances',
-    emoji: '🔌',
+    icon: <Plug size={18} />,
     items: [
       { name: 'Refrigerator' },
       { name: 'Freezer' },
@@ -81,7 +81,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Electronics',
-    emoji: '📺',
+    icon: <Monitor size={18} />,
     items: [
       { name: 'TV (Small, under 40")' },
       { name: 'TV (Large, 40"+)' },
@@ -96,7 +96,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Yard & Outdoor',
-    emoji: '🌳',
+    icon: <TreePine size={18} />,
     items: [
       { name: 'Lawn Mower' },
       { name: 'Grill / BBQ' },
@@ -116,7 +116,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Construction & Debris',
-    emoji: '🔨',
+    icon: <HardHat size={18} />,
     items: [
       { name: 'Drywall / Sheetrock' },
       { name: 'Lumber / Wood Pile' },
@@ -136,7 +136,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Garage & Storage',
-    emoji: '🏠',
+    icon: <Warehouse size={18} />,
     items: [
       { name: 'Tires (each)' },
       { name: 'Car Battery' },
@@ -154,7 +154,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Miscellaneous',
-    emoji: '📦',
+    icon: <Package size={18} />,
     items: [
       { name: 'Piano / Organ' },
       { name: 'Pool Table' },
@@ -700,7 +700,7 @@ export const QuotePage: React.FC = () => {
                             className="w-full flex items-center justify-between px-4 py-3.5 bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200 text-left"
                           >
                             <div className="flex items-center gap-2.5">
-                              <span className="text-lg">{category.emoji}</span>
+                              <span className="text-black">{category.icon}</span>
                               <span className="text-sm font-bold text-gray-800">{category.label}</span>
                               {selectedInCategory > 0 && (
                                 <span className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
@@ -708,7 +708,7 @@ export const QuotePage: React.FC = () => {
                                 </span>
                               )}
                             </div>
-                            <span className={`text-gray-400 text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
+                            <ChevronDown size={16} className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                           </button>
                           {isExpanded && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 divide-gray-100">
