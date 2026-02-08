@@ -20,11 +20,11 @@ export const Footer: React.FC = () => {
             </p>
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="tel:(303)555-0199" className="flex items-center gap-2.5 text-gray-400 hover:text-white transition-colors group">
+              <a href="tel:8313187139" className="flex items-center gap-2.5 text-gray-400 hover:text-white transition-colors group">
                 <div className="w-8 h-8 rounded-lg bg-gray-800 group-hover:bg-gray-700 flex items-center justify-center transition-colors">
                   <Phone size={14} className="text-gray-400 group-hover:text-white transition-colors" />
                 </div>
-                <span className="text-sm font-bold">(303) 555-0199</span>
+                <span className="text-sm font-bold">(831) 318-7139</span>
               </a>
               <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-2.5 text-gray-400 hover:text-white transition-colors group">
                 <div className="w-8 h-8 rounded-lg bg-gray-800 group-hover:bg-gray-700 flex items-center justify-center transition-colors">

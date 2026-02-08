@@ -50,7 +50,7 @@
       "image": "https://opekjunkremoval.com/logo1.png",
       "description": "Professional junk removal services connecting you with trusted providers nationwide. Residential, commercial, construction debris, e-waste recycling, and dumpster rental services.",
       "url": "https://opekjunkremoval.com",
-      "telephone": "(303) 555-0199",
+      "telephone": "(831) 318-7139",
       "email": "Support@opekjunkremoval.com",
       "address": {
         "@type": "PostalAddress",
@@ -263,17 +263,38 @@
   <body>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
-  <div id="ai-widget-wrapper" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-    <div id="ai-widget-container" style="display:none;transition:opacity 0.2s ease,transform 0.2s ease;opacity:0;transform:scale(0.9) translateY(10px);transform-origin:bottom right;">
+  <!-- Desktop: show widget natively -->
+  <div id="ai-widget-desktop" style="position:fixed;bottom:20px;right:20px;z-index:9999;">
+    <elevenlabs-convai agent-id="agent_5101kgxcwtkgek18m0j13cq16t3y"></elevenlabs-convai>
+  </div>
+
+  <!-- Mobile: toggle button + expandable widget, above sticky bar -->
+  <div id="ai-widget-mobile" style="position:fixed;bottom:80px;right:16px;z-index:9999;display:none;flex-direction:column;align-items:flex-end;gap:8px;">
+    <div id="ai-widget-container-m" style="display:none;transition:opacity 0.2s ease,transform 0.2s ease;opacity:0;transform:scale(0.9) translateY(10px);transform-origin:bottom right;">
       <elevenlabs-convai agent-id="agent_5101kgxcwtkgek18m0j13cq16t3y"></elevenlabs-convai>
     </div>
-    <button id="ai-widget-toggle" onclick="toggleAiWidget()" style="width:48px;height:48px;border-radius:50%;background:#000;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform 0.2s ease,background 0.15s ease;" onmouseenter="this.style.background='#333'" onmouseleave="this.style.background='#000'">
-      <svg id="ai-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    <button id="ai-widget-toggle" onclick="toggleAiWidget()" style="width:44px;height:44px;border-radius:50%;background:#000;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform 0.2s ease,background 0.15s ease;">
+      <svg id="ai-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
     </button>
   </div>
+
   <script>
+    function applyWidgetLayout(){
+      var d=document.getElementById('ai-widget-desktop');
+      var m=document.getElementById('ai-widget-mobile');
+      if(window.innerWidth>=768){
+        d.style.display='block';
+        m.style.display='none';
+      }else{
+        d.style.display='none';
+        m.style.display='flex';
+      }
+    }
+    applyWidgetLayout();
+    window.addEventListener('resize',applyWidgetLayout);
+
     function toggleAiWidget(){
-      var c=document.getElementById('ai-widget-container');
+      var c=document.getElementById('ai-widget-container-m');
       var icon=document.getElementById('ai-toggle-icon');
       if(c.style.display==='none'){
         c.style.display='block';

@@ -11,11 +11,11 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
       <div className="bg-black text-white rounded-full shadow-2xl px-4 py-3 md:px-6 md:py-4 flex items-center justify-between md:justify-center gap-3 md:gap-4 border border-white/10 max-w-2xl mx-auto">
         {/* Phone Number */}
         <a 
-          href="tel:3035550199"
+          href="tel:8313187139"
           className="flex items-center gap-2 px-3 py-2 md:px-4 hover:bg-white/10 rounded-full transition-colors flex-1 md:flex-initial justify-center"
         >
           <Phone size={18} className="flex-shrink-0" />
-          <span className="font-bold text-xs md:text-sm whitespace-nowrap">(303) 555-0199</span>
+          <span className="font-bold text-xs md:text-sm whitespace-nowrap">(831) 318-7139</span>
         </a>
 
         {/* Divider */}

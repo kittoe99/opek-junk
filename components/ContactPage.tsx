@@ -119,7 +119,7 @@ export const ContactPage: React.FC = () => {
               <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-8 text-white text-center md:text-left">
                 <div className="flex items-center gap-2">
                   <Phone size={16} className="shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold">(303) 555-0199</span>
+                  <span className="text-xs sm:text-sm font-bold">(831) 318-7139</span>
                 </div>
                 <span className="hidden md:block text-white/40">•</span>
                 <div className="flex items-center gap-2">
@@ -183,7 +183,7 @@ export const ContactPage: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                  placeholder="(303) 555-0199"
+                  placeholder="(831) 318-7139"
                 />
               </div>
               <div>

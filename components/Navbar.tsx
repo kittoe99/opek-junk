@@ -325,8 +325,8 @@ export const Navbar: React.FC = () => {
               Get A Quote
             </button>
             <div className="text-center">
-              <a href="tel:(303)555-0199" className="text-xs text-gray-400 font-bold hover:text-black transition-colors">
-                (303) 555-0199
+              <a href="tel:8313187139" className="text-xs text-gray-400 font-bold hover:text-black transition-colors">
+                (831) 318-7139
               </a>
             </div>
           </div>

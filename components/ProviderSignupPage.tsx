@@ -230,7 +230,7 @@ export const ProviderSignupPage: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="(303) 555-0199"
+                    placeholder="(831) 318-7139"
                   />
                 </div>
                 <div className="md:col-span-2">
