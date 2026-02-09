@@ -381,11 +381,11 @@ export const QuotePage: React.FC = () => {
         </div>
         <div className="border-t border-gray-200 pt-6 mb-6">
           <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Estimated Volume</div>
-          <div className="text-2xl font-black">{price.estimatedVolume}</div>
+          <div className="text-2xl font-black text-emerald-600">{price.estimatedVolume}</div>
         </div>
         <div className="mb-6">
           <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Price Range</div>
-          <div className="text-4xl font-black">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
+          <div className="text-4xl font-black text-emerald-600">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
         </div>
         <p className="text-sm text-gray-600 leading-relaxed mb-6 pb-6 border-b border-gray-200">{price.summary}</p>
         <button
@@ -410,7 +410,7 @@ export const QuotePage: React.FC = () => {
         <section className="py-16 md:py-20 lg:py-32">
           <div className="flex items-center justify-center">
             <div className="max-w-lg mx-auto px-4 text-center">
-              <div className="w-20 h-20 bg-black text-white flex items-center justify-center mx-auto mb-6 rounded-full">
+              <div className="w-20 h-20 bg-emerald-500 text-white flex items-center justify-center mx-auto mb-6 rounded-full">
                 <CheckCircle size={40} />
               </div>
               <h2 className="text-4xl font-black mb-4">Request Received</h2>
@@ -517,13 +517,13 @@ export const QuotePage: React.FC = () => {
                     <React.Fragment key={label}>
                       <div className="flex flex-col items-center">
                         <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                          isComplete || isActive ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
+                          isComplete ? 'bg-emerald-500 text-white' : isActive ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
                         }`}>
                           {isComplete ? <CheckCircle size={18} /> : i + 1}
                         </div>
                         <span className="text-[10px] font-bold mt-1.5 uppercase tracking-wider text-gray-500">{label}</span>
                       </div>
-                      {i < 2 && <div className={`w-12 h-0.5 mx-2 mb-5 ${isComplete ? 'bg-black' : 'bg-gray-200'}`} />}
+                      {i < 2 && <div className={`w-12 h-0.5 mx-2 mb-5 ${isComplete ? 'bg-emerald-500' : 'bg-gray-200'}`} />}
                     </React.Fragment>
                   );
                 })}
@@ -715,7 +715,7 @@ export const QuotePage: React.FC = () => {
                               <span className="text-black">{category.icon}</span>
                               <span className="text-sm font-bold text-gray-800">{category.label}</span>
                               {selectedInCategory > 0 && (
-                                <span className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                <span className="bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                                   {selectedInCategory}
                                 </span>
                               )}

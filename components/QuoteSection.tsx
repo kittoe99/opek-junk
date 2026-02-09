@@ -39,7 +39,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ onOpenAI }) => {
             </p>
             
             <div className="flex items-center gap-3 text-sm text-gray-500 mb-8 z-10 font-bold bg-white w-fit px-4 py-2 rounded-full border border-gray-200">
-              <Clock size={16} className="text-black" />
+              <Clock size={16} className="text-emerald-500" />
               <span>Get quote within 15 minutes</span>
             </div>
 
@@ -64,7 +64,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ onOpenAI }) => {
             </p>
 
             <div className="flex items-center gap-3 text-sm text-gray-500 mb-8 z-10 font-bold bg-gray-50 w-fit px-4 py-2 rounded-full border border-gray-200">
-              <Calendar size={16} className="text-black" />
+              <Calendar size={16} className="text-emerald-500" />
               <span>Free, no-obligation visit</span>
             </div>
 

@@ -89,7 +89,7 @@ export const DumpsterRentalPage: React.FC = () => {
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                 <div className="flex items-center gap-3 text-white">
-                  <CheckCircle2 size={18}/>
+                  <CheckCircle2 size={18} className="text-emerald-400"/>
                   <span className="text-sm font-bold">Multiple Sizes • Flexible Periods • Fast Delivery</span>
                 </div>
               </div>

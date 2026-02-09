@@ -55,7 +55,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               />
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6 transform translate-y-0 group-hover:translate-y-0 transition-transform duration-300">
                 <div className="flex items-center gap-3 text-white">
-                  <CheckCircle2 size={18} className="animate-pulse"/>
+                  <CheckCircle2 size={18} className="text-emerald-400 animate-pulse"/>
                   <span className="text-sm font-bold">Fully Insured • 70% Recycled • Same-Day Available</span>
                 </div>
               </div>

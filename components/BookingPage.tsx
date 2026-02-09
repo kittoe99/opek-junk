@@ -277,7 +277,7 @@ export const BookingPage: React.FC = () => {
         <Breadcrumb items={[{ label: 'Book Online' }]} />
         <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
           <div className="max-w-md w-full text-center">
-            <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} />
             </div>
             <h2 className="text-2xl font-black mb-3">Booking Confirmed!</h2>
@@ -381,7 +381,7 @@ export const BookingPage: React.FC = () => {
                     <React.Fragment key={label}>
                       <div className="flex flex-col items-center">
                         <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                          currentStep >= step ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
+                          currentStep > step ? 'bg-emerald-500 text-white' : currentStep === step ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
                         }`}>
                           {currentStep > step ? <CheckCircle size={16} /> : step}
                         </div>
@@ -393,7 +393,7 @@ export const BookingPage: React.FC = () => {
                       </div>
                       {step < 3 && (
                         <div className={`w-16 h-0.5 mx-2 mb-5 transition-colors ${
-                          currentStep > step ? 'bg-black' : 'bg-gray-200'
+                          currentStep > step ? 'bg-emerald-500' : 'bg-gray-200'
                         }`} />
                       )}
                     </React.Fragment>

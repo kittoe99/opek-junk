@@ -71,7 +71,7 @@ export const ContactPage: React.FC = () => {
         <Breadcrumb items={[{ label: 'Contact Us' }]} />
         <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
           <div className="max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 size={32} />
           </div>
           <h2 className="text-2xl font-black mb-3">Message Received!</h2>
