@@ -226,32 +226,36 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Sidebar Menu */}
       <div 
-        className={`fixed top-0 right-0 h-full w-[300px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-[305px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-            <span className="text-xs font-black uppercase tracking-widest text-gray-400">Menu</span>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <img
+              src="/logo1.png"
+              alt="Opek Junk Removal"
+              className="h-9 w-auto object-contain"
+            />
             <button 
               onClick={() => setIsMenuOpen(false)}
-              className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+              className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
             >
-              <X size={22} className="text-gray-600" />
+              <X size={18} className="text-gray-600" />
             </button>
           </div>
 
           {/* Location Badge */}
           {userCity && (
-            <div className="px-6 py-3 bg-gray-50 border-b border-gray-100">
+            <div className="mx-5 mt-4 mb-1">
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-gray-500 hover:text-black transition-colors disabled:opacity-50 w-full"
               >
-                <MapPin size={14} />
-                <span className="text-xs font-bold uppercase tracking-wider">
+                <MapPin size={13} className="shrink-0" />
+                <span className="text-[11px] font-bold uppercase tracking-wider">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
               </button>
@@ -259,23 +263,28 @@ export const Navbar: React.FC = () => {
           )}
 
           {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto px-4 py-4">
-            <div className="space-y-1">
-              {navLinks.map((link) => (
+          <nav className="flex-1 overflow-y-auto px-5 py-3">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-2 px-1">Navigation</p>
+            <div className="space-y-0.5">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path.split('#')[0]));
+                return (
                 <div key={link.name}>
                   {link.hasMega ? (
                     <div>
                       <button
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full flex items-center justify-between px-3 py-3.5 rounded-xl text-sm font-bold text-black hover:bg-gray-50 transition-colors"
+                        className={`w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
+                          mobileServicesOpen ? 'bg-black text-white' : 'text-gray-900 hover:bg-gray-50'
+                        }`}
                       >
                         <span>{link.name}</span>
-                        <ChevronDown size={16} className={`text-gray-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={16} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180 text-white/60' : 'text-gray-400'}`} />
                       </button>
                       
                       {/* Services Submenu */}
                       <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="pl-3 pr-1 py-1 space-y-0.5">
+                        <div className="py-1.5 space-y-0.5">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -283,10 +292,13 @@ export const Navbar: React.FC = () => {
                                 setMobileServicesOpen(false);
                                 handleLinkClick(item.path);
                               }}
-                              className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                              className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group flex items-start gap-2.5"
                             >
-                              <div className="text-sm font-semibold text-gray-800 group-hover:text-black">{item.name}</div>
-                              <div className="text-[11px] text-gray-400 mt-0.5">{item.desc}</div>
+                              <span className="w-1 h-1 rounded-full bg-gray-300 mt-2 shrink-0 group-hover:bg-black transition-colors"></span>
+                              <div>
+                                <div className="text-[13px] font-semibold text-gray-800 group-hover:text-black">{item.name}</div>
+                                <div className="text-[11px] text-gray-400 mt-0.5 leading-tight">{item.desc}</div>
+                              </div>
                             </button>
                           ))}
                         </div>
@@ -295,18 +307,23 @@ export const Navbar: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link.path)}
-                      className="w-full flex items-center px-3 py-3.5 rounded-xl text-sm font-bold text-black hover:bg-gray-50 transition-colors"
+                      className={`w-full flex items-center px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
+                        isActive ? 'bg-gray-100 text-black' : 'text-gray-900 hover:bg-gray-50'
+                      }`}
                     >
                       {link.name}
                     </button>
                   )}
                 </div>
-              ))}
+              );
+              })}
+
+              <div className="h-px bg-gray-100 my-2"></div>
 
               {/* Provider Signup Link */}
               <button
                 onClick={() => handleLinkClick('/provider-signup')}
-                className="w-full flex items-center px-3 py-3.5 rounded-xl text-sm font-bold text-gray-500 hover:text-black hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center px-3 py-3 rounded-xl text-sm font-bold text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
               >
                 Become a Provider
               </button>
@@ -314,46 +331,44 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Nav Image */}
-          <div className="px-4 py-3">
-            <img
-              src="/opek-nav.webp"
-              alt="Opek Junk Removal"
-              loading="lazy"
-              className="w-full rounded-xl object-cover"
-            />
+          <div className="px-5 pb-2">
+            <div className="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+              <img
+                src="/opek-nav.webp"
+                alt="Opek Junk Removal"
+                loading="lazy"
+                className="w-full h-36 object-cover"
+              />
+            </div>
           </div>
 
           {/* Sidebar Footer */}
-          <div className="mt-auto p-4 space-y-3">
-            {/* Download App Card */}
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Get the App</p>
-              <div className="flex gap-2">
-                <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 transition-colors">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  App Store
-                </button>
-                <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 transition-colors">
-                  <Smartphone size={14} />
-                  Google Play
-                </button>
-              </div>
-            </div>
-
+          <div className="p-5 pt-3 space-y-2.5 border-t border-gray-100">
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 navigate('/quote');
               }}
-              className="w-full py-3.5 bg-black text-white text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-xl"
+              className="w-full py-3.5 bg-black text-white text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-xl shadow-md"
             >
               Get A Quote
             </button>
-            <div className="text-center">
-              <a href="tel:8313187139" className="text-xs text-gray-400 font-bold hover:text-black transition-colors">
-                (831) 318-7139
-              </a>
+
+            {/* Download App Card */}
+            <div className="flex gap-2">
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-gray-100 text-black rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-colors">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                App Store
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-gray-100 text-black rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-colors">
+                <Smartphone size={13} />
+                Google Play
+              </button>
             </div>
+
+            <a href="tel:8313187139" className="flex items-center justify-center gap-1.5 text-[11px] text-gray-400 font-bold hover:text-black transition-colors py-1">
+              <span>Call us: (831) 318-7139</span>
+            </a>
           </div>
         </div>
       </div>
