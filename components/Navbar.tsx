@@ -332,7 +332,7 @@ export const Navbar: React.FC = () => {
 
           {/* Nav Image with CTA overlay */}
           <div className="px-5 pb-2">
-            <div className={`relative rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 ${mobileServicesOpen ? 'h-24' : 'h-36'}`}>
+            <div className={`relative rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 ${mobileServicesOpen ? 'h-0 opacity-0 border-0 shadow-none' : 'h-36 opacity-100'}`}>
               <img
                 src="/opek-nav.webp"
                 alt="Opek Junk Removal"
@@ -346,7 +346,7 @@ export const Navbar: React.FC = () => {
                     setIsMenuOpen(false);
                     navigate('/quote');
                   }}
-                  className="px-6 py-2.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg shadow-lg"
+                  className="px-6 py-2.5 bg-transparent text-white text-xs font-bold uppercase tracking-wider border border-white hover:bg-white/20 transition-colors rounded-lg"
                 >
                   Get A Quote
                 </button>
