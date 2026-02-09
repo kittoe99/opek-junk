@@ -164,7 +164,7 @@ export const QuotePage: React.FC = () => {
   // Item Selection State
   const [selectedItems, setSelectedItems] = useState<DetectedItem[]>([]);
   const [catalogSearch, setCatalogSearch] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(ITEM_CATALOG[0].label);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [manualStep, setManualStep] = useState<'select' | 'result'>('select');
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
@@ -726,28 +726,43 @@ export const QuotePage: React.FC = () => {
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 p-3">
                               {category.items.map((item) => {
                                 const selected = isItemSelected(item.name);
+                                const selectedItem = selectedItems.find(i => i.name === item.name);
                                 return (
-                                  <button
+                                  <div
                                     key={item.name}
-                                    onClick={() => toggleCatalogItem(item.name)}
-                                    className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all text-center ${
+                                    className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200 text-center cursor-pointer ${
                                       selected
-                                        ? 'border-black bg-black/5 shadow-sm'
-                                        : 'border-gray-100 bg-white hover:border-gray-300 hover:shadow-sm'
+                                        ? 'border-black bg-black/5 shadow-md scale-[1.02]'
+                                        : 'border-gray-100 bg-white hover:border-gray-300 hover:shadow-sm active:scale-95'
                                     }`}
+                                    onClick={() => !selected && toggleCatalogItem(item.name)}
                                   >
                                     {selected && (
-                                      <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-black rounded-full flex items-center justify-center">
-                                        <CheckCircle size={12} className="text-white" />
-                                      </div>
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
+                                        className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
+                                      >
+                                        <Trash2 size={10} className="text-red-500" />
+                                      </button>
                                     )}
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
-                                      selected ? 'bg-black/10' : 'bg-gray-100'
+                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                                      selected ? 'bg-black/10 scale-110' : 'bg-gray-100'
                                     }`}>
                                       <img src={item.image} alt={item.name} className="w-7 h-7" />
                                     </div>
                                     <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
-                                  </button>
+                                    {selected && selectedItem && (
+                                      <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-gray-300 flex items-center justify-center hover:bg-white transition-colors">
+                                          <Minus size={12} className="text-gray-500" />
+                                        </button>
+                                        <span className="w-5 text-center text-xs font-bold">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-gray-300 flex items-center justify-center hover:bg-white transition-colors">
+                                          <Plus size={12} className="text-gray-500" />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
                                 );
                               })}
                             </div>
@@ -779,37 +794,26 @@ export const QuotePage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Selected items summary */}
+                  {/* Selected items summary bar */}
                   {selectedItems.length > 0 && (
-                    <div ref={selectedItemsRef} className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Your Items ({totalSelectedCount})</span>
-                        <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors">
-                          Clear All
-                        </button>
+                    <div ref={selectedItemsRef} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-black">{totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}</span>
+                        <div className="flex flex-wrap gap-1">
+                          {selectedItems.slice(0, 3).map((item) => (
+                            <span key={item.id} className="inline-flex items-center gap-0.5 px-2 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-medium text-gray-600">
+                              {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
+                              {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
+                            </span>
+                          ))}
+                          {selectedItems.length > 3 && (
+                            <span className="text-[10px] font-bold text-gray-400">+{selectedItems.length - 3} more</span>
+                          )}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
-                        {selectedItems.map((item) => (
-                          <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-black bg-black/5 shadow-sm text-center">
-                            <button onClick={() => removeSelectedItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
-                              <Trash2 size={10} className="text-red-500" />
-                            </button>
-                            <div className="w-12 h-12 rounded-lg bg-black/10 flex items-center justify-center">
-                              <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
-                            </div>
-                            <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
-                            <div className="flex items-center gap-1.5">
-                              <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                                <Minus size={12} className="text-gray-500" />
-                              </button>
-                              <span className="w-5 text-center text-xs font-bold">{item.quantity}</span>
-                              <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                                <Plus size={12} className="text-gray-500" />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors shrink-0 ml-2">
+                        Clear
+                      </button>
                     </div>
                   )}
 
