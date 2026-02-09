@@ -330,30 +330,32 @@ export const Navbar: React.FC = () => {
             </div>
           </nav>
 
-          {/* Nav Image */}
+          {/* Nav Image with CTA overlay */}
           <div className="px-5 pb-2">
-            <div className="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+            <div className={`relative rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 ${mobileServicesOpen ? 'h-24' : 'h-36'}`}>
               <img
                 src="/opek-nav.webp"
                 alt="Opek Junk Removal"
                 loading="lazy"
-                className="w-full h-36 object-cover"
+                className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    navigate('/quote');
+                  }}
+                  className="px-6 py-2.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg shadow-lg"
+                >
+                  Get A Quote
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Sidebar Footer */}
           <div className="p-5 pt-3 space-y-2.5 border-t border-gray-100">
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                navigate('/quote');
-              }}
-              className="w-full py-3.5 bg-black text-white text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-xl shadow-md"
-            >
-              Get A Quote
-            </button>
-
             {/* Download App Card */}
             <div className="flex gap-2">
               <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-gray-100 text-black rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-colors">
