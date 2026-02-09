@@ -246,7 +246,8 @@ export const QuotePage: React.FC = () => {
       setDetectedItems(items);
       setAiStep('items');
       setLoadingState(LoadingState.SUCCESS);
-    } catch {
+    } catch (err) {
+      console.error('AI analysis error:', err);
       setLoadingState(LoadingState.ERROR);
     }
   };
