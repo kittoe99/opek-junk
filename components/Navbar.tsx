@@ -313,6 +313,16 @@ export const Navbar: React.FC = () => {
             </div>
           </nav>
 
+          {/* Nav Image */}
+          <div className="px-4 py-3">
+            <img
+              src="/opek-nav.webp"
+              alt="Opek Junk Removal"
+              loading="lazy"
+              className="w-full rounded-xl object-cover"
+            />
+          </div>
+
           {/* Sidebar Footer */}
           <div className="mt-auto p-4 space-y-3">
             {/* Download App Card */}
