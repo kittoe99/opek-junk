@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, BadgeDollarSign, Sparkles, ArrowRight } from 'lucide-react';
+import { ScanLine, HandCoins, Truck, ArrowRight } from 'lucide-react';
 
 interface ProcessProps {
   onGetQuote?: () => void;
@@ -8,25 +8,22 @@ interface ProcessProps {
 export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      icon: Camera,
-      title: "SNAP A PHOTO",
-      desc: "Take a quick photo of your junk. Our AI instantly analyzes the volume and gives you a price range.",
-      accent: "bg-emerald-50 border-emerald-100 text-emerald-600",
-      iconBg: "bg-emerald-100",
+      icon: ScanLine,
+      number: "01",
+      title: "SCAN YOUR JUNK",
+      desc: "Snap a photo — our AI scans the pile, identifies every item, and calculates the load size instantly.",
     },
     {
-      icon: BadgeDollarSign,
-      title: "GET YOUR PRICE",
-      desc: "Receive an upfront, transparent quote. No hidden fees, no surprises — just honest pricing.",
-      accent: "bg-blue-50 border-blue-100 text-blue-600",
-      iconBg: "bg-blue-100",
+      icon: HandCoins,
+      number: "02",
+      title: "LOCK IN YOUR PRICE",
+      desc: "Get a guaranteed price range on the spot. What you see is what you pay — zero hidden fees.",
     },
     {
-      icon: Sparkles,
-      title: "WE HANDLE IT",
-      desc: "Our insured pros arrive on time, haul everything away, and leave your space spotless.",
-      accent: "bg-amber-50 border-amber-100 text-amber-600",
-      iconBg: "bg-amber-100",
+      icon: Truck,
+      number: "03",
+      title: "WE HAUL IT ALL",
+      desc: "Our licensed, insured crew shows up on time, loads everything, and leaves your space clean.",
     }
   ];
 
@@ -46,29 +43,29 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           {steps.map((step, index) => (
-            <div key={index} className={`relative rounded-2xl border p-6 md:p-8 transition-all hover:shadow-lg ${step.accent}`}>
+            <div key={index} className="group relative bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8 hover:bg-black hover:border-black transition-all duration-300">
               {/* Step number */}
-              <div className="absolute -top-3 left-6 w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-xs">
-                {index + 1}
-              </div>
+              <span className="text-[64px] md:text-[80px] font-black leading-none text-gray-100 group-hover:text-white/10 absolute top-3 right-5 transition-colors duration-300 select-none">
+                {step.number}
+              </span>
 
               {/* Icon */}
-              <div className={`w-14 h-14 ${step.iconBg} rounded-xl flex items-center justify-center mb-5`}>
-                <step.icon size={26} strokeWidth={2} />
+              <div className="relative z-10 w-12 h-12 bg-black text-white group-hover:bg-emerald-500 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300">
+                <step.icon size={22} strokeWidth={2} />
               </div>
               
               {/* Content */}
-              <h3 className="text-base md:text-lg font-black text-gray-900 mb-2">
+              <h3 className="relative z-10 text-base md:text-lg font-black text-gray-900 group-hover:text-white mb-2 transition-colors duration-300">
                 {step.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="relative z-10 text-gray-500 group-hover:text-gray-400 text-sm leading-relaxed transition-colors duration-300">
                 {step.desc}
               </p>
 
-              {/* Connector arrow (desktop only) */}
+              {/* Connector (desktop) */}
               {index < 2 && (
-                <div className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 bg-white border border-gray-200 rounded-full items-center justify-center">
-                  <ArrowRight size={12} className="text-gray-400" />
+                <div className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-6 h-6 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm">
+                  <ArrowRight size={11} className="text-gray-400" />
                 </div>
               )}
             </div>
