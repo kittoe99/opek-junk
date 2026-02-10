@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Search, MapPin, MapPinCheck, Calendar, Clock, Phone, Hash, ChevronRight, AlertCircle } from 'lucide-react';
+import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
 interface BookingResult {
   id: string;
+  order_number: string;
   name: string;
   phone: string;
   address: string;
@@ -20,12 +21,21 @@ interface BookingResult {
   price_range_max: number | null;
 }
 
-const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
-  pending: { label: 'Pending', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200' },
-  confirmed: { label: 'Confirmed', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200' },
-  in_progress: { label: 'In Progress', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200' },
-  completed: { label: 'Completed', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200' },
-  cancelled: { label: 'Cancelled', color: 'text-red-700', bg: 'bg-red-50 border-red-200' },
+interface StatusHistoryItem {
+  id: string;
+  status: string;
+  note: string | null;
+  created_at: string;
+}
+
+const STATUS_MAP: Record<string, { label: string; color: string; bg: string; dot: string }> = {
+  pending: { label: 'Pending', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', dot: 'bg-yellow-400' },
+  confirmed: { label: 'Confirmed', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', dot: 'bg-blue-500' },
+  scheduled: { label: 'Scheduled', color: 'text-indigo-700', bg: 'bg-indigo-50 border-indigo-200', dot: 'bg-indigo-500' },
+  en_route: { label: 'En Route', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', dot: 'bg-orange-500' },
+  in_progress: { label: 'In Progress', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', dot: 'bg-orange-500' },
+  completed: { label: 'Completed', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
+  cancelled: { label: 'Cancelled', color: 'text-red-700', bg: 'bg-red-50 border-red-200', dot: 'bg-red-500' },
 };
 
 export const TrackOrderPage: React.FC = () => {
@@ -36,6 +46,8 @@ export const TrackOrderPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<BookingResult | null>(null);
+  const [statusHistory, setStatusHistory] = useState<StatusHistoryItem[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,19 +58,21 @@ export const TrackOrderPage: React.FC = () => {
     setError(null);
     setResults([]);
     setSelectedOrder(null);
+    setStatusHistory([]);
     setSearched(true);
 
     try {
       let query = supabase
         .from('bookings')
-        .select('id, name, phone, address, city, state, zip_code, service_type, preferred_date, status, created_at, estimated_volume, price_range_min, price_range_max')
+        .select('id, order_number, name, phone, address, city, state, zip_code, service_type, preferred_date, status, created_at, estimated_volume, price_range_min, price_range_max')
         .order('created_at', { ascending: false });
 
       if (searchType === 'phone') {
         const digits = value.replace(/\D/g, '');
         query = query.like('phone', `%${digits}%`);
       } else {
-        query = query.eq('id', value);
+        const normalized = value.toUpperCase().trim();
+        query = query.eq('order_number', normalized);
       }
 
       const { data, error: queryError } = await query.limit(10);
@@ -70,6 +84,26 @@ export const TrackOrderPage: React.FC = () => {
       setError('Unable to look up your order. Please check your input and try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSelectOrder = async (order: BookingResult) => {
+    setSelectedOrder(order);
+    setHistoryLoading(true);
+    try {
+      const { data, error: histError } = await supabase
+        .from('order_status_history')
+        .select('id, status, note, created_at')
+        .eq('booking_id', order.id)
+        .order('created_at', { ascending: true });
+
+      if (histError) throw histError;
+      setStatusHistory(data || []);
+    } catch (err) {
+      console.error('Failed to load status history:', err);
+      setStatusHistory([]);
+    } finally {
+      setHistoryLoading(false);
     }
   };
 
@@ -100,11 +134,11 @@ export const TrackOrderPage: React.FC = () => {
     const s = getStatus(selectedOrder.status);
     return (
       <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
-        <Breadcrumb items={[{ label: 'Track Order', path: '/track-order' }, { label: `Order #${selectedOrder.id.slice(0, 8)}` }]} />
+        <Breadcrumb items={[{ label: 'Track Order', path: '/track-order' }, { label: selectedOrder.order_number }]} />
         <div className="py-16 md:py-20 lg:py-32">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <button
-              onClick={() => setSelectedOrder(null)}
+              onClick={() => { setSelectedOrder(null); setStatusHistory([]); }}
               className="mb-8 text-sm font-bold text-gray-600 hover:text-black transition-colors"
             >
               ← Back to results
@@ -116,13 +150,66 @@ export const TrackOrderPage: React.FC = () => {
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order Number</p>
-                    <p className="text-sm font-mono font-bold text-black">{selectedOrder.id.slice(0, 8).toUpperCase()}</p>
+                    <p className="text-lg font-mono font-black text-black">{selectedOrder.order_number}</p>
                   </div>
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${s.bg} ${s.color}`}>
                     {s.label}
                   </span>
                 </div>
                 <p className="text-xs text-gray-400">Placed {formatDateTime(selectedOrder.created_at)}</p>
+              </div>
+
+              {/* Status Timeline */}
+              <div className="p-6 md:p-8 border-b border-gray-100">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Order Timeline</p>
+                {historyLoading ? (
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <Clock size={14} className="animate-spin" /> Loading timeline...
+                  </div>
+                ) : statusHistory.length > 0 ? (
+                  <div className="relative">
+                    {statusHistory.map((entry, i) => {
+                      const isLast = i === statusHistory.length - 1;
+                      const entryStatus = getStatus(entry.status);
+                      return (
+                        <div key={entry.id} className="flex gap-3 relative">
+                          {/* Vertical line */}
+                          {!isLast && (
+                            <div className="absolute left-[9px] top-5 bottom-0 w-0.5 bg-gray-200" />
+                          )}
+                          {/* Dot */}
+                          <div className="relative z-10 mt-0.5 shrink-0">
+                            {isLast ? (
+                              <div className={`w-[18px] h-[18px] rounded-full ${entryStatus.dot} flex items-center justify-center`}>
+                                {entry.status === 'completed' ? (
+                                  <CheckCircle size={12} className="text-white" />
+                                ) : (
+                                  <Circle size={8} className="text-white fill-white" />
+                                )}
+                              </div>
+                            ) : (
+                              <div className="w-[18px] h-[18px] rounded-full bg-gray-200 flex items-center justify-center">
+                                <CheckCircle size={12} className="text-gray-400" />
+                              </div>
+                            )}
+                          </div>
+                          {/* Content */}
+                          <div className={`pb-5 ${isLast ? '' : ''}`}>
+                            <p className={`text-sm font-bold ${isLast ? 'text-black' : 'text-gray-500'}`}>
+                              {entryStatus.label}
+                            </p>
+                            {entry.note && (
+                              <p className="text-xs text-gray-400 mt-0.5">{entry.note}</p>
+                            )}
+                            <p className="text-[11px] text-gray-300 mt-0.5">{formatDateTime(entry.created_at)}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-400">No timeline data available.</p>
+                )}
               </div>
 
               {/* Details */}
@@ -234,7 +321,7 @@ export const TrackOrderPage: React.FC = () => {
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder={searchType === 'phone' ? 'Enter your phone number' : 'Enter your order number'}
+                  placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
                   className="w-full pl-11 pr-4 py-3.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
                   required
                 />
@@ -276,19 +363,19 @@ export const TrackOrderPage: React.FC = () => {
                     {results.length} order{results.length !== 1 ? 's' : ''} found
                   </p>
                   {results.map((order) => {
-                    const s = getStatus(order.status);
+                    const os = getStatus(order.status);
                     return (
                       <button
                         key={order.id}
-                        onClick={() => setSelectedOrder(order)}
+                        onClick={() => handleSelectOrder(order)}
                         className="w-full bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm hover:shadow-md hover:border-gray-300 transition-all text-left group"
                       >
                         <div className="flex items-center justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-xs font-mono font-bold text-black">#{order.id.slice(0, 8).toUpperCase()}</span>
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${s.bg} ${s.color}`}>
-                                {s.label}
+                              <span className="text-xs font-mono font-bold text-black">{order.order_number}</span>
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${os.bg} ${os.color}`}>
+                                {os.label}
                               </span>
                             </div>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
@@ -328,7 +415,7 @@ export const TrackOrderPage: React.FC = () => {
           {!searched && (
             <div className="text-center">
               <p className="text-xs text-gray-400">
-                Your order number was provided in your booking confirmation. If you don't have it, use your phone number instead.
+                Your order number (e.g. OPK-A1B2C3) was provided in your booking confirmation. If you don't have it, use your phone number instead.
               </p>
             </div>
           )}

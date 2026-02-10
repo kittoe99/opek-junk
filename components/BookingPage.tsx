@@ -26,6 +26,7 @@ export const BookingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
@@ -235,7 +236,7 @@ export const BookingPage: React.FC = () => {
     setError(null);
 
     try {
-      const { error: insertError } = await supabase
+      const { data: insertedData, error: insertError } = await supabase
         .from('bookings')
         .insert([
           {
@@ -258,9 +259,12 @@ export const BookingPage: React.FC = () => {
             photo_url: formData.photoUrl,
             status: 'pending'
           }
-        ]);
+        ])
+        .select('order_number')
+        .single();
 
       if (insertError) throw insertError;
+      if (insertedData?.order_number) setOrderNumber(insertedData.order_number);
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting booking:', err);
@@ -281,15 +285,30 @@ export const BookingPage: React.FC = () => {
               <CheckCircle size={32} />
             </div>
             <h2 className="text-2xl font-black mb-3">Booking Confirmed!</h2>
+            {orderNumber && (
+              <div className="mb-5 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Your Order Number</p>
+                <p className="text-xl font-mono font-black text-black">{orderNumber}</p>
+                <p className="text-[11px] text-gray-400 mt-1">Save this to track your order status</p>
+              </div>
+            )}
             <p className="text-gray-600 text-sm mb-6">
               Matched service providers will contact you within 15 minutes to confirm your appointment details.
             </p>
-            <button
-              onClick={() => navigate('/')}
-              className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
-            >
-              Return Home
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <button
+                onClick={() => navigate('/track-order')}
+                className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Track Order
+              </button>
+              <button
+                onClick={() => navigate('/')}
+                className="px-6 py-2.5 bg-white text-black font-bold uppercase text-xs tracking-wider rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+              >
+                Return Home
+              </button>
+            </div>
           </div>
         </div>
       </div>
