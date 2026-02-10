@@ -17,6 +17,7 @@ import { EWastePage } from './components/services/EWastePage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
+import { TrackOrderPage } from './components/TrackOrderPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { SEO, seoConfig } from './components/SEO';
@@ -159,6 +160,15 @@ function ProviderSignupPageWithSEO() {
   );
 }
 
+function TrackOrderPageWithSEO() {
+  return (
+    <>
+      <SEO title="Track Your Order | Opek Junk Removal" description="Track the status of your junk removal booking with your phone number or order number." />
+      <TrackOrderPage />
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -178,6 +188,7 @@ function App() {
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
           <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
+          <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/test-openai" element={<OpenAITestPage />} />
         </Routes>
         

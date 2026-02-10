@@ -61,6 +61,7 @@ export const Footer: React.FC = () => {
               <li><Link to="/quote" className="text-gray-400 hover:text-white text-sm transition-colors">Get a Quote</Link></li>
               <li><Link to="/booking" className="text-gray-400 hover:text-white text-sm transition-colors">Book Online</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Contact Us</Link></li>
+              <li><Link to="/track-order" className="text-gray-400 hover:text-white text-sm transition-colors">Track Order</Link></li>
               <li><Link to="/#process" className="text-gray-400 hover:text-white text-sm transition-colors">How it Works</Link></li>
               <li><Link to="/#service-area" className="text-gray-400 hover:text-white text-sm transition-colors">Service Areas</Link></li>
               <li><Link to="/provider-signup" className="text-gray-400 hover:text-white text-sm transition-colors">Become a Provider</Link></li>
