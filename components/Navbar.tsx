@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Smartphone } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -68,10 +68,10 @@ export const Navbar: React.FC = () => {
   }, [isMenuOpen]);
 
   const navLinks = [
-    { name: 'Services', path: '/#services', hasMega: true },
-    { name: 'Contact', path: '/contact' },
-    { name: 'Book Online', path: '/booking' },
-    { name: 'Track Order', path: '/track-order' },
+    { name: 'Services', path: '/#services', hasMega: true, icon: <Layers size={16} /> },
+    { name: 'Contact', path: '/contact', icon: <MessageSquare size={16} /> },
+    { name: 'Book Online', path: '/booking', icon: <CalendarCheck size={16} /> },
+    { name: 'Track Order', path: '/track-order', icon: <Truck size={16} /> },
   ];
 
   const serviceItems = [
@@ -279,7 +279,7 @@ export const Navbar: React.FC = () => {
                           mobileServicesOpen ? 'bg-black text-white' : 'text-gray-900 hover:bg-gray-50'
                         }`}
                       >
-                        <span>{link.name}</span>
+                        <span className="flex items-center gap-2.5">{link.icon}<span>{link.name}</span></span>
                         <ChevronDown size={16} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180 text-white/60' : 'text-gray-400'}`} />
                       </button>
                       
@@ -308,10 +308,11 @@ export const Navbar: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link.path)}
-                      className={`w-full flex items-center px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
+                      className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
                         isActive ? 'bg-gray-100 text-black' : 'text-gray-900 hover:bg-gray-50'
                       }`}
                     >
+                      {link.icon}
                       {link.name}
                     </button>
                   )}
@@ -324,8 +325,9 @@ export const Navbar: React.FC = () => {
               {/* Provider Signup Link */}
               <button
                 onClick={() => handleLinkClick('/provider-signup')}
-                className="w-full flex items-center px-3 py-3 rounded-xl text-sm font-bold text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
               >
+                <UserPlus size={16} />
                 Become a Provider
               </button>
             </div>
