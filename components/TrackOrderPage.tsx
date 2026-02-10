@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Package, MapPin, Calendar, Clock, Phone, Hash, ChevronRight, AlertCircle } from 'lucide-react';
+import { Search, Truck, MapPin, Calendar, Clock, Phone, Hash, ChevronRight, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -194,7 +194,7 @@ export const TrackOrderPage: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-10">
             <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Package size={32} />
+              <Truck size={32} />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3">Track Your Order</h1>
             <p className="text-gray-600 text-sm md:text-base max-w-md mx-auto">

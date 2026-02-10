@@ -71,6 +71,7 @@ export const Navbar: React.FC = () => {
     { name: 'Services', path: '/#services', hasMega: true },
     { name: 'Contact', path: '/contact' },
     { name: 'Book Online', path: '/booking' },
+    { name: 'Track Order', path: '/track-order' },
   ];
 
   const serviceItems = [
