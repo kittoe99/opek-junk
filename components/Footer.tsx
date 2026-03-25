@@ -72,15 +72,15 @@ export const Footer: React.FC = () => {
           <div className="col-span-2 md:col-span-2 lg:col-span-4">
             <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Get the App</h4>
             <p className="text-gray-400 text-sm mb-5">Book pickups, track your service, and manage everything from your phone.</p>
-            <div className="flex flex-col sm:flex-row gap-2.5">
-              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
+            <div className="flex flex-row gap-2.5">
+              <button className="flex flex-1 items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
                 <Apple size={20} />
                 <div className="text-left">
                   <div className="text-[10px] text-gray-400 leading-none">Download on the</div>
                   <div className="text-sm font-bold leading-tight">App Store</div>
                 </div>
               </button>
-              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
+              <button className="flex flex-1 items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
                 <Smartphone size={20} />
                 <div className="text-left">
                   <div className="text-[10px] text-gray-400 leading-none">Get it on</div>

@@ -20,35 +20,61 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch user's city based on IP address with improved accuracy
+  // Reverse-geocode coordinates to city name using OpenStreetMap Nominatim
+  const reverseGeocode = async (lat: number, lon: number): Promise<string> => {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`,
+      { headers: { 'Accept-Language': 'en' } }
+    );
+    const data = await res.json();
+    const addr = data.address;
+    const city = addr?.city || addr?.town || addr?.village || addr?.county || '';
+    const state = addr?.state_code || addr?.state || '';
+    if (city && state) return `${city}, ${state}`;
+    if (city) return city;
+    return 'Your Location';
+  };
+
+  // Fallback: IP-based location detection
+  const fetchLocationByIP = async (): Promise<string> => {
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipResponse.json();
+    const geoResponse = await fetch(`https://ipwho.is/${ipData.ip}`);
+    const geoData = await geoResponse.json();
+    if (geoData.success && geoData.city && geoData.region_code) {
+      return `${geoData.city}, ${geoData.region_code}`;
+    }
+    return 'Your Location';
+  };
+
+  // Request exact browser location, fall back to IP-based
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // Get IP first, then use it for geolocation
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      const userIp = ipData.ip;
-      
-      console.log('User IP:', userIp);
-      
-      // Use ipwho.is with the IP (free, unlimited, HTTPS)
-      const geoResponse = await fetch(`https://ipwho.is/${userIp}`);
-      const geoData = await geoResponse.json();
-      
-      console.log('Geolocation response:', geoData);
-      
-      if (geoData.success && geoData.city && geoData.region_code) {
-        setUserCity(`${geoData.city}, ${geoData.region_code}`);
-        console.log('Location set:', `${geoData.city}, ${geoData.region_code}`);
+      if ('geolocation' in navigator) {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000,
+          });
+        });
+        const { latitude, longitude } = position.coords;
+        const city = await reverseGeocode(latitude, longitude);
+        setUserCity(city);
       } else {
-        // Set default location if API fails
-        setUserCity('Your Location');
-        console.log('Using default location - API returned:', geoData);
+        const city = await fetchLocationByIP();
+        setUserCity(city);
       }
     } catch (error) {
-      console.error('Failed to fetch location:', error);
-      // Set default location on error
-      setUserCity('Your Location');
+      // User denied permission or geolocation failed — fall back to IP
+      console.warn('Browser geolocation unavailable, falling back to IP:', error);
+      try {
+        const city = await fetchLocationByIP();
+        setUserCity(city);
+      } catch {
+        setUserCity('Your Location');
+      }
     } finally {
       setIsDetectingLocation(false);
     }
