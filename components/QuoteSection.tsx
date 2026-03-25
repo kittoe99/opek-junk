@@ -24,7 +24,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ onOpenAI }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Option 1: AI / Picture */}
-          <div className="bg-gray-50 rounded-3xl p-8 md:p-10 border border-gray-200 hover:border-black transition-all duration-300 hover:shadow-2xl flex flex-col relative overflow-hidden group animate-fade-in-up delay-100">
+          <div className="bg-gray-50 rounded-3xl p-8 md:p-10 border border-gray-200 hover:border-gray-400 transition-all duration-300 hover:shadow-2xl flex flex-col relative overflow-hidden group animate-fade-in-up delay-100">
             <div className="absolute -top-10 -right-10 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity transform rotate-12">
               <Camera size={200} />
             </div>
@@ -49,7 +49,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({ onOpenAI }) => {
           </div>
 
           {/* Option 2: In-Home */}
-          <div className="bg-white rounded-3xl p-8 md:p-10 border border-gray-200 hover:border-black transition-all duration-300 hover:shadow-2xl flex flex-col relative overflow-hidden group animate-fade-in-up delay-200">
+          <div className="bg-white rounded-3xl p-8 md:p-10 border border-gray-200 hover:border-gray-400 transition-all duration-300 hover:shadow-2xl flex flex-col relative overflow-hidden group animate-fade-in-up delay-200">
             <div className="absolute -top-10 -right-10 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity transform rotate-12">
               <Home size={200} />
             </div>

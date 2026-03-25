@@ -193,7 +193,7 @@ export const ProviderSignupPage: React.FC = () => {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     placeholder="John"
                   />
                 </div>
@@ -205,7 +205,7 @@ export const ProviderSignupPage: React.FC = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     placeholder="Smith"
                   />
                 </div>
@@ -217,7 +217,7 @@ export const ProviderSignupPage: React.FC = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -229,7 +229,7 @@ export const ProviderSignupPage: React.FC = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     placeholder="(831) 318-7139"
                   />
                 </div>
@@ -240,7 +240,7 @@ export const ProviderSignupPage: React.FC = () => {
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     placeholder="Your Business Name"
                   />
                 </div>
@@ -260,7 +260,7 @@ export const ProviderSignupPage: React.FC = () => {
                   value={formData.serviceArea}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                   placeholder="e.g., Denver Metro Area, Los Angeles County, etc."
                 />
                 <p className="text-sm text-gray-500 mt-2">
@@ -281,7 +281,7 @@ export const ProviderSignupPage: React.FC = () => {
                   value={formData.vehicleType}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                 >
                   <option value="">Select vehicle type</option>
                   {vehicleTypes.map(type => (
@@ -325,7 +325,7 @@ export const ProviderSignupPage: React.FC = () => {
                 value={formData.additionalInfo}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                 placeholder="Tell us about your experience, equipment, certifications, or anything else you'd like us to know..."
               />
             </div>

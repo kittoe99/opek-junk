@@ -76,7 +76,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
         <div className="p-6 flex-1">
           {!image ? (
             <div 
-              className="border-2 border-dashed border-gray-200 rounded-xl p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer group"
+              className="border-2 border-dashed border-gray-200 rounded-xl p-12 text-center hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer group"
               onClick={() => fileInputRef.current?.click()}
             >
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -173,7 +173,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm italic mb-6 border-l-2 border-black pl-3 bg-white p-3 rounded-r-lg">
+                  <p className="text-gray-600 text-sm italic mb-6 border-l-2 border-gray-300 pl-3 bg-white p-3 rounded-r-lg">
                     "{estimate.summary}"
                   </p>
 

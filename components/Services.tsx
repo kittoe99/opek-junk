@@ -79,7 +79,7 @@ export const Services: React.FC = () => {
                   <div 
                     key={index} 
                     className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                      openIndex === index ? 'shadow-lg ring-2 ring-gray-300' : 'shadow-sm hover:shadow-md'
                     }`}
                   >
                     <button
@@ -136,7 +136,7 @@ export const Services: React.FC = () => {
                 <div 
                   key={index} 
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                    openIndex === index ? 'shadow-lg ring-2 ring-gray-300' : 'shadow-sm hover:shadow-md'
                   }`}
                 >
                   <button

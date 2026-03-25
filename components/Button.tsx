@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
     // Standard Light Theme Buttons
     primary: "bg-black text-white hover:bg-gray-800 border border-transparent shadow-lg hover:shadow-xl",
     secondary: "bg-gray-100 text-black hover:bg-gray-200 border border-transparent",
-    outline: "bg-transparent text-black border-2 border-black hover:bg-black hover:text-white",
+    outline: "bg-transparent text-black border-2 border-gray-300 hover:bg-black hover:text-white hover:border-black",
     
     // Dark Background Buttons (Hero, Footer, etc)
     inverse: "bg-white text-black hover:bg-gray-100 border border-transparent shadow-lg hover:shadow-xl",

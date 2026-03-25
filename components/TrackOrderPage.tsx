@@ -322,7 +322,7 @@ export const TrackOrderPage: React.FC = () => {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full pl-11 pr-4 py-3.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  className="w-full pl-11 pr-4 py-3.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                   required
                 />
               </div>

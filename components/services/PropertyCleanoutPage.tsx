@@ -45,7 +45,7 @@ export const PropertyCleanoutPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => navigate('/contact')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg shadow-sm"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-gray-300 text-black bg-white hover:bg-black hover:text-white hover:border-black transition-all rounded-lg shadow-sm"
                 >
                   Contact Us
                 </button>

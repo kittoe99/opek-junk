@@ -174,6 +174,8 @@ export const QuotePage: React.FC = () => {
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const selectedItemsRef = useRef<HTMLDivElement>(null);
   const contentTopRef = useRef<HTMLDivElement>(null);
+  const estimateButtonRef = useRef<HTMLButtonElement>(null);
+  const [showStickyEstimate, setShowStickyEstimate] = useState(false);
 
   // ── Smooth scroll helper ──
   const scrollToElement = useCallback((el: HTMLElement | null, offset = -100) => {
@@ -188,6 +190,18 @@ export const QuotePage: React.FC = () => {
   useEffect(() => {
     scrollToElement(contentTopRef.current, -120);
   }, [aiStep, manualStep, selectedOption, scrollToElement]);
+
+  // Intersection Observer for sticky estimate button
+  useEffect(() => {
+    const el = estimateButtonRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyEstimate(!entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [selectedOption, manualStep, manualPricingLoading]);
 
   // ── Shared helpers ──
   const compressImage = (file: File): Promise<string> => {
@@ -444,7 +458,7 @@ export const QuotePage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
               <button
                 onClick={() => setSelectedOption('ai')}
-                className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
+                className="group p-6 border border-gray-200 hover:border-gray-400 transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
               >
                 <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
                   <Camera size={28} />
@@ -458,7 +472,7 @@ export const QuotePage: React.FC = () => {
               </button>
               <button
                 onClick={() => setSelectedOption('manual')}
-                className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
+                className="group p-6 border border-gray-200 hover:border-gray-400 transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
               >
                 <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
                   <List size={28} />
@@ -535,7 +549,7 @@ export const QuotePage: React.FC = () => {
                   {!image ? (
                     <div className="space-y-4">
                       <div
-                        className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                        className="border border-dashed border-gray-300 p-12 text-center hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                         onClick={() => cameraInputRef.current?.click()}
                       >
                         <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
@@ -551,7 +565,7 @@ export const QuotePage: React.FC = () => {
                         <div className="flex-1 h-px bg-gray-300"></div>
                       </div>
                       <div
-                        className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                        className="border border-dashed border-gray-300 p-12 text-center hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -611,11 +625,11 @@ export const QuotePage: React.FC = () => {
                   )}
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                     {detectedItems.map((item) => (
-                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-black bg-black/5 shadow-sm text-center">
+                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 shadow-sm text-center">
                         <button onClick={() => removeItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
                           <Trash2 size={10} className="text-red-500" />
                         </button>
-                        <div className="w-12 h-12 rounded-lg bg-black/10 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-lg bg-emerald-100 flex items-center justify-center">
                           <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
                         </div>
                         <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
@@ -640,7 +654,7 @@ export const QuotePage: React.FC = () => {
                         onChange={(e) => setNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
                         placeholder="e.g. Old Desk"
-                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
                       />
                       <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                         <Plus size={16} />
@@ -648,7 +662,7 @@ export const QuotePage: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg">
+                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-gray-300 text-black font-bold uppercase text-sm hover:bg-black hover:text-white hover:border-black transition-colors rounded-lg">
                       Back
                     </button>
                     <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed">
@@ -690,7 +704,7 @@ export const QuotePage: React.FC = () => {
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
                       placeholder="Search items..."
-                      className="w-full border border-gray-200 pl-10 pr-4 py-3 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                      className="w-full border border-gray-200 pl-10 pr-4 py-3 text-sm rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
                     />
                   </div>
 
@@ -732,7 +746,7 @@ export const QuotePage: React.FC = () => {
                                     key={item.name}
                                     className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200 text-center cursor-pointer ${
                                       selected
-                                        ? 'border-black bg-black/5 shadow-md scale-[1.02]'
+                                        ? 'border-emerald-500 bg-emerald-50 shadow-md scale-[1.02]'
                                         : 'border-gray-100 bg-white hover:border-gray-300 hover:shadow-sm active:scale-95'
                                     }`}
                                     onClick={() => !selected && toggleCatalogItem(item.name)}
@@ -746,7 +760,7 @@ export const QuotePage: React.FC = () => {
                                       </button>
                                     )}
                                     <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                                      selected ? 'bg-black/10 scale-110' : 'bg-gray-100'
+                                      selected ? 'bg-emerald-100 scale-110' : 'bg-gray-100'
                                     }`}>
                                       <img src={item.image} alt={item.name} className="w-7 h-7" />
                                     </div>
@@ -782,7 +796,7 @@ export const QuotePage: React.FC = () => {
                         onChange={(e) => setManualNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
                         placeholder="Type item name and add"
-                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
                       />
                       <button
                         onClick={addManualSelectedItem}
@@ -819,12 +833,27 @@ export const QuotePage: React.FC = () => {
 
                   {/* Get Estimate button */}
                   <button
+                    ref={estimateButtonRef}
                     onClick={handleGetManualPrice}
                     disabled={selectedItems.length === 0}
                     className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     {selectedItems.length === 0 ? 'Select items to continue' : `Get Estimate (${totalSelectedCount} item${totalSelectedCount !== 1 ? 's' : ''})`}
                   </button>
+                </div>
+              )}
+
+              {/* Sticky floating Get Estimate button */}
+              {manualStep === 'select' && !manualPricingLoading && selectedItems.length > 0 && showStickyEstimate && (
+                <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white/90 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+                  <div className="max-w-4xl mx-auto">
+                    <button
+                      onClick={handleGetManualPrice}
+                      className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
+                    >
+                      Get Estimate ({totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''})
+                    </button>
+                  </div>
                 </div>
               )}
 

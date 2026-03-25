@@ -114,7 +114,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                       }
                     }}
                     placeholder="ZIP code"
-                    className="w-full px-4 py-3 text-center text-lg font-bold border border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors shadow-sm"
+                    className="w-full px-4 py-3 text-center text-lg font-bold border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none transition-colors shadow-sm"
                   />
                   {error && (
                     <p className="text-red-600 text-xs mt-2">{error}</p>
@@ -140,7 +140,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
             ) : (
               <>
                 {/* Success Icon */}
-                <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle size={24} className="text-white" />
                 </div>
 

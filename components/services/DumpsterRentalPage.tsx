@@ -72,7 +72,7 @@ export const DumpsterRentalPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => navigate('/booking')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg shadow-sm"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-gray-300 text-black bg-white hover:bg-black hover:text-white hover:border-black transition-all rounded-lg shadow-sm"
                 >
                   Book Now
                 </button>
@@ -113,7 +113,7 @@ export const DumpsterRentalPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {dumpsterSizes.map((dumpster, index) => (
-              <div key={index} className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-black transition-all hover:shadow-lg">
+              <div key={index} className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-gray-400 transition-all hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center">
                     <Truck size={24} className="text-white" />

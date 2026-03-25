@@ -85,7 +85,7 @@ export const OpenAITestPage: React.FC = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none"
               placeholder="Enter a message to test the OpenAI connection (e.g., 'Hello, can you hear me?')"
             />
           </div>

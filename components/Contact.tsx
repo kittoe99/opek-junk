@@ -56,22 +56,22 @@ export const Contact: React.FC = () => {
               <div className="grid grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">First Name</label>
-                  <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="John" />
+                  <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-all" placeholder="John" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Last Name</label>
-                  <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="Doe" />
+                  <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-all" placeholder="Doe" />
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="john@example.com" />
+                <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-all" placeholder="john@example.com" />
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Message / Items</label>
-                <textarea rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="Tell us what needs to be removed..."></textarea>
+                <textarea rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-all" placeholder="Tell us what needs to be removed..."></textarea>
               </div>
 
               <Button type="submit" fullWidth className="h-12 text-lg">Send Request</Button>

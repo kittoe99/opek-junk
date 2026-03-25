@@ -431,7 +431,7 @@ export const BookingPage: React.FC = () => {
                   {!image ? (
                     <div className="space-y-3">
                       <div
-                        className="border border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                        className="border border-dashed border-gray-300 p-8 text-center hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                         onClick={() => cameraInputRef.current?.click()}
                       >
                         <div className="w-14 h-14 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
@@ -449,7 +449,7 @@ export const BookingPage: React.FC = () => {
                       </div>
 
                       <div
-                        className="border border-dashed border-gray-300 p-8 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                        className="border border-dashed border-gray-300 p-8 text-center hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -464,7 +464,7 @@ export const BookingPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleNextStep()}
-                          className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase border border-black text-black hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                          className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase border border-gray-300 text-black hover:bg-black hover:text-white hover:border-black transition-colors rounded-lg flex items-center justify-center gap-2"
                         >
                           Skip — I'll describe my items
                           <ArrowRight size={18} />
@@ -570,7 +570,7 @@ export const BookingPage: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="John Smith"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                     <div>
@@ -582,7 +582,7 @@ export const BookingPage: React.FC = () => {
                         required
                         type="email"
                         placeholder="john@example.com"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                   </div>
@@ -596,7 +596,7 @@ export const BookingPage: React.FC = () => {
                       required
                       type="tel"
                       placeholder="(555) 123-4567"
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     />
                   </div>
 
@@ -613,7 +613,7 @@ export const BookingPage: React.FC = () => {
                       required
                       placeholder="Start typing an address..."
                       autoComplete="off"
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     />
                     {addressLoading && (
                       <Loader2 size={14} className="absolute right-3 top-[34px] animate-spin text-gray-400" />
@@ -643,7 +643,7 @@ export const BookingPage: React.FC = () => {
                       value={formData.unitNumber}
                       onChange={handleInputChange}
                       placeholder="e.g. Apt 4B, Suite 200"
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     />
                   </div>
 
@@ -657,7 +657,7 @@ export const BookingPage: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="Denver"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                     <div>
@@ -668,7 +668,7 @@ export const BookingPage: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="CO"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                     <div>
@@ -679,7 +679,7 @@ export const BookingPage: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="80202"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                   </div>
@@ -688,7 +688,7 @@ export const BookingPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={handlePrevStep}
-                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase border border-black text-black hover:bg-black hover:text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase border border-gray-300 text-black hover:bg-black hover:text-white hover:border-black transition-colors rounded-lg flex items-center justify-center gap-2"
                     >
                       <ArrowLeft size={18} />
                       Back
@@ -719,7 +719,7 @@ export const BookingPage: React.FC = () => {
                         name="serviceType"
                         value={formData.serviceType}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       >
                         <option>Residential Junk Removal</option>
                         <option>Commercial Services</option>
@@ -740,7 +740,7 @@ export const BookingPage: React.FC = () => {
                         required
                         type="date"
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                       />
                     </div>
                   </div>
@@ -753,7 +753,7 @@ export const BookingPage: React.FC = () => {
                       onChange={handleInputChange}
                       rows={3}
                       placeholder="Tell us about the items you need removed, access instructions, etc."
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none shadow-sm"
                     />
                   </div>
 
