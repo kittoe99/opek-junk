@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, ArrowRight, Navigation } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const cities = [
   "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
@@ -15,64 +15,59 @@ interface ServiceAreaProps {
 
 export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
   return (
-    <section id="service-area" className="py-16 md:py-24 lg:py-32 bg-white text-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Left Column: Image */}
-          <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden rounded-3xl shadow-2xl order-2 lg:order-1">
-            <img 
-              src="/estimates (1).webp"
-              loading="lazy" 
-              alt="Nationwide junk removal service" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-bold mb-4">
-                <MapPin size={16} />
-                <span>All 50 States</span>
-              </div>
-              <p className="text-white text-lg font-bold">
-                Trusted professionals in your area
-              </p>
+    <section id="service-area" className="py-24 md:py-32 bg-white border-t border-gray-100">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+          {/* Image */}
+          <div className="lg:col-span-5 order-2 lg:order-1">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
+              <img
+                src="/estimates (1).webp"
+                loading="lazy"
+                alt="Nationwide junk removal service"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          {/* Right Column: Content */}
-          <div className="flex flex-col space-y-6 order-1 lg:order-2">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-4">
-                Nationwide Coverage
-              </h2>
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                Professional junk removal services coast to coast. Connect with trusted local professionals ready to help clear your space.
-              </p>
-              
-              <button 
-                onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
-              >
-                Check Your Area
-                <ArrowRight size={20} />
-              </button>
+          {/* Content */}
+          <div className="lg:col-span-7 order-1 lg:order-2">
+            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">
+              <span className="inline-block h-px w-8 bg-gray-300" />
+              <span>Coverage</span>
             </div>
 
-            {/* Cities Grid */}
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-              <h3 className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-4">Major Cities Served</h3>
-              <div className="flex flex-wrap gap-2">
-                {cities.slice(0, 12).map((city) => (
-                  <span 
-                    key={city} 
-                    className="px-3 py-1.5 bg-white text-gray-700 rounded-lg text-xs font-medium border border-gray-200"
-                  >
+            <h2 className="text-4xl md:text-5xl font-light text-gray-900 leading-tight tracking-tight mb-6">
+              All 50 states. <span className="text-gray-400">Coast to coast.</span>
+            </h2>
+            <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-10 max-w-lg">
+              A trusted network of local professionals, ready to help clear your space.
+            </p>
+
+            <button
+              onClick={onGetQuote}
+              className="group inline-flex items-center gap-2 text-sm font-medium text-gray-900 underline-offset-4 hover:underline mb-12"
+            >
+              Check your area
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover:translate-x-0.5"
+              />
+            </button>
+
+            {/* Cities */}
+            <div className="border-t border-gray-200 pt-8">
+              <h3 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">
+                Major cities served
+              </h3>
+              <div className="flex flex-wrap gap-x-6 gap-y-3">
+                {cities.slice(0, 16).map((city) => (
+                  <span key={city} className="text-sm text-gray-700">
                     {city}
                   </span>
                 ))}
-                <span className="px-3 py-1.5 bg-black text-white rounded-lg text-xs font-bold">
-                  +100 More
-                </span>
+                <span className="text-sm text-gray-400">+ 100 more</span>
               </div>
             </div>
           </div>

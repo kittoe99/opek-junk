@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, Warehouse, Truck, Recycle, Trash, HardHat, Container, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
@@ -43,178 +43,90 @@ const serviceItems = [
 
 export const Services: React.FC = () => {
   const navigate = useNavigate();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
-  // On desktop (lg and above), always show all services. On mobile, use showAll state
-  const displayedServices = serviceItems;
+  const visible = showAll ? serviceItems : serviceItems.slice(0, 3);
 
   return (
-    <section id="services" className="py-16 md:py-24 lg:py-32 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          
-          {/* Content Side */}
-          <div className="flex flex-col">
-            <div className="mb-10">
-              <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-                Services
-              </span>
-              <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-                Fast pickup. <span className="text-gray-400">Fair pricing.</span>
-              </h2>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Trusted professionals in your area.
-              </p>
+    <section id="services" className="py-24 md:py-32 bg-white border-t border-gray-100">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+
+        {/* Section header */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 md:mb-20">
+          <div className="md:col-span-4">
+            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500">
+              <span className="inline-block h-px w-8 bg-gray-300" />
+              <span>Services</span>
             </div>
+          </div>
+          <div className="md:col-span-8">
+            <h2 className="text-4xl md:text-5xl font-light text-gray-900 leading-tight tracking-tight">
+              Fast pickup. <span className="text-gray-400">Fair pricing.</span>
+            </h2>
+            <p className="text-gray-500 mt-4 max-w-lg">
+              Six services. One trusted network of local pros.
+            </p>
+          </div>
+        </div>
 
-            <div className="space-y-3">
-              {/* Desktop: show all services */}
-              <div className="hidden lg:block space-y-3">
-                {serviceItems.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? 'shadow-lg ring-2 ring-gray-300' : 'shadow-sm hover:shadow-md'
-                    }`}
-                  >
-                    <button
-                      onClick={() => {
-                        if (openIndex === index) {
-                          navigate(item.path);
-                        } else {
-                          toggleAccordion(index);
-                        }
-                      }}
-                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
-                      aria-expanded={openIndex === index}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                          openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
-                        }`}>
-                          <item.icon size={20} />
-                        </div>
-                        <span className={`font-bold text-base transition-colors ${
-                          openIndex === index ? 'text-black' : 'text-gray-700'
-                        }`}>
-                          {item.title}
-                        </span>
-                      </div>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
-                      }`}>
-                        {openIndex === index ? (
-                          <Minus size={16} />
-                        ) : (
-                          <Plus size={16} />
-                        )}
-                      </div>
-                    </button>
-                    <div 
-                      className={`grid transition-all duration-300 ease-in-out ${
-                        openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Mobile: show 3 initially with show more button */}
-              <div className="lg:hidden space-y-3">
-                {(showAll ? serviceItems : serviceItems.slice(0, 3)).map((item, index) => (
-                <div 
-                  key={index} 
-                  className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'shadow-lg ring-2 ring-gray-300' : 'shadow-sm hover:shadow-md'
-                  }`}
-                >
-                  <button
-                    onClick={() => {
-                      if (openIndex === index) {
-                        navigate(item.path);
-                      } else {
-                        toggleAccordion(index);
-                      }
-                    }}
-                    className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
-                    aria-expanded={openIndex === index}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
-                      }`}>
-                        <item.icon size={20} />
-                      </div>
-                      <span className={`font-bold text-base transition-colors ${
-                        openIndex === index ? 'text-black' : 'text-gray-700'
-                      }`}>
-                        {item.title}
-                      </span>
-                    </div>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
-                    }`}>
-                      {openIndex === index ? (
-                        <Minus size={16} />
-                      ) : (
-                        <Plus size={16} />
-                      )}
-                    </div>
-                  </button>
-                  <div 
-                    className={`grid transition-all duration-300 ease-in-out ${
-                      openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                ))}
-                
-                {/* Show More/Less Button - Mobile Only */}
+        {/* Service list */}
+        <div className="border-t border-gray-200">
+          {/* Desktop: full list */}
+          <ul className="hidden md:block">
+            {serviceItems.map((item, i) => (
+              <li key={i} className="border-b border-gray-200">
                 <button
-                  onClick={() => setShowAll(!showAll)}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-gray-600 hover:text-black transition-colors"
+                  onClick={() => navigate(item.path)}
+                  className="group w-full flex items-center gap-8 py-7 text-left"
                 >
-                  <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
-                  <ChevronDown 
-                    size={18} 
-                    className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
+                  <span className="w-10 text-xs text-gray-400 tabular-nums">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <item.icon size={20} className="text-gray-400 group-hover:text-gray-900 transition-colors" strokeWidth={1.25} />
+                  <span className="flex-1 text-xl md:text-2xl font-light text-gray-900 tracking-tight">
+                    {item.title}
+                  </span>
+                  <span className="hidden lg:block flex-1 max-w-md text-sm text-gray-500 leading-relaxed">
+                    {item.description}
+                  </span>
+                  <ArrowUpRight
+                    size={20}
+                    className="text-gray-300 group-hover:text-gray-900 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all"
                   />
                 </button>
-              </div>
-            </div>
-          </div>
+              </li>
+            ))}
+          </ul>
 
-          {/* Image Side */}
-          <div className="relative mt-8 lg:mt-0">
-            <div className="sticky top-32">
-              <div className="relative aspect-[3/2] md:aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-2xl">
-                <img 
-                  src="/workers-opek.webp"
-                  loading="lazy" 
-                  alt="Professional junk removal team at work" 
-                  className="w-full h-full object-cover"
+          {/* Mobile: collapsible */}
+          <ul className="md:hidden">
+            {visible.map((item, i) => (
+              <li key={i} className="border-b border-gray-200">
+                <button
+                  onClick={() => navigate(item.path)}
+                  className="group w-full flex items-center gap-4 py-6 text-left"
+                >
+                  <item.icon size={18} className="text-gray-400" strokeWidth={1.25} />
+                  <span className="flex-1 text-lg font-light text-gray-900 tracking-tight">
+                    {item.title}
+                  </span>
+                  <ArrowUpRight size={18} className="text-gray-300" />
+                </button>
+              </li>
+            ))}
+            <li className="pt-6">
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900"
+              >
+                <span>{showAll ? 'Show less' : `Show all ${serviceItems.length}`}</span>
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform ${showAll ? 'rotate-180' : ''}`}
                 />
-              </div>
-            </div>
-          </div>
-
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </section>

@@ -13,38 +13,34 @@ interface BreadcrumbProps {
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
-    <nav aria-label="Breadcrumb" className="pt-8 pb-4">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ol className="flex items-center space-x-2 text-sm">
-          {/* Home Link */}
+    <nav aria-label="Breadcrumb" className="pt-10 pb-2">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        <ol className="flex items-center gap-2 text-xs">
           <li>
-            <Link 
-              to="/" 
-              className="flex items-center text-gray-500 hover:text-black transition-colors"
+            <Link
+              to="/"
+              className="flex items-center text-gray-400 hover:text-gray-900 transition-colors"
               aria-label="Home"
             >
-              <Home size={16} />
+              <Home size={13} strokeWidth={1.5} />
             </Link>
           </li>
-
-          {/* Breadcrumb Items */}
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
-            
             return (
               <React.Fragment key={index}>
                 <li>
-                  <ChevronRight size={16} className="text-gray-400" />
+                  <ChevronRight size={12} className="text-gray-300" strokeWidth={1.5} />
                 </li>
                 <li>
                   {isLast || !item.path ? (
-                    <span className="font-semibold text-black" aria-current="page">
+                    <span className="text-gray-900" aria-current="page">
                       {item.label}
                     </span>
                   ) : (
-                    <Link 
-                      to={item.path} 
-                      className="text-gray-500 hover:text-black transition-colors"
+                    <Link
+                      to={item.path}
+                      className="text-gray-400 hover:text-gray-900 transition-colors"
                     >
                       {item.label}
                     </Link>

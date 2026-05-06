@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2 } from 'lucide-react';
 import { Process } from '../Process';
 import { ServiceArea } from '../ServiceArea';
 import { Breadcrumb } from '../Breadcrumb';
@@ -10,7 +9,7 @@ export const ResidentialPage: React.FC = () => {
   const [isZipModalOpen, setIsZipModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
+    <div className="min-h-screen bg-white pt-[80px] md:pt-[104px]">
       
       {/* Breadcrumb Navigation */}
       <Breadcrumb items={[
@@ -19,34 +18,34 @@ export const ResidentialPage: React.FC = () => {
       ]} />
       
       {/* Hero Section */}
-      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative pt-12 pb-20 md:pt-16 md:pb-32 bg-white">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end">
             
             {/* Left Column */}
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 block">
+            <div className="lg:col-span-7">
+              <span className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6 inline-flex items-center gap-3 before:content-[''] before:inline-block before:h-px before:w-8 before:bg-gray-300">
                 Residential Services
               </span>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-light text-gray-900 tracking-tight mb-6 md:mb-8 leading-[1.05]">
                 Residential Junk Removal
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6 md:mb-8">
+              <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-10 max-w-md">
                 Fast, upfront pricing for furniture removal, appliance pickup, and household junk. Same-day and next-day options nationwide.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-wrap items-center gap-6">
                 <button 
                   onClick={() => navigate('/quote')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md"
+                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-gray-900 text-white rounded-full hover:bg-black transition-colors"
                 >
                   Get Free Quote
                 </button>
                 <button 
                   onClick={() => navigate('/contact')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-gray-300 text-black bg-white hover:bg-black hover:text-white hover:border-black transition-all rounded-lg shadow-sm"
+                  className="text-sm font-medium text-gray-700 underline-offset-4 hover:text-gray-900 hover:underline transition-colors"
                 >
                   Contact Us
                 </button>
@@ -54,19 +53,14 @@ export const ResidentialPage: React.FC = () => {
             </div>
 
             {/* Right Column - Image */}
-            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
+            <div className="lg:col-span-5 relative aspect-[4/3] sm:aspect-square lg:aspect-[4/5] overflow-hidden rounded-sm">
               <img 
                 src="/opek2.webp"
                 loading="lazy"
                 alt="Professional residential junk removal service"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                <div className="flex items-center gap-3 text-white">
-                  <CheckCircle2 size={18} className="text-emerald-400"/>
-                  <span className="text-sm font-bold">Same-Day Service • Licensed & Insured</span>
-                </div>
-              </div>
+            
             </div>
 
           </div>
@@ -74,61 +68,61 @@ export const ResidentialPage: React.FC = () => {
       </section>
 
       {/* What We Remove Section */}
-      <section className="py-12 md:py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 md:py-32 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-black leading-tight mb-3 md:mb-4 tracking-tight">
+          <div className="mb-16 md:mb-20 max-w-2xl">
+            <h2 className="text-3xl md:text-5xl font-light text-gray-900 leading-tight mb-4 tracking-tight">
               What We Remove
             </h2>
-            <p className="text-gray-600 text-sm md:text-base lg:text-lg">
+            <p className="text-gray-500 text-base">
               From furniture to appliances, we handle it all
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
             
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Furniture</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Couches & Sofas</li>
-                <li>• Mattresses & Beds</li>
-                <li>• Tables & Chairs</li>
-                <li>• Dressers & Cabinets</li>
-                <li>• Entertainment Centers</li>
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-lg font-light text-gray-900 tracking-tight mb-5">Furniture</h3>
+              <ul className="space-y-2.5 text-gray-500 text-sm">
+                <li>Couches & Sofas</li>
+                <li>Mattresses & Beds</li>
+                <li>Tables & Chairs</li>
+                <li>Dressers & Cabinets</li>
+                <li>Entertainment Centers</li>
               </ul>
             </div>
 
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Appliances</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Refrigerators & Freezers</li>
-                <li>• Washers & Dryers</li>
-                <li>• Stoves & Ovens</li>
-                <li>• Dishwashers</li>
-                <li>• Water Heaters</li>
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-lg font-light text-gray-900 tracking-tight mb-5">Appliances</h3>
+              <ul className="space-y-2.5 text-gray-500 text-sm">
+                <li>Refrigerators & Freezers</li>
+                <li>Washers & Dryers</li>
+                <li>Stoves & Ovens</li>
+                <li>Dishwashers</li>
+                <li>Water Heaters</li>
               </ul>
             </div>
 
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Electronics</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• TVs & Monitors</li>
-                <li>• Computers & Laptops</li>
-                <li>• Printers & Scanners</li>
-                <li>• Stereo Equipment</li>
-                <li>• Gaming Consoles</li>
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-lg font-light text-gray-900 tracking-tight mb-5">Electronics</h3>
+              <ul className="space-y-2.5 text-gray-500 text-sm">
+                <li>TVs & Monitors</li>
+                <li>Computers & Laptops</li>
+                <li>Printers & Scanners</li>
+                <li>Stereo Equipment</li>
+                <li>Gaming Consoles</li>
               </ul>
             </div>
 
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">General Items</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Boxes & Clutter</li>
-                <li>• Yard Waste & Debris</li>
-                <li>• Exercise Equipment</li>
-                <li>• Patio Furniture</li>
-                <li>• Storage Items</li>
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-lg font-light text-gray-900 tracking-tight mb-5">General Items</h3>
+              <ul className="space-y-2.5 text-gray-500 text-sm">
+                <li>Boxes & Clutter</li>
+                <li>Yard Waste & Debris</li>
+                <li>Exercise Equipment</li>
+                <li>Patio Furniture</li>
+                <li>Storage Items</li>
               </ul>
             </div>
 
@@ -138,28 +132,28 @@ export const ResidentialPage: React.FC = () => {
       </section>
 
       {/* Content Section */}
-      <section className="py-12 md:py-16 lg:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 md:py-32 bg-white border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
           
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-6 md:mb-8 tracking-tight leading-tight">
             Professional Residential Junk Removal
           </h2>
           
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4 md:mb-6">
+          <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-10 max-w-2xl">
             Whether you're moving, downsizing, or simply decluttering, our residential junk removal service makes it easy to clear out unwanted items. We handle everything from single-item pickups to full home cleanouts.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-8 border-t border-gray-200">
             <div>
-              <h3 className="text-xl font-black text-black mb-3">Fast & Convenient</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-xl font-light text-gray-900 tracking-tight mb-3">Fast & Convenient</h3>
+              <p className="text-gray-500 leading-relaxed">
                 Same-day and next-day service available in most areas. We do all the heavy lifting, loading, and hauling—you just point to what needs to go.
               </p>
             </div>
 
             <div>
-              <h3 className="text-xl font-black text-black mb-3">Eco-Friendly Disposal</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-xl font-light text-gray-900 tracking-tight mb-3">Eco-Friendly Disposal</h3>
+              <p className="text-gray-500 leading-relaxed">
                 We prioritize donation and recycling whenever possible. Up to 70% of collected items are diverted from landfills through responsible disposal practices.
               </p>
             </div>
