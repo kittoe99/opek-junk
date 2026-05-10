@@ -201,7 +201,7 @@ export const Navbar: React.FC = () => {
             
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 rounded-none shadow-md"
+              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 rounded-lg shadow-md"
             >
               Get A Quote
             </button>

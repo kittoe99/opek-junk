@@ -32,13 +32,13 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
             <div className="flex flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
               <button 
                 onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 hover:scale-105 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
               >
                 View Pricing
               </button>
               <button 
                 onClick={onBookOnline}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-secondary text-secondary bg-white hover:bg-secondary hover:text-white hover:scale-105 transition-all duration-300 rounded-none shadow-sm hover:shadow-md"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-secondary text-secondary bg-white hover:bg-secondary hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
               >
                 Book Online
               </button>

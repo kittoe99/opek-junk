@@ -51,7 +51,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
               
               <button 
                 onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-none shadow-md inline-flex items-center gap-2"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
               >
                 Check Your Area
                 <ArrowRight size={20} className="text-brand group-hover:text-white" />

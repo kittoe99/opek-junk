@@ -189,7 +189,7 @@ export const Services: React.FC = () => {
                 {/* Show More/Less Button - Mobile Only */}
                 <button
                   onClick={() => setShowAll(!showAll)}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-secondary hover:text-secondary-600 transition-colors rounded-none border border-secondary-200 hover:border-secondary"
+                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-secondary hover:text-secondary-600 transition-colors rounded-lg border border-secondary-200 hover:border-secondary"
                 >
                   <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
                   <ChevronDown 

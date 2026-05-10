@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Receipt, Trash2 } from 'lucide-react';
+import { Camera, Calculator, Truck } from 'lucide-react';
 
 interface ProcessProps {
   onGetQuote?: () => void;
@@ -8,17 +8,17 @@ interface ProcessProps {
 export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      icon: Smartphone,
+      icon: Camera,
       title: "PHOTO ESTIMATE",
       desc: "Snap a quick photo of your junk. Get instant volume analysis and pricing from local professionals."
     },
     {
-      icon: Receipt,
+      icon: Calculator,
       title: "UPFRONT QUOTE",
       desc: "On-site confirmation with a fixed price. No surcharges, no hidden fees, no games."
     },
     {
-      icon: Trash2,
+      icon: Truck,
       title: "HEAVY LIFTING",
       desc: "Professional hauling, sorting, and cleanup. You just point—the team handles the rest."
     }
