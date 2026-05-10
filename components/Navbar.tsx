@@ -216,8 +216,7 @@ export const Navbar: React.FC = () => {
 
       {/* Announcement Bar - In-Home Estimates */}
       <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-secondary py-2 px-3 md:px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5 md:gap-2">
-          <Home size={12} className="text-brand flex-shrink-0 md:size-14" />
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
           <span className="text-white text-[11px] md:text-xs font-bold uppercase tracking-wider truncate">
             <span className="hidden sm:inline">Free In-Home Estimates — </span>
             <span className="sm:hidden">Free In-Home Estimate — </span>
