@@ -15,6 +15,7 @@ import { CommercialPage } from './components/services/CommercialPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
+import { InHomeEstimatePage } from './components/InHomeEstimatePage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { SEO, seoConfig } from './components/SEO';
 
@@ -138,6 +139,15 @@ function TrackOrderPageWithSEO() {
   );
 }
 
+function InHomeEstimatePageWithSEO() {
+  return (
+    <>
+      <SEO title="Free In-Home Estimate | Opek Junk Removal" description="Schedule a free, no-obligation in-home estimate. Our team will visit your property and provide an accurate quote on the spot." />
+      <InHomeEstimatePage />
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -155,6 +165,7 @@ function App() {
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
+          <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
         </Routes>
         
         <Footer />

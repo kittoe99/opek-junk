@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone, Home } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -213,6 +213,22 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
       </nav>
+
+      {/* Announcement Bar - In-Home Estimates */}
+      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-brand py-2 px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
+          <Home size={14} className="text-white" />
+          <span className="text-white text-xs font-bold uppercase tracking-wider">
+            Free In-Home Estimates — We'll visit your property!
+          </span>
+          <button
+            onClick={() => navigate('/in-home-estimate')}
+            className="ml-2 text-[10px] font-bold uppercase tracking-wider bg-white text-brand px-3 py-1 rounded hover:bg-secondary-50 transition-colors"
+          >
+            Schedule Now
+          </button>
+        </div>
+      </div>
 
       {/* Mobile Sidebar Overlay */}
       <div 
