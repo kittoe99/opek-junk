@@ -1,4 +1,5 @@
 import React from 'react';
+import { Smartphone, Receipt, Trash2 } from 'lucide-react';
 
 interface ProcessProps {
   onGetQuote?: () => void;
@@ -7,63 +8,67 @@ interface ProcessProps {
 export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      title: 'Snap a photo',
-      desc: 'Send a picture of your junk and get instant volume analysis and a price.',
+      icon: Smartphone,
+      title: "PHOTO ESTIMATE",
+      desc: "Snap a quick photo of your junk. Get instant volume analysis and pricing from local professionals."
     },
     {
-      title: 'Lock the price',
-      desc: 'On-site confirmation with a fixed quote. No surcharges or hidden fees.',
+      icon: Receipt,
+      title: "UPFRONT QUOTE",
+      desc: "On-site confirmation with a fixed price. No surcharges, no hidden fees, no games."
     },
     {
-      title: 'We haul it',
-      desc: 'Professional pickup, sorting, and cleanup. You point—we do the rest.',
-    },
+      icon: Trash2,
+      title: "HEAVY LIFTING",
+      desc: "Professional hauling, sorting, and cleanup. You just point—the team handles the rest."
+    }
   ];
 
   return (
-    <section id="process" className="py-24 md:py-32 bg-gray-50 border-t border-gray-100">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 md:mb-20">
-          <div className="md:col-span-4">
-            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500">
-              <span className="inline-block h-px w-8 bg-gray-300" />
-              <span>How it works</span>
-            </div>
-          </div>
-          <div className="md:col-span-8">
-            <h2 className="text-4xl md:text-5xl font-light text-gray-900 leading-tight tracking-tight">
-              Point. Price. <span className="text-gray-400">Gone.</span>
-            </h2>
-          </div>
+    <section id="process" className="py-12 md:py-16 lg:py-24 bg-white">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header - Centered */}
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-3 md:mb-4 tracking-tight">
+            How It Works
+          </h2>
+          <p className="text-gray-600 text-sm md:text-base lg:text-lg max-w-2xl mx-auto">
+            Point. Price. <span className="text-gray-400">Gone.</span> Three simple steps to a clutter-free space
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
-          {steps.map((step, i) => (
-            <div key={i} className="bg-gray-50 p-8 md:p-10">
-              <div className="text-xs text-gray-400 tabular-nums mb-6">
-                {String(i + 1).padStart(2, '0')}
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="hidden md:block absolute top-12 left-0 right-0 h-px bg-gray-200"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {steps.map((step, index) => (
+              <div key={index} className="relative">
+                <div className="flex flex-col items-center text-center">
+                  {/* Icon circle */}
+                  <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 bg-white border border-gray-300 rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm hover:shadow-md hover:border-black transition-all duration-200">
+                    <step.icon size={28} className="text-black md:hidden" strokeWidth={1.5} />
+                    <step.icon size={36} className="text-black hidden md:block" strokeWidth={1.5} />
+                  </div>
+                  
+                  {/* Step number */}
+                  <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-2 w-7 h-7 md:w-8 md:h-8 bg-black text-white rounded-full flex items-center justify-center font-black text-xs md:text-sm z-20 shadow-sm">
+                    {index + 1}
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-base md:text-lg font-black text-gray-900 mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed max-w-[260px]">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-2xl font-light text-gray-900 tracking-tight mb-3">
-                {step.title}
-              </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                {step.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {onGetQuote && (
-          <div className="mt-12 flex justify-center md:justify-start">
-            <button
-              onClick={onGetQuote}
-              className="text-sm font-medium text-gray-700 underline-offset-4 hover:text-gray-900 hover:underline"
-            >
-              Start your quote &rarr;
-            </button>
+            ))}
           </div>
-        )}
+        </div>
 
       </div>
     </section>

@@ -1,97 +1,111 @@
 import React from 'react';
-import { Apple, Smartphone } from 'lucide-react';
+import { Phone, Mail, MapPin, Apple, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
+
   return (
-    <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-20 md:pt-24 pb-10">
-
-        {/* Wordmark + tagline */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 md:mb-20">
-          <div className="md:col-span-7">
-            <div className="text-4xl md:text-5xl font-light text-gray-900 tracking-tight leading-tight">
-              Junk gone. <span className="text-gray-400">Today.</span>
+    <footer className="bg-black">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-4 lg:col-span-4">
+            <div className="mb-5">
+              <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-40 w-auto object-contain" />
             </div>
-            <p className="text-gray-500 mt-6 max-w-md leading-relaxed">
-              Trusted local pros. Same-day pickup. Coast to coast.
+            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
+              Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
             </p>
+            {/* Contact Info */}
+            <div className="space-y-3">
+              <a href="tel:8313187139" className="flex items-center gap-2.5 text-gray-400 hover:text-white transition-colors group">
+                <div className="w-8 h-8 rounded-lg bg-gray-800 group-hover:bg-gray-700 flex items-center justify-center transition-colors">
+                  <Phone size={14} className="text-gray-400 group-hover:text-white transition-colors" />
+                </div>
+                <span className="text-sm font-bold">(831) 318-7139</span>
+              </a>
+              <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-2.5 text-gray-400 hover:text-white transition-colors group">
+                <div className="w-8 h-8 rounded-lg bg-gray-800 group-hover:bg-gray-700 flex items-center justify-center transition-colors">
+                  <Mail size={14} className="text-gray-400 group-hover:text-white transition-colors" />
+                </div>
+                <span className="text-sm">Support@opekjunkremoval.com</span>
+              </a>
+              <div className="flex items-center gap-2.5 text-gray-400">
+                <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center">
+                  <MapPin size={14} />
+                </div>
+                <span className="text-sm">Nationwide Service</span>
+              </div>
+            </div>
           </div>
-          <div className="md:col-span-5 md:text-right flex md:justify-end items-end">
-            <div className="space-y-2 text-sm md:text-right">
-              <a href="tel:8313187139" className="block text-gray-900 hover:text-gray-600 transition-colors">
-                (831) 318-7139
-              </a>
-              <a
-                href="mailto:Support@opekjunkremoval.com"
-                className="block text-gray-500 hover:text-gray-900 transition-colors"
-              >
-                Support@opekjunkremoval.com
-              </a>
+
+          {/* Services */}
+          <div className="col-span-1 lg:col-span-2">
+            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Services</h4>
+            <ul className="space-y-2.5">
+              <li><Link to="/services/residential" className="text-gray-400 hover:text-white text-sm transition-colors">Residential</Link></li>
+              <li><Link to="/services/commercial" className="text-gray-400 hover:text-white text-sm transition-colors">Commercial</Link></li>
+              <li><Link to="/services/construction" className="text-gray-400 hover:text-white text-sm transition-colors">Construction</Link></li>
+              <li><Link to="/services/e-waste" className="text-gray-400 hover:text-white text-sm transition-colors">E-Waste</Link></li>
+              <li><Link to="/services/property-cleanout" className="text-gray-400 hover:text-white text-sm transition-colors">Property Cleanout</Link></li>
+              <li><Link to="/services/dumpster-rental" className="text-gray-400 hover:text-white text-sm transition-colors">Dumpster Rental</Link></li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="col-span-1 lg:col-span-2">
+            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Company</h4>
+            <ul className="space-y-2.5">
+              <li><Link to="/quote" className="text-gray-400 hover:text-white text-sm transition-colors">Get a Quote</Link></li>
+              <li><Link to="/booking" className="text-gray-400 hover:text-white text-sm transition-colors">Book Online</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Contact Us</Link></li>
+              <li><Link to="/track-order" className="text-gray-400 hover:text-white text-sm transition-colors">Track Order</Link></li>
+              <li><Link to="/#process" className="text-gray-400 hover:text-white text-sm transition-colors">How it Works</Link></li>
+              <li><Link to="/#service-area" className="text-gray-400 hover:text-white text-sm transition-colors">Service Areas</Link></li>
+              <li><Link to="/provider-signup" className="text-gray-400 hover:text-white text-sm transition-colors">Become a Provider</Link></li>
+            </ul>
+          </div>
+
+          {/* App Download */}
+          <div className="col-span-2 md:col-span-2 lg:col-span-4">
+            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Get the App</h4>
+            <p className="text-gray-400 text-sm mb-5">Book pickups, track your service, and manage everything from your phone.</p>
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
+                <Apple size={20} />
+                <div className="text-left">
+                  <div className="text-[10px] text-gray-400 leading-none">Download on the</div>
+                  <div className="text-sm font-bold leading-tight">App Store</div>
+                </div>
+              </button>
+              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors">
+                <Smartphone size={20} />
+                <div className="text-left">
+                  <div className="text-[10px] text-gray-400 leading-none">Get it on</div>
+                  <div className="text-sm font-bold leading-tight">Google Play</div>
+                </div>
+              </button>
             </div>
           </div>
         </div>
-
-        {/* Link grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 pt-12 border-t border-gray-200">
-          <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-5">Services</h4>
-            <ul className="space-y-3 text-sm">
-              <li><Link to="/services/residential" className="text-gray-700 hover:text-gray-900">Residential</Link></li>
-              <li><Link to="/services/commercial" className="text-gray-700 hover:text-gray-900">Commercial</Link></li>
-              <li><Link to="/services/construction" className="text-gray-700 hover:text-gray-900">Construction</Link></li>
-              <li><Link to="/services/e-waste" className="text-gray-700 hover:text-gray-900">E-Waste</Link></li>
-              <li><Link to="/services/property-cleanout" className="text-gray-700 hover:text-gray-900">Property Cleanout</Link></li>
-              <li><Link to="/services/dumpster-rental" className="text-gray-700 hover:text-gray-900">Dumpster Rental</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-5">Company</h4>
-            <ul className="space-y-3 text-sm">
-              <li><Link to="/quote" className="text-gray-700 hover:text-gray-900">Get a quote</Link></li>
-              <li><Link to="/booking" className="text-gray-700 hover:text-gray-900">Book online</Link></li>
-              <li><Link to="/contact" className="text-gray-700 hover:text-gray-900">Contact</Link></li>
-              <li><Link to="/track-order" className="text-gray-700 hover:text-gray-900">Track order</Link></li>
-              <li><Link to="/provider-signup" className="text-gray-700 hover:text-gray-900">Become a provider</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-5">Explore</h4>
-            <ul className="space-y-3 text-sm">
-              <li><Link to="/#process" className="text-gray-700 hover:text-gray-900">How it works</Link></li>
-              <li><Link to="/#service-area" className="text-gray-700 hover:text-gray-900">Service areas</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-5">Get the app</h4>
-            <div className="flex flex-col gap-3">
-              <button className="flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900">
-                <Apple size={16} strokeWidth={1.5} />
-                App Store
-              </button>
-              <button className="flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900">
-                <Smartphone size={16} strokeWidth={1.5} />
-                Google Play
-              </button>
+      </div>
+      
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-500 text-xs">
+              &copy; {new Date().getFullYear()} Opek Junk Removal. All rights reserved.
+            </p>
+            <div className="flex gap-6 text-xs">
+              <a href="#" className="text-gray-500 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="text-gray-500 hover:text-white transition-colors">Terms of Service</a>
+              <a href="#" className="text-gray-500 hover:text-white transition-colors">Accessibility</a>
             </div>
           </div>
         </div>
-
-        {/* Bottom row */}
-        <div className="mt-16 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} Opek Junk Removal
-          </p>
-          <div className="flex gap-8 text-xs">
-            <a href="#" className="text-gray-400 hover:text-gray-700">Privacy</a>
-            <a href="#" className="text-gray-400 hover:text-gray-700">Terms</a>
-            <a href="#" className="text-gray-400 hover:text-gray-700">Accessibility</a>
-          </div>
-        </div>
-
       </div>
     </footer>
   );

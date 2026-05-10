@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown, CheckCircle2, ShieldCheck, MapPin } from 'lucide-react';
+import { Button } from './Button';
 
 interface HeroProps {
   onGetQuote: () => void;
@@ -8,88 +9,59 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
-    <section className="relative bg-white pt-32 md:pt-40 pb-20 md:pb-32">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end">
-
-          {/* Heading & CTA */}
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pt-32 pb-12 md:pt-40 md:pb-32">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          
+          {/* Left Column - Heading & CTA */}
           <div className="lg:col-span-7">
-            <div className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500 animate-fade-in">
-              <span className="inline-block h-px w-8 bg-gray-300" />
-              <span>Nationwide</span>
+            <div className="mb-4 animate-fade-in">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Nationwide Service</span>
             </div>
 
-            <h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light text-gray-900 tracking-tight leading-[1.02] mb-8 animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
-            >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black tracking-tight mb-4 md:mb-6 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
               Junk gone.
-              <br />
-              <span className="text-gray-400">Today.</span>
+              <br/>
+              Today.
             </h1>
-
-            <p
-              className="text-base md:text-lg text-gray-500 mb-10 max-w-md leading-relaxed animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
-            >
-              Instant quotes. Same-day pickup. Trusted local pros.
+            
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 md:mb-8 max-w-lg leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
+              Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
-            <div
-              className="flex flex-wrap items-center gap-6 animate-slide-up"
-              style={{ animationDelay: '0.3s' }}
-            >
-              <button
+            <div className="flex flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
+              <button 
                 onClick={onGetQuote}
-                className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-gray-900 text-white rounded-full hover:bg-black transition-colors"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
               >
-                Get a quote
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-0.5"
-                />
+                View Pricing
               </button>
-              <button
+              <button 
                 onClick={onBookOnline}
-                className="text-sm font-medium text-gray-700 underline-offset-4 hover:text-gray-900 hover:underline transition-colors"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
               >
-                Book online
+                Book Online
               </button>
             </div>
           </div>
 
-          {/* Image */}
-          <div
-            className="lg:col-span-5 animate-fade-in"
-            style={{ animationDelay: '0.4s' }}
-          >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
-              <img
-                src="/junk-removal.webp"
-                alt="Professional junk removal"
-                className="w-full h-full object-cover"
+          {/* Right Column - Image */}
+          <div className="lg:col-span-5 animate-fade-in" style={{animationDelay: '0.4s'}}>
+            <div className="relative aspect-[3/2] sm:aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
+              <img 
+                src="/junk-removal.webp" 
+                alt="Professional junk removal truck" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6 transform translate-y-0 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle2 size={18} className="text-emerald-400 animate-pulse"/>
+                  <span className="text-sm font-bold">Fully Insured • 70% Recycled • Same-Day Available</span>
+                </div>
+              </div>
             </div>
           </div>
 
-        </div>
-
-        {/* Stat strip */}
-        <div className="mt-16 md:mt-24 pt-8 border-t border-gray-200 grid grid-cols-3 gap-6 max-w-3xl">
-          {[
-            { k: 'Same-day', v: 'Pickup' },
-            { k: '70%', v: 'Recycled' },
-            { k: '50 states', v: 'Coverage' },
-          ].map((s) => (
-            <div key={s.k}>
-              <div className="text-xl md:text-2xl text-gray-900 font-light tracking-tight">
-                {s.k}
-              </div>
-              <div className="text-xs uppercase tracking-[0.18em] text-gray-500 mt-1">
-                {s.v}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>

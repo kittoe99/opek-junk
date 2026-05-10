@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Phone, Mail, Clock } from 'lucide-react';
+import { CheckCircle2, Phone, Mail, Clock, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -67,180 +67,179 @@ export const ContactPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white pt-[80px] md:pt-[104px] px-4">
-        <Breadcrumb items={[{ label: 'Contact' }]} />
-        <div className="py-24 md:py-32 flex items-center justify-center">
+      <div className="min-h-screen bg-white pt-[88px] md:pt-[108px] px-4">
+        <Breadcrumb items={[{ label: 'Contact Us' }]} />
+        <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
           <div className="max-w-md w-full text-center">
-            <div className="w-12 h-12 border border-gray-300 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-900">
-              <CheckCircle2 size={20} strokeWidth={1.25} />
-            </div>
-            <h2 className="text-3xl font-light text-gray-900 tracking-tight mb-4">Message received</h2>
-            <p className="text-gray-500 text-sm mb-10 leading-relaxed">
-              Thanks for reaching out. We&apos;ll respond within 30 minutes during business hours.
-            </p>
-            <button
-              onClick={() => navigate('/')}
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-gray-900 text-white rounded-full hover:bg-black transition-colors"
-            >
-              Return home
-            </button>
+          <div className="w-16 h-16 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 size={32} />
           </div>
+          <h2 className="text-2xl font-black mb-3">Message Received!</h2>
+          <p className="text-gray-600 text-sm mb-6">
+            Thank you for contacting OPEK. We'll respond within 30 minutes during business hours.
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+          >
+            Return Home
+          </button>
+        </div>
         </div>
       </div>
     );
   }
 
-  const inputClass = "w-full px-0 py-3 text-base bg-transparent border-0 border-b border-gray-200 rounded-none focus:border-gray-900 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400";
-  const labelClass = "block text-xs uppercase tracking-[0.18em] text-gray-500 mb-2";
-
   return (
-    <div className="min-h-screen bg-white pt-[80px] md:pt-[104px]">
-      <Breadcrumb items={[{ label: 'Contact' }]} />
-
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-12 pb-24 md:pb-32">
-
+    <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
+      <Breadcrumb items={[{ label: 'Contact Us' }]} />
+      <div className="py-16 md:py-20 lg:py-32">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        
         {/* Header */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 md:mb-24">
-          <div className="md:col-span-4">
-            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500">
-              <span className="inline-block h-px w-8 bg-gray-300" />
-              <span>Contact</span>
+        <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
+            Get In Touch
+          </h1>
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+            Connect with local junk removal professionals. We're here to help clear your space.
+          </p>
+        </div>
+
+        {/* Hero Image */}
+        <div className="mb-12">
+          <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-xl">
+            <img 
+              src="/opek2.webp" 
+              loading="lazy"
+              alt="Professional junk removal service" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 sm:p-6">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-8 text-white text-center md:text-left">
+                <div className="flex items-center gap-2">
+                  <Phone size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">(831) 318-7139</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Mail size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">Support@opekjunkremoval.com</span>
+                </div>
+                <span className="hidden md:block text-white/40">•</span>
+                <div className="flex items-center gap-2">
+                  <Clock size={16} className="shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold">24/7 Service</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="md:col-span-8">
-            <h1 className="text-5xl md:text-6xl font-light text-gray-900 tracking-tight leading-[1.05]">
-              Get in touch.
-            </h1>
-            <p className="text-gray-500 mt-6 max-w-lg leading-relaxed">
-              We&apos;re here to help clear your space. Drop us a message and we&apos;ll be in touch shortly.
-            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-
-          {/* Contact details */}
-          <aside className="lg:col-span-4 order-2 lg:order-1">
-            <div className="border-t border-gray-200 pt-8 space-y-8">
-              <div>
-                <div className={labelClass}>Phone</div>
-                <a href="tel:8313187139" className="flex items-center gap-2 text-base text-gray-900 hover:text-gray-600">
-                  <Phone size={14} strokeWidth={1.5} />
-                  (831) 318-7139
-                </a>
-              </div>
-              <div>
-                <div className={labelClass}>Email</div>
-                <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-2 text-base text-gray-900 hover:text-gray-600 break-all">
-                  <Mail size={14} strokeWidth={1.5} />
-                  Support@opekjunkremoval.com
-                </a>
-              </div>
-              <div>
-                <div className={labelClass}>Hours</div>
-                <div className="flex items-center gap-2 text-base text-gray-900">
-                  <Clock size={14} strokeWidth={1.5} />
-                  24/7 service
-                </div>
-              </div>
+        {/* Form */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
+          <div className="max-w-2xl mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            
+            <div className="mb-4 md:mb-6">
+              <h2 className="text-lg md:text-xl font-black mb-1">Send Us a Message</h2>
+              <p className="text-gray-600 text-sm">Fill out the form and we'll get back to you shortly.</p>
             </div>
-          </aside>
 
-          {/* Form */}
-          <div className="lg:col-span-8 order-1 lg:order-2">
-            <form onSubmit={handleSubmit} className="space-y-8 border-t border-gray-200 pt-8">
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <label className={labelClass}>Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className={inputClass}
-                    placeholder="John Smith"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className={inputClass}
-                    placeholder="john@example.com"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <label className={labelClass}>Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    required
-                    className={inputClass}
-                    placeholder="(555) 555-5555"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Subject</label>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                    className={inputClass + " appearance-none cursor-pointer"}
-                  >
-                    <option value="">Select a subject</option>
-                    {subjectOptions.map(option => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Message</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
+                <label className="block text-xs font-bold mb-1.5">Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   required
-                  rows={4}
-                  className={inputClass + " resize-none"}
-                  placeholder="Tell us about your junk removal needs..."
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  placeholder="John Smith"
                 />
               </div>
-
-              {error && (
-                <div className="text-sm text-red-600">{error}</div>
-              )}
-
-              <div className="pt-4 flex flex-wrap items-center gap-6">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-gray-900 text-white rounded-full hover:bg-black transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                  {submitting ? 'Sending…' : 'Send message'}
-                </button>
-                <p className="text-xs text-gray-400">
-                  We respond within 30 minutes during business hours.
-                </p>
+              <div>
+                <label className="block text-xs font-bold mb-1.5">Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  placeholder="john@example.com"
+                />
               </div>
+            </div>
 
-            </form>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold mb-1.5">Phone *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                  placeholder="(831) 318-7139"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold mb-1.5">Subject *</label>
+                <select
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                >
+                  <option value="">Select a subject</option>
+                  {subjectOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold mb-1.5">Message *</label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                rows={4}
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
+                placeholder="Tell us about your junk removal needs..."
+              />
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-700 text-xs font-bold">{error}</p>
+              </div>
+            )}
+
+            <div className="pt-4">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {submitting ? 'Sending...' : 'Send Message'}
+              </button>
+              <p className="text-xs text-gray-500 text-center mt-3">
+                We'll respond within 30 minutes during business hours
+              </p>
+            </div>
+
+          </form>
           </div>
-
         </div>
+
+      </div>
       </div>
     </div>
   );

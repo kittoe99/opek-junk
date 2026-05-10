@@ -20,61 +20,35 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Reverse-geocode coordinates to city name using OpenStreetMap Nominatim
-  const reverseGeocode = async (lat: number, lon: number): Promise<string> => {
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`,
-      { headers: { 'Accept-Language': 'en' } }
-    );
-    const data = await res.json();
-    const addr = data.address;
-    const city = addr?.city || addr?.town || addr?.village || addr?.county || '';
-    const state = addr?.state_code || addr?.state || '';
-    if (city && state) return `${city}, ${state}`;
-    if (city) return city;
-    return 'Your Location';
-  };
-
-  // Fallback: IP-based location detection
-  const fetchLocationByIP = async (): Promise<string> => {
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    const ipData = await ipResponse.json();
-    const geoResponse = await fetch(`https://ipwho.is/${ipData.ip}`);
-    const geoData = await geoResponse.json();
-    if (geoData.success && geoData.city && geoData.region_code) {
-      return `${geoData.city}, ${geoData.region_code}`;
-    }
-    return 'Your Location';
-  };
-
-  // Request exact browser location, fall back to IP-based
+  // Fetch user's city based on IP address with improved accuracy
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      if ('geolocation' in navigator) {
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 300000,
-          });
-        });
-        const { latitude, longitude } = position.coords;
-        const city = await reverseGeocode(latitude, longitude);
-        setUserCity(city);
+      // Get IP first, then use it for geolocation
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const userIp = ipData.ip;
+      
+      console.log('User IP:', userIp);
+      
+      // Use ipwho.is with the IP (free, unlimited, HTTPS)
+      const geoResponse = await fetch(`https://ipwho.is/${userIp}`);
+      const geoData = await geoResponse.json();
+      
+      console.log('Geolocation response:', geoData);
+      
+      if (geoData.success && geoData.city && geoData.region_code) {
+        setUserCity(`${geoData.city}, ${geoData.region_code}`);
+        console.log('Location set:', `${geoData.city}, ${geoData.region_code}`);
       } else {
-        const city = await fetchLocationByIP();
-        setUserCity(city);
+        // Set default location if API fails
+        setUserCity('Your Location');
+        console.log('Using default location - API returned:', geoData);
       }
     } catch (error) {
-      // User denied permission or geolocation failed — fall back to IP
-      console.warn('Browser geolocation unavailable, falling back to IP:', error);
-      try {
-        const city = await fetchLocationByIP();
-        setUserCity(city);
-      } catch {
-        setUserCity('Your Location');
-      }
+      console.error('Failed to fetch location:', error);
+      // Set default location on error
+      setUserCity('Your Location');
     } finally {
       setIsDetectingLocation(false);
     }
@@ -122,17 +96,17 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Bar - Desktop Only */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-white border-b border-gray-100 py-2 px-6">
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 py-1.5 px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
           {userCity && (
             <button
               onClick={fetchUserLocation}
               disabled={isDetectingLocation}
-              className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition-colors cursor-pointer group disabled:opacity-50"
+              className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
             >
-              <MapPin size={11} className="text-gray-400 group-hover:text-gray-900 transition-colors" strokeWidth={1.75} />
-              <span className="text-[11px] uppercase tracking-[0.18em]">
-                {isDetectingLocation ? 'Detecting…' : userCity}
+              <MapPin size={12} className="text-gray-400 group-hover:text-black transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
+                {isDetectingLocation ? 'Detecting...' : userCity}
               </span>
             </button>
           )}
@@ -141,7 +115,7 @@ export const Navbar: React.FC = () => {
 
       {/* Main Navbar */}
       <nav 
-        className={`fixed top-0 md:top-[32px] left-0 right-0 z-[60] py-3 bg-white/90 backdrop-blur-md transition-all px-6 ${isScrolled ? 'border-b border-gray-200' : 'border-b border-transparent'}`}
+        className="fixed top-0 md:top-[28px] left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
@@ -185,16 +159,17 @@ export const Navbar: React.FC = () => {
                   >
                     <button 
                       onClick={() => handleLinkClick(link.path)}
-                      className="text-sm font-medium tracking-tight transition-colors duration-200 bg-transparent border-none cursor-pointer text-gray-700 hover:text-gray-900 flex items-center gap-1"
+                      className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black flex items-center gap-1"
                     >
                       {link.name}
-                      <ChevronDown size={14} className={`transition-transform duration-200 ${showServicesMega ? 'rotate-180' : ''}`} strokeWidth={1.75} />
+                      <ChevronDown size={14} className={`transition-transform duration-300 ${showServicesMega ? 'rotate-180' : ''}`} />
+                      <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-black"></span>
                     </button>
                     
                     {/* Mega Menu */}
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-white border border-gray-200 rounded-sm shadow-sm transition-all duration-200 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                      <div className="p-2">
-                        <div className="grid grid-cols-2">
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-white shadow-2xl border border-gray-200 rounded-xl transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'}`}>
+                      <div className="p-6">
+                        <div className="grid grid-cols-2 gap-4">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -202,9 +177,9 @@ export const Navbar: React.FC = () => {
                                 setShowServicesMega(false);
                                 handleLinkClick(item.path);
                               }}
-                              className="text-left px-5 py-4 hover:bg-gray-50 transition-colors group"
+                              className="text-left p-4 rounded-lg hover:bg-gray-50 transition-colors group"
                             >
-                              <div className="text-sm text-gray-900 mb-1 font-normal">{item.name}</div>
+                              <div className="font-bold text-sm text-black group-hover:text-gray-900 mb-1">{item.name}</div>
                               <div className="text-xs text-gray-500">{item.desc}</div>
                             </button>
                           ))}
@@ -215,9 +190,10 @@ export const Navbar: React.FC = () => {
                 ) : (
                   <button 
                     onClick={() => handleLinkClick(link.path)}
-                    className="text-sm font-medium tracking-tight transition-colors duration-200 bg-transparent border-none cursor-pointer text-gray-700 hover:text-gray-900"
+                    className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black"
                   >
                     {link.name}
+                    <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-black"></span>
                   </button>
                 )}
               </div>
@@ -225,9 +201,9 @@ export const Navbar: React.FC = () => {
             
             <button 
               onClick={() => navigate('/quote')}
-              className="px-5 py-2.5 text-sm font-medium bg-gray-900 text-white hover:bg-black rounded-full transition-colors"
+              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-black text-white hover:bg-gray-800 rounded-lg shadow-md"
             >
-              Get a quote
+              Get A Quote
             </button>
           </div>
 
