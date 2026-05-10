@@ -215,17 +215,19 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Announcement Bar - In-Home Estimates */}
-      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-brand py-2 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
-          <Home size={14} className="text-white" />
-          <span className="text-white text-xs font-bold uppercase tracking-wider">
-            Free In-Home Estimates — We'll visit your property!
+      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-secondary py-2 px-3 md:px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5 md:gap-2">
+          <Home size={12} className="text-brand flex-shrink-0 md:size-14" />
+          <span className="text-white text-[11px] md:text-xs font-bold uppercase tracking-wider truncate">
+            <span className="hidden sm:inline">Free In-Home Estimates — </span>
+            <span className="sm:hidden">Free In-Home Estimate — </span>
+            We'll visit you!
           </span>
           <button
             onClick={() => navigate('/in-home-estimate')}
-            className="ml-2 text-[10px] font-bold uppercase tracking-wider bg-white text-brand px-3 py-1 rounded hover:bg-secondary-50 transition-colors"
+            className="ml-1 md:ml-2 text-[10px] font-bold uppercase tracking-wider bg-brand text-white px-2 md:px-3 py-1 rounded hover:bg-brand-600 transition-colors flex-shrink-0 whitespace-nowrap"
           >
-            Schedule Now
+            Schedule<span className="hidden sm:inline"> Now</span>
           </button>
         </div>
       </div>
