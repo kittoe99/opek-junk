@@ -227,7 +227,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Sidebar Menu */}
       <div 
-        className={`fixed top-0 right-0 h-full w-[305px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-[320px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -237,55 +237,80 @@ export const Navbar: React.FC = () => {
             <img
               src="/logo1.png"
               alt="Opek Junk Removal"
-              className="h-9 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
             <button 
               onClick={() => setIsMenuOpen(false)}
-              className="w-9 h-9 rounded-none bg-secondary-100 hover:bg-brand hover:text-white flex items-center justify-center transition-colors text-secondary"
+              className="w-10 h-10 flex items-center justify-center text-secondary hover:text-brand transition-colors"
             >
-              <X size={18} />
+              <X size={24} />
             </button>
+          </div>
+
+          {/* Quick Actions - Prominent CTAs */}
+          <div className="px-5 py-4 bg-secondary-50 border-b border-secondary-100">
+            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Quick Actions</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  navigate('/quote');
+                }}
+                className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-brand text-white rounded-lg shadow-sm hover:bg-brand-600 transition-colors"
+              >
+                <MessageSquare size={20} />
+                <span className="text-[10px] font-bold uppercase tracking-wide">Get Quote</span>
+              </button>
+              <a
+                href="tel:8313187139"
+                className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-secondary text-white rounded-lg shadow-sm hover:bg-secondary-600 transition-colors"
+              >
+                <Phone size={20} />
+                <span className="text-[10px] font-bold uppercase tracking-wide">Call Now</span>
+              </a>
+            </div>
           </div>
 
           {/* Location Badge */}
           {userCity && (
-            <div className="mx-5 mt-4 mb-1">
+            <div className="px-5 py-3 border-b border-secondary-100">
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-2 px-3 py-2 bg-secondary-50 rounded-none text-secondary hover:text-brand transition-colors disabled:opacity-50 w-full"
+                className="flex items-center gap-2 text-secondary hover:text-brand transition-colors disabled:opacity-50 w-full"
               >
-                <MapPin size={13} className="shrink-0 text-brand" />
-                <span className="text-[11px] font-bold uppercase tracking-wider">
-                  {isDetectingLocation ? 'Detecting...' : userCity}
+                <MapPin size={16} className="text-brand" />
+                <span className="text-sm font-bold">
+                  {isDetectingLocation ? 'Detecting location...' : `Serving ${userCity}`}
                 </span>
               </button>
             </div>
           )}
 
           {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto px-5 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-secondary-300 mb-2 px-1">Navigation</p>
-            <div className="space-y-1">
+          <nav className="flex-1 overflow-y-auto px-5 py-4">
+            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Menu</p>
+            <div className="space-y-0.5">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path.split('#')[0]));
                 return (
                 <div key={link.name}>
                   {link.hasMega ? (
-                    <div>
+                    <div className="border-b border-secondary-50 last:border-0">
                       <button
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className={`w-full flex items-center justify-between px-3 py-3 rounded-none text-sm font-bold transition-colors ${
-                          mobileServicesOpen ? 'bg-brand text-white' : 'text-secondary hover:bg-secondary-50'
-                        }`}
+                        className="w-full flex items-center justify-between py-3 text-sm font-bold transition-colors"
                       >
-                        <span className="flex items-center gap-2.5">{link.icon}<span className="text-brand">{link.name}</span></span>
-                        <ChevronDown size={16} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180 text-white/60' : 'text-brand'}`} />
+                        <span className="flex items-center gap-3 text-secondary">
+                          <span className="w-8 h-8 rounded-lg bg-secondary-100 flex items-center justify-center text-brand">{link.icon}</span>
+                          {link.name}
+                        </span>
+                        <ChevronDown size={18} className={`text-secondary-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
                       </button>
                       
                       {/* Services Submenu */}
-                      <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="py-2 space-y-1 bg-secondary-50/50">
+                      <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[400px] opacity-100 pb-3' : 'max-h-0 opacity-0'}`}>
+                        <div className="space-y-0.5 pl-11">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -293,13 +318,9 @@ export const Navbar: React.FC = () => {
                                 setMobileServicesOpen(false);
                                 handleLinkClick(item.path);
                               }}
-                              className="w-full text-left px-3 py-3 rounded-none hover:bg-white transition-colors group flex items-start gap-3"
+                              className="w-full text-left py-2 px-3 text-sm text-secondary-600 hover:text-brand hover:bg-secondary-50 rounded-lg transition-colors"
                             >
-                              <span className="w-1.5 h-1.5 rounded-full bg-secondary-300 mt-1.5 shrink-0 group-hover:bg-brand transition-colors"></span>
-                              <div>
-                                <div className="text-[13px] font-semibold text-secondary group-hover:text-brand">{item.name}</div>
-                                <div className="text-[11px] text-secondary-300 mt-0.5 leading-tight">{item.desc}</div>
-                              </div>
+                              {item.name}
                             </button>
                           ))}
                         </div>
@@ -308,73 +329,48 @@ export const Navbar: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link.path)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-none text-sm font-bold transition-colors ${
-                        isActive ? 'bg-secondary-100 text-secondary' : 'text-secondary hover:bg-secondary-50'
+                      className={`w-full flex items-center gap-3 py-3 text-sm font-bold border-b border-secondary-50 last:border-0 transition-colors ${
+                        isActive ? 'text-brand' : 'text-secondary hover:text-brand'
                       }`}
                     >
-                      <span className="text-brand">{link.icon}</span>
+                      <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand text-white' : 'bg-secondary-100 text-brand'}`}>
+                        {link.icon}
+                      </span>
                       {link.name}
                     </button>
                   )}
                 </div>
               );
               })}
+            </div>
 
-              <div className="h-px bg-secondary-100 my-3"></div>
-
-              {/* Provider Signup Link */}
+            {/* Additional Links */}
+            <div className="mt-4 pt-4 border-t border-secondary-100">
               <button
                 onClick={() => handleLinkClick('/provider-signup')}
-                className="w-full flex items-center gap-2.5 px-3 py-3 rounded-none text-sm font-bold text-secondary hover:text-brand hover:bg-secondary-50 transition-colors"
+                className="w-full flex items-center gap-3 py-3 text-sm font-bold text-secondary hover:text-brand transition-colors"
               >
-                <span className="text-brand"><UserPlus size={16} /></span>
+                <span className="w-8 h-8 rounded-lg bg-secondary-100 flex items-center justify-center text-brand">
+                  <UserPlus size={16} />
+                </span>
                 Become a Provider
               </button>
             </div>
           </nav>
 
-          {/* Nav Image with CTA overlay */}
-          <div className="px-5 pb-3">
-            <div className={`relative rounded-none overflow-hidden shadow-sm border border-secondary-100 transition-all duration-300 ${mobileServicesOpen ? 'h-0 opacity-0 border-0 shadow-none' : 'h-32 opacity-100'}`}>
-              <img
-                src="/opek-nav.webp"
-                alt="Opek Junk Removal"
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-secondary/60" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    navigate('/quote');
-                  }}
-                  className="px-6 py-2.5 bg-brand text-white text-xs font-bold uppercase tracking-wider border border-transparent hover:bg-brand-600 transition-colors rounded-none shadow-lg"
-                >
-                  Get A Quote
-                </button>
-              </div>
-            </div>
-          </div>
-
           {/* Sidebar Footer */}
-          <div className="p-5 pt-3 space-y-3 border-t border-secondary-100">
-            {/* Download App Card */}
+          <div className="p-5 border-t border-secondary-100 bg-secondary-50">
+            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3 text-center">Get the App</p>
             <div className="flex gap-2">
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-secondary text-white rounded-none text-[11px] font-bold hover:bg-brand transition-colors">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                App Store
+              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white text-secondary border border-secondary-200 rounded-lg text-[11px] font-bold hover:border-brand hover:text-brand transition-colors shadow-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                iOS
               </button>
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-secondary text-white rounded-none text-[11px] font-bold hover:bg-brand transition-colors">
-                <Smartphone size={13} />
-                Google Play
+              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white text-secondary border border-secondary-200 rounded-lg text-[11px] font-bold hover:border-brand hover:text-brand transition-colors shadow-sm">
+                <Smartphone size={14} />
+                Android
               </button>
             </div>
-
-            <a href="tel:8313187139" className="flex items-center justify-center gap-1.5 text-[11px] text-secondary-400 font-bold hover:text-brand transition-colors py-1">
-              <Phone size={12} className="text-brand" />
-              <span>Call us: (831) 318-7139</span>
-            </a>
           </div>
         </div>
       </div>
