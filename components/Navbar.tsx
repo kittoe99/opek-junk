@@ -92,28 +92,27 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Top Bar - Desktop Only */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 z-[61] bg-gray-50 py-1.5 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-center">
-          {userCity && (
-            <button
-              onClick={fetchUserLocation}
-              disabled={isDetectingLocation}
-              className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
-            >
-              <MapPin size={12} className="text-gray-400 group-hover:text-black transition-colors" />
-              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
-                {isDetectingLocation ? 'Detecting...' : userCity}
-              </span>
-            </button>
-          )}
+      <header className="fixed top-0 left-0 right-0 z-[60] shadow-md">
+        {/* Top Bar - Desktop Only */}
+        <div className="hidden md:block bg-gray-50 py-1.5 px-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-center">
+            {userCity && (
+              <button
+                onClick={fetchUserLocation}
+                disabled={isDetectingLocation}
+                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+              >
+                <MapPin size={12} className="text-gray-400 group-hover:text-black transition-colors" />
+                <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
+                  {isDetectingLocation ? 'Detecting...' : userCity}
+                </span>
+              </button>
+            )}
+          </div>
         </div>
-      </div>
 
       {/* Main Navbar */}
-      <nav 
-        className="fixed top-0 md:top-[28px] left-0 right-0 z-[60] py-4 bg-white shadow-md px-6"
-      >
+      <nav className="py-4 bg-white px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Left Section - Logo */}
@@ -215,7 +214,7 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Announcement Bar - In-Home Estimates */}
-      <div className="fixed top-[80px] md:top-[112px] left-0 right-0 z-[59] bg-secondary px-3 py-2">
+      <div className="bg-secondary px-3 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
           <span className="min-w-0 text-white text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
             <span className="hidden sm:inline">Free In-Home Estimates — We'll visit your property</span>
@@ -229,6 +228,7 @@ export const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
+      </header>
 
       {/* Mobile Sidebar Overlay */}
       <div 
