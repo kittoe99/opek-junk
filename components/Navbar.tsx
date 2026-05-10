@@ -215,18 +215,17 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Announcement Bar - In-Home Estimates */}
-      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-secondary py-2 px-3 md:px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
-          <span className="text-white text-[11px] md:text-xs font-bold uppercase tracking-wider truncate">
-            <span className="hidden sm:inline">Free In-Home Estimates — </span>
-            <span className="sm:hidden">Free In-Home Estimate — </span>
-            We'll visit you!
+      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-secondary px-3 py-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <span className="min-w-0 flex-1 text-white text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
+            <span className="hidden sm:inline">Free In-Home Estimates — We'll visit your property</span>
+            <span className="sm:hidden">Free In-Home Estimates</span>
           </span>
           <button
             onClick={() => navigate('/in-home-estimate')}
-            className="ml-1 md:ml-2 text-[10px] font-bold uppercase tracking-wider bg-brand text-white px-2 md:px-3 py-1 rounded hover:bg-brand-600 transition-colors flex-shrink-0 whitespace-nowrap"
+            className="flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 transition-colors whitespace-nowrap"
           >
-            Schedule<span className="hidden sm:inline"> Now</span>
+            Schedule
           </button>
         </div>
       </div>
