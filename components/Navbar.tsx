@@ -92,7 +92,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[60] shadow-md">
+      <header
+        className="shadow-md"
+        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60 }}
+      >
         {/* Top Bar - Desktop Only */}
         <div className="hidden md:block bg-gray-50 py-1.5 px-6">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
