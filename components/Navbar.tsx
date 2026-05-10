@@ -215,7 +215,7 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Announcement Bar - In-Home Estimates */}
-      <div className="fixed top-[57px] md:top-[85px] left-0 right-0 z-[59] bg-secondary px-3 py-2">
+      <div className="fixed top-[80px] md:top-[112px] left-0 right-0 z-[59] bg-secondary px-3 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           <span className="min-w-0 flex-1 text-white text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
             <span className="hidden sm:inline">Free In-Home Estimates — We'll visit your property</span>
