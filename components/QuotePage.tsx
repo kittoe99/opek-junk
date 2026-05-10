@@ -390,7 +390,7 @@ export const QuotePage: React.FC = () => {
         <p className="text-sm text-gray-600 leading-relaxed mb-6 pb-6 border-b border-gray-200">{price.summary}</p>
         <button
           onClick={() => navigate('/booking', { state: { estimate, image } })}
-          className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg"
+          className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg"
         >
           Confirm Booking
         </button>
@@ -419,7 +419,7 @@ export const QuotePage: React.FC = () => {
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="px-8 py-3 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg"
+                className="px-8 py-3 bg-brand text-white font-bold uppercase text-sm hover:bg-brand-600 transition-colors rounded-lg"
               >
                 Submit Another Request
               </button>
@@ -576,7 +576,7 @@ export const QuotePage: React.FC = () => {
                         )}
                       </div>
                       {loadingState === LoadingState.IDLE && (
-                        <button onClick={handleAnalyze} className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg">
+                        <button onClick={handleAnalyze} className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg">
                           Analyze Photo
                         </button>
                       )}
@@ -642,7 +642,7 @@ export const QuotePage: React.FC = () => {
                         placeholder="e.g. Old Desk"
                         className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
                       />
-                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                         <Plus size={16} />
                       </button>
                     </div>
@@ -651,7 +651,7 @@ export const QuotePage: React.FC = () => {
                     <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg">
                       Back
                     </button>
-                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-black text-white font-bold uppercase text-sm hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-brand text-white font-bold uppercase text-sm hover:bg-brand-600 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed">
                       Get Estimate
                     </button>
                   </div>
@@ -787,7 +787,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         onClick={addManualSelectedItem}
                         disabled={!manualNewItemName.trim()}
-                        className="px-4 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        className="px-4 py-2.5 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                       >
                         <Plus size={16} />
                       </button>
@@ -821,7 +821,7 @@ export const QuotePage: React.FC = () => {
                   <button
                     onClick={handleGetManualPrice}
                     disabled={selectedItems.length === 0}
-                    className="w-full py-4 bg-black text-white font-bold uppercase hover:bg-gray-800 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     {selectedItems.length === 0 ? 'Select items to continue' : `Get Estimate (${totalSelectedCount} item${totalSelectedCount !== 1 ? 's' : ''})`}
                   </button>

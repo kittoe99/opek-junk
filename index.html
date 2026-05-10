@@ -138,6 +138,36 @@
     </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                DEFAULT: '#ff006e',
+                50:  '#fff0f6',
+                100: '#ffd6e6',
+                400: '#ff3387',
+                500: '#ff006e',
+                600: '#e60063',
+                700: '#b30049',
+              },
+              secondary: {
+                DEFAULT: '#355070',
+                50:  '#f4f6f8',
+                100: '#e1e5ea',
+                200: '#c3cbd4',
+                300: '#9aa6b7',
+                400: '#6e7f99',
+                500: '#355070',
+                600: '#2d4460',
+                700: '#23354d',
+              }
+            }
+          }
+        }
+      };
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
       body {

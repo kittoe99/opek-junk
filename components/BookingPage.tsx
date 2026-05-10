@@ -298,7 +298,7 @@ export const BookingPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <button
                 onClick={() => navigate('/track-order')}
-                className="px-6 py-2.5 bg-black text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-gray-800 transition-colors"
+                className="px-6 py-2.5 bg-brand text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand-600 transition-colors"
               >
                 Track Order
               </button>
@@ -488,7 +488,7 @@ export const BookingPage: React.FC = () => {
                       {loadingState === LoadingState.IDLE && (
                         <button
                           onClick={handleAnalyze}
-                          className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase hover:bg-gray-800 bg-black text-white transition-colors rounded-lg shadow-md"
+                          className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase hover:bg-brand-600 bg-brand text-white transition-colors rounded-lg shadow-md"
                         >
                           Analyze Photo
                         </button>
@@ -527,7 +527,7 @@ export const BookingPage: React.FC = () => {
                           </div>
                           <button
                             onClick={() => handleNextStep()}
-                            className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase hover:bg-gray-800 bg-black text-white transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                            className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase hover:bg-brand-600 bg-brand text-white transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
                           >
                             Continue to Booking
                             <ArrowRight size={18} />
@@ -541,7 +541,7 @@ export const BookingPage: React.FC = () => {
                           <p className="text-red-700 text-sm font-bold mb-3">Failed to analyze photo</p>
                           <button
                             onClick={handleAnalyze}
-                            className="px-5 py-2 bg-black text-white font-bold uppercase text-xs hover:bg-gray-800 transition-colors rounded-lg"
+                            className="px-5 py-2 bg-brand text-white font-bold uppercase text-xs hover:bg-brand-600 transition-colors rounded-lg"
                           >
                             Try Again
                           </button>
@@ -695,7 +695,7 @@ export const BookingPage: React.FC = () => {
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
+                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase bg-brand text-white hover:bg-brand-600 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2"
                     >
                       Next Step
                       <ArrowRight size={18} />
@@ -790,7 +790,7 @@ export const BookingPage: React.FC = () => {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="flex-1 px-5 py-2.5 text-xs sm:text-sm font-bold uppercase bg-brand text-white hover:bg-brand-600 transition-colors rounded-lg shadow-md flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {submitting ? 'Submitting...' : 'Confirm Booking'}
                       {!submitting && <CheckCircle size={18} />}

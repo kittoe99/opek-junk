@@ -54,20 +54,20 @@ export const Services: React.FC = () => {
   const displayedServices = serviceItems;
 
   return (
-    <section id="services" className="py-16 md:py-24 lg:py-32 bg-gray-50">
+    <section id="services" className="py-16 md:py-24 lg:py-32 bg-secondary-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           
           {/* Content Side */}
           <div className="flex flex-col">
             <div className="mb-10">
-              <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
+              <span className="inline-block px-4 py-2 bg-secondary text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-lg mb-6">
                 Services
               </span>
-              <h2 className="text-4xl md:text-5xl font-black text-black leading-tight mb-4 tracking-tight">
-                Fast pickup. <span className="text-gray-400">Fair pricing.</span>
+              <h2 className="text-4xl md:text-5xl font-black text-secondary leading-tight mb-4 tracking-tight">
+                Fast pickup. <span className="text-brand">Fair pricing.</span>
               </h2>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-secondary text-lg leading-relaxed">
                 Trusted professionals in your area.
               </p>
             </div>
@@ -79,7 +79,7 @@ export const Services: React.FC = () => {
                   <div 
                     key={index} 
                     className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                      openIndex === index ? 'shadow-lg ring-2 ring-secondary' : 'shadow-sm hover:shadow-md'
                     }`}
                   >
                     <button
@@ -95,18 +95,18 @@ export const Services: React.FC = () => {
                     >
                       <div className="flex items-center gap-4">
                         <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                          openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
+                          openIndex === index ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary'
                         }`}>
                           <item.icon size={20} />
                         </div>
                         <span className={`font-bold text-base transition-colors ${
-                          openIndex === index ? 'text-black' : 'text-gray-700'
+                          openIndex === index ? 'text-secondary' : 'text-secondary'
                         }`}>
                           {item.title}
                         </span>
                       </div>
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
+                        openIndex === index ? 'bg-brand text-white rotate-180' : 'bg-secondary-100 text-secondary'
                       }`}>
                         {openIndex === index ? (
                           <Minus size={16} />
@@ -121,7 +121,7 @@ export const Services: React.FC = () => {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
+                        <p className="px-5 pb-5 text-secondary-400 leading-relaxed pl-20">
                           {item.description}
                         </p>
                       </div>
@@ -136,7 +136,7 @@ export const Services: React.FC = () => {
                 <div 
                   key={index} 
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'shadow-lg ring-2 ring-black' : 'shadow-sm hover:shadow-md'
+                    openIndex === index ? 'shadow-lg ring-2 ring-secondary' : 'shadow-sm hover:shadow-md'
                   }`}
                 >
                   <button
@@ -152,18 +152,18 @@ export const Services: React.FC = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
+                        openIndex === index ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary'
                       }`}>
                         <item.icon size={20} />
                       </div>
                       <span className={`font-bold text-base transition-colors ${
-                        openIndex === index ? 'text-black' : 'text-gray-700'
+                        openIndex === index ? 'text-secondary' : 'text-secondary'
                       }`}>
                         {item.title}
                       </span>
                     </div>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      openIndex === index ? 'bg-black text-white rotate-180' : 'bg-gray-100 text-gray-400'
+                      openIndex === index ? 'bg-brand text-white rotate-180' : 'bg-secondary-100 text-secondary'
                     }`}>
                       {openIndex === index ? (
                         <Minus size={16} />
@@ -178,7 +178,7 @@ export const Services: React.FC = () => {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-5 pb-5 text-gray-600 leading-relaxed pl-20">
+                      <p className="px-5 pb-5 text-secondary-400 leading-relaxed pl-20">
                         {item.description}
                       </p>
                     </div>
@@ -189,7 +189,7 @@ export const Services: React.FC = () => {
                 {/* Show More/Less Button - Mobile Only */}
                 <button
                   onClick={() => setShowAll(!showAll)}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-gray-600 hover:text-black transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-secondary hover:text-secondary-600 transition-colors rounded-none border border-secondary-200 hover:border-secondary"
                 >
                   <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
                   <ChevronDown 

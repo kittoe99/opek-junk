@@ -341,7 +341,7 @@ export const ProviderSignupPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting...' : 'Submit Application'}
               </button>

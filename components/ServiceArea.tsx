@@ -30,7 +30,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-bold mb-4">
-                <MapPin size={16} />
+                <MapPin size={16} className="text-brand" />
                 <span>All 50 States</span>
               </div>
               <p className="text-white text-lg font-bold">
@@ -42,35 +42,35 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
           {/* Right Column: Content */}
           <div className="flex flex-col space-y-6 order-1 lg:order-2">
             <div>
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-4">
+              <h2 className="text-4xl md:text-5xl font-black text-secondary leading-tight tracking-tight mb-4">
                 Nationwide Coverage
               </h2>
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                Professional junk removal services coast to coast. Connect with trusted local professionals ready to help clear your space.
+              <p className="text-xl text-secondary leading-relaxed mb-8">
+                Professional junk removal services coast to coast. <span className="text-brand">Connect with trusted local professionals</span> ready to help clear your space.
               </p>
               
               <button 
                 onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-black text-white hover:bg-gray-800 transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
+                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-none shadow-md inline-flex items-center gap-2"
               >
                 Check Your Area
-                <ArrowRight size={20} />
+                <ArrowRight size={20} className="text-brand group-hover:text-white" />
               </button>
             </div>
 
             {/* Cities Grid */}
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-              <h3 className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-4">Major Cities Served</h3>
+            <div className="bg-secondary-50 p-6 rounded-2xl border border-secondary-100">
+              <h3 className="font-bold text-sm uppercase tracking-wider text-secondary-400 mb-4">Major Cities Served</h3>
               <div className="flex flex-wrap gap-2">
                 {cities.slice(0, 12).map((city) => (
                   <span 
                     key={city} 
-                    className="px-3 py-1.5 bg-white text-gray-700 rounded-lg text-xs font-medium border border-gray-200"
+                    className="px-3 py-1.5 bg-white text-secondary rounded-lg text-xs font-medium border border-secondary-100 hover:border-brand transition-colors"
                   >
                     {city}
                   </span>
                 ))}
-                <span className="px-3 py-1.5 bg-black text-white rounded-lg text-xs font-bold">
+                <span className="px-3 py-1.5 bg-brand text-white rounded-lg text-xs font-bold">
                   +100 More
                 </span>
               </div>

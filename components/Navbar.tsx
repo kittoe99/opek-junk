@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -159,11 +159,11 @@ export const Navbar: React.FC = () => {
                   >
                     <button 
                       onClick={() => handleLinkClick(link.path)}
-                      className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black flex items-center gap-1"
+                      className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600 flex items-center gap-1"
                     >
                       {link.name}
                       <ChevronDown size={14} className={`transition-transform duration-300 ${showServicesMega ? 'rotate-180' : ''}`} />
-                      <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-black"></span>
+                      <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-secondary-400"></span>
                     </button>
                     
                     {/* Mega Menu */}
@@ -190,10 +190,10 @@ export const Navbar: React.FC = () => {
                 ) : (
                   <button 
                     onClick={() => handleLinkClick(link.path)}
-                    className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-gray-900 hover:text-black"
+                    className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600"
                   >
                     {link.name}
-                    <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-black"></span>
+                    <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-brand"></span>
                   </button>
                 )}
               </div>
@@ -201,7 +201,7 @@ export const Navbar: React.FC = () => {
             
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-black text-white hover:bg-gray-800 rounded-lg shadow-md"
+              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 rounded-none shadow-md"
             >
               Get A Quote
             </button>
@@ -233,7 +233,7 @@ export const Navbar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-100">
             <img
               src="/logo1.png"
               alt="Opek Junk Removal"
@@ -241,9 +241,9 @@ export const Navbar: React.FC = () => {
             />
             <button 
               onClick={() => setIsMenuOpen(false)}
-              className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              className="w-9 h-9 rounded-none bg-secondary-100 hover:bg-brand hover:text-white flex items-center justify-center transition-colors text-secondary"
             >
-              <X size={18} className="text-gray-600" />
+              <X size={18} />
             </button>
           </div>
 
@@ -253,9 +253,9 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-gray-500 hover:text-black transition-colors disabled:opacity-50 w-full"
+                className="flex items-center gap-2 px-3 py-2 bg-secondary-50 rounded-none text-secondary hover:text-brand transition-colors disabled:opacity-50 w-full"
               >
-                <MapPin size={13} className="shrink-0" />
+                <MapPin size={13} className="shrink-0 text-brand" />
                 <span className="text-[11px] font-bold uppercase tracking-wider">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
@@ -265,8 +265,8 @@ export const Navbar: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="flex-1 overflow-y-auto px-5 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-2 px-1">Navigation</p>
-            <div className="space-y-0.5">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-secondary-300 mb-2 px-1">Navigation</p>
+            <div className="space-y-1">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path.split('#')[0]));
                 return (
@@ -275,17 +275,17 @@ export const Navbar: React.FC = () => {
                     <div>
                       <button
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className={`w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
-                          mobileServicesOpen ? 'bg-black text-white' : 'text-gray-900 hover:bg-gray-50'
+                        className={`w-full flex items-center justify-between px-3 py-3 rounded-none text-sm font-bold transition-colors ${
+                          mobileServicesOpen ? 'bg-brand text-white' : 'text-secondary hover:bg-secondary-50'
                         }`}
                       >
-                        <span className="flex items-center gap-2.5">{link.icon}<span>{link.name}</span></span>
-                        <ChevronDown size={16} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180 text-white/60' : 'text-gray-400'}`} />
+                        <span className="flex items-center gap-2.5">{link.icon}<span className="text-brand">{link.name}</span></span>
+                        <ChevronDown size={16} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180 text-white/60' : 'text-brand'}`} />
                       </button>
                       
                       {/* Services Submenu */}
                       <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="py-1.5 space-y-0.5">
+                        <div className="py-2 space-y-1 bg-secondary-50/50">
                           {serviceItems.map((item) => (
                             <button
                               key={item.name}
@@ -293,12 +293,12 @@ export const Navbar: React.FC = () => {
                                 setMobileServicesOpen(false);
                                 handleLinkClick(item.path);
                               }}
-                              className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group flex items-start gap-2.5"
+                              className="w-full text-left px-3 py-3 rounded-none hover:bg-white transition-colors group flex items-start gap-3"
                             >
-                              <span className="w-1 h-1 rounded-full bg-gray-300 mt-2 shrink-0 group-hover:bg-black transition-colors"></span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-secondary-300 mt-1.5 shrink-0 group-hover:bg-brand transition-colors"></span>
                               <div>
-                                <div className="text-[13px] font-semibold text-gray-800 group-hover:text-black">{item.name}</div>
-                                <div className="text-[11px] text-gray-400 mt-0.5 leading-tight">{item.desc}</div>
+                                <div className="text-[13px] font-semibold text-secondary group-hover:text-brand">{item.name}</div>
+                                <div className="text-[11px] text-secondary-300 mt-0.5 leading-tight">{item.desc}</div>
                               </div>
                             </button>
                           ))}
@@ -308,11 +308,11 @@ export const Navbar: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => handleLinkClick(link.path)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold transition-colors ${
-                        isActive ? 'bg-gray-100 text-black' : 'text-gray-900 hover:bg-gray-50'
+                      className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-none text-sm font-bold transition-colors ${
+                        isActive ? 'bg-secondary-100 text-secondary' : 'text-secondary hover:bg-secondary-50'
                       }`}
                     >
-                      {link.icon}
+                      <span className="text-brand">{link.icon}</span>
                       {link.name}
                     </button>
                   )}
@@ -320,36 +320,36 @@ export const Navbar: React.FC = () => {
               );
               })}
 
-              <div className="h-px bg-gray-100 my-2"></div>
+              <div className="h-px bg-secondary-100 my-3"></div>
 
               {/* Provider Signup Link */}
               <button
                 onClick={() => handleLinkClick('/provider-signup')}
-                className="w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-2.5 px-3 py-3 rounded-none text-sm font-bold text-secondary hover:text-brand hover:bg-secondary-50 transition-colors"
               >
-                <UserPlus size={16} />
+                <span className="text-brand"><UserPlus size={16} /></span>
                 Become a Provider
               </button>
             </div>
           </nav>
 
           {/* Nav Image with CTA overlay */}
-          <div className="px-5 pb-2">
-            <div className={`relative rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 ${mobileServicesOpen ? 'h-0 opacity-0 border-0 shadow-none' : 'h-36 opacity-100'}`}>
+          <div className="px-5 pb-3">
+            <div className={`relative rounded-none overflow-hidden shadow-sm border border-secondary-100 transition-all duration-300 ${mobileServicesOpen ? 'h-0 opacity-0 border-0 shadow-none' : 'h-32 opacity-100'}`}>
               <img
                 src="/opek-nav.webp"
                 alt="Opek Junk Removal"
                 loading="lazy"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-secondary/60" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <button
                   onClick={() => {
                     setIsMenuOpen(false);
                     navigate('/quote');
                   }}
-                  className="px-6 py-2.5 bg-transparent text-white text-xs font-bold uppercase tracking-wider border border-white hover:bg-white/20 transition-colors rounded-lg"
+                  className="px-6 py-2.5 bg-brand text-white text-xs font-bold uppercase tracking-wider border border-transparent hover:bg-brand-600 transition-colors rounded-none shadow-lg"
                 >
                   Get A Quote
                 </button>
@@ -358,20 +358,21 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Sidebar Footer */}
-          <div className="p-5 pt-3 space-y-2.5 border-t border-gray-100">
+          <div className="p-5 pt-3 space-y-3 border-t border-secondary-100">
             {/* Download App Card */}
             <div className="flex gap-2">
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-gray-100 text-black rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-colors">
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-secondary text-white rounded-none text-[11px] font-bold hover:bg-brand transition-colors">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 App Store
               </button>
-              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-gray-100 text-black rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-colors">
+              <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-secondary text-white rounded-none text-[11px] font-bold hover:bg-brand transition-colors">
                 <Smartphone size={13} />
                 Google Play
               </button>
             </div>
 
-            <a href="tel:8313187139" className="flex items-center justify-center gap-1.5 text-[11px] text-gray-400 font-bold hover:text-black transition-colors py-1">
+            <a href="tel:8313187139" className="flex items-center justify-center gap-1.5 text-[11px] text-secondary-400 font-bold hover:text-brand transition-colors py-1">
+              <Phone size={12} className="text-brand" />
               <span>Call us: (831) 318-7139</span>
             </a>
           </div>

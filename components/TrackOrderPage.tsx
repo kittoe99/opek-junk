@@ -329,7 +329,7 @@ export const TrackOrderPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading || !searchValue.trim()}
-                className="w-full py-3.5 bg-black text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="w-full py-3.5 bg-brand text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-brand-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
                 {loading ? 'Searching...' : 'Track Order'}
               </button>
