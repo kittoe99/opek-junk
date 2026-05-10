@@ -1,179 +1,128 @@
 import React, { useState } from 'react';
+import { ArrowRight, ChevronDown, Check, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2 } from 'lucide-react';
-import { Process } from '../Process';
-import { ServiceArea } from '../ServiceArea';
-import { Breadcrumb } from '../Breadcrumb';
 
 export const ResidentialPage: React.FC = () => {
   const navigate = useNavigate();
-  const [isZipModalOpen, setIsZipModalOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const highlights = [
+    "Furniture, appliances, mattresses & household clutter",
+    "Same-day and next-day service available nationwide",
+    "Full home cleanouts — we handle everything",
+    "Up to 70% of items donated or recycled",
+    "Licensed, insured, and background-checked crews",
+  ];
+
+  const faqs = [
+    {
+      q: "How is pricing determined?",
+      a: "Pricing is based on the volume of junk — the space your items take up in our truck. We give you an upfront quote on-site before any work begins. No hidden fees."
+    },
+    {
+      q: "Do I need to be home during pickup?",
+      a: "Yes, we recommend being present so you can point out exactly what needs to go and approve the quote. However, we can arrange gated-access or key pickup for regular customers."
+    },
+    {
+      q: "What items can't you take?",
+      a: "We cannot haul hazardous materials like paint, chemicals, asbestos, or medical waste. Everything else — furniture, appliances, electronics, debris — we handle."
+    },
+    {
+      q: "How quickly can you come out?",
+      a: "In most areas, same-day or next-day appointments are available. Book online or call us and we'll confirm a 2-hour arrival window."
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-white pt-[88px] md:pt-[108px]">
-      
-      {/* Breadcrumb Navigation */}
-      <Breadcrumb items={[
-        { label: 'Services', path: '/#services' },
-        { label: 'Residential Junk Removal' }
-      ]} />
-      
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-20 lg:py-32 bg-white overflow-hidden">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Column */}
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 block">
-                Residential Services
+    <div className="min-h-screen bg-white">
+      {/* Hero */}
+      <div className="pt-32 pb-16 md:pt-40 md:pb-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Home size={14} className="text-brand" strokeWidth={2.5} />
+          <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Residential</span>
+        </div>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+          Residential junk removal<br className="hidden sm:block" />
+          <span className="text-brand">at your doorstep.</span>
+        </h1>
+        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed mb-8">
+          Furniture, appliances, and full home cleanouts. Upfront pricing, same-day availability, and crews that do all the heavy lifting — you just point.
+        </p>
+        <button
+          onClick={() => navigate('/quote')}
+          className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+        >
+          Get a Free Quote <ArrowRight size={16} />
+        </button>
+      </div>
+
+      {/* Wide Image */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="relative aspect-[21/9] rounded-2xl overflow-hidden">
+          <img src="/opek2.webp" alt="Residential junk removal crew" className="w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-secondary/50 via-transparent to-transparent" />
+        </div>
+      </div>
+
+      {/* What's Included */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight mb-6">What's included</h2>
+        <div className="space-y-3">
+          {highlights.map((item) => (
+            <div key={item} className="flex items-center gap-3">
+              <span className="w-6 h-6 rounded-full bg-brand flex items-center justify-center shrink-0">
+                <Check size={14} className="text-white" strokeWidth={3} />
               </span>
-
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight mb-4 md:mb-6 leading-tight">
-                Residential Junk Removal
-              </h1>
-              
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6 md:mb-8">
-                Fast, upfront pricing for furniture removal, appliance pickup, and household junk. Same-day and next-day options nationwide.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => navigate('/quote')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-colors rounded-lg shadow-md"
-                >
-                  Get Free Quote
-                </button>
-                <button 
-                  onClick={() => navigate('/contact')}
-                  className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-black text-black bg-white hover:bg-black hover:text-white transition-all rounded-lg shadow-sm"
-                >
-                  Contact Us
-                </button>
-              </div>
+              <span className="text-secondary-600 text-sm">{item}</span>
             </div>
+          ))}
+        </div>
+      </div>
 
-            {/* Right Column - Image */}
-            <div className="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
-              <img 
-                src="/opek2.webp"
-                loading="lazy"
-                alt="Professional residential junk removal service"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                <div className="flex items-center gap-3 text-white">
-                  <CheckCircle2 size={18} className="text-emerald-400"/>
-                  <span className="text-sm font-bold">Same-Day Service • Licensed & Insured</span>
+      {/* FAQ */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight mb-6">Common questions</h2>
+        <div className="space-y-3">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border border-secondary-100 rounded-xl overflow-hidden">
+              <button
+                onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
+              >
+                <span className="font-bold text-sm text-secondary pr-4">{faq.q}</span>
+                <ChevronDown size={18} className={`text-secondary-300 shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`} />
+              </button>
+              <div className={`grid transition-all duration-300 ease-in-out ${openFaq === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <p className="px-5 pb-5 text-secondary-400 text-sm leading-relaxed">{faq.a}</p>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+      </div>
 
+      {/* Bottom CTA */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="border-l-2 border-brand pl-6">
+          <h2 className="text-xl font-black text-secondary mb-2">Ready to clear it out?</h2>
+          <p className="text-secondary-400 text-sm mb-4">Free quote in under two minutes. No obligations, no hidden fees.</p>
+          <div className="flex flex-wrap gap-3 items-center">
+            <button
+              onClick={() => navigate('/quote')}
+              className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+            >
+              Get a Free Quote <ArrowRight size={16} />
+            </button>
+            <a
+              href="tel:8313187139"
+              className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors"
+            >
+              (831) 318-7139
+            </a>
           </div>
         </div>
-      </section>
-
-      {/* What We Remove Section */}
-      <section className="py-12 md:py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-black leading-tight mb-3 md:mb-4 tracking-tight">
-              What We Remove
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base lg:text-lg">
-              From furniture to appliances, we handle it all
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Furniture</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Couches & Sofas</li>
-                <li>• Mattresses & Beds</li>
-                <li>• Tables & Chairs</li>
-                <li>• Dressers & Cabinets</li>
-                <li>• Entertainment Centers</li>
-              </ul>
-            </div>
-
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Appliances</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Refrigerators & Freezers</li>
-                <li>• Washers & Dryers</li>
-                <li>• Stoves & Ovens</li>
-                <li>• Dishwashers</li>
-                <li>• Water Heaters</li>
-              </ul>
-            </div>
-
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">Electronics</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• TVs & Monitors</li>
-                <li>• Computers & Laptops</li>
-                <li>• Printers & Scanners</li>
-                <li>• Stereo Equipment</li>
-                <li>• Gaming Consoles</li>
-              </ul>
-            </div>
-
-            <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100">
-              <h3 className="font-black text-lg mb-4">General Items</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li>• Boxes & Clutter</li>
-                <li>• Yard Waste & Debris</li>
-                <li>• Exercise Equipment</li>
-                <li>• Patio Furniture</li>
-                <li>• Storage Items</li>
-              </ul>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* Content Section */}
-      <section className="py-12 md:py-16 lg:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-4 md:mb-6">
-            Professional Residential Junk Removal
-          </h2>
-          
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4 md:mb-6">
-            Whether you're moving, downsizing, or simply decluttering, our residential junk removal service makes it easy to clear out unwanted items. We handle everything from single-item pickups to full home cleanouts.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div>
-              <h3 className="text-xl font-black text-black mb-3">Fast & Convenient</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Same-day and next-day service available in most areas. We do all the heavy lifting, loading, and hauling—you just point to what needs to go.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-black text-black mb-3">Eco-Friendly Disposal</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We prioritize donation and recycling whenever possible. Up to 70% of collected items are diverted from landfills through responsible disposal practices.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <Process onGetQuote={() => navigate('/quote')} />
-
-      {/* Service Area Section */}
-      <ServiceArea onGetQuote={() => navigate('/quote')} />
-
+      </div>
     </div>
   );
 };
