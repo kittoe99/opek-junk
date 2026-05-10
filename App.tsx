@@ -15,7 +15,6 @@ import { CommercialPage } from './components/services/CommercialPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
-import { OpenAITestPage } from './components/OpenAITestPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { SEO, seoConfig } from './components/SEO';
 
@@ -156,7 +155,6 @@ function App() {
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
-          <Route path="/test-openai" element={<OpenAITestPage />} />
         </Routes>
         
         <Footer />

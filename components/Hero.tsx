@@ -1,6 +1,5 @@
 import React from 'react';
-import { ArrowRight, ChevronDown, CheckCircle2, ShieldCheck, MapPin } from 'lucide-react';
-import { Button } from './Button';
+import { CheckCircle2 } from 'lucide-react';
 
 interface HeroProps {
   onGetQuote: () => void;

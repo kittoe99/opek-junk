@@ -20,8 +20,6 @@ export const ContactPage: React.FC = () => {
     'General Inquiry',
     'Residential Service',
     'Commercial Service',
-    'Construction Debris',
-    'E-Waste Recycling',
     'Property Cleanout',
     'Partnership Opportunity'
   ];

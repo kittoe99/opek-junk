@@ -702,12 +702,10 @@ export const BookingPage: React.FC = () => {
                       >
                         <option>Residential Junk Removal</option>
                         <option>Commercial Services</option>
-                        <option>Construction Debris</option>
+                        <option>Property Cleanout</option>
                         <option>Appliance Removal</option>
                         <option>Furniture Disposal</option>
                         <option>Yard Waste</option>
-                        <option>E-Waste Recycling</option>
-                        <option>Property Cleanout</option>
                       </select>
                     </div>
                     <div>

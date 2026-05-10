@@ -119,25 +119,10 @@ export const seoConfig = {
     description: 'Commercial junk removal for offices, retail spaces, and businesses. Office furniture, equipment, and commercial debris removal with minimal disruption.',
     keywords: 'commercial junk removal, office junk removal, business hauling, office furniture removal, commercial debris',
   },
-  construction: {
-    title: 'Construction Debris Removal | Opek - Post-Construction Cleanup',
-    description: 'Professional construction debris removal services. Drywall, wood, tile, flooring, and metal scraps. One-time or recurring service for contractors and builders.',
-    keywords: 'construction debris removal, construction cleanup, drywall removal, contractor junk removal, building debris',
-  },
-  ewaste: {
-    title: 'E-Waste Recycling & Appliance Removal | Opek - Eco-Friendly Disposal',
-    description: 'Responsible e-waste recycling and appliance removal. Electronics, monitors, refrigerators, stoves, and more. EPA-compliant disposal and recycling.',
-    keywords: 'e-waste recycling, electronics disposal, appliance removal, refrigerator removal, eco-friendly recycling',
-  },
   propertyCleanout: {
     title: 'Property Cleanout Services | Opek - Estate Clearing & Move-Outs',
     description: 'Full property cleanout services for estates, move-outs, and hoarding situations. Professional, discreet, and compassionate service.',
     keywords: 'property cleanout, estate cleanout, move-out service, hoarding cleanup, full house cleanout',
-  },
-  dumpsterRental: {
-    title: 'Dumpster Rental Services | Opek - Multiple Sizes for Any Project',
-    description: 'Dumpster rental services with multiple sizes available. Flexible rental periods, fast delivery and pickup. Perfect for home renovations, cleanouts, and construction projects.',
-    keywords: 'dumpster rental, roll-off dumpster, construction dumpster, residential dumpster, waste container rental',
   },
   providerSignup: {
     title: 'Become a Provider - Opek Junk Removal | Partner With Us',
