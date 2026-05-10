@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, CheckCircle, Plus, Minus, Trash2, Search, List, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, Sparkles, Receipt, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { supabase } from '../lib/supabase';
-import { Breadcrumb } from './Breadcrumb';
 
 // ── Item Catalog ──
 interface CatalogItem {
@@ -364,40 +363,46 @@ export const QuotePage: React.FC = () => {
     onEditBack: () => void,
     backLabel: string
   ) => (
-    <div className="space-y-6">
-      <div className="bg-gray-50 p-6 md:p-8 border border-gray-200 rounded-lg">
-        <div className="mb-6">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+    <div className="space-y-4">
+      <div className="border border-brand/20 bg-brand/5 p-6 md:p-8 rounded-2xl">
+        <div className="flex items-center gap-2 mb-4">
+          <Receipt size={14} className="text-brand" strokeWidth={2.5} />
+          <h3 className="text-[10px] font-bold text-brand uppercase tracking-wider">Your Estimate</h3>
+        </div>
+        <div className="mb-5">
+          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
             Items ({items.reduce((sum, i) => sum + i.quantity, 0)})
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {items.map((item) => (
-              <span key={item.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700">
-                {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
+              <span key={item.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-secondary-100 rounded-md text-xs font-medium text-secondary-600">
+                {item.quantity > 1 && <span className="font-bold text-brand">{item.quantity}x</span>}
                 {item.name}
               </span>
             ))}
           </div>
         </div>
-        <div className="border-t border-gray-200 pt-6 mb-6">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Estimated Volume</div>
-          <div className="text-2xl font-black text-emerald-600">{price.estimatedVolume}</div>
+        <div className="grid grid-cols-2 gap-4 pt-5 border-t border-brand/20">
+          <div>
+            <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Volume</div>
+            <div className="text-lg font-black text-secondary">{price.estimatedVolume}</div>
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Price Range</div>
+            <div className="text-2xl font-black text-brand">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
+          </div>
         </div>
-        <div className="mb-6">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Price Range</div>
-          <div className="text-4xl font-black text-emerald-600">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
-        </div>
-        <p className="text-sm text-gray-600 leading-relaxed mb-6 pb-6 border-b border-gray-200">{price.summary}</p>
+        <p className="text-sm text-secondary-600 leading-relaxed mt-4 mb-5">{price.summary}</p>
         <button
           onClick={() => navigate('/booking', { state: { estimate, image } })}
-          className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg"
+          className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
         >
-          Confirm Booking
+          Continue to Booking <ArrowRight size={14} />
         </button>
-        <p className="text-xs text-gray-400 text-center mt-3">* Final price confirmed on-site</p>
+        <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
       </div>
-      <button onClick={onEditBack} className="w-full py-3 text-sm font-bold text-gray-500 hover:text-black transition-colors">
-        ← {backLabel}
+      <button onClick={onEditBack} className="w-full py-3 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
+        <ArrowLeft size={14} /> {backLabel}
       </button>
     </div>
   );
@@ -405,27 +410,22 @@ export const QuotePage: React.FC = () => {
   // ── Submitted screen ──
   if (submitted) {
     return (
-      <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
-        <Breadcrumb items={[{ label: 'Get a Quote' }]} />
-        <section className="py-16 md:py-20 lg:py-32">
-          <div className="flex items-center justify-center">
-            <div className="max-w-lg mx-auto px-4 text-center">
-              <div className="w-20 h-20 bg-emerald-500 text-white flex items-center justify-center mx-auto mb-6 rounded-full">
-                <CheckCircle size={40} />
-              </div>
-              <h2 className="text-4xl font-black mb-4">Request Received</h2>
-              <p className="text-gray-600 mb-8">
-                You'll be contacted within 15 minutes to confirm your estimate.
-              </p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-8 py-3 bg-brand text-white font-bold uppercase text-sm hover:bg-brand-600 transition-colors rounded-lg"
-              >
-                Submit Another Request
-              </button>
-            </div>
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="w-14 h-14 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <Receipt size={26} className="text-brand" strokeWidth={2.5} />
           </div>
-        </section>
+          <h2 className="text-2xl font-black text-secondary mb-3">Request Received</h2>
+          <p className="text-secondary-400 text-sm mb-6 max-w-sm mx-auto">
+            We'll contact you within 15 minutes to confirm your estimate.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
+          >
+            Submit Another Request <ArrowRight size={14} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -433,77 +433,108 @@ export const QuotePage: React.FC = () => {
   // ── Selection screen ──
   if (!selectedOption) {
     return (
-      <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
-        <Breadcrumb items={[{ label: 'Get a Quote' }]} />
-        <section className="py-16 md:py-20 lg:py-32">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-black mb-3">Get a Quote</h1>
-              <p className="text-gray-600">Choose your method</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
-              <button
-                onClick={() => setSelectedOption('ai')}
-                className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
-              >
-                <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
-                  <Camera size={28} />
-                </div>
-                <h3 className="text-xl font-black mb-2">AI Photo Estimate</h3>
-                <p className="text-gray-600 text-sm mb-4">Snap a photo for instant AI pricing</p>
-                <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
-                  Continue
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </button>
-              <button
-                onClick={() => setSelectedOption('manual')}
-                className="group p-6 border border-gray-200 hover:border-black transition-all text-left bg-white shadow-sm hover:shadow-lg rounded-lg"
-              >
-                <div className="w-14 h-14 bg-black text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform rounded-lg">
-                  <List size={28} />
-                </div>
-                <h3 className="text-xl font-black mb-2">Select Your Items</h3>
-                <p className="text-gray-600 text-sm mb-4">Pick items from our catalog for a quote</p>
-                <div className="inline-flex items-center gap-2 text-sm font-bold text-black">
-                  Continue
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </button>
-            </div>
-            <div className="relative aspect-[21/9] overflow-hidden rounded-2xl max-w-3xl mx-auto">
-              <img src="/opek2.webp" loading="lazy" alt="Professional junk removal service" className="w-full h-full object-cover" />
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-                <p className="text-white text-sm md:text-base font-bold text-center">Fast, reliable service with transparent pricing</p>
+      <div className="min-h-screen bg-white">
+        {/* Hero */}
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Receipt size={14} className="text-brand" strokeWidth={2.5} />
+            <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Get a Quote</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            Free quote in <span className="text-brand">two minutes.</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            Snap a photo for instant AI pricing, or pick items from our catalog. Either way, you get an upfront estimate — no obligations.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          {/* Method Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            <button
+              onClick={() => setSelectedOption('ai')}
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
+            >
+              <div className="w-12 h-12 bg-brand text-white flex items-center justify-center mb-4 rounded-xl">
+                <Sparkles size={22} strokeWidth={2.5} />
               </div>
+              <h3 className="text-lg font-black text-secondary mb-1">AI Photo Estimate</h3>
+              <p className="text-secondary-400 text-sm mb-4">Snap a photo for instant AI pricing</p>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
+                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+            <button
+              onClick={() => setSelectedOption('manual')}
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
+            >
+              <div className="w-12 h-12 bg-secondary text-white flex items-center justify-center mb-4 rounded-xl">
+                <ListChecks size={22} strokeWidth={2.5} />
+              </div>
+              <h3 className="text-lg font-black text-secondary mb-1">Select Your Items</h3>
+              <p className="text-secondary-400 text-sm mb-4">Pick items from our catalog for a quote</p>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
+                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="border-l-2 border-brand pl-6">
+            <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk to someone?</h2>
+            <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate or to ask any questions — we're here 24/7.</p>
+            <div className="flex flex-wrap gap-3 items-center">
+              <button
+                onClick={() => navigate('/contact')}
+                className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+              >
+                Contact Us <ArrowRight size={16} />
+              </button>
+              <a
+                href="tel:8313187139"
+                className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors"
+              >
+                (831) 318-7139
+              </a>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     );
   }
 
   // ── Main flow ──
   return (
-    <div className="min-h-screen pt-[88px] md:pt-[108px] pb-20 bg-white">
-      <Breadcrumb items={[{ label: 'Get a Quote' }]} />
-      <section className="py-16 md:py-20 lg:py-32">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => setSelectedOption(null)}
-            className="mb-8 text-sm font-bold text-gray-600 hover:text-black transition-colors"
-          >
-            ← Back to options
-          </button>
+    <div className="min-h-screen bg-white">
+      <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <button
+          onClick={() => setSelectedOption(null)}
+          className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+        >
+          <ArrowLeft size={14} /> Back to options
+        </button>
 
-          <div ref={contentTopRef} className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-black mb-4">
-              {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Select Your Items'}
-            </h1>
-            {selectedOption === 'manual' && manualStep === 'select' && (
-              <p className="text-gray-500">Browse categories, pick items, then get your AI-powered estimate</p>
+        <div ref={contentTopRef} className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            {selectedOption === 'ai' ? (
+              <Sparkles size={14} className="text-brand" strokeWidth={2.5} />
+            ) : (
+              <ListChecks size={14} className="text-brand" strokeWidth={2.5} />
             )}
+            <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">
+              {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Item Catalog'}
+            </span>
           </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
+            {selectedOption === 'ai' ? <>Snap, <span className="text-brand">price.</span></> : <>Pick your <span className="text-brand">items.</span></>}
+          </h1>
+          {selectedOption === 'manual' && manualStep === 'select' && (
+            <p className="text-secondary-400 text-base">Browse categories, pick what you need, get your AI-powered estimate.</p>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
 
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (
@@ -517,13 +548,13 @@ export const QuotePage: React.FC = () => {
                     <React.Fragment key={label}>
                       <div className="flex flex-col items-center">
                         <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                          isComplete ? 'bg-emerald-500 text-white' : isActive ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
+                          isComplete ? 'bg-brand text-white' : isActive ? 'bg-secondary text-white' : 'bg-secondary-50 text-secondary-300'
                         }`}>
-                          {isComplete ? <CheckCircle size={18} /> : i + 1}
+                          {isComplete ? <Check size={16} strokeWidth={3} /> : i + 1}
                         </div>
-                        <span className="text-[10px] font-bold mt-1.5 uppercase tracking-wider text-gray-500">{label}</span>
+                        <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wider ${isComplete || isActive ? 'text-secondary' : 'text-secondary-300'}`}>{label}</span>
                       </div>
-                      {i < 2 && <div className={`w-12 h-0.5 mx-2 mb-5 ${isComplete ? 'bg-emerald-500' : 'bg-gray-200'}`} />}
+                      {i < 2 && <div className={`w-12 h-0.5 mx-2 mb-5 ${isComplete ? 'bg-brand' : 'bg-secondary-100'}`} />}
                     </React.Fragment>
                   );
                 })}
@@ -533,63 +564,67 @@ export const QuotePage: React.FC = () => {
               {aiStep === 'upload' && (
                 <>
                   {!image ? (
-                    <div className="space-y-4">
-                      <div
-                        className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                    <div className="space-y-3">
+                      <button
+                        type="button"
                         onClick={() => cameraInputRef.current?.click()}
+                        className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
                       >
-                        <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Camera size={32} className="text-white" />
+                        <div className="w-14 h-14 rounded-xl bg-brand flex items-center justify-center shrink-0">
+                          <Camera size={24} className="text-white" />
                         </div>
-                        <h3 className="text-xl font-bold mb-2">Take Photo</h3>
-                        <p className="text-gray-600">Use your camera to capture the junk</p>
+                        <div className="flex-1">
+                          <h3 className="text-base font-black text-secondary mb-0.5">Take Photo</h3>
+                          <p className="text-secondary-400 text-sm">Use your camera to capture the junk</p>
+                        </div>
+                        <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
                         <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="flex-1 h-px bg-gray-300"></div>
-                        <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">Or</span>
-                        <div className="flex-1 h-px bg-gray-300"></div>
-                      </div>
-                      <div
-                        className="border border-dashed border-gray-300 p-12 text-center hover:border-black hover:bg-gray-50 transition-all cursor-pointer rounded-lg"
+                      </button>
+
+                      <button
+                        type="button"
                         onClick={() => fileInputRef.current?.click()}
+                        className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
                       >
-                        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Upload size={32} className="text-gray-400" />
+                        <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center shrink-0">
+                          <Upload size={24} className="text-white" />
                         </div>
-                        <h3 className="text-xl font-bold mb-2">Upload Photo</h3>
-                        <p className="text-gray-600">Choose a photo from your device</p>
+                        <div className="flex-1">
+                          <h3 className="text-base font-black text-secondary mb-0.5">Upload Photo</h3>
+                          <p className="text-secondary-400 text-sm">Choose an existing photo from your device</p>
+                        </div>
+                        <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
                         <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-                      </div>
+                      </button>
                     </div>
                   ) : (
-                    <div className="space-y-6">
-                      <div className="relative border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="space-y-4">
+                      <div className="relative border border-secondary-100 rounded-xl overflow-hidden">
                         <img src={image} alt="Upload" className="w-full" />
                         {loadingState !== LoadingState.ANALYZING && (
                           <button
                             onClick={() => { setImage(null); setEstimate(null); setDetectedItems([]); }}
-                            className="absolute top-4 right-4 bg-white text-black px-4 py-2 text-sm font-bold shadow-lg hover:bg-gray-100 transition-colors rounded-lg"
+                            className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-lg"
                           >
                             Change Photo
                           </button>
                         )}
                       </div>
                       {loadingState === LoadingState.IDLE && (
-                        <button onClick={handleAnalyze} className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg">
-                          Analyze Photo
+                        <button onClick={handleAnalyze} className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2">
+                          <Sparkles size={14} /> Analyze Photo
                         </button>
                       )}
                       {loadingState === LoadingState.ANALYZING && (
                         <div className="py-12 text-center">
-                          <Loader2 size={48} className="animate-spin mx-auto mb-4" />
-                          <p className="text-gray-600">Identifying items in your photo...</p>
+                          <Loader2 size={40} className="animate-spin mx-auto mb-3 text-brand" />
+                          <p className="text-secondary-400 text-sm">Identifying items in your photo...</p>
                         </div>
                       )}
                       {loadingState === LoadingState.ERROR && (
                         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
                           <p className="text-red-700 text-sm font-bold mb-2">Failed to analyze photo</p>
-                          <button onClick={handleAnalyze} className="text-sm font-bold text-black underline">Try again</button>
+                          <button onClick={handleAnalyze} className="text-sm font-bold text-secondary underline hover:text-brand transition-colors">Try again</button>
                         </div>
                       )}
                     </div>
@@ -601,38 +636,38 @@ export const QuotePage: React.FC = () => {
               {aiStep === 'items' && (
                 <div className="space-y-6">
                   {image && (
-                    <div className="flex gap-4 items-start">
-                      <img src={image} alt="Your photo" className="w-24 h-24 object-cover rounded-lg border border-gray-200" />
+                    <div className="flex gap-4 items-start p-4 border border-secondary-100 rounded-xl bg-secondary-50/50">
+                      <img src={image} alt="Your photo" className="w-20 h-20 object-cover rounded-lg border border-secondary-100" />
                       <div>
-                        <p className="text-sm font-bold text-black">{detectedItems.length} items detected</p>
-                        <p className="text-xs text-gray-500 mt-1">Review, edit quantities, remove items, or add anything we missed.</p>
+                        <p className="text-sm font-black text-secondary">{detectedItems.length} items detected</p>
+                        <p className="text-xs text-secondary-400 mt-1">Review, edit quantities, remove items, or add anything we missed.</p>
                       </div>
                     </div>
                   )}
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                     {detectedItems.map((item) => (
-                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-black bg-black/5 shadow-sm text-center">
+                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-brand bg-brand/5 text-center">
                         <button onClick={() => removeItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
                           <Trash2 size={10} className="text-red-500" />
                         </button>
-                        <div className="w-12 h-12 rounded-lg bg-black/10 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
                           <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
                         </div>
-                        <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
+                        <span className="text-xs font-medium text-secondary leading-tight line-clamp-2">{item.name}</span>
                         <div className="flex items-center gap-1.5">
-                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                            <Minus size={12} className="text-gray-500" />
+                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                            <Minus size={12} className="text-secondary-400" />
                           </button>
-                          <span className="w-5 text-center text-xs font-bold">{item.quantity}</span>
-                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-gray-200 flex items-center justify-center hover:bg-white transition-colors">
-                            <Plus size={12} className="text-gray-500" />
+                          <span className="w-5 text-center text-xs font-bold text-secondary">{item.quantity}</span>
+                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                            <Plus size={12} className="text-secondary-400" />
                           </button>
                         </div>
                       </div>
                     ))}
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Add an item</p>
+                    <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Add an item</p>
                     <div className="flex gap-2">
                       <input
                         type="text"
@@ -640,19 +675,19 @@ export const QuotePage: React.FC = () => {
                         onChange={(e) => setNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
                         placeholder="e.g. Old Desk"
-                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
                       />
-                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 py-2.5 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                         <Plus size={16} />
                       </button>
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-black text-black font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors rounded-lg">
-                      Back
+                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider hover:border-brand hover:text-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2">
+                      <ArrowLeft size={14} /> Back
                     </button>
-                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-brand text-white font-bold uppercase text-sm hover:bg-brand-600 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed">
-                      Get Estimate
+                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
+                      Get Estimate <ArrowRight size={14} />
                     </button>
                   </div>
                 </div>
@@ -661,8 +696,8 @@ export const QuotePage: React.FC = () => {
               {/* Pricing loading */}
               {pricingLoading && (
                 <div className="py-16 text-center">
-                  <Loader2 size={48} className="animate-spin mx-auto mb-4" />
-                  <p className="text-gray-600">Calculating your estimate...</p>
+                  <Loader2 size={40} className="animate-spin mx-auto mb-4 text-brand" />
+                  <p className="text-secondary-400 text-sm">Calculating your estimate...</p>
                 </div>
               )}
 
@@ -684,23 +719,23 @@ export const QuotePage: React.FC = () => {
                 <div className="space-y-6">
                   {/* Search */}
                   <div className="relative">
-                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-300" />
                     <input
                       type="text"
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
                       placeholder="Search items..."
-                      className="w-full border border-gray-200 pl-10 pr-4 py-3 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                      className="w-full pl-11 pr-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
                     />
                   </div>
 
                   {/* Category accordion */}
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="border border-secondary-100 rounded-2xl overflow-hidden">
                     {filteredCatalog.map((category) => {
                       const isExpanded = expandedCategory === category.label || catalogSearch.trim() !== '';
                       const selectedInCategory = category.items.filter(i => isItemSelected(i.name)).length;
                       return (
-                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }}>
+                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }} className="border-b border-secondary-100 last:border-b-0">
                           <button
                             onClick={() => {
                               const newCat = isExpanded && !catalogSearch ? null : category.label;
@@ -709,21 +744,21 @@ export const QuotePage: React.FC = () => {
                                 setTimeout(() => scrollToElement(categoryRefs.current[category.label], -20), 80);
                               }
                             }}
-                            className="w-full flex items-center justify-between px-4 py-3.5 bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200 text-left"
+                            className="w-full flex items-center justify-between px-4 py-3.5 bg-white hover:bg-secondary-50 transition-colors text-left"
                           >
                             <div className="flex items-center gap-2.5">
-                              <span className="text-black">{category.icon}</span>
-                              <span className="text-sm font-bold text-gray-800">{category.label}</span>
+                              <span className="text-brand">{category.icon}</span>
+                              <span className="text-sm font-bold text-secondary">{category.label}</span>
                               {selectedInCategory > 0 && (
-                                <span className="bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                <span className="bg-brand text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                                   {selectedInCategory}
                                 </span>
                               )}
                             </div>
-                            <ChevronDown size={16} className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                            <ChevronDown size={16} className={`text-secondary-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                           </button>
                           {isExpanded && (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 p-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 p-3 bg-secondary-50/50">
                               {category.items.map((item) => {
                                 const selected = isItemSelected(item.name);
                                 const selectedItem = selectedItems.find(i => i.name === item.name);
@@ -732,8 +767,8 @@ export const QuotePage: React.FC = () => {
                                     key={item.name}
                                     className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200 text-center cursor-pointer ${
                                       selected
-                                        ? 'border-black bg-black/5 shadow-md scale-[1.02]'
-                                        : 'border-gray-100 bg-white hover:border-gray-300 hover:shadow-sm active:scale-95'
+                                        ? 'border-brand bg-brand/5 scale-[1.02]'
+                                        : 'border-secondary-100 bg-white hover:border-secondary-300 active:scale-95'
                                     }`}
                                     onClick={() => !selected && toggleCatalogItem(item.name)}
                                   >
@@ -746,19 +781,19 @@ export const QuotePage: React.FC = () => {
                                       </button>
                                     )}
                                     <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                                      selected ? 'bg-black/10 scale-110' : 'bg-gray-100'
+                                      selected ? 'bg-white scale-110' : 'bg-secondary-50'
                                     }`}>
                                       <img src={item.image} alt={item.name} className="w-7 h-7" />
                                     </div>
-                                    <span className="text-xs font-medium leading-tight line-clamp-2">{item.name}</span>
+                                    <span className="text-xs font-medium text-secondary leading-tight line-clamp-2">{item.name}</span>
                                     {selected && selectedItem && (
                                       <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-gray-300 flex items-center justify-center hover:bg-white transition-colors">
-                                          <Minus size={12} className="text-gray-500" />
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                                          <Minus size={12} className="text-secondary-400" />
                                         </button>
-                                        <span className="w-5 text-center text-xs font-bold">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-gray-300 flex items-center justify-center hover:bg-white transition-colors">
-                                          <Plus size={12} className="text-gray-500" />
+                                        <span className="w-5 text-center text-xs font-bold text-secondary">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                                          <Plus size={12} className="text-secondary-400" />
                                         </button>
                                       </div>
                                     )}
@@ -774,7 +809,7 @@ export const QuotePage: React.FC = () => {
 
                   {/* Custom item entry */}
                   <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Don't see your item?</p>
+                    <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Don't see your item?</p>
                     <div className="flex gap-2">
                       <input
                         type="text"
@@ -782,12 +817,12 @@ export const QuotePage: React.FC = () => {
                         onChange={(e) => setManualNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
                         placeholder="Type item name and add"
-                        className="flex-1 border border-gray-200 px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
                       />
                       <button
                         onClick={addManualSelectedItem}
                         disabled={!manualNewItemName.trim()}
-                        className="px-4 py-2.5 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        className="px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <Plus size={16} />
                       </button>
@@ -796,18 +831,18 @@ export const QuotePage: React.FC = () => {
 
                   {/* Selected items summary bar */}
                   {selectedItems.length > 0 && (
-                    <div ref={selectedItemsRef} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-black">{totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}</span>
-                        <div className="flex flex-wrap gap-1">
+                    <div ref={selectedItemsRef} className="flex items-center justify-between bg-brand/5 border border-brand/20 rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-sm font-black text-secondary shrink-0">{totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}</span>
+                        <div className="flex flex-wrap gap-1 min-w-0">
                           {selectedItems.slice(0, 3).map((item) => (
-                            <span key={item.id} className="inline-flex items-center gap-0.5 px-2 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-medium text-gray-600">
+                            <span key={item.id} className="inline-flex items-center gap-0.5 px-2 py-0.5 bg-white border border-secondary-100 rounded text-[10px] font-medium text-secondary-600">
                               {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
                               {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
                             </span>
                           ))}
                           {selectedItems.length > 3 && (
-                            <span className="text-[10px] font-bold text-gray-400">+{selectedItems.length - 3} more</span>
+                            <span className="text-[10px] font-bold text-secondary-400">+{selectedItems.length - 3} more</span>
                           )}
                         </div>
                       </div>
@@ -821,9 +856,9 @@ export const QuotePage: React.FC = () => {
                   <button
                     onClick={handleGetManualPrice}
                     disabled={selectedItems.length === 0}
-                    className="w-full py-4 bg-brand text-white font-bold uppercase hover:bg-brand-600 transition-colors rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
                   >
-                    {selectedItems.length === 0 ? 'Select items to continue' : `Get Estimate (${totalSelectedCount} item${totalSelectedCount !== 1 ? 's' : ''})`}
+                    {selectedItems.length === 0 ? 'Select items to continue' : <>Get Estimate ({totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}) <ArrowRight size={14} /></>}
                   </button>
                 </div>
               )}
@@ -831,8 +866,8 @@ export const QuotePage: React.FC = () => {
               {/* Pricing loading */}
               {manualPricingLoading && (
                 <div className="py-16 text-center">
-                  <Loader2 size={48} className="animate-spin mx-auto mb-4" />
-                  <p className="text-gray-600">Calculating your estimate...</p>
+                  <Loader2 size={40} className="animate-spin mx-auto mb-4 text-brand" />
+                  <p className="text-secondary-400 text-sm">Calculating your estimate...</p>
                 </div>
               )}
 
@@ -846,8 +881,7 @@ export const QuotePage: React.FC = () => {
             </div>
           )}
 
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

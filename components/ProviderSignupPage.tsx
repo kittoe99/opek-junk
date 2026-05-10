@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Truck, MapPin, Calendar, User } from 'lucide-react';
+import { ArrowRight, Check, UserPlus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { Breadcrumb } from './Breadcrumb';
 
 export const ProviderSignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -97,237 +96,130 @@ export const ProviderSignupPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 pt-[88px] md:pt-[108px] px-4">
-        <Breadcrumb items={[{ label: 'Become a Provider' }]} />
-        <div className="py-16 md:py-20 lg:py-32 flex items-center justify-center">
-        <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 size={40} />
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-sm w-full text-center">
+          <div className="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Check size={22} className="text-brand" strokeWidth={3} />
           </div>
-          <h2 className="text-3xl font-black text-white mb-4">Application Submitted!</h2>
-          <p className="text-gray-300 mb-6">
-            Thank you for your interest in joining the OPEK provider network. Our team will review your application and contact you within 1-2 business days.
+          <h2 className="text-xl font-black text-secondary mb-2">Application Submitted!</h2>
+          <p className="text-secondary-400 text-sm mb-6">
+            Our team will review your application and contact you within 1–2 business days.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-white text-black hover:bg-gray-100 transition-colors rounded-lg shadow-md"
+            className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
           >
-            Return Home
+            Return Home <ArrowRight size={16} />
           </button>
-        </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-[88px] md:pt-[108px]">
-      <Breadcrumb items={[{ label: 'Become a Provider' }]} />
-      <div className="py-16 md:py-20 lg:py-32">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full mb-6">
-            Provider Network
-          </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
-            Join Our Provider Network
-          </h1>
-          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Connect with customers nationwide. Grow your junk removal business with OPEK's booking platform.
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Hero */}
+      <div className="pt-32 pb-12 md:pt-40 md:pb-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 mb-4">
+          <UserPlus size={14} className="text-brand" strokeWidth={2.5} />
+          <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Provider Network</span>
         </div>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+          Grow your business<br className="hidden sm:block" />
+          <span className="text-brand">with Opek.</span>
+        </h1>
+        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+          Join our provider network and connect with customers nationwide. Flexible scheduling, fast payouts, and a platform built for haulers.
+        </p>
+      </div>
 
-        {/* Hero Image */}
-        <div className="mb-12">
-          <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-xl">
-            <img 
-              src="/opek2.webp" 
-              loading="lazy"
-              alt="Professional junk removal provider" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-8 text-white text-center">
-                <div className="flex items-center gap-2">
-                  <User size={16} className="shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold">500+ Providers</span>
-                </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <MapPin size={16} className="shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold">50+ Cities</span>
-                </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Calendar size={16} className="shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold">Flexible Schedule</span>
-                </div>
-                <span className="hidden md:block text-white/40">•</span>
-                <div className="flex items-center gap-2">
-                  <Truck size={16} className="shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold">Grow Your Business</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         {/* Form */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-8 md:p-12 shadow-sm">
-          <div className="max-w-3xl mx-auto">
+        <div className="border border-secondary-100 rounded-2xl p-6 md:p-8 mb-12">
           <form onSubmit={handleSubmit} className="space-y-8">
             
             {/* Personal Information */}
             <div>
-              <h2 className="text-2xl font-black mb-6">
-                Personal Information
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-base font-black text-secondary mb-4">Personal Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">First Name *</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="John"
-                  />
+                  <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">First Name *</label>
+                  <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">Last Name *</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="Smith"
-                  />
+                  <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Last Name *</label>
+                  <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">Email *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="john@example.com"
-                  />
+                  <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Email *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">Phone *</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="(831) 318-7139"
-                  />
+                  <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Phone *</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-bold mb-1.5">Business Name (Optional)</label>
-                  <input
-                    type="text"
-                    name="businessName"
-                    value={formData.businessName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                    placeholder="Your Business Name"
-                  />
+                  <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Business Name (Optional)</label>
+                  <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="Your Business Name"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
                 </div>
               </div>
             </div>
 
             {/* Service Area */}
             <div>
-              <h2 className="text-2xl font-black mb-6">
-                Service Area
-              </h2>
-              <div>
-                <label className="block text-xs font-bold mb-1.5">Primary Service Area *</label>
-                <input
-                  type="text"
-                  name="serviceArea"
-                  value={formData.serviceArea}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                  placeholder="e.g., Denver Metro Area, Los Angeles County, etc."
-                />
-                <p className="text-sm text-gray-500 mt-2">
-                  Specify the city, county, or region you primarily serve
-                </p>
-              </div>
+              <h2 className="text-base font-black text-secondary mb-4">Service Area</h2>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Primary Service Area *</label>
+              <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required
+                placeholder="e.g., Denver Metro Area, Los Angeles County"
+                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors" />
+              <p className="text-xs text-secondary-300 mt-2">Specify the city, county, or region you primarily serve</p>
             </div>
 
             {/* Vehicle Information */}
             <div>
-              <h2 className="text-2xl font-black mb-6">
-                Vehicle Information
-              </h2>
-              <div>
-                <label className="block text-xs font-bold mb-1.5">Vehicle Type *</label>
-                <select
-                  name="vehicleType"
-                  value={formData.vehicleType}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                >
-                  <option value="">Select vehicle type</option>
-                  {vehicleTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
+              <h2 className="text-base font-black text-secondary mb-4">Vehicle Information</h2>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Vehicle Type *</label>
+              <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required
+                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors">
+                <option value="">Select vehicle type</option>
+                {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
+              </select>
             </div>
 
             {/* Schedule Availability */}
             <div>
-              <h2 className="text-2xl font-black mb-6">
-                Schedule Availability
-              </h2>
-              <div>
-                <label className="block text-xs font-bold mb-4">When are you typically available? (Select all that apply) *</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {scheduleOptions.map(option => (
-                    <label
-                      key={option}
-                      className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-black transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.scheduleAvailability.includes(option)}
-                        onChange={() => handleScheduleChange(option)}
-                        className="w-5 h-5"
-                      />
-                      <span className="font-medium">{option}</span>
-                    </label>
-                  ))}
-                </div>
+              <h2 className="text-base font-black text-secondary mb-4">Schedule Availability</h2>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-3">When are you typically available? (Select all that apply) *</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {scheduleOptions.map(option => (
+                  <label key={option} className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
+                    formData.scheduleAvailability.includes(option)
+                      ? 'border-brand bg-brand/5'
+                      : 'border-secondary-100 hover:border-secondary-300'
+                  }`}>
+                    <div className={`w-5 h-5 rounded flex items-center justify-center shrink-0 transition-colors ${
+                      formData.scheduleAvailability.includes(option) ? 'bg-brand' : 'border-2 border-secondary-200'
+                    }`}>
+                      {formData.scheduleAvailability.includes(option) && <Check size={12} className="text-white" strokeWidth={3} />}
+                    </div>
+                    <input type="checkbox" checked={formData.scheduleAvailability.includes(option)} onChange={() => handleScheduleChange(option)} className="sr-only" />
+                    <span className="text-sm font-medium text-secondary">{option}</span>
+                  </label>
+                ))}
               </div>
             </div>
 
-            {/* Additional Information */}
+            {/* Additional Info */}
             <div>
-              <label className="block text-xs font-bold mb-1.5">Additional Information (Optional)</label>
-              <textarea
-                name="additionalInfo"
-                value={formData.additionalInfo}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-black focus:outline-none shadow-sm"
-                placeholder="Tell us about your experience, equipment, certifications, or anything else you'd like us to know..."
-              />
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Additional Information (Optional)</label>
+              <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleInputChange} rows={4}
+                placeholder="Tell us about your experience, equipment, certifications, or anything else..."
+                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors resize-none" />
             </div>
 
             {error && (
@@ -336,24 +228,31 @@ export const ProviderSignupPage: React.FC = () => {
               </div>
             )}
 
-            {/* Submit Button */}
-            <div className="pt-6 border-t border-gray-200">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-colors rounded-lg shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {submitting ? 'Submitting...' : 'Submit Application'}
-              </button>
-              <p className="text-sm text-gray-500 text-center mt-4">
-                By submitting, you agree to our provider terms and conditions
-              </p>
-            </div>
+            <button type="submit" disabled={submitting}
+              className="w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              {submitting ? 'Submitting...' : 'Submit Application'}
+            </button>
+            <p className="text-xs text-secondary-300 text-center">By submitting, you agree to our provider terms and conditions</p>
 
           </form>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="border-l-2 border-brand pl-6">
+          <h2 className="text-xl font-black text-secondary mb-2">Have questions first?</h2>
+          <p className="text-secondary-400 text-sm mb-4">Reach out before applying — we're happy to answer any questions about the network.</p>
+          <div className="flex flex-wrap gap-3 items-center">
+            <button onClick={() => navigate('/contact')}
+              className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2">
+              Contact Us <ArrowRight size={16} />
+            </button>
+            <a href="tel:8313187139"
+              className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors">
+              (831) 318-7139
+            </a>
           </div>
         </div>
-      </div>
+
       </div>
     </div>
   );
