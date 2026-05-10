@@ -1,57 +1,34 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Warehouse, Truck, Recycle, Trash, HardHat, Container, ChevronDown } from 'lucide-react';
+import { Plus, Minus, Home, Building2, PackageOpen, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
   {
-    title: "Residential Junk Removal",
-    icon: Warehouse,
-    description: "Furniture, appliances, electronics, and household clutter. Local providers in your area.",
+    title: "Residential",
+    icon: Home,
+    description: "Furniture, appliances, electronics, and household clutter. Fast, affordable pickup by local professionals in your area.",
     path: "/services/residential"
   },
   {
-    title: "Commercial & Office Hauling",
-    icon: Truck,
-    description: "Office furniture, equipment, and commercial debris. Minimal business disruption.",
+    title: "Commercial",
+    icon: Building2,
+    description: "Office furniture, equipment, and commercial debris cleared with minimal disruption to your business operations.",
     path: "/services/commercial"
   },
   {
-    title: "Construction Debris",
-    icon: HardHat,
-    description: "Drywall, wood, tile, flooring, and metal scraps. One-time or recurring service.",
-    path: "/services/construction"
-  },
-  {
-    title: "E-Waste & Appliances",
-    icon: Recycle,
-    description: "Electronics, monitors, refrigerators, and stoves. Eco-friendly disposal.",
-    path: "/services/e-waste"
-  },
-  {
     title: "Property Cleanouts",
-    icon: Trash,
-    description: "Estate clearing, move-outs, and hoarding situations. Professional and discreet.",
+    icon: PackageOpen,
+    description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
-  },
-  {
-    title: "Dumpster Rental",
-    icon: Container,
-    description: "Multiple sizes available for any project. Flexible rental periods with fast delivery and pickup.",
-    path: "/services/dumpster-rental"
   }
 ];
 
 export const Services: React.FC = () => {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [showAll, setShowAll] = useState(false);
-
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  // On desktop (lg and above), always show all services. On mobile, use showAll state
-  const displayedServices = serviceItems;
 
   return (
     <section id="services" className="py-16 md:py-24 lg:py-32 bg-secondary-50">
@@ -130,9 +107,9 @@ export const Services: React.FC = () => {
                 ))}
               </div>
 
-              {/* Mobile: show 3 initially with show more button */}
+              {/* Mobile: same 3 services */}
               <div className="lg:hidden space-y-3">
-                {(showAll ? serviceItems : serviceItems.slice(0, 3)).map((item, index) => (
+                {serviceItems.map((item, index) => (
                 <div 
                   key={index} 
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
@@ -156,9 +133,7 @@ export const Services: React.FC = () => {
                       }`}>
                         <item.icon size={20} />
                       </div>
-                      <span className={`font-bold text-base transition-colors ${
-                        openIndex === index ? 'text-secondary' : 'text-secondary'
-                      }`}>
+                      <span className="font-bold text-base text-secondary">
                         {item.title}
                       </span>
                     </div>
@@ -185,18 +160,6 @@ export const Services: React.FC = () => {
                   </div>
                 </div>
                 ))}
-                
-                {/* Show More/Less Button - Mobile Only */}
-                <button
-                  onClick={() => setShowAll(!showAll)}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-secondary hover:text-secondary-600 transition-colors rounded-lg border border-secondary-200 hover:border-secondary"
-                >
-                  <span>{showAll ? 'Show Less' : `Show ${serviceItems.length - 3} More Services`}</span>
-                  <ChevronDown 
-                    size={18} 
-                    className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
-                  />
-                </button>
               </div>
             </div>
           </div>

@@ -47,10 +47,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5">
               <li><Link to="/services/residential" className="text-secondary-300 hover:text-white text-sm transition-colors">Residential</Link></li>
               <li><Link to="/services/commercial" className="text-secondary-300 hover:text-white text-sm transition-colors">Commercial</Link></li>
-              <li><Link to="/services/construction" className="text-secondary-300 hover:text-white text-sm transition-colors">Construction</Link></li>
-              <li><Link to="/services/e-waste" className="text-secondary-300 hover:text-white text-sm transition-colors">E-Waste</Link></li>
-              <li><Link to="/services/property-cleanout" className="text-secondary-300 hover:text-white text-sm transition-colors">Property Cleanout</Link></li>
-              <li><Link to="/services/dumpster-rental" className="text-secondary-300 hover:text-white text-sm transition-colors">Dumpster Rental</Link></li>
+              <li><Link to="/services/property-cleanout" className="text-secondary-300 hover:text-white text-sm transition-colors">Property Cleanouts</Link></li>
             </ul>
           </div>
 

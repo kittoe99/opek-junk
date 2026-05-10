@@ -75,12 +75,9 @@ export const Navbar: React.FC = () => {
   ];
 
   const serviceItems = [
-    { name: 'Residential Junk Removal', desc: 'Home cleanouts and decluttering', path: '/services/residential' },
-    { name: 'Commercial Services', desc: 'Office and retail space clearing', path: '/services/commercial' },
-    { name: 'Construction Debris', desc: 'Post-construction cleanup', path: '/services/construction' },
-    { name: 'E-Waste & Appliance Recycling', desc: 'Responsible electronics disposal', path: '/services/e-waste' },
-    { name: 'Full Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout' },
-    { name: 'Dumpster Rental', desc: 'Flexible sizes for any project', path: '/services/dumpster-rental' },
+    { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential' },
+    { name: 'Commercial', desc: 'Office and retail space clearing', path: '/services/commercial' },
+    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout' },
   ];
 
   const handleLinkClick = (path: string) => {

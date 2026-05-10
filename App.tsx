@@ -12,10 +12,7 @@ import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { ResidentialPage } from './components/services/ResidentialPage';
 import { CommercialPage } from './components/services/CommercialPage';
-import { ConstructionPage } from './components/services/ConstructionPage';
-import { EWastePage } from './components/services/EWastePage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
-import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { OpenAITestPage } from './components/OpenAITestPage';
@@ -115,38 +112,11 @@ function CommercialPageWithSEO() {
   );
 }
 
-function ConstructionPageWithSEO() {
-  return (
-    <>
-      <SEO {...seoConfig.construction} />
-      <ConstructionPage />
-    </>
-  );
-}
-
-function EWastePageWithSEO() {
-  return (
-    <>
-      <SEO {...seoConfig.ewaste} />
-      <EWastePage />
-    </>
-  );
-}
-
 function PropertyCleanoutPageWithSEO() {
   return (
     <>
       <SEO {...seoConfig.propertyCleanout} />
       <PropertyCleanoutPage />
-    </>
-  );
-}
-
-function DumpsterRentalPageWithSEO() {
-  return (
-    <>
-      <SEO {...seoConfig.dumpsterRental} />
-      <DumpsterRentalPage />
     </>
   );
 }
@@ -183,10 +153,7 @@ function App() {
           <Route path="/booking" element={<BookingPageWithSEO />} />
           <Route path="/services/residential" element={<ResidentialPageWithSEO />} />
           <Route path="/services/commercial" element={<CommercialPageWithSEO />} />
-          <Route path="/services/construction" element={<ConstructionPageWithSEO />} />
-          <Route path="/services/e-waste" element={<EWastePageWithSEO />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
-          <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/test-openai" element={<OpenAITestPage />} />
