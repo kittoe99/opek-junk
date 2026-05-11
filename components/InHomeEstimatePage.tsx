@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Phone } from 'lucide-react';
+import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Phone, Eye, Shield, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { PageHero } from './shared/PageHero';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,10 +28,7 @@ export const InHomeEstimatePage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,24 +39,20 @@ export const InHomeEstimatePage: React.FC = () => {
     try {
       const { error: insertError } = await supabase
         .from('in_home_estimates')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            address: formData.address,
-            preferred_date: formData.preferredDate,
-            preferred_time: formData.preferredTime,
-            message: formData.message
-          }
-        ]);
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          preferred_date: formData.preferredDate,
+          preferred_time: formData.preferredTime,
+          message: formData.message
+        }]);
 
       if (insertError) throw insertError;
 
       setSubmitted(true);
-      setTimeout(() => {
-        navigate('/');
-      }, 4000);
+      setTimeout(() => { navigate('/'); }, 4000);
     } catch (err: any) {
       console.error('Error submitting in-home estimate form:', err);
       setError(err.message || 'Failed to submit request. Please try again.');
@@ -68,192 +62,226 @@ export const InHomeEstimatePage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="min-h-[70vh] bg-white flex items-center justify-center px-4">
         <div className="max-w-sm w-full text-center">
-          <div className="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Check size={22} className="text-brand" strokeWidth={3} />
+          <div className="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <Check size={28} className="text-brand" strokeWidth={3} />
           </div>
-          <h2 className="text-xl font-black text-secondary mb-2">Request Received!</h2>
-          <p className="text-secondary-400 text-sm mb-6">
+          <h2 className="text-2xl font-black text-secondary mb-2">Request Received</h2>
+          <p className="text-secondary-500 text-sm mb-6">
             We'll contact you within 24 hours to confirm your in-home estimate appointment.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
+            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md"
           >
-            Return Home <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            Return Home <ArrowRight size={16} />
           </button>
         </div>
       </div>
     );
   }
 
+  const benefits = [
+    { icon: Eye, title: 'Eyes on the job', desc: 'We see exactly what you have so the quote is accurate, not a guess.' },
+    { icon: BadgeCheck, title: 'Free, no-obligation', desc: 'Walk-through is on us. Zero pressure to book if the price isn\'t right.' },
+    { icon: Shield, title: 'Same-day quote', desc: 'Get a written, locked-in price on the spot before we leave.' },
+  ];
+
+  const steps = [
+    { n: '01', title: 'You schedule', desc: 'Pick a window that works for you — most appointments confirmed within 24 hours.' },
+    { n: '02', title: 'We walk through', desc: 'Crew lead arrives at your property and assesses scope in 15–30 minutes.' },
+    { n: '03', title: 'Quote on the spot', desc: 'You get a written, fixed price. Book today, schedule the haul, or take time to decide.' },
+  ];
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <div className="pt-32 pb-12 md:pt-40 md:pb-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Home size={14} className="text-brand" strokeWidth={2.5} />
-          <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Free In-Home Estimate</span>
-        </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-          We'll come to <span className="text-brand">you.</span>
-        </h1>
-        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-          Schedule a free, no-obligation in-home estimate. Our team will visit your property and provide an accurate quote on the spot.
-        </p>
-      </div>
+    <div className="bg-white">
+      <PageHero
+        eyebrow="Free In-Home Estimate"
+        title={<>We'll come<br />to <span className="text-brand">you.</span></>}
+        subtitle="Schedule a free, no-obligation in-home estimate. Our team visits your property and provides an accurate quote on the spot."
+        image="/estimates (1).webp"
+        imageAlt="In-home estimate visit"
+        imageCaption="Free • No-Obligation • Quote on the Spot"
+        primaryCta={{ label: 'Schedule Visit', onClick: () => { document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' }); } }}
+        secondaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
+      />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-
-        {/* Estimate Form */}
-        <div className="border border-secondary-100 rounded-2xl p-6 md:p-8 mb-12">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="mb-2">
-              <h2 className="text-lg font-black text-secondary mb-1">Request your free estimate</h2>
-              <p className="text-secondary-400 text-sm">Fill out the form and we'll schedule a visit to your home.</p>
+      {/* Benefits */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="block w-8 h-px bg-brand" />
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why an In-Home Visit</span>
             </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
+              Accurate quote. <span className="text-brand">Zero surprises.</span>
+            </h2>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Name *</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="John Smith"
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            {benefits.map((item, idx) => (
+              <div key={item.title} className={`group ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}>
+                <div className="w-14 h-14 rounded-2xl bg-secondary-50 flex items-center justify-center mb-5 group-hover:bg-brand transition-colors">
+                  <item.icon size={24} className="text-brand group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">{item.title}</h3>
+                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">{item.desc}</p>
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Phone *</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="(831) 318-7139"
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="you@email.com"
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                  <MapPin size={10} /> Address *
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="123 Main St, City, State ZIP"
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                  <Calendar size={10} /> Preferred Date
-                </label>
-                <input
-                  type="date"
-                  name="preferredDate"
-                  value={formData.preferredDate}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                  <Clock size={10} /> Preferred Time
-                </label>
-                <select
-                  name="preferredTime"
-                  value={formData.preferredTime}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                >
-                  <option value="">Select a time preference</option>
-                  {timeOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Additional Details</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                rows={3}
-                placeholder="Tell us about the items you need removed, access conditions, or any special requirements..."
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors resize-none"
-              />
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-xs font-bold">{error}</p>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="group w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
-            </button>
-
-            <p className="text-[10px] text-secondary-400 text-center">
-              No obligation. We'll confirm your appointment within 24 hours.
-            </p>
-          </form>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="border-l-2 border-brand pl-6">
-          <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk now?</h2>
-          <p className="text-secondary-400 text-sm mb-4">Call us for an immediate quote over the phone.</p>
-          <div className="flex flex-wrap gap-3 items-center">
-            <a
-              href="tel:8313187139"
-              className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
-            >
-              <Phone size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" /> (831) 318-7139
-            </a>
-            <button
-              onClick={() => navigate('/quote')}
-              className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors"
-            >
-              Get Instant Quote Online
-            </button>
+            ))}
           </div>
         </div>
+      </section>
 
-      </div>
+      {/* Process */}
+      <section className="py-16 md:py-24 bg-secondary-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="block w-8 h-px bg-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">How It Works</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
+                Three simple <span className="text-brand">steps.</span>
+              </h2>
+              <p className="text-secondary-500 text-base leading-relaxed mb-6">
+                We walk through your property, scope the job, and hand you a fixed price. No homework, no surprise upsells.
+              </p>
+            </div>
+            <div className="space-y-6">
+              {steps.map((step) => (
+                <div key={step.n} className="flex gap-5 pb-6 border-b border-secondary-200 last:border-0">
+                  <span className="text-3xl md:text-4xl font-black text-brand leading-none shrink-0 w-12">{step.n}</span>
+                  <div>
+                    <h3 className="font-black text-secondary text-lg md:text-xl mb-1">{step.title}</h3>
+                    <p className="text-secondary-500 text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Form */}
+      <section id="schedule" className="py-16 md:py-24 bg-white scroll-mt-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-10">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="block w-8 h-px bg-brand" />
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Schedule</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-3">
+              Request your <span className="text-brand">free estimate.</span>
+            </h2>
+            <p className="text-secondary-500 text-base leading-relaxed">
+              Pick a window and we'll confirm your appointment within 24 hours.
+            </p>
+          </div>
+
+          <div className="border border-secondary-100 rounded-2xl p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><MapPin size={10} className="inline mr-1" />Address *</label>
+                  <input type="text" name="address" value={formData.address} onChange={handleInputChange} required placeholder="123 Main St, City, State ZIP"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><Calendar size={10} className="inline mr-1" />Preferred Date</label>
+                  <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><Clock size={10} className="inline mr-1" />Preferred Time</label>
+                  <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors">
+                    <option value="">Select a time preference</option>
+                    {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
+                <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
+                  placeholder="Tell us about the items you need removed, access conditions, or any special requirements..."
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none" />
+              </div>
+
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 text-xs font-bold">{error}</p>
+                </div>
+              )}
+
+              <button type="submit" disabled={submitting}
+                className="group w-full py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md">
+                {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
+              </button>
+
+              <p className="text-[10px] text-secondary-400 text-center">
+                No obligation. We'll confirm your appointment within 24 hours.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="py-16 md:py-20 bg-secondary-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-3xl p-8 md:p-12 lg:p-16 shadow-sm">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <span className="block w-8 h-px bg-brand" />
+                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Prefer to Talk Now?</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
+                  Skip the visit. <span className="text-brand">Quote by phone.</span>
+                </h2>
+                <p className="text-secondary-500 text-base leading-relaxed">
+                  For straightforward jobs, we can get you a number over the phone in five minutes.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <a href="tel:8313187139"
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  <Phone size={16} /> (831) 318-7139
+                </a>
+                <button onClick={() => navigate('/quote')}
+                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  Get Instant Online Quote <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock } from 'lucide-react';
+import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { PageHero } from './shared/PageHero';
 
 interface BookingResult {
   id: string;
@@ -110,30 +111,22 @@ export const TrackOrderPage: React.FC = () => {
 
   const formatDate = (dateStr: string) => {
     try {
-      return new Date(dateStr).toLocaleDateString('en-US', {
-        month: 'short', day: 'numeric', year: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
+      return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch { return dateStr; }
   };
 
   const formatDateTime = (dateStr: string) => {
     try {
-      return new Date(dateStr).toLocaleDateString('en-US', {
-        month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
-      });
-    } catch {
-      return dateStr;
-    }
+      return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    } catch { return dateStr; }
   };
 
   // Order detail view
   if (selectedOrder) {
     const s = getStatus(selectedOrder.status);
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white">
+        <div className="pt-12 pb-8 md:pt-16 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => { setSelectedOrder(null); setStatusHistory([]); }}
             className="mb-8 text-sm font-bold text-secondary-400 hover:text-brand transition-colors"
@@ -141,24 +134,24 @@ export const TrackOrderPage: React.FC = () => {
             ← Back to results
           </button>
 
-          <div className="border border-secondary-100 rounded-2xl overflow-hidden">
+          <div className="border border-secondary-100 rounded-3xl overflow-hidden shadow-sm">
             {/* Header */}
             <div className="p-6 md:p-8 border-b border-secondary-100">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Order Number</p>
-                  <p className="text-lg font-mono font-black text-secondary">{selectedOrder.order_number}</p>
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Order Number</p>
+                  <p className="text-2xl font-mono font-black text-secondary">{selectedOrder.order_number}</p>
                 </div>
                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${s.bg} ${s.color}`}>
                   {s.label}
                 </span>
               </div>
-              <p className="text-xs text-secondary-300">Placed {formatDateTime(selectedOrder.created_at)}</p>
+              <p className="text-xs text-secondary-400">Placed {formatDateTime(selectedOrder.created_at)}</p>
             </div>
 
             {/* Status Timeline */}
             <div className="p-6 md:p-8 border-b border-secondary-100">
-              <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-4">Order Timeline</p>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-4">Order Timeline</p>
               {historyLoading ? (
                 <div className="flex items-center gap-2 text-sm text-secondary-400">
                   <Clock size={14} className="animate-spin" /> Loading timeline...
@@ -185,14 +178,14 @@ export const TrackOrderPage: React.FC = () => {
                         <div className="pb-5">
                           <p className={`text-sm font-bold ${isLast ? 'text-secondary' : 'text-secondary-400'}`}>{entryStatus.label}</p>
                           {entry.note && <p className="text-xs text-secondary-400 mt-0.5">{entry.note}</p>}
-                          <p className="text-[11px] text-secondary-300 mt-0.5">{formatDateTime(entry.created_at)}</p>
+                          <p className="text-[11px] text-secondary-400 mt-0.5">{formatDateTime(entry.created_at)}</p>
                         </div>
                       </div>
                     );
                   })}
                 </div>
               ) : (
-                <p className="text-sm text-secondary-300">No timeline data available.</p>
+                <p className="text-sm text-secondary-400">No timeline data available.</p>
               )}
             </div>
 
@@ -200,43 +193,43 @@ export const TrackOrderPage: React.FC = () => {
             <div className="p-6 md:p-8 space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Customer</p>
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Customer</p>
                   <p className="text-sm font-bold text-secondary">{selectedOrder.name}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Phone</p>
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Phone</p>
                   <p className="text-sm font-bold text-secondary">{selectedOrder.phone}</p>
                 </div>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Service Address</p>
+                <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Service Address</p>
                 <p className="text-sm font-bold text-secondary">
                   {selectedOrder.address}{selectedOrder.city && `, ${selectedOrder.city}`}{selectedOrder.state && `, ${selectedOrder.state}`}{selectedOrder.zip_code && ` ${selectedOrder.zip_code}`}
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Service Type</p>
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Service Type</p>
                   <p className="text-sm font-bold text-secondary capitalize">{selectedOrder.service_type?.replace(/_/g, ' ') || 'General'}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Preferred Date</p>
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Preferred Date</p>
                   <p className="text-sm font-bold text-secondary">{selectedOrder.preferred_date ? formatDate(selectedOrder.preferred_date) : 'Not specified'}</p>
                 </div>
               </div>
               {(selectedOrder.price_range_min || selectedOrder.price_range_max) && (
                 <div>
-                  <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Estimated Price</p>
-                  <p className="text-2xl font-black text-brand">${selectedOrder.price_range_min} &ndash; ${selectedOrder.price_range_max}</p>
-                  {selectedOrder.estimated_volume && <p className="text-xs text-secondary-300 mt-1">Volume: {selectedOrder.estimated_volume}</p>}
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Estimated Price</p>
+                  <p className="text-3xl font-black text-brand">${selectedOrder.price_range_min} &ndash; ${selectedOrder.price_range_max}</p>
+                  {selectedOrder.estimated_volume && <p className="text-xs text-secondary-400 mt-1">Volume: {selectedOrder.estimated_volume}</p>}
                 </div>
               )}
             </div>
 
             {/* Footer */}
             <div className="p-6 md:p-8 bg-secondary-50 border-t border-secondary-100">
-              <p className="text-xs text-secondary-400 text-center">
-                Questions? Call us at <a href="tel:8313187139" className="font-bold text-secondary hover:text-brand transition-colors">(831) 318-7139</a>
+              <p className="text-xs text-secondary-500 text-center">
+                Questions? Call us at <a href="tel:8313187139" className="font-black text-secondary hover:text-brand transition-colors">(831) 318-7139</a>
               </p>
             </div>
           </div>
@@ -246,135 +239,162 @@ export const TrackOrderPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <div className="pt-32 pb-12 md:pt-40 md:pb-16 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 mb-4">
-          <MapPinCheck size={14} className="text-brand" strokeWidth={2.5} />
-          <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Track Order</span>
-        </div>
-        <h1 className="text-4xl md:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-4">
-          Track your <span className="text-brand">order.</span>
-        </h1>
-        <p className="text-secondary-400 text-base max-w-md leading-relaxed">
-          Enter your phone number or order number to check the status of your booking.
-        </p>
-      </div>
+    <div className="bg-white">
+      <PageHero
+        eyebrow="Track Order"
+        EyebrowIcon={MapPinCheck}
+        title={<>Track your <span className="text-brand">job.</span></>}
+        subtitle="Enter your phone number or order number to see live status, ETA, and crew details."
+        image="/junk-removal.webp"
+        imageAlt="Tracking your order"
+        compact
+      />
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-
-        {/* Search Card */}
-        <div className="border border-secondary-100 rounded-2xl p-6 md:p-8 mb-8">
-          {/* Toggle */}
-          <div className="flex bg-secondary-50 rounded-lg p-1 mb-6">
-            <button
-              onClick={() => { setSearchType('phone'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all ${
-                searchType === 'phone' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
-              }`}
-            >
-              <Phone size={14} /> Phone Number
-            </button>
-            <button
-              onClick={() => { setSearchType('order'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all ${
-                searchType === 'order' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
-              }`}
-            >
-              <Hash size={14} /> Order Number
-            </button>
-          </div>
-
-          <form onSubmit={handleSearch}>
-            <div className="relative mb-4">
-              <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-300" />
-              <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                className="w-full pl-11 pr-4 py-3.5 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
-                required
-              />
+      <section className="py-12 md:py-16 bg-secondary-50">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white border border-secondary-100 rounded-3xl p-6 md:p-8 shadow-sm">
+            {/* Toggle */}
+            <div className="flex bg-secondary-50 rounded-xl p-1 mb-6">
+              <button
+                onClick={() => { setSearchType('phone'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-black uppercase tracking-[0.15em] transition-all ${
+                  searchType === 'phone' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
+                }`}
+              >
+                <Phone size={14} /> Phone
+              </button>
+              <button
+                onClick={() => { setSearchType('order'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-black uppercase tracking-[0.15em] transition-all ${
+                  searchType === 'order' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
+                }`}
+              >
+                <Hash size={14} /> Order #
+              </button>
             </div>
-            <button
-              type="submit"
-              disabled={loading || !searchValue.trim()}
-              className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Searching...' : 'Track Order'}
-            </button>
-          </form>
-        </div>
 
-        {/* Error */}
-        {error && (
-          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg mb-6">
-            <AlertCircle size={18} className="text-red-500 shrink-0" />
-            <p className="text-red-700 text-sm font-bold">{error}</p>
+            <form onSubmit={handleSearch}>
+              <div className="relative mb-4">
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-300" />
+                <input
+                  type="text"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
+                  className="w-full pl-12 pr-4 py-4 text-sm bg-secondary-50 border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading || !searchValue.trim()}
+                className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Searching...' : 'Track Order'}
+              </button>
+            </form>
           </div>
-        )}
 
-        {/* Results */}
-        {searched && !loading && !error && (
-          <div>
-            {results.length === 0 ? (
-              <div className="text-center py-12 border border-secondary-100 rounded-2xl">
-                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search size={20} className="text-secondary-300" />
+          {/* Error */}
+          {error && (
+            <div className="flex items-center gap-3 p-4 mt-6 bg-red-50 border border-red-200 rounded-2xl">
+              <AlertCircle size={18} className="text-red-500 shrink-0" />
+              <p className="text-red-700 text-sm font-bold">{error}</p>
+            </div>
+          )}
+
+          {/* Results */}
+          {searched && !loading && !error && (
+            <div className="mt-6">
+              {results.length === 0 ? (
+                <div className="text-center py-12 px-6 bg-white border border-secondary-100 rounded-3xl">
+                  <div className="w-14 h-14 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search size={22} className="text-secondary-300" />
+                  </div>
+                  <h3 className="text-lg font-black text-secondary mb-2">No orders found</h3>
+                  <p className="text-secondary-500 text-sm max-w-xs mx-auto">
+                    We couldn't find any orders matching your {searchType === 'phone' ? 'phone number' : 'order number'}. Please double-check and try again.
+                  </p>
                 </div>
-                <h3 className="text-base font-black text-secondary mb-2">No Orders Found</h3>
-                <p className="text-secondary-400 text-sm max-w-xs mx-auto">
-                  We couldn't find any orders matching your {searchType === 'phone' ? 'phone number' : 'order number'}. Please double-check and try again.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-3">
-                  {results.length} order{results.length !== 1 ? 's' : ''} found
-                </p>
-                {results.map((order) => {
-                  const os = getStatus(order.status);
-                  return (
-                    <button
-                      key={order.id}
-                      onClick={() => handleSelectOrder(order)}
-                      className="w-full border border-secondary-100 rounded-xl p-4 md:p-5 hover:border-brand hover:shadow-sm transition-all text-left group"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xs font-mono font-black text-secondary">{order.order_number}</span>
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${os.bg} ${os.color}`}>
-                              {os.label}
-                            </span>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">
+                    {results.length} order{results.length !== 1 ? 's' : ''} found
+                  </p>
+                  {results.map((order) => {
+                    const os = getStatus(order.status);
+                    return (
+                      <button
+                        key={order.id}
+                        onClick={() => handleSelectOrder(order)}
+                        className="w-full bg-white border border-secondary-100 rounded-2xl p-4 md:p-5 hover:border-brand hover:shadow-md transition-all text-left group"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-xs font-mono font-black text-secondary">{order.order_number}</span>
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${os.bg} ${os.color}`}>
+                                {os.label}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary-500">
+                              {order.service_type && <span className="capitalize">{order.service_type.replace(/_/g, ' ')}</span>}
+                              {order.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatDate(order.preferred_date)}</span>}
+                              {order.city && <span className="flex items-center gap-1"><MapPin size={11} />{order.city}, {order.state}</span>}
+                            </div>
+                            {(order.price_range_min || order.price_range_max) && (
+                              <p className="text-sm font-black text-brand mt-2">${order.price_range_min} &ndash; ${order.price_range_max}</p>
+                            )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary-400">
-                            {order.service_type && <span className="capitalize">{order.service_type.replace(/_/g, ' ')}</span>}
-                            {order.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatDate(order.preferred_date)}</span>}
-                            {order.city && <span className="flex items-center gap-1"><MapPin size={11} />{order.city}, {order.state}</span>}
-                          </div>
-                          {(order.price_range_min || order.price_range_max) && (
-                            <p className="text-sm font-black text-brand mt-2">${order.price_range_min} &ndash; ${order.price_range_max}</p>
-                          )}
+                          <ChevronRight size={18} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
                         </div>
-                        <ChevronRight size={18} className="text-secondary-200 group-hover:text-brand transition-colors shrink-0" />
-                      </div>
-                    </button>
-                  );
-                })}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {!searched && (
+            <p className="text-xs text-secondary-400 text-center mt-6 leading-relaxed max-w-md mx-auto">
+              Your order number (e.g. <span className="font-mono font-bold text-secondary">OPK-A1B2C3</span>) was sent in your booking confirmation. If you don't have it, use your phone number instead.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-secondary-50 rounded-3xl p-8 md:p-12 lg:p-16">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <span className="block w-8 h-px bg-brand" />
+                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Need Help?</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
+                  Lost your order? <span className="text-brand">We'll find it.</span>
+                </h2>
+                <p className="text-secondary-500 text-base leading-relaxed">
+                  Call us with any details about your booking and we'll look it up by hand. Quickest response is usually a phone call.
+                </p>
               </div>
-            )}
+              <div className="flex flex-col gap-3">
+                <a href="tel:8313187139"
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  <Phone size={16} /> (831) 318-7139
+                </a>
+                <a href="/contact"
+                  className="px-8 py-4 bg-white text-secondary font-bold text-sm uppercase tracking-wider hover:bg-secondary hover:text-white transition-colors inline-flex items-center justify-center gap-2 shadow-md border border-secondary-100">
+                  Send a Message <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
           </div>
-        )}
-
-        {!searched && (
-          <p className="text-xs text-secondary-300 text-center">
-            Your order number (e.g. OPK-A1B2C3) was in your booking confirmation. If you don't have it, use your phone number.
-          </p>
-        )}
-
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

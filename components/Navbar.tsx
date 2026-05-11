@@ -20,34 +20,34 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch user's city based on IP using ipapi.co (free tier: 1000 requests/day, no API key needed)
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // ipapi.co free tier allows 1000 requests/day without API key
-      const geoResponse = await fetch('https://ipapi.co/json/');
-      const geoData = await geoResponse.json();
-      
-      console.log('Geolocation response:', geoData);
-      
-      if (geoData.city && geoData.region_code) {
-        // Use city + state code for US, city + country for international
-        const location = geoData.country_code === 'US' 
-          ? `${geoData.city}, ${geoData.region_code}`
-          : `${geoData.city}, ${geoData.country_code}`;
-        setUserCity(location);
-        console.log('Location detected:', location);
-      } else if (geoData.city) {
-        // Fallback to city only if region not available
-        setUserCity(geoData.city);
-        console.log('Location detected (city only):', geoData.city);
-      } else {
-        setUserCity('Your Location');
-        console.log('Using default - API response:', geoData);
+      // ip-api.com: free, no API key, CORS-friendly from browser
+      const res = await fetch('http://ip-api.com/json/?fields=status,city,regionCode,countryCode');
+      const data = await res.json();
+      if (data.status === 'success' && data.city) {
+        const loc = data.countryCode === 'US'
+          ? `${data.city}, ${data.regionCode}`
+          : `${data.city}, ${data.countryCode}`;
+        setUserCity(loc);
+        return;
       }
-    } catch (error) {
-      console.error('Failed to fetch location:', error);
-      setUserCity('Your Location');
+      throw new Error('ip-api failed');
+    } catch {
+      try {
+        // Fallback: ipapi.is
+        const res2 = await fetch('https://ipapi.is/json/');
+        const data2 = await res2.json();
+        if (data2.location?.city) {
+          const loc = data2.location.country_code === 'US'
+            ? `${data2.location.city}, ${data2.location.state_code}`
+            : `${data2.location.city}, ${data2.location.country_code}`;
+          setUserCity(loc);
+          return;
+        }
+      } catch {}
+      setUserCity('');
     } finally {
       setIsDetectingLocation(false);
     }
@@ -265,25 +265,22 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Quick Actions - Prominent CTAs */}
-          <div className="px-5 py-4 bg-secondary-50 border-b border-secondary-100">
-            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Quick Actions</p>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="bg-secondary-50 border-b border-secondary-100">
+            <div className="flex flex-row gap-0">
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
                   navigate('/quote');
                 }}
-                className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-brand text-white rounded-lg shadow-sm hover:bg-brand-600 transition-colors"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
               >
-                <MessageSquare size={20} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">Get Quote</span>
+                Get Quote
               </button>
               <a
                 href="tel:8313187139"
-                className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-secondary text-white rounded-lg shadow-sm hover:bg-secondary-600 transition-colors"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center"
               >
-                <Phone size={20} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">Call Now</span>
+                Call Now
               </a>
             </div>
           </div>
@@ -298,7 +295,7 @@ export const Navbar: React.FC = () => {
               >
                 <MapPin size={16} className="text-brand" />
                 <span className="text-sm font-bold">
-                  {isDetectingLocation ? 'Detecting location...' : `Serving ${userCity}`}
+                  {isDetectingLocation ? 'Detecting location...' : userCity}
                 </span>
               </button>
             </div>
