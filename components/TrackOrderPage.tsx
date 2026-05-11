@@ -383,11 +383,11 @@ export const TrackOrderPage: React.FC = () => {
               </div>
               <div className="flex flex-col gap-3">
                 <a href="tel:8313187139"
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
                   <Phone size={16} /> (831) 318-7139
                 </a>
                 <a href="/contact"
-                  className="px-8 py-4 bg-white text-secondary font-bold text-sm uppercase tracking-wider hover:bg-secondary hover:text-white transition-colors inline-flex items-center justify-center gap-2 shadow-md border border-secondary-100">
+                  className="px-8 py-4 bg-white text-secondary font-bold text-sm uppercase tracking-wider hover:bg-secondary hover:text-white transition-colors inline-flex items-center justify-center gap-2 shadow-md border border-secondary-100 rounded-lg">
                   Send a Message <ArrowRight size={16} />
                 </a>
               </div>

@@ -255,13 +255,13 @@ export const CommercialPage: React.FC = () => {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => navigate('/quote')}
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md"
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
                 >
                   Request a Bid <ArrowRight size={16} />
                 </button>
                 <button
                   onClick={() => navigate('/contact')}
-                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md"
+                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
                 >
                   Talk to Sales <ArrowRight size={16} />
                 </button>

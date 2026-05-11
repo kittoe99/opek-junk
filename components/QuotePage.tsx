@@ -483,7 +483,7 @@ export const QuotePage: React.FC = () => {
           </div>
 
           {/* Bottom CTA */}
-          <div className="border-l-2 border-brand pl-6">
+          <div>
             <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk to someone?</h2>
             <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate or to ask any questions — we're here 24/7.</p>
             <div className="flex flex-wrap gap-3 items-center">

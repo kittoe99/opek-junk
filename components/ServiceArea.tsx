@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, ArrowRight, Navigation } from 'lucide-react';
+import { MapPin, ArrowRight } from 'lucide-react';
 
 const cities = [
   "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
@@ -15,63 +15,64 @@ interface ServiceAreaProps {
 
 export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
   return (
-    <section id="service-area" className="py-16 md:py-24 lg:py-32 bg-white text-black">
+    <section id="service-area" className="py-16 md:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
           {/* Left Column: Image */}
-          <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden rounded-3xl shadow-2xl order-2 lg:order-1">
-            <img 
+          <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden order-2 lg:order-1">
+            <img
               src="/estimates (1).webp"
-              loading="lazy" 
-              alt="Nationwide junk removal service" 
+              loading="lazy"
+              alt="Nationwide junk removal service"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-bold mb-4">
-                <MapPin size={16} className="text-brand" />
-                <span>All 50 States</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1.5 mb-3 rounded-full">
+                <MapPin size={13} className="text-brand" />
+                <span className="text-white text-xs font-black uppercase tracking-[0.15em]">All 50 States</span>
               </div>
-              <p className="text-white text-lg font-bold">
-                Trusted professionals in your area
+              <p className="text-white text-lg md:text-xl font-black leading-tight tracking-tight">
+                Trusted professionals<br />in your area.
               </p>
             </div>
           </div>
 
           {/* Right Column: Content */}
-          <div className="flex flex-col space-y-6 order-1 lg:order-2">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-secondary leading-tight tracking-tight mb-4">
-                Nationwide Coverage
-              </h2>
-              <p className="text-xl text-secondary leading-relaxed mb-8">
-                Professional junk removal services coast to coast. <span className="text-brand">Connect with trusted local professionals</span> ready to help clear your space.
-              </p>
-              
-              <button 
-                onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg shadow-md inline-flex items-center gap-2"
-              >
-                Check Your Area
-                <ArrowRight size={20} className="text-brand group-hover:text-white" />
-              </button>
+          <div className="flex flex-col order-1 lg:order-2">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <span className="block w-8 h-px bg-brand" />
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
             </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
+              Nationwide<br /><span className="text-brand">coverage.</span>
+            </h2>
+            <p className="text-secondary-500 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              Professional junk removal coast to coast. Connect with vetted local crews ready to clear your space — fast.
+            </p>
 
-            {/* Cities Grid */}
-            <div className="bg-secondary-50 p-6 rounded-2xl border border-secondary-100">
-              <h3 className="font-bold text-sm uppercase tracking-wider text-secondary-400 mb-4">Major Cities Served</h3>
+            <button
+              onClick={onGetQuote}
+              className="self-start px-8 py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md mb-10 rounded-lg"
+            >
+              Check Your Area <ArrowRight size={16} />
+            </button>
+
+            {/* Cities */}
+            <div>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Major cities served</p>
               <div className="flex flex-wrap gap-2">
-                {cities.slice(0, 12).map((city) => (
-                  <span 
-                    key={city} 
-                    className="px-3 py-1.5 bg-white text-secondary rounded-lg text-xs font-medium border border-secondary-100 hover:border-brand transition-colors"
+                {cities.slice(0, 16).map((city) => (
+                  <span
+                    key={city}
+                    className="px-3 py-1.5 bg-secondary-50 text-secondary text-xs font-medium border border-secondary-100 hover:border-brand hover:text-brand transition-colors cursor-default rounded-full"
                   >
                     {city}
                   </span>
                 ))}
-                <span className="px-3 py-1.5 bg-brand text-white rounded-lg text-xs font-bold">
-                  +100 More
+                <span className="px-3 py-1.5 bg-brand text-white text-xs font-black rounded-full">
+                  +100 more
                 </span>
               </div>
             </div>

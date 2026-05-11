@@ -102,7 +102,7 @@ export const ProviderSignupPage: React.FC = () => {
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md"
+            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md rounded-lg"
           >
             Return Home <ArrowRight size={16} />
           </button>
@@ -346,11 +346,11 @@ export const ProviderSignupPage: React.FC = () => {
               </div>
               <div className="flex flex-col gap-3">
                 <button onClick={() => navigate('/contact')}
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
                   Contact Provider Team <ArrowRight size={16} />
                 </button>
                 <a href="tel:8313187139"
-                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md">
+                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
                   Call (831) 318-7139
                 </a>
               </div>

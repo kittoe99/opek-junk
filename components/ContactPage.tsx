@@ -61,7 +61,7 @@ export const ContactPage: React.FC = () => {
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md"
+            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md rounded-lg"
           >
             Return Home <ArrowRight size={16} />
           </button>

@@ -259,13 +259,13 @@ export const ResidentialPage: React.FC = () => {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => navigate('/quote')}
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md"
+                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
                 >
                   Get a Free Quote <ArrowRight size={16} />
                 </button>
                 <button
                   onClick={() => navigate('/booking')}
-                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md"
+                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
                 >
                   Book Online <ArrowRight size={16} />
                 </button>
