@@ -62,9 +62,9 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
                 index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
               }`}
             >
-              {/* Image with peek hover */}
-              <div className="relative overflow-hidden rounded-[2rem] mb-6">
-                <div className="aspect-[3/4] overflow-hidden">
+              {/* Image */}
+              <div className="relative overflow-hidden rounded-[2rem] mb-5 shadow-md">
+                <div className="aspect-square overflow-hidden">
                   <img
                     src={step.image}
                     alt={step.alt}

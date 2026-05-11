@@ -102,10 +102,10 @@ export const Services: React.FC = () => {
             </div>
           </div>
 
-          {/* Image Side */}
-          <div className="relative mt-8 lg:mt-0">
+          {/* Image Side - Hidden on mobile/tablet */}
+          <div className="hidden lg:block relative">
             <div className="sticky top-32">
-              <div className="relative aspect-[3/2] md:aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-2xl">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                 <img 
                   src="/workers-opek.webp"
                   loading="lazy" 
