@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, Sparkles, Receipt, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, Sparkles, Receipt, ArrowRight, ArrowLeft, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -758,46 +758,46 @@ export const QuotePage: React.FC = () => {
                             <ChevronDown size={16} className={`text-secondary-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                           </button>
                           {isExpanded && (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 p-3 bg-secondary-50/50">
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2 bg-secondary-50/50">
                               {category.items.map((item) => {
                                 const selected = isItemSelected(item.name);
                                 const selectedItem = selectedItems.find(i => i.name === item.name);
                                 return (
-                                  <div
+                                  <button
                                     key={item.name}
-                                    className={`relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200 text-center cursor-pointer ${
+                                    className={`relative flex flex-col items-center gap-1 p-2 rounded-lg border transition-all duration-200 text-center cursor-pointer ${
                                       selected
                                         ? 'border-brand bg-brand/5 scale-[1.02]'
-                                        : 'border-secondary-100 bg-white hover:border-secondary-300 active:scale-95'
+                                        : 'border-secondary-100 bg-white hover:border-brand active:scale-95'
                                     }`}
                                     onClick={() => !selected && toggleCatalogItem(item.name)}
                                   >
                                     {selected && (
                                       <button
                                         onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                        className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
+                                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
                                       >
-                                        <Trash2 size={10} className="text-red-500" />
+                                        <X size={8} className="text-white" />
                                       </button>
                                     )}
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                                      selected ? 'bg-white scale-110' : 'bg-secondary-50'
+                                    <div className={`w-8 h-8 rounded flex items-center justify-center transition-all duration-200 ${
+                                      selected ? 'bg-brand text-white' : 'bg-secondary-100 text-brand'
                                     }`}>
-                                      <img src={item.image} alt={item.name} className="w-7 h-7" />
+                                      <img src={item.image} alt={item.name} className="w-5 h-5" />
                                     </div>
-                                    <span className="text-xs font-medium text-secondary leading-tight line-clamp-2">{item.name}</span>
+                                    <span className="text-[10px] font-medium text-secondary leading-tight line-clamp-1">{item.name}</span>
                                     {selected && selectedItem && (
-                                      <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                                          <Minus size={12} className="text-secondary-400" />
+                                      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                                          <Minus size={10} className="text-secondary-400" />
                                         </button>
-                                        <span className="w-5 text-center text-xs font-bold text-secondary">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                                          <Plus size={12} className="text-secondary-400" />
+                                        <span className="w-4 text-center text-[10px] font-bold text-secondary">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
+                                          <Plus size={10} className="text-secondary-400" />
                                         </button>
                                       </div>
                                     )}
-                                  </div>
+                                  </button>
                                 );
                               })}
                             </div>

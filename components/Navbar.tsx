@@ -220,7 +220,7 @@ export const Navbar: React.FC = () => {
       {/* Announcement Bar - In-Home Estimates */}
       <div className="bg-secondary px-3 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
-          <span className="min-w-0 text-white text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
+          <span className="min-w-0 text-white text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
             <span className="hidden sm:inline">Free In-Home Estimates — We'll visit your property</span>
             <span className="sm:hidden">Free In-Home Estimates</span>
           </span>
