@@ -23,31 +23,32 @@ export const Navbar: React.FC = () => {
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // ip-api.com: free, no API key, CORS-friendly from browser
-      const res = await fetch('http://ip-api.com/json/?fields=status,city,regionCode,countryCode');
+      // ipwho.is: free, HTTPS, CORS-enabled, no API key
+      const res = await fetch('https://ipwho.is/');
       const data = await res.json();
-      if (data.status === 'success' && data.city) {
-        const loc = data.countryCode === 'US'
-          ? `${data.city}, ${data.regionCode}`
-          : `${data.city}, ${data.countryCode}`;
+      if (data.success && data.city) {
+        const loc = data.country_code === 'US'
+          ? `${data.city}, ${data.region_code}`
+          : `${data.city}, ${data.country_code}`;
         setUserCity(loc);
         return;
       }
-      throw new Error('ip-api failed');
+      throw new Error('ipwho.is failed');
     } catch {
       try {
-        // Fallback: ipapi.is
-        const res2 = await fetch('https://ipapi.is/json/');
+        // Fallback: ipapi.co
+        const res2 = await fetch('https://ipapi.co/json/');
         const data2 = await res2.json();
-        if (data2.location?.city) {
-          const loc = data2.location.country_code === 'US'
-            ? `${data2.location.city}, ${data2.location.state_code}`
-            : `${data2.location.city}, ${data2.location.country_code}`;
+        if (data2.city) {
+          const loc = data2.country_code === 'US'
+            ? `${data2.city}, ${data2.region_code}`
+            : `${data2.city}, ${data2.country_code}`;
           setUserCity(loc);
           return;
         }
       } catch {}
-      setUserCity('');
+      // Final fallback so the bar still shows
+      setUserCity('United States');
     } finally {
       setIsDetectingLocation(false);
     }
@@ -98,18 +99,16 @@ export const Navbar: React.FC = () => {
         {/* Top Bar - Desktop Only */}
         <div className="hidden md:block bg-gray-50 py-1.5 px-6">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
-            {userCity && (
-              <button
-                onClick={fetchUserLocation}
-                disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
-              >
-                <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
-                <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
-                  {isDetectingLocation ? 'Detecting...' : userCity}
-                </span>
-              </button>
-            )}
+            <button
+              onClick={fetchUserLocation}
+              disabled={isDetectingLocation}
+              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
+            >
+              <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
+                {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
+              </span>
+            </button>
           </div>
         </div>
 
@@ -130,20 +129,18 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Location - Centered (Mobile Only) */}
-          {userCity ? (
-            <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
-              <button
-                onClick={fetchUserLocation}
-                disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
-              >
-                <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
-                <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
-                  {isDetectingLocation ? 'Detecting...' : userCity}
-                </span>
-              </button>
-            </div>
-          ) : null}
+          <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
+            <button
+              onClick={fetchUserLocation}
+              disabled={isDetectingLocation}
+              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
+            >
+              <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
+              <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
+                {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
+              </span>
+            </button>
+          </div>
 
           {/* Right Section - Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
