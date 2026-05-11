@@ -28,16 +28,16 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
             </p>
 
-            <div className="flex flex-row gap-2 sm:gap-3 animate-slide-up" style={{animationDelay: '0.3s'}}>
+            <div className="flex flex-row gap-0 w-screen -mx-4 sm:-mx-6 lg:-mx-8 animate-slide-up lg:w-full lg:mx-0" style={{animationDelay: '0.3s'}}>
               <button 
                 onClick={onGetQuote}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 hover:scale-105 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
               >
                 View Pricing
               </button>
               <button 
                 onClick={onBookOnline}
-                className="px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider border border-secondary text-secondary bg-white hover:bg-secondary hover:text-white hover:scale-105 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
               >
                 Book Online
               </button>

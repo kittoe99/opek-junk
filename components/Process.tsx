@@ -63,15 +63,13 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
               }`}
             >
               {/* Image */}
-              <div className="relative overflow-hidden rounded-[2rem] mb-5 shadow-md">
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={step.image}
-                    alt={step.alt}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
+              <div className="relative aspect-square overflow-hidden mb-5 shadow-md">
+                <img
+                  src={step.image}
+                  alt={step.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
                 {/* Subtle gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
               </div>
