@@ -63,7 +63,7 @@ export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
               }`}
             >
               {/* Image */}
-              <div className="relative aspect-square overflow-hidden mb-5 shadow-md">
+              <div className="relative aspect-[16/10] md:aspect-square overflow-hidden mb-5 shadow-md">
                 <img
                   src={step.image}
                   alt={step.alt}
