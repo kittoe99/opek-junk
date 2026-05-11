@@ -329,7 +329,7 @@ export const BookingPage: React.FC = () => {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         {/* Form Card */}
-        <div className="border border-secondary-100 rounded-2xl p-6 md:p-8">
+        <div className="md:border md:border-secondary-100 md:rounded-2xl md:p-8">
 
           {/* Estimate Summary (if available) */}
           {estimateData?.estimate && (

@@ -181,8 +181,7 @@ export const InHomeEstimatePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="border border-secondary-100 rounded-2xl p-6 md:p-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 md:border md:border-secondary-100 md:rounded-2xl md:p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
@@ -247,7 +246,6 @@ export const InHomeEstimatePage: React.FC = () => {
                 No obligation. We'll confirm your appointment within 24 hours.
               </p>
             </form>
-          </div>
         </div>
       </section>
 

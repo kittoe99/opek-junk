@@ -460,7 +460,7 @@ export const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
             <button
               onClick={() => setSelectedOption('ai')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
             >
               <ScanSearch size={24} className="text-brand mb-4" strokeWidth={2} />
               <h3 className="text-lg font-black text-secondary mb-1">AI Photo Estimate</h3>
@@ -471,7 +471,7 @@ export const QuotePage: React.FC = () => {
             </button>
             <button
               onClick={() => setSelectedOption('manual')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
             >
               <ListChecks size={24} className="text-secondary mb-4" strokeWidth={2} />
               <h3 className="text-lg font-black text-secondary mb-1">Select Your Items</h3>
@@ -578,7 +578,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => cameraInputRef.current?.click()}
-                        className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-2xl rounded-xl text-left flex items-center gap-4 group"
                       >
                         <Camera size={24} className="text-brand shrink-0" />
                         <div className="flex-1">
@@ -592,7 +592,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-2xl rounded-xl text-left flex items-center gap-4 group"
                       >
                         <Upload size={24} className="text-secondary shrink-0" />
                         <div className="flex-1">

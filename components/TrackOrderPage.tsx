@@ -250,9 +250,9 @@ export const TrackOrderPage: React.FC = () => {
         compact
       />
 
-      <section className="py-12 md:py-16 bg-secondary-50">
+      <section className="py-12 md:py-16 bg-white md:bg-secondary-50">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white border border-secondary-100 rounded-3xl p-6 md:p-8 shadow-sm">
+          <div className="bg-white md:border md:border-secondary-100 md:rounded-3xl md:p-8 md:shadow-sm">
             {/* Toggle */}
             <div className="flex bg-secondary-50 rounded-xl p-1 mb-6">
               <button

@@ -229,8 +229,7 @@ export const ProviderSignupPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="border border-secondary-100 rounded-2xl p-6 md:p-8">
-            <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8 md:border md:border-secondary-100 md:rounded-2xl md:p-8">
               {/* Personal Information */}
               <div>
                 <h3 className="text-sm font-black text-secondary uppercase tracking-[0.2em] mb-4">Personal Information</h3>
@@ -325,7 +324,6 @@ export const ProviderSignupPage: React.FC = () => {
               </button>
               <p className="text-xs text-secondary-400 text-center">By submitting, you agree to our provider terms and conditions</p>
             </form>
-          </div>
         </div>
       </section>
 
