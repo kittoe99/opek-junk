@@ -611,7 +611,7 @@ export const QuotePage: React.FC = () => {
                         )}
                       </div>
                       {loadingState === LoadingState.IDLE && (
-                        <button onClick={handleAnalyze} className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2">
+                        <button onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-lg inline-flex items-center justify-center gap-2">
                           <Sparkles size={14} /> Analyze Photo
                         </button>
                       )}
@@ -677,17 +677,17 @@ export const QuotePage: React.FC = () => {
                         placeholder="e.g. Old Desk"
                         className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
                       />
-                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-                        <Plus size={16} />
+                      <button onClick={addManualItem} disabled={!newItemName.trim()} className="group px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <Plus size={16} className="transition-transform duration-300 group-hover:scale-110" />
                       </button>
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider hover:border-brand hover:text-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2">
+                    <button onClick={() => { setAiStep('upload'); setLoadingState(LoadingState.IDLE); }} className="group flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider hover:border-brand hover:text-brand hover:shadow-lg transition-all duration-300 rounded-lg inline-flex items-center justify-center gap-2">
                       <ArrowLeft size={14} /> Back
                     </button>
-                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
-                      Get Estimate <ArrowRight size={14} />
+                    <button onClick={handleGetPrice} disabled={detectedItems.length === 0} className="group flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
+                      Get Estimate <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
                   </div>
                 </div>

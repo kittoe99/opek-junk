@@ -295,9 +295,9 @@ export const BookingPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-2 justify-center">
             <button
               onClick={() => navigate('/track-order')}
-              className="px-6 py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
+              className="group px-6 py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
-              Track Order <ArrowRight size={14} />
+              Track Order <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
             <button
               onClick={() => navigate('/')}
@@ -461,9 +461,9 @@ export const BookingPage: React.FC = () => {
                   {loadingState === LoadingState.IDLE && (
                     <button
                       onClick={handleAnalyze}
-                      className="w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                     >
-                      <Sparkles size={14} /> Analyze Photo
+                      <Sparkles size={14} className="transition-transform duration-300 group-hover:scale-110" /> Analyze Photo
                     </button>
                   )}
 
@@ -500,9 +500,9 @@ export const BookingPage: React.FC = () => {
                       <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
                       <button
                         onClick={() => handleNextStep()}
-                        className="w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                        className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                       >
-                        Continue to Booking <ArrowRight size={14} />
+                        Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                       </button>
                       <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
                     </div>

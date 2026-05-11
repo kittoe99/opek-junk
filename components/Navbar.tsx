@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone, Home } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone, Home, ArrowRight } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -200,9 +200,10 @@ export const Navbar: React.FC = () => {
             
             <button 
               onClick={() => navigate('/quote')}
-              className="px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 rounded-lg shadow-md"
+              className="group px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 hover:shadow-xl rounded-lg shadow-md inline-flex items-center gap-2"
             >
               Get A Quote
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
@@ -225,9 +226,10 @@ export const Navbar: React.FC = () => {
           </span>
           <button
             onClick={() => navigate('/in-home-estimate')}
-            className="flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 transition-colors whitespace-nowrap"
+            className="group flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 hover:shadow-lg transition-all duration-300 whitespace-nowrap inline-flex items-center gap-1"
           >
             Schedule
+            <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>

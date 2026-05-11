@@ -75,9 +75,9 @@ export const ContactPage: React.FC = () => {
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+            className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
           >
-            Return Home <ArrowRight size={16} />
+            Return Home <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>
@@ -189,9 +189,9 @@ export const ContactPage: React.FC = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Sending...' : <><Send size={14} /> Send Message</>}
+              {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Send Message</>}
             </button>
           </form>
         </div>
@@ -203,9 +203,9 @@ export const ContactPage: React.FC = () => {
           <div className="flex flex-wrap gap-3 items-center">
             <button
               onClick={() => navigate('/quote')}
-              className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+              className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
             >
-              Get a Free Quote <ArrowRight size={16} />
+              Get a Free Quote <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
             <a
               href="tel:8313187139"

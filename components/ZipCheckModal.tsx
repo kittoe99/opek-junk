@@ -125,7 +125,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 <button
                   onClick={handleZipCheck}
                   disabled={isLoading || zipCode.length !== 5}
-                  className="w-full px-6 py-3 bg-brand text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  className="group w-full px-6 py-3 bg-brand text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-brand-600 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300"
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -159,7 +159,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 {/* Get Quote Button */}
                 <button
                   onClick={handleGetQuote}
-                  className="w-full px-6 py-3 bg-brand text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-brand-600 transition-colors shadow-md"
+                  className="group w-full px-6 py-3 bg-brand text-white font-bold uppercase text-sm tracking-wider rounded-lg hover:bg-brand-600 hover:shadow-lg transition-all duration-300 shadow-md"
                 >
                   Get A Quote
                 </button>

@@ -155,7 +155,7 @@ function App() {
         <ScrollToTop />
         <Navbar />
         
-        <main className="pt-[116px] md:pt-[146px]">
+        <main className="pt-[80px] md:pt-[120px]">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/quote" element={<QuotePageWithSEO />} />

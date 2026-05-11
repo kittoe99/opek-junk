@@ -79,9 +79,9 @@ export const InHomeEstimatePage: React.FC = () => {
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+            className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
           >
-            Return Home <ArrowRight size={16} />
+            Return Home <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>
@@ -222,9 +222,9 @@ export const InHomeEstimatePage: React.FC = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group w-full py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Sending...' : <><Send size={14} /> Request Free Estimate</>}
+              {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
             </button>
 
             <p className="text-[10px] text-secondary-400 text-center">
@@ -240,9 +240,9 @@ export const InHomeEstimatePage: React.FC = () => {
           <div className="flex flex-wrap gap-3 items-center">
             <a
               href="tel:8313187139"
-              className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+              className="group px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
             >
-              <Phone size={16} /> (831) 318-7139
+              <Phone size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" /> (831) 318-7139
             </a>
             <button
               onClick={() => navigate('/quote')}
