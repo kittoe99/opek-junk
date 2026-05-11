@@ -20,34 +20,33 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch user's city based on IP address with improved accuracy
+  // Fetch user's city based on IP using ipapi.co (free tier: 1000 requests/day, no API key needed)
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // Get IP first, then use it for geolocation
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      const userIp = ipData.ip;
-      
-      console.log('User IP:', userIp);
-      
-      // Use ipwho.is with the IP (free, unlimited, HTTPS)
-      const geoResponse = await fetch(`https://ipwho.is/${userIp}`);
+      // ipapi.co free tier allows 1000 requests/day without API key
+      const geoResponse = await fetch('https://ipapi.co/json/');
       const geoData = await geoResponse.json();
       
       console.log('Geolocation response:', geoData);
       
-      if (geoData.success && geoData.city && geoData.region_code) {
-        setUserCity(`${geoData.city}, ${geoData.region_code}`);
-        console.log('Location set:', `${geoData.city}, ${geoData.region_code}`);
+      if (geoData.city && geoData.region_code) {
+        // Use city + state code for US, city + country for international
+        const location = geoData.country_code === 'US' 
+          ? `${geoData.city}, ${geoData.region_code}`
+          : `${geoData.city}, ${geoData.country_code}`;
+        setUserCity(location);
+        console.log('Location detected:', location);
+      } else if (geoData.city) {
+        // Fallback to city only if region not available
+        setUserCity(geoData.city);
+        console.log('Location detected (city only):', geoData.city);
       } else {
-        // Set default location if API fails
         setUserCity('Your Location');
-        console.log('Using default location - API returned:', geoData);
+        console.log('Using default - API response:', geoData);
       }
     } catch (error) {
       console.error('Failed to fetch location:', error);
-      // Set default location on error
       setUserCity('Your Location');
     } finally {
       setIsDetectingLocation(false);
@@ -136,9 +135,9 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
+                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
               >
-                <MapPin size={14} className="text-gray-400 group-hover:text-black transition-colors" />
+                <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
                 <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
