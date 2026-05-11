@@ -405,7 +405,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-xl text-left flex items-center gap-4 group"
                   >
                     <Camera size={22} className="text-brand shrink-0" />
                     <div className="flex-1">
@@ -419,7 +419,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-xl text-left flex items-center gap-4 group"
                   >
                     <Upload size={22} className="text-secondary shrink-0" />
                     <div className="flex-1">
