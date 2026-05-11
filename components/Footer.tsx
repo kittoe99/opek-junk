@@ -21,21 +21,15 @@ export const Footer: React.FC = () => {
             {/* Contact Info */}
             <div className="space-y-3">
               <a href="tel:8313187139" className="flex items-center gap-2.5 text-secondary-300 hover:text-white transition-colors group">
-                <div className="w-8 h-8 rounded-lg bg-secondary-600 group-hover:bg-brand flex items-center justify-center transition-colors">
-                  <Phone size={14} className="text-brand group-hover:text-white transition-colors" />
-                </div>
+                <Phone size={15} className="text-brand group-hover:text-white transition-colors shrink-0" />
                 <span className="text-sm font-bold">(831) 318-7139</span>
               </a>
               <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-2.5 text-secondary-300 hover:text-white transition-colors group">
-                <div className="w-8 h-8 rounded-lg bg-secondary-600 group-hover:bg-brand flex items-center justify-center transition-colors">
-                  <Mail size={14} className="text-brand group-hover:text-white transition-colors" />
-                </div>
+                <Mail size={15} className="text-brand group-hover:text-white transition-colors shrink-0" />
                 <span className="text-sm">Support@opekjunkremoval.com</span>
               </a>
               <div className="flex items-center gap-2.5 text-secondary-300">
-                <div className="w-8 h-8 rounded-lg bg-secondary-600 flex items-center justify-center">
-                  <MapPin size={14} className="text-brand" />
-                </div>
+                <MapPin size={15} className="text-brand shrink-0" />
                 <span className="text-sm">Nationwide Service</span>
               </div>
             </div>

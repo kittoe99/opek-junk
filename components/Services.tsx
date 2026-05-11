@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Home, Building2, PackageOpen, ChevronDown } from 'lucide-react';
+import { Home, Building2, PackageOpen, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
@@ -50,68 +50,9 @@ export const Services: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {/* Desktop: show all services */}
-              <div className="hidden lg:block space-y-3">
-                {serviceItems.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? 'shadow-lg ring-2 ring-secondary' : 'shadow-sm hover:shadow-md'
-                    }`}
-                  >
-                    <button
-                      onClick={() => {
-                        if (openIndex === index) {
-                          navigate(item.path);
-                        } else {
-                          toggleAccordion(index);
-                        }
-                      }}
-                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
-                      aria-expanded={openIndex === index}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                          openIndex === index ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary'
-                        }`}>
-                          <item.icon size={20} />
-                        </div>
-                        <span className={`font-bold text-base transition-colors ${
-                          openIndex === index ? 'text-secondary' : 'text-secondary'
-                        }`}>
-                          {item.title}
-                        </span>
-                      </div>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-brand text-white rotate-180' : 'bg-secondary-100 text-secondary'
-                      }`}>
-                        {openIndex === index ? (
-                          <Minus size={16} />
-                        ) : (
-                          <Plus size={16} />
-                        )}
-                      </div>
-                    </button>
-                    <div 
-                      className={`grid transition-all duration-300 ease-in-out ${
-                        openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-5 pb-5 text-secondary-400 leading-relaxed pl-20">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Mobile: same 3 services */}
-              <div className="lg:hidden space-y-3">
-                {serviceItems.map((item, index) => (
-                <div 
-                  key={index} 
+              {serviceItems.map((item, index) => (
+                <div
+                  key={index}
                   className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
                     openIndex === index ? 'shadow-lg ring-2 ring-secondary' : 'shadow-sm hover:shadow-md'
                   }`}
@@ -127,40 +68,37 @@ export const Services: React.FC = () => {
                     className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
                     aria-expanded={openIndex === index}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                        openIndex === index ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary'
-                      }`}>
-                        <item.icon size={20} />
-                      </div>
+                    <div className="flex items-center gap-3.5">
+                      <item.icon
+                        size={22}
+                        className={`transition-colors duration-300 shrink-0 ${
+                          openIndex === index ? 'text-brand' : 'text-secondary'
+                        }`}
+                      />
                       <span className="font-bold text-base text-secondary">
                         {item.title}
                       </span>
                     </div>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      openIndex === index ? 'bg-brand text-white rotate-180' : 'bg-secondary-100 text-secondary'
-                    }`}>
-                      {openIndex === index ? (
-                        <Minus size={16} />
-                      ) : (
-                        <Plus size={16} />
-                      )}
-                    </div>
+                    <ChevronDown
+                      size={18}
+                      className={`transition-all duration-300 shrink-0 ${
+                        openIndex === index ? 'text-brand rotate-180' : 'text-secondary-300'
+                      }`}
+                    />
                   </button>
-                  <div 
+                  <div
                     className={`grid transition-all duration-300 ease-in-out ${
                       openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-5 pb-5 text-secondary-400 leading-relaxed pl-20">
+                      <p className="px-5 pb-5 pl-9 text-secondary-400 leading-relaxed">
                         {item.description}
                       </p>
                     </div>
                   </div>
                 </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 

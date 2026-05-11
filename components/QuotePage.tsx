@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, Sparkles, Receipt, ArrowRight, ArrowLeft, X } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -164,7 +164,7 @@ export const QuotePage: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<DetectedItem[]>([]);
   const [catalogSearch, setCatalogSearch] = useState('');
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const [manualStep, setManualStep] = useState<'select' | 'result'>('select');
+  const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>('select');
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
   const [manualNewItemName, setManualNewItemName] = useState('');
@@ -187,6 +187,13 @@ export const QuotePage: React.FC = () => {
   useEffect(() => {
     scrollToElement(contentTopRef.current, -120);
   }, [aiStep, manualStep, selectedOption, scrollToElement]);
+
+  // If all items get removed while on review, send user back to selection
+  useEffect(() => {
+    if (manualStep === 'review' && selectedItems.length === 0) {
+      setManualStep('select');
+    }
+  }, [manualStep, selectedItems.length]);
 
   // ── Shared helpers ──
   const compressImage = (file: File): Promise<string> => {
@@ -455,9 +462,7 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('ai')}
               className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
             >
-              <div className="w-12 h-12 bg-brand text-white flex items-center justify-center mb-4 rounded-xl">
-                <Sparkles size={22} strokeWidth={2.5} />
-              </div>
+              <ScanSearch size={24} className="text-brand mb-4" strokeWidth={2} />
               <h3 className="text-lg font-black text-secondary mb-1">AI Photo Estimate</h3>
               <p className="text-secondary-400 text-sm mb-4">Snap a photo for instant AI pricing</p>
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
@@ -468,9 +473,7 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('manual')}
               className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left rounded-2xl"
             >
-              <div className="w-12 h-12 bg-secondary text-white flex items-center justify-center mb-4 rounded-xl">
-                <ListChecks size={22} strokeWidth={2.5} />
-              </div>
+              <ListChecks size={24} className="text-secondary mb-4" strokeWidth={2} />
               <h3 className="text-lg font-black text-secondary mb-1">Select Your Items</h3>
               <p className="text-secondary-400 text-sm mb-4">Pick items from our catalog for a quote</p>
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
@@ -517,7 +520,7 @@ export const QuotePage: React.FC = () => {
         <div ref={contentTopRef} className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             {selectedOption === 'ai' ? (
-              <Sparkles size={14} className="text-brand" strokeWidth={2.5} />
+              <ScanSearch size={14} className="text-brand" strokeWidth={2.5} />
             ) : (
               <ListChecks size={14} className="text-brand" strokeWidth={2.5} />
             )}
@@ -526,10 +529,17 @@ export const QuotePage: React.FC = () => {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
-            {selectedOption === 'ai' ? <>Snap, <span className="text-brand">price.</span></> : <>Pick your <span className="text-brand">items.</span></>}
+            {selectedOption === 'ai'
+              ? <>Snap, <span className="text-brand">price.</span></>
+              : manualStep === 'review'
+                ? <>Review your <span className="text-brand">list.</span></>
+                : <>Pick your <span className="text-brand">items.</span></>}
           </h1>
           {selectedOption === 'manual' && manualStep === 'select' && (
             <p className="text-secondary-400 text-base">Browse categories, pick what you need, get your AI-powered estimate.</p>
+          )}
+          {selectedOption === 'manual' && manualStep === 'review' && (
+            <p className="text-secondary-400 text-base">Confirm your items and we'll calculate your estimate.</p>
           )}
         </div>
       </div>
@@ -570,9 +580,7 @@ export const QuotePage: React.FC = () => {
                         onClick={() => cameraInputRef.current?.click()}
                         className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
                       >
-                        <div className="w-14 h-14 rounded-xl bg-brand flex items-center justify-center shrink-0">
-                          <Camera size={24} className="text-white" />
-                        </div>
+                        <Camera size={24} className="text-brand shrink-0" />
                         <div className="flex-1">
                           <h3 className="text-base font-black text-secondary mb-0.5">Take Photo</h3>
                           <p className="text-secondary-400 text-sm">Use your camera to capture the junk</p>
@@ -586,9 +594,7 @@ export const QuotePage: React.FC = () => {
                         onClick={() => fileInputRef.current?.click()}
                         className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-2xl text-left flex items-center gap-4 group"
                       >
-                        <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-                          <Upload size={24} className="text-white" />
-                        </div>
+                        <Upload size={24} className="text-secondary shrink-0" />
                         <div className="flex-1">
                           <h3 className="text-base font-black text-secondary mb-0.5">Upload Photo</h3>
                           <p className="text-secondary-400 text-sm">Choose an existing photo from your device</p>
@@ -612,7 +618,7 @@ export const QuotePage: React.FC = () => {
                       </div>
                       {loadingState === LoadingState.IDLE && (
                         <button onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-lg inline-flex items-center justify-center gap-2">
-                          <Sparkles size={14} /> Analyze Photo
+                          <ScanSearch size={14} /> Analyze Photo
                         </button>
                       )}
                       {loadingState === LoadingState.ANALYZING && (
@@ -765,29 +771,34 @@ export const QuotePage: React.FC = () => {
                                 return (
                                   <button
                                     key={item.name}
-                                    className={`relative flex flex-col items-center gap-1 p-2 rounded-lg border transition-all duration-200 text-center cursor-pointer ${
-                                      selected
-                                        ? 'border-brand bg-brand/5 scale-[1.02]'
-                                        : 'border-secondary-100 bg-white hover:border-brand active:scale-95'
+                                    className={`group relative flex flex-col items-center gap-1.5 p-2 transition-all duration-200 text-center cursor-pointer ${
+                                      selected ? 'scale-[1.05]' : 'hover:scale-105 active:scale-95'
                                     }`}
                                     onClick={() => !selected && toggleCatalogItem(item.name)}
                                   >
                                     {selected && (
                                       <button
                                         onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                                        className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10"
                                       >
-                                        <X size={8} className="text-white" />
+                                        <X size={8} className="text-white" strokeWidth={3} />
                                       </button>
                                     )}
-                                    <div className={`w-8 h-8 rounded flex items-center justify-center transition-all duration-200 ${
-                                      selected ? 'bg-brand text-white' : 'bg-secondary-100 text-brand'
-                                    }`}>
-                                      <img src={item.image} alt={item.name} className="w-5 h-5" />
-                                    </div>
-                                    <span className="text-[10px] font-medium text-secondary leading-tight line-clamp-1">{item.name}</span>
+                                    <img
+                                      src={item.image}
+                                      alt={item.name}
+                                      className="w-10 h-10 transition-all duration-200"
+                                      style={{
+                                        filter: selected
+                                          ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
+                                          : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
+                                      }}
+                                    />
+                                    <span className={`text-[10px] font-bold leading-tight line-clamp-2 transition-colors ${
+                                      selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
+                                    }`}>{item.name}</span>
                                     {selected && selectedItem && (
-                                      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                      <div className="flex items-center gap-1 mt-0.5" onClick={(e) => e.stopPropagation()}>
                                         <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
                                           <Minus size={10} className="text-secondary-400" />
                                         </button>
@@ -829,37 +840,111 @@ export const QuotePage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Selected items summary bar */}
-                  {selectedItems.length > 0 && (
-                    <div ref={selectedItemsRef} className="flex items-center justify-between bg-brand/5 border border-brand/20 rounded-xl px-4 py-3">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-sm font-black text-secondary shrink-0">{totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}</span>
-                        <div className="flex flex-wrap gap-1 min-w-0">
-                          {selectedItems.slice(0, 3).map((item) => (
-                            <span key={item.id} className="inline-flex items-center gap-0.5 px-2 py-0.5 bg-white border border-secondary-100 rounded text-[10px] font-medium text-secondary-600">
-                              {item.quantity > 1 && <span className="font-bold">{item.quantity}x</span>}
-                              {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
-                            </span>
-                          ))}
-                          {selectedItems.length > 3 && (
-                            <span className="text-[10px] font-bold text-secondary-400">+{selectedItems.length - 3} more</span>
-                          )}
-                        </div>
-                      </div>
-                      <button onClick={() => setSelectedItems([])} className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors shrink-0 ml-2">
-                        Clear
-                      </button>
-                    </div>
-                  )}
+                </div>
+              )}
 
-                  {/* Get Estimate button */}
+              {/* Sticky floating Review CTA — scrolls with page */}
+              {manualStep === 'select' && selectedItems.length > 0 && (
+                <div ref={selectedItemsRef} className="sticky bottom-4 z-30 mt-6 mx-auto max-w-2xl px-2">
                   <button
-                    onClick={handleGetManualPrice}
-                    disabled={selectedItems.length === 0}
-                    className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+                    onClick={() => setManualStep('review')}
+                    className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    {selectedItems.length === 0 ? 'Select items to continue' : <>Get Estimate ({totalSelectedCount} item{totalSelectedCount !== 1 ? 's' : ''}) <ArrowRight size={14} /></>}
+                    <span className="flex items-center gap-2.5 min-w-0">
+                      <span className="flex items-center justify-center w-7 h-7 rounded-full bg-brand group-hover:bg-white text-white group-hover:text-brand text-xs font-black transition-colors shrink-0">
+                        {totalSelectedCount}
+                      </span>
+                      <span className="text-sm font-black uppercase tracking-wider truncate">
+                        Review {totalSelectedCount === 1 ? 'item' : 'items'}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider whitespace-nowrap">
+                      Continue
+                      <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
                   </button>
+                </div>
+              )}
+
+              {/* ===== REVIEW STEP ===== */}
+              {manualStep === 'review' && !manualPricingLoading && (
+                <div className="space-y-6">
+                  {/* Header card */}
+                  <div className="bg-gradient-to-br from-brand/10 via-brand/5 to-transparent border border-brand/20 rounded-2xl p-5 md:p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Receipt size={14} className="text-brand" strokeWidth={2.5} />
+                      <span className="text-[10px] font-black text-brand uppercase tracking-widest">Review your list</span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-black text-secondary leading-tight mb-1">
+                      {totalSelectedCount} {totalSelectedCount === 1 ? 'item' : 'items'} ready for pickup
+                    </h2>
+                    <p className="text-sm text-secondary-400">Adjust quantities or remove items before getting your estimate.</p>
+                  </div>
+
+                  {/* Items list */}
+                  <div className="border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden bg-white">
+                    {selectedItems.map((item) => (
+                      <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-secondary-50/50 transition-colors">
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-secondary-50 flex items-center justify-center shrink-0">
+                          <img
+                            src={getItemImage(item.name)}
+                            alt={item.name}
+                            className="w-8 h-8 md:w-9 md:h-9"
+                            style={{ filter: 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)' }}
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-secondary truncate">{item.name}</p>
+                          <p className="text-[11px] text-secondary-400">Qty: {item.quantity}</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-lg border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                            <Minus size={14} />
+                          </button>
+                          <span className="w-6 text-center text-sm font-black text-secondary">{item.quantity}</span>
+                          <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-lg border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                            <Plus size={14} />
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => toggleCatalogItem(item.name)}
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 transition-colors shrink-0"
+                          aria-label={`Remove ${item.name}`}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Helper actions */}
+                  <div className="flex items-center justify-between text-xs">
+                    <button
+                      onClick={() => setManualStep('select')}
+                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+                    >
+                      <ArrowLeft size={12} /> Add more items
+                    </button>
+                    <button
+                      onClick={() => { setSelectedItems([]); setManualStep('select'); }}
+                      className="font-bold text-red-400 hover:text-red-600 transition-colors"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+
+                  {/* Sticky Get Estimate CTA */}
+                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+                    <button
+                      onClick={handleGetManualPrice}
+                      disabled={selectedItems.length === 0}
+                      className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-full shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
+                      <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </div>
                 </div>
               )}
 

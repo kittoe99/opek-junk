@@ -1,5 +1,4 @@
 import React from 'react';
-import { Camera, Calculator, Truck } from 'lucide-react';
 
 interface ProcessProps {
   onGetQuote?: () => void;
@@ -8,66 +7,86 @@ interface ProcessProps {
 export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      icon: Camera,
-      title: "PHOTO ESTIMATE",
-      desc: "Snap a quick photo of your junk. Get instant volume analysis and pricing from local professionals."
+      image: "/estimates (1).webp",
+      alt: "Customer snapping a photo for an estimate",
+      label: "Step One",
+      titleStart: "Snap. Send.",
+      titleAccent: "Done.",
+      desc: "A quick photo is all we need. Our AI reads the volume, the team confirms the price — instantly."
     },
     {
-      icon: Calculator,
-      title: "UPFRONT QUOTE",
-      desc: "On-site confirmation with a fixed price. No surcharges, no hidden fees, no games."
+      image: "/opek2.webp",
+      alt: "Upfront quote on-site",
+      label: "Step Two",
+      titleStart: "Lock in a",
+      titleAccent: "fixed price.",
+      desc: "Crew arrives, confirms what's getting hauled, and gives you the final number on the spot. No upcharges."
     },
     {
-      icon: Truck,
-      title: "HEAVY LIFTING",
-      desc: "Professional hauling, sorting, and cleanup. You just point—the team handles the rest."
+      image: "/workers-opek.webp",
+      alt: "Professional junk removal team hauling items",
+      label: "Step Three",
+      titleStart: "We do",
+      titleAccent: "the lifting.",
+      desc: "Loading, sweeping, hauling — all handled. You point, we clear. Same day in most cases."
     }
   ];
 
   return (
-    <section id="process" className="py-12 md:py-16 lg:py-24 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header - Centered */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-tight mb-3 md:mb-4 tracking-tight">
-            How It Works
-          </h2>
-          <p className="text-secondary text-sm md:text-base lg:text-lg max-w-2xl mx-auto">
-            Point. Price. <span className="text-brand">Gone.</span> Three simple steps to a clutter-free space
+    <section id="process" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 md:mb-20">
+          <div>
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="block w-8 h-px bg-brand"></span>
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">The Process</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight">
+              From clutter to <span className="text-brand">clear</span>
+              <br className="hidden md:block" /> in three moves.
+            </h2>
+          </div>
+          <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
+            No quote forms. No phone tag. Just photos, a fixed price, and a crew.
           </p>
         </div>
 
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="hidden md:block absolute top-12 left-0 right-0 h-px bg-secondary-200"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="flex flex-col items-center text-center">
-                  {/* Icon circle */}
-                  <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 bg-white border border-secondary-200 rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm hover:shadow-md hover:border-brand transition-all duration-200">
-                    <step.icon size={28} className="text-brand md:hidden" strokeWidth={1.5} />
-                    <step.icon size={36} className="text-brand hidden md:block" strokeWidth={1.5} />
-                  </div>
-                  
-                  {/* Step number */}
-                  <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-2 w-7 h-7 md:w-8 md:h-8 bg-brand text-white rounded-full flex items-center justify-center font-black text-xs md:text-sm z-20 shadow-sm">
-                    {index + 1}
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-base md:text-lg font-black text-secondary mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-secondary text-sm leading-relaxed max-w-[260px]">
-                    {step.desc}
-                  </p>
+        {/* Steps — staggered editorial layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6 lg:gap-10">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              className={`group relative ${
+                index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
+              }`}
+            >
+              {/* Image with peek hover */}
+              <div className="relative overflow-hidden rounded-[2rem] mb-6">
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src={step.image}
+                    alt={step.alt}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
               </div>
-            ))}
-          </div>
+
+              {/* Title */}
+              <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
+                {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
+              </h3>
+
+              {/* Description */}
+              <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
+                {step.desc}
+              </p>
+            </div>
+          ))}
         </div>
 
       </div>

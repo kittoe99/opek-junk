@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, Sparkles, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
@@ -393,9 +393,7 @@ export const BookingPage: React.FC = () => {
           {currentStep === 1 && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-brand/10 flex items-center justify-center shrink-0">
-                  <Sparkles size={16} className="text-brand" strokeWidth={2.5} />
-                </div>
+                <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                 <div>
                   <h2 className="text-base font-black text-secondary">AI Photo Estimate</h2>
                   <p className="text-secondary-400 text-xs">Snap a photo for instant volume + price detection</p>
@@ -409,9 +407,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => cameraInputRef.current?.click()}
                     className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-brand flex items-center justify-center shrink-0">
-                      <Camera size={20} className="text-white" />
-                    </div>
+                    <Camera size={22} className="text-brand shrink-0" />
                     <div className="flex-1">
                       <h3 className="text-sm font-black text-secondary mb-0.5">Take Photo</h3>
                       <p className="text-secondary-400 text-xs">Use your camera to capture the junk</p>
@@ -425,9 +421,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => fileInputRef.current?.click()}
                     className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-                      <Upload size={20} className="text-white" />
-                    </div>
+                    <Upload size={22} className="text-secondary shrink-0" />
                     <div className="flex-1">
                       <h3 className="text-sm font-black text-secondary mb-0.5">Upload Photo</h3>
                       <p className="text-secondary-400 text-xs">Choose an existing photo from your device</p>
@@ -463,7 +457,7 @@ export const BookingPage: React.FC = () => {
                       onClick={handleAnalyze}
                       className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                     >
-                      <Sparkles size={14} className="transition-transform duration-300 group-hover:scale-110" /> Analyze Photo
+                      <ScanSearch size={14} className="transition-transform duration-300 group-hover:scale-110" /> Analyze Photo
                     </button>
                   )}
 
@@ -528,9 +522,7 @@ export const BookingPage: React.FC = () => {
           {currentStep === 2 && (
             <form onSubmit={handleNextStep} className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-brand/10 flex items-center justify-center shrink-0">
-                  <MapPinned size={16} className="text-brand" strokeWidth={2.5} />
-                </div>
+                <MapPinned size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                 <div>
                   <h2 className="text-base font-black text-secondary">Contact & Address</h2>
                   <p className="text-secondary-400 text-xs">Where should we pick up?</p>
@@ -682,9 +674,7 @@ export const BookingPage: React.FC = () => {
               {currentStep === 3 && (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="mb-2 flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-brand/10 flex items-center justify-center shrink-0">
-                      <ClipboardList size={16} className="text-brand" strokeWidth={2.5} />
-                    </div>
+                    <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                     <div>
                       <h2 className="text-base font-black text-secondary">Service Details</h2>
                       <p className="text-secondary-400 text-xs">Pick a service type and date, then review</p>

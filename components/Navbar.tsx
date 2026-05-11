@@ -103,9 +103,9 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={fetchUserLocation}
                 disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-gray-600 hover:text-black transition-colors cursor-pointer group disabled:opacity-50"
+                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
               >
-                <MapPin size={12} className="text-gray-400 group-hover:text-black transition-colors" />
+                <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
                 <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
                   {isDetectingLocation ? 'Detecting...' : userCity}
                 </span>
