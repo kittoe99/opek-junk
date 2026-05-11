@@ -24,7 +24,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
         {/* Book Online Button */}
         <button
           onClick={onBookOnline}
-          className="flex items-center gap-2 px-4 py-2 md:px-6 bg-brand text-white rounded-lg font-bold text-xs md:text-sm hover:bg-brand-600 transition-colors flex-1 md:flex-initial justify-center shadow-lg"
+          className="flex items-center gap-2 px-4 py-2 md:px-6 bg-brand text-white rounded-full font-bold text-xs md:text-sm hover:bg-brand-600 transition-colors flex-1 md:flex-initial justify-center shadow-lg"
         >
           <Calendar size={18} className="flex-shrink-0 text-white" />
           <span className="whitespace-nowrap">Book Online</span>
