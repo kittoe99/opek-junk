@@ -1,88 +1,122 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+interface BreadcrumbItem {
+  name: string;
+  href: string;
+}
+
 interface SEOProps {
   title?: string;
   description?: string;
   keywords?: string;
   ogImage?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  geoLat?: number;
+  geoLon?: number;
+  cityName?: string;
+  stateAbbr?: string;
 }
 
-export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage }) => {
+export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Update document title
     if (title) {
       document.title = title;
     }
 
-    // Update meta description
     if (description) {
       let metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', description);
-      }
+      if (metaDescription) metaDescription.setAttribute('content', description);
     }
 
-    // Update meta keywords
     if (keywords) {
       let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (metaKeywords) {
-        metaKeywords.setAttribute('content', keywords);
-      }
+      if (metaKeywords) metaKeywords.setAttribute('content', keywords);
     }
 
-    // Update OG tags
     if (title) {
       let ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute('content', title);
-      }
+      if (ogTitle) ogTitle.setAttribute('content', title);
       let twitterTitle = document.querySelector('meta[property="twitter:title"]');
-      if (twitterTitle) {
-        twitterTitle.setAttribute('content', title);
-      }
+      if (twitterTitle) twitterTitle.setAttribute('content', title);
     }
 
     if (description) {
       let ogDescription = document.querySelector('meta[property="og:description"]');
-      if (ogDescription) {
-        ogDescription.setAttribute('content', description);
-      }
+      if (ogDescription) ogDescription.setAttribute('content', description);
       let twitterDescription = document.querySelector('meta[property="twitter:description"]');
-      if (twitterDescription) {
-        twitterDescription.setAttribute('content', description);
-      }
+      if (twitterDescription) twitterDescription.setAttribute('content', description);
     }
 
     if (ogImage) {
       let ogImageTag = document.querySelector('meta[property="og:image"]');
-      if (ogImageTag) {
-        ogImageTag.setAttribute('content', ogImage);
-      }
+      if (ogImageTag) ogImageTag.setAttribute('content', ogImage);
       let twitterImage = document.querySelector('meta[property="twitter:image"]');
-      if (twitterImage) {
-        twitterImage.setAttribute('content', ogImage);
-      }
+      if (twitterImage) twitterImage.setAttribute('content', ogImage);
     }
 
-    // Update canonical URL
+    // Canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute('href', `https://opekjunkremoval.com${location.pathname}`);
+    if (canonical) canonical.setAttribute('href', `https://opekjunkremoval.com${location.pathname}`);
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
+    let twitterUrl = document.querySelector('meta[property="twitter:url"]');
+    if (twitterUrl) twitterUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
+
+    // Geo meta tags for local SEO
+    const setOrCreate = (name: string, content: string, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    if (geoLat && geoLon) {
+      setOrCreate('geo.position', `${geoLat};${geoLon}`);
+      setOrCreate('ICBM', `${geoLat}, ${geoLon}`);
+    } else {
+      // Reset to country-level on non-city pages
+      setOrCreate('geo.position', '');
+      setOrCreate('ICBM', '');
     }
 
-    // Update OG URL
-    let ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
+    if (cityName && stateAbbr) {
+      setOrCreate('geo.placename', `${cityName}, ${stateAbbr}`);
+      setOrCreate('geo.region', `US-${stateAbbr}`);
+    } else {
+      setOrCreate('geo.placename', 'United States');
+      setOrCreate('geo.region', 'US');
     }
-    let twitterUrl = document.querySelector('meta[property="twitter:url"]');
-    if (twitterUrl) {
-      twitterUrl.setAttribute('content', `https://opekjunkremoval.com${location.pathname}`);
+
+    // BreadcrumbList schema — inject/replace dynamic script tag
+    const BREADCRUMB_ID = 'schema-breadcrumb';
+    let existing = document.getElementById(BREADCRUMB_ID);
+    if (existing) existing.remove();
+
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((b, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: b.name,
+          item: `https://opekjunkremoval.com${b.href}`,
+        })),
+      };
+      const script = document.createElement('script');
+      script.id = BREADCRUMB_ID;
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(schema);
+      document.head.appendChild(script);
     }
-  }, [title, description, keywords, ogImage, location.pathname]);
+  }, [title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, location.pathname]);
 
   return null;
 };

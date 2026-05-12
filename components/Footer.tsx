@@ -3,78 +3,94 @@ import { Phone, Mail, MapPin, Apple, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
-
   return (
-    <footer className="bg-secondary">
+    <footer className="bg-secondary text-white">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-16">
           
           {/* Brand */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-4">
-            <div className="mb-5">
-              <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-40 w-auto object-contain" />
-            </div>
-            <p className="text-secondary-300 text-sm leading-relaxed mb-6 max-w-xs">
+          <div className="lg:col-span-4">
+            <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-32 w-auto object-contain mb-6" />
+            <p className="text-secondary-300 text-sm leading-relaxed mb-8 max-w-sm">
               Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
             </p>
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="tel:8313187139" className="flex items-center gap-2.5 text-secondary-300 hover:text-white transition-colors group">
-                <Phone size={15} className="text-brand group-hover:text-white transition-colors shrink-0" />
+              <a href="tel:8313187139" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center group-hover:bg-brand transition-colors">
+                  <Phone size={16} className="text-brand group-hover:text-white transition-colors" />
+                </div>
                 <span className="text-sm font-bold">(831) 318-7139</span>
               </a>
-              <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-2.5 text-secondary-300 hover:text-white transition-colors group">
-                <Mail size={15} className="text-brand group-hover:text-white transition-colors shrink-0" />
+              <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center group-hover:bg-brand transition-colors">
+                  <Mail size={16} className="text-brand group-hover:text-white transition-colors" />
+                </div>
                 <span className="text-sm">Support@opekjunkremoval.com</span>
               </a>
-              <div className="flex items-center gap-2.5 text-secondary-300">
-                <MapPin size={15} className="text-brand shrink-0" />
+              <div className="flex items-center gap-3 text-secondary-300">
+                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center">
+                  <MapPin size={16} className="text-brand" />
+                </div>
                 <span className="text-sm">Nationwide Service</span>
               </div>
             </div>
           </div>
 
-          {/* Services */}
-          <div className="col-span-1 lg:col-span-2">
-            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Services</h4>
-            <ul className="space-y-2.5">
-              <li><Link to="/services/residential" className="text-secondary-300 hover:text-white text-sm transition-colors">Residential</Link></li>
-              <li><Link to="/services/commercial" className="text-secondary-300 hover:text-white text-sm transition-colors">Commercial</Link></li>
-              <li><Link to="/services/property-cleanout" className="text-secondary-300 hover:text-white text-sm transition-colors">Property Cleanouts</Link></li>
-            </ul>
-          </div>
+          {/* Links Grid */}
+          <div className="lg:col-span-5 grid grid-cols-3 gap-8">
+            {/* Services */}
+            <div>
+              <h4 className="text-white font-black text-xs uppercase tracking-wider mb-4">Services</h4>
+              <ul className="space-y-2">
+                <li><Link to="/services/residential" className="text-secondary-300 hover:text-white text-sm transition-colors">Residential</Link></li>
+                <li><Link to="/services/commercial" className="text-secondary-300 hover:text-white text-sm transition-colors">Commercial</Link></li>
+                <li><Link to="/services/property-cleanout" className="text-secondary-300 hover:text-white text-sm transition-colors">Property Cleanouts</Link></li>
+              </ul>
+            </div>
 
-          {/* Company */}
-          <div className="col-span-1 lg:col-span-2">
-            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Company</h4>
-            <ul className="space-y-2.5">
-              <li><Link to="/quote" className="text-secondary-300 hover:text-white text-sm transition-colors">Get a Quote</Link></li>
-              <li><Link to="/booking" className="text-secondary-300 hover:text-white text-sm transition-colors">Book Online</Link></li>
-              <li><Link to="/contact" className="text-secondary-300 hover:text-white text-sm transition-colors">Contact Us</Link></li>
-              <li><Link to="/track-order" className="text-secondary-300 hover:text-white text-sm transition-colors">Track Order</Link></li>
-              <li><Link to="/#process" className="text-secondary-300 hover:text-white text-sm transition-colors">How it Works</Link></li>
-              <li><Link to="/#service-area" className="text-secondary-300 hover:text-white text-sm transition-colors">Service Areas</Link></li>
-              <li><Link to="/provider-signup" className="text-secondary-300 hover:text-white text-sm transition-colors">Become a Provider</Link></li>
-            </ul>
+            {/* Locations */}
+            <div>
+              <h4 className="text-white font-black text-xs uppercase tracking-wider mb-4">Locations</h4>
+              <ul className="space-y-2">
+                <li><Link to="/locations/dallas-fort-worth" className="text-secondary-300 hover:text-white text-sm transition-colors">Dallas-Fort Worth, TX</Link></li>
+                <li><Link to="/locations/jacksonville" className="text-secondary-300 hover:text-white text-sm transition-colors">Jacksonville, FL</Link></li>
+                <li><Link to="/locations/atlanta" className="text-secondary-300 hover:text-white text-sm transition-colors">Atlanta, GA</Link></li>
+                <li><Link to="/#service-area" className="text-secondary-400 hover:text-brand text-xs transition-colors mt-1 inline-block">More coming soon →</Link></li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-white font-black text-xs uppercase tracking-wider mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li><Link to="/quote" className="text-secondary-300 hover:text-white text-sm transition-colors">Get a Quote</Link></li>
+                <li><Link to="/booking" className="text-secondary-300 hover:text-white text-sm transition-colors">Book Online</Link></li>
+                <li><Link to="/contact" className="text-secondary-300 hover:text-white text-sm transition-colors">Contact Us</Link></li>
+                <li><Link to="/track-order" className="text-secondary-300 hover:text-white text-sm transition-colors">Track Order</Link></li>
+                <li><Link to="/#process" className="text-secondary-300 hover:text-white text-sm transition-colors">How it Works</Link></li>
+                <li><Link to="/provider-signup" className="text-secondary-300 hover:text-white text-sm transition-colors">Become a Provider</Link></li>
+              </ul>
+            </div>
           </div>
 
           {/* App Download */}
-          <div className="col-span-2 md:col-span-2 lg:col-span-4">
-            <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Get the App</h4>
-            <p className="text-secondary-300 text-sm mb-5">Book pickups, track your service, and <span className="text-brand font-medium">manage everything from your phone</span>.</p>
-            <div className="flex flex-col sm:flex-row gap-2.5">
-              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-secondary-600 hover:bg-brand transition-colors text-white rounded-lg">
-                <Apple size={20} className="text-brand group-hover:text-white" />
+          <div className="lg:col-span-3">
+            <h4 className="text-white font-black text-xs uppercase tracking-wider mb-4">Get the App</h4>
+            <p className="text-secondary-300 text-sm mb-6">Book pickups, track your service, and <span className="text-brand font-medium">manage everything from your phone</span>.</p>
+            <div className="flex flex-col gap-3">
+              <button className="inline-flex items-center gap-3 px-4 py-3 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
+                <Apple size={20} className="text-secondary group-hover:text-brand transition-colors" />
                 <div className="text-left">
-                  <div className="text-[10px] text-white/70 leading-none">Download on the</div>
+                  <div className="text-[10px] text-secondary-500 leading-none">Download on the</div>
                   <div className="text-sm font-bold leading-tight">App Store</div>
                 </div>
               </button>
-              <button className="inline-flex items-center gap-2.5 px-4 py-3 bg-secondary-600 hover:bg-brand transition-colors text-white rounded-lg group">
-                <Smartphone size={20} className="text-brand group-hover:text-white" />
+              <button className="inline-flex items-center gap-3 px-4 py-3 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
+                <Smartphone size={20} className="text-secondary group-hover:text-brand transition-colors" />
                 <div className="text-left">
-                  <div className="text-[10px] text-white/70 leading-none">Get it on</div>
+                  <div className="text-[10px] text-secondary-500 leading-none">Get it on</div>
                   <div className="text-sm font-bold leading-tight">Google Play</div>
                 </div>
               </button>

@@ -1,12 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, ArrowRight } from 'lucide-react';
 
 const cities = [
-  "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
-  "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
-  "Austin", "Jacksonville", "Fort Worth", "Columbus", "Charlotte",
-  "San Francisco", "Indianapolis", "Seattle", "Denver", "Washington DC",
-  "Boston", "Nashville", "Detroit", "Portland", "Las Vegas"
+  { label: "Dallas-Fort Worth, TX", slug: "dallas-fort-worth" },
+  { label: "Jacksonville, FL",      slug: "jacksonville" },
+  { label: "Atlanta, GA",           slug: "atlanta" },
 ];
 
 interface ServiceAreaProps {
@@ -31,7 +30,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
             <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1.5 mb-3 rounded-full">
                 <MapPin size={13} className="text-brand" />
-                <span className="text-white text-xs font-black uppercase tracking-[0.15em]">All 50 States</span>
+                <span className="text-white text-xs font-black uppercase tracking-[0.15em]">Now Serving 3 Cities</span>
               </div>
               <p className="text-white text-lg md:text-xl font-black leading-tight tracking-tight">
                 Trusted professionals<br />in your area.
@@ -46,10 +45,10 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
               <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-              Nationwide<br /><span className="text-brand">coverage.</span>
+              Now serving<br /><span className="text-brand">your city.</span>
             </h2>
             <p className="text-secondary-500 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-              Professional junk removal coast to coast. Connect with vetted local crews ready to clear your space — fast.
+              We're live in select markets and expanding fast. Check if we serve your area and get a free quote today.
             </p>
 
             <button
@@ -61,18 +60,19 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({ onGetQuote }) => {
 
             {/* Cities */}
             <div>
-              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Major cities served</p>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Cities currently served</p>
               <div className="flex flex-wrap gap-2">
-                {cities.slice(0, 16).map((city) => (
-                  <span
-                    key={city}
-                    className="px-3 py-1.5 bg-secondary-50 text-secondary text-xs font-medium border border-secondary-100 hover:border-brand hover:text-brand transition-colors cursor-default rounded-full"
+                {cities.map((city) => (
+                  <Link
+                    key={city.slug}
+                    to={`/locations/${city.slug}`}
+                    className="px-3 py-1.5 bg-secondary-50 text-secondary text-xs font-medium border border-secondary-100 hover:border-brand hover:text-brand transition-colors rounded-full"
                   >
-                    {city}
-                  </span>
+                    {city.label}
+                  </Link>
                 ))}
-                <span className="px-3 py-1.5 bg-brand text-white text-xs font-black rounded-full">
-                  +100 more
+                <span className="px-3 py-1.5 bg-brand/10 text-brand border border-brand/20 text-xs font-black rounded-full">
+                  More cities coming soon
                 </span>
               </div>
             </div>

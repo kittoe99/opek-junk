@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
@@ -18,6 +18,8 @@ import { TrackOrderPage } from './components/TrackOrderPage';
 import { InHomeEstimatePage } from './components/InHomeEstimatePage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { SEO, seoConfig } from './components/SEO';
+import { CityPage } from './components/CityPage';
+import { getCityBySlug } from './lib/cityData';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -148,6 +150,13 @@ function InHomeEstimatePageWithSEO() {
   );
 }
 
+function CityPageRouteWrapper() {
+  const { slug } = useParams<{ slug: string }>();
+  const city = getCityBySlug(slug ?? '');
+  if (!city) return <Navigate to="/" replace />;
+  return <CityPage city={city} />;
+}
+
 function App() {
   return (
     <Router>
@@ -167,6 +176,7 @@ function App() {
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
+          <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
         </Routes>
         </main>
         

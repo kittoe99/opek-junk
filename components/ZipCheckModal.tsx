@@ -138,7 +138,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 )}
 
                 <p className="text-[10px] text-secondary-300 mt-4">
-                  We cover all 50 states — over 100 cities nationwide.
+                  Currently serving Dallas-Fort Worth, Jacksonville FL, and Atlanta GA.
                 </p>
               </>
             ) : (
