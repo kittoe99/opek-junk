@@ -443,10 +443,6 @@ export const QuotePage: React.FC = () => {
       <div className="min-h-screen bg-white">
         {/* Hero */}
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Receipt size={14} className="text-brand" strokeWidth={2.5} />
-            <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">Get a Quote</span>
-          </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
             Free quote in <span className="text-brand">two minutes.</span>
           </h1>
