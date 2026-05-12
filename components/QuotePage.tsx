@@ -514,16 +514,6 @@ export const QuotePage: React.FC = () => {
         </button>
 
         <div ref={contentTopRef} className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            {selectedOption === 'ai' ? (
-              <ScanSearch size={14} className="text-brand" strokeWidth={2.5} />
-            ) : (
-              <ListChecks size={14} className="text-brand" strokeWidth={2.5} />
-            )}
-            <span className="text-sm font-bold text-secondary-400 uppercase tracking-wider">
-              {selectedOption === 'ai' ? 'AI Photo Estimate' : 'Item Catalog'}
-            </span>
-          </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
             {selectedOption === 'ai'
               ? <>Snap, <span className="text-brand">price.</span></>

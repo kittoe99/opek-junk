@@ -5,20 +5,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [userCity, setUserCity] = useState<string>('');
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
