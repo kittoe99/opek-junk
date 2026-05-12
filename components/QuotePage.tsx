@@ -897,7 +897,7 @@ export const QuotePage: React.FC = () => {
               {manualStep === 'review' && !manualPricingLoading && (
                 <div className="space-y-6">
                   {/* Header card */}
-                  <div className="bg-gradient-to-br from-brand/10 via-brand/5 to-transparent border border-brand/20 rounded-2xl p-5 md:p-6">
+                  <div className="rounded-2xl p-5 md:p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Receipt size={14} className="text-brand" strokeWidth={2.5} />
                       <span className="text-[10px] font-black text-brand uppercase tracking-widest">Review your list</span>
