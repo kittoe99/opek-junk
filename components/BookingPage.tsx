@@ -362,31 +362,26 @@ export const BookingPage: React.FC = () => {
           )}
 
           {/* Step Indicator */}
-          <div className="flex items-center justify-center mb-8">
-            {stepLabels.map((label, i) => {
-              const step = i + 1;
-              return (
-                <React.Fragment key={label}>
-                  <div className="flex flex-col items-center">
-                    <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                      currentStep > step ? 'bg-brand text-white' : currentStep === step ? 'bg-secondary text-white' : 'bg-secondary-50 text-secondary-300'
-                    }`}>
-                      {currentStep > step ? <Check size={16} strokeWidth={3} /> : step}
-                    </div>
-                    <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wider ${
-                      currentStep >= step ? 'text-secondary' : 'text-secondary-300'
-                    }`}>
-                      {label}
-                    </span>
-                  </div>
-                  {step < 3 && (
-                    <div className={`w-12 sm:w-16 h-0.5 mx-2 mb-5 transition-colors ${
-                      currentStep > step ? 'bg-brand' : 'bg-secondary-100'
-                    }`} />
-                  )}
-                </React.Fragment>
-              );
-            })}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-2">
+              {stepLabels.map((label, i) => {
+                const step = i + 1;
+                return (
+                  <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                    currentStep > step ? 'text-brand' : currentStep === step ? 'text-secondary' : 'text-secondary-300'
+                  }`}>
+                    {currentStep > step ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                  </span>
+                );
+              })}
+            </div>
+            <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+              <div
+                className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${((currentStep - 1) / (stepLabels.length - 1)) * 100}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-secondary-400 mt-1.5">Step {currentStep} of {stepLabels.length}</p>
           </div>
 
           {/* ═══ Step 1: Photo Upload & Estimate ═══ */}

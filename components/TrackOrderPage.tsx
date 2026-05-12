@@ -254,22 +254,22 @@ export const TrackOrderPage: React.FC = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white md:border md:border-secondary-100 md:rounded-3xl md:p-8 md:shadow-sm">
             {/* Toggle */}
-            <div className="flex bg-secondary-50 rounded-xl p-1 mb-6">
+            <div className="flex bg-secondary-50 border border-secondary-100 rounded-full p-1 mb-6">
               <button
                 onClick={() => { setSearchType('phone'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-black uppercase tracking-[0.15em] transition-all ${
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.15em] transition-all ${
                   searchType === 'phone' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
                 }`}
               >
-                <Phone size={14} /> Phone
+                <Phone size={13} /> Phone
               </button>
               <button
                 onClick={() => { setSearchType('order'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-black uppercase tracking-[0.15em] transition-all ${
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.15em] transition-all ${
                   searchType === 'order' ? 'bg-secondary text-white shadow-sm' : 'text-secondary-400 hover:text-secondary'
                 }`}
               >
-                <Hash size={14} /> Order #
+                <Hash size={13} /> Order #
               </button>
             </div>
 

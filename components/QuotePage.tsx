@@ -550,25 +550,30 @@ export const QuotePage: React.FC = () => {
           {selectedOption === 'ai' && (
             <div>
               {/* Step indicator */}
-              <div className="flex items-center justify-center mb-10">
-                {['Upload', 'Review Items', 'Estimate'].map((label, i) => {
-                  const isComplete = (i === 0 && aiStep !== 'upload') || (i === 1 && aiStep === 'result');
-                  const isActive = (i === 0 && aiStep === 'upload') || (i === 1 && aiStep === 'items') || (i === 2 && aiStep === 'result');
-                  return (
-                    <React.Fragment key={label}>
-                      <div className="flex flex-col items-center">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                          isComplete ? 'bg-brand text-white' : isActive ? 'bg-secondary text-white' : 'bg-secondary-50 text-secondary-300'
+              {(() => {
+                const aiSteps = ['Upload', 'Review Items', 'Estimate'];
+                const aiStepIndex = aiStep === 'upload' ? 0 : aiStep === 'items' ? 1 : 2;
+                return (
+                  <div className="mb-10">
+                    <div className="flex items-center justify-between mb-2">
+                      {aiSteps.map((label, i) => (
+                        <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                          i < aiStepIndex ? 'text-brand' : i === aiStepIndex ? 'text-secondary' : 'text-secondary-300'
                         }`}>
-                          {isComplete ? <Check size={16} strokeWidth={3} /> : i + 1}
-                        </div>
-                        <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wider ${isComplete || isActive ? 'text-secondary' : 'text-secondary-300'}`}>{label}</span>
-                      </div>
-                      {i < 2 && <div className={`w-12 h-0.5 mx-2 mb-5 ${isComplete ? 'bg-brand' : 'bg-secondary-100'}`} />}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+                          {i < aiStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                      <div
+                        className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${(aiStepIndex / (aiSteps.length - 1)) * 100}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-secondary-400 mt-1.5">Step {aiStepIndex + 1} of {aiSteps.length}</p>
+                  </div>
+                );
+              })()}
 
               {/* Step 1: Upload */}
               {aiStep === 'upload' && (
@@ -720,6 +725,32 @@ export const QuotePage: React.FC = () => {
           {/* ===== ITEM SELECTION CONTENT ===== */}
           {selectedOption === 'manual' && (
             <div>
+              {/* Progress bar */}
+              {(() => {
+                const manualSteps = ['Select Items', 'Review', 'Estimate'];
+                const manualStepIndex = manualStep === 'select' ? 0 : manualStep === 'review' ? 1 : 2;
+                return (
+                  <div className="mb-10">
+                    <div className="flex items-center justify-between mb-2">
+                      {manualSteps.map((label, i) => (
+                        <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                          i < manualStepIndex ? 'text-brand' : i === manualStepIndex ? 'text-secondary' : 'text-secondary-300'
+                        }`}>
+                          {i < manualStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                      <div
+                        className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${(manualStepIndex / (manualSteps.length - 1)) * 100}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-secondary-400 mt-1.5">Step {manualStepIndex + 1} of {manualSteps.length}</p>
+                  </div>
+                );
+              })()}
+
               {/* Selection step */}
               {manualStep === 'select' && !manualPricingLoading && (
                 <div className="space-y-6">

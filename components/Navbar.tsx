@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Smartphone, Layers, MessageSquare, CalendarCheck, Truck, UserPlus, Phone, Home, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Truck, Phone, ArrowRight, Home, Building2, KeyRound } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -75,9 +75,9 @@ export const Navbar: React.FC = () => {
   ];
 
   const serviceItems = [
-    { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential' },
-    { name: 'Commercial', desc: 'Office and retail space clearing', path: '/services/commercial' },
-    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout' },
+    { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential', icon: Home },
+    { name: 'Commercial', desc: 'Office and retail space clearing', path: '/services/commercial', icon: Building2 },
+    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: KeyRound },
   ];
 
   const handleLinkClick = (path: string) => {
@@ -162,23 +162,27 @@ export const Navbar: React.FC = () => {
                     </button>
                     
                     {/* Mega Menu */}
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-white shadow-2xl border border-gray-200 rounded-xl transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'}`}>
-                      <div className="p-6">
-                        <div className="grid grid-cols-2 gap-4">
-                          {serviceItems.map((item) => (
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[340px] bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
+                      <div className="p-4 space-y-1">
+                        <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
+                        {serviceItems.map((item) => {
+                          const Icon = item.icon;
+                          return (
                             <button
                               key={item.name}
-                              onClick={() => {
-                                setShowServicesMega(false);
-                                handleLinkClick(item.path);
-                              }}
-                              className="text-left p-4 rounded-lg hover:bg-gray-50 transition-colors group"
+                              onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
+                              className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
                             >
-                              <div className="font-bold text-sm text-black group-hover:text-gray-900 mb-1">{item.name}</div>
-                              <div className="text-xs text-gray-500">{item.desc}</div>
+                              <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                              </div>
+                              <div>
+                                <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
+                                <div className="text-xs text-secondary-400">{item.desc}</div>
+                              </div>
                             </button>
-                          ))}
-                        </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -356,31 +360,53 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* Additional Links */}
-            <div className="mt-4 pt-4 border-t border-secondary-100">
+            <div className="mt-4 pt-4 border-t border-secondary-100 space-y-0.5">
               <button
-                onClick={() => handleLinkClick('/provider-signup')}
+                onClick={() => handleLinkClick('/in-home-estimate')}
                 className="w-full flex items-center gap-3 py-3 text-sm font-bold text-secondary hover:text-brand transition-colors"
               >
                 <span className="w-8 h-8 rounded-lg bg-secondary-100 flex items-center justify-center text-brand">
-                  <UserPlus size={16} />
+                  <Home size={16} />
                 </span>
-                Become a Provider
+                In-Home Estimate
               </button>
+            </div>
+
+            {/* Promo block */}
+            <div className="mt-4 pt-4 border-t border-secondary-100">
+              <div className="bg-secondary rounded-2xl p-4">
+                <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Same-day available</p>
+                <p className="text-sm font-black text-white leading-snug mb-3">Junk gone today.<br /><span className="text-brand">Free upfront quote.</span></p>
+                <button
+                  onClick={() => handleLinkClick('/quote')}
+                  className="w-full py-2.5 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2"
+                >
+                  Get a Free Quote <ArrowRight size={13} />
+                </button>
+              </div>
             </div>
           </nav>
 
           {/* Sidebar Footer */}
           <div className="p-5 border-t border-secondary-100 bg-secondary-50">
-            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3 text-center">Get the App</p>
-            <div className="flex gap-2">
-              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white text-secondary border border-secondary-200 rounded-lg text-[11px] font-bold hover:border-brand hover:text-brand transition-colors shadow-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                iOS
-              </button>
-              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white text-secondary border border-secondary-200 rounded-lg text-[11px] font-bold hover:border-brand hover:text-brand transition-colors shadow-sm">
-                <Smartphone size={14} />
-                Android
-              </button>
+            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Quick Links</p>
+            <div className="grid grid-cols-3 gap-x-2 gap-y-1.5">
+              {[
+                { label: 'Quote', path: '/quote' },
+                { label: 'Book', path: '/booking' },
+                { label: 'Track', path: '/track-order' },
+                { label: 'Contact', path: '/contact' },
+                { label: 'Residential', path: '/services/residential' },
+                { label: 'Commercial', path: '/services/commercial' },
+              ].map(({ label, path }) => (
+                <button
+                  key={path}
+                  onClick={() => handleLinkClick(path)}
+                  className="text-left text-[10px] font-bold text-secondary-400 hover:text-brand transition-colors py-0.5 uppercase tracking-wide"
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
