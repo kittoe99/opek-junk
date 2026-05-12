@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, DollarSign, Calendar, Truck, Smartphone } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, DollarSign, Calendar, Truck, Smartphone } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 
+const STEPS = ['You', 'Operations', 'Availability'];
+
 export const ProviderSignupPage: React.FC = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -55,6 +58,11 @@ export const ProviderSignupPage: React.FC = () => {
     }));
   };
 
+  const handleNext = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(s => s + 1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -87,6 +95,8 @@ export const ProviderSignupPage: React.FC = () => {
       setSubmitting(false);
     }
   };
+
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors";
 
   if (submitted) {
     return (
@@ -171,91 +181,129 @@ export const ProviderSignupPage: React.FC = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">First Name *</label>
-                <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Last Name *</label>
-                <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-                <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-              </div>
+          {/* Progress bar */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-2">
+              {STEPS.map((label, i) => (
+                <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                  i + 1 < step ? 'text-brand' : i + 1 === step ? 'text-secondary' : 'text-secondary-300'
+                }`}>
+                  {i + 1 < step ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                </span>
+              ))}
             </div>
-
-            <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Business Name (Optional)</label>
-              <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="Your Business Name"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+            <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+              <div
+                className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
+              />
             </div>
+            <p className="text-[10px] text-secondary-400 mt-1.5">Step {step} of {STEPS.length}</p>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Step 1 — Personal Info */}
+          {step === 1 && (
+            <form onSubmit={handleNext} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">First Name *</label>
+                  <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Last Name *</label>
+                  <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={inputCls} />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Business Name (Optional)</label>
+                <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="Your Business Name" className={inputCls} />
+              </div>
+              <button type="submit" className="w-full py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 rounded-lg">
+                Continue <ArrowRight size={14} />
+              </button>
+            </form>
+          )}
+
+          {/* Step 2 — Operations */}
+          {step === 2 && (
+            <form onSubmit={handleNext} className="space-y-4">
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Service Area *</label>
                 <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required
-                  placeholder="e.g., Denver Metro, LA County"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+                  placeholder="e.g., Denver Metro, LA County" className={inputCls} />
               </div>
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Vehicle Type *</label>
-                <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors">
+                <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={inputCls}>
                   <option value="">Select vehicle type</option>
                   {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
-            </div>
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setStep(1)}
+                  className="flex items-center gap-2 px-5 py-3 border border-secondary-200 text-secondary text-xs font-bold uppercase tracking-wider rounded-lg hover:border-secondary transition-colors">
+                  <ArrowLeft size={13} /> Back
+                </button>
+                <button type="submit" className="flex-1 py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 rounded-lg">
+                  Continue <ArrowRight size={14} />
+                </button>
+              </div>
+            </form>
+          )}
 
-            <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-2">Availability (select all that apply) *</label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {scheduleOptions.map(option => (
-                  <label key={option} className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors text-xs font-medium ${
-                    formData.scheduleAvailability.includes(option) ? 'border-brand bg-brand/5 text-secondary' : 'border-secondary-100 text-secondary-500 hover:border-secondary-300'
-                  }`}>
-                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 transition-colors ${
-                      formData.scheduleAvailability.includes(option) ? 'bg-brand' : 'border-2 border-secondary-200'
+          {/* Step 3 — Availability */}
+          {step === 3 && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-2">When are you available? *</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {scheduleOptions.map(option => (
+                    <label key={option} className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors text-xs font-medium ${
+                      formData.scheduleAvailability.includes(option) ? 'border-brand bg-brand/5 text-secondary' : 'border-secondary-100 text-secondary-500 hover:border-secondary-300'
                     }`}>
-                      {formData.scheduleAvailability.includes(option) && <Check size={10} className="text-white" strokeWidth={3} />}
-                    </div>
-                    <input type="checkbox" checked={formData.scheduleAvailability.includes(option)} onChange={() => handleScheduleChange(option)} className="sr-only" />
-                    {option}
-                  </label>
-                ))}
+                      <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 transition-colors ${
+                        formData.scheduleAvailability.includes(option) ? 'bg-brand' : 'border-2 border-secondary-200'
+                      }`}>
+                        {formData.scheduleAvailability.includes(option) && <Check size={10} className="text-white" strokeWidth={3} />}
+                      </div>
+                      <input type="checkbox" checked={formData.scheduleAvailability.includes(option)} onChange={() => handleScheduleChange(option)} className="sr-only" />
+                      {option}
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details (Optional)</label>
-              <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleInputChange} rows={3}
-                placeholder="Experience, certifications, equipment, or anything else..."
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none" />
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-xs font-bold">{error}</p>
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details (Optional)</label>
+                <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleInputChange} rows={3}
+                  placeholder="Experience, certifications, equipment, or anything else..."
+                  className={`${inputCls} resize-none`} />
               </div>
-            )}
-
-            <button type="submit" disabled={submitting}
-              className="w-full py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg">
-              {submitting ? 'Submitting...' : <>Submit Application <ArrowRight size={14} /></>}
-            </button>
-            <p className="text-[10px] text-secondary-400 text-center">By submitting, you agree to our provider terms and conditions.</p>
-          </form>
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 text-xs font-bold">{error}</p>
+                </div>
+              )}
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setStep(2)}
+                  className="flex items-center gap-2 px-5 py-3 border border-secondary-200 text-secondary text-xs font-bold uppercase tracking-wider rounded-lg hover:border-secondary transition-colors">
+                  <ArrowLeft size={13} /> Back
+                </button>
+                <button type="submit" disabled={submitting || formData.scheduleAvailability.length === 0}
+                  className="flex-1 py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg">
+                  {submitting ? 'Submitting...' : <>Submit Application <ArrowRight size={14} /></>}
+                </button>
+              </div>
+              <p className="text-[10px] text-secondary-400 text-center">By submitting, you agree to our provider terms and conditions.</p>
+            </form>
+          )}
         </div>
       </section>
 
