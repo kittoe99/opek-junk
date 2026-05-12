@@ -325,19 +325,25 @@ export const Navbar: React.FC = () => {
                       
                       {/* Services Submenu */}
                       <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[400px] opacity-100 pb-3' : 'max-h-0 opacity-0'}`}>
-                        <div className="space-y-0.5 pl-11">
-                          {serviceItems.map((item) => (
-                            <button
-                              key={item.name}
-                              onClick={() => {
-                                setMobileServicesOpen(false);
-                                handleLinkClick(item.path);
-                              }}
-                              className="w-full text-left py-2 px-3 text-sm text-secondary-600 hover:text-brand hover:bg-secondary-50 rounded-lg transition-colors"
-                            >
-                              {item.name}
-                            </button>
-                          ))}
+                        <div className="space-y-1 pt-1">
+                          {serviceItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                              <button
+                                key={item.name}
+                                onClick={() => { setMobileServicesOpen(false); handleLinkClick(item.path); }}
+                                className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                  <Icon size={14} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                                </div>
+                                <div>
+                                  <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors leading-tight">{item.name}</div>
+                                  <div className="text-[10px] text-secondary-400 leading-tight">{item.desc}</div>
+                                </div>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
@@ -387,28 +393,6 @@ export const Navbar: React.FC = () => {
             </div>
           </nav>
 
-          {/* Sidebar Footer */}
-          <div className="p-5 border-t border-secondary-100 bg-secondary-50">
-            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Quick Links</p>
-            <div className="grid grid-cols-3 gap-x-2 gap-y-1.5">
-              {[
-                { label: 'Quote', path: '/quote' },
-                { label: 'Book', path: '/booking' },
-                { label: 'Track', path: '/track-order' },
-                { label: 'Contact', path: '/contact' },
-                { label: 'Residential', path: '/services/residential' },
-                { label: 'Commercial', path: '/services/commercial' },
-              ].map(({ label, path }) => (
-                <button
-                  key={path}
-                  onClick={() => handleLinkClick(path)}
-                  className="text-left text-[10px] font-bold text-secondary-400 hover:text-brand transition-colors py-0.5 uppercase tracking-wide"
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </>
