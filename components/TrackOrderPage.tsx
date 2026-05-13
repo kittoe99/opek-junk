@@ -365,33 +365,28 @@ export const TrackOrderPage: React.FC = () => {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-secondary-50 rounded-3xl p-8 md:p-12 lg:p-16">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <span className="block w-8 h-px bg-brand" />
-                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Need Help?</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
-                  Lost your order? <span className="text-brand">We'll find it.</span>
-                </h2>
-                <p className="text-secondary-500 text-base leading-relaxed">
-                  Call us with any details about your booking and we'll look it up by hand. Quickest response is usually a phone call.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3">
-                <a href="tel:8313187139"
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
-                  <Phone size={16} /> (831) 318-7139
-                </a>
-                <a href="/contact"
-                  className="px-8 py-4 bg-white text-secondary font-bold text-sm uppercase tracking-wider hover:bg-secondary hover:text-white transition-colors inline-flex items-center justify-center gap-2 shadow-md border border-secondary-100 rounded-lg">
-                  Send a Message <ArrowRight size={16} />
-                </a>
-              </div>
-            </div>
+      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Need Help?</p>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
+            Lost your order? <span className="text-brand">We'll find it.</span>
+          </h2>
+          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+            Call us with any details about your booking and we'll look it up by hand.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+            <a href="tel:8313187139"
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              <Phone size={16} className="text-brand" />
+              (831) 318-7139
+            </a>
+            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
+            <a href="/contact"
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              Send a Message
+              <ArrowRight size={14} />
+            </a>
           </div>
         </div>
       </section>
