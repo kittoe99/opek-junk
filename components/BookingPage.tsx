@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
@@ -22,11 +22,48 @@ export const BookingPage: React.FC = () => {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const addressDropdownRef = useRef<HTMLDivElement>(null);
   
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // ZIP check state
+  const [zipValue, setZipValue] = useState('');
+  const [zipLoading, setZipLoading] = useState(false);
+  const [zipError, setZipError] = useState<string | null>(null);
+  const [zipResult, setZipResult] = useState<{ city: string; state: string; served: boolean } | null>(null);
+
+  const SERVED_STATES_CITIES = [
+    { states: ['TX'], cities: ['Dallas','Fort Worth','Plano','Arlington','Irving','Garland','Frisco','McKinney','Mesquite','Grand Prairie','Carrollton','Denton','Allen','Richardson','Lewisville','Grapevine','Flower Mound','Euless','Bedford','Hurst'] },
+    { states: ['FL'], cities: ['Jacksonville','Jacksonville Beach','Neptune Beach','Atlantic Beach','Ponte Vedra','Orange Park','Fleming Island','Fernandina Beach','Yulee','St. Augustine','Green Cove Springs','Middleburg'] },
+    { states: ['GA'], cities: ['Atlanta','Decatur','Sandy Springs','Marietta','Alpharetta','Smyrna','Roswell','Dunwoody','Kennesaw','Peachtree City','Norcross','Duluth','Lawrenceville','Brookhaven','East Point','College Park','Union City','Fayetteville','Woodstock','Cumming'] },
+  ];
+
+  const handleZipCheck = async () => {
+    const zip = zipValue.trim();
+    if (!/^\d{5}$/.test(zip)) { setZipError('Please enter a valid 5-digit ZIP code.'); return; }
+    setZipLoading(true);
+    setZipError(null);
+    setZipResult(null);
+    try {
+      const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+      if (!res.ok) { setZipError('ZIP code not found. Please check and try again.'); setZipLoading(false); return; }
+      const data = await res.json();
+      const city = data.places?.[0]?.['place name'] ?? '';
+      const state = data.places?.[0]?.['state abbreviation'] ?? '';
+      const normState = state.trim().toUpperCase();
+      const normCity = city.trim().toLowerCase();
+      const served = SERVED_STATES_CITIES.some(
+        (s) => s.states.includes(normState) && s.cities.some((c) => normCity.includes(c.toLowerCase()) || c.toLowerCase().includes(normCity))
+      );
+      setZipResult({ city, state, served });
+    } catch {
+      setZipError('Unable to verify ZIP code. Please try again.');
+    } finally {
+      setZipLoading(false);
+    }
+  };
   const [image, setImage] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
@@ -75,7 +112,7 @@ export const BookingPage: React.FC = () => {
         photoUrl: img || '',
         details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nPrice Range: $${est.priceRange.min} - $${est.priceRange.max}`
       }));
-      setCurrentStep(2);
+      setCurrentStep(2); // skip ZIP + photo steps when coming from QuotePage
     }
   }, [estimateData]);
 
@@ -226,6 +263,7 @@ export const BookingPage: React.FC = () => {
 
   const handlePrevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
+    else setCurrentStep(0);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -272,7 +310,7 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const stepLabels = ['Photo', 'Info & Location', 'Details & Review'];
+  const stepLabels = ['ZIP Check', 'Photo', 'Info & Location', 'Details & Review'];
 
   if (submitted) {
     return (
@@ -327,6 +365,85 @@ export const BookingPage: React.FC = () => {
         {/* Form Card */}
         <div className="md:border md:border-secondary-100 md:rounded-2xl md:p-8">
 
+          {/* ═══ Step 0: ZIP Check ═══ */}
+          {currentStep === 0 && (
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 mb-2">
+                <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
+                <div>
+                  <h2 className="text-base font-black text-secondary">Check Your ZIP Code</h2>
+                  <p className="text-secondary-400 text-xs">We're currently serving Dallas-Fort Worth, Jacksonville FL, and Atlanta GA.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={5}
+                  value={zipValue}
+                  onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
+                  onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                  placeholder="Enter ZIP code"
+                  className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors font-mono tracking-wider"
+                />
+                <button
+                  onClick={handleZipCheck}
+                  disabled={zipValue.length !== 5 || zipLoading}
+                  className="px-5 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
+                >
+                  {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
+                </button>
+              </div>
+
+              {zipError && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
+                  <p className="text-red-700 text-sm">{zipError}</p>
+                </div>
+              )}
+
+              {zipResult && !zipResult.served && (
+                <div className="p-5 border border-secondary-100 rounded-xl bg-secondary-50">
+                  <div className="flex items-start gap-3 mb-4">
+                    <AlertCircle size={18} className="text-secondary-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-black text-sm text-secondary mb-1">{zipResult.city}, {zipResult.state} isn't in our coverage area yet.</p>
+                      <p className="text-secondary-400 text-xs">We're expanding fast. You can still book and we'll be in touch.</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button onClick={() => setCurrentStep(1)} className="px-5 py-2.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2">
+                      Continue Anyway <ArrowRight size={13} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {zipResult?.served && (
+                <div className="p-5 border border-green-200 bg-green-50 rounded-xl">
+                  <div className="flex items-start gap-3 mb-4">
+                    <CheckCircle2 size={18} className="text-green-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-black text-sm text-secondary mb-0.5">We serve {zipResult.city}, {zipResult.state}!</p>
+                      <p className="text-secondary-400 text-xs">You're in our service area. Let's get your pickup scheduled.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setCurrentStep(1)}
+                    className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    Continue to Booking <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
+
+              <p className="text-[10px] text-secondary-300 text-center pt-2">
+                Currently serving Dallas-Fort Worth TX · Jacksonville FL · Atlanta GA
+              </p>
+            </div>
+          )}
+
           {/* Estimate Summary (if available) */}
           {estimateData?.estimate && (
             <div className="border border-brand/20 bg-brand/5 rounded-xl p-4 mb-6">
@@ -357,10 +474,11 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
-          {/* Step Indicator */}
+          {/* Step Indicator — only show on steps 1+ */}
+          {currentStep > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
-              {stepLabels.map((label, i) => {
+              {stepLabels.slice(1).map((label, i) => {
                 const step = i + 1;
                 return (
                   <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
@@ -374,11 +492,12 @@ export const BookingPage: React.FC = () => {
             <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
               <div
                 className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${((currentStep - 1) / (stepLabels.length - 1)) * 100}%` }}
+                style={{ width: `${((currentStep - 1) / (stepLabels.length - 2)) * 100}%` }}
               />
             </div>
-            <p className="text-[10px] text-secondary-400 mt-1.5">Step {currentStep} of {stepLabels.length}</p>
+            <p className="text-[10px] text-secondary-400 mt-1.5">Step {currentStep} of {stepLabels.length - 1}</p>
           </div>
+          )}
 
           {/* ═══ Step 1: Photo Upload & Estimate ═══ */}
           {currentStep === 1 && (
@@ -396,7 +515,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
                   >
                     <Camera size={22} className="text-brand shrink-0" />
                     <div className="flex-1">
@@ -410,7 +529,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-xl text-left flex items-center gap-4 group"
                   >
                     <Upload size={22} className="text-secondary shrink-0" />
                     <div className="flex-1">

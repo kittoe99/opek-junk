@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -142,11 +142,51 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
 ];
 
+const SERVED_ZIPS_BY_CITY: { name: string; stateAbbr: string; slug: string; states: string[]; cities: string[] }[] = [
+  { name: 'Dallas-Fort Worth', stateAbbr: 'TX', slug: 'dallas-fort-worth', states: ['TX'], cities: ['Dallas','Fort Worth','Plano','Arlington','Irving','Garland','Frisco','McKinney','Mesquite','Grand Prairie','Carrollton','Denton','Allen','Richardson','Lewisville','Grapevine','Flower Mound','Euless','Bedford','Hurst'] },
+  { name: 'Jacksonville', stateAbbr: 'FL', slug: 'jacksonville', states: ['FL'], cities: ['Jacksonville','Jacksonville Beach','Neptune Beach','Atlantic Beach','Ponte Vedra','Orange Park','Fleming Island','Fernandina Beach','Yulee','St. Augustine','Green Cove Springs','Middleburg'] },
+  { name: 'Atlanta', stateAbbr: 'GA', slug: 'atlanta', states: ['GA'], cities: ['Atlanta','Decatur','Sandy Springs','Marietta','Alpharetta','Smyrna','Roswell','Dunwoody','Kennesaw','Peachtree City','Norcross','Duluth','Lawrenceville','Brookhaven','East Point','College Park','Union City','Fayetteville','Woodstock','Cumming'] },
+];
+
+function detectServedCity(state: string, city: string) {
+  const normState = state.trim().toUpperCase();
+  const normCity = city.trim().toLowerCase();
+  return SERVED_ZIPS_BY_CITY.find(
+    (s) => s.states.includes(normState) && s.cities.some((c) => normCity.includes(c.toLowerCase()) || c.toLowerCase().includes(normCity))
+  ) ?? null;
+}
+
 export const QuotePage: React.FC = () => {
   const navigate = useNavigate();
+  const [zipVerified, setZipVerified] = useState(false);
+  const [zipValue, setZipValue] = useState('');
+  const [zipLoading, setZipLoading] = useState(false);
+  const [zipError, setZipError] = useState<string | null>(null);
+  const [zipResult, setZipResult] = useState<{ city: string; state: string; servedCity: typeof SERVED_ZIPS_BY_CITY[0] | null } | null>(null);
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleZipCheck = async () => {
+    const zip = zipValue.trim();
+    if (!/^\d{5}$/.test(zip)) { setZipError('Please enter a valid 5-digit ZIP code.'); return; }
+    setZipLoading(true);
+    setZipError(null);
+    setZipResult(null);
+    try {
+      const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+      if (!res.ok) { setZipError('ZIP code not found. Please check and try again.'); setZipLoading(false); return; }
+      const data = await res.json();
+      const city = data.places?.[0]?.['place name'] ?? '';
+      const state = data.places?.[0]?.['state abbreviation'] ?? '';
+      const servedCity = detectServedCity(state, city);
+      setZipResult({ city, state, servedCity });
+    } catch {
+      setZipError('Unable to verify ZIP code. Please try again.');
+    } finally {
+      setZipLoading(false);
+    }
+  };
 
   // AI Photo State
   const [image, setImage] = useState<string | null>(null);
@@ -432,6 +472,124 @@ export const QuotePage: React.FC = () => {
           >
             Submit Another Request <ArrowRight size={14} />
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── ZIP check screen ──
+  if (!zipVerified) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            Free quote in <span className="text-brand">two minutes.</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            First, let's confirm we serve your area.
+          </p>
+        </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="md:border md:border-secondary-100 md:rounded-2xl md:p-8">
+            <div className="flex items-start gap-3 mb-6">
+              <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
+              <div>
+                <h2 className="text-base font-black text-secondary">Check Your ZIP Code</h2>
+                <p className="text-secondary-400 text-xs">We're currently serving Dallas-Fort Worth, Jacksonville FL, and Atlanta GA.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2 mb-4">
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={5}
+                value={zipValue}
+                onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
+                onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                placeholder="Enter ZIP code"
+                className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors font-mono tracking-wider"
+              />
+              <button
+                onClick={handleZipCheck}
+                disabled={zipValue.length !== 5 || zipLoading}
+                className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
+              >
+                {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
+              </button>
+            </div>
+
+            {/* Error */}
+            {zipError && (
+              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+                <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
+                <p className="text-red-700 text-sm">{zipError}</p>
+              </div>
+            )}
+
+            {/* Not served */}
+            {zipResult && !zipResult.servedCity && (
+              <div className="p-5 border border-secondary-100 rounded-xl bg-secondary-50 mb-4">
+                <div className="flex items-start gap-3 mb-4">
+                  <AlertCircle size={18} className="text-secondary-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-black text-sm text-secondary mb-1">{zipResult.city}, {zipResult.state} isn't in our coverage area yet.</p>
+                    <p className="text-secondary-400 text-xs">We're expanding fast. You can still get a quote and we'll notify you when we arrive in your area.</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setZipVerified(true)}
+                    className="px-5 py-2.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+                  >
+                    Continue Anyway <ArrowRight size={13} />
+                  </button>
+                  <button
+                    onClick={() => navigate('/contact')}
+                    className="px-5 py-2.5 border border-secondary-200 text-secondary font-bold text-xs uppercase tracking-wider rounded-lg hover:border-brand hover:text-brand transition-colors"
+                  >
+                    Notify Me When Available
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Served */}
+            {zipResult?.servedCity && (
+              <div className="p-5 border border-green-200 bg-green-50 rounded-xl mb-4">
+                <div className="flex items-start gap-3 mb-4">
+                  <CheckCircle2 size={18} className="text-green-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-black text-sm text-secondary mb-0.5">Great news — we serve {zipResult.city}, {zipResult.state}!</p>
+                    <p className="text-secondary-400 text-xs">You're in our {zipResult.servedCity.name} service area.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setZipVerified(true)}
+                  className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
+                >
+                  Get My Free Quote <ArrowRight size={14} />
+                </button>
+              </div>
+            )}
+
+            <p className="text-[10px] text-secondary-300 mt-4 text-center">
+              Currently serving Dallas-Fort Worth TX · Jacksonville FL · Atlanta GA
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-lg font-black text-secondary mb-1">Prefer to talk to someone?</h2>
+            <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate — we're here 7 days a week.</p>
+            <div className="flex flex-wrap gap-3 items-center">
+              <button onClick={() => navigate('/contact')} className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2">
+                Contact Us <ArrowRight size={16} />
+              </button>
+              <a href="tel:8313187139" className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors">
+                (831) 318-7139
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     );
