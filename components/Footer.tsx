@@ -11,7 +11,9 @@ export const Footer: React.FC = () => {
           
           {/* Brand */}
           <div className="lg:col-span-4">
-            <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-32 w-auto object-contain mb-6" />
+            <div className="overflow-hidden -ml-2 mb-3" style={{ height: '64px' }}>
+              <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-28 w-auto object-contain -mt-8" />
+            </div>
             <p className="text-secondary-300 text-sm leading-relaxed mb-8 max-w-sm">
               Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
             </p>
@@ -79,19 +81,19 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-3">
             <h4 className="text-white font-black text-xs uppercase tracking-wider mb-4">Get the App</h4>
             <p className="text-secondary-300 text-sm mb-6">Book pickups, track your service, and <span className="text-brand font-medium">manage everything from your phone</span>.</p>
-            <div className="flex flex-col gap-3">
-              <button className="inline-flex items-center gap-3 px-4 py-3 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
-                <Apple size={20} className="text-secondary group-hover:text-brand transition-colors" />
+            <div className="flex flex-row gap-2">
+              <button className="inline-flex items-center gap-2 px-3 py-2 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
+                <Apple size={16} className="text-secondary group-hover:text-brand transition-colors shrink-0" />
                 <div className="text-left">
-                  <div className="text-[10px] text-secondary-500 leading-none">Download on the</div>
-                  <div className="text-sm font-bold leading-tight">App Store</div>
+                  <div className="text-[9px] text-secondary-500 leading-none">Download on the</div>
+                  <div className="text-xs font-bold leading-tight">App Store</div>
                 </div>
               </button>
-              <button className="inline-flex items-center gap-3 px-4 py-3 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
-                <Smartphone size={20} className="text-secondary group-hover:text-brand transition-colors" />
+              <button className="inline-flex items-center gap-2 px-3 py-2 bg-white text-secondary rounded-lg hover:bg-secondary-50 transition-colors group">
+                <Smartphone size={16} className="text-secondary group-hover:text-brand transition-colors shrink-0" />
                 <div className="text-left">
-                  <div className="text-[10px] text-secondary-500 leading-none">Get it on</div>
-                  <div className="text-sm font-bold leading-tight">Google Play</div>
+                  <div className="text-[9px] text-secondary-500 leading-none">Get it on</div>
+                  <div className="text-xs font-bold leading-tight">Google Play</div>
                 </div>
               </button>
             </div>

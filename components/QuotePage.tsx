@@ -293,6 +293,7 @@ export const QuotePage: React.FC = () => {
   const handleAnalyze = async () => {
     if (!image) return;
     setLoadingState(LoadingState.ANALYZING);
+    setError(null);
     try {
       const base64Data = image.split(',')[1];
       const mimeType = image.split(';')[0].split(':')[1];
@@ -300,8 +301,9 @@ export const QuotePage: React.FC = () => {
       setDetectedItems(items);
       setAiStep('items');
       setLoadingState(LoadingState.SUCCESS);
-    } catch (err) {
+    } catch (err: any) {
       console.error('AI analysis error:', err);
+      setError(err?.message || 'Failed to analyze photo. Please try again.');
       setLoadingState(LoadingState.ERROR);
     }
   };
@@ -309,6 +311,7 @@ export const QuotePage: React.FC = () => {
   const handleGetPrice = async () => {
     if (detectedItems.length === 0) return;
     setPricingLoading(true);
+    setError(null);
     try {
       const price = await getPriceForItems(detectedItems);
       setPriceEstimate(price);
@@ -319,8 +322,9 @@ export const QuotePage: React.FC = () => {
         summary: price.summary,
       });
       setAiStep('result');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Pricing error:', err);
+      setError(err?.message || 'Failed to calculate price. Please try again.');
     } finally {
       setPricingLoading(false);
     }
@@ -383,6 +387,7 @@ export const QuotePage: React.FC = () => {
   const handleGetManualPrice = async () => {
     if (selectedItems.length === 0) return;
     setManualPricingLoading(true);
+    setError(null);
     try {
       const price = await getPriceForItems(selectedItems);
       setManualPriceEstimate(price);
@@ -393,8 +398,9 @@ export const QuotePage: React.FC = () => {
         summary: price.summary,
       });
       setManualStep('result');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Pricing error:', err);
+      setError(err?.message || 'Failed to calculate price. Please try again.');
     } finally {
       setManualPricingLoading(false);
     }
@@ -769,7 +775,8 @@ export const QuotePage: React.FC = () => {
                       )}
                       {loadingState === LoadingState.ERROR && (
                         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                          <p className="text-red-700 text-sm font-bold mb-2">Failed to analyze photo</p>
+                          <p className="text-red-700 text-sm font-bold mb-1">Failed to analyze photo</p>
+                          {error && <p className="text-red-600 text-xs mb-2">{error}</p>}
                           <button onClick={handleAnalyze} className="text-sm font-bold text-secondary underline hover:text-brand transition-colors">Try again</button>
                         </div>
                       )}

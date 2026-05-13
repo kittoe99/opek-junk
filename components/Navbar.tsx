@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Truck, Phone, ArrowRight, Home, Building2, KeyRound } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
     { name: 'Services', path: '/#services', hasMega: true, icon: <Layers size={16} /> },
     { name: 'Contact', path: '/contact', icon: <MessageSquare size={16} /> },
     { name: 'Book Online', path: '/booking', icon: <CalendarCheck size={16} /> },
-    { name: 'Track Order', path: '/track-order', icon: <Truck size={16} /> },
+    { name: 'Track Order', path: '/track-order', icon: <Locate size={16} /> },
   ];
 
   const serviceItems = [
@@ -308,7 +308,7 @@ export const Navbar: React.FC = () => {
                         className="w-full flex items-center justify-between py-3 text-sm font-bold transition-colors"
                       >
                         <span className="flex items-center gap-3 text-secondary">
-                          <span className="w-8 h-8 rounded-lg bg-secondary-100 flex items-center justify-center text-brand">{link.icon}</span>
+                          <span className="w-8 h-8 flex items-center justify-center text-brand">{link.icon}</span>
                           {link.name}
                         </span>
                         <ChevronDown size={18} className={`text-secondary-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
@@ -345,7 +345,7 @@ export const Navbar: React.FC = () => {
                         isActive ? 'text-brand' : 'text-secondary hover:text-brand'
                       }`}
                     >
-                      <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand text-white' : 'bg-secondary-100 text-brand'}`}>
+                      <span className={`w-8 h-8 flex items-center justify-center ${isActive ? 'text-brand' : 'text-brand'}`}>
                         {link.icon}
                       </span>
                       {link.name}
@@ -362,8 +362,8 @@ export const Navbar: React.FC = () => {
                 onClick={() => handleLinkClick('/in-home-estimate')}
                 className="w-full flex items-center gap-3 py-3 text-sm font-bold text-secondary hover:text-brand transition-colors"
               >
-                <span className="w-8 h-8 rounded-lg bg-secondary-100 flex items-center justify-center text-brand">
-                  <Home size={16} />
+                <span className="w-8 h-8 flex items-center justify-center text-brand">
+                  <CheckSquare size={16} />
                 </span>
                 In-Home Estimate
               </button>
@@ -371,15 +371,25 @@ export const Navbar: React.FC = () => {
 
             {/* Promo block */}
             <div className="mt-4 pt-4 border-t border-secondary-100">
-              <div className="bg-secondary rounded-2xl p-4">
-                <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Same-day available</p>
-                <p className="text-sm font-black text-white leading-snug mb-3">Junk gone today.<br /><span className="text-brand">Free upfront quote.</span></p>
-                <button
-                  onClick={() => handleLinkClick('/quote')}
-                  className="w-full py-2.5 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2"
-                >
-                  Get a Free Quote <ArrowRight size={13} />
-                </button>
+              <div className="bg-secondary rounded-2xl overflow-hidden">
+                <div className="relative h-32 w-full">
+                  <img
+                    src="/opek-nav.webp"
+                    alt="Opek team"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
+                </div>
+                <div className="px-4 pb-4 -mt-2">
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Same-day available</p>
+                  <p className="text-sm font-black text-white leading-snug mb-3">Junk gone today.<br /><span className="text-brand">Free upfront quote.</span></p>
+                  <button
+                    onClick={() => handleLinkClick('/quote')}
+                    className="w-full py-2.5 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    Get a Free Quote <ArrowRight size={13} />
+                  </button>
+                </div>
               </div>
             </div>
           </nav>
