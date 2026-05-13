@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, PackageOpen, Home, KeyRound, Building, Heart, Sparkles, Clock, Lock, Recycle, Quote, Star } from 'lucide-react';
+import { ArrowRight, ChevronDown, PackageOpen, Home, KeyRound, Building, Heart, Sparkles, Clock, Lock, Recycle, Quote, Star, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
 import { StatsStrip } from '../shared/StatsStrip';
@@ -237,43 +237,34 @@ export const PropertyCleanoutPage: React.FC = () => {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl p-8 md:p-12 lg:p-16 shadow-sm">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <span className="block w-8 h-px bg-brand" />
-                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">When You're Ready</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
-                  Clear the property. <span className="text-brand">With grace.</span>
-                </h2>
-                <p className="text-secondary-500 text-base leading-relaxed">
-                  No-pressure quote. We'll walk through together, give you a fair number, and only proceed when you say so.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={() => navigate('/quote')}
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
-                >
-                  Get a Free Quote <ArrowRight size={16} />
-                </button>
-                <button
-                  onClick={() => navigate('/in-home-estimate')}
-                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg"
-                >
-                  Schedule a Walk-Through <ArrowRight size={16} />
-                </button>
-                <a
-                  href="tel:8313187139"
-                  className="text-center text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors py-2"
-                >
-                  or call (831) 318-7139
-                </a>
-              </div>
-            </div>
+      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">When You're Ready</p>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
+            Clear the property. <span className="text-brand">With grace.</span>
+          </h2>
+          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+            No-pressure quote. We'll walk through together, give you a fair number, and only proceed when you say so.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+            <button onClick={() => navigate('/quote')}
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              Get a Free Quote
+              <ArrowRight size={14} />
+            </button>
+            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
+            <button onClick={() => navigate('/in-home-estimate')}
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              Schedule a Walk-Through
+              <ArrowRight size={14} />
+            </button>
+            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
+            <a href="tel:8313187139"
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              <Phone size={16} className="text-brand" />
+              (831) 318-7139
+            </a>
           </div>
         </div>
       </section>

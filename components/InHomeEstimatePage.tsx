@@ -263,33 +263,28 @@ export const InHomeEstimatePage: React.FC = () => {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl p-8 md:p-12 lg:p-16 shadow-sm">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <span className="block w-8 h-px bg-brand" />
-                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Prefer to Talk Now?</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
-                  Skip the visit. <span className="text-brand">Quote by phone.</span>
-                </h2>
-                <p className="text-secondary-500 text-base leading-relaxed">
-                  For straightforward jobs, we can get you a number over the phone in five minutes.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3">
-                <a href="tel:8313187139"
-                  className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
-                  <Phone size={16} /> (831) 318-7139
-                </a>
-                <button onClick={() => navigate('/quote')}
-                  className="px-8 py-4 bg-brand text-white font-bold text-sm uppercase tracking-wider hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2 shadow-md rounded-lg">
-                  Get Instant Online Quote <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
+      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Prefer to Talk?</p>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
+            Skip the visit. <span className="text-brand">Quote by phone.</span>
+          </h2>
+          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+            For straightforward jobs, we can get you a number over the phone in five minutes.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+            <a href="tel:8313187139"
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              <Phone size={16} className="text-brand" />
+              (831) 318-7139
+            </a>
+            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
+            <button onClick={() => navigate('/quote')}
+              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
+              Get Online Quote
+              <ArrowRight size={14} />
+            </button>
           </div>
         </div>
       </section>
