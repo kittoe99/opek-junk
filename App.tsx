@@ -19,6 +19,7 @@ import { InHomeEstimatePage } from './components/InHomeEstimatePage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { SEO, seoConfig } from './components/SEO';
 import { CityPage } from './components/CityPage';
+import { PageLoader } from './components/PageLoader';
 import { getCityBySlug } from './lib/cityData';
 
 function ScrollToTop() {
@@ -161,6 +162,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-white text-gray-900 selection:bg-black selection:text-white">
+        <PageLoader />
         <ScrollToTop />
         <Navbar />
         
