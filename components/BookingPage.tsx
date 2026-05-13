@@ -441,31 +441,29 @@ export const BookingPage: React.FC = () => {
 
           {/* Estimate Summary (if available) */}
           {estimateData?.estimate && (
-            <div className="border border-brand/20 bg-brand/5 rounded-xl p-4 mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <Receipt size={14} className="text-brand" strokeWidth={2.5} />
-                <h3 className="text-[10px] font-bold text-brand uppercase tracking-wider">Your Estimate</h3>
+            <div className="border-b border-secondary-100 pb-6 mb-6">
+              <div className="text-center mb-4">
+                <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-1">Estimated Price</p>
+                <p className="text-2xl font-black text-secondary">${formData.priceRangeMin} – ${formData.priceRangeMax}</p>
+                <p className="text-xs text-secondary-400 mt-0.5">{formData.estimatedVolume}</p>
               </div>
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                <div>
-                  <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Volume</div>
-                  <div className="font-black text-sm text-secondary">{formData.estimatedVolume}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Price Range</div>
-                  <div className="font-black text-sm text-secondary">${formData.priceRangeMin} – ${formData.priceRangeMax}</div>
-                </div>
-              </div>
+
               {formData.estimatedItems.length > 0 && (
-                <div>
-                  <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items</div>
-                  <div className="flex flex-wrap gap-1.5">
+                <div className="mb-3">
+                  <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-2">
+                    {formData.estimatedItems.length} items
+                  </p>
+                  <div className="space-y-1">
                     {formData.estimatedItems.map((item, index) => (
-                      <span key={index} className="px-2.5 py-0.5 bg-white border border-secondary-100 rounded-full text-xs text-secondary-600">{item}</span>
+                      <div key={index} className="flex items-center justify-between text-sm py-1">
+                        <span className="text-secondary-600">{item}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
+
+              <p className="text-xs text-secondary-500 leading-relaxed">{formData.estimateSummary}</p>
             </div>
           )}
 

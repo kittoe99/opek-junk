@@ -201,7 +201,7 @@ export const QuotePage: React.FC = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [detectedItems, setDetectedItems] = useState<DetectedItem[]>([]);
   const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
-  const [aiStep, setAiStep] = useState<'upload' | 'items' | 'result'>('upload');
+  const [aiStep, setAiStep] = useState<'tips' | 'upload' | 'items' | 'result'>('tips');
   const [newItemName, setNewItemName] = useState('');
   const [pricingLoading, setPricingLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -424,47 +424,45 @@ export const QuotePage: React.FC = () => {
     onEditBack: () => void,
     backLabel: string
   ) => (
-    <div className="space-y-4">
-      <div className="border border-brand/20 bg-brand/5 p-6 md:p-8 rounded-2xl">
-        <div className="flex items-center gap-2 mb-4">
-          <Receipt size={14} className="text-brand" strokeWidth={2.5} />
-          <h3 className="text-[10px] font-bold text-brand uppercase tracking-wider">Your Estimate</h3>
+    <div className="space-y-6">
+      {/* Price header */}
+      <div className="text-center">
+        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-1">Estimated Price</p>
+        <p className="text-3xl font-black text-secondary">${price.priceRange.min} – ${price.priceRange.max}</p>
+        <p className="text-xs text-secondary-400 mt-1">{price.estimatedVolume}</p>
+      </div>
+
+      {/* Items list - minimal */}
+      <div>
+        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
+          {items.reduce((sum, i) => sum + i.quantity, 0)} items
+        </p>
+        <div className="space-y-1">
+          {items.map((item) => (
+            <div key={item.id} className="flex items-center justify-between text-sm">
+              <span className="text-secondary-600">{item.name}</span>
+              {item.quantity > 1 && <span className="text-secondary-400 text-xs">×{item.quantity}</span>}
+            </div>
+          ))}
         </div>
-        <div className="mb-5">
-          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-            Items ({items.reduce((sum, i) => sum + i.quantity, 0)})
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {items.map((item) => (
-              <span key={item.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-secondary-100 rounded-md text-xs font-medium text-secondary-600">
-                {item.quantity > 1 && <span className="font-bold text-brand">{item.quantity}x</span>}
-                {item.name}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 pt-5 border-t border-brand/20">
-          <div>
-            <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Volume</div>
-            <div className="text-lg font-black text-secondary">{price.estimatedVolume}</div>
-          </div>
-          <div>
-            <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Price Range</div>
-            <div className="text-2xl font-black text-brand">${price.priceRange.min} &ndash; ${price.priceRange.max}</div>
-          </div>
-        </div>
-        <p className="text-sm text-secondary-600 leading-relaxed mt-4 mb-5">{price.summary}</p>
+      </div>
+
+      {/* Summary */}
+      <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
+
+      {/* CTA */}
+      <div className="space-y-3 pt-2">
         <button
           onClick={() => navigate('/booking', { state: { estimate, image } })}
-          className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
+          className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
         >
           Continue to Booking <ArrowRight size={14} />
         </button>
-        <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
+        <button onClick={onEditBack} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
+          <ArrowLeft size={14} /> {backLabel}
+        </button>
+        <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
       </div>
-      <button onClick={onEditBack} className="w-full py-3 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
-        <ArrowLeft size={14} /> {backLabel}
-      </button>
     </div>
   );
 
@@ -692,8 +690,8 @@ export const QuotePage: React.FC = () => {
             <div>
               {/* Step indicator */}
               {(() => {
-                const aiSteps = ['Upload', 'Review Items', 'Estimate'];
-                const aiStepIndex = aiStep === 'upload' ? 0 : aiStep === 'items' ? 1 : 2;
+                const aiSteps = ['Tips', 'Upload', 'Review Items', 'Estimate'];
+                const aiStepIndex = aiStep === 'tips' ? 0 : aiStep === 'upload' ? 1 : aiStep === 'items' ? 2 : 3;
                 return (
                   <div className="mb-10">
                     <div className="flex items-center justify-between mb-2">
@@ -715,6 +713,65 @@ export const QuotePage: React.FC = () => {
                   </div>
                 );
               })()}
+
+              {/* Step 0: Photo Tips */}
+              {aiStep === 'tips' && (
+                <div className="space-y-6">
+                  <div className="text-center mb-6">
+                    <p className="text-[10px] font-medium text-brand uppercase tracking-wider mb-2">Photo Tips</p>
+                    <h3 className="text-lg font-black text-secondary">Take clear photos for best results</h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-black text-brand">1</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-secondary">Good lighting</p>
+                        <p className="text-xs text-secondary-400">Take photos in daylight or well-lit areas. Avoid dark shadows.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-black text-brand">2</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-secondary">All items visible</p>
+                        <p className="text-xs text-secondary-400">Make sure everything you want removed is in the frame.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-black text-brand">3</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-secondary">Items only</p>
+                        <p className="text-xs text-secondary-400">Photos of just the junk items work best. Avoid people or pets.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-black text-brand">4</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-secondary">Multiple angles</p>
+                        <p className="text-xs text-secondary-400">For large piles, you can upload several photos of different sections.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setAiStep('upload')}
+                    className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2 mt-4"
+                  >
+                    Got it — Continue <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
 
               {/* Step 1: Upload */}
               {aiStep === 'upload' && (
@@ -747,6 +804,13 @@ export const QuotePage: React.FC = () => {
                         </div>
                         <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
                         <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                      </button>
+
+                      <button
+                        onClick={() => setAiStep('tips')}
+                        className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                      >
+                        <ArrowLeft size={14} /> Back to photo tips
                       </button>
                     </div>
                   ) : (
@@ -797,23 +861,21 @@ export const QuotePage: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                  <div className="space-y-2">
                     {detectedItems.map((item) => (
-                      <div key={item.id} className="relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-brand bg-brand/5 text-center">
-                        <button onClick={() => removeItem(item.id)} className="absolute top-1.5 right-1.5 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
-                          <Trash2 size={10} className="text-red-500" />
-                        </button>
-                        <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                          <img src={getItemImage(item.name)} alt={item.name} className="w-7 h-7" />
-                        </div>
-                        <span className="text-xs font-medium text-secondary leading-tight line-clamp-2">{item.name}</span>
-                        <div className="flex items-center gap-1.5">
-                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                            <Minus size={12} className="text-secondary-400" />
+                      <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl border border-secondary-100 bg-white">
+                        <img src={getItemImage(item.name)} alt={item.name} className="w-10 h-10 object-contain" />
+                        <span className="flex-1 text-sm font-medium text-secondary">{item.name}</span>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-secondary-50 flex items-center justify-center hover:border-brand transition-colors">
+                            <Minus size={14} className="text-secondary-500" />
                           </button>
-                          <span className="w-5 text-center text-xs font-bold text-secondary">{item.quantity}</span>
-                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                            <Plus size={12} className="text-secondary-400" />
+                          <span className="w-6 text-center text-sm font-bold text-secondary">{item.quantity}</span>
+                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-secondary-50 flex items-center justify-center hover:border-brand transition-colors">
+                            <Plus size={14} className="text-secondary-500" />
+                          </button>
+                          <button onClick={() => removeItem(item.id)} className="w-7 h-7 rounded-md bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors ml-1">
+                            <Trash2 size={14} className="text-red-500" />
                           </button>
                         </div>
                       </div>
@@ -846,11 +908,13 @@ export const QuotePage: React.FC = () => {
                 </div>
               )}
 
-              {/* Pricing loading */}
+              {/* Pricing loading - full screen centered */}
               {pricingLoading && (
-                <div className="py-16 text-center">
-                  <Loader2 size={40} className="animate-spin mx-auto mb-4 text-brand" />
-                  <p className="text-secondary-400 text-sm">Calculating your estimate...</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                  <div className="text-center">
+                    <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
+                    <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
+                  </div>
                 </div>
               )}
 
@@ -1121,11 +1185,13 @@ export const QuotePage: React.FC = () => {
                 </div>
               )}
 
-              {/* Pricing loading */}
+              {/* Pricing loading - full screen centered */}
               {manualPricingLoading && (
-                <div className="py-16 text-center">
-                  <Loader2 size={40} className="animate-spin mx-auto mb-4 text-brand" />
-                  <p className="text-secondary-400 text-sm">Calculating your estimate...</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                  <div className="text-center">
+                    <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
+                    <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
+                  </div>
                 </div>
               )}
 
