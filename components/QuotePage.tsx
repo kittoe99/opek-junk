@@ -167,6 +167,14 @@ export const QuotePage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Auto-advance on served ZIP
+  useEffect(() => {
+    if (zipResult?.servedCity) {
+      const t = setTimeout(() => setZipVerified(true), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [zipResult]);
+
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
     if (!/^\d{5}$/.test(zip)) { setZipError('Please enter a valid 5-digit ZIP code.'); return; }
@@ -508,7 +516,7 @@ export const QuotePage: React.FC = () => {
                 onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                 placeholder="Enter ZIP code"
-                className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors font-mono tracking-wider"
+                className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
               />
               <button
                 onClick={handleZipCheck}
@@ -527,49 +535,32 @@ export const QuotePage: React.FC = () => {
               </div>
             )}
 
-            {/* Not served */}
-            {zipResult && !zipResult.servedCity && (
-              <div className="p-5 border border-secondary-100 rounded-xl bg-secondary-50 mb-4">
-                <div className="flex items-start gap-3 mb-4">
-                  <AlertCircle size={18} className="text-secondary-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-black text-sm text-secondary mb-1">{zipResult.city}, {zipResult.state} isn't in our coverage area yet.</p>
-                    <p className="text-secondary-400 text-xs">We're expanding fast. You can still get a quote and we'll notify you when we arrive in your area.</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setZipVerified(true)}
-                    className="px-5 py-2.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
-                  >
-                    Continue Anyway <ArrowRight size={13} />
-                  </button>
-                  <button
-                    onClick={() => navigate('/contact')}
-                    className="px-5 py-2.5 border border-secondary-200 text-secondary font-bold text-xs uppercase tracking-wider rounded-lg hover:border-brand hover:text-brand transition-colors"
-                  >
-                    Notify Me When Available
-                  </button>
-                </div>
+            {/* Served */}
+            {zipResult?.servedCity && (
+              <div className="flex items-center gap-2 pt-1 mb-4">
+                <Check size={14} className="text-brand shrink-0" strokeWidth={3} />
+                <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
+                <span className="text-xs text-secondary-400 ml-auto">Continuing...</span>
               </div>
             )}
 
-            {/* Served */}
-            {zipResult?.servedCity && (
-              <div className="p-5 border border-green-200 bg-green-50 rounded-xl mb-4">
-                <div className="flex items-start gap-3 mb-4">
-                  <CheckCircle2 size={18} className="text-green-600 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-black text-sm text-secondary mb-0.5">Great news — we serve {zipResult.city}, {zipResult.state}!</p>
-                    <p className="text-secondary-400 text-xs">You're in our {zipResult.servedCity.name} service area.</p>
-                  </div>
+            {/* Not served */}
+            {zipResult && !zipResult.servedCity && (
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center gap-2 pt-1">
+                  <AlertCircle size={14} className="text-secondary-400 shrink-0" />
+                  <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
+                  <span className="text-xs text-secondary-400 ml-auto">Outside coverage</span>
                 </div>
-                <button
-                  onClick={() => setZipVerified(true)}
-                  className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
-                >
-                  Get My Free Quote <ArrowRight size={14} />
-                </button>
+                <p className="text-xs text-secondary-400">We're not in your area yet, but you can still get a quote and we'll notify you when we expand nearby.</p>
+                <div className="flex gap-2">
+                  <button onClick={() => setZipVerified(true)} className="flex-1 py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2">
+                    Continue Anyway <ArrowRight size={13} />
+                  </button>
+                  <button onClick={() => navigate('/contact')} className="flex-1 py-3 border border-secondary-200 text-secondary font-bold text-xs uppercase tracking-wider rounded-lg hover:border-brand hover:text-brand transition-colors">
+                    Notify Me
+                  </button>
+                </div>
               </div>
             )}
 

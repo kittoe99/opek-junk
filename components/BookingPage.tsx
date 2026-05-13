@@ -40,6 +40,14 @@ export const BookingPage: React.FC = () => {
     { states: ['GA'], cities: ['Atlanta','Decatur','Sandy Springs','Marietta','Alpharetta','Smyrna','Roswell','Dunwoody','Kennesaw','Peachtree City','Norcross','Duluth','Lawrenceville','Brookhaven','East Point','College Park','Union City','Fayetteville','Woodstock','Cumming'] },
   ];
 
+  // Auto-advance on served ZIP
+  useEffect(() => {
+    if (zipResult?.served) {
+      const t = setTimeout(() => setCurrentStep(1), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [zipResult]);
+
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
     if (!/^\d{5}$/.test(zip)) { setZipError('Please enter a valid 5-digit ZIP code.'); return; }
@@ -257,7 +265,7 @@ export const BookingPage: React.FC = () => {
 
   const handleNextStep = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -310,7 +318,7 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const stepLabels = ['ZIP Check', 'Photo', 'Info & Location', 'Details & Review'];
+  const stepLabels = ['ZIP Check', 'Photo', 'Contact', 'Address', 'Details & Review'];
 
   if (submitted) {
     return (
@@ -385,7 +393,7 @@ export const BookingPage: React.FC = () => {
                   onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
                   onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                   placeholder="Enter ZIP code"
-                  className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors font-mono tracking-wider"
+                  className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
                 />
                 <button
                   onClick={handleZipCheck}
@@ -403,37 +411,24 @@ export const BookingPage: React.FC = () => {
                 </div>
               )}
 
-              {zipResult && !zipResult.served && (
-                <div className="p-5 border border-secondary-100 rounded-xl bg-secondary-50">
-                  <div className="flex items-start gap-3 mb-4">
-                    <AlertCircle size={18} className="text-secondary-400 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-black text-sm text-secondary mb-1">{zipResult.city}, {zipResult.state} isn't in our coverage area yet.</p>
-                      <p className="text-secondary-400 text-xs">We're expanding fast. You can still book and we'll be in touch.</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <button onClick={() => setCurrentStep(1)} className="px-5 py-2.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2">
-                      Continue Anyway <ArrowRight size={13} />
-                    </button>
-                  </div>
+              {zipResult?.served && (
+                <div className="flex items-center gap-2 pt-1">
+                  <Check size={14} className="text-brand shrink-0" strokeWidth={3} />
+                  <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
+                  <span className="text-xs text-secondary-400 ml-auto">Continuing...</span>
                 </div>
               )}
 
-              {zipResult?.served && (
-                <div className="p-5 border border-green-200 bg-green-50 rounded-xl">
-                  <div className="flex items-start gap-3 mb-4">
-                    <CheckCircle2 size={18} className="text-green-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-black text-sm text-secondary mb-0.5">We serve {zipResult.city}, {zipResult.state}!</p>
-                      <p className="text-secondary-400 text-xs">You're in our service area. Let's get your pickup scheduled.</p>
-                    </div>
+              {zipResult && !zipResult.served && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 pt-1">
+                    <AlertCircle size={14} className="text-secondary-400 shrink-0" />
+                    <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
+                    <span className="text-xs text-secondary-400 ml-auto">Outside coverage</span>
                   </div>
-                  <button
-                    onClick={() => setCurrentStep(1)}
-                    className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
-                  >
-                    Continue to Booking <ArrowRight size={14} />
+                  <p className="text-xs text-secondary-400">We're not in your area yet, but you can still book and we'll be in touch.</p>
+                  <button onClick={() => setCurrentStep(1)} className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2">
+                    Continue Anyway <ArrowRight size={13} />
                   </button>
                 </div>
               )}
@@ -498,6 +493,8 @@ export const BookingPage: React.FC = () => {
             <p className="text-[10px] text-secondary-400 mt-1.5">Step {currentStep} of {stepLabels.length - 1}</p>
           </div>
           )}
+
+          {/* NOTE: pre-fill from QuotePage skips to step 2 */}
 
           {/* ═══ Step 1: Photo Upload & Estimate ═══ */}
           {currentStep === 1 && (
@@ -628,160 +625,174 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
-          {/* ═══ Step 2: Contact Info & Location ═══ */}
+          {/* ═══ Step 2: Contact Info ═══ */}
           {currentStep === 2 && (
+            <form onSubmit={handleNextStep} className="space-y-4">
+              <div className="mb-2 flex items-start gap-3">
+                <CalendarCheck size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+                <div>
+                  <h2 className="text-base font-black text-secondary">Your Contact Details</h2>
+                  <p className="text-secondary-400 text-xs">How should we reach you to confirm?</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Full Name *</label>
+                <input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="John Smith"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  type="email"
+                  placeholder="john@example.com"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
+                <input
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button type="submit" className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  Continue <ArrowRight size={14} />
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* ═══ Step 3: Address ═══ */}
+          {currentStep === 3 && (
             <form onSubmit={handleNextStep} className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <MapPinned size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                 <div>
-                  <h2 className="text-base font-black text-secondary">Contact & Address</h2>
-                  <p className="text-secondary-400 text-xs">Where should we pick up?</p>
+                  <h2 className="text-base font-black text-secondary">Pickup Address</h2>
+                  <p className="text-secondary-400 text-xs">Where should we come to collect?</p>
                 </div>
               </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Full Name *</label>
-                      <input
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="John Smith"
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Email *</label>
-                      <input
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        type="email"
-                        placeholder="john@example.com"
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                      />
-                    </div>
+              {/* Address with autocomplete */}
+              <div ref={addressDropdownRef} className="relative">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
+                  <MapPinned size={11} className="inline mr-1" />
+                  Service Address *
+                </label>
+                <input
+                  value={addressQuery}
+                  onChange={(e) => handleAddressInput(e.target.value)}
+                  onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                  required
+                  placeholder="Start typing an address..."
+                  autoComplete="off"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+                {addressLoading && (
+                  <Loader2 size={14} className="absolute right-3 top-[38px] animate-spin text-secondary-300" />
+                )}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {suggestions.map((s, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => selectSuggestion(s)}
+                        className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
+                      >
+                        <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
+                        <span>{s.display}</span>
+                      </button>
+                    ))}
                   </div>
+                )}
+              </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Phone *</label>
-                    <input
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      type="tel"
-                      placeholder="(555) 123-4567"
-                      className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                    />
-                  </div>
+              {/* Unit number */}
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span></label>
+                <input
+                  name="unitNumber"
+                  value={formData.unitNumber}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Apt 4B, Suite 200"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
 
-                  {/* Address with autocomplete */}
-                  <div ref={addressDropdownRef} className="relative">
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">
-                      <MapPinned size={11} className="inline mr-1" />
-                      Service Address *
-                    </label>
-                    <input
-                      value={addressQuery}
-                      onChange={(e) => handleAddressInput(e.target.value)}
-                      onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                      required
-                      placeholder="Start typing an address..."
-                      autoComplete="off"
-                      className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                    />
-                    {addressLoading && (
-                      <Loader2 size={14} className="absolute right-3 top-[38px] animate-spin text-secondary-300" />
-                    )}
-                    {showSuggestions && suggestions.length > 0 && (
-                      <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                        {suggestions.map((s, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => selectSuggestion(s)}
-                            className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
-                          >
-                            <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
-                            <span>{s.display}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+              {/* City, State, Zip */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="col-span-2 md:col-span-1">
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">City *</label>
+                  <input
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Dallas"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
+                  <input
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="TX"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Zip Code *</label>
+                  <input
+                    name="zipCode"
+                    value={formData.zipCode}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="75201"
+                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  />
+                </div>
+              </div>
 
-                  {/* Unit number */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span></label>
-                    <input
-                      name="unitNumber"
-                      value={formData.unitNumber}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Apt 4B, Suite 200"
-                      className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                    />
-                  </div>
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button type="submit" className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  Continue <ArrowRight size={14} />
+                </button>
+              </div>
+            </form>
+          )}
 
-                  {/* City, State, Zip */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="col-span-2 md:col-span-1">
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">City *</label>
-                      <input
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Denver"
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">State *</label>
-                      <input
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="CO"
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Zip Code *</label>
-                      <input
-                        name="zipCode"
-                        value={formData.zipCode}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="80202"
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={handlePrevStep}
-                      className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2"
-                    >
-                      <ArrowLeft size={14} /> Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2"
-                    >
-                      Continue <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {/* ═══ Step 3: Service Details & Review ═══ */}
-              {currentStep === 3 && (
+              {/* ═══ Step 4: Service Details & Review ═══ */}
+              {currentStep === 4 && (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="mb-2 flex items-start gap-3">
                     <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -793,12 +804,12 @@ export const BookingPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Service Type *</label>
+                      <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Service Type *</label>
                       <select
                         name="serviceType"
                         value={formData.serviceType}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
+                        className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
                       >
                         <option>Residential Junk Removal</option>
                         <option>Commercial Services</option>
@@ -809,7 +820,7 @@ export const BookingPage: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>
+                      <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>
                       <input
                         name="date"
                         value={formData.date}
@@ -817,20 +828,20 @@ export const BookingPage: React.FC = () => {
                         required
                         type="date"
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
+                        className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1.5">Additional Details</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
                     <textarea
                       name="details"
                       value={formData.details}
                       onChange={handleInputChange}
                       rows={3}
                       placeholder="Tell us about the items you need removed, access instructions, etc."
-                      className="w-full px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 focus:border-secondary-200 transition-colors"
+                      className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
                     />
                   </div>
 
@@ -862,14 +873,14 @@ export const BookingPage: React.FC = () => {
                       type="button"
                       onClick={handlePrevStep}
                       disabled={submitting}
-                      className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {submitting ? 'Submitting...' : <>Confirm Booking <Check size={14} strokeWidth={3} /></>}
                     </button>
