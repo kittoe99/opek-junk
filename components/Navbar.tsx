@@ -372,7 +372,7 @@ export const Navbar: React.FC = () => {
             {/* Promo block */}
             <div className="mt-4 pt-4 border-t border-secondary-100">
               <div className="bg-secondary rounded-2xl overflow-hidden">
-                <div className="relative h-32 w-full">
+                <div className="relative h-20 w-full">
                   <img
                     src="/opek-nav.webp"
                     alt="Opek team"
