@@ -322,35 +322,49 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center">
-          <div className="w-14 h-14 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-5">
-            <PackageCheck size={26} className="text-brand" strokeWidth={2.5} />
-          </div>
-          <h2 className="text-2xl font-black text-secondary mb-3">Booking Confirmed!</h2>
-          {orderNumber && (
-            <div className="mb-5 p-5 border border-secondary-100 rounded-xl bg-secondary-50/50">
-              <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Your Order Number</p>
-              <p className="text-xl font-mono font-black text-secondary">{orderNumber}</p>
-              <p className="text-[11px] text-secondary-300 mt-1">Save this to track your order status</p>
+      <div className="min-h-screen bg-gradient-to-b from-brand/5 to-white flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
+            {/* Animated success icon */}
+            <div className="relative mx-auto mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
+                <PackageCheck size={32} className="text-brand" strokeWidth={2} />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
+                <Check size={16} className="text-white" strokeWidth={3} />
+              </div>
             </div>
-          )}
-          <p className="text-secondary-400 text-sm mb-6 max-w-sm mx-auto">
-            A matched provider will contact you within 15 minutes to confirm your appointment details.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center">
-            <button
-              onClick={() => navigate('/track-order')}
-              className="group px-6 py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 inline-flex items-center justify-center gap-2"
-            >
-              Track Order <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-            </button>
-            <button
-              onClick={() => navigate('/')}
-              className="px-6 py-3 bg-white text-secondary font-bold uppercase text-xs tracking-wider rounded-lg border border-secondary-200 hover:border-brand hover:text-brand transition-colors"
-            >
-              Return Home
-            </button>
+
+            <div className="space-y-2 mb-6">
+              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Booking Confirmed</p>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">You're All Set!</h2>
+              <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
+                A matched provider will contact you within 15 minutes to confirm your appointment.
+              </p>
+            </div>
+
+            {orderNumber && (
+              <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-100">
+                <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Order Number</p>
+                <p className="text-xl font-mono font-black text-secondary tracking-wider">{orderNumber}</p>
+                <p className="text-[11px] text-secondary-400 mt-1">Save this to track your order</p>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => navigate('/track-order')}
+                className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
+              >
+                Track Order <ArrowRight size={14} />
+              </button>
+              <button
+                onClick={() => navigate('/')}
+                className="flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider rounded-xl hover:border-brand hover:text-brand transition-all duration-300"
+              >
+                Return Home
+              </button>
+            </div>
           </div>
         </div>
       </div>

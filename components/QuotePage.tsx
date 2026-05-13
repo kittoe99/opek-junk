@@ -469,21 +469,42 @@ export const QuotePage: React.FC = () => {
   // ── Submitted screen ──
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center">
-          <div className="w-14 h-14 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-5">
-            <Receipt size={26} className="text-brand" strokeWidth={2.5} />
+      <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
+            {/* Animated success icon */}
+            <div className="relative mx-auto mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
+                <Receipt size={32} className="text-brand" strokeWidth={2} />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
+                <Check size={16} className="text-white" strokeWidth={3} />
+              </div>
+            </div>
+
+            <div className="space-y-2 mb-6">
+              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Estimate Submitted</p>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Request Received</h2>
+              <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
+                Our team is reviewing your items. We'll contact you within 15 minutes to confirm your estimate.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => navigate('/booking', { state: { estimate, image } })}
+                className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
+              >
+                Book Now <ArrowRight size={14} />
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider rounded-xl hover:border-brand hover:text-brand transition-all duration-300"
+              >
+                New Quote
+              </button>
+            </div>
           </div>
-          <h2 className="text-2xl font-black text-secondary mb-3">Request Received</h2>
-          <p className="text-secondary-400 text-sm mb-6 max-w-sm mx-auto">
-            We'll contact you within 15 minutes to confirm your estimate.
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2"
-          >
-            Submit Another Request <ArrowRight size={14} />
-          </button>
         </div>
       </div>
     );

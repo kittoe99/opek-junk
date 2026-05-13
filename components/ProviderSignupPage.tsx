@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Check, DollarSign, Calendar, Truck, Smartphone } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, DollarSign, Calendar, Truck, Smartphone, UserCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 
@@ -100,21 +100,34 @@ export const ProviderSignupPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-[70vh] bg-white flex items-center justify-center px-4">
-        <div className="max-w-sm w-full text-center">
-          <div className="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-5">
-            <Check size={28} className="text-brand" strokeWidth={3} />
+      <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
+            {/* Animated success icon */}
+            <div className="relative mx-auto mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
+                <UserCheck size={32} className="text-brand" strokeWidth={2} />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
+                <Check size={16} className="text-white" strokeWidth={3} />
+              </div>
+            </div>
+
+            <div className="space-y-2 mb-6">
+              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Application Received</p>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Welcome Aboard!</h2>
+              <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
+                Our team will review your application and contact you within 1–2 business days to get you started.
+              </p>
+            </div>
+
+            <button
+              onClick={() => navigate('/')}
+              className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
+            >
+              Return Home <ArrowRight size={14} />
+            </button>
           </div>
-          <h2 className="text-2xl font-black text-secondary mb-2">Application Submitted</h2>
-          <p className="text-secondary-500 text-sm mb-6">
-            Our team will review your application and contact you within 1–2 business days.
-          </p>
-          <button
-            onClick={() => navigate('/')}
-            className="px-8 py-4 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md rounded-lg"
-          >
-            Return Home <ArrowRight size={16} />
-          </button>
         </div>
       </div>
     );
