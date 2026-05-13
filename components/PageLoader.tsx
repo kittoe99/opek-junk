@@ -20,7 +20,7 @@ export const PageLoader: React.FC = () => {
     setVisible(true);
     requestAnimationFrame(() => setActive(true));
 
-    t1.current = window.setTimeout(() => setActive(false), 700);  // start fade after entrance completes
+    t1.current = window.setTimeout(() => setActive(false), 700);  // start fade
     t2.current = window.setTimeout(() => setVisible(false), 950); // unmount
 
     return () => {
@@ -38,52 +38,31 @@ export const PageLoader: React.FC = () => {
         active ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <div className="flex items-center gap-3 select-none">
-        {/* Slanted brand bars */}
-        <div className="flex gap-1.5">
-          <span className="pl-bar pl-bar-1" />
-          <span className="pl-bar pl-bar-2" />
-        </div>
-
-        {/* Wordmark + tagline */}
-        <div className="flex flex-col -space-y-0.5 mt-0.5">
-          <div className="overflow-hidden leading-none">
-            <h1 className="pl-word text-5xl md:text-6xl font-black italic tracking-tighter text-secondary leading-[0.85] flex items-start">
-              Opek
-              <span className="text-[10px] md:text-xs font-medium not-italic tracking-normal mt-1 ml-0.5 opacity-70">TM</span>
-            </h1>
-          </div>
-          <div className="overflow-hidden leading-none">
-            <p className="pl-tag text-base md:text-lg font-light italic tracking-tight text-secondary/80">Junk Removal</p>
-          </div>
-        </div>
+      <div className="flex items-end gap-2 md:gap-2.5 select-none">
+        <span className="pl-bar pl-bar-1" />
+        <span className="pl-bar pl-bar-2" />
       </div>
 
       <style>{`
         .pl-bar {
-          width: 1.25rem;
-          height: 2.75rem;
-          background: #ff006e;
+          width: 1.5rem;
+          height: 3.5rem;
+          background: #355070;
           border-radius: 2px;
           transform: skewX(-18deg) scaleY(0);
           transform-origin: bottom;
-          animation: pl-bar-rise 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+          animation: pl-bar 1.1s cubic-bezier(0.33, 1, 0.68, 1) infinite;
         }
-        .pl-bar-2 { animation-delay: 0.06s; opacity: 0.85; }
+        @media (min-width: 768px) {
+          .pl-bar { width: 2rem; height: 4.5rem; }
+        }
+        .pl-bar-2 { animation-delay: 0.15s; }
 
-        .pl-word {
-          transform: translateY(100%) skewX(-10deg);
-          animation: pl-rise 0.45s cubic-bezier(0.33, 1, 0.68, 1) 0.15s forwards;
+        @keyframes pl-bar {
+          0%   { transform: skewX(-18deg) scaleY(0); }
+          50%  { transform: skewX(-18deg) scaleY(1); }
+          100% { transform: skewX(-18deg) scaleY(0); }
         }
-        .pl-tag {
-          transform: translateY(-100%);
-          opacity: 0;
-          animation: pl-drop 0.45s cubic-bezier(0.33, 1, 0.68, 1) 0.28s forwards;
-        }
-
-        @keyframes pl-bar-rise { to { transform: skewX(-18deg) scaleY(1); } }
-        @keyframes pl-rise     { to { transform: translateY(0) skewX(0); } }
-        @keyframes pl-drop     { to { transform: translateY(0); opacity: 1; } }
       `}</style>
     </div>
   );
