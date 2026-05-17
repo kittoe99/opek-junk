@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { supabase } from '../lib/supabase';
+import { TrustBadges } from './TrustBadges';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -34,12 +35,6 @@ export const BookingPage: React.FC = () => {
   const [zipError, setZipError] = useState<string | null>(null);
   const [zipResult, setZipResult] = useState<{ city: string; state: string; served: boolean } | null>(null);
 
-  const SERVED_STATES_CITIES = [
-    { states: ['TX'], cities: ['Dallas','Fort Worth','Plano','Arlington','Irving','Garland','Frisco','McKinney','Mesquite','Grand Prairie','Carrollton','Denton','Allen','Richardson','Lewisville','Grapevine','Flower Mound','Euless','Bedford','Hurst'] },
-    { states: ['FL'], cities: ['Jacksonville','Jacksonville Beach','Neptune Beach','Atlantic Beach','Ponte Vedra','Orange Park','Fleming Island','Fernandina Beach','Yulee','St. Augustine','Green Cove Springs','Middleburg'] },
-    { states: ['GA'], cities: ['Atlanta','Decatur','Sandy Springs','Marietta','Alpharetta','Smyrna','Roswell','Dunwoody','Kennesaw','Peachtree City','Norcross','Duluth','Lawrenceville','Brookhaven','East Point','College Park','Union City','Fayetteville','Woodstock','Cumming'] },
-  ];
-
   // Auto-advance on served ZIP
   useEffect(() => {
     if (zipResult?.served) {
@@ -60,12 +55,8 @@ export const BookingPage: React.FC = () => {
       const data = await res.json();
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
-      const normState = state.trim().toUpperCase();
-      const normCity = city.trim().toLowerCase();
-      const served = SERVED_STATES_CITIES.some(
-        (s) => s.states.includes(normState) && s.cities.some((c) => normCity.includes(c.toLowerCase()) || c.toLowerCase().includes(normCity))
-      );
-      setZipResult({ city, state, served });
+      // Nationwide coverage — any valid US ZIP is served
+      setZipResult({ city, state, served: true });
     } catch {
       setZipError('Unable to verify ZIP code. Please try again.');
     } finally {
@@ -383,9 +374,9 @@ export const BookingPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        {/* Form Card */}
-        <div className="md:border md:border-secondary-100 md:rounded-2xl md:p-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 mt-8">
+        {/* Form */}
+        <div>
 
           {/* ═══ Step 0: ZIP Check ═══ */}
           {currentStep === 0 && (
@@ -393,8 +384,8 @@ export const BookingPage: React.FC = () => {
               <div className="flex items-start gap-3 mb-2">
                 <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
                 <div>
-                  <h2 className="text-base font-black text-secondary">Check Your ZIP Code</h2>
-                  <p className="text-secondary-400 text-xs">We're currently serving Dallas-Fort Worth, Jacksonville FL, and Atlanta GA.</p>
+                  <h2 className="text-base font-black text-secondary">Confirm Your ZIP Code</h2>
+                  <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
                 </div>
               </div>
 
@@ -433,22 +424,8 @@ export const BookingPage: React.FC = () => {
                 </div>
               )}
 
-              {zipResult && !zipResult.served && (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 pt-1">
-                    <AlertCircle size={14} className="text-secondary-400 shrink-0" />
-                    <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
-                    <span className="text-xs text-secondary-400 ml-auto">Outside coverage</span>
-                  </div>
-                  <p className="text-xs text-secondary-400">We're not in your area yet, but you can still book and we'll be in touch.</p>
-                  <button onClick={() => setCurrentStep(1)} className="w-full py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2">
-                    Continue Anyway <ArrowRight size={13} />
-                  </button>
-                </div>
-              )}
-
               <p className="text-[10px] text-secondary-300 text-center pt-2">
-                Currently serving Dallas-Fort Worth TX · Jacksonville FL · Atlanta GA
+                Nationwide coverage · Available in all 50 states
               </p>
             </div>
           )}
@@ -963,6 +940,9 @@ export const BookingPage: React.FC = () => {
               )}
 
         </div>
+      </div>
+      <div className="mt-16">
+        <TrustBadges />
       </div>
     </div>
   );

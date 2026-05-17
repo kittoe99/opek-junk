@@ -3,6 +3,7 @@ import { ArrowRight, ChevronDown, PackageOpen, Home, KeyRound, Building, Heart, 
 import { useNavigate } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
 import { StatsStrip } from '../shared/StatsStrip';
+import { TrustBadges } from '../TrustBadges';
 
 export const PropertyCleanoutPage: React.FC = () => {
   const navigate = useNavigate();
@@ -62,6 +63,8 @@ export const PropertyCleanoutPage: React.FC = () => {
         primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
       />
+
+      <TrustBadges />
 
       <StatsStrip
         stats={[

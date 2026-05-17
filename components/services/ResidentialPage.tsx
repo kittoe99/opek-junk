@@ -1,56 +1,30 @@
-import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, Check, Home, Sofa, Refrigerator, Bed, Tv, Wrench, Recycle, Clock, Shield, Quote, Star, Phone } from 'lucide-react';
+import React from 'react';
+import { Phone, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
-import { StatsStrip } from '../shared/StatsStrip';
+import { TrustBadges } from '../TrustBadges';
 
 export const ResidentialPage: React.FC = () => {
   const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const itemTypes = [
-    { icon: Sofa, label: 'Furniture', desc: 'Couches, tables, dressers, mattresses' },
-    { icon: Refrigerator, label: 'Appliances', desc: 'Fridges, washers, dryers, stoves' },
-    { icon: Tv, label: 'Electronics', desc: 'TVs, computers, monitors, e-waste' },
-    { icon: Bed, label: 'Bedroom Sets', desc: 'Frames, headboards, full bedrooms' },
-    { icon: Wrench, label: 'Garage Junk', desc: 'Tools, exercise gear, old paint cans' },
-    { icon: Recycle, label: 'Yard Waste', desc: 'Branches, debris, light landscaping' },
-  ];
-
-  const whyUs = [
-    {
-      icon: Clock,
-      title: 'Same-day pickup',
-      desc: 'Most jobs scheduled within 2 hours. Book by noon, often gone by dinner.',
-    },
-    {
-      icon: Shield,
-      title: 'Fixed upfront pricing',
-      desc: 'No hourly meters, no hidden fees. You see the number before we lift a thing.',
-    },
-    {
-      icon: Recycle,
-      title: '70% diverted from landfill',
-      desc: 'We donate, recycle, or repurpose what we can — your stuff gets a second life.',
-    },
+    { label: 'Furniture', desc: 'Sofas, tables, dressers, mattresses' },
+    { label: 'Appliances', desc: 'Fridges, washers, dryers, stoves' },
+    { label: 'Electronics', desc: 'TVs, computers, monitors, e-waste' },
+    { label: 'Bedroom Sets', desc: 'Frames, headboards, full bedrooms' },
+    { label: 'Garage Junk', desc: 'Tools, exercise gear, old paint cans' },
+    { label: 'Yard Waste', desc: 'Branches, debris, light landscaping' },
   ];
 
   const steps = [
-    { n: '01', title: 'Snap a photo', desc: 'Text or upload pictures of what needs to go.' },
-    { n: '02', title: 'Lock the price', desc: 'Crew confirms volume and gives a flat quote.' },
-    { n: '03', title: 'We haul it', desc: 'You point, we lift, sweep, and roll out.' },
-  ];
-
-  const faqs = [
-    { q: 'How is pricing determined?', a: 'Pricing is based on volume — the space your items take up in our truck. We give you an upfront quote on-site before any work begins. No hidden fees, no hourly billing surprises.' },
-    { q: 'Do I need to be home during pickup?', a: 'We recommend it so you can point out exactly what should go and approve the quote. For repeat customers, we can also arrange gated-access or key pickup.' },
-    { q: "What items can't you take?", a: 'We cannot haul hazardous materials like wet paint, chemicals, asbestos, or medical waste. Everything else — furniture, appliances, electronics, debris — we handle.' },
-    { q: 'How quickly can you come out?', a: 'In most areas, same-day or next-day appointments are available. Book online or call and we will confirm a 2-hour arrival window.' },
-    { q: 'Do you carry insurance?', a: 'Yes. Every provider in our network is fully licensed, insured, and background-checked. We can provide a Certificate of Insurance on request.' },
+    { title: 'Snap a photo', desc: 'Text or upload pictures of what needs to go.' },
+    { title: 'Lock the price', desc: 'Crew confirms volume and gives a flat quote.' },
+    { title: 'We haul it', desc: 'You point, we lift, sweep, and roll out.' },
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <PageHero
         eyebrow="Residential"
         title={<>Junk gone.<br />Today.</>}
@@ -62,119 +36,27 @@ export const ResidentialPage: React.FC = () => {
         secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
       />
 
-      {/* Stats Strip */}
-      <StatsStrip
-        stats={[
-          { value: '5K+', label: 'Homes Cleared' },
-          { value: '< 2 hr', label: 'Avg Arrival' },
-          { value: '70%', label: 'Diverted from Landfill' },
-          { value: '4.9★', label: 'Customer Rating' },
-        ]}
-      />
+      <TrustBadges />
 
-      {/* What we haul */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14">
+      {/* What We Haul */}
+      <section className="py-20 border-b border-secondary-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
             <div>
               <div className="inline-flex items-center gap-2 mb-3">
                 <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">What We Haul</span>
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">What We Clear</span>
               </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-                If it's in your home,<br />
-                <span className="text-brand">we'll move it out.</span>
-              </h2>
-            </div>
-            <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
-              From a single couch to a full attic clean — same crew, same flat-rate pricing.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {itemTypes.map((item) => (
-              <div
-                key={item.label}
-                className="group p-6 bg-secondary-50 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-secondary-100"
-              >
-                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand transition-colors">
-                  <item.icon size={20} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="font-black text-secondary text-base mb-1">{item.label}</h3>
-                <p className="text-secondary-500 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why us — staggered editorial */}
-      <section className="py-16 md:py-24 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why Opek</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
-              Built different. <span className="text-brand">Priced honest.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-            {whyUs.map((item, idx) => (
-              <div
-                key={item.title}
-                className={`group ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}
-              >
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-5 group-hover:bg-brand transition-colors">
-                  <item.icon size={24} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">How It Works</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-                Three steps from<br />
-                <span className="text-brand">cluttered to clear.</span>
-              </h2>
-              <p className="text-secondary-500 text-base leading-relaxed mb-6">
-                No quote forms. No phone tag. Just photos, a flat price, and a crew at the door.
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">What We Haul</h2>
+              <p className="text-secondary-500 text-sm mt-3 leading-relaxed">
+                From a single couch to a full attic clean — same crew, same flat-rate pricing.
               </p>
-              <button
-                onClick={() => navigate('/quote')}
-                className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-all duration-300 shadow-md hover:shadow-xl inline-flex items-center gap-2"
-              >
-                Start a Quote <ArrowRight size={16} />
-              </button>
             </div>
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <div key={step.n} className="flex gap-5 pb-6 border-b border-secondary-100 last:border-0">
-                  <span className="text-3xl md:text-4xl font-black text-brand leading-none shrink-0 w-12">
-                    {step.n}
-                  </span>
-                  <div>
-                    <h3 className="font-black text-secondary text-lg md:text-xl mb-1">{step.title}</h3>
-                    <p className="text-secondary-500 text-sm leading-relaxed">{step.desc}</p>
-                  </div>
+            <div className="divide-y divide-secondary-100">
+              {itemTypes.map((item) => (
+                <div key={item.label} className="py-4 flex items-baseline justify-between gap-6">
+                  <span className="font-bold text-secondary text-sm">{item.label}</span>
+                  <span className="text-secondary-400 text-sm text-right">{item.desc}</span>
                 </div>
               ))}
             </div>
@@ -182,92 +64,95 @@ export const ResidentialPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className="py-16 md:py-24 bg-secondary text-white relative overflow-hidden">
-        <div className="absolute -top-10 right-10 opacity-10">
-          <Quote size={200} className="text-brand" />
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-1 mb-6">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={18} className="text-brand fill-brand" />
-            ))}
-          </div>
-          <blockquote className="text-2xl md:text-3xl lg:text-4xl font-black leading-[1.2] tracking-tight mb-6">
-            "Booked at 9am, gone by 2pm. They cleared an entire garage in one trip and the price didn't budge — flat as advertised."
-          </blockquote>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-brand flex items-center justify-center font-black">M</div>
+      {/* From photo to empty room */}
+      <section className="py-20 border-b border-secondary-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
             <div>
-              <p className="font-bold text-sm">Megan R.</p>
-              <p className="text-xs text-white/60">Austin, TX • Garage Cleanout</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">FAQ</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Common questions, <span className="text-brand">straight answers.</span>
-            </h2>
-          </div>
-          <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border border-secondary-100 rounded-2xl overflow-hidden bg-white hover:border-secondary-200 transition-colors">
-                <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none cursor-pointer"
-                >
-                  <span className="font-bold text-base text-secondary pr-4">{faq.q}</span>
-                  <ChevronDown size={20} className={`text-secondary-300 shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180 text-brand' : ''}`} />
-                </button>
-                <div className={`grid transition-all duration-300 ease-in-out ${openFaq === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                  <div className="overflow-hidden">
-                    <p className="px-5 md:px-6 pb-5 md:pb-6 text-secondary-500 text-sm md:text-base leading-relaxed">{faq.a}</p>
-                  </div>
-                </div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="block w-8 h-px bg-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">From Photo to Empty Room</span>
               </div>
-            ))}
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">Simple from start to finish.</h2>
+            </div>
+            <div className="divide-y divide-secondary-100">
+              {steps.map((step) => (
+                <div key={step.title} className="py-5">
+                  <h3 className="font-bold text-secondary text-sm mb-1">{step.title}</h3>
+                  <p className="text-secondary-400 text-sm leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Ready When You Are</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
-            Clear the clutter. <span className="text-brand">Today.</span>
-          </h2>
-          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
-            Free quote in under two minutes. No obligations, no hidden fees. Pay only when the truck is loaded.
-          </p>
+      {/* CTA + Service Areas */}
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-            <button onClick={() => navigate('/quote')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Get a Free Quote
-              <ArrowRight size={14} />
-            </button>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <button onClick={() => navigate('/booking')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Book Online
-              <ArrowRight size={14} />
-            </button>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <a href="tel:8313187139"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              <Phone size={16} className="text-brand" />
-              (831) 318-7139
-            </a>
+            {/* CTA */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05] mb-6">
+                Schedule a pickup.<br />We handle the rest.
+              </h2>
+              <div className="flex flex-row items-start mb-8">
+                <button
+                  onClick={() => navigate('/quote')}
+                  className="px-8 py-4 bg-secondary text-white text-sm font-bold uppercase tracking-wider hover:bg-secondary-600 transition-all duration-300 shadow-md hover:shadow-xl"
+                >
+                  Get a Free Quote
+                </button>
+                <button
+                  onClick={() => navigate('/booking')}
+                  className="px-8 py-4 bg-brand text-white text-sm font-bold uppercase tracking-wider hover:bg-brand-600 transition-all duration-300 shadow-md hover:shadow-xl"
+                >
+                  Book Online
+                </button>
+              </div>
+              <a
+                href="tel:8313187139"
+                className="inline-flex items-center gap-2 text-secondary-400 hover:text-secondary transition-colors text-sm"
+              >
+                <Phone size={14} />
+                <span>(831) 318-7139</span>
+              </a>
+            </div>
+
+            {/* Service Areas */}
+            <div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <MapPin size={13} className="text-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
+              </div>
+              <p className="text-2xl font-black text-secondary tracking-tight leading-[1.1] mb-2">Nationwide coverage.</p>
+              <p className="text-secondary-400 text-sm leading-relaxed mb-6">Available in all 50 states. Same flat-rate model, same crew standards — wherever you are.</p>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Popular cities</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {[
+                  { label: 'Dallas-Fort Worth, TX', slug: 'dallas-fort-worth' },
+                  { label: 'Jacksonville, FL', slug: 'jacksonville' },
+                  { label: 'Atlanta, GA', slug: 'atlanta' },
+                  { label: 'Los Angeles, CA', slug: 'los-angeles' },
+                  { label: 'Houston, TX', slug: 'houston' },
+                  { label: 'Chicago, IL', slug: 'chicago' },
+                  { label: 'Phoenix, AZ', slug: 'phoenix' },
+                  { label: 'Miami, FL', slug: 'miami' },
+                ].map((city, index, arr) => (
+                  <span key={city.slug} className="inline-flex items-center">
+                    <Link
+                      to={`/locations/${city.slug}`}
+                      className="text-secondary text-xs font-medium hover:text-brand transition-colors"
+                    >
+                      {city.label}
+                    </Link>
+                    {index < arr.length - 1 && <span className="text-secondary-300 ml-4">·</span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

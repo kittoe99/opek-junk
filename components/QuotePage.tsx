@@ -3,6 +3,7 @@ import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
+import { TrustBadges } from './TrustBadges';
 import { supabase } from '../lib/supabase';
 
 // ── Item Catalog ──
@@ -142,19 +143,8 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
 ];
 
-const SERVED_ZIPS_BY_CITY: { name: string; stateAbbr: string; slug: string; states: string[]; cities: string[] }[] = [
-  { name: 'Dallas-Fort Worth', stateAbbr: 'TX', slug: 'dallas-fort-worth', states: ['TX'], cities: ['Dallas','Fort Worth','Plano','Arlington','Irving','Garland','Frisco','McKinney','Mesquite','Grand Prairie','Carrollton','Denton','Allen','Richardson','Lewisville','Grapevine','Flower Mound','Euless','Bedford','Hurst'] },
-  { name: 'Jacksonville', stateAbbr: 'FL', slug: 'jacksonville', states: ['FL'], cities: ['Jacksonville','Jacksonville Beach','Neptune Beach','Atlantic Beach','Ponte Vedra','Orange Park','Fleming Island','Fernandina Beach','Yulee','St. Augustine','Green Cove Springs','Middleburg'] },
-  { name: 'Atlanta', stateAbbr: 'GA', slug: 'atlanta', states: ['GA'], cities: ['Atlanta','Decatur','Sandy Springs','Marietta','Alpharetta','Smyrna','Roswell','Dunwoody','Kennesaw','Peachtree City','Norcross','Duluth','Lawrenceville','Brookhaven','East Point','College Park','Union City','Fayetteville','Woodstock','Cumming'] },
-];
-
-function detectServedCity(state: string, city: string) {
-  const normState = state.trim().toUpperCase();
-  const normCity = city.trim().toLowerCase();
-  return SERVED_ZIPS_BY_CITY.find(
-    (s) => s.states.includes(normState) && s.cities.some((c) => normCity.includes(c.toLowerCase()) || c.toLowerCase().includes(normCity))
-  ) ?? null;
-}
+// Nationwide coverage — any valid US ZIP is served.
+type ServedCity = { city: string; state: string };
 
 export const QuotePage: React.FC = () => {
   const navigate = useNavigate();
@@ -162,7 +152,7 @@ export const QuotePage: React.FC = () => {
   const [zipValue, setZipValue] = useState('');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
-  const [zipResult, setZipResult] = useState<{ city: string; state: string; servedCity: typeof SERVED_ZIPS_BY_CITY[0] | null } | null>(null);
+  const [zipResult, setZipResult] = useState<({ city: string; state: string; servedCity: ServedCity | null }) | null>(null);
   const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(null);
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -188,8 +178,8 @@ export const QuotePage: React.FC = () => {
       const data = await res.json();
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
-      const servedCity = detectServedCity(state, city);
-      setZipResult({ city, state, servedCity });
+      // Nationwide — every valid US ZIP is in-area
+      setZipResult({ city, state, servedCity: { city, state } });
     } catch {
       setZipError('Unable to verify ZIP code. Please try again.');
     } finally {
@@ -520,16 +510,16 @@ export const QuotePage: React.FC = () => {
             Free quote in <span className="text-brand">two minutes.</span>
           </h1>
           <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            First, let's confirm we serve your area.
+            Nationwide coverage in all 50 states — start by confirming your ZIP.
           </p>
         </div>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <div className="md:border md:border-secondary-100 md:rounded-2xl md:p-8">
+          <div>
             <div className="flex items-start gap-3 mb-6">
               <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
               <div>
-                <h2 className="text-base font-black text-secondary">Check Your ZIP Code</h2>
-                <p className="text-secondary-400 text-xs">We're currently serving Dallas-Fort Worth, Jacksonville FL, and Atlanta GA.</p>
+                <h2 className="text-base font-black text-secondary">Confirm Your ZIP Code</h2>
+                <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
               </div>
             </div>
 
@@ -570,43 +560,15 @@ export const QuotePage: React.FC = () => {
               </div>
             )}
 
-            {/* Not served */}
-            {zipResult && !zipResult.servedCity && (
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center gap-2 pt-1">
-                  <AlertCircle size={14} className="text-secondary-400 shrink-0" />
-                  <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
-                  <span className="text-xs text-secondary-400 ml-auto">Outside coverage</span>
-                </div>
-                <p className="text-xs text-secondary-400">We're not in your area yet, but you can still get a quote and we'll notify you when we expand nearby.</p>
-                <div className="flex gap-2">
-                  <button onClick={() => setZipVerified(true)} className="flex-1 py-3 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center justify-center gap-2">
-                    Continue Anyway <ArrowRight size={13} />
-                  </button>
-                  <button onClick={() => navigate('/contact')} className="flex-1 py-3 border border-secondary-200 text-secondary font-bold text-xs uppercase tracking-wider rounded-lg hover:border-brand hover:text-brand transition-colors">
-                    Notify Me
-                  </button>
-                </div>
-              </div>
-            )}
-
             <p className="text-[10px] text-secondary-300 mt-4 text-center">
-              Currently serving Dallas-Fort Worth TX · Jacksonville FL · Atlanta GA
+              Nationwide coverage · Available in all 50 states
             </p>
           </div>
 
-          <div className="mt-16">
-            <h2 className="text-lg font-black text-secondary mb-1">Prefer to talk to someone?</h2>
-            <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate — we're here 7 days a week.</p>
-            <div className="flex flex-wrap gap-3 items-center">
-              <button onClick={() => navigate('/contact')} className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2">
-                Contact Us <ArrowRight size={16} />
-              </button>
-              <a href="tel:8313187139" className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors">
-                (831) 318-7139
-              </a>
-            </div>
-          </div>
+        </div>
+
+        <div className="mt-16">
+          <TrustBadges />
         </div>
       </div>
     );
@@ -1294,6 +1256,9 @@ export const QuotePage: React.FC = () => {
             </div>
           )}
 
+      </div>
+      <div className="mt-16">
+        <TrustBadges />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { ArrowRight, ChevronDown, Building2, Briefcase, Server, Armchair, Boxes,
 import { useNavigate } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
 import { StatsStrip } from '../shared/StatsStrip';
+import { TrustBadges } from '../TrustBadges';
 
 export const CommercialPage: React.FC = () => {
   const navigate = useNavigate();
@@ -62,6 +63,8 @@ export const CommercialPage: React.FC = () => {
         primaryCta={{ label: 'Request Bid', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Schedule Walkthrough', onClick: () => navigate('/in-home-estimate') }}
       />
+
+      <TrustBadges />
 
       <StatsStrip
         stats={[

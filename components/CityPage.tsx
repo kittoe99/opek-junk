@@ -4,6 +4,7 @@ import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowR
 import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
+import { TrustBadges } from './TrustBadges';
 
 interface CityPageProps {
   city: CityData;
@@ -252,6 +253,8 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
           </div>
         </div>
       </section>
+
+      <TrustBadges />
 
       {/* ── SERVICES — mirrors homepage Services exactly ── */}
       <section id="services" className="py-16 md:py-24 lg:py-32 bg-secondary-50">

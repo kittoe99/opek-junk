@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Phone, Eye, Shield, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
+import { TrustBadges } from './TrustBadges';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -114,6 +115,8 @@ export const InHomeEstimatePage: React.FC = () => {
         primaryCta={{ label: 'Schedule Visit', onClick: () => { document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' }); } }}
         secondaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
       />
+
+      <TrustBadges />
 
       {/* Benefits */}
       <section className="py-16 md:py-24 bg-white">

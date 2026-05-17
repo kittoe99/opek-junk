@@ -16,9 +16,10 @@ interface SEOProps {
   geoLon?: number;
   cityName?: string;
   stateAbbr?: string;
+  schema?: any;
 }
 
-export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr }) => {
+export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -100,7 +101,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
     if (existing) existing.remove();
 
     if (breadcrumbs && breadcrumbs.length > 0) {
-      const schema = {
+      const breadcrumbSchema = {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: breadcrumbs.map((b, i) => ({
@@ -113,10 +114,23 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
       const script = document.createElement('script');
       script.id = BREADCRUMB_ID;
       script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(breadcrumbSchema);
+      document.head.appendChild(script);
+    }
+
+    // Custom Schema injection
+    const CUSTOM_SCHEMA_ID = 'schema-custom';
+    let existingCustom = document.getElementById(CUSTOM_SCHEMA_ID);
+    if (existingCustom) existingCustom.remove();
+
+    if (schema) {
+      const script = document.createElement('script');
+      script.id = CUSTOM_SCHEMA_ID;
+      script.type = 'application/ld+json';
       script.textContent = JSON.stringify(schema);
       document.head.appendChild(script);
     }
-  }, [title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, location.pathname]);
+  }, [title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema, location.pathname]);
 
   return null;
 };
@@ -124,14 +138,49 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
 // SEO configurations for different pages
 export const seoConfig = {
   home: {
-    title: 'Opek Junk Removal - Professional Junk Removal Services Nationwide | Same-Day Pickup',
-    description: 'Professional junk removal services across the US. Get instant quotes, same-day pickup, and eco-friendly disposal. Residential, commercial, construction debris, e-waste, and more. Trusted local providers nationwide.',
-    keywords: 'junk removal, junk hauling, trash removal, furniture removal, appliance removal, same-day junk removal, eco-friendly disposal',
+    title: 'Opek Junk Removal | Nationwide Service in All 50 States',
+    description: 'Nationwide junk removal, donations pickup, and moving labor. Available in all 50 states with same-day service, upfront flat-rate pricing, and fully insured crews.',
+    keywords: 'nationwide junk removal, junk removal near me, junk hauling, trash removal, furniture removal, appliance removal, same-day junk removal, eco-friendly disposal, all 50 states',
+    schema: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "Opek Junk Removal",
+          "url": "https://opekjunkremoval.com/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://opekjunkremoval.com/track-order?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "How It Works",
+          "url": "https://opekjunkremoval.com/#process"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Services",
+          "url": "https://opekjunkremoval.com/#services"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Locations",
+          "url": "https://opekjunkremoval.com/#service-area"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Become a Provider",
+          "url": "https://opekjunkremoval.com/provider-signup"
+        }
+      ]
+    }
   },
   quote: {
-    title: 'Get a Free Quote - Opek Junk Removal | Instant Pricing',
-    description: 'Get an instant free quote for junk removal services. Fast, transparent pricing with no hidden fees. Same-day service available across the US.',
-    keywords: 'junk removal quote, free estimate, junk removal pricing, instant quote, junk hauling cost',
+    title: 'Free Junk Removal Quote | Opek — Nationwide Instant Pricing',
+    description: 'Get an instant free quote for junk removal anywhere in the US. Transparent flat-rate pricing, no hidden fees. Same-day service in all 50 states.',
+    keywords: 'junk removal quote, free estimate, nationwide junk removal pricing, instant quote, junk hauling cost, junk removal near me',
   },
   contact: {
     title: 'Contact Us - Opek Junk Removal | Customer Support',
@@ -139,24 +188,24 @@ export const seoConfig = {
     keywords: 'contact junk removal, customer support, junk removal help, schedule pickup',
   },
   booking: {
-    title: 'Book Online - Opek Junk Removal | Schedule Your Pickup',
-    description: 'Book your junk removal service online in minutes. Choose your date, time, and service type. Same-day and next-day appointments available.',
-    keywords: 'book junk removal, schedule pickup, online booking, junk removal appointment',
+    title: 'Book Junk Removal Online | Opek — Nationwide Same-Day Pickup',
+    description: 'Book junk removal online in minutes anywhere in the US. Pick your date, time, and service. Same-day and next-day appointments in all 50 states.',
+    keywords: 'book junk removal, schedule pickup, online booking, junk removal appointment, nationwide junk removal',
   },
   residential: {
-    title: 'Residential Junk Removal Services | Opek - Home Cleanouts & Decluttering',
-    description: 'Professional residential junk removal services. Furniture, appliances, electronics, and household clutter removal. Same-day service available. Eco-friendly disposal.',
-    keywords: 'residential junk removal, home junk removal, furniture removal, appliance removal, household cleanout',
+    title: 'Residential Junk Removal | Opek — Nationwide Home Cleanouts',
+    description: 'Nationwide residential junk removal in all 50 states. Furniture, appliances, electronics, and full home cleanouts. Same-day service, flat-rate pricing, eco-friendly disposal.',
+    keywords: 'residential junk removal, nationwide home junk removal, furniture removal, appliance removal, household cleanout, junk removal near me',
   },
   commercial: {
-    title: 'Commercial Junk Removal Services | Opek - Office & Business Hauling',
-    description: 'Commercial junk removal for offices, retail spaces, and businesses. Office furniture, equipment, and commercial debris removal with minimal disruption.',
-    keywords: 'commercial junk removal, office junk removal, business hauling, office furniture removal, commercial debris',
+    title: 'Commercial Junk Removal | Opek — Nationwide Office & Business Hauling',
+    description: 'Nationwide commercial junk removal for offices, retail, and warehouses in all 50 states. After-hours scheduling, COI on request, and minimal disruption to operations.',
+    keywords: 'commercial junk removal, nationwide office junk removal, business hauling, office furniture removal, commercial debris',
   },
   propertyCleanout: {
-    title: 'Property Cleanout Services | Opek - Estate Clearing & Move-Outs',
-    description: 'Full property cleanout services for estates, move-outs, and hoarding situations. Professional, discreet, and compassionate service.',
-    keywords: 'property cleanout, estate cleanout, move-out service, hoarding cleanup, full house cleanout',
+    title: 'Property Cleanout | Opek — Nationwide Estate & Move-Out Service',
+    description: 'Full property cleanout services nationwide. Estate clearing, move-outs, and hoarding cleanups across all 50 states. Professional, discreet, compassionate.',
+    keywords: 'property cleanout, nationwide estate cleanout, move-out service, hoarding cleanup, full house cleanout',
   },
   providerSignup: {
     title: 'Become a Provider - Opek Junk Removal | Partner With Us',
