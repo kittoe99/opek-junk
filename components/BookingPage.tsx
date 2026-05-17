@@ -374,7 +374,7 @@ export const BookingPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 mt-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-8">
         {/* Form */}
         <div>
 
@@ -941,7 +941,7 @@ export const BookingPage: React.FC = () => {
 
         </div>
       </div>
-      <div className="mt-16">
+      <div>
         <TrustBadges />
       </div>
     </div>

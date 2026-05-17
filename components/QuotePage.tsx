@@ -513,7 +513,7 @@ export const QuotePage: React.FC = () => {
             Nationwide coverage in all 50 states — start by confirming your ZIP.
           </p>
         </div>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
           <div>
             <div className="flex items-start gap-3 mb-6">
               <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
@@ -567,7 +567,7 @@ export const QuotePage: React.FC = () => {
 
         </div>
 
-        <div className="mt-16">
+        <div>
           <TrustBadges />
         </div>
       </div>
@@ -734,7 +734,7 @@ export const QuotePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (
@@ -1257,7 +1257,7 @@ export const QuotePage: React.FC = () => {
           )}
 
       </div>
-      <div className="mt-16">
+      <div>
         <TrustBadges />
       </div>
     </div>
