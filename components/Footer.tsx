@@ -18,25 +18,17 @@ export const Footer: React.FC = () => {
               Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
             </p>
             {/* Contact Info */}
-            <div className="space-y-3">
-              <a href="tel:8313187139" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center group-hover:bg-brand transition-colors">
-                  <Phone size={16} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <span className="text-sm font-bold">(831) 318-7139</span>
-              </a>
-              <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center group-hover:bg-brand transition-colors">
-                  <Mail size={16} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <span className="text-sm">Support@opekjunkremoval.com</span>
-              </a>
-              <div className="flex items-center gap-3 text-secondary-300">
-                <div className="w-9 h-9 rounded-lg bg-secondary-700 flex items-center justify-center">
-                  <MapPin size={16} className="text-brand" />
-                </div>
-                <span className="text-sm">Nationwide Service</span>
-              </div>
+            <a href="tel:8313187139" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
+              <Phone size={16} className="text-brand group-hover:text-white transition-colors" />
+              <span className="text-sm font-bold">(831) 318-7139</span>
+            </a>
+            <a href="mailto:Support@opekjunkremoval.com" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
+              <Mail size={16} className="text-brand group-hover:text-white transition-colors" />
+              <span className="text-sm">Support@opekjunkremoval.com</span>
+            </a>
+            <div className="flex items-center gap-3 text-secondary-300">
+              <MapPin size={16} className="text-brand" />
+              <span className="text-sm">Nationwide Service</span>
             </div>
           </div>
 

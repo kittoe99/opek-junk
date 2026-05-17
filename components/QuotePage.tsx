@@ -594,7 +594,7 @@ export const QuotePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-16">
             <h2 className="text-lg font-black text-secondary mb-1">Prefer to talk to someone?</h2>
             <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate — we're here 7 days a week.</p>
             <div className="flex flex-wrap gap-3 items-center">
