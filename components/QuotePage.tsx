@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -163,6 +163,7 @@ export const QuotePage: React.FC = () => {
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
   const [zipResult, setZipResult] = useState<{ city: string; state: string; servedCity: typeof SERVED_ZIPS_BY_CITY[0] | null } | null>(null);
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(null);
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -453,7 +454,7 @@ export const QuotePage: React.FC = () => {
       {/* CTA */}
       <div className="space-y-3 pt-2">
         <button
-          onClick={() => navigate('/booking', { state: { estimate, image } })}
+          onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService } })}
           className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
         >
           Continue to Booking <ArrowRight size={14} />
@@ -492,7 +493,7 @@ export const QuotePage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => navigate('/booking', { state: { estimate, image } })}
+                onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService } })}
                 className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
               >
                 Book Now <ArrowRight size={14} />
@@ -611,12 +612,79 @@ export const QuotePage: React.FC = () => {
     );
   }
 
-  // ── Selection screen ──
+  // ── Service Selection screen ──
+  if (!selectedService) {
+    return (
+      <div className="min-h-screen bg-white">
+        {/* Hero */}
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => { setZipVerified(false); setZipResult(null); setZipValue(''); }}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> Back
+          </button>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            What do you <span className="text-brand">need?</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            Select a service below to continue.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <button
+              onClick={() => setSelectedService('junk_removal')}
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+            >
+              <Armchair size={24} className="text-brand mb-4" strokeWidth={2} />
+              <h3 className="text-lg font-black text-secondary mb-1">Junk Removal</h3>
+              <p className="text-secondary-400 text-sm mb-4">We haul away your unwanted items.</p>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
+                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+            <button
+              onClick={() => setSelectedService('donation_pickup')}
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+            >
+              <HeartHandshake size={24} className="text-brand mb-4" strokeWidth={2} />
+              <h3 className="text-lg font-black text-secondary mb-1">Donation Pick Up</h3>
+              <p className="text-secondary-400 text-sm mb-4">We deliver to local charities.</p>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
+                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+            <button
+              onClick={() => setSelectedService('moving_labor')}
+              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+            >
+              <BicepsFlexed size={24} className="text-brand mb-4" strokeWidth={2} />
+              <h3 className="text-lg font-black text-secondary mb-1">Moving Labor</h3>
+              <p className="text-secondary-400 text-sm mb-4">Hourly labor for heavy lifting.</p>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
+                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Method Selection screen ──
   if (!selectedOption) {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero */}
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => setSelectedService(null)}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> Back to services
+          </button>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
             Free quote in <span className="text-brand">two minutes.</span>
           </h1>
@@ -653,7 +721,7 @@ export const QuotePage: React.FC = () => {
           </div>
 
           {/* Bottom CTA */}
-          <div>
+          <div className="mt-16 md:mt-24">
             <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk to someone?</h2>
             <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate or to ask any questions — we're here 24/7.</p>
             <div className="flex flex-wrap gap-3 items-center">
@@ -681,10 +749,10 @@ export const QuotePage: React.FC = () => {
     <div className="min-h-screen bg-white">
       <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <button
-          onClick={() => setSelectedOption(null)}
+          onClick={() => setSelectedService(null)}
           className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
         >
-          <ArrowLeft size={14} /> Back to options
+          <ArrowLeft size={14} /> Back to services
         </button>
 
         <div ref={contentTopRef} className="mb-8">

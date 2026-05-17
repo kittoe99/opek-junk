@@ -13,6 +13,8 @@ import { QuickActionBar } from './components/QuickActionBar';
 import { ResidentialPage } from './components/services/ResidentialPage';
 import { CommercialPage } from './components/services/CommercialPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
+import { DonationsPickupPage } from './components/services/DonationsPickupPage';
+import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { InHomeEstimatePage } from './components/InHomeEstimatePage';
@@ -124,6 +126,24 @@ function PropertyCleanoutPageWithSEO() {
   );
 }
 
+function DonationsPickupPageWithSEO() {
+  return (
+    <>
+      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. We pick up and deliver to local charities." />
+      <DonationsPickupPage />
+    </>
+  );
+}
+
+function MovingLaborPageWithSEO() {
+  return (
+    <>
+      <SEO title="Moving Labor | Opek Junk Removal" description="Hire professional moving labor to load, unload, or move items within your home." />
+      <MovingLaborPage />
+    </>
+  );
+}
+
 function ProviderSignupPageWithSEO() {
   return (
     <>
@@ -175,6 +195,8 @@ function App() {
           <Route path="/services/residential" element={<ResidentialPageWithSEO />} />
           <Route path="/services/commercial" element={<CommercialPageWithSEO />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
+          <Route path="/services/donations-pickup" element={<DonationsPickupPageWithSEO />} />
+          <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />

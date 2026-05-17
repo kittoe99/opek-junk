@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink } from 'lucide-react';
+import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed } from 'lucide-react';
 import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
@@ -32,6 +32,18 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       icon: PackageOpen,
       description: city.services.propertyCleanout,
       path: '/services/property-cleanout',
+    },
+    {
+      title: 'Donations Pickup',
+      icon: HeartHandshake,
+      description: city.services.donationsPickup,
+      path: '/services/donations-pickup',
+    },
+    {
+      title: 'Moving Labor',
+      icon: BicepsFlexed,
+      description: city.services.movingLabor,
+      path: '/services/moving-labor',
     },
   ];
 
@@ -100,6 +112,8 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Residential Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/residential' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Commercial Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/commercial' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Property Cleanouts in ${city.name}`, url: 'https://opekjunkremoval.com/services/property-cleanout' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Donations Pickup in ${city.name}`, url: 'https://opekjunkremoval.com/services/donations-pickup' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Moving Labor in ${city.name}`, url: 'https://opekjunkremoval.com/services/moving-labor' } },
       ],
     },
     openingHours: 'Mo-Su 07:00-20:00',
@@ -489,6 +503,20 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                   className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
                 >
                   <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Commercial junk removal services</span>
+                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
+                </Link>
+                <Link
+                  to="/services/donations-pickup"
+                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
+                >
+                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Donations pickup services</span>
+                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
+                </Link>
+                <Link
+                  to="/services/moving-labor"
+                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
+                >
+                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Moving labor services</span>
                   <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
                 </Link>
               </div>

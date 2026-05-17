@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
@@ -17,7 +17,7 @@ interface AddressSuggestion {
 export const BookingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const estimateData = location.state as { estimate?: QuoteEstimate; image?: string } | null;
+  const estimateData = location.state as { estimate?: QuoteEstimate; image?: string; serviceType?: string } | null;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const addressDropdownRef = useRef<HTMLDivElement>(null);
@@ -120,7 +120,7 @@ export const BookingPage: React.FC = () => {
         photoUrl: img || '',
         details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nPrice Range: $${est.priceRange.min} - $${est.priceRange.max}`
       }));
-      setCurrentStep(2); // skip ZIP + photo steps when coming from QuotePage
+      setCurrentStep(3); // skip ZIP, Service, and photo steps when coming from QuotePage
     }
   }, [estimateData]);
 
@@ -265,7 +265,7 @@ export const BookingPage: React.FC = () => {
 
   const handleNextStep = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 5) setCurrentStep(currentStep + 1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -318,7 +318,7 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const stepLabels = ['ZIP Check', 'Photo', 'Contact', 'Address', 'Details & Review'];
+  const stepLabels = ['ZIP Check', 'Service', 'Photo', 'Contact', 'Address', 'Details & Review'];
 
   if (submitted) {
     return (
@@ -506,10 +506,76 @@ export const BookingPage: React.FC = () => {
           </div>
           )}
 
-          {/* NOTE: pre-fill from QuotePage skips to step 2 */}
+          {/* NOTE: pre-fill from QuotePage skips to step 3 */}
 
-          {/* ═══ Step 1: Photo Upload & Estimate ═══ */}
+          {/* ═══ Step 1: Service Selection ═══ */}
           {currentStep === 1 && (
+            <div className="space-y-4">
+              <div className="mb-2 flex items-start gap-3">
+                <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+                <div>
+                  <h2 className="text-base font-black text-secondary">Select Service</h2>
+                  <p className="text-secondary-400 text-xs">What kind of help do you need?</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                <button
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
+                    handleNextStep();
+                  }}
+                  className={`w-full border ${formData.serviceType === 'Junk Removal' ? 'border-brand bg-brand/5' : 'border-secondary-100 hover:border-brand hover:bg-brand/5'} transition-all p-6 rounded-xl text-left flex items-center gap-4 group`}
+                >
+                  <Armchair size={22} className={`${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary'} shrink-0`} />
+                  <div className="flex-1">
+                    <h3 className="text-sm font-black text-secondary mb-0.5">Junk Removal</h3>
+                    <p className="text-secondary-400 text-xs">We haul away your unwanted items</p>
+                  </div>
+                  <ArrowRight size={16} className={`${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary-300 group-hover:text-brand group-hover:translate-x-1'} transition-all`} />
+                </button>
+
+                <button
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, serviceType: 'Donation Pick Up' }));
+                    handleNextStep();
+                  }}
+                  className={`w-full border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand bg-brand/5' : 'border-secondary-100 hover:border-brand hover:bg-brand/5'} transition-all p-6 rounded-xl text-left flex items-center gap-4 group`}
+                >
+                  <HeartHandshake size={22} className={`${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary'} shrink-0`} />
+                  <div className="flex-1">
+                    <h3 className="text-sm font-black text-secondary mb-0.5">Donation Pick Up</h3>
+                    <p className="text-secondary-400 text-xs">We deliver gently used items to local charities</p>
+                  </div>
+                  <ArrowRight size={16} className={`${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary-300 group-hover:text-brand group-hover:translate-x-1'} transition-all`} />
+                </button>
+
+                <button
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, serviceType: 'Moving Labor' }));
+                    handleNextStep();
+                  }}
+                  className={`w-full border ${formData.serviceType === 'Moving Labor' ? 'border-brand bg-brand/5' : 'border-secondary-100 hover:border-brand hover:bg-brand/5'} transition-all p-6 rounded-xl text-left flex items-center gap-4 group`}
+                >
+                  <BicepsFlexed size={22} className={`${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary'} shrink-0`} />
+                  <div className="flex-1">
+                    <h3 className="text-sm font-black text-secondary mb-0.5">Moving Labor</h3>
+                    <p className="text-secondary-400 text-xs">Hourly labor for heavy lifting</p>
+                  </div>
+                  <ArrowRight size={16} className={`${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary-300 group-hover:text-brand group-hover:translate-x-1'} transition-all`} />
+                </button>
+              </div>
+              
+              <div className="pt-4 flex">
+                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  <ArrowLeft size={14} /> Back
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ═══ Step 2: Photo Upload & Estimate ═══ */}
+          {currentStep === 2 && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -637,8 +703,8 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
-          {/* ═══ Step 2: Contact Info ═══ */}
-          {currentStep === 2 && (
+          {/* ═══ Step 3: Contact Info ═══ */}
+          {currentStep === 3 && (
             <form onSubmit={handleNextStep} className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <CalendarCheck size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -697,8 +763,8 @@ export const BookingPage: React.FC = () => {
             </form>
           )}
 
-          {/* ═══ Step 3: Address ═══ */}
-          {currentStep === 3 && (
+          {/* ═══ Step 4: Address ═══ */}
+          {currentStep === 4 && (
             <form onSubmit={handleNextStep} className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <MapPinned size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -803,33 +869,25 @@ export const BookingPage: React.FC = () => {
             </form>
           )}
 
-              {/* ═══ Step 4: Service Details & Review ═══ */}
-              {currentStep === 4 && (
+              {/* ═══ Step 5: Details & Review ═══ */}
+              {currentStep === 5 && (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="mb-2 flex items-start gap-3">
                     <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                     <div>
-                      <h2 className="text-base font-black text-secondary">Service Details</h2>
-                      <p className="text-secondary-400 text-xs">Pick a service type and date, then review</p>
+                      <h2 className="text-base font-black text-secondary">Details & Review</h2>
+                      <p className="text-secondary-400 text-xs">Pick a date and review your booking</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Service Type *</label>
-                      <select
-                        name="serviceType"
+                      <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Service Type</label>
+                      <input
+                        readOnly
                         value={formData.serviceType}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-                      >
-                        <option>Residential Junk Removal</option>
-                        <option>Commercial Services</option>
-                        <option>Property Cleanout</option>
-                        <option>Appliance Removal</option>
-                        <option>Furniture Disposal</option>
-                        <option>Yard Waste</option>
-                      </select>
+                        className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary font-bold focus:outline-none transition-colors"
+                      />
                     </div>
                     <div>
                       <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>

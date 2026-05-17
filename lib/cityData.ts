@@ -20,6 +20,8 @@ export interface CityData {
     residential: string;
     commercial: string;
     propertyCleanout: string;
+    donationsPickup: string;
+    movingLabor: string;
   };
   serviceAreaSubtext: string;
   neighborhoods: string[];
@@ -56,6 +58,10 @@ export const cities: CityData[] = [
         "Office furniture, equipment, and commercial debris cleared across Dallas and Fort Worth with minimal disruption to your operations.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout the Metroplex. Professional, thorough, and discreet.",
+      donationsPickup:
+        "Gently used furniture, appliances, and clothing picked up and delivered to local charities across the DFW Metroplex.",
+      movingLabor:
+        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "We're live across the DFW Metroplex and expanding fast. Check if we serve your ZIP and get a free quote today.",
@@ -121,6 +127,10 @@ export const cities: CityData[] = [
         "Office furniture, equipment, and commercial debris cleared across Jacksonville with minimal disruption to your business.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout Jacksonville and Duval County. Professional, thorough, and discreet.",
+      donationsPickup:
+        "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Jacksonville.",
+      movingLabor:
+        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "We're live across Jacksonville and expanding fast. Check if we serve your ZIP and get a free quote today.",
@@ -186,6 +196,10 @@ export const cities: CityData[] = [
         "Office furniture, equipment, and commercial debris cleared across Metro Atlanta with minimal disruption to your business.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout Atlanta and surrounding metro areas. Professional, thorough, and discreet.",
+      donationsPickup:
+        "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Metro Atlanta.",
+      movingLabor:
+        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "We're live across Metro Atlanta and expanding fast. Check if we serve your ZIP and get a free quote today.",

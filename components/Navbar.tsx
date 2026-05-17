@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, HeartHandshake, BicepsFlexed } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -69,6 +69,8 @@ export const Navbar: React.FC = () => {
     { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential', icon: Home },
     { name: 'Commercial', desc: 'Office and retail space clearing', path: '/services/commercial', icon: Building2 },
     { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: KeyRound },
+    { name: 'Donations Pickup', desc: 'Pickup and delivery to local charities', path: '/services/donations-pickup', icon: HeartHandshake },
+    { name: 'Moving Labor', desc: 'Hourly labor for loading and heavy lifting', path: '/services/moving-labor', icon: BicepsFlexed },
   ];
 
   const handleLinkClick = (path: string) => {

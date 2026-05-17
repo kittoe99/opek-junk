@@ -101,11 +101,6 @@ export const InHomeEstimatePage: React.FC = () => {
     { icon: Shield, title: 'Same-day quote', desc: 'Get a written, locked-in price on the spot before we leave.' },
   ];
 
-  const steps = [
-    { n: '01', title: 'You schedule', desc: 'Pick a window that works for you — most appointments confirmed within 24 hours.' },
-    { n: '02', title: 'We walk through', desc: 'Crew lead arrives at your property and assesses scope in 15–30 minutes.' },
-    { n: '03', title: 'Quote on the spot', desc: 'You get a written, fixed price. Book today, schedule the haul, or take time to decide.' },
-  ];
 
   return (
     <div className="bg-white">
@@ -147,36 +142,7 @@ export const InHomeEstimatePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="py-16 md:py-24 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">How It Works</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-                Three simple <span className="text-brand">steps.</span>
-              </h2>
-              <p className="text-secondary-500 text-base leading-relaxed mb-6">
-                We walk through your property, scope the job, and hand you a fixed price. No homework, no surprise upsells.
-              </p>
-            </div>
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <div key={step.n} className="flex gap-5 pb-6 border-b border-secondary-200 last:border-0">
-                  <span className="text-3xl md:text-4xl font-black text-brand leading-none shrink-0 w-12">{step.n}</span>
-                  <div>
-                    <h3 className="font-black text-secondary text-lg md:text-xl mb-1">{step.title}</h3>
-                    <p className="text-secondary-500 text-sm leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Form */}
       <section id="schedule" className="py-16 md:py-24 bg-white scroll-mt-24">

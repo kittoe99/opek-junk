@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock, ArrowRight } from 'lucide-react';
+import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock, ArrowRight, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 
@@ -125,16 +125,16 @@ export const TrackOrderPage: React.FC = () => {
   if (selectedOrder) {
     const s = getStatus(selectedOrder.status);
     return (
-      <div className="bg-white">
-        <div className="pt-12 pb-8 md:pt-16 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-secondary-50 min-h-screen">
+        <div className="pt-32 pb-16 md:pt-40 md:pb-24 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => { setSelectedOrder(null); setStatusHistory([]); }}
-            className="mb-8 text-sm font-bold text-secondary-400 hover:text-brand transition-colors"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors bg-white px-4 py-2 rounded-full border border-secondary-100 shadow-sm"
           >
-            ← Back to results
+            <ArrowLeft size={16} /> Back to results
           </button>
 
-          <div className="border border-secondary-100 rounded-3xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-secondary-100 rounded-3xl overflow-hidden shadow-xl">
             {/* Header */}
             <div className="p-6 md:p-8 border-b border-secondary-100">
               <div className="flex items-start justify-between gap-4 mb-4">
@@ -247,12 +247,24 @@ export const TrackOrderPage: React.FC = () => {
         subtitle="Enter your phone number or order number to see live status, ETA, and crew details."
         image="/junk-removal.webp"
         imageAlt="Tracking your order"
-        compact
       />
 
-      <section className="py-12 md:py-16 bg-white md:bg-secondary-50">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white md:border md:border-secondary-100 md:rounded-3xl md:p-8 md:shadow-sm">
+      <section className="py-16 md:py-24 bg-white scroll-mt-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-10">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="block w-8 h-px bg-brand" />
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Tracking Lookup</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-3">
+              Find your <span className="text-brand">order.</span>
+            </h2>
+            <p className="text-secondary-500 text-base leading-relaxed">
+              Enter your phone number or order number below to see live status, ETA, and crew details.
+            </p>
+          </div>
+
+          <div className="bg-white border border-secondary-100 md:border-secondary-100 rounded-3xl p-6 md:p-10 shadow-xl">
             {/* Toggle */}
             <div className="flex bg-secondary-50 border border-secondary-100 rounded-full p-1 mb-6">
               <button
@@ -288,16 +300,16 @@ export const TrackOrderPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading || !searchValue.trim()}
-                className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+                className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed rounded-xl flex items-center justify-center gap-2"
               >
-                {loading ? 'Searching...' : 'Track Order'}
+                {loading ? 'Searching...' : <>Track Order <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></>}
               </button>
             </form>
           </div>
 
           {/* Error */}
           {error && (
-            <div className="flex items-center gap-3 p-4 mt-6 bg-red-50 border border-red-200 rounded-2xl">
+            <div className="flex items-center gap-3 p-4 mt-8 bg-red-50 border border-red-200 rounded-2xl">
               <AlertCircle size={18} className="text-red-500 shrink-0" />
               <p className="text-red-700 text-sm font-bold">{error}</p>
             </div>
@@ -305,7 +317,7 @@ export const TrackOrderPage: React.FC = () => {
 
           {/* Results */}
           {searched && !loading && !error && (
-            <div className="mt-6">
+            <div className="mt-10">
               {results.length === 0 ? (
                 <div className="text-center py-12 px-6 bg-white border border-secondary-100 rounded-3xl">
                   <div className="w-14 h-14 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -357,7 +369,7 @@ export const TrackOrderPage: React.FC = () => {
           )}
 
           {!searched && (
-            <p className="text-xs text-secondary-400 text-center mt-6 leading-relaxed max-w-md mx-auto">
+            <p className="text-xs text-secondary-400 mt-8 leading-relaxed max-w-lg">
               Your order number (e.g. <span className="font-mono font-bold text-secondary">OPK-A1B2C3</span>) was sent in your booking confirmation. If you don't have it, use your phone number instead.
             </p>
           )}

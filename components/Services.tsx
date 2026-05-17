@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Building2, PackageOpen, ChevronDown } from 'lucide-react';
+import { Home, Building2, PackageOpen, ChevronDown, HeartHandshake, BicepsFlexed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
@@ -20,6 +20,18 @@ const serviceItems = [
     icon: PackageOpen,
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
+  },
+  {
+    title: "Donations Pickup",
+    icon: HeartHandshake,
+    description: "Convenient pickup of gently used furniture, clothing, and household goods, delivered directly to local charities.",
+    path: "/services/donations-pickup"
+  },
+  {
+    title: "Moving Labor",
+    icon: BicepsFlexed,
+    description: "Hire our strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
+    path: "/services/moving-labor"
   }
 ];
 
