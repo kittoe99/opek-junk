@@ -11,6 +11,7 @@ import { QuotePage } from './components/QuotePage';
 import { ContactPage } from './components/ContactPage';
 import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
+import { WhatWeHaul } from './components/WhatWeHaul';
 import { ResidentialPage } from './components/services/ResidentialPage';
 import { CommercialPage } from './components/services/CommercialPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
@@ -62,6 +63,7 @@ function HomePage() {
       <TrustBadges />
       <Services />
       <Process onGetQuote={() => navigate('/quote')} />
+      <WhatWeHaul />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
       <QuickActionBar onBookOnline={() => navigate('/booking')} />
       
@@ -194,7 +196,7 @@ function App() {
           <Route path="/quote" element={<QuotePageWithSEO />} />
           <Route path="/contact" element={<ContactPageWithSEO />} />
           <Route path="/booking" element={<BookingPageWithSEO />} />
-          <Route path="/services/residential" element={<ResidentialPageWithSEO />} />
+          <Route path="/services/residential-junk-removal" element={<ResidentialPageWithSEO />} />
           <Route path="/services/commercial" element={<CommercialPageWithSEO />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
           <Route path="/services/donations-pickup" element={<DonationsPickupPageWithSEO />} />

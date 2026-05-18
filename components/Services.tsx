@@ -7,7 +7,7 @@ const serviceItems = [
     title: "Residential",
     icon: Home,
     description: "Furniture, appliances, electronics, and household clutter. Fast, affordable pickup by local professionals in your area.",
-    path: "/services/residential"
+    path: "/services/residential-junk-removal"
   },
   {
     title: "Commercial",

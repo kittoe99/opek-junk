@@ -5,6 +5,7 @@ import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
 import { TrustBadges } from './TrustBadges';
+import { WhatWeHaul } from './WhatWeHaul';
 
 interface CityPageProps {
   city: CityData;
@@ -20,7 +21,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       title: 'Residential',
       icon: Home,
       description: city.services.residential,
-      path: '/services/residential',
+      path: '/services/residential-junk-removal',
     },
     {
       title: 'Commercial',
@@ -110,7 +111,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       '@type': 'OfferCatalog',
       name: `Junk Removal Services in ${city.name}`,
       itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Residential Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/residential' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Residential Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/residential-junk-removal' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Commercial Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/commercial' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Property Cleanouts in ${city.name}`, url: 'https://opekjunkremoval.com/services/property-cleanout' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Donations Pickup in ${city.name}`, url: 'https://opekjunkremoval.com/services/donations-pickup' } },
@@ -338,6 +339,8 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         </div>
       </section>
 
+      <WhatWeHaul />
+
       {/* ── PROCESS — mirrors homepage Process exactly ── */}
       <section id="process" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -495,7 +498,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                 ))}
                 {/* Internal service links for topical authority */}
                 <Link
-                  to="/services/residential"
+                  to="/services/residential-junk-removal"
                   className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
                 >
                   <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Residential junk removal services</span>

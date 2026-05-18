@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
   ];
 
   const serviceItems = [
-    { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential', icon: Home },
+    { name: 'Residential', desc: 'Home cleanouts and decluttering', path: '/services/residential-junk-removal', icon: Home },
     { name: 'Commercial', desc: 'Office and retail space clearing', path: '/services/commercial', icon: Building2 },
     { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: KeyRound },
     { name: 'Donations Pickup', desc: 'Pickup and delivery to local charities', path: '/services/donations-pickup', icon: HeartHandshake },
