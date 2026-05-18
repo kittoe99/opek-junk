@@ -5,17 +5,14 @@ import { Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
 import { TrustBadges } from '../TrustBadges';
 import { WhatWeHaul } from '../WhatWeHaul';
+import { Process } from '../Process';
 
 export const ResidentialPage: React.FC = () => {
   const navigate = useNavigate();
 
 
 
-  const steps = [
-    { title: 'Snap a photo', desc: 'Text or upload pictures of what needs to go.' },
-    { title: 'Lock the price', desc: 'Crew confirms volume and gives a flat quote.' },
-    { title: 'We haul it', desc: 'You point, we lift, sweep, and roll out.' },
-  ];
+
 
   return (
     <div className="bg-white min-h-screen">
@@ -34,34 +31,7 @@ export const ResidentialPage: React.FC = () => {
 
       <WhatWeHaul />
 
-      {/* From photo to empty room */}
-      <section className="py-16 md:py-20 border-b border-secondary-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">From Photo to Empty Room</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
-              Simple from start to finish.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
-            {steps.map((step, index) => (
-              <div key={step.title} className="relative">
-                <span className="text-8xl font-black text-secondary-50/50 absolute -top-12 -left-4 z-0 pointer-events-none select-none tracking-tighter">
-                  0{index + 1}
-                </span>
-                <div className="relative z-10 pt-6 border-t-2 border-secondary-100">
-                  <h3 className="font-black text-secondary text-xl mb-3">{step.title}</h3>
-                  <p className="text-secondary-500 text-base leading-relaxed">{step.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Process />
 
       {/* SEO Content */}
       <section className="py-16 bg-gray-50 border-t border-secondary-100">

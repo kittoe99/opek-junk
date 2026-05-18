@@ -1,92 +1,55 @@
 import React from 'react';
+import { Camera, Banknote, Truck } from 'lucide-react';
 
-interface ProcessProps {
-  onGetQuote?: () => void;
-}
-
-export const Process: React.FC<ProcessProps> = ({ onGetQuote }) => {
+export const Process: React.FC = () => {
   const steps = [
-    {
-      image: "/estimates (1).webp",
-      alt: "Customer snapping a photo for an estimate",
-      label: "Step One",
-      titleStart: "Snap. Send.",
-      titleAccent: "Done.",
-      desc: "A quick photo is all we need. Our AI reads the volume, the team confirms the price — instantly."
+    { 
+      title: 'Snap a photo', 
+      desc: 'Text or upload pictures of what needs to go.',
+      icon: Camera
     },
-    {
-      image: "/opek2.webp",
-      alt: "Upfront quote on-site",
-      label: "Step Two",
-      titleStart: "Lock in a",
-      titleAccent: "fixed price.",
-      desc: "Crew arrives, confirms what's getting hauled, and gives you the final number on the spot. No upcharges."
+    { 
+      title: 'Lock the price', 
+      desc: 'Crew confirms volume and gives a flat quote.',
+      icon: Banknote
     },
-    {
-      image: "/workers-opek.webp",
-      alt: "Professional junk removal team hauling items",
-      label: "Step Three",
-      titleStart: "We do",
-      titleAccent: "the lifting.",
-      desc: "Loading, sweeping, hauling — all handled. You point, we clear. Same day in most cases."
-    }
+    { 
+      title: 'We haul it', 
+      desc: 'You point, we lift, sweep, and roll out.',
+      icon: Truck
+    },
   ];
 
   return (
-    <section id="process" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden">
+    <section id="process" className="py-16 md:py-20 border-b border-secondary-100 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 md:mb-20">
-          <div>
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand"></span>
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">The Process</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight">
-              From clutter to <span className="text-brand">clear</span>
-              <br className="hidden md:block" /> in three moves.
-            </h2>
+        <div className="mb-10">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <span className="block w-8 h-px bg-brand" />
+            <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">From Photo to Empty Room</span>
           </div>
-          <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
-            No quote forms. No phone tag. Just photos, a fixed price, and a crew.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
+            Simple from start to finish.
+          </h2>
         </div>
 
-        {/* Steps — staggered editorial layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6 lg:gap-10">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={`group relative ${
-                index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
-              }`}
-            >
-              {/* Image */}
-              <div className="relative aspect-[16/10] md:aspect-square overflow-hidden mb-5 shadow-md">
-                <img
-                  src={step.image}
-                  alt={step.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
-                {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
+          {steps.map((step) => (
+            <div key={step.title} className="relative group">
+              <div className="relative z-10 pt-8 border-t-2 border-secondary-100 group-hover:border-brand transition-colors duration-500">
+                <div className="mb-6">
+                  <step.icon 
+                    size={56} 
+                    strokeWidth={1} 
+                    className="text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                  />
+                </div>
+                <h3 className="font-black text-secondary text-xl mb-3 group-hover:text-brand transition-colors duration-300">{step.title}</h3>
+                <p className="text-secondary-500 text-base leading-relaxed">{step.desc}</p>
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
-              </h3>
-
-              {/* Description */}
-              <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                {step.desc}
-              </p>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

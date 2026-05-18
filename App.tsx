@@ -12,6 +12,7 @@ import { ContactPage } from './components/ContactPage';
 import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { WhatWeHaul } from './components/WhatWeHaul';
+import { ProcessEditorial } from './components/ProcessEditorial';
 import { ResidentialPage } from './components/services/ResidentialPage';
 import { CommercialPage } from './components/services/CommercialPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
@@ -62,7 +63,8 @@ function HomePage() {
       />
       <TrustBadges />
       <Services />
-      <Process onGetQuote={() => navigate('/quote')} />
+      <Process />
+      <ProcessEditorial />
       <WhatWeHaul />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
       <QuickActionBar onBookOnline={() => navigate('/booking')} />

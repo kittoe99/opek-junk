@@ -1,13 +1,14 @@
 import React from 'react';
+import { Sofa, WashingMachine, Tv, BedDouble, Wrench, Leaf } from 'lucide-react';
 
 export const WhatWeHaul: React.FC = () => {
   const itemTypes = [
-    { label: 'Furniture', desc: 'Sofas, tables, dressers, mattresses' },
-    { label: 'Appliances', desc: 'Fridges, washers, dryers, stoves' },
-    { label: 'Electronics', desc: 'TVs, computers, monitors, e-waste' },
-    { label: 'Bedroom Sets', desc: 'Frames, headboards, full bedrooms' },
-    { label: 'Garage Junk', desc: 'Tools, exercise gear, old paint cans' },
-    { label: 'Yard Waste', desc: 'Branches, debris, light landscaping' },
+    { label: 'Furniture', desc: 'Sofas, tables, dressers, mattresses', icon: Sofa },
+    { label: 'Appliances', desc: 'Fridges, washers, dryers, stoves', icon: WashingMachine },
+    { label: 'Electronics', desc: 'TVs, computers, monitors, e-waste', icon: Tv },
+    { label: 'Bedroom Sets', desc: 'Frames, headboards, full bedrooms', icon: BedDouble },
+    { label: 'Garage Junk', desc: 'Tools, exercise gear, old paint cans', icon: Wrench },
+    { label: 'Yard Waste', desc: 'Branches, debris, light landscaping', icon: Leaf },
   ];
 
   return (
@@ -26,10 +27,21 @@ export const WhatWeHaul: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {itemTypes.map((item) => (
-            <div key={item.label} className="border-t border-secondary-100 pt-4">
-              <h3 className="font-bold text-secondary text-base mb-1">{item.label}</h3>
+            <div 
+              key={item.label} 
+              className="group relative p-6 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300"
+            >
+              <div className="absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="mb-6">
+                <item.icon 
+                  size={56} 
+                  strokeWidth={1} 
+                  className="text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                />
+              </div>
+              <h3 className="font-black text-secondary text-lg mb-2">{item.label}</h3>
               <p className="text-secondary-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
           ))}
