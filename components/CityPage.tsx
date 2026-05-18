@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed } from 'lucide-react';
+import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed, Phone } from 'lucide-react';
 import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
@@ -315,172 +315,166 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
               No quote forms. No phone tag. Just photos, a fixed price, and a crew.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6 lg:gap-10">
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-6 lg:gap-10">
             {processSteps.map((step, index) => (
               <div
                 key={index}
-                className={`group relative ${
+                className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none ${
                   index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
                 }`}
               >
-                <div className="relative aspect-[16/10] md:aspect-square overflow-hidden mb-5 shadow-md">
+                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-none">
                   <img
                     src={step.image}
                     alt={step.alt}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none hidden md:block" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                  {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
-                </h3>
-                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                  {step.desc}
-                </p>
+                <div>
+                  <h3 className="text-[17px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-1 md:mb-3">
+                    {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
+                  </h3>
+                  <p className="text-secondary-500 text-xs md:text-[15px] leading-relaxed max-w-sm">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SERVICE AREA — mirrors homepage ServiceArea exactly ── */}
-      <section id="service-area" className="py-16 md:py-24 lg:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden order-2 lg:order-1">
-              <img
-                src="/estimates (1).webp"
-                loading="lazy"
-                alt={`Junk removal service area in ${city.name}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1.5 mb-3 rounded-full">
-                  <MapPin size={13} className="text-brand" />
-                  <span className="text-white text-xs font-black uppercase tracking-[0.15em]">Serving {city.metroArea}</span>
-                </div>
-                <p className="text-white text-lg md:text-xl font-black leading-tight tracking-tight">
-                  Trusted professionals<br />in {city.name}.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col order-1 lg:order-2">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-                Now serving<br /><span className="text-brand">{city.name}.</span>
-              </h2>
-              <p className="text-secondary-500 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                {city.serviceAreaSubtext}
-              </p>
-              <button
-                onClick={() => navigate('/quote')}
-                className="self-start px-8 py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center gap-2 shadow-md mb-10 rounded-lg"
-              >
-                Get a Free Quote <ArrowRight size={16} />
-              </button>
+      {/* ── SERVICE AREA CTA ── */}
+      <section id="service-area" className="py-16 md:py-24 bg-white border-t border-secondary-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-secondary-50/50 rounded-3xl p-8 md:p-12 border border-secondary-100">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+              {/* Left: City-specific CTA */}
               <div>
-                <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Neighborhoods we serve</p>
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <span className="block w-6 h-px bg-brand" />
+                  <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Ready to start?</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.05] mb-6">
+                  Same-day service<br /><span className="text-brand">in {city.name}.</span>
+                </h2>
+
+                <div className="flex flex-col sm:flex-row items-start gap-3 mb-6">
+                  <button
+                    onClick={() => navigate('/quote')}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 rounded-xl shadow-md"
+                  >
+                    Get a Free Quote <ArrowRight size={14} />
+                  </button>
+                  <button
+                    onClick={() => navigate('/booking')}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-white text-secondary font-bold text-xs uppercase tracking-wider hover:bg-secondary-100 transition-colors inline-flex items-center justify-center gap-2 rounded-xl shadow-sm border border-secondary-200"
+                  >
+                    Book Online <ArrowRight size={14} />
+                  </button>
+                </div>
+
+                <a
+                  href="tel:8313187139"
+                  className="inline-flex items-center gap-2 text-secondary-500 hover:text-brand transition-colors text-sm font-medium"
+                >
+                  <Phone size={14} />
+                  <span>(831) 318-7139</span>
+                </a>
+              </div>
+
+              {/* Right: Neighborhoods */}
+              <div>
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <MapPin size={13} className="text-brand" />
+                  <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Neighborhoods</span>
+                </div>
+                <p className="text-2xl md:text-3xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
+                  Serving all of {city.metroArea}.
+                </p>
+                <p className="text-secondary-500 text-sm leading-relaxed mb-6">
+                  {city.serviceAreaSubtext}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {city.neighborhoods.map((n) => (
                     <span
                       key={n}
-                      className="px-3 py-1.5 bg-secondary-50 text-secondary text-xs font-medium border border-secondary-100 hover:border-brand hover:text-brand transition-colors cursor-default rounded-full"
+                      className="px-3 py-1.5 bg-white text-secondary text-xs font-medium border border-secondary-100 hover:border-brand hover:text-brand transition-colors cursor-default rounded-full"
                     >
                       {n}
                     </span>
                   ))}
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </section>
 
       {/* ── OTHER CITIES + EXTERNAL CITATIONS ── */}
-      <section className="py-14 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <section className="py-10 md:py-14 bg-white border-t border-secondary-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 
-            {/* Internal: other city pages */}
+            {/* Internal: other city pages — plain text links */}
             <div>
               <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-4">Also Serving</p>
-              <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-3">
                 {otherCities.map((c) => (
                   <Link
                     key={c.slug}
                     to={`/locations/${c.slug}`}
-                    className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
+                    className="text-secondary text-sm font-medium hover:text-brand transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <MapPin size={15} className="text-brand shrink-0" />
-                      <div>
-                        <p className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{c.name}, {c.stateAbbr}</p>
-                        <p className="text-xs text-secondary-400">{c.metroArea}</p>
-                      </div>
-                    </div>
-                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-brand transition-colors" />
+                    {c.name}, {c.stateAbbr}
                   </Link>
                 ))}
-                <Link
-                  to="/#service-area"
-                  className="flex items-center gap-2 p-4 rounded-xl border border-dashed border-secondary-200 hover:border-brand transition-colors text-secondary-400 hover:text-brand text-sm font-bold"
-                >
-                  <MapPin size={14} />
-                  View all service areas
-                </Link>
               </div>
+              <Link
+                to="/#service-area"
+                className="inline-flex items-center gap-1.5 mt-5 text-secondary-400 hover:text-brand transition-colors text-xs font-bold"
+              >
+                <MapPin size={12} />
+                View all service areas
+              </Link>
             </div>
 
-            {/* External: citations & trust links */}
+            {/* External: citations & trust links — compact list */}
             <div>
               <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-4">Resources & References</p>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 {city.externalCitations.map((cite) => (
                   <a
                     key={cite.href}
                     href={cite.href}
                     target="_blank"
                     rel={cite.rel}
-                    className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
+                    className="inline-flex items-center gap-2 text-secondary text-sm font-medium hover:text-brand transition-colors"
                   >
-                    <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">{cite.label}</span>
-                    <ExternalLink size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
+                    <ExternalLink size={12} className="text-secondary-300 shrink-0" />
+                    {cite.label}
                   </a>
                 ))}
-                {/* Internal service links for topical authority */}
-                <Link
-                  to="/services/residential-junk-removal"
-                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
-                >
-                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Residential junk removal services</span>
-                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
-                </Link>
-                <Link
-                  to="/services/commercial"
-                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
-                >
-                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Commercial junk removal services</span>
-                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
-                </Link>
-                <Link
-                  to="/services/donations-pickup"
-                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
-                >
-                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Donations pickup services</span>
-                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
-                </Link>
-                <Link
-                  to="/services/moving-labor"
-                  className="flex items-center justify-between p-4 bg-secondary-50 border border-secondary-100 rounded-xl hover:border-brand hover:bg-brand/5 transition-all group"
-                >
-                  <span className="font-medium text-sm text-secondary group-hover:text-brand transition-colors">Moving labor services</span>
-                  <ArrowRight size={13} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />
-                </Link>
+                <div className="border-t border-secondary-100 my-2" />
+                {[
+                  { label: 'Residential junk removal', path: '/services/residential-junk-removal' },
+                  { label: 'Commercial junk removal', path: '/services/commercial' },
+                  { label: 'Donations pickup', path: '/services/donations-pickup' },
+                  { label: 'Moving labor', path: '/services/moving-labor' },
+                ].map((s) => (
+                  <Link
+                    key={s.path}
+                    to={s.path}
+                    className="inline-flex items-center gap-2 text-secondary text-sm font-medium hover:text-brand transition-colors"
+                  >
+                    <ArrowRight size={12} className="text-secondary-300 shrink-0" />
+                    {s.label}
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -489,69 +483,69 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-16 md:py-24 lg:py-32 bg-secondary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-4">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">FAQ</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-4">
-                Questions about <span className="text-brand">{city.name}.</span>
-              </h2>
-              <p className="text-secondary-500 text-lg leading-relaxed">
-                Everything you need to know about junk removal in {city.metroArea}.
-              </p>
+      <section className="py-14 md:py-20 bg-secondary-50 border-t border-secondary-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header — stacked and compact */}
+          <div className="mb-8 md:mb-10">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="block w-8 h-px bg-brand" />
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">FAQ</span>
             </div>
-            <div>
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify({
-                    '@context': 'https://schema.org',
-                    '@type': 'FAQPage',
-                    mainEntity: city.faqs.map((faq) => ({
-                      '@type': 'Question',
-                      name: faq.question,
-                      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-                    })),
-                  }),
-                }}
-              />
-              <div className="space-y-3">
-                {city.faqs.map((faq, i) => (
+            <h2 className="text-3xl md:text-4xl font-black text-secondary leading-[1.05] tracking-tight mb-2">
+              Questions about <span className="text-brand">{city.name}.</span>
+            </h2>
+            <p className="text-secondary-500 text-sm md:text-base leading-relaxed">
+              Everything you need to know about junk removal in {city.metroArea}.
+            </p>
+          </div>
+          {/* Accordion */}
+          <div>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: city.faqs.map((faq) => ({
+                    '@type': 'Question',
+                    name: faq.question,
+                    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+                  })),
+                }),
+              }}
+            />
+            <div className="space-y-2">
+              {city.faqs.map((faq, i) => (
+                <div
+                  key={i}
+                  className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
+                    openFaq === i ? 'shadow-md ring-1 ring-secondary' : 'shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  <button
+                    className="w-full flex items-center justify-between p-4 md:p-5 text-left focus:outline-none cursor-pointer"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    aria-expanded={openFaq === i}
+                  >
+                    <span className="font-bold text-sm md:text-base text-secondary pr-4">{faq.question}</span>
+                    <ChevronDown
+                      size={16}
+                      className={`transition-all duration-300 shrink-0 ${
+                        openFaq === i ? 'text-brand rotate-180' : 'text-secondary-300'
+                      }`}
+                    />
+                  </button>
                   <div
-                    key={i}
-                    className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-                      openFaq === i ? 'shadow-lg ring-2 ring-secondary' : 'shadow-sm hover:shadow-md'
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      openFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                     }`}
                   >
-                    <button
-                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer"
-                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      aria-expanded={openFaq === i}
-                    >
-                      <span className="font-bold text-base text-secondary pr-4">{faq.question}</span>
-                      <ChevronDown
-                        size={18}
-                        className={`transition-all duration-300 shrink-0 ${
-                          openFaq === i ? 'text-brand rotate-180' : 'text-secondary-300'
-                        }`}
-                      />
-                    </button>
-                    <div
-                      className={`grid transition-all duration-300 ease-in-out ${
-                        openFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-5 pb-5 pl-9 text-secondary-400 leading-relaxed">{faq.answer}</p>
-                      </div>
+                    <div className="overflow-hidden">
+                      <p className="px-4 md:px-5 pb-4 md:pb-5 text-secondary-400 text-sm leading-relaxed">{faq.answer}</p>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

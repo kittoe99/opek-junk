@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Phone, Eye, Shield, BadgeCheck } from 'lucide-react';
+import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Eye, Shield, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
+import { ServiceArea } from './ServiceArea';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -119,26 +120,31 @@ export const InHomeEstimatePage: React.FC = () => {
       <TrustBadges />
 
       {/* Benefits */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-10 md:py-20 bg-white border-b border-secondary-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 mb-3">
+          <div className="mb-6 md:mb-14">
+            <div className="inline-flex items-center gap-2 mb-2 md:mb-3">
               <span className="block w-8 h-px bg-brand" />
               <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why an In-Home Visit</span>
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
               Accurate quote. <span className="text-brand">Zero surprises.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-10">
             {benefits.map((item, idx) => (
-              <div key={item.title} className={`group ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}>
-                <div className="w-14 h-14 rounded-2xl bg-secondary-50 flex items-center justify-center mb-5 group-hover:bg-brand transition-colors">
-                  <item.icon size={24} className="text-brand group-hover:text-white transition-colors" />
+              <div
+                key={item.title}
+                className={`group flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}
+              >
+                <div className="w-9 h-9 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-secondary-50 flex items-center justify-center shrink-0 md:mb-5 group-hover:bg-brand transition-colors">
+                  <item.icon className="w-4 h-4 md:w-6 md:h-6 text-brand group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">{item.title}</h3>
-                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">{item.desc}</p>
+                <div>
+                  <h3 className="text-[15px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-0.5 md:mb-3">{item.title}</h3>
+                  <p className="text-secondary-500 text-xs md:text-[15px] leading-relaxed max-w-sm">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -231,32 +237,7 @@ export const InHomeEstimatePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Prefer to Talk?</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
-            Skip the visit. <span className="text-brand">Quote by phone.</span>
-          </h2>
-          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
-            For straightforward jobs, we can get you a number over the phone in five minutes.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-            <a href="tel:8313187139"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              <Phone size={16} className="text-brand" />
-              (831) 318-7139
-            </a>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <button onClick={() => navigate('/quote')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Get Online Quote
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
-      </section>
+      <ServiceArea titleStart="We'll come to you." titleAccent="Free estimate." />
     </div>
   );
 };

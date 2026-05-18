@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock, ArrowRight, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
+import { TrustBadges } from './TrustBadges';
+import { ServiceArea } from './ServiceArea';
 
 interface BookingResult {
   id: string;
@@ -249,7 +251,9 @@ export const TrackOrderPage: React.FC = () => {
         imageAlt="Tracking your order"
       />
 
-      <section className="py-16 md:py-24 bg-white scroll-mt-24">
+      <TrustBadges />
+
+      <section className="py-10 md:py-16 bg-white scroll-mt-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 mb-3">
@@ -376,32 +380,7 @@ export const TrackOrderPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Need Help?</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
-            Lost your order? <span className="text-brand">We'll find it.</span>
-          </h2>
-          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
-            Call us with any details about your booking and we'll look it up by hand.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-            <a href="tel:8313187139"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              <Phone size={16} className="text-brand" />
-              (831) 318-7139
-            </a>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <a href="/contact"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Send a Message
-              <ArrowRight size={14} />
-            </a>
-          </div>
-        </div>
-      </section>
+      <ServiceArea titleStart="Questions about" titleAccent="your order?" />
     </div>
   );
 };
