@@ -54,16 +54,16 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
         </div>
 
         {/* Steps — staggered editorial layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6 lg:gap-10">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-6 lg:gap-10">
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`group relative ${
+              className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none ${
                 index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
               }`}
             >
               {/* Image */}
-              <div className="relative aspect-[16/10] md:aspect-square overflow-hidden mb-5 shadow-md">
+              <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-none">
                 <img
                   src={step.image}
                   alt={step.alt}
@@ -71,18 +71,18 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
                   loading="lazy"
                 />
                 {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none hidden md:block"></div>
               </div>
 
-              {/* Title */}
-              <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
-              </h3>
-
-              {/* Description */}
-              <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                {step.desc}
-              </p>
+              {/* Text */}
+              <div>
+                <h3 className="text-[17px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-1 md:mb-3">
+                  {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
+                </h3>
+                <p className="text-secondary-500 text-xs md:text-[15px] leading-relaxed max-w-sm">
+                  {step.desc}
+                </p>
+              </div>
             </div>
           ))}
         </div>

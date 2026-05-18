@@ -1,61 +1,25 @@
-import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, PackageOpen, Home, KeyRound, Building, Heart, Sparkles, Clock, Lock, Recycle, Quote, Star, Phone } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Phone, MapPin, Home, KeyRound, Building, Heart, Sparkles, Recycle } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
-import { StatsStrip } from '../shared/StatsStrip';
 import { TrustBadges } from '../TrustBadges';
 
 export const PropertyCleanoutPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   const scenarios = [
-    { icon: Home, label: 'Estate Cleanouts', desc: 'Full-home clearing with donation coordination' },
-    { icon: KeyRound, label: 'Move-Outs & Rentals', desc: 'Tenant turnovers and end-of-lease clears' },
-    { icon: Building, label: 'Foreclosures', desc: 'Bank-owned and REO trash-outs to broom-swept' },
-    { icon: Heart, label: 'Hoarding Situations', desc: 'Compassionate, discreet, paced to your needs' },
-    { icon: Sparkles, label: 'Pre-Sale Prep', desc: 'Get a property listing-ready in days, not weeks' },
-    { icon: Recycle, label: 'Donation Sorting', desc: 'On-site sorting with receipts where applicable' },
+    { label: 'Estate Cleanouts', desc: 'Full-home clearing with donation coordination', icon: Home },
+    { label: 'Move-Outs & Rentals', desc: 'Tenant turnovers and end-of-lease clears', icon: KeyRound },
+    { label: 'Foreclosures', desc: 'Bank-owned and REO trash-outs to broom-swept', icon: Building },
+    { label: 'Hoarding Situations', desc: 'Compassionate, discreet, paced to your needs', icon: Heart },
+    { label: 'Pre-Sale Prep', desc: 'Get a property listing-ready in days, not weeks', icon: Sparkles },
+    { label: 'Donation Sorting', desc: 'On-site sorting with receipts where applicable', icon: Recycle },
   ];
-
-  const whyUs = [
-    {
-      icon: Clock,
-      title: 'Fast turnarounds',
-      desc: 'Most full-home cleanouts done in a single day. Multi-property contracts within the week.',
-    },
-    {
-      icon: Lock,
-      title: 'Discreet and trustworthy',
-      desc: 'Background-checked crews, unmarked vehicles on request, and locked truck transport.',
-    },
-    {
-      icon: Heart,
-      title: 'Handled with care',
-      desc: 'Whether estate or hoarding, we work at your pace and treat every item with respect.',
-    },
-  ];
-
-  const steps = [
-    { n: '01', title: 'Walk-through', desc: 'Free in-home or virtual assessment of the property.' },
-    { n: '02', title: 'Flat quote', desc: 'One price for the whole job — sorting, hauling, sweeping.' },
-    { n: '03', title: 'Broom-swept', desc: 'Property left ready for listing, tenants, or closing.' },
-  ];
-
-  const faqs = [
-    { q: 'How long does a full property cleanout take?', a: 'Most 3-bedroom homes take 4–8 hours with a full crew. Larger estates or multi-floor properties may run 1–2 days. We give you an honest time estimate when we provide your quote.' },
-    { q: 'Do you handle sensitive situations like hoarding or estate cleanouts?', a: 'Yes. Our crews are trained to handle these situations with discretion and compassion. We work at your pace, treat every item with respect, and pause anytime you need to review something.' },
-    { q: 'Can you coordinate donations and recycling?', a: 'Absolutely. We sort items on-site and donate usable furniture, clothing, and household goods to local charities. You receive a donation receipt where applicable for tax purposes.' },
-    { q: 'Do you work with real estate agents and property managers?', a: 'Yes — we regularly partner with real estate professionals, landlords, REO asset managers, and property managers for fast-turnaround cleanouts between tenants or before listing.' },
-    { q: 'What happens to items of value or sentimental importance?', a: 'We never throw out anything that looks valuable or personal without explicit approval. Photos, documents, jewelry, and heirlooms are set aside for your review.' },
-    { q: 'Are you insured for property cleanouts?', a: 'Yes. Every provider in our network carries full liability coverage. We can provide a Certificate of Insurance to property managers, executors, or REO clients on request.' },
-  ];
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <PageHero
-        eyebrow="Property Cleanouts"
-        title={<>Done<br />with care.</>}
+        eyebrow="Professional Service"
+        title={<>Property<br />Cleanouts</>}
         subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — we handle the hard parts so you don't have to."
         image="/estimates (1).webp"
         imageAlt="Property cleanout team clearing a home"
@@ -66,172 +30,38 @@ export const PropertyCleanoutPage: React.FC = () => {
 
       <TrustBadges />
 
-      <StatsStrip
-        stats={[
-          { value: '800+', label: 'Properties Cleared' },
-          { value: '1 Day', label: 'Avg Cleanout' },
-          { value: '70%', label: 'Donated/Recycled' },
-          { value: '100%', label: 'Broom-Swept' },
-        ]}
-      />
-
-      {/* Scenarios */}
-      <section className="py-16 md:py-24 bg-white">
+      {/* Dynamic Grid instead of WhatWeHaul */}
+      <section className="py-16 md:py-20 border-b border-secondary-100 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">What We Handle</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-                Every situation,<br />
-                <span className="text-brand">handled with respect.</span>
-              </h2>
-            </div>
-            <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
-              From inherited estates to bank-owned trash-outs, we know how sensitive these jobs can be.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {scenarios.map((item) => (
-              <div
-                key={item.label}
-                className="group p-6 bg-secondary-50 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-secondary-100"
-              >
-                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand transition-colors">
-                  <item.icon size={20} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="font-black text-secondary text-base mb-1">{item.label}</h3>
-                <p className="text-secondary-500 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why us */}
-      <section className="py-16 md:py-24 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why Opek</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
-              Trusted with the <span className="text-brand">hardest jobs.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-            {whyUs.map((item, idx) => (
-              <div key={item.title} className={`group ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}>
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-5 group-hover:bg-brand transition-colors">
-                  <item.icon size={24} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">How It Works</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-                From inherited mess<br />
-                to <span className="text-brand">listing-ready.</span>
-              </h2>
-              <p className="text-secondary-500 text-base leading-relaxed mb-6">
-                A simple, predictable process for executors, property managers, and families navigating life transitions.
-              </p>
-              <button
-                onClick={() => navigate('/in-home-estimate')}
-                className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-all duration-300 shadow-md hover:shadow-xl inline-flex items-center gap-2"
-              >
-                Book a Walk-Through <ArrowRight size={16} />
-              </button>
-            </div>
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <div key={step.n} className="flex gap-5 pb-6 border-b border-secondary-100 last:border-0">
-                  <span className="text-3xl md:text-4xl font-black text-brand leading-none shrink-0 w-12">
-                    {step.n}
-                  </span>
-                  <div>
-                    <h3 className="font-black text-secondary text-lg md:text-xl mb-1">{step.title}</h3>
-                    <p className="text-secondary-500 text-sm leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial */}
-      <section className="py-16 md:py-24 bg-secondary text-white relative overflow-hidden">
-        <div className="absolute -top-10 right-10 opacity-10">
-          <Quote size={200} className="text-brand" />
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-1 mb-6">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={18} className="text-brand fill-brand" />
-            ))}
-          </div>
-          <blockquote className="text-2xl md:text-3xl lg:text-4xl font-black leading-[1.2] tracking-tight mb-6">
-            "After my mom passed, I dreaded clearing her house. The Opek crew was patient, kind, and saved every photo and document for me to review. I'll never forget that."
-          </blockquote>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-brand flex items-center justify-center font-black">L</div>
-            <div>
-              <p className="font-bold text-sm">Lauren P.</p>
-              <p className="text-xs text-white/60">Estate Cleanout • Phoenix, AZ</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 mb-3">
               <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">FAQ</span>
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Cleanout Specialties</span>
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Common questions, <span className="text-brand">straight answers.</span>
+            <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
+              Handled With Care
             </h2>
+            <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
+              Every situation, handled with respect and total discretion.
+            </p>
           </div>
-          <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border border-secondary-100 rounded-2xl overflow-hidden bg-white hover:border-secondary-200 transition-colors">
-                <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none cursor-pointer"
-                >
-                  <span className="font-bold text-base text-secondary pr-4">{faq.q}</span>
-                  <ChevronDown size={20} className={`text-secondary-300 shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180 text-brand' : ''}`} />
-                </button>
-                <div className={`grid transition-all duration-300 ease-in-out ${openFaq === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                  <div className="overflow-hidden">
-                    <p className="px-5 md:px-6 pb-5 md:pb-6 text-secondary-500 text-sm md:text-base leading-relaxed">{faq.a}</p>
-                  </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            {scenarios.map((item) => (
+              <div 
+                key={item.label} 
+                className="group relative p-5 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
+              >
+                <div className="hidden md:block absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="md:mb-6 shrink-0 mt-0.5 md:mt-0">
+                  <item.icon 
+                    className="w-7 h-7 md:w-14 md:h-14 text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                    strokeWidth={1.25} 
+                  />
+                </div>
+                <div>
+                  <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2">{item.label}</h3>
+                  <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -239,35 +69,89 @@ export const PropertyCleanoutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">When You're Ready</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
-            Clear the property. <span className="text-brand">With grace.</span>
-          </h2>
-          <p className="text-secondary-500 text-sm leading-relaxed mb-8 max-w-md mx-auto">
-            No-pressure quote. We'll walk through together, give you a fair number, and only proceed when you say so.
-          </p>
+      {/* SEO Content */}
+      <section className="py-16 bg-gray-50 border-t border-secondary-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
+            <h2 className="text-2xl font-bold text-secondary mb-4">Thorough & Compassionate Property Clearing Services</h2>
+            <p className="mb-4">
+              Clearing out an entire property can be an overwhelming task. Our <strong>property cleanout</strong> services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, our team approaches every job with compassion and efficiency to leave the space completely broom-swept and ready for its next chapter.
+            </p>
+            <p className="mb-4">
+              We work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Our crews are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy <Link to="/services/residential-junk-removal" className="text-brand hover:underline font-medium">residential junk removal</Link> to sorting valuable heirlooms from debris, we work at your pace. We even coordinate <Link to="/services/donations-pickup" className="text-brand hover:underline font-medium">donations pickups</Link> for gently used items to ensure nothing goes to waste unnecessarily.
+            </p>
+            <p>
+              Our property cleanout services are available nationwide, serving major areas from <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-medium">Dallas-Fort Worth</Link> to <Link to="/locations/phoenix" className="text-brand hover:underline font-medium">Phoenix</Link> and beyond. We offer upfront, flat-rate pricing with no hidden fees. If you're a business managing multiple REO properties, our <Link to="/services/commercial" className="text-brand hover:underline font-medium">commercial team</Link> can also coordinate centralized billing and multi-location support. Let us handle the difficult work so you can move forward.
+            </p>
+          </div>
+        </div>
+      </section>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-            <button onClick={() => navigate('/quote')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Get a Free Quote
-              <ArrowRight size={14} />
-            </button>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <button onClick={() => navigate('/in-home-estimate')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Schedule a Walk-Through
-              <ArrowRight size={14} />
-            </button>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <a href="tel:8313187139"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              <Phone size={16} className="text-brand" />
-              (831) 318-7139
-            </a>
+      {/* CTA + Service Areas */}
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+
+            {/* CTA */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05] mb-6">
+                Clear the property.<br />With grace.
+              </h2>
+              <div className="flex flex-col sm:flex-row items-start gap-4 mb-8">
+                <button
+                  onClick={() => navigate('/quote')}
+                  className="w-full sm:w-auto px-8 py-4 bg-secondary text-white text-sm font-bold uppercase tracking-wider hover:bg-secondary-600 transition-all duration-300 shadow-md hover:shadow-xl text-center"
+                >
+                  Get a Free Quote
+                </button>
+                <button
+                  onClick={() => navigate('/booking')}
+                  className="w-full sm:w-auto px-8 py-4 bg-brand text-white text-sm font-bold uppercase tracking-wider hover:bg-brand-600 transition-all duration-300 shadow-md hover:shadow-xl text-center"
+                >
+                  Book Online
+                </button>
+              </div>
+              <a
+                href="tel:8313187139"
+                className="inline-flex items-center gap-2 text-secondary-400 hover:text-secondary transition-colors text-sm"
+              >
+                <Phone size={14} />
+                <span>(831) 318-7139</span>
+              </a>
+            </div>
+
+            {/* Service Areas */}
+            <div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <MapPin size={13} className="text-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
+              </div>
+              <p className="text-2xl font-black text-secondary tracking-tight leading-[1.1] mb-2">Nationwide coverage.</p>
+              <p className="text-secondary-400 text-sm leading-relaxed mb-6">Available in all 50 states. Same flat-rate model, same crew standards — wherever you are.</p>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Popular cities</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Dallas-Fort Worth, TX', slug: 'dallas-fort-worth' },
+                  { label: 'Jacksonville, FL', slug: 'jacksonville' },
+                  { label: 'Atlanta, GA', slug: 'atlanta' },
+                  { label: 'Los Angeles, CA', slug: 'los-angeles' },
+                  { label: 'Houston, TX', slug: 'houston' },
+                  { label: 'Chicago, IL', slug: 'chicago' },
+                  { label: 'Phoenix, AZ', slug: 'phoenix' },
+                  { label: 'Miami, FL', slug: 'miami' },
+                ].map((city) => (
+                  <Link
+                    key={city.slug}
+                    to={`/locations/${city.slug}`}
+                    className="group flex items-center justify-between px-3 py-2.5 bg-secondary-50/50 hover:bg-secondary-50 transition-colors"
+                  >
+                    <span className="text-secondary text-xs font-medium group-hover:text-brand transition-colors">{city.label}</span>
+                    <span className="text-secondary-300 text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

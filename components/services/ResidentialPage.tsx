@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
 import { TrustBadges } from '../TrustBadges';
 import { WhatWeHaul } from '../WhatWeHaul';
-import { Process } from '../Process';
 
 export const ResidentialPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,8 +29,6 @@ export const ResidentialPage: React.FC = () => {
       <TrustBadges />
 
       <WhatWeHaul />
-
-      <Process />
 
       {/* SEO Content */}
       <section className="py-16 bg-gray-50 border-t border-secondary-100">

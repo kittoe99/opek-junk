@@ -3,29 +3,22 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Phone, MapPin, ArrowRight } from 'lucide-react';
 import { cities } from '../lib/cityData';
 
-interface ServiceAreaProps {
-  onGetQuote?: () => void;
+interface GlobalCTAProps {
   titleStart?: string;
   titleAccent?: string;
 }
 
-export const ServiceArea: React.FC<ServiceAreaProps> = ({ 
-  onGetQuote,
+export const GlobalCTA: React.FC<GlobalCTAProps> = ({ 
   titleStart = "Empty the space.",
   titleAccent = "On schedule."
 }) => {
   const navigate = useNavigate();
-  
-  const handleQuoteClick = () => {
-    if (onGetQuote) onGetQuote();
-    else navigate('/quote');
-  };
 
-  // Get first 8 cities for the minified clean list
+  // Get first 8 cities for the list to keep it compact
   const popularCities = cities.slice(0, 8);
 
   return (
-    <section id="service-area" className="py-16 md:py-24 bg-white border-t border-secondary-100">
+    <section className="py-16 md:py-24 bg-white border-t border-secondary-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Minified container wrapping the CTA for a highly premium, clean look */}
@@ -44,7 +37,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
               
               <div className="flex flex-col sm:flex-row items-start gap-3 mb-6">
                 <button
-                  onClick={handleQuoteClick}
+                  onClick={() => navigate('/quote')}
                   className="w-full sm:w-auto px-6 py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors inline-flex items-center justify-center gap-2 rounded-xl shadow-md"
                 >
                   Get a Free Quote <ArrowRight size={14} />

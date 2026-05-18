@@ -1,225 +1,157 @@
-import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, Check, Heart, Gift, Truck, Box, Recycle, Clock, Shield, Quote, Star, Phone } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Phone, MapPin, Sofa, Shirt, Utensils, WashingMachine, BedDouble, PackageOpen } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
-import { StatsStrip } from '../shared/StatsStrip';
+import { TrustBadges } from '../TrustBadges';
 
 export const DonationsPickupPage: React.FC = () => {
+  const donations = [
+    { label: 'Living Room Furniture', desc: 'Couches, chairs, coffee tables, bookshelves', icon: Sofa },
+    { label: 'Clothing & Linens', desc: 'Boxed or bagged clothing, coats, and bedding', icon: Shirt },
+    { label: 'Kitchenware', desc: 'Pots, pans, dishes, and small appliances', icon: Utensils },
+    { label: 'Large Appliances', desc: 'Working fridges, washers, dryers', icon: WashingMachine },
+    { label: 'Bedroom Sets', desc: 'Dressers, nightstands, and bed frames', icon: BedDouble },
+    { label: 'Household Goods', desc: 'Toys, books, decor, and miscellaneous items', icon: PackageOpen },
+  ];
   const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  const itemTypes = [
-    { icon: Heart, label: 'Furniture', desc: 'Sofas, tables, dressers, and chairs in good condition.' },
-    { icon: Gift, label: 'Clothing & Toys', desc: 'Boxed or bagged clothing, shoes, and children\'s items.' },
-    { icon: Box, label: 'Household Goods', desc: 'Kitchenware, books, decor, and small appliances.' },
-  ];
-
-  const whyUs = [
-    {
-      icon: Clock,
-      title: 'Easy Scheduling',
-      desc: 'Pick a time that works for you. We handle the heavy lifting.',
-    },
-    {
-      icon: Shield,
-      title: 'Tax Deductible',
-      desc: 'Receive a donation receipt for your tax records upon request.',
-    },
-    {
-      icon: Recycle,
-      title: 'Support Local',
-      desc: 'Your items go to local charities and families in need.',
-    },
-  ];
-
-  const steps = [
-    { n: '01', title: 'Schedule Pickup', desc: 'Book online or call us to set a convenient time.' },
-    { n: '02', title: 'We Collect', desc: 'Our team arrives and safely removes your donation items.' },
-    { n: '03', title: 'Items Delivered', desc: 'We transport your items to local charity centers.' },
-  ];
-
-  const faqs = [
-    { q: 'What items can be donated?', a: 'We accept gently used furniture, clothing, household goods, books, and working appliances. Items must be free of major stains, tears, or damage.' },
-    { q: 'Do you charge for donation pickups?', a: 'Yes, we charge a standard pickup and delivery fee to cover the labor, transportation, and coordination with local charities, saving you the time and effort.' },
-    { q: 'Will I get a tax receipt?', a: 'Yes, if the charity provides a receipt upon drop-off, we will pass it along to you for your tax records.' },
-  ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <PageHero
-        eyebrow="Donations"
-        title={<>Give your items<br />a <span className="text-brand">second life.</span></>}
-        subtitle="Convenient donation pickup for gently used furniture, clothing, and household goods. We do the heavy lifting and deliver to local charities."
-        image="/junk-removal.webp"
-        imageAlt="Team loading donation items"
-        imageCaption="Fully Insured • Support Local • Easy Scheduling"
+        eyebrow="Eco-Friendly Service"
+        title={<>Donations<br />Pickup</>}
+        subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. We sort, transport, and deliver directly to local charities and recycling centers."
+        image="/workers-opek.webp"
+        imageAlt="Donation pickup team loading items"
+        imageCaption="Eco-Friendly • Donation Receipts • Same-Day Available"
         primaryCta={{ label: 'Schedule Pickup', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
       />
 
-      <StatsStrip
-        stats={[
-          { value: '10K+', label: 'Items Donated' },
-          { value: '100%', label: 'Local Impact' },
-          { value: '< 2 hr', label: 'Avg Arrival' },
-          { value: '4.9★', label: 'Customer Rating' },
-        ]}
-      />
+      <TrustBadges />
 
-      {/* What we take */}
-      <section className="py-16 md:py-24 bg-white">
+      {/* Dynamic Grid instead of WhatWeHaul */}
+      <section className="py-16 md:py-20 border-b border-secondary-100 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">What We Accept</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-                Items perfect for<br />
-                <span className="text-brand">donating.</span>
-              </h2>
-            </div>
-            <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
-              Gently used items that can benefit families and organizations in your community.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {itemTypes.map((item) => (
-              <div
-                key={item.label}
-                className="group p-6 bg-secondary-50 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-secondary-100"
-              >
-                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand transition-colors">
-                  <item.icon size={20} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="font-black text-secondary text-base mb-1">{item.label}</h3>
-                <p className="text-secondary-500 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why us */}
-      <section className="py-16 md:py-24 bg-secondary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why Opek</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight max-w-3xl">
-              Donating made <span className="text-brand">effortless.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-            {whyUs.map((item, idx) => (
-              <div key={item.title} className={`group ${idx === 1 ? 'md:mt-12' : idx === 2 ? 'md:mt-6' : ''}`}>
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-5 group-hover:bg-brand transition-colors">
-                  <item.icon size={24} className="text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-secondary-500 text-sm md:text-[15px] leading-relaxed max-w-sm">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">How It Works</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight mb-5">
-                Three steps to<br />
-                <span className="text-brand">make a difference.</span>
-              </h2>
-              <button
-                onClick={() => navigate('/quote')}
-                className="mt-6 px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-all duration-300 shadow-md hover:shadow-xl inline-flex items-center gap-2"
-              >
-                Start a Quote <ArrowRight size={16} />
-              </button>
-            </div>
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <div key={step.n} className="flex gap-5 pb-6 border-b border-secondary-100 last:border-0">
-                  <span className="text-3xl md:text-4xl font-black text-brand leading-none shrink-0 w-12">{step.n}</span>
-                  <div>
-                    <h3 className="font-black text-secondary text-lg md:text-xl mb-1">{step.title}</h3>
-                    <p className="text-secondary-500 text-sm leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 mb-3">
               <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">FAQ</span>
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Common Donations</span>
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Common questions.
+            <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
+              Items We Accept
             </h2>
+            <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
+              Gently used items we can transport to local charities.
+            </p>
           </div>
-          <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border border-secondary-100 rounded-2xl overflow-hidden bg-white hover:border-secondary-200 transition-colors">
-                <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none cursor-pointer"
-                >
-                  <span className="font-bold text-base text-secondary pr-4">{faq.q}</span>
-                  <ChevronDown size={20} className={`text-secondary-300 shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180 text-brand' : ''}`} />
-                </button>
-                <div className={`grid transition-all duration-300 ease-in-out ${openFaq === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                  <div className="overflow-hidden">
-                    <p className="px-5 md:px-6 pb-5 md:pb-6 text-secondary-500 text-sm md:text-base leading-relaxed">{faq.a}</p>
-                  </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            {donations.map((item) => (
+              <div 
+                key={item.label} 
+                className="group relative p-5 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
+              >
+                <div className="hidden md:block absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="md:mb-6 shrink-0 mt-0.5 md:mt-0">
+                  <item.icon 
+                    className="w-7 h-7 md:w-14 md:h-14 text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                    strokeWidth={1.25} 
+                  />
+                </div>
+                <div>
+                  <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2">{item.label}</h3>
+                  <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-      
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-20 bg-white border-t border-secondary-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest mb-3">Ready When You Are</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary mb-4">
-            Give back <span className="text-brand">today.</span>
-          </h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 mt-8">
-            <button onClick={() => navigate('/booking')}
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              Book Online
-              <ArrowRight size={14} />
-            </button>
-            <span className="hidden sm:block w-px h-4 bg-secondary-200" />
-            <a href="tel:8313187139"
-              className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-brand transition-colors">
-              <Phone size={16} className="text-brand" />
-              (831) 318-7139
-            </a>
+
+      {/* SEO Content */}
+      <section className="py-16 bg-gray-50 border-t border-secondary-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
+            <h2 className="text-2xl font-bold text-secondary mb-4">Responsible Donation & Charity Delivery Services</h2>
+            <p className="mb-4">
+              When you're decluttering, upgrading furniture, or dealing with an <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">estate cleanout</Link>, throwing usable items in a landfill shouldn't be the only option. Our <strong>donations pickup</strong> service makes it easy to give your gently used goods a second life. We partner with local charities and non-profits to ensure that clothing, furniture, and household items end up in the hands of those who need them most.
+            </p>
+            <p className="mb-4">
+              We handle all the heavy lifting, sorting, and transport. Whether it's a single couch or an entire house full of items, our background-checked crews will carefully remove your donations without damaging your property. Whenever possible, we will provide you with a tax-deductible donation receipt from the receiving charity. Items that cannot be donated are responsibly recycled to minimize environmental impact.
+            </p>
+            <p>
+              Available nationwide, from <Link to="/locations/houston" className="text-brand hover:underline font-medium">Houston</Link> to <Link to="/locations/chicago" className="text-brand hover:underline font-medium">Chicago</Link>, our eco-friendly approach is built into everything we do. If your donation pickup is part of a larger move, our <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> team can also assist with loading your moving truck. Need to clear out an office? Our <Link to="/services/commercial" className="text-brand hover:underline font-medium">commercial junk removal</Link> team ensures old desks and chairs are donated to community organizations. Help us keep items out of landfills while supporting your local community.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA + Service Areas */}
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+
+            {/* CTA */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05] mb-6">
+                Pass it on.<br />We do the heavy lifting.
+              </h2>
+              <div className="flex flex-col sm:flex-row items-start gap-4 mb-8">
+                <button
+                  onClick={() => navigate('/quote')}
+                  className="w-full sm:w-auto px-8 py-4 bg-secondary text-white text-sm font-bold uppercase tracking-wider hover:bg-secondary-600 transition-all duration-300 shadow-md hover:shadow-xl text-center"
+                >
+                  Get a Free Quote
+                </button>
+                <button
+                  onClick={() => navigate('/booking')}
+                  className="w-full sm:w-auto px-8 py-4 bg-brand text-white text-sm font-bold uppercase tracking-wider hover:bg-brand-600 transition-all duration-300 shadow-md hover:shadow-xl text-center"
+                >
+                  Book Online
+                </button>
+              </div>
+              <a
+                href="tel:8313187139"
+                className="inline-flex items-center gap-2 text-secondary-400 hover:text-secondary transition-colors text-sm"
+              >
+                <Phone size={14} />
+                <span>(831) 318-7139</span>
+              </a>
+            </div>
+
+            {/* Service Areas */}
+            <div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <MapPin size={13} className="text-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
+              </div>
+              <p className="text-2xl font-black text-secondary tracking-tight leading-[1.1] mb-2">Nationwide coverage.</p>
+              <p className="text-secondary-400 text-sm leading-relaxed mb-6">Available in all 50 states. Same flat-rate model, same crew standards — wherever you are.</p>
+              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Popular cities</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Dallas-Fort Worth, TX', slug: 'dallas-fort-worth' },
+                  { label: 'Jacksonville, FL', slug: 'jacksonville' },
+                  { label: 'Atlanta, GA', slug: 'atlanta' },
+                  { label: 'Los Angeles, CA', slug: 'los-angeles' },
+                  { label: 'Houston, TX', slug: 'houston' },
+                  { label: 'Chicago, IL', slug: 'chicago' },
+                  { label: 'Phoenix, AZ', slug: 'phoenix' },
+                  { label: 'Miami, FL', slug: 'miami' },
+                ].map((city) => (
+                  <Link
+                    key={city.slug}
+                    to={`/locations/${city.slug}`}
+                    className="group flex items-center justify-between px-3 py-2.5 bg-secondary-50/50 hover:bg-secondary-50 transition-colors"
+                  >
+                    <span className="text-secondary text-xs font-medium group-hover:text-brand transition-colors">{city.label}</span>
+                    <span className="text-secondary-300 text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

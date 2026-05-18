@@ -27,22 +27,23 @@ export const WhatWeHaul: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {itemTypes.map((item) => (
             <div 
               key={item.label} 
-              className="group relative p-6 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300"
+              className="group relative p-5 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
             >
-              <div className="absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="mb-6">
+              <div className="hidden md:block absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="md:mb-6 shrink-0 mt-0.5 md:mt-0">
                 <item.icon 
-                  size={56} 
-                  strokeWidth={1} 
-                  className="text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                  className="w-7 h-7 md:w-14 md:h-14 text-secondary-300 group-hover:text-brand transition-colors duration-500" 
+                  strokeWidth={1.25} 
                 />
               </div>
-              <h3 className="font-black text-secondary text-lg mb-2">{item.label}</h3>
-              <p className="text-secondary-500 text-sm leading-relaxed">{item.desc}</p>
+              <div>
+                <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2">{item.label}</h3>
+                <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.desc}</p>
+              </div>
             </div>
           ))}
         </div>
