@@ -13,20 +13,14 @@ export interface DetectedItem {
 
 export interface PriceEstimate {
   estimatedVolume: string;
-  priceRange: {
-    min: number;
-    max: number;
-  };
+  price: number;
   summary: string;
 }
 
 export interface QuoteEstimate {
   itemsDetected: string[];
   estimatedVolume: string;
-  priceRange: {
-    min: number;
-    max: number;
-  };
+  price: number;
   summary: string;
 }
 

@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { detectItemsFromPhoto, getPriceForItems } from '../services/openaiService';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { detectItemsFromPhoto } from '../services/openaiService';
+import { calculateStaticPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
+import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase } from '../lib/supabase';
 
 // ── Item Catalog ──
@@ -148,17 +150,48 @@ type ServedCity = { city: string; state: string };
 
 export const QuotePage: React.FC = () => {
   const navigate = useNavigate();
-  const [zipVerified, setZipVerified] = useState(false);
-  const [zipValue, setZipValue] = useState('');
+  const location = useLocation();
+  const incomingState = location.state as {
+    zipResult?: { city: string; state: string; served?: boolean } | null;
+    zipValue?: string;
+    serviceType?: string;
+  } | null;
+
+  // Map incoming serviceType string to internal service type if present
+  const mappedServiceType: 'junk_removal' | 'donation_pickup' | 'moving_labor' | null =
+    incomingState?.serviceType
+      ? (incomingState.serviceType.toLowerCase().includes('donation') ? 'donation_pickup'
+        : incomingState.serviceType.toLowerCase().includes('moving') ? 'moving_labor'
+        : 'junk_removal')
+      : null;
+
+  const [zipVerified, setZipVerified] = useState(!!incomingState?.zipResult);
+  const [zipValue, setZipValue] = useState(incomingState?.zipValue || '');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
-  const [zipResult, setZipResult] = useState<({ city: string; state: string; servedCity: ServedCity | null }) | null>(null);
-  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(null);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | null>(null);
+  const [zipResult, setZipResult] = useState<({ city: string; state: string; servedCity: ServedCity | null }) | null>(
+    incomingState?.zipResult
+      ? { city: incomingState.zipResult.city, state: incomingState.zipResult.state, servedCity: { city: incomingState.zipResult.city, state: incomingState.zipResult.state } }
+      : null
+  );
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(mappedServiceType);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | null>(incomingState?.serviceType ? 'manual' : null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
-  // Auto-advance on served ZIP
+  // Moving Labor State
+  const [movingServiceType, setMovingServiceType] = useState<'Loading Only' | 'Unloading Only' | 'Both'>('Both');
+  const [movingType, setMovingType] = useState<'Storage Unit' | 'Box Truck' | 'Inside Home' | 'Other'>('Inside Home');
+  const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
+  const [movingHours, setMovingHours] = useState<number>(2);
+
+  // Auto-advance for Moving Labor selection
+  useEffect(() => {
+    if (selectedService === 'moving_labor') {
+      setSelectedOption('moving_labor');
+    }
+  }, [selectedService]);
   useEffect(() => {
     if (zipResult?.servedCity) {
       const t = setTimeout(() => setZipVerified(true), 2000);
@@ -304,12 +337,13 @@ export const QuotePage: React.FC = () => {
     setPricingLoading(true);
     setError(null);
     try {
-      const price = await getPriceForItems(detectedItems);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      const price = calculateStaticPrice(detectedItems);
       setPriceEstimate(price);
       setEstimate({
         itemsDetected: detectedItems.map(i => `${i.quantity}x ${i.name}`),
         estimatedVolume: price.estimatedVolume,
-        priceRange: price.priceRange,
+        price: price.price,
         summary: price.summary,
       });
       setAiStep('result');
@@ -380,12 +414,13 @@ export const QuotePage: React.FC = () => {
     setManualPricingLoading(true);
     setError(null);
     try {
-      const price = await getPriceForItems(selectedItems);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      const price = calculateStaticPrice(selectedItems);
       setManualPriceEstimate(price);
       setEstimate({
         itemsDetected: selectedItems.map(i => `${i.quantity}x ${i.name}`),
         estimatedVolume: price.estimatedVolume,
-        priceRange: price.priceRange,
+        price: price.price,
         summary: price.summary,
       });
       setManualStep('result');
@@ -414,48 +449,121 @@ export const QuotePage: React.FC = () => {
     price: PriceEstimate,
     onEditBack: () => void,
     backLabel: string
-  ) => (
-    <div className="space-y-6">
-      {/* Price header */}
-      <div className="text-center">
-        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-1">Estimated Price</p>
-        <p className="text-3xl font-black text-secondary">${price.priceRange.min} – ${price.priceRange.max}</p>
-        <p className="text-xs text-secondary-400 mt-1">{price.estimatedVolume}</p>
-      </div>
+  ) => {
+    const pickupFee = Math.round(price.price * 0.65);
+    const disposalFee = price.price - pickupFee;
+    const isMovingLabor = selectedOption === 'moving_labor';
 
-      {/* Items list - minimal */}
-      <div>
-        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
-          {items.reduce((sum, i) => sum + i.quantity, 0)} items
-        </p>
-        <div className="space-y-1">
-          {items.map((item) => (
-            <div key={item.id} className="flex items-center justify-between text-sm">
-              <span className="text-secondary-600">{item.name}</span>
-              {item.quantity > 1 && <span className="text-secondary-400 text-xs">×{item.quantity}</span>}
+    return (
+      <div className="space-y-6">
+        {/* Price header breakdown */}
+        <div className="bg-secondary-50 rounded-2xl p-5 md:p-6 border border-secondary-100">
+          {!isMovingLabor && (
+            <div className="space-y-3 mb-5 pb-5 border-b border-secondary-200">
+              <div className="flex justify-between items-center text-sm md:text-base">
+                <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
+                <span className="text-secondary-900 font-bold">${pickupFee}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm md:text-base">
+                <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
+                <span className="text-secondary-900 font-bold">${disposalFee}</span>
+              </div>
             </div>
-          ))}
+          )}
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+              <p className="text-xs text-secondary-500 mt-1">{price.estimatedVolume}</p>
+            </div>
+            <p className="text-3xl md:text-4xl font-black text-brand">${price.price}</p>
+          </div>
+        </div>
+
+        {/* Items list - minimal */}
+        <div>
+          <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
+            {items.reduce((sum, i) => sum + i.quantity, 0)} items
+          </p>
+          <div className="space-y-1">
+            {items.map((item) => (
+              <div key={item.id} className="flex items-center justify-between text-sm">
+                <span className="text-secondary-600">{item.name}</span>
+                {item.quantity > 1 && <span className="text-secondary-400 text-xs">×{item.quantity}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Summary */}
+        <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
+
+        {/* CTA */}
+        <div className="space-y-3 pt-2">
+          <button
+            onClick={() => setShowBookingForm(true)}
+            className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
+          >
+            Continue to Booking <ArrowRight size={14} />
+          </button>
+          <button onClick={onEditBack} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
+            <ArrowLeft size={14} /> {backLabel}
+          </button>
+          <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
         </div>
       </div>
+    );
+  };
 
-      {/* Summary */}
-      <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
+  // ── Booking form screen (embedded contact + address + review) ──
+  if (showBookingForm && estimate) {
+    const serviceTypeLabel =
+      selectedService === 'junk_removal' ? 'Junk Removal'
+      : selectedService === 'donation_pickup' ? 'Donation Pick Up'
+      : selectedService === 'moving_labor' ? 'Moving Labor'
+      : 'Junk Removal';
+    const defaultZip = zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined;
 
-      {/* CTA */}
-      <div className="space-y-3 pt-2">
-        <button
-          onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService } })}
-          className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
-        >
-          Continue to Booking <ArrowRight size={14} />
-        </button>
-        <button onClick={onEditBack} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
-          <ArrowLeft size={14} /> {backLabel}
-        </button>
-        <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => setShowBookingForm(false)}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> Back to estimate
+          </button>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
+            Book your <span className="text-brand">pickup.</span>
+          </h1>
+          <p className="text-secondary-400 text-base">A matched provider confirms within 15 minutes.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          {/* Mini estimate banner */}
+          <div className="bg-secondary-50 rounded-2xl p-4 border border-secondary-100 mb-8 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+              <p className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</p>
+            </div>
+            <p className="text-2xl font-black text-brand">${estimate.price}</p>
+          </div>
+
+          <BookingDetailsForm
+            estimate={estimate}
+            image={image}
+            serviceType={serviceTypeLabel}
+            defaultZip={defaultZip}
+            onBack={() => setShowBookingForm(false)}
+            backLabel="Back to estimate"
+          />
+        </div>
+
+        <div>
+          <TrustBadges />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   // ── Submitted screen ──
   if (submitted) {
@@ -595,41 +703,241 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedService('junk_removal')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <Armchair size={24} className="text-brand mb-4" strokeWidth={2} />
-              <h3 className="text-lg font-black text-secondary mb-1">Junk Removal</h3>
-              <p className="text-secondary-400 text-sm mb-4">We haul away your unwanted items.</p>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
-                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <Armchair size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">We haul away your unwanted items</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
             <button
               onClick={() => setSelectedService('donation_pickup')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <HeartHandshake size={24} className="text-brand mb-4" strokeWidth={2} />
-              <h3 className="text-lg font-black text-secondary mb-1">Donation Pick Up</h3>
-              <p className="text-secondary-400 text-sm mb-4">We deliver to local charities.</p>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
-                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <HeartHandshake size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">We deliver gently used items to local charities</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
             <button
               onClick={() => setSelectedService('moving_labor')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <BicepsFlexed size={24} className="text-brand mb-4" strokeWidth={2} />
-              <h3 className="text-lg font-black text-secondary mb-1">Moving Labor</h3>
-              <p className="text-secondary-400 text-sm mb-4">Hourly labor for heavy lifting.</p>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
-                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <BicepsFlexed size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Dedicated Moving Labor Quote Form ──
+  if (selectedOption === 'moving_labor') {
+    const movingPricePerHour = movingHelpers === 2 ? 149 : 189;
+    const movingEstimateTotal = movingPricePerHour * movingHours;
+
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> Back to services
+          </button>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            Book <span className="text-brand">Moving Labor.</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            Get professional heavy-lifting assistance. 2-hour minimum applies.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+              {/* Service Selection */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { label: 'Loading Only', icon: <Upload size={20} /> },
+                    { label: 'Unloading Only', icon: <Download size={20} /> },
+                    { label: 'Both', icon: <RefreshCw size={20} /> }
+                  ].map((service) => {
+                    const isSelected = movingServiceType === service.label;
+                    return (
+                      <button
+                        key={service.label}
+                        onClick={() => setMovingServiceType(service.label as any)}
+                        className={`group p-4 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          {service.icon}
+                        </div>
+                        <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          {service.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Move Type */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    { label: 'Storage Unit', icon: <Warehouse size={20} /> },
+                    { label: 'Box Truck', icon: <Truck size={20} /> },
+                    { label: 'Inside Home', icon: <Home size={20} /> },
+                    { label: 'Other', icon: <Package size={20} /> }
+                  ].map((type) => {
+                    const isSelected = movingType === type.label;
+                    return (
+                      <button
+                        key={type.label}
+                        onClick={() => setMovingType(type.label as any)}
+                        className={`group p-4 border rounded-2xl flex flex-col items-center gap-3 transition-all text-center ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          {type.icon}
+                        </div>
+                        <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          {type.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-secondary-100/50"></div>
+
+              {/* Helpers Selection */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setMovingHelpers(2)}
+                    className={`group p-4 md:p-5 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
+                      movingHelpers === 2 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                    }`}
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                      movingHelpers === 2 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                    }`}>
+                      <div className="flex -space-x-1">
+                        <BicepsFlexed size={20} />
+                        <BicepsFlexed size={20} />
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <span className={`block text-sm font-black transition-colors ${movingHelpers === 2 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>2 Helpers</span>
+                      <span className={`block text-[10px] mt-1 font-bold ${movingHelpers === 2 ? 'text-brand/80' : 'text-secondary-400'}`}>$149 / hour</span>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setMovingHelpers(3)}
+                    className={`group p-4 md:p-5 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
+                      movingHelpers === 3 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                    }`}
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                      movingHelpers === 3 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                    }`}>
+                      <div className="flex -space-x-1">
+                        <BicepsFlexed size={20} />
+                        <BicepsFlexed size={20} />
+                        <BicepsFlexed size={20} />
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <span className={`block text-sm font-black transition-colors ${movingHelpers === 3 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>3 Helpers</span>
+                      <span className={`block text-[10px] mt-1 font-bold ${movingHelpers === 3 ? 'text-brand/80' : 'text-secondary-400'}`}>$189 / hour</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Hours Selection */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
+                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
+                      <Clock size={20} />
+                    </div>
+                    <div>
+                      <div className="text-sm font-black text-secondary">Time Needed</div>
+                      <div className="text-[10px] text-secondary-400 font-bold">{movingHours} hours selected</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                    <button
+                      onClick={() => setMovingHours(h => Math.max(2, h - 1))}
+                      disabled={movingHours <= 2}
+                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                    >
+                      <Minus size={18} />
+                    </button>
+                    <span className="w-8 text-center text-xl font-black text-brand">{movingHours}</span>
+                    <button
+                      onClick={() => setMovingHours(h => Math.min(12, h + 1))}
+                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                    >
+                      <Plus size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+          {/* Pricing Result */}
+          {renderPriceResult(
+            [{ id: 'moving-labor', name: `${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`, quantity: 1 }],
+            {
+              price: movingEstimateTotal,
+              estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
+              summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
+            },
+            () => { setSelectedService(null); setSelectedOption(null); },
+            "Back to services"
+          )}
         </div>
       </div>
     );
@@ -657,27 +965,35 @@ export const QuotePage: React.FC = () => {
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           {/* Method Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedOption('ai')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <ScanSearch size={24} className="text-brand mb-4" strokeWidth={2} />
-              <h3 className="text-lg font-black text-secondary mb-1">AI Photo Estimate</h3>
-              <p className="text-secondary-400 text-sm mb-4">Snap a photo for instant AI pricing</p>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
-                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <ScanSearch size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">AI Photo Estimate</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Snap a photo for instant AI pricing</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
             <button
               onClick={() => setSelectedOption('manual')}
-              className="group p-6 border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all text-left md:rounded-2xl rounded-xl"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <ListChecks size={24} className="text-secondary mb-4" strokeWidth={2} />
-              <h3 className="text-lg font-black text-secondary mb-1">Select Your Items</h3>
-              <p className="text-secondary-400 text-sm mb-4">Pick items from our catalog for a quote</p>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary group-hover:text-brand transition-colors">
-                Start <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <ListChecks size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Pick items from our catalog for a quote</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
           </div>
@@ -1023,13 +1339,13 @@ export const QuotePage: React.FC = () => {
                     />
                   </div>
 
-                  {/* Category accordion */}
-                  <div className="border border-secondary-100 rounded-2xl overflow-hidden">
+                  {/* Category list */}
+                  <div className="space-y-3">
                     {filteredCatalog.map((category) => {
                       const isExpanded = expandedCategory === category.label || catalogSearch.trim() !== '';
                       const selectedInCategory = category.items.filter(i => isItemSelected(i.name)).length;
                       return (
-                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }} className="border-b border-secondary-100 last:border-b-0">
+                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }} className={`bg-white border transition-all rounded-2xl overflow-hidden ${isExpanded ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'}`}>
                           <button
                             onClick={() => {
                               const newCat = isExpanded && !catalogSearch ? null : category.label;
@@ -1038,67 +1354,83 @@ export const QuotePage: React.FC = () => {
                                 setTimeout(() => scrollToElement(categoryRefs.current[category.label], -20), 80);
                               }
                             }}
-                            className="w-full flex items-center justify-between px-4 py-3.5 bg-white hover:bg-secondary-50 transition-colors text-left"
+                            className="w-full flex items-center justify-between p-4 md:p-5 text-left group"
                           >
-                            <div className="flex items-center gap-2.5">
-                              <span className="text-brand">{category.icon}</span>
-                              <span className="text-sm font-bold text-secondary">{category.label}</span>
+                            <div className="flex items-center gap-4">
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${isExpanded ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
+                                {category.icon}
+                              </div>
+                              <div>
+                                <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${isExpanded ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                                  {category.label}
+                                </h3>
+                                <p className="text-secondary-400 text-xs hidden sm:block">
+                                  {category.items.length} items
+                                </p>
+                              </div>
                               {selectedInCategory > 0 && (
-                                <span className="bg-brand text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                                  {selectedInCategory}
+                                <span className="ml-2 bg-brand text-white text-[10px] font-bold px-2 py-1 rounded-full min-w-[20px] text-center">
+                                  {selectedInCategory} selected
                                 </span>
                               )}
                             </div>
-                            <ChevronDown size={16} className={`text-secondary-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                            <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${isExpanded ? 'border-brand bg-brand text-white' : 'border-secondary-100 text-secondary-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white'}`}>
+                              <ChevronDown size={16} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                            </div>
                           </button>
                           {isExpanded && (
-                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2 bg-secondary-50/50">
-                              {category.items.map((item) => {
-                                const selected = isItemSelected(item.name);
-                                const selectedItem = selectedItems.find(i => i.name === item.name);
-                                return (
-                                  <button
-                                    key={item.name}
-                                    className={`group relative flex flex-col items-center gap-1.5 p-2 transition-all duration-200 text-center cursor-pointer ${
-                                      selected ? 'scale-[1.05]' : 'hover:scale-105 active:scale-95'
-                                    }`}
-                                    onClick={() => !selected && toggleCatalogItem(item.name)}
-                                  >
-                                    {selected && (
-                                      <button
-                                        onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                        className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10"
-                                      >
-                                        <X size={8} className="text-white" strokeWidth={3} />
-                                      </button>
-                                    )}
-                                    <img
-                                      src={item.image}
-                                      alt={item.name}
-                                      className="w-10 h-10 transition-all duration-200"
-                                      style={{
-                                        filter: selected
-                                          ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
-                                          : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
-                                      }}
-                                    />
-                                    <span className={`text-[10px] font-bold leading-tight line-clamp-2 transition-colors ${
-                                      selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
-                                    }`}>{item.name}</span>
-                                    {selected && selectedItem && (
-                                      <div className="flex items-center gap-1 mt-0.5" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                                          <Minus size={10} className="text-secondary-400" />
+                            <div className="border-t border-secondary-100 bg-secondary-50/30 p-4">
+                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                                {category.items.map((item) => {
+                                  const selected = isItemSelected(item.name);
+                                  const selectedItem = selectedItems.find(i => i.name === item.name);
+                                  return (
+                                    <button
+                                      key={item.name}
+                                      className={`group relative flex flex-col items-center gap-2 p-3 bg-white border rounded-xl transition-all duration-200 text-center cursor-pointer ${
+                                        selected ? 'border-brand shadow-sm shadow-brand/10 scale-[1.02]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02] active:scale-[0.98]'
+                                      }`}
+                                      onClick={() => !selected && toggleCatalogItem(item.name)}
+                                    >
+                                      {selected && (
+                                        <button
+                                          onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
+                                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-md transition-colors z-10"
+                                        >
+                                          <X size={12} className="text-white" strokeWidth={3} />
                                         </button>
-                                        <span className="w-4 text-center text-[10px] font-bold text-secondary">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
-                                          <Plus size={10} className="text-secondary-400" />
-                                        </button>
+                                      )}
+                                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-1 ${selected ? 'bg-brand/5' : 'bg-transparent'}`}>
+                                        <img
+                                          src={item.image}
+                                          alt={item.name}
+                                          className="w-10 h-10 transition-all duration-200"
+                                          style={{
+                                            filter: selected
+                                              ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
+                                              : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
+                                          }}
+                                        />
                                       </div>
-                                    )}
-                                  </button>
-                                );
-                              })}
+                                      <span className={`text-[11px] font-bold leading-tight line-clamp-2 transition-colors ${
+                                        selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
+                                      }`}>{item.name}</span>
+                                      
+                                      {selected && selectedItem && (
+                                        <div className="flex items-center gap-1.5 mt-2 bg-secondary-50 rounded-lg p-1" onClick={(e) => e.stopPropagation()}>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand transition-colors">
+                                            <Minus size={12} className="text-secondary-600" />
+                                          </button>
+                                          <span className="w-4 text-center text-xs font-black text-secondary">{selectedItem.quantity}</span>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand transition-colors">
+                                            <Plus size={12} className="text-secondary-600" />
+                                          </button>
+                                        </div>
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
                             </div>
                           )}
                         </div>
