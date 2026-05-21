@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice } from '../services/pricingService';
@@ -175,21 +175,44 @@ export const QuotePage: React.FC = () => {
       : null
   );
   const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(mappedServiceType);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | null>(incomingState?.serviceType ? 'manual' : null);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | null>(incomingState?.serviceType ? 'manual' : null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showInsuranceModal, setShowInsuranceModal] = useState(false);
 
   // Moving Labor State
   const [movingServiceType, setMovingServiceType] = useState<'Loading Only' | 'Unloading Only' | 'Both'>('Both');
   const [movingType, setMovingType] = useState<'Storage Unit' | 'Box Truck' | 'Inside Home' | 'Other'>('Inside Home');
   const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
   const [movingHours, setMovingHours] = useState<number>(2);
+  const [movingStep, setMovingStep] = useState<'details' | 'crew' | 'result'>('details');
 
-  // Auto-advance for Moving Labor selection
+  useEffect(() => {
+    if (selectedOption !== 'moving_labor') {
+      setMovingStep('details');
+    }
+  }, [selectedOption]);
+
+  // Donation Pickup State
+  const [donationCharity, setDonationCharity] = useState<'No Preference' | 'Goodwill' | 'Habitat ReStore' | 'Local Shelter'>('No Preference');
+  const [donationReceipt, setDonationReceipt] = useState<boolean>(true);
+  const [donationSize, setDonationSize] = useState<'Bagged/Boxed Items' | 'Few Furniture Items' | 'Full Room/Multiple Items'>('Few Furniture Items');
+  const [donationLocation, setDonationLocation] = useState<'Curbside/Outside' | 'Garage/Porch' | 'Inside Home (Ground Floor)' | 'Inside Home (Stairs)'>('Garage/Porch');
+  const [donationStep, setDonationStep] = useState<'details' | 'size' | 'result'>('details');
+
+  useEffect(() => {
+    if (selectedOption !== 'donation_pickup') {
+      setDonationStep('details');
+    }
+  }, [selectedOption]);
+
+  // Auto-advance for service selections
   useEffect(() => {
     if (selectedService === 'moving_labor') {
       setSelectedOption('moving_labor');
+    } else if (selectedService === 'donation_pickup') {
+      setSelectedOption('donation_pickup');
     }
   }, [selectedService]);
   useEffect(() => {
@@ -258,7 +281,7 @@ export const QuotePage: React.FC = () => {
   // Auto-scroll to top when step changes
   useEffect(() => {
     scrollToElement(contentTopRef.current, -120);
-  }, [aiStep, manualStep, selectedOption, scrollToElement]);
+  }, [aiStep, manualStep, selectedOption, movingStep, donationStep, scrollToElement]);
 
   // If all items get removed while on review, send user back to selection
   useEffect(() => {
@@ -452,13 +475,13 @@ export const QuotePage: React.FC = () => {
   ) => {
     const pickupFee = Math.round(price.price * 0.65);
     const disposalFee = price.price - pickupFee;
-    const isMovingLabor = selectedOption === 'moving_labor';
+    const isSpecialService = selectedOption === 'moving_labor' || selectedOption === 'donation_pickup';
 
     return (
       <div className="space-y-6">
         {/* Price header breakdown */}
         <div className="bg-secondary-50 rounded-2xl p-5 md:p-6 border border-secondary-100">
-          {!isMovingLabor && (
+          {!isSpecialService && (
             <div className="space-y-3 mb-5 pb-5 border-b border-secondary-200">
               <div className="flex justify-between items-center text-sm md:text-base">
                 <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
@@ -476,6 +499,28 @@ export const QuotePage: React.FC = () => {
               <p className="text-xs text-secondary-500 mt-1">{price.estimatedVolume}</p>
             </div>
             <p className="text-3xl md:text-4xl font-black text-brand">${price.price}</p>
+          </div>
+        </div>
+
+        {/* Safe Protect Sticker */}
+        <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+            <ShieldCheck size={18} strokeWidth={2.5} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+              <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+            </div>
+            <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+              Your service is protected by our multi-million dollar liability insurance.{' '}
+              <button 
+                onClick={() => setShowInsuranceModal(true)} 
+                className="text-emerald-900 font-bold hover:underline"
+              >
+                Learn more
+              </button>
+            </p>
           </div>
         </div>
 
@@ -499,25 +544,90 @@ export const QuotePage: React.FC = () => {
 
         {/* CTA */}
         <div className="space-y-3 pt-2">
-          <button
-            onClick={() => {
-              setEstimate({
-                itemsDetected: items.map(i => `${i.quantity}x ${i.name}`),
-                estimatedVolume: price.estimatedVolume,
-                price: price.price,
-                summary: price.summary,
-              });
-              setShowBookingForm(true);
-            }}
-            className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
-          >
-            Continue to Booking <ArrowRight size={14} />
-          </button>
+          <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+            <button
+              onClick={() => {
+                setEstimate({
+                  itemsDetected: items.map(i => `${i.quantity}x ${i.name}`),
+                  estimatedVolume: price.estimatedVolume,
+                  price: price.price,
+                  summary: price.summary,
+                });
+                setShowBookingForm(true);
+              }}
+              className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span className="text-sm font-black uppercase tracking-wider">
+                Continue to Booking
+              </span>
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
+          </div>
           <button onClick={onEditBack} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
             <ArrowLeft size={14} /> {backLabel}
           </button>
           <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
         </div>
+
+        {/* Insurance Modal */}
+        {showInsuranceModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
+            <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                    <ShieldCheck size={22} strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-secondary text-lg">Safe Protect™</h3>
+                    <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Premium Coverage Included</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setShowInsuranceModal(false)}
+                  className="w-8 h-8 rounded-full bg-secondary-50 hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <p className="text-xs text-secondary-500 leading-relaxed">
+                  We prioritize safety and peace of mind. Every service is covered by our comprehensive insurance policy at no extra charge.
+                </p>
+                <div className="h-px bg-secondary-100"></div>
+                <div className="space-y-3">
+                  <div className="flex gap-3">
+                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-black text-secondary">Multi-Million Liability Coverage</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects your residential or commercial property from accidental damage during service.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-black text-secondary">Fully Background-Checked Crew</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Every partner crew is thoroughly screened, vetted, and background-checked for absolute safety.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-black text-secondary">Satisfaction Guarantee</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, our support team will resolve it quickly.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowInsuranceModal(false)}
+                className="w-full mt-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-secondary/15 transition-all"
+              >
+                Got it, thanks
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -541,7 +651,7 @@ export const QuotePage: React.FC = () => {
             <ArrowLeft size={14} /> Back to estimate
           </button>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
-            Book your <span className="text-brand">pickup.</span>
+            Book your <span className="text-brand">{selectedService === 'moving_labor' ? 'service' : 'pickup'}.</span>
           </h1>
           <p className="text-secondary-400 text-base">A matched provider confirms within 15 minutes.</p>
         </div>
@@ -772,10 +882,19 @@ export const QuotePage: React.FC = () => {
       <div className="min-h-screen bg-white">
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
-            onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+            onClick={() => {
+              if (movingStep === 'crew') {
+                setMovingStep('details');
+              } else if (movingStep === 'result') {
+                setMovingStep('crew');
+              } else {
+                setSelectedService(null);
+                setSelectedOption(null);
+              }
+            }}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            <ArrowLeft size={14} /> Back to services
+            <ArrowLeft size={14} /> {movingStep === 'crew' ? 'Back to details' : movingStep === 'result' ? 'Back to crew & time' : 'Back to services'}
           </button>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
             Book <span className="text-brand">Moving Labor.</span>
@@ -786,30 +905,60 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+          {/* Progress bar */}
+          {(() => {
+            const movingSteps = ['Details', 'Crew & Time', 'Estimate'];
+            const movingStepIndex = movingStep === 'details' ? 0 : movingStep === 'crew' ? 1 : 2;
+            return (
+              <div className="mb-10">
+                <div className="flex items-center justify-between mb-2">
+                  {movingSteps.map((label, i) => (
+                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                      i < movingStepIndex ? 'text-brand' : i === movingStepIndex ? 'text-secondary' : 'text-secondary-300'
+                    }`}>
+                      {i < movingStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                    </span>
+                  ))}
+                </div>
+                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${(movingStepIndex / (movingSteps.length - 1)) * 100}%` }}
+                  />
+                </div>
+                <p className="text-[10px] text-secondary-400 mt-1.5">Step {movingStepIndex + 1} of {movingSteps.length}</p>
+              </div>
+            );
+          })()}
+
+          {/* STEP 1: DETAILS */}
+          {movingStep === 'details' && (
+            <div className="space-y-8">
               {/* Service Selection */}
               <div>
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { label: 'Loading Only', icon: <PackagePlus size={20} /> },
-                    { label: 'Unloading Only', icon: <PackageMinus size={20} /> },
-                    { label: 'Both', icon: <ArrowLeftRight size={20} /> }
+                    { label: 'Loading Only', icon: PackagePlus },
+                    { label: 'Unloading Only', icon: PackageMinus },
+                    { label: 'Both', icon: ArrowLeftRight }
                   ].map((service) => {
                     const isSelected = movingServiceType === service.label;
+                    const Icon = service.icon;
                     return (
                       <button
                         key={service.label}
                         onClick={() => setMovingServiceType(service.label as any)}
-                        className={`group p-4 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
+                        className={`group p-3 sm:p-4 border rounded-xl sm:rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-3 transition-all w-full ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                        <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                           isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
                         }`}>
-                          {service.icon}
+                          <Icon size={18} className="sm:w-5 sm:h-5" />
                         </div>
                         <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
                           {service.label}
@@ -825,28 +974,29 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
-                    { label: 'Storage Unit', icon: <Warehouse size={20} /> },
-                    { label: 'Box Truck', icon: <Truck size={20} /> },
-                    { label: 'Inside Home', icon: <Home size={20} /> },
-                    { label: 'Other', icon: <Boxes size={20} /> }
+                    { label: 'Storage Unit', icon: Warehouse },
+                    { label: 'Box Truck', icon: Truck },
+                    { label: 'Inside Home', icon: Home },
+                    { label: 'Other', icon: Boxes }
                   ].map((type) => {
                     const isSelected = movingType === type.label;
+                    const Icon = type.icon;
                     return (
                       <button
                         key={type.label}
                         onClick={() => setMovingType(type.label as any)}
-                        className={`group p-4 border rounded-2xl flex flex-col items-center gap-3 transition-all text-center ${
+                        className={`group p-2.5 sm:p-4 border rounded-xl sm:rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-2.5 transition-all w-full ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                           isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
                         }`}>
-                          {type.icon}
+                          <Icon size={16} className="sm:w-5 sm:h-5" />
                         </div>
-                        <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                        <span className={`text-xs sm:text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
                           {type.label}
                         </span>
                       </button>
@@ -855,49 +1005,70 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="w-full h-px bg-secondary-100/50"></div>
+              <div className="pt-4">
+                <button
+                  onClick={() => setMovingStep('crew')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Continue
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to services
+                </button>
+              </div>
+            </div>
+          )}
 
+          {/* STEP 2: CREW & TIME */}
+          {movingStep === 'crew' && (
+            <div className="space-y-8">
               {/* Helpers Selection */}
               <div>
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setMovingHelpers(2)}
-                    className={`group p-4 md:p-5 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
-                      movingHelpers === 2 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                    className={`group p-3 md:p-5 border rounded-xl md:rounded-2xl flex flex-row md:flex-col items-center text-left md:text-center gap-3 transition-all w-full ${
+                      movingHelpers === 2 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                       movingHelpers === 2 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
                     }`}>
                       <div className="flex -space-x-1">
-                        <BicepsFlexed size={20} />
-                        <BicepsFlexed size={20} />
+                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
+                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
                       </div>
                     </div>
-                    <div className="text-center">
+                    <div className="flex-1 md:flex-initial">
                       <span className={`block text-sm font-black transition-colors ${movingHelpers === 2 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>2 Helpers</span>
-                      <span className={`block text-[10px] mt-1 font-bold ${movingHelpers === 2 ? 'text-brand/80' : 'text-secondary-400'}`}>$149 / hour</span>
+                      <span className={`block text-[10px] mt-0.5 md:mt-1 font-bold ${movingHelpers === 2 ? 'text-brand/80' : 'text-secondary-400'}`}>$149 / hour</span>
                     </div>
                   </button>
                   <button
                     onClick={() => setMovingHelpers(3)}
-                    className={`group p-4 md:p-5 border rounded-2xl flex flex-col items-center gap-3 transition-all ${
-                      movingHelpers === 3 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.02]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02]'
+                    className={`group p-3 md:p-5 border rounded-xl md:rounded-2xl flex flex-row md:flex-col items-center text-left md:text-center gap-3 transition-all w-full ${
+                      movingHelpers === 3 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                       movingHelpers === 3 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
                     }`}>
                       <div className="flex -space-x-1">
-                        <BicepsFlexed size={20} />
-                        <BicepsFlexed size={20} />
-                        <BicepsFlexed size={20} />
+                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
+                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
+                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
                       </div>
                     </div>
-                    <div className="text-center">
+                    <div className="flex-1 md:flex-initial">
                       <span className={`block text-sm font-black transition-colors ${movingHelpers === 3 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>3 Helpers</span>
-                      <span className={`block text-[10px] mt-1 font-bold ${movingHelpers === 3 ? 'text-brand/80' : 'text-secondary-400'}`}>$189 / hour</span>
+                      <span className={`block text-[10px] mt-0.5 md:mt-1 font-bold ${movingHelpers === 3 ? 'text-brand/80' : 'text-secondary-400'}`}>$189 / hour</span>
                     </div>
                   </button>
                 </div>
@@ -906,45 +1077,362 @@ export const QuotePage: React.FC = () => {
               {/* Hours Selection */}
               <div>
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-white border border-secondary-100 rounded-xl sm:rounded-2xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
-                      <Clock size={20} />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
+                      <Clock size={18} className="sm:w-5 sm:h-5" />
                     </div>
                     <div>
                       <div className="text-sm font-black text-secondary">Time Needed</div>
                       <div className="text-[10px] text-secondary-400 font-bold">{movingHours} hours selected</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                  <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
                     <button
                       onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                       disabled={movingHours <= 2}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                     >
-                      <Minus size={18} />
+                      <Minus size={16} />
                     </button>
-                    <span className="w-8 text-center text-xl font-black text-brand">{movingHours}</span>
+                    <span className="w-6 sm:w-8 text-center text-lg sm:text-xl font-black text-brand">{movingHours}</span>
                     <button
                       onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                     >
-                      <Plus size={18} />
+                      <Plus size={16} />
                     </button>
                   </div>
                 </div>
               </div>
 
-          {/* Pricing Result */}
-          {renderPriceResult(
-            [{ id: 'moving-labor', name: `${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`, quantity: 1 }],
-            {
-              price: movingEstimateTotal,
-              estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
-              summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
-            },
-            () => { setSelectedService(null); setSelectedOption(null); },
-            "Back to services"
+              <div className="pt-4">
+                <button
+                  onClick={() => setMovingStep('result')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Get Estimate
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => setMovingStep('details')}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to details
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3: ESTIMATE RESULT */}
+          {movingStep === 'result' && (
+            <div>
+              {renderPriceResult(
+                [{ id: 'moving-labor', name: `${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`, quantity: 1 }],
+                {
+                  price: movingEstimateTotal,
+                  estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
+                  summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
+                },
+                () => setMovingStep('crew'),
+                "Back to crew & time"
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Dedicated Donations Pickup Quote Form ──
+  if (selectedOption === 'donation_pickup') {
+    const basePrice = donationSize === 'Bagged/Boxed Items' ? 95
+      : donationSize === 'Few Furniture Items' ? 185
+      : 325;
+    
+    const locationAdj = donationLocation === 'Curbside/Outside' ? -15
+      : donationLocation === 'Garage/Porch' ? 0
+      : donationLocation === 'Inside Home (Ground Floor)' ? 30
+      : 60;
+      
+    const donationTotal = basePrice + locationAdj;
+
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => {
+              if (donationStep === 'size') {
+                setDonationStep('details');
+              } else if (donationStep === 'result') {
+                setDonationStep('size');
+              } else {
+                setSelectedService(null);
+                setSelectedOption(null);
+              }
+            }}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> {donationStep === 'size' ? 'Back to details' : donationStep === 'result' ? 'Back to size & location' : 'Back to services'}
+          </button>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            Schedule <span className="text-brand">Donation Pickup.</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            Get your gently used items picked up and delivered to charity. Upfront pricing.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+          {/* Progress bar */}
+          {(() => {
+            const donationSteps = ['Charity', 'Size & Location', 'Estimate'];
+            const donationStepIndex = donationStep === 'details' ? 0 : donationStep === 'size' ? 1 : 2;
+            return (
+              <div className="mb-10">
+                <div className="flex items-center justify-between mb-2">
+                  {donationSteps.map((label, i) => (
+                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                      i < donationStepIndex ? 'text-brand' : i === donationStepIndex ? 'text-secondary' : 'text-secondary-300'
+                    }`}>
+                      {i < donationStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                    </span>
+                  ))}
+                </div>
+                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${(donationStepIndex / (donationSteps.length - 1)) * 100}%` }}
+                  />
+                </div>
+                <p className="text-[10px] text-secondary-400 mt-1.5">Step {donationStepIndex + 1} of {donationSteps.length}</p>
+              </div>
+            );
+          })()}
+
+          {/* STEP 1: DETAILS */}
+          {donationStep === 'details' && (
+            <div className="space-y-8">
+              {/* Charity Preference */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Preferred Charity Partner</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { label: 'No Preference', desc: 'First available partner charity', icon: HeartHandshake },
+                    { label: 'Goodwill', desc: 'Deliver to nearest Goodwill drop-off', icon: Truck },
+                    { label: 'Habitat ReStore', desc: 'Deliver to Habitat for Humanity ReStore', icon: Home },
+                    { label: 'Local Shelter', desc: 'Deliver to a local shelter or mission', icon: Heart }
+                  ].map((charity) => {
+                    const isSelected = donationCharity === charity.label;
+                    const Icon = charity.icon;
+                    return (
+                      <button
+                        key={charity.label}
+                        onClick={() => setDonationCharity(charity.label as any)}
+                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            {charity.label}
+                          </span>
+                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                            {charity.desc}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Tax Receipt Needed */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Tax Donation Receipt</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { label: 'Receipt Requested', value: true, desc: 'We will email a tax receipt from the charity', icon: Receipt },
+                    { label: 'No Receipt Needed', value: false, desc: 'Simply pick up and deliver the items', icon: Check }
+                  ].map((option) => {
+                    const isSelected = donationReceipt === option.value;
+                    const Icon = option.icon;
+                    return (
+                      <button
+                        key={option.label}
+                        onClick={() => setDonationReceipt(option.value)}
+                        className={`group p-4 border rounded-2xl flex items-center gap-4 transition-all w-full text-left ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            {option.label}
+                          </span>
+                          <span className={`block text-[10px] mt-0.5 font-bold ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                            {option.desc}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => setDonationStep('size')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Continue
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to services
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: SIZE & LOCATION */}
+          {donationStep === 'size' && (
+            <div className="space-y-8">
+              {/* Size estimation */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Size</label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { label: 'Bagged/Boxed Items', desc: 'Clothes, toys, small housewares', icon: Package },
+                    { label: 'Few Furniture Items', desc: '1-3 large furniture pieces', icon: Armchair },
+                    { label: 'Full Room/Multiple Items', desc: 'Entire room set or major cleanout', icon: Boxes }
+                  ].map((size) => {
+                    const isSelected = donationSize === size.label;
+                    const Icon = size.icon;
+                    return (
+                      <button
+                        key={size.label}
+                        onClick={() => setDonationSize(size.label as any)}
+                        className={`group p-4 border rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-4 sm:gap-3 transition-all w-full ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            {size.label}
+                          </span>
+                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                            {size.desc}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Access Location */}
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Donation Item Location</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { label: 'Curbside/Outside', desc: 'Items are outside, ready on curb/driveway', icon: Truck },
+                    { label: 'Garage/Porch', desc: 'Easy access, ground level external access', icon: Warehouse },
+                    { label: 'Inside Home (Ground Floor)', desc: 'Ground floor inside entry', icon: Home },
+                    { label: 'Inside Home (Stairs)', desc: 'Upper floor, basement, or multi-level stairs', icon: ArrowLeftRight }
+                  ].map((loc) => {
+                    const isSelected = donationLocation === loc.label;
+                    const Icon = loc.icon;
+                    return (
+                      <button
+                        key={loc.label}
+                        onClick={() => setDonationLocation(loc.label as any)}
+                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            {loc.label}
+                          </span>
+                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                            {loc.desc}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => setDonationStep('result')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Get Estimate
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => setDonationStep('details')}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to details
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3: ESTIMATE RESULT */}
+          {donationStep === 'result' && (
+            <div>
+              {renderPriceResult(
+                [{ id: 'donation-pickup', name: `${donationSize} - Pickup from ${donationLocation} to ${donationCharity}`, quantity: 1 }],
+                {
+                  price: donationTotal,
+                  estimatedVolume: donationSize,
+                  summary: `Eco-friendly donation pickup service. We will deliver your items to ${donationCharity === 'No Preference' ? 'a local partner charity' : donationCharity}. ${donationReceipt ? 'A tax donation receipt will be emailed to you.' : 'No tax receipt requested.'}`
+                },
+                () => setDonationStep('size'),
+                "Back to size & location"
+              )}
+            </div>
           )}
         </div>
       </div>

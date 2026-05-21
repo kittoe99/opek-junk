@@ -361,13 +361,12 @@ export const BookingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero */}
       <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-          Schedule your <span className="text-brand">pickup.</span>
+          Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
         </h1>
         <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-          Three quick steps — photo, address, details. A matched provider confirms within 15 minutes.
+          Three quick steps — details, address, review. A matched provider confirms within 15 minutes.
         </p>
       </div>
 
@@ -432,16 +431,18 @@ export const BookingPage: React.FC = () => {
             <div className="border-b border-secondary-100 pb-6 mb-6">
               {/* Price breakdown */}
               <div className="bg-secondary-50 rounded-2xl p-5 border border-secondary-100 mb-4">
-                <div className="space-y-3 mb-4 pb-4 border-b border-secondary-200">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-                    <span className="text-secondary-900 font-bold">${Math.round(formData.price * 0.65)}</span>
+                {formData.serviceType !== 'Moving Labor' && (
+                  <div className="space-y-3 mb-4 pb-4 border-b border-secondary-200">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
+                      <span className="text-secondary-900 font-bold">${Math.round(formData.price * 0.65)}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
+                      <span className="text-secondary-900 font-bold">${formData.price - Math.round(formData.price * 0.65)}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
-                    <span className="text-secondary-900 font-bold">${formData.price - Math.round(formData.price * 0.65)}</span>
-                  </div>
-                </div>
+                )}
                 <div className="flex justify-between items-end">
                   <div>
                     <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>

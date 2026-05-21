@@ -336,8 +336,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div className="mb-2 flex items-start gap-3">
             <MapPinned size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
             <div>
-              <h2 className="text-base font-black text-secondary">Pickup Address</h2>
-              <p className="text-secondary-400 text-xs">Where should we come to collect?</p>
+              <h2 className="text-base font-black text-secondary">
+                {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
+              </h2>
+              <p className="text-secondary-400 text-xs">
+                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should we come to collect?'}
+              </p>
             </div>
           </div>
 
