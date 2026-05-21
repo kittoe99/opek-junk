@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice } from '../services/pricingService';
@@ -500,7 +500,15 @@ export const QuotePage: React.FC = () => {
         {/* CTA */}
         <div className="space-y-3 pt-2">
           <button
-            onClick={() => setShowBookingForm(true)}
+            onClick={() => {
+              setEstimate({
+                itemsDetected: items.map(i => `${i.quantity}x ${i.name}`),
+                estimatedVolume: price.estimatedVolume,
+                price: price.price,
+                summary: price.summary,
+              });
+              setShowBookingForm(true);
+            }}
             className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2"
           >
             Continue to Booking <ArrowRight size={14} />
@@ -783,9 +791,9 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { label: 'Loading Only', icon: <Upload size={20} /> },
-                    { label: 'Unloading Only', icon: <Download size={20} /> },
-                    { label: 'Both', icon: <RefreshCw size={20} /> }
+                    { label: 'Loading Only', icon: <PackagePlus size={20} /> },
+                    { label: 'Unloading Only', icon: <PackageMinus size={20} /> },
+                    { label: 'Both', icon: <ArrowLeftRight size={20} /> }
                   ].map((service) => {
                     const isSelected = movingServiceType === service.label;
                     return (
@@ -820,7 +828,7 @@ export const QuotePage: React.FC = () => {
                     { label: 'Storage Unit', icon: <Warehouse size={20} /> },
                     { label: 'Box Truck', icon: <Truck size={20} /> },
                     { label: 'Inside Home', icon: <Home size={20} /> },
-                    { label: 'Other', icon: <Package size={20} /> }
+                    { label: 'Other', icon: <Boxes size={20} /> }
                   ].map((type) => {
                     const isSelected = movingType === type.label;
                     return (
