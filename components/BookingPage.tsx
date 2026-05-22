@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed, Container } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
+import { calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
 import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -68,6 +69,11 @@ export const BookingPage: React.FC = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
 
+  // Dumpster Rental State
+  const [dumpsterSize, setDumpsterSize] = useState<'10-yard' | '15-yard' | '20-yard' | '30-yard'>('20-yard');
+  const [dumpsterDuration, setDumpsterDuration] = useState<number>(7);
+  const [dumpsterStep, setDumpsterStep] = useState<'size' | 'duration' | 'result'>('size');
+
   // Address autocomplete state
   const [addressQuery, setAddressQuery] = useState('');
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
@@ -85,7 +91,7 @@ export const BookingPage: React.FC = () => {
     state: '',
     zipCode: '',
     date: '',
-    serviceType: 'Residential Junk Removal',
+    serviceType: 'Junk Removal',
     details: '',
     estimatedItems: [] as string[],
     estimatedVolume: '',
@@ -97,12 +103,13 @@ export const BookingPage: React.FC = () => {
   // Pre-fill estimate data if available from QuotePage
   useEffect(() => {
     if (estimateData?.estimate) {
-      const { estimate: est, image: img } = estimateData;
+      const { estimate: est, image: img, serviceType } = estimateData;
       setEstimate(est);
       setImage(img || null);
       setLoadingState(LoadingState.SUCCESS);
       setFormData(prev => ({
         ...prev,
+        serviceType: serviceType || 'Junk Removal',
         estimatedItems: est.itemsDetected,
         estimatedVolume: est.estimatedVolume,
         price: est.price,
@@ -431,7 +438,7 @@ export const BookingPage: React.FC = () => {
             <div className="border-b border-secondary-100 pb-6 mb-6">
               {/* Price breakdown */}
               <div className="bg-secondary-50 rounded-2xl p-5 border border-secondary-100 mb-4">
-                {formData.serviceType !== 'Moving Labor' && (
+                {formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Dumpster Rental' && (
                   <div className="space-y-3 mb-4 pb-4 border-b border-secondary-200">
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
@@ -566,6 +573,25 @@ export const BookingPage: React.FC = () => {
                     <ArrowRight size={14} className={`transition-all ${formData.serviceType === 'Moving Labor' ? 'text-white translate-x-0.5' : 'text-secondary-300 group-hover:text-white group-hover:translate-x-0.5'}`} />
                   </div>
                 </button>
+
+                <button
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, serviceType: 'Dumpster Rental' }));
+                    handleNextStep();
+                  }}
+                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-5 rounded-2xl text-left flex items-center gap-4 group`}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
+                    <Container size={22} className="transition-colors" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
+                    <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
+                  </div>
+                  <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${formData.serviceType === 'Dumpster Rental' ? 'border-brand bg-brand' : 'border-secondary-100 group-hover:border-brand group-hover:bg-brand'}`}>
+                    <ArrowRight size={14} className={`transition-all ${formData.serviceType === 'Dumpster Rental' ? 'text-white translate-x-0.5' : 'text-secondary-300 group-hover:text-white group-hover:translate-x-0.5'}`} />
+                  </div>
+                </button>
               </div>
               
               <div className="pt-4 flex">
@@ -576,8 +602,8 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
-          {/* ═══ Step 2: Photo Upload & Estimate ═══ */}
-          {currentStep === 2 && (
+          {/* ═══ Step 2: Photo Upload & Estimate (or Dumpster Rental) ═══ */}
+          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -734,6 +760,185 @@ export const BookingPage: React.FC = () => {
                       </button>
                     </div>
                   )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ═══ Step 2: Dumpster Rental Flow ═══ */}
+          {currentStep === 2 && formData.serviceType === 'Dumpster Rental' && (
+            <div className="space-y-4">
+              <div className="mb-2 flex items-start gap-3">
+                <Container size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+                <div>
+                  <h2 className="text-base font-black text-secondary">Dumpster Rental Options</h2>
+                  <p className="text-secondary-400 text-xs">Select size and rental duration</p>
+                </div>
+              </div>
+
+              {/* SIZE SELECTION */}
+              {dumpsterStep === 'size' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Select Dumpster Size</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {[
+                        { label: '10-Yard', desc: 'Small projects, garage cleanouts', price: '$350' },
+                        { label: '15-Yard', desc: 'Medium renovations, yard debris', price: '$400' },
+                        { label: '20-Yard', desc: 'Large cleanouts, roofing', price: '$450' },
+                        { label: '30-Yard', desc: 'Construction, major demolition', price: '$550' }
+                      ].map((size) => {
+                        const isSelected = dumpsterSize === `${size.label.toLowerCase()}` as any;
+                        return (
+                          <button
+                            key={size.label}
+                            onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
+                            className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                              isSelected 
+                                ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                                : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            }`}
+                          >
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                            }`}>
+                              <Container size={18} />
+                            </div>
+                            <div>
+                              <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                                {size.label}
+                              </span>
+                              <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                                {size.desc}
+                              </span>
+                              <span className={`block text-xs mt-1 font-bold ${isSelected ? 'text-brand' : 'text-secondary-400'}`}>
+                                {size.price} / 7 days
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      onClick={() => setDumpsterStep('duration')}
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* DURATION SELECTION */}
+              {dumpsterStep === 'duration' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
+                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
+                          <CalendarCheck size={18} />
+                        </div>
+                        <div>
+                          <div className="text-sm font-black text-secondary">Rental Period</div>
+                          <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                        <button
+                          onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
+                          disabled={dumpsterDuration <= 1}
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                        >
+                          <ArrowLeft size={16} />
+                        </button>
+                        <span className="w-8 text-center text-lg font-black text-brand">{dumpsterDuration}</span>
+                        <button
+                          onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                        >
+                          <ArrowRight size={16} />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-secondary-400 mt-2">
+                      Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% discount.
+                    </p>
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      onClick={() => {
+                        const dumpsterPrice = calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
+                        setEstimate({
+                          itemsDetected: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                          estimatedVolume: dumpsterPrice.estimatedVolume,
+                          price: dumpsterPrice.price,
+                          summary: dumpsterPrice.summary
+                        });
+                        setFormData(prev => ({
+                          ...prev,
+                          estimatedItems: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                          estimatedVolume: dumpsterPrice.estimatedVolume,
+                          price: dumpsterPrice.price,
+                          estimateSummary: dumpsterPrice.summary,
+                          details: `${dumpsterSize} dumpster rental for ${dumpsterDuration} days. ${dumpsterPrice.summary}`
+                        }));
+                        setDumpsterStep('result');
+                      }}
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Get Estimate <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                    <button
+                      onClick={() => setDumpsterStep('size')}
+                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                    >
+                      <ArrowLeft size={14} /> Back to size
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ESTIMATE RESULT */}
+              {dumpsterStep === 'result' && estimate && (
+                <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                  <div className="mb-4">
+                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
+                    <ul className="space-y-1.5">
+                      {estimate.itemsDetected.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                          <span className="text-secondary-600 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
+                        <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                      </div>
+                      <div className="text-2xl font-black text-brand">${estimate.price}</div>
+                    </div>
+                  </div>
+                  <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
+                  <button
+                    onClick={() => handleNextStep()}
+                    className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                  >
+                    Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </button>
+                  <button
+                    onClick={() => setDumpsterStep('duration')}
+                    className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  >
+                    <ArrowLeft size={14} /> Back to duration
+                  </button>
                 </div>
               )}
             </div>

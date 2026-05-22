@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed, Phone } from 'lucide-react';
+import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed, Phone, Trash2, Container } from 'lucide-react';
 import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
@@ -17,16 +17,16 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
 
   const serviceItems = [
     {
-      title: 'Residential',
-      icon: Home,
-      description: city.services.residential,
-      path: '/services/residential-junk-removal',
+      title: 'Junk Removal',
+      icon: Trash2,
+      description: city.services.junkRemoval,
+      path: '/services/junk-removal',
     },
     {
-      title: 'Commercial',
-      icon: Building2,
-      description: city.services.commercial,
-      path: '/services/commercial',
+      title: 'Dumpster Rental',
+      icon: Container,
+      description: city.services.dumpsterRental,
+      path: '/services/dumpster-rental',
     },
     {
       title: 'Property Cleanouts',
@@ -110,8 +110,8 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       '@type': 'OfferCatalog',
       name: `Junk Removal Services in ${city.name}`,
       itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Residential Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/residential-junk-removal' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Commercial Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/commercial' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/junk-removal' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Dumpster Rental in ${city.name}`, url: `https://opekjunkremoval.com/services/dumpster-rental` } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Property Cleanouts in ${city.name}`, url: 'https://opekjunkremoval.com/services/property-cleanout' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Donations Pickup in ${city.name}`, url: 'https://opekjunkremoval.com/services/donations-pickup' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Moving Labor in ${city.name}`, url: 'https://opekjunkremoval.com/services/moving-labor' } },
@@ -461,8 +461,8 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                 ))}
                 <div className="border-t border-secondary-100 my-2" />
                 {[
-                  { label: 'Residential junk removal', path: '/services/residential-junk-removal' },
-                  { label: 'Commercial junk removal', path: '/services/commercial' },
+                  { label: 'Junk removal', path: '/services/junk-removal' },
+                  { label: 'Dumpster rental', path: '/services/dumpster-rental' },
                   { label: 'Donations pickup', path: '/services/donations-pickup' },
                   { label: 'Moving labor', path: '/services/moving-labor' },
                 ].map((s) => (

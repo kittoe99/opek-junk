@@ -17,8 +17,8 @@ export interface CityData {
     subheadline: string;
   };
   services: {
-    residential: string;
-    commercial: string;
+    junkRemoval: string;
+    dumpsterRental: string;
     propertyCleanout: string;
     donationsPickup: string;
     movingLabor: string;
@@ -52,10 +52,10 @@ export const cities: CityData[] = [
         "Professional junk removal across the entire DFW Metroplex. Get instant quotes and same-day service from trusted local crews.",
     },
     services: {
-      residential:
-        "Furniture, appliances, electronics, and household clutter hauled fast. Affordable pickup by insured DFW crews — same day in most cases.",
-      commercial:
-        "Office furniture, equipment, and commercial debris cleared across Dallas and Fort Worth with minimal disruption to your operations.",
+      junkRemoval:
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by our insured DFW crews.",
+      dumpsterRental:
+        "Roll-off dumpster rentals in various sizes delivered directly to your home, job site, or business in the DFW Metroplex.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout the Metroplex. Professional, thorough, and discreet.",
       donationsPickup:
@@ -121,10 +121,10 @@ export const cities: CityData[] = [
         "Professional junk removal across Duval County. Get instant quotes and same-day service from trusted local crews.",
     },
     services: {
-      residential:
-        "Furniture, appliances, electronics, and household clutter removed fast. Affordable pickup by insured Jacksonville crews — same day in most cases.",
-      commercial:
-        "Office furniture, equipment, and commercial debris cleared across Jacksonville with minimal disruption to your business.",
+      junkRemoval:
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris removed fast by our insured Jacksonville crews.",
+      dumpsterRental:
+        "Flexible, flat-rate dumpster rentals delivered to your driveway or commercial site anywhere in Jacksonville.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout Jacksonville and Duval County. Professional, thorough, and discreet.",
       donationsPickup:
@@ -190,10 +190,10 @@ export const cities: CityData[] = [
         "Professional junk removal across Metro Atlanta. Get instant quotes and same-day service from trusted local crews.",
     },
     services: {
-      residential:
-        "Furniture, appliances, electronics, and household clutter hauled fast. Affordable pickup by insured Atlanta crews — same day in most cases.",
-      commercial:
-        "Office furniture, equipment, and commercial debris cleared across Metro Atlanta with minimal disruption to your business.",
+      junkRemoval:
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by our insured Atlanta crews.",
+      dumpsterRental:
+        "Convenient roll-off dumpsters for residential cleanups and construction sites across the Atlanta metropolitan area.",
       propertyCleanout:
         "Estate clearing, move-outs, and full property cleanouts throughout Atlanta and surrounding metro areas. Professional, thorough, and discreet.",
       donationsPickup:

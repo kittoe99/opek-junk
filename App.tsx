@@ -13,8 +13,8 @@ import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { WhatWeHaul } from './components/WhatWeHaul';
 import { ProcessEditorial } from './components/ProcessEditorial';
-import { ResidentialPage } from './components/services/ResidentialPage';
-import { CommercialPage } from './components/services/CommercialPage';
+import { JunkRemovalPage } from './components/services/JunkRemovalPage';
+import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { DonationsPickupPage } from './components/services/DonationsPickupPage';
 import { MovingLaborPage } from './components/services/MovingLaborPage';
@@ -105,20 +105,20 @@ function BookingPageWithSEO() {
   );
 }
 
-function ResidentialPageWithSEO() {
+function JunkRemovalPageWithSEO() {
   return (
     <>
-      <SEO {...seoConfig.residential} />
-      <ResidentialPage />
+      <SEO {...seoConfig.junkRemoval} />
+      <JunkRemovalPage />
     </>
   );
 }
 
-function CommercialPageWithSEO() {
+function DumpsterRentalPageWithSEO() {
   return (
     <>
-      <SEO {...seoConfig.commercial} />
-      <CommercialPage />
+      <SEO {...seoConfig.dumpsterRental} />
+      <DumpsterRentalPage />
     </>
   );
 }
@@ -198,8 +198,10 @@ function App() {
           <Route path="/quote" element={<QuotePageWithSEO />} />
           <Route path="/contact" element={<ContactPageWithSEO />} />
           <Route path="/booking" element={<BookingPageWithSEO />} />
-          <Route path="/services/residential-junk-removal" element={<ResidentialPageWithSEO />} />
-          <Route path="/services/commercial" element={<CommercialPageWithSEO />} />
+          <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
+          <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
+          <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
+          <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
           <Route path="/services/donations-pickup" element={<DonationsPickupPageWithSEO />} />
           <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />

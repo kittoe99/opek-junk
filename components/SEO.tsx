@@ -192,15 +192,15 @@ export const seoConfig = {
     description: 'Book junk removal online in minutes anywhere in the US. Pick your date, time, and service. Same-day and next-day appointments in all 50 states.',
     keywords: 'book junk removal, schedule pickup, online booking, junk removal appointment, nationwide junk removal',
   },
-  residential: {
-    title: 'Residential Junk Removal | Opek — Nationwide Home Cleanouts',
-    description: 'Nationwide residential junk removal in all 50 states. Furniture, appliances, electronics, and full home cleanouts. Same-day service, flat-rate pricing, eco-friendly disposal.',
-    keywords: 'residential junk removal, nationwide home junk removal, furniture removal, appliance removal, household cleanout, junk removal near me',
+  junkRemoval: {
+    title: 'Junk Removal Services | Opek — Nationwide Home & Business Hauling',
+    description: 'Nationwide residential and commercial junk removal in all 50 states. Furniture, appliances, office cleanouts, and retail clearing. Same-day available, upfront pricing, fully insured.',
+    keywords: 'junk removal, residential junk removal, commercial junk removal, furniture removal, appliance removal, office cleanout, junk hauling, same-day junk removal',
   },
-  commercial: {
-    title: 'Commercial Junk Removal | Opek — Nationwide Office & Business Hauling',
-    description: 'Nationwide commercial junk removal for offices, retail, and warehouses in all 50 states. After-hours scheduling, COI on request, and minimal disruption to operations.',
-    keywords: 'commercial junk removal, nationwide office junk removal, business hauling, office furniture removal, commercial debris',
+  dumpsterRental: {
+    title: 'Dumpster Rental Services | Opek — Nationwide Roll-Off Containers',
+    description: 'Roll-off dumpster rentals in all 50 states. Multiple sizes (10, 15, 20, 30 yards) available with flat-rate pricing, protective placement, and flexible rentals.',
+    keywords: 'dumpster rental, roll-off dumpster, rent a dumpster, commercial dumpster rental, construction dumpster, residential dumpster',
   },
   propertyCleanout: {
     title: 'Property Cleanout | Opek — Nationwide Estate & Move-Out Service',

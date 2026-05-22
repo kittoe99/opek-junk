@@ -1,19 +1,18 @@
-import React from 'react';
-import { Home, Building2, PackageOpen, HeartHandshake, BicepsFlexed } from 'lucide-react';
+import { Trash2, PackageOpen, HeartHandshake, BicepsFlexed, Container } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
   {
-    title: "Residential",
-    icon: Home,
-    description: "Furniture, appliances, electronics, and household clutter. Fast, affordable pickup by local professionals in your area.",
-    path: "/services/residential-junk-removal"
+    title: "Junk Removal",
+    icon: Trash2,
+    description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
+    path: "/services/junk-removal"
   },
   {
-    title: "Commercial",
-    icon: Building2,
-    description: "Office furniture, equipment, and commercial debris cleared with minimal disruption to your business operations.",
-    path: "/services/commercial"
+    title: "Dumpster Rental",
+    icon: Container,
+    description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
+    path: "/services/dumpster-rental"
   },
   {
     title: "Property Cleanouts",

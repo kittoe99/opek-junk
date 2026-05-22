@@ -203,3 +203,53 @@ export function calculateStaticPrice(items: DetectedItem[]): PriceEstimate {
     summary
   };
 }
+
+// Dumpster Rental Pricing
+// Based on dumpster size and rental duration
+export interface DumpsterRentalOptions {
+  size: '10-yard' | '15-yard' | '20-yard' | '30-yard';
+  duration: number; // number of days
+}
+
+export function calculateDumpsterRentalPrice(options: DumpsterRentalOptions): PriceEstimate {
+  const { size, duration } = options;
+  
+  // Base prices per dumpster size (7-day rental)
+  const basePrices: Record<string, number> = {
+    '10-yard': 350,
+    '15-yard': 400,
+    '20-yard': 450,
+    '30-yard': 550,
+  };
+  
+  const basePrice = basePrices[size] || 400;
+  
+  // Additional days pricing: $25 per extra day
+  const baseDuration = 7;
+  let extraDaysCost = 0;
+  if (duration > baseDuration) {
+    extraDaysCost = (duration - baseDuration) * 25;
+  }
+  
+  // Discount for longer rentals (14+ days): 10% off
+  let discount = 0;
+  if (duration >= 14) {
+    discount = Math.round((basePrice + extraDaysCost) * 0.1);
+  }
+  
+  const finalPrice = basePrice + extraDaysCost - discount;
+  
+  let summary = `${size} dumpster rental for ${duration} day${duration > 1 ? 's' : ''}.`;
+  if (duration > baseDuration) {
+    summary += ` Includes ${duration - baseDuration} extra day${duration - baseDuration > 1 ? 's' : ''} at $25/day.`;
+  }
+  if (discount > 0) {
+    summary += ` 10% long-term rental discount applied.`;
+  }
+  
+  return {
+    estimatedVolume: `${size} container`,
+    price: finalPrice,
+    summary
+  };
+}

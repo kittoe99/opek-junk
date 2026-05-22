@@ -38,35 +38,7 @@
 
   <!-- Service Pages -->
   <url>
-    <loc>https://opekjunkremoval.com/services/residential-junk-removal</loc>
-    <lastmod>2026-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://opekjunkremoval.com/services/commercial</loc>
-    <lastmod>2026-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://opekjunkremoval.com/services/construction</loc>
-    <lastmod>2026-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://opekjunkremoval.com/services/e-waste</loc>
-    <lastmod>2026-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://opekjunkremoval.com/services/property-cleanout</loc>
+    <loc>https://opekjunkremoval.com/services/junk-removal</loc>
     <lastmod>2026-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -74,6 +46,13 @@
 
   <url>
     <loc>https://opekjunkremoval.com/services/dumpster-rental</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://opekjunkremoval.com/services/property-cleanout</loc>
     <lastmod>2026-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

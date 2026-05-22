@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
-import { calculateStaticPrice } from '../services/pricingService';
+import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -172,10 +172,11 @@ export const QuotePage: React.FC = () => {
   } | null;
 
   // Map incoming serviceType string to internal service type if present
-  const mappedServiceType: 'junk_removal' | 'donation_pickup' | 'moving_labor' | null =
+  const mappedServiceType: 'junk_removal' | 'donation_pickup' | 'moving_labor' | 'dumpster_rental' | null =
     incomingState?.serviceType
       ? (incomingState.serviceType.toLowerCase().includes('donation') ? 'donation_pickup'
         : incomingState.serviceType.toLowerCase().includes('moving') ? 'moving_labor'
+        : incomingState.serviceType.toLowerCase().includes('dumpster') ? 'dumpster_rental'
         : 'junk_removal')
       : null;
 
@@ -188,8 +189,8 @@ export const QuotePage: React.FC = () => {
       ? { city: incomingState.zipResult.city, state: incomingState.zipResult.state, servedCity: { city: incomingState.zipResult.city, state: incomingState.zipResult.state } }
       : null
   );
-  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | null>(mappedServiceType);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | null>(incomingState?.serviceType ? 'manual' : null);
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | 'dumpster_rental' | null>(mappedServiceType);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -221,12 +222,25 @@ export const QuotePage: React.FC = () => {
     }
   }, [selectedOption]);
 
+  // Dumpster Rental State
+  const [dumpsterSize, setDumpsterSize] = useState<'10-yard' | '15-yard' | '20-yard' | '30-yard'>('20-yard');
+  const [dumpsterDuration, setDumpsterDuration] = useState<number>(7);
+  const [dumpsterStep, setDumpsterStep] = useState<'size' | 'duration' | 'result'>('size');
+
+  useEffect(() => {
+    if (selectedOption !== 'dumpster_rental') {
+      setDumpsterStep('size');
+    }
+  }, [selectedOption]);
+
   // Auto-advance for service selections
   useEffect(() => {
     if (selectedService === 'moving_labor') {
       setSelectedOption('moving_labor');
     } else if (selectedService === 'donation_pickup') {
       setSelectedOption('donation_pickup');
+    } else if (selectedService === 'dumpster_rental') {
+      setSelectedOption('dumpster_rental');
     }
   }, [selectedService]);
   useEffect(() => {
@@ -295,7 +309,7 @@ export const QuotePage: React.FC = () => {
   // Auto-scroll to top when step changes
   useEffect(() => {
     scrollToElement(contentTopRef.current, -120);
-  }, [aiStep, manualStep, selectedOption, movingStep, donationStep, scrollToElement]);
+  }, [aiStep, manualStep, selectedOption, movingStep, donationStep, dumpsterStep, scrollToElement]);
 
   // If all items get removed while on review, send user back to selection
   useEffect(() => {
@@ -652,6 +666,7 @@ export const QuotePage: React.FC = () => {
       selectedService === 'junk_removal' ? 'Junk Removal'
       : selectedService === 'donation_pickup' ? 'Donation Pick Up'
       : selectedService === 'moving_labor' ? 'Moving Labor'
+      : selectedService === 'dumpster_rental' ? 'Dumpster Rental'
       : 'Junk Removal';
     const defaultZip = zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined;
 
@@ -876,6 +891,21 @@ export const QuotePage: React.FC = () => {
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
                 <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              </div>
+            </button>
+            <button
+              onClick={() => setSelectedService('dumpster_rental')}
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+            >
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                <Container size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
               </div>
               <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
@@ -1445,6 +1475,201 @@ export const QuotePage: React.FC = () => {
                 },
                 () => setDonationStep('size'),
                 "Back to size & location"
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Dedicated Dumpster Rental Quote Form ──
+  if (selectedOption === 'dumpster_rental') {
+    const dumpsterPrice = calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
+
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => {
+              if (dumpsterStep === 'duration') {
+                setDumpsterStep('size');
+              } else if (dumpsterStep === 'result') {
+                setDumpsterStep('duration');
+              } else {
+                setSelectedService(null);
+                setSelectedOption(null);
+              }
+            }}
+            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            <ArrowLeft size={14} /> {dumpsterStep === 'duration' ? 'Back to size' : dumpsterStep === 'result' ? 'Back to duration' : 'Back to services'}
+          </button>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+            Rent a <span className="text-brand">Dumpster.</span>
+          </h1>
+          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+            Roll-off dumpster delivered to your site. Flat-rate pricing with flexible rental periods.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+          {/* Progress bar */}
+          {(() => {
+            const dumpsterSteps = ['Size', 'Duration', 'Estimate'];
+            const dumpsterStepIndex = dumpsterStep === 'size' ? 0 : dumpsterStep === 'duration' ? 1 : 2;
+            return (
+              <div className="mb-10">
+                <div className="flex items-center justify-between mb-2">
+                  {dumpsterSteps.map((label, i) => (
+                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
+                      i < dumpsterStepIndex ? 'text-brand' : i === dumpsterStepIndex ? 'text-secondary' : 'text-secondary-300'
+                    }`}>
+                      {i < dumpsterStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
+                    </span>
+                  ))}
+                </div>
+                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${(dumpsterStepIndex / (dumpsterSteps.length - 1)) * 100}%` }}
+                  />
+                </div>
+                <p className="text-[10px] text-secondary-400 mt-1.5">Step {dumpsterStepIndex + 1} of {dumpsterSteps.length}</p>
+              </div>
+            );
+          })()}
+
+          {/* STEP 1: SIZE SELECTION */}
+          {dumpsterStep === 'size' && (
+            <div className="space-y-8">
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Select Dumpster Size</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { label: '10-Yard', desc: 'Small projects, garage cleanouts', price: '$350' },
+                    { label: '15-Yard', desc: 'Medium renovations, yard debris', price: '$400' },
+                    { label: '20-Yard', desc: 'Large cleanouts, roofing', price: '$450' },
+                    { label: '30-Yard', desc: 'Construction, major demolition', price: '$550' }
+                  ].map((size) => {
+                    const isSelected = dumpsterSize === `${size.label.toLowerCase()}` as any;
+                    return (
+                      <button
+                        key={size.label}
+                        onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
+                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                          isSelected 
+                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
+                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <Container size={18} />
+                        </div>
+                        <div>
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            {size.label}
+                          </span>
+                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                            {size.desc}
+                          </span>
+                          <span className={`block text-xs mt-1 font-bold ${isSelected ? 'text-brand' : 'text-secondary-400'}`}>
+                            {size.price} / 7 days
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => setDumpsterStep('duration')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Continue
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to services
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: DURATION SELECTION */}
+          {dumpsterStep === 'duration' && (
+            <div className="space-y-8">
+              <div>
+                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
+                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
+                      <Clock size={18} />
+                    </div>
+                    <div>
+                      <div className="text-sm font-black text-secondary">Rental Period</div>
+                      <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                    <button
+                      onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
+                      disabled={dumpsterDuration <= 1}
+                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="w-8 text-center text-lg font-black text-brand">{dumpsterDuration}</span>
+                    <button
+                      onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
+                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+                <p className="text-[10px] text-secondary-400 mt-2">
+                  Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% discount.
+                </p>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => setDumpsterStep('result')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Get Estimate
+                  </span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => setDumpsterStep('size')}
+                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to size
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3: ESTIMATE RESULT */}
+          {dumpsterStep === 'result' && (
+            <div>
+              {renderPriceResult(
+                [{ id: 'dumpster-rental', name: `${dumpsterSize} dumpster rental - ${dumpsterDuration} days`, quantity: 1 }],
+                dumpsterPrice,
+                () => setDumpsterStep('duration'),
+                "Back to duration"
               )}
             </div>
           )}
