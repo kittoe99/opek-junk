@@ -1919,11 +1919,11 @@ export const QuotePage: React.FC = () => {
                                         <X size={10} className="text-white" strokeWidth={3} />
                                       </button>
                                     )}
-                                    <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
+                                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
                                       <img
                                         src={item.image}
                                         alt={item.name}
-                                        className="w-6 h-6 sm:w-8 sm:h-8 transition-all duration-200"
+                                        className="w-8 h-8 transition-all duration-200"
                                         style={{
                                           filter: selected
                                             ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -1937,11 +1937,11 @@ export const QuotePage: React.FC = () => {
                                     
                                     {selected && selectedItem && (
                                       <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                           <Minus size={10} className="text-secondary-600" />
                                         </button>
-                                        <span className="w-3 sm:w-5 text-center text-[9px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                        <span className="w-4 sm:w-5 text-center text-[10px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                           <Plus size={10} className="text-secondary-600" />
                                         </button>
                                       </div>
@@ -1979,11 +1979,11 @@ export const QuotePage: React.FC = () => {
                                           <X size={10} className="text-white" strokeWidth={3} />
                                         </button>
                                       )}
-                                      <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
+                                      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
                                         <img
                                           src={item.image}
                                           alt={item.name}
-                                          className="w-6 h-6 sm:w-8 sm:h-8 transition-all duration-200"
+                                          className="w-8 h-8 transition-all duration-200"
                                           style={{
                                             filter: selected
                                               ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -1997,11 +1997,11 @@ export const QuotePage: React.FC = () => {
                                       
                                       {selected && selectedItem && (
                                         <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                             <Minus size={10} className="text-secondary-600" />
                                           </button>
-                                          <span className="w-3 sm:w-5 text-center text-[9px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <span className="w-4 sm:w-5 text-center text-[10px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                             <Plus size={10} className="text-secondary-600" />
                                           </button>
                                         </div>
