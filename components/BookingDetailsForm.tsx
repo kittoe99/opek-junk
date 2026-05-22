@@ -478,7 +478,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.details}
               onChange={handleInputChange}
               rows={3}
-              placeholder="Tell us about the items you need removed, access instructions, etc."
+              placeholder={serviceType === 'Moving Labor' ? "Tell us about the items you need moved, access instructions, etc." : "Tell us about the items you need removed, access instructions, etc."}
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>

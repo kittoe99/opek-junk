@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed, Container } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
@@ -74,6 +74,13 @@ export const BookingPage: React.FC = () => {
   const [dumpsterDuration, setDumpsterDuration] = useState<number>(7);
   const [dumpsterStep, setDumpsterStep] = useState<'size' | 'duration' | 'result'>('size');
 
+  // Moving Labor State
+  const [movingServiceType, setMovingServiceType] = useState<'Loading Only' | 'Unloading Only' | 'Both'>('Both');
+  const [movingType, setMovingType] = useState<'Storage Unit' | 'Box Truck' | 'Inside Home' | 'Other'>('Inside Home');
+  const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
+  const [movingHours, setMovingHours] = useState<number>(2);
+  const [movingStep, setMovingStep] = useState<'details' | 'crew' | 'result'>('details');
+  const [showInsuranceModal, setShowInsuranceModal] = useState(false);
   // Address autocomplete state
   const [addressQuery, setAddressQuery] = useState('');
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
@@ -99,6 +106,13 @@ export const BookingPage: React.FC = () => {
     estimateSummary: '',
     photoUrl: ''
   });
+
+  // Auto-reset movingStep on service change
+  useEffect(() => {
+    if (formData.serviceType !== 'Moving Labor') {
+      setMovingStep('details');
+    }
+  }, [formData.serviceType]);
 
   // Pre-fill estimate data if available from QuotePage
   useEffect(() => {
@@ -313,7 +327,12 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const stepLabels = ['ZIP Check', 'Service', 'Photo', 'Booking'];
+  const stepLabels = [
+    'ZIP Check', 
+    'Service', 
+    formData.serviceType === 'Moving Labor' ? 'Options' : formData.serviceType === 'Dumpster Rental' ? 'Options' : 'Photo', 
+    'Booking'
+  ];
 
   if (submitted) {
     return (
@@ -522,10 +541,10 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-5 rounded-2xl text-left flex items-center gap-4 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${formData.serviceType === 'Junk Removal' ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
-                    <Armchair size={22} className="transition-colors" />
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                    <img src="/card-junk-removal.png" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
@@ -541,10 +560,10 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Donation Pick Up' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-5 rounded-2xl text-left flex items-center gap-4 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
-                    <HeartHandshake size={22} className="transition-colors" />
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                    <img src="/card-donation-pickup.png" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
@@ -560,10 +579,10 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Moving Labor' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-5 rounded-2xl text-left flex items-center gap-4 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${formData.serviceType === 'Moving Labor' ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
-                    <BicepsFlexed size={22} className="transition-colors" />
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                    <img src="/card-moving-labor.png" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
@@ -579,10 +598,10 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Dumpster Rental' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-5 rounded-2xl text-left flex items-center gap-4 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
-                    <Container size={22} className="transition-colors" />
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                    <img src="/card-dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
@@ -602,8 +621,8 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
-          {/* ═══ Step 2: Photo Upload & Estimate (or Dumpster Rental) ═══ */}
-          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && (
+          {/* ═══ Step 2: Photo Upload & Estimate (Junk Removal / Donation Pick Up) ═══ */}
+          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && formData.serviceType !== 'Moving Labor' && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -708,6 +727,14 @@ export const BookingPage: React.FC = () => {
 
                   {loadingState === LoadingState.SUCCESS && estimate && (
                     <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                      {/* Related banner image */}
+                      <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                        <img 
+                          src={formData.serviceType === 'Donation Pick Up' ? '/card-donation-pickup.png' : '/card-junk-removal.png'} 
+                          alt="Service" 
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
                       <div className="mb-4">
                         <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items Detected</div>
                         <ul className="space-y-1.5">
@@ -738,6 +765,29 @@ export const BookingPage: React.FC = () => {
                           <div className="text-2xl font-black text-brand">${estimate.price}</div>
                         </div>
                       </div>
+                      {/* Safe Protect Sticker */}
+                      <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                          <ShieldCheck size={18} strokeWidth={2.5} />
+                        </div>
+                        <div className="flex-1 min-w-0 text-left">
+                          <div className="flex items-center gap-2">
+                            <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                            <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                          </div>
+                          <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                            Your service is protected by our multi-million dollar liability insurance.{' '}
+                            <button 
+                              type="button"
+                              onClick={() => setShowInsuranceModal(true)} 
+                              className="text-emerald-900 font-bold hover:underline"
+                            >
+                              Learn more
+                            </button>
+                          </p>
+                        </div>
+                      </div>
+
                       <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
                       <button
                         onClick={() => handleNextStep()}
@@ -906,6 +956,10 @@ export const BookingPage: React.FC = () => {
               {/* ESTIMATE RESULT */}
               {dumpsterStep === 'result' && estimate && (
                 <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                  {/* Related banner image */}
+                  <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                    <img src="/dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover" />
+                  </div>
                   <div className="mb-4">
                     <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
                     <ul className="space-y-1.5">
@@ -926,6 +980,28 @@ export const BookingPage: React.FC = () => {
                       <div className="text-2xl font-black text-brand">${estimate.price}</div>
                     </div>
                   </div>
+                  {/* Safe Protect Sticker */}
+                  <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                      <ShieldCheck size={18} strokeWidth={2.5} />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                        <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                      </div>
+                      <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                        Your service is protected by our multi-million dollar liability insurance.{' '}
+                        <button 
+                          type="button"
+                          onClick={() => setShowInsuranceModal(true)} 
+                          className="text-emerald-900 font-bold hover:underline"
+                        >
+                          Learn more
+                        </button>
+                      </p>
+                    </div>
+                  </div>
                   <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
                   <button
                     onClick={() => handleNextStep()}
@@ -938,6 +1014,299 @@ export const BookingPage: React.FC = () => {
                     className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                   >
                     <ArrowLeft size={14} /> Back to duration
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ═══ Step 2: Moving Labor Flow ═══ */}
+          {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
+            <div className="space-y-4">
+              <div className="mb-2 flex items-start gap-3">
+                <BicepsFlexed size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+                <div>
+                  <h2 className="text-base font-black text-secondary">Moving Labor Options</h2>
+                  <p className="text-secondary-400 text-xs">Configure your helpers and hours</p>
+                </div>
+              </div>
+
+              {/* DETAILS SELECTION */}
+              {movingStep === 'details' && (
+                <div className="space-y-4">
+                  {/* Service Selection */}
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-2">Service Selection</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { label: 'Loading Only', icon: PackagePlus },
+                        { label: 'Unloading Only', icon: PackageMinus },
+                        { label: 'Both', icon: ArrowLeftRight }
+                      ].map((service) => {
+                        const isSelected = movingServiceType === service.label;
+                        const Icon = service.icon;
+                        return (
+                          <button
+                            key={service.label}
+                            type="button"
+                            onClick={() => setMovingServiceType(service.label as any)}
+                            className={`group p-3 border rounded-xl flex items-center gap-3 transition-all w-full text-left ${
+                              isSelected 
+                                ? 'border-brand bg-brand/5 shadow-md shadow-brand/10' 
+                                : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5'
+                            }`}
+                          >
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                            }`}>
+                              <Icon size={16} />
+                            </div>
+                            <span className={`text-xs font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                              {service.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Move Type */}
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-2">Type of Move</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {[
+                        { label: 'Storage Unit', icon: Warehouse },
+                        { label: 'Box Truck', icon: Truck },
+                        { label: 'Inside Home', icon: Home },
+                        { label: 'Other', icon: Boxes }
+                      ].map((type) => {
+                        const isSelected = movingType === type.label;
+                        const Icon = type.icon;
+                        return (
+                          <button
+                            key={type.label}
+                            type="button"
+                            onClick={() => setMovingType(type.label as any)}
+                            className={`group p-2.5 border rounded-xl flex items-center gap-2.5 transition-all w-full text-left ${
+                              isSelected 
+                                ? 'border-brand bg-brand/5 shadow-md shadow-brand/10' 
+                                : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5'
+                            }`}
+                          >
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                            }`}>
+                              <Icon size={14} />
+                            </div>
+                            <span className={`text-xs font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                              {type.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex gap-3">
+                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                      <ArrowLeft size={14} /> Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMovingStep('crew')}
+                      className="flex-1 group py-3 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* CREW & TIME SELECTION */}
+              {movingStep === 'crew' && (
+                <div className="space-y-4">
+                  {/* Helpers Selection */}
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-2">Number of Helpers</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setMovingHelpers(2)}
+                        className={`group p-3 border rounded-xl flex items-center gap-3 transition-all w-full text-left ${
+                          movingHelpers === 2 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                          movingHelpers === 2 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <div className="flex -space-x-1">
+                            <BicepsFlexed size={14} />
+                            <BicepsFlexed size={14} />
+                          </div>
+                        </div>
+                        <div>
+                          <span className={`block text-xs font-black transition-colors ${movingHelpers === 2 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>2 Helpers</span>
+                          <span className={`block text-[9px] font-bold ${movingHelpers === 2 ? 'text-brand/80' : 'text-secondary-400'}`}>$149 / hour</span>
+                        </div>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMovingHelpers(3)}
+                        className={`group p-3 border rounded-xl flex items-center gap-3 transition-all w-full text-left ${
+                          movingHelpers === 3 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                          movingHelpers === 3 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        }`}>
+                          <div className="flex -space-x-1">
+                            <BicepsFlexed size={14} />
+                            <BicepsFlexed size={14} />
+                            <BicepsFlexed size={14} />
+                          </div>
+                        </div>
+                        <div>
+                          <span className={`block text-xs font-black transition-colors ${movingHelpers === 3 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>3 Helpers</span>
+                          <span className={`block text-[9px] font-bold ${movingHelpers === 3 ? 'text-brand/80' : 'text-secondary-400'}`}>$189 / hour</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Hours Selection */}
+                  <div>
+                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-2">Estimated Hours (2 hr min)</label>
+                    <div className="flex items-center justify-between p-3 bg-white border border-secondary-100 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-secondary-50 flex items-center justify-center text-secondary">
+                          <Clock size={16} />
+                        </div>
+                        <div>
+                          <div className="text-xs font-black text-secondary">Time Needed</div>
+                          <div className="text-[10px] text-secondary-400 font-bold">{movingHours} hours selected</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 bg-secondary-50 border border-secondary-100 rounded-lg p-1 w-max">
+                        <button
+                          type="button"
+                          onClick={() => setMovingHours(h => Math.max(2, h - 1))}
+                          disabled={movingHours <= 2}
+                          className="w-8 h-8 rounded-md bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className="w-6 text-center text-base font-black text-brand">{movingHours}</span>
+                        <button
+                          type="button"
+                          onClick={() => setMovingHours(h => Math.min(12, h + 1))}
+                          className="w-8 h-8 rounded-md bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setMovingStep('details')}
+                      className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2"
+                    >
+                      <ArrowLeft size={14} /> Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const movingPricePerHour = movingHelpers === 2 ? 149 : 189;
+                        const movingEstimateTotal = movingPricePerHour * movingHours;
+                        setEstimate({
+                          itemsDetected: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
+                          estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
+                          price: movingEstimateTotal,
+                          summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
+                        });
+                        setFormData(prev => ({
+                          ...prev,
+                          estimatedItems: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
+                          estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
+                          price: movingEstimateTotal,
+                          estimateSummary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`,
+                          details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
+                        }));
+                        setMovingStep('result');
+                      }}
+                      className="flex-1 group py-3 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Get Estimate <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ESTIMATE RESULT */}
+              {movingStep === 'result' && estimate && (
+                <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                  {/* Related banner image */}
+                  <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                    <img src="/card-moving-labor.png" alt="Moving Labor" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="mb-4">
+                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>
+                    <ul className="space-y-1.5">
+                      {estimate.itemsDetected.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                          <span className="text-secondary-600 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
+                        <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                      </div>
+                      <div className="text-2xl font-black text-brand">${estimate.price}</div>
+                    </div>
+                  </div>
+                  {/* Safe Protect Sticker */}
+                  <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                      <ShieldCheck size={18} strokeWidth={2.5} />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                        <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                      </div>
+                      <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                        Your service is protected by our multi-million dollar liability insurance.{' '}
+                        <button 
+                          type="button"
+                          onClick={() => setShowInsuranceModal(true)} 
+                          className="text-emerald-900 font-bold hover:underline"
+                        >
+                          Learn more
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
+                  <button
+                    type="button"
+                    onClick={() => handleNextStep()}
+                    className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                  >
+                    Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMovingStep('crew')}
+                    className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  >
+                    <ArrowLeft size={14} /> Back to crew & time
                   </button>
                 </div>
               )}
@@ -961,6 +1330,68 @@ export const BookingPage: React.FC = () => {
       <div>
         <TrustBadges />
       </div>
+
+      {/* Insurance Modal */}
+      {showInsuranceModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                  <ShieldCheck size={22} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="font-black text-secondary text-lg">Safe Protect™</h3>
+                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Premium Coverage Included</p>
+                </div>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setShowInsuranceModal(false)}
+                className="w-8 h-8 rounded-full bg-secondary-50 hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="space-y-4 text-left">
+              <p className="text-xs text-secondary-500 leading-relaxed">
+                We prioritize safety and peace of mind. Every service is covered by our comprehensive insurance policy at no extra charge.
+              </p>
+              <div className="h-px bg-secondary-100"></div>
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-black text-secondary">Multi-Million Liability Coverage</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects your residential or commercial property from accidental damage during service.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-black text-secondary">Fully Background-Checked Crew</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Every partner crew is thoroughly screened, vetted, and background-checked for absolute safety.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-black text-secondary">Satisfaction Guarantee</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, our support team will resolve it quickly.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowInsuranceModal(false)}
+              className="w-full mt-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-secondary/15 transition-all"
+            >
+              Got it, thanks
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

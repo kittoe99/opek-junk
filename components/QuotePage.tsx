@@ -507,6 +507,21 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className="space-y-6">
+        {/* Related service banner image */}
+        <div className="w-full h-48 rounded-2xl overflow-hidden border border-secondary-100 shadow-sm">
+          <img 
+            src={
+              selectedService === 'junk_removal' ? '/card-junk-removal.png' :
+              selectedService === 'donation_pickup' ? '/card-donation-pickup.png' :
+              selectedService === 'moving_labor' ? '/card-moving-labor.png' :
+              selectedService === 'dumpster_rental' ? '/dumpster-rental.png' :
+              '/card-junk-removal.png'
+            } 
+            alt="Service breakdown" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         {/* Price header breakdown */}
         <div className="bg-secondary-50 rounded-2xl p-5 md:p-6 border border-secondary-100">
           {!isSpecialService && (
@@ -599,7 +614,7 @@ export const QuotePage: React.FC = () => {
 
         {/* Insurance Modal */}
         {showInsuranceModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
             <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -853,10 +868,10 @@ export const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedService('junk_removal')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <Armchair size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                <img src="/card-junk-removal.png" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
@@ -868,10 +883,10 @@ export const QuotePage: React.FC = () => {
             </button>
             <button
               onClick={() => setSelectedService('donation_pickup')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <HeartHandshake size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                <img src="/card-donation-pickup.png" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
@@ -883,10 +898,10 @@ export const QuotePage: React.FC = () => {
             </button>
             <button
               onClick={() => setSelectedService('moving_labor')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <BicepsFlexed size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                <img src="/card-moving-labor.png" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
@@ -898,10 +913,10 @@ export const QuotePage: React.FC = () => {
             </button>
             <button
               onClick={() => setSelectedService('dumpster_rental')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <Container size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
+                <img src="/card-dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
