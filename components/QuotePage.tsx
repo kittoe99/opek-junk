@@ -21,6 +21,20 @@ interface CatalogCategory {
 
 const ITEM_CATALOG: CatalogCategory[] = [
   {
+    label: 'Popular Items',
+    icon: <Heart size={18} className="text-brand fill-brand/10" />,
+    items: [
+      { name: 'Sofa / Couch', image: '/items/sofa.svg' },
+      { name: 'Mattress', image: '/items/mattress.svg' },
+      { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
+      { name: 'Washer / Dryer', image: '/items/washer.svg' },
+      { name: 'TV', image: '/items/tv.svg' },
+      { name: 'Bags of Trash', image: '/items/trash-bags.svg' },
+      { name: 'Boxes of Junk', image: '/items/junk-boxes.svg' },
+      { name: 'Yard Debris / Brush', image: '/items/yard-debris.svg' },
+    ],
+  },
+  {
     label: 'Furniture',
     icon: <Armchair size={18} />,
     items: [
@@ -258,7 +272,7 @@ export const QuotePage: React.FC = () => {
   // Item Selection State
   const [selectedItems, setSelectedItems] = useState<DetectedItem[]>([]);
   const [catalogSearch, setCatalogSearch] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>('Popular Items');
   const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>('select');
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
@@ -1521,7 +1535,7 @@ export const QuotePage: React.FC = () => {
   // ── Main flow ──
   return (
     <div className="min-h-screen bg-white">
-      <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`pt-32 pb-8 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
         <button
           onClick={() => setSelectedService(null)}
           className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
@@ -1546,7 +1560,7 @@ export const QuotePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
 
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (
@@ -1835,72 +1849,141 @@ export const QuotePage: React.FC = () => {
                     />
                   </div>
 
-                  {/* Category list */}
-                  <div className="space-y-3">
-                    {filteredCatalog.map((category) => {
-                      const isExpanded = expandedCategory === category.label || catalogSearch.trim() !== '';
-                      const selectedInCategory = category.items.filter(i => isItemSelected(i.name)).length;
-                      return (
-                        <div key={category.label} ref={(el) => { categoryRefs.current[category.label] = el; }} className={`bg-white border transition-all rounded-2xl overflow-hidden ${isExpanded ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'}`}>
+                  {/* Sidebar and Grid split layout */}
+                  <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
+                    {/* Left Sidebar */}
+                    <div className="w-full sm:w-[200px] md:w-[240px] shrink-0 flex flex-row sm:flex-col gap-2 sm:gap-1 border-b sm:border-b-0 sm:border-r border-secondary-100 pb-3 sm:pb-0 pr-0 sm:pr-4 overflow-x-auto sm:overflow-y-visible scrollbar-none py-1 sm:sticky sm:top-36">
+                      {ITEM_CATALOG.map((category) => {
+                        const isActive = expandedCategory === category.label && !catalogSearch.trim();
+                        const selectedCount = category.items.filter(i => isItemSelected(i.name)).length;
+                        return (
                           <button
+                            key={category.label}
                             onClick={() => {
-                              const newCat = isExpanded && !catalogSearch ? null : category.label;
-                              setExpandedCategory(newCat);
-                              if (newCat) {
-                                setTimeout(() => scrollToElement(categoryRefs.current[category.label], -20), 80);
-                              }
+                              setExpandedCategory(category.label);
+                              setCatalogSearch('');
                             }}
-                            className="w-full flex items-center justify-between p-4 md:p-5 text-left group"
+                            className={`flex flex-row items-center gap-1.5 sm:gap-2.5 p-1.5 sm:p-2 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
+                              isActive
+                                ? 'bg-brand/10 text-brand font-black'
+                                : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
+                            }`}
                           >
-                            <div className="flex items-center gap-4">
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${isExpanded ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'}`}>
-                                {category.icon}
-                              </div>
-                              <div>
-                                <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${isExpanded ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
-                                  {category.label}
-                                </h3>
-                                <p className="text-secondary-400 text-xs hidden sm:block">
-                                  {category.items.length} items
-                                </p>
-                              </div>
-                              {selectedInCategory > 0 && (
-                                <span className="ml-2 bg-brand text-white text-[10px] font-bold px-2 py-1 rounded-full min-w-[20px] text-center">
-                                  {selectedInCategory} selected
-                                </span>
-                              )}
+                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isActive ? 'bg-brand/20 text-brand' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                            }`}>
+                              {category.icon}
                             </div>
-                            <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${isExpanded ? 'border-brand bg-brand text-white' : 'border-secondary-100 text-secondary-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white'}`}>
-                              <ChevronDown size={16} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                            <div className="flex-1 min-w-0 text-left">
+                              <p className="text-[10px] sm:text-xs font-bold leading-tight truncate whitespace-nowrap sm:whitespace-normal">
+                                {category.label}
+                              </p>
                             </div>
+                            {selectedCount > 0 && (
+                              <span className="bg-brand text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0">
+                                {selectedCount}
+                              </span>
+                            )}
                           </button>
-                          {isExpanded && (
-                            <div className="border-t border-secondary-100 bg-secondary-50/30 p-4">
-                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        );
+                      })}
+                    </div>
+
+                    {/* Right Items Grid */}
+                    <div className="flex-1 min-w-0 pr-1 py-1">
+                      {catalogSearch.trim() ? (
+                        <div>
+                          <h3 className="text-[10px] font-black uppercase tracking-wider text-secondary-400 mb-4">
+                            Search Results ({filteredCatalog.reduce((sum, cat) => sum + cat.items.length, 0)} items)
+                          </h3>
+                          {filteredCatalog.length === 0 ? (
+                            <p className="text-xs text-secondary-400 py-8 text-center">No items found matching "{catalogSearch}"</p>
+                          ) : (
+                            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
+                              {filteredCatalog.flatMap(cat => cat.items).map((item) => {
+                                const selected = isItemSelected(item.name);
+                                const selectedItem = selectedItems.find(i => i.name === item.name);
+                                return (
+                                  <button
+                                    key={item.name}
+                                    className={`group relative flex flex-col items-center gap-1 p-1.5 sm:p-3 rounded-xl transition-all duration-200 text-center cursor-pointer ${
+                                      selected ? 'bg-brand/5 text-brand scale-[1.02]' : 'hover:bg-secondary-50 hover:scale-[1.02] active:scale-[0.98]'
+                                    }`}
+                                    onClick={() => !selected && toggleCatalogItem(item.name)}
+                                  >
+                                    {selected && (
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
+                                        className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 w-4.5 h-4.5 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow transition-colors z-10"
+                                      >
+                                        <X size={10} className="text-white" strokeWidth={3} />
+                                      </button>
+                                    )}
+                                    <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
+                                      <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        className="w-6 h-6 sm:w-8 sm:h-8 transition-all duration-200"
+                                        style={{
+                                          filter: selected
+                                            ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
+                                            : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
+                                        }}
+                                      />
+                                    </div>
+                                    <span className={`text-[10px] sm:text-xs font-black leading-tight line-clamp-2 transition-colors ${
+                                      selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
+                                    }`}>{item.name}</span>
+                                    
+                                    {selected && selectedItem && (
+                                      <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <Minus size={10} className="text-secondary-600" />
+                                        </button>
+                                        <span className="w-3 sm:w-5 text-center text-[9px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <Plus size={10} className="text-secondary-600" />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div>
+                          {ITEM_CATALOG.filter(cat => cat.label === (expandedCategory || 'Popular Items')).map((category) => (
+                            <div key={category.label}>
+                              <h3 className="text-[10px] font-black uppercase tracking-wider text-secondary-400 mb-4 flex items-center gap-1.5">
+                                <span className="w-4 h-4 shrink-0 flex items-center justify-center">{category.icon}</span> {category.label} ({category.items.length} items)
+                              </h3>
+                              <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
                                 {category.items.map((item) => {
                                   const selected = isItemSelected(item.name);
                                   const selectedItem = selectedItems.find(i => i.name === item.name);
                                   return (
                                     <button
                                       key={item.name}
-                                      className={`group relative flex flex-col items-center gap-2 p-3 bg-white border rounded-xl transition-all duration-200 text-center cursor-pointer ${
-                                        selected ? 'border-brand shadow-sm shadow-brand/10 scale-[1.02]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.02] active:scale-[0.98]'
+                                      className={`group relative flex flex-col items-center gap-1 p-1.5 sm:p-3 rounded-xl transition-all duration-200 text-center cursor-pointer ${
+                                        selected ? 'bg-brand/5 text-brand scale-[1.02]' : 'hover:bg-secondary-50 hover:scale-[1.02] active:scale-[0.98]'
                                       }`}
                                       onClick={() => !selected && toggleCatalogItem(item.name)}
                                     >
                                       {selected && (
                                         <button
                                           onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-md transition-colors z-10"
+                                          className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 w-4.5 h-4.5 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow transition-colors z-10"
                                         >
-                                          <X size={12} className="text-white" strokeWidth={3} />
+                                          <X size={10} className="text-white" strokeWidth={3} />
                                         </button>
                                       )}
-                                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-1 ${selected ? 'bg-brand/5' : 'bg-transparent'}`}>
+                                      <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
                                         <img
                                           src={item.image}
                                           alt={item.name}
-                                          className="w-10 h-10 transition-all duration-200"
+                                          className="w-6 h-6 sm:w-8 sm:h-8 transition-all duration-200"
                                           style={{
                                             filter: selected
                                               ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -1908,18 +1991,18 @@ export const QuotePage: React.FC = () => {
                                           }}
                                         />
                                       </div>
-                                      <span className={`text-[11px] font-bold leading-tight line-clamp-2 transition-colors ${
+                                      <span className={`text-[10px] sm:text-xs font-black leading-tight line-clamp-2 transition-colors ${
                                         selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
                                       }`}>{item.name}</span>
                                       
                                       {selected && selectedItem && (
-                                        <div className="flex items-center gap-1.5 mt-2 bg-secondary-50 rounded-lg p-1" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand transition-colors">
-                                            <Minus size={12} className="text-secondary-600" />
+                                        <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                            <Minus size={10} className="text-secondary-600" />
                                           </button>
-                                          <span className="w-4 text-center text-xs font-black text-secondary">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-6 h-6 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand transition-colors">
-                                            <Plus size={12} className="text-secondary-600" />
+                                          <span className="w-3 sm:w-5 text-center text-[9px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                            <Plus size={10} className="text-secondary-600" />
                                           </button>
                                         </div>
                                       )}
@@ -1928,10 +2011,10 @@ export const QuotePage: React.FC = () => {
                                 })}
                               </div>
                             </div>
-                          )}
+                          ))}
                         </div>
-                      );
-                    })}
+                      )}
+                    </div>
                   </div>
 
                   {/* Custom item entry */}
