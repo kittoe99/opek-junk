@@ -22,7 +22,7 @@ export const DonationsPickupPage: React.FC = () => {
         eyebrow="Eco-Friendly Service"
         title={<>Donations<br />Pickup</>}
         subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. We sort, transport, and deliver directly to local charities and recycling centers."
-        image="/workers-opek.webp"
+        image="/opek-nav.webp"
         imageAlt="Donation pickup team loading items"
         imageCaption="Eco-Friendly • Donation Receipts • Same-Day Available"
         primaryCta={{ label: 'Schedule Pickup', onClick: () => navigate('/quote') }}

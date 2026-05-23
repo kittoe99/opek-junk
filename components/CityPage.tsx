@@ -66,7 +66,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       desc: `Crew arrives anywhere in ${city.metroArea}, confirms what's getting hauled, and gives you the final number on the spot. No upcharges.`,
     },
     {
-      image: '/workers-opek.webp',
+      image: '/junk-removal.webp',
       alt: 'Professional junk removal team hauling items',
       label: 'Step Three',
       titleStart: 'We do',

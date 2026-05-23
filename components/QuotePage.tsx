@@ -511,11 +511,11 @@ export const QuotePage: React.FC = () => {
         <div className="w-full h-48 rounded-2xl overflow-hidden border border-secondary-100 shadow-sm">
           <img 
             src={
-              selectedService === 'junk_removal' ? '/card-junk-removal.png' :
-              selectedService === 'donation_pickup' ? '/card-donation-pickup.png' :
-              selectedService === 'moving_labor' ? '/card-moving-labor.png' :
+              selectedService === 'junk_removal' ? '/junk-removal.webp' :
+              selectedService === 'donation_pickup' ? '/opek-nav.webp' :
+              selectedService === 'moving_labor' ? '/opek2.webp' :
               selectedService === 'dumpster_rental' ? '/dumpster-rental.png' :
-              '/card-junk-removal.png'
+              '/junk-removal.webp'
             } 
             alt="Service breakdown" 
             className="w-full h-full object-cover"
@@ -871,7 +871,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/card-junk-removal.png" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/junk-removal.webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
@@ -886,7 +886,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/card-donation-pickup.png" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/opek-nav.webp" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
@@ -901,7 +901,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/card-moving-labor.png" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/opek2.webp" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
@@ -916,7 +916,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/card-dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>

@@ -22,7 +22,7 @@ export const MovingLaborPage: React.FC = () => {
         eyebrow="Professional Service"
         title={<>Moving<br />Labor</>}
         subtitle="Hire strong, experienced crews by the hour to load, unload, or rearrange items in your home. You provide the truck or storage unit, we provide the muscle."
-        image="/workers-opek.webp"
+        image="/opek2.webp"
         imageAlt="Moving labor team lifting a heavy sofa"
         imageCaption="Hourly Rates • Insured Crews • Same-Day Available"
         primaryCta={{ label: 'Book Labor', onClick: () => navigate('/booking') }}
