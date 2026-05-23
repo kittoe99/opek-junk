@@ -135,7 +135,7 @@ function PropertyCleanoutPageWithSEO() {
 function DonationsPickupPageWithSEO() {
   return (
     <>
-      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. We pick up and deliver to local charities." />
+      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. Partner crews pick up and deliver to local charities." />
       <DonationsPickupPage />
     </>
   );
@@ -171,7 +171,7 @@ function TrackOrderPageWithSEO() {
 function InHomeEstimatePageWithSEO() {
   return (
     <>
-      <SEO title="Free In-Home Estimate | Opek Junk Removal" description="Schedule a free, no-obligation in-home estimate. Our team will visit your property and provide an accurate quote on the spot." />
+      <SEO title="Free In-Home Estimate | Opek Junk Removal" description="Schedule a free, no-obligation in-home estimate. A vetted local provider will visit your property and provide an accurate quote on the spot." />
       <InHomeEstimatePage />
     </>
   );

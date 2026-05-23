@@ -43,8 +43,8 @@ export const TrustBadges: React.FC = () => {
               <ShieldCheck size={18} className="text-emerald-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-secondary">Property Protection</span>
-              <span className="text-[10px] uppercase tracking-wider text-secondary-500 font-bold">$2M Fully Insured</span>
+              <span className="text-sm font-bold text-secondary">Vetted Providers</span>
+              <span className="text-[10px] uppercase tracking-wider text-secondary-500 font-bold">Same Day Service</span>
             </div>
           </div>
 

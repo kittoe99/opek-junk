@@ -21,10 +21,10 @@ export const MovingLaborPage: React.FC = () => {
       <PageHero
         eyebrow="Professional Service"
         title={<>Moving<br />Labor</>}
-        subtitle="Hire strong, experienced crews by the hour to load, unload, or rearrange items in your home. You provide the truck or storage unit, we provide the muscle."
+        subtitle="Hire strong, experienced crews by the hour to load, unload, or rearrange items in your home. You provide the truck or storage unit, vetted crews provide the muscle."
         image="/opek2.webp"
         imageAlt="Moving labor team lifting a heavy sofa"
-        imageCaption="Hourly Rates • Insured Crews • Same-Day Available"
+        imageCaption="Hourly Rates • Vetted Providers • Same-Day Available"
         primaryCta={{ label: 'Book Labor', onClick: () => navigate('/booking') }}
         secondaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}
       />
@@ -43,7 +43,7 @@ export const MovingLaborPage: React.FC = () => {
               Muscle On Demand
             </h2>
             <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
-              Hire the muscle. You provide the truck, we provide the crew.
+              Hire the muscle. You provide the truck, the platform provides the crew.
             </p>
           </div>
 
@@ -76,13 +76,13 @@ export const MovingLaborPage: React.FC = () => {
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Heavy Lifting & Professional Moving Labor Crews</h2>
             <p className="mb-4">
-              Sometimes you don't need a full-service moving company or junk removal truck—you just need a few strong pairs of hands. Our <strong>moving labor</strong> service provides you with experienced, background-checked crews by the hour. Whether you need help loading a rented U-Haul, unloading a PODS container, or simply rearranging heavy furniture within your home, our team provides the physical support you need.
+              Sometimes you don't need a full-service moving company or junk removal truck—you just need a few strong pairs of hands. Vetted moving labor services provide experienced, background-checked crews by the hour. Whether you need help loading a rented U-Haul, unloading a PODS container, or simply rearranging heavy furniture within your home, partner crews provide the physical support you need.
             </p>
             <p className="mb-4">
-              We specialize in labor-only assistance. This means you maintain control over your transportation and storage, while avoiding the exorbitant fees of traditional moving companies. If you happen to discover items you no longer want while packing or unpacking, we can seamlessly transition to our <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> or <Link to="/services/donations-pickup" className="text-brand hover:underline font-medium">donations pickup</Link> services to clear them away on the spot. 
+              Partner crews specialize in labor-only assistance. This means you maintain control over transportation and storage, while avoiding the exorbitant fees of traditional moving companies. If you happen to discover items you no longer want while packing or unpacking, a seamless transition to <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> or <Link to="/services/donations-pickup" className="text-brand hover:underline font-medium">donations pickup</Link> services can clear them away on the spot. 
             </p>
             <p>
-              Our moving labor crews are fully insured and available for jobs of all sizes, from quick 2-hour minimums to full-day loading projects. With crews standing by nationwide in cities like <Link to="/locations/los-angeles" className="text-brand hover:underline font-medium">Los Angeles</Link> and <Link to="/locations/jacksonville" className="text-brand hover:underline font-medium">Jacksonville</Link>, we make moving safer and significantly less stressful. Let our professionals take the weight off your shoulders.
+              Moving labor crews are vetted and available for jobs of all sizes, from quick 2-hour minimums to full-day loading projects. With crews standing by nationwide in cities like <Link to="/locations/los-angeles" className="text-brand hover:underline font-medium">Los Angeles</Link> and <Link to="/locations/jacksonville" className="text-brand hover:underline font-medium">Jacksonville</Link>, the platform makes moving safer and significantly less stressful. Let the professionals take the weight off your shoulders.
             </p>
           </div>
         </div>

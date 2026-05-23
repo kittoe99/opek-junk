@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
               <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-28 w-auto object-contain -mt-8" />
             </div>
             <p className="text-secondary-300 text-sm leading-relaxed mb-8 max-w-sm">
-              Professional junk removal services connecting you with trusted providers nationwide. Licensed, insured, and eco-friendly.
+              Professional junk removal services connecting you with trusted providers nationwide. Vetted providers, same day service, and eco-friendly.
             </p>
             {/* Contact Info */}
             <a href="tel:8313187139" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">

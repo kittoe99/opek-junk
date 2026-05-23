@@ -17,10 +17,10 @@ export const WhatWeHaul: React.FC = () => {
         <div className="mb-10">
           <div className="inline-flex items-center gap-2 mb-3">
             <span className="block w-8 h-px bg-brand" />
-            <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">What We Clear</span>
+            <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Common Items</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
-            What We Haul
+            Items Hauled
           </h2>
           <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
             From a single couch to a full attic clean — same crew, same flat-rate pricing.

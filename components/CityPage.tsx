@@ -55,7 +55,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       label: 'Step One',
       titleStart: 'Snap. Send.',
       titleAccent: 'Done.',
-      desc: 'A quick photo is all we need. Our AI reads the volume, the team confirms the price — instantly.',
+      desc: 'A quick photo is all that is needed. AI reads the volume, confirming the price — instantly.',
     },
     {
       image: '/opek2.webp',
@@ -69,9 +69,9 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       image: '/junk-removal.webp',
       alt: 'Professional junk removal team hauling items',
       label: 'Step Three',
-      titleStart: 'We do',
+      titleStart: 'Crews do',
       titleAccent: 'the lifting.',
-      desc: `Loading, sweeping, hauling — all handled by your ${city.name} crew. You point, we clear. Same day in most cases.`,
+      desc: `Loading, sweeping, hauling — all handled by your ${city.name} crew. You point, they clear. Same day in most cases.`,
     },
   ];
 
@@ -244,7 +244,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                   <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
                     <div className="flex items-center gap-3 text-white">
                       <CheckCircle2 size={18} className="text-brand" />
-                      <span className="text-sm font-bold">Fully Insured • 70% Recycled • Same-Day Available</span>
+                      <span className="text-sm font-bold">Vetted Providers • Same-Day Service • 70% Recycled</span>
                     </div>
                   </div>
                 </div>

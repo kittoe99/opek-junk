@@ -12,7 +12,7 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
       label: "Step One",
       titleStart: "Snap. Send.",
       titleAccent: "Done.",
-      desc: "A quick photo is all we need. Our AI reads the volume, the team confirms the price — instantly."
+      desc: "A quick photo is all that is needed. AI reads the volume, confirming the price — instantly."
     },
     {
       image: "/opek2.webp",
@@ -26,9 +26,9 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
       image: "/junk-removal.webp",
       alt: "Professional junk removal team hauling items",
       label: "Step Three",
-      titleStart: "We do",
+      titleStart: "Crews do",
       titleAccent: "the lifting.",
-      desc: "Loading, sweeping, hauling — all handled. You point, we clear. Same day in most cases."
+      desc: "Loading, sweeping, hauling — all handled by the crew. You point, they clear. Same day in most cases."
     }
   ];
 

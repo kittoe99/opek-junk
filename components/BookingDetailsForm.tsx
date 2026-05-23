@@ -277,7 +277,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <CalendarCheck size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
             <div>
               <h2 className="text-base font-black text-secondary">Your Contact Details</h2>
-              <p className="text-secondary-400 text-xs">How should we reach you to confirm?</p>
+              <p className="text-secondary-400 text-xs">How should you be reached to confirm?</p>
             </div>
           </div>
 
@@ -340,7 +340,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
               </h2>
               <p className="text-secondary-400 text-xs">
-                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should we come to collect?'}
+                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the crew come to collect?'}
               </p>
             </div>
           </div>
@@ -478,7 +478,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.details}
               onChange={handleInputChange}
               rows={3}
-              placeholder={serviceType === 'Moving Labor' ? "Tell us about the items you need moved, access instructions, etc." : "Tell us about the items you need removed, access instructions, etc."}
+              placeholder={serviceType === 'Moving Labor' ? "Tell the crew about the items needing relocation, access instructions, etc." : "Tell the crew about the items needing removal, access instructions, etc."}
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>
@@ -528,7 +528,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           <p className="text-xs text-secondary-300 text-center mt-3">
-            We'll match you with a provider who confirms within 15 minutes
+            Opek matches you with a provider who confirms within 15 minutes
           </p>
         </form>
       )}

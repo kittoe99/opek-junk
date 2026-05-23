@@ -47,10 +47,10 @@ export const JunkRemovalPage: React.FC = () => {
       <PageHero
         eyebrow="Professional Service"
         title={<>Junk<br />Removal</>}
-        subtitle="Residential & commercial clearing. Furniture, appliances, office decommissioning, and retail fixtures. Upfront pricing, same-day availability, and fully insured crews."
+        subtitle="Residential & commercial clearing. Furniture, appliances, office decommissioning, and retail fixtures. Upfront pricing, same-day availability, and vetted local providers."
         image="/junk-removal.webp"
         imageAlt="Junk removal team loading a truck"
-        imageCaption="Fully Insured • Eco-Friendly • Same-Day Available"
+        imageCaption="Vetted Providers • Eco-Friendly • Same-Day Available"
         primaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
       />
@@ -71,7 +71,7 @@ export const JunkRemovalPage: React.FC = () => {
               Junk Removal For Any Situation
             </h2>
             <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md mx-auto">
-              Choose a service sector to explore what we can clear from your space.
+              Choose a service sector to explore what partner crews can clear from your space.
             </p>
           </div>
 
@@ -131,19 +131,19 @@ export const JunkRemovalPage: React.FC = () => {
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Comprehensive Junk Removal Services for Homes & Businesses</h2>
             <p className="mb-4">
-              When it comes to clearing out unwanted items, finding a reliable, full-service junk removal provider is crucial. Whether you are decluttering your home, preparing for a move, decommissioning an office, or clearing out warehouse inventory, our professional team ensures a stress-free experience. We handle all heavy lifting, sorting, and eco-friendly disposal, so you don't have to lift a finger.
+              When it comes to clearing out unwanted items, finding a reliable, full-service junk removal provider is crucial. Whether you are decluttering your home, preparing for a move, decommissioning an office, or clearing out warehouse inventory, the partner crews ensure a stress-free experience. Vetted providers handle all heavy lifting, sorting, and eco-friendly disposal, so you don't have to lift a finger.
             </p>
             <p className="mb-4">
-              We specialize in both <strong>residential and commercial junk removal</strong>, serving communities nationwide. For homeowners, we handle everything from single furniture items to full attic and estate cleanouts. For our business clients, we understand the importance of speed and compliance, offering after-hours scheduling, secure e-waste disposal, volume pricing, and full Certificates of Insurance (COI) to meet building management requirements.
+              Partner crews specialize in both <strong>residential and commercial junk removal</strong>, serving communities nationwide. For homeowners, they handle everything from single furniture items to full attic and estate cleanouts. For business clients, they understand the importance of speed and compliance, offering after-hours scheduling, secure e-waste disposal, volume pricing, and full Certificates of Insurance (COI) to meet building management requirements.
             </p>
             <p className="mb-4">
-              Beyond standard junk removal, we also provide specialized <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link> for estates, foreclosures, and tenant turnovers. If you have gently used items that shouldn't go to waste, we coordinate <Link to="/services/donations-pickup" className="text-brand hover:underline font-medium">donations pickups</Link> to ensure they reach local charities. Need help loading or unloading a moving truck? Check out our <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> services for reliable, hourly assistance.
+              Beyond standard junk removal, partner crews also provide specialized <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link> for estates, foreclosures, and tenant turnovers. If you have gently used items that shouldn't go to waste, donation pickups can be coordinated to ensure they reach local charities. Need help loading or unloading a moving truck? Check out <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> services for reliable, hourly assistance.
             </p>
           </div>
         </div>
       </section>
 
-      <ServiceArea titleStart="Schedule a pickup." titleAccent="We handle the rest." />
+      <ServiceArea titleStart="Schedule a pickup." titleAccent="Crews handle the rest." />
     </div>
   );
 };

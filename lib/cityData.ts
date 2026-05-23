@@ -36,16 +36,16 @@ export const cities: CityData[] = [
     state: "Texas",
     stateAbbr: "TX",
     metroArea: "DFW Metroplex",
-    geoCoords: { lat: 32.7767, lon: -96.7970 },
+    geoCoords: { lat: 32.7767, lon: -96.797 },
     seo: {
-      title: "Junk Removal Dallas-Fort Worth, TX | Same-Day Pickup | Opek",
+      title: "Junk Removal Dallas-Fort Worth | Same-Day Pickup | Opek",
       description:
-        "Professional junk removal in Dallas-Fort Worth, TX. Same-day pickup, upfront pricing, and eco-friendly disposal. Serving Dallas, Fort Worth, Plano, Arlington & the entire DFW Metroplex.",
+        "Professional junk removal services in Dallas, Fort Worth, Arlington, Plano, and across the DFW Metroplex. Flat-rate pricing, eco-friendly disposal, and vetted local crews.",
       keywords:
-        "junk removal Dallas, junk removal Fort Worth, junk removal DFW, furniture removal Dallas TX, same-day junk removal Dallas, appliance removal Fort Worth, trash hauling Dallas",
+        "junk removal Dallas, junk removal Fort Worth, DFW junk hauling, same-day trash pickup Dallas, furniture removal Arlington, dumpster rental Plano",
     },
     hero: {
-      badge: "Now Serving DFW",
+      badge: "Now Serving DFW Metroplex",
       headlineStart: "Junk gone.",
       headlineAccent: "Dallas.",
       subheadline:
@@ -53,7 +53,7 @@ export const cities: CityData[] = [
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by our insured DFW crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured DFW partner crews.",
       dumpsterRental:
         "Roll-off dumpster rentals in various sizes delivered directly to your home, job site, or business in the DFW Metroplex.",
       propertyCleanout:
@@ -61,10 +61,10 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across the DFW Metroplex.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
-        "We're live across the DFW Metroplex and expanding fast. Check if we serve your ZIP and get a free quote today.",
+        "Service is live across the DFW Metroplex and expanding fast. Check if a local ZIP is served and get a free quote today.",
     neighborhoods: [
       "Dallas", "Fort Worth", "Plano", "Arlington", "Irving",
       "Garland", "Frisco", "McKinney", "Mesquite", "Grand Prairie",
@@ -78,24 +78,24 @@ export const cities: CityData[] = [
     ],
     faqs: [
       {
-        question: "Do you serve all of the DFW Metroplex?",
+        question: "Is all of the DFW Metroplex served?",
         answer:
-          "Yes. We cover Dallas, Fort Worth, and surrounding cities including Plano, Arlington, Irving, Frisco, McKinney, and more. If you're unsure, use our ZIP check to confirm.",
+          "Yes. Partner crews cover Dallas, Fort Worth, and surrounding cities including Plano, Arlington, Irving, Frisco, McKinney, and more. If you're unsure, use the ZIP check to confirm.",
       },
       {
-        question: "How quickly can you pick up in Dallas-Fort Worth?",
+        question: "How quickly can a pickup be scheduled in Dallas-Fort Worth?",
         answer:
-          "Same-day appointments are available most days. Book online or call and we'll get a crew to you as fast as possible.",
+          "Same-day appointments are available most days. Book online or call and a crew will be dispatched as fast as possible.",
       },
       {
-        question: "What items do you remove in the DFW area?",
+        question: "What items can be removed in the DFW area?",
         answer:
-          "Furniture, appliances, electronics, yard waste, construction debris, hot tubs, mattresses, office equipment — if you can point to it, we'll haul it.",
+          "Furniture, appliances, electronics, yard waste, construction debris, hot tubs, mattresses, office equipment — if you can point to it, the crews will haul it.",
       },
       {
         question: "How is pricing determined?",
         answer:
-          "Pricing is based on the volume your items take up in our truck. Send us a photo for an instant estimate, or we'll give you a firm quote on arrival before we start.",
+          "Pricing is based on the volume your items take up in the truck. Send a photo for an instant estimate, or receive a firm quote on arrival before work starts.",
       },
     ],
   },
@@ -122,7 +122,7 @@ export const cities: CityData[] = [
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris removed fast by our insured Jacksonville crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris removed fast by insured Jacksonville partner crews.",
       dumpsterRental:
         "Flexible, flat-rate dumpster rentals delivered to your driveway or commercial site anywhere in Jacksonville.",
       propertyCleanout:
@@ -130,10 +130,10 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Jacksonville.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
-        "We're live across Jacksonville and expanding fast. Check if we serve your ZIP and get a free quote today.",
+        "Service is live across Jacksonville and expanding fast. Check if a local ZIP is served and get a free quote today.",
     neighborhoods: [
       "Downtown Jacksonville", "Riverside", "Avondale", "Southside",
       "Mandarin", "Jacksonville Beach", "Neptune Beach", "Ponte Vedra",
@@ -147,24 +147,24 @@ export const cities: CityData[] = [
     ],
     faqs: [
       {
-        question: "Do you cover all Jacksonville neighborhoods?",
+        question: "Are all Jacksonville neighborhoods covered?",
         answer:
-          "Yes — we serve the entire city of Jacksonville including the beaches, Southside, Mandarin, Riverside, and surrounding Duval County areas.",
+          "Yes — service covers the entire city of Jacksonville including the beaches, Southside, Mandarin, Riverside, and surrounding Duval County areas.",
       },
       {
-        question: "Can I get same-day junk removal in Jacksonville?",
+        question: "Is same-day junk removal available in Jacksonville?",
         answer:
-          "Absolutely. Same-day slots fill up fast, so book early or call us in the morning for the best availability.",
+          "Absolutely. Same-day slots fill up fast, so book early or call in the morning for the best availability.",
       },
       {
-        question: "Do you haul yard debris and outdoor furniture in Jacksonville?",
+        question: "Is yard debris and outdoor furniture hauled in Jacksonville?",
         answer:
-          "Yes. Patio furniture, swing sets, yard waste, sheds, and hot tubs are all fair game. Our crews handle heavy lifting so you don't have to.",
+          "Yes. Patio furniture, swing sets, yard waste, sheds, and hot tubs are all fair game. Vetted crews handle heavy lifting so you don't have to.",
       },
       {
         question: "What does junk removal cost in Jacksonville?",
         answer:
-          "Pricing is volume-based and transparent. Send a photo for an instant estimate, or get a firm on-site quote before we lift a thing.",
+          "Pricing is volume-based and transparent. Send a photo for an instant estimate, or get a firm on-site quote before any lifting begins.",
       },
     ],
   },
@@ -191,7 +191,7 @@ export const cities: CityData[] = [
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by our insured Atlanta crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured Atlanta partner crews.",
       dumpsterRental:
         "Convenient roll-off dumpsters for residential cleanups and construction sites across the Atlanta metropolitan area.",
       propertyCleanout:
@@ -199,10 +199,10 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Metro Atlanta.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. We provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
-        "We're live across Metro Atlanta and expanding fast. Check if we serve your ZIP and get a free quote today.",
+        "Service is live across Metro Atlanta and expanding fast. Check if a local ZIP is served and get a free quote today.",
     neighborhoods: [
       "Buckhead", "Midtown", "Old Fourth Ward", "Decatur",
       "Sandy Springs", "Marietta", "Alpharetta", "Smyrna",
@@ -216,24 +216,24 @@ export const cities: CityData[] = [
     ],
     faqs: [
       {
-        question: "What areas of Atlanta do you serve?",
+        question: "What areas of Atlanta are served?",
         answer:
-          "We cover all of Metro Atlanta — Buckhead, Midtown, Decatur, Sandy Springs, Marietta, Alpharetta, and everywhere in between. Enter your ZIP to confirm.",
+          "Service covers all of Metro Atlanta — Buckhead, Midtown, Decatur, Sandy Springs, Marietta, Alpharetta, and everywhere in between. Enter your ZIP to confirm.",
       },
       {
-        question: "How fast can you come in Atlanta?",
+        question: "How fast can a pickup occur in Atlanta?",
         answer:
           "Same-day service is available most days across Metro Atlanta. Book online before noon for the best chance at a same-day slot.",
       },
       {
-        question: "Do you recycle or donate items in Atlanta?",
+        question: "Are items recycled or donated in Atlanta?",
         answer:
-          "Yes. We partner with local Atlanta donation centers and recycling facilities to divert as much as possible from landfills on every job.",
+          "Yes. Local providers partner with Atlanta donation centers and recycling facilities to divert as much as possible from landfills on every job.",
       },
       {
         question: "How do I get a quote for junk removal in Atlanta?",
         answer:
-          "Snap a photo of what needs to go and send it via our quote form for an instant estimate, or we'll price it out on-site with no obligation.",
+          "Snap a photo of what needs to go and send it via the quote form for an instant estimate, or receive pricing on-site with no obligation.",
       },
     ],
   },

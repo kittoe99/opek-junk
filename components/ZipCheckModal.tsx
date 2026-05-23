@@ -90,7 +90,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                   Confirm your <span className="text-brand">ZIP.</span>
                 </h2>
                 <p className="text-secondary-400 text-sm mb-5">
-                  We serve all 50 states — just enter your ZIP to get started.
+                  Service is available in all 50 states — just enter your ZIP to get started.
                 </p>
 
                 <div className="flex gap-2 mb-3">
@@ -130,7 +130,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     <Check size={18} className="text-green-600" strokeWidth={3} />
                   </div>
                   <div>
-                    <h2 className="text-xl font-black text-secondary tracking-tight leading-tight">We're in your area.</h2>
+                    <h2 className="text-xl font-black text-secondary tracking-tight leading-tight">Service is available in your area.</h2>
                     <p className="text-secondary-400 text-xs">Same-day pickup available</p>
                   </div>
                 </div>

@@ -119,7 +119,7 @@ export const ProviderSignupPage: React.FC = () => {
               <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Application Received</p>
               <h2 className="text-2xl md:text-3xl font-black text-secondary">Welcome Aboard!</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Our team will review your application and contact you within 1–2 business days to get you started.
+                Applications are reviewed with responses sent within 1–2 business days to get you started.
               </p>
             </div>
 
@@ -151,7 +151,7 @@ export const ProviderSignupPage: React.FC = () => {
         imageAlt="Opek provider crew loading a truck"
         imageCaption="Pre-qualified leads • Weekly payouts • Full control"
         primaryCta={{ label: 'Apply Now', onClick: () => { document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' }); } }}
-        secondaryCta={{ label: 'Talk to Us', onClick: () => navigate('/contact') }}
+        secondaryCta={{ label: 'Contact Support', onClick: () => navigate('/contact') }}
       />
 
       <TrustBadges />
@@ -199,7 +199,7 @@ export const ProviderSignupPage: React.FC = () => {
               Provider <span className="text-brand">application.</span>
             </h2>
             <p className="text-secondary-500 text-sm leading-relaxed">
-              Five minutes to apply. We'll review and reach out within 1–2 business days.
+              Five minutes to apply. Applications are reviewed within 1–2 business days.
             </p>
           </div>
 
@@ -323,13 +323,13 @@ export const ProviderSignupPage: React.FC = () => {
                   {submitting ? 'Submitting...' : <>Submit Application <ArrowRight size={14} /></>}
                 </button>
               </div>
-              <p className="text-[10px] text-secondary-400 text-center">By submitting, you agree to our provider terms and conditions.</p>
+               <p className="text-[10px] text-secondary-400 text-center">By submitting, you agree to the provider terms and conditions.</p>
             </form>
           )}
         </div>
       </section>
 
-      <ServiceArea titleStart="Grow your hauling" titleAccent="business with us." />
+      <ServiceArea titleStart="Grow your hauling" titleAccent="business today." />
     </div>
   );
 };

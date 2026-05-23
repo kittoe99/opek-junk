@@ -21,7 +21,7 @@ export const DonationsPickupPage: React.FC = () => {
       <PageHero
         eyebrow="Eco-Friendly Service"
         title={<>Donations<br />Pickup</>}
-        subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. We sort, transport, and deliver directly to local charities and recycling centers."
+        subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. Partner crews sort, transport, and deliver directly to local charities and recycling centers."
         image="/opek-nav.webp"
         imageAlt="Donation pickup team loading items"
         imageCaption="Eco-Friendly • Donation Receipts • Same-Day Available"
@@ -40,10 +40,10 @@ export const DonationsPickupPage: React.FC = () => {
               <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Common Donations</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
-              Items We Accept
+              Donations Accepted
             </h2>
             <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
-              Gently used items we can transport to local charities.
+              Gently used items suitable for transport to local charities.
             </p>
           </div>
 
@@ -76,19 +76,19 @@ export const DonationsPickupPage: React.FC = () => {
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Responsible Donation & Charity Delivery Services</h2>
             <p className="mb-4">
-              When you're decluttering, upgrading furniture, or dealing with an <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">estate cleanout</Link>, throwing usable items in a landfill shouldn't be the only option. Our <strong>donations pickup</strong> service makes it easy to give your gently used goods a second life. We partner with local charities and non-profits to ensure that clothing, furniture, and household items end up in the hands of those who need them most.
+              When you're decluttering, upgrading furniture, or dealing with an <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">estate cleanout</Link>, throwing usable items in a landfill shouldn't be the only option. The donations pickup service makes it easy to give gently used goods a second life. Partner providers work with local charities and non-profits to ensure that clothing, furniture, and household items end up in the hands of those who need them most.
             </p>
             <p className="mb-4">
-              We handle all the heavy lifting, sorting, and transport. Whether it's a single couch or an entire house full of items, our background-checked crews will carefully remove your donations without damaging your property. Whenever possible, we will provide you with a tax-deductible donation receipt from the receiving charity. Items that cannot be donated are responsibly recycled to minimize environmental impact.
+              Vetted crews handle all heavy lifting, sorting, and transport. Whether it's a single couch or an entire house full of items, background-checked crews will carefully remove donations without damaging the property. Whenever possible, a tax-deductible donation receipt from the receiving charity will be provided. Items that cannot be donated are responsibly recycled to minimize environmental impact.
             </p>
             <p>
-              Available nationwide, from <Link to="/locations/houston" className="text-brand hover:underline font-medium">Houston</Link> to <Link to="/locations/chicago" className="text-brand hover:underline font-medium">Chicago</Link>, our eco-friendly approach is built into everything we do. If your donation pickup is part of a larger move, our <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> team can also assist with loading your moving truck. Need to clear out an office? Our <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> team ensures old desks and chairs are donated to community organizations. Help us keep items out of landfills while supporting your local community.
+              Available nationwide, from <Link to="/locations/houston" className="text-brand hover:underline font-medium">Houston</Link> to <Link to="/locations/chicago" className="text-brand hover:underline font-medium">Chicago</Link>, an eco-friendly approach is built into the service. If a donation pickup is part of a larger move, partner moving labor crews can also assist with loading a moving truck. Need to clear out an office? Partner junk removal crews ensure old desks and chairs are donated to community organizations, helping keep items out of landfills while supporting the local community.
             </p>
           </div>
         </div>
       </section>
 
-      <ServiceArea titleStart="Pass it on." titleAccent="We do the heavy lifting." />
+      <ServiceArea titleStart="Pass it on." titleAccent="Crews do the heavy lifting." />
     </div>
   );
 };

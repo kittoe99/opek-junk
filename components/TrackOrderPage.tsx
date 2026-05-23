@@ -231,7 +231,7 @@ export const TrackOrderPage: React.FC = () => {
             {/* Footer */}
             <div className="p-6 md:p-8 bg-secondary-50 border-t border-secondary-100">
               <p className="text-xs text-secondary-500 text-center">
-                Questions? Call us at <a href="tel:8313187139" className="font-black text-secondary hover:text-brand transition-colors">(831) 318-7139</a>
+                Questions? Call support at <a href="tel:8313187139" className="font-black text-secondary hover:text-brand transition-colors">(831) 318-7139</a>
               </p>
             </div>
           </div>
@@ -329,7 +329,7 @@ export const TrackOrderPage: React.FC = () => {
                   </div>
                   <h3 className="text-lg font-black text-secondary mb-2">No orders found</h3>
                   <p className="text-secondary-500 text-sm max-w-xs mx-auto">
-                    We couldn't find any orders matching your {searchType === 'phone' ? 'phone number' : 'order number'}. Please double-check and try again.
+                    No orders were found matching your {searchType === 'phone' ? 'phone number' : 'order number'}. Please double-check and try again.
                   </p>
                 </div>
               ) : (

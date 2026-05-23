@@ -139,7 +139,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
 export const seoConfig = {
   home: {
     title: 'Opek Junk Removal | Nationwide Service in All 50 States',
-    description: 'Nationwide junk removal, donations pickup, and moving labor. Available in all 50 states with same-day service, upfront flat-rate pricing, and fully insured crews.',
+    description: 'Nationwide junk removal, donations pickup, and moving labor. Available in all 50 states with same-day service, upfront flat-rate pricing, and vetted local providers.',
     keywords: 'nationwide junk removal, junk removal near me, junk hauling, trash removal, furniture removal, appliance removal, same-day junk removal, eco-friendly disposal, all 50 states',
     schema: {
       "@context": "https://schema.org",
@@ -183,7 +183,7 @@ export const seoConfig = {
     keywords: 'junk removal quote, free estimate, nationwide junk removal pricing, instant quote, junk hauling cost, junk removal near me',
   },
   contact: {
-    title: 'Contact Us - Opek Junk Removal | Customer Support',
+    title: 'Contact Opek - Opek Junk Removal | Customer Support',
     description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (831) 318-7139 or email Support@opekjunkremoval.com',
     keywords: 'contact junk removal, customer support, junk removal help, schedule pickup',
   },
@@ -194,7 +194,7 @@ export const seoConfig = {
   },
   junkRemoval: {
     title: 'Junk Removal Services | Opek — Nationwide Home & Business Hauling',
-    description: 'Nationwide residential and commercial junk removal in all 50 states. Furniture, appliances, office cleanouts, and retail clearing. Same-day available, upfront pricing, fully insured.',
+    description: 'Nationwide residential and commercial junk removal in all 50 states. Furniture, appliances, office cleanouts, and retail clearing. Same-day available, upfront pricing, and vetted providers.',
     keywords: 'junk removal, residential junk removal, commercial junk removal, furniture removal, appliance removal, office cleanout, junk hauling, same-day junk removal',
   },
   dumpsterRental: {
@@ -208,7 +208,7 @@ export const seoConfig = {
     keywords: 'property cleanout, nationwide estate cleanout, move-out service, hoarding cleanup, full house cleanout',
   },
   providerSignup: {
-    title: 'Become a Provider - Opek Junk Removal | Partner With Us',
+    title: 'Become a Provider - Opek Junk Removal | Partner With Opek',
     description: 'Join the Opek network of trusted junk removal providers. Grow your business with qualified leads and nationwide exposure.',
     keywords: 'junk removal provider, partner program, junk removal business, provider signup',
   },

@@ -14,8 +14,8 @@ export const Process: React.FC = () => {
       icon: Banknote
     },
     { 
-      title: 'We haul it', 
-      desc: 'You point, we lift, sweep, and roll out.',
+      title: 'Crews haul it', 
+      desc: 'You point, partner crews lift, sweep, and roll out.',
       icon: Truck
     },
   ];

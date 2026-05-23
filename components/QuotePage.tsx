@@ -511,11 +511,11 @@ export const QuotePage: React.FC = () => {
         <div className="w-full h-48 rounded-2xl overflow-hidden border border-secondary-100 shadow-sm">
           <img 
             src={
-              selectedService === 'junk_removal' ? '/junk-removal.webp' :
+              selectedService === 'junk_removal' ? '/estimates (1).webp' :
               selectedService === 'donation_pickup' ? '/opek-nav.webp' :
               selectedService === 'moving_labor' ? '/opek2.webp' :
               selectedService === 'dumpster_rental' ? '/dumpster-rental.png' :
-              '/junk-removal.webp'
+              '/estimates (1).webp'
             } 
             alt="Service breakdown" 
             className="w-full h-full object-cover"
@@ -556,7 +556,7 @@ export const QuotePage: React.FC = () => {
               <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
             </div>
             <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-              Your service is protected by our multi-million dollar liability insurance.{' '}
+              All bookings are covered by platform damage protection.{' '}
               <button 
                 onClick={() => setShowInsuranceModal(true)} 
                 className="text-emerald-900 font-bold hover:underline"
@@ -623,7 +623,7 @@ export const QuotePage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-black text-secondary text-lg">Safe Protect™</h3>
-                    <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Premium Coverage Included</p>
+                    <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                   </div>
                 </div>
                 <button 
@@ -635,29 +635,29 @@ export const QuotePage: React.FC = () => {
               </div>
               <div className="space-y-4">
                 <p className="text-xs text-secondary-500 leading-relaxed">
-                  We prioritize safety and peace of mind. Every service is covered by our comprehensive insurance policy at no extra charge.
+                  Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
                 </p>
                 <div className="h-px bg-secondary-100"></div>
                 <div className="space-y-3">
                   <div className="flex gap-3">
                     <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-black text-secondary">Multi-Million Liability Coverage</p>
-                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects your residential or commercial property from accidental damage during service.</p>
+                      <p className="text-xs font-black text-secondary">Damage Protection</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects residential and commercial property from accidental damage during service.</p>
                     </div>
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-black text-secondary">Fully Background-Checked Crew</p>
-                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Every partner crew is thoroughly screened, vetted, and background-checked for absolute safety.</p>
+                      <p className="text-xs font-black text-secondary">Same Day Service</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Subject to availability, local crews can get to your site on the same day.</p>
                     </div>
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                     <div>
                       <p className="text-xs font-black text-secondary">Satisfaction Guarantee</p>
-                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, our support team will resolve it quickly.</p>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, the support team will resolve it quickly.</p>
                     </div>
                   </div>
                 </div>
@@ -747,7 +747,7 @@ export const QuotePage: React.FC = () => {
               <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Estimate Submitted</p>
               <h2 className="text-2xl md:text-3xl font-black text-secondary">Request Received</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Our team is reviewing your items. We'll contact you within 15 minutes to confirm your estimate.
+                Opek is reviewing your items. A matched provider will contact you within 15 minutes to confirm your estimate.
               </p>
             </div>
 
@@ -871,11 +871,11 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/junk-removal.webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/estimates (1).webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">We haul away your unwanted items</p>
+                <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
               </div>
               <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
@@ -890,7 +890,7 @@ export const QuotePage: React.FC = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">We deliver gently used items to local charities</p>
+                <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
               </div>
               <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
@@ -1193,7 +1193,7 @@ export const QuotePage: React.FC = () => {
                 {
                   price: movingEstimateTotal,
                   estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
-                  summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
+                  summary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
                 },
                 () => setMovingStep('crew'),
                 "Back to crew & time"
@@ -1320,7 +1320,7 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Tax Donation Receipt</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { label: 'Receipt Requested', value: true, desc: 'We will email a tax receipt from the charity', icon: Receipt },
+                    { label: 'Receipt Requested', value: true, desc: 'A tax receipt from the charity will be emailed', icon: Receipt },
                     { label: 'No Receipt Needed', value: false, desc: 'Simply pick up and deliver the items', icon: Check }
                   ].map((option) => {
                     const isSelected = donationReceipt === option.value;
@@ -1486,7 +1486,7 @@ export const QuotePage: React.FC = () => {
                 {
                   price: donationTotal,
                   estimatedVolume: donationSize,
-                  summary: `Eco-friendly donation pickup service. We will deliver your items to ${donationCharity === 'No Preference' ? 'a local partner charity' : donationCharity}. ${donationReceipt ? 'A tax donation receipt will be emailed to you.' : 'No tax receipt requested.'}`
+                  summary: `Eco-friendly donation pickup service. The provider will deliver items to ${donationCharity === 'No Preference' ? 'a local partner charity' : donationCharity}. ${donationReceipt ? 'A tax donation receipt will be emailed.' : 'No tax receipt requested.'}`
                 },
                 () => setDonationStep('size'),
                 "Back to size & location"
@@ -1709,7 +1709,7 @@ export const QuotePage: React.FC = () => {
             Free quote in <span className="text-brand">two minutes.</span>
           </h1>
           <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Snap a photo for instant AI pricing, or pick items from our catalog. Either way, you get an upfront estimate — no obligations.
+            Snap a photo for instant AI pricing, or pick items from the catalog. Either way, you get an upfront estimate — no obligations.
           </p>
         </div>
 
@@ -1740,7 +1740,7 @@ export const QuotePage: React.FC = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Pick items from our catalog for a quote</p>
+                <p className="text-secondary-400 text-xs md:text-sm">Pick items from the catalog for a quote</p>
               </div>
               <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
@@ -1751,7 +1751,7 @@ export const QuotePage: React.FC = () => {
           {/* Bottom CTA */}
           <div className="mt-16 md:mt-24">
             <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk to someone?</h2>
-            <p className="text-secondary-400 text-sm mb-4">Call us for a phone estimate or to ask any questions — we're here 24/7.</p>
+            <p className="text-secondary-400 text-sm mb-4">Call support for a phone estimate or to ask any questions — support is available 24/7.</p>
             <div className="flex flex-wrap gap-3 items-center">
               <button
                 onClick={() => navigate('/contact')}
@@ -1795,7 +1795,7 @@ export const QuotePage: React.FC = () => {
             <p className="text-secondary-400 text-base">Browse categories, pick what you need, get your AI-powered estimate.</p>
           )}
           {selectedOption === 'manual' && manualStep === 'review' && (
-            <p className="text-secondary-400 text-base">Confirm your items and we'll calculate your estimate.</p>
+            <p className="text-secondary-400 text-base">Confirm your items to calculate the estimate.</p>
           )}
         </div>
       </div>
@@ -1974,7 +1974,7 @@ export const QuotePage: React.FC = () => {
                       <img src={image} alt="Your photo" className="w-20 h-20 object-cover rounded-lg border border-secondary-100" />
                       <div>
                         <p className="text-sm font-black text-secondary">{detectedItems.length} items detected</p>
-                        <p className="text-xs text-secondary-400 mt-1">Review, edit quantities, remove items, or add anything we missed.</p>
+                        <p className="text-xs text-secondary-400 mt-1">Review, edit quantities, remove items, or add any additional items.</p>
                       </div>
                     </div>
                   )}

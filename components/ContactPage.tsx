@@ -65,9 +65,9 @@ export const ContactPage: React.FC = () => {
 
             <div className="space-y-2 mb-6">
               <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Message Sent</p>
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">We Received It!</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Message Received</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Thanks for reaching out. We'll respond within 30 minutes during business hours.
+                Thanks for reaching out. An agent will respond within 30 minutes during business hours.
               </p>
             </div>
 
@@ -88,7 +88,7 @@ export const ContactPage: React.FC = () => {
       <PageHero
         eyebrow="Contact"
         title={<>Get in <span className="text-brand">touch.</span></>}
-        subtitle="Question, quote, or partnership — drop us a line and we'll respond within 30 minutes during business hours."
+        subtitle="Question, quote, or partnership — drop a line and an agent will respond within 30 minutes during business hours."
         image="/junk-removal.webp"
         imageAlt="Opek crew ready to help"
         imageCaption="Real humans • Fast replies • Nationwide"
@@ -129,7 +129,7 @@ export const ContactPage: React.FC = () => {
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Message *</label>
             <textarea
               name="message" value={formData.message} onChange={handleInputChange} required rows={5}
-              placeholder="Tell us about your junk removal needs..."
+              placeholder="Describe the service needs..."
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none"
             />
           </div>

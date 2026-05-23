@@ -544,11 +544,11 @@ export const BookingPage: React.FC = () => {
                   className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
                   <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                    <img src="/junk-removal.webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src="/estimates (1).webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
-                    <p className="text-secondary-400 text-xs md:text-sm">We haul away your unwanted items</p>
+                    <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
                   </div>
                   <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${formData.serviceType === 'Junk Removal' ? 'border-brand bg-brand' : 'border-secondary-100 group-hover:border-brand group-hover:bg-brand'}`}>
                     <ArrowRight size={14} className={`transition-all ${formData.serviceType === 'Junk Removal' ? 'text-white translate-x-0.5' : 'text-secondary-300 group-hover:text-white group-hover:translate-x-0.5'}`} />
@@ -567,7 +567,7 @@ export const BookingPage: React.FC = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
-                    <p className="text-secondary-400 text-xs md:text-sm">We deliver gently used items to local charities</p>
+                    <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
                   </div>
                   <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${formData.serviceType === 'Donation Pick Up' ? 'border-brand bg-brand' : 'border-secondary-100 group-hover:border-brand group-hover:bg-brand'}`}>
                     <ArrowRight size={14} className={`transition-all ${formData.serviceType === 'Donation Pick Up' ? 'text-white translate-x-0.5' : 'text-secondary-300 group-hover:text-white group-hover:translate-x-0.5'}`} />
@@ -730,7 +730,7 @@ export const BookingPage: React.FC = () => {
                       {/* Related banner image */}
                       <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
                         <img 
-                          src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.webp' : '/junk-removal.webp'} 
+                          src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.webp' : '/estimates (1).webp'} 
                           alt="Service" 
                           className="w-full h-full object-cover" 
                         />
@@ -776,7 +776,7 @@ export const BookingPage: React.FC = () => {
                             <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
                           </div>
                           <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                            Your service is protected by our multi-million dollar liability insurance.{' '}
+                            All bookings are covered by platform damage protection.{' '}
                             <button 
                               type="button"
                               onClick={() => setShowInsuranceModal(true)} 
@@ -991,7 +991,7 @@ export const BookingPage: React.FC = () => {
                         <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
                       </div>
                       <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                        Your service is protected by our multi-million dollar liability insurance.{' '}
+                        All bookings are covered by platform damage protection.{' '}
                         <button 
                           type="button"
                           onClick={() => setShowInsuranceModal(true)} 
@@ -1224,14 +1224,14 @@ export const BookingPage: React.FC = () => {
                           itemsDetected: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
                           estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
                           price: movingEstimateTotal,
-                          summary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
+                          summary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
                         });
                         setFormData(prev => ({
                           ...prev,
                           estimatedItems: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
                           estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
                           price: movingEstimateTotal,
-                          estimateSummary: `${movingServiceType} service for ${movingType}. Our professional movers bring their own equipment (dollies, straps). Moving truck is not included.`,
+                          estimateSummary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`,
                           details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
                         }));
                         setMovingStep('result');
@@ -1282,7 +1282,7 @@ export const BookingPage: React.FC = () => {
                         <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
                       </div>
                       <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                        Your service is protected by our multi-million dollar liability insurance.{' '}
+                        All bookings are covered by platform damage protection.{' '}
                         <button 
                           type="button"
                           onClick={() => setShowInsuranceModal(true)} 
@@ -1342,7 +1342,7 @@ export const BookingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-black text-secondary text-lg">Safe Protect™</h3>
-                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Premium Coverage Included</p>
+                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                 </div>
               </div>
               <button 
@@ -1355,29 +1355,29 @@ export const BookingPage: React.FC = () => {
             </div>
             <div className="space-y-4 text-left">
               <p className="text-xs text-secondary-500 leading-relaxed">
-                We prioritize safety and peace of mind. Every service is covered by our comprehensive insurance policy at no extra charge.
+                Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
               </p>
               <div className="h-px bg-secondary-100"></div>
               <div className="space-y-3">
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-secondary">Multi-Million Liability Coverage</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects your residential or commercial property from accidental damage during service.</p>
+                    <p className="text-xs font-black text-secondary">Damage Protection</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects residential and commercial property from accidental damage during service.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-secondary">Fully Background-Checked Crew</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Every partner crew is thoroughly screened, vetted, and background-checked for absolute safety.</p>
+                    <p className="text-xs font-black text-secondary">Same Day Service</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Subject to availability, local crews can get to your site on the same day.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs font-black text-secondary">Satisfaction Guarantee</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, our support team will resolve it quickly.</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, the support team will resolve it quickly.</p>
                   </div>
                 </div>
               </div>

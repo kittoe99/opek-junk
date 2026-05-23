@@ -54,12 +54,12 @@ export const DumpsterRentalPage: React.FC = () => {
     },
     { 
       title: 'Driveway Protection', 
-      desc: 'We place protective boards under the dumpster wheels to protect your driveway from damage.', 
+      desc: 'Protective boards are placed under the dumpster wheels to protect driveways from damage.', 
       icon: ShieldCheck 
     },
     { 
       title: 'Flexible Rental Periods', 
-      desc: 'Keep the dumpster for a weekend, a week, or longer. We adapt to your project timeline.', 
+      desc: 'Keep the dumpster for a weekend, a week, or longer. Rental timelines adapt to your project.', 
       icon: Calendar 
     },
     { 
@@ -140,7 +140,7 @@ export const DumpsterRentalPage: React.FC = () => {
           <div className="mb-10 text-center">
             <div className="inline-flex items-center gap-2 mb-3">
               <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why Rent With Us</span>
+              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Why Rent Dumpsters</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
               Stress-Free Containers
@@ -170,13 +170,13 @@ export const DumpsterRentalPage: React.FC = () => {
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Roll-Off Dumpster Rentals for Residential & Commercial Cleanups</h2>
             <p className="mb-4">
-              When dealing with home renovations, construction debris, landscape cleanups, or whole-house decluttering, a roll-off dumpster rental is often the most cost-effective and convenient waste disposal solution. We simplify the rental process by providing upfront flat-rate pricing, protective placement techniques, and on-schedule drop-offs and pickups so that you can focus entirely on completing your project.
+              When dealing with home renovations, construction debris, landscape cleanups, or whole-house decluttering, a roll-off dumpster rental is often the most cost-effective and convenient waste disposal solution. The platform simplifies the rental process by facilitating upfront flat-rate pricing, protective placement techniques, and on-schedule drop-offs and pickups so that you can focus entirely on completing your project.
             </p>
             <p className="mb-4">
-              Our 10, 15, 20, and 30-yard roll-off containers serve a wide range of needs. Homeowners love our smaller dumpsters for yard debris and garage clearouts, while building contractors and property managers rely on our large 30-yard dumpsters to manage roofing shingles, concrete debris, and commercial construction waste. Every rental comes with a designated weight allowance, and our customer support team is always standing by to help you choose the right container capacity.
+              The 10, 15, 20, and 30-yard roll-off containers serve a wide range of needs. Homeowners utilize smaller dumpsters for yard debris and garage clearouts, while building contractors and property managers rely on large 30-yard dumpsters to manage roofing shingles, concrete debris, and commercial construction waste. Every rental comes with a designated weight allowance, and customer support is always standing by to help you choose the right container capacity.
             </p>
             <p className="mb-4">
-              If you decide that you'd rather not lift and load the debris yourself, we also offer full-service <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> and <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link>. For eco-conscious disposal, we work with local transfer stations to ensure recyclable building materials are sorted and kept out of landfills whenever possible.
+              If you decide that you'd rather not lift and load the debris yourself, full-service <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> and <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link> are also available. For eco-conscious disposal, partner providers work with local transfer stations to ensure recyclable building materials are sorted and kept out of landfills whenever possible.
             </p>
           </div>
         </div>

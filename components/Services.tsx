@@ -29,7 +29,7 @@ const serviceItems = [
   {
     title: "Moving Labor",
     icon: BicepsFlexed,
-    description: "Hire our strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
+    description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
     path: "/services/moving-labor"
   }
 ];
