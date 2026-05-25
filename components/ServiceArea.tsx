@@ -29,19 +29,9 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 lg:gap-16 items-center">
-          
-          {/* Image Column */}
-          <div className="md:col-span-6 lg:col-span-5 relative group overflow-hidden rounded-2xl shadow-md border border-secondary-100/50">
-            <img 
-              src="/opek-clean-space.png" 
-              alt="Decluttered and clean modern living space representing an empty space" 
-              className="w-full h-full object-cover aspect-[4/3] md:aspect-square transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-secondary/10 to-transparent pointer-events-none" />
-          </div>
 
           {/* CTA Column */}
-          <div className="md:col-span-6 lg:col-span-4 space-y-6">
+          <div className="md:col-span-7 space-y-6">
             <div>
               <div className="inline-flex items-center gap-2 mb-3">
                 <span className="block w-6 h-px bg-brand" />
@@ -80,7 +70,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
           </div>
 
           {/* Service Area Column */}
-          <div className="md:col-span-12 lg:col-span-3 space-y-6 lg:border-l lg:border-secondary-100 lg:pl-8 pt-8 md:pt-4 lg:pt-0 border-t md:border-t-0 lg:border-t-0 border-secondary-100">
+          <div className="md:col-span-5 space-y-6 md:border-l md:border-secondary-100 md:pl-8 pt-8 md:pt-0 border-t md:border-t-0 border-secondary-100">
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2">
                 <MapPin size={13} className="text-brand" />
