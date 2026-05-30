@@ -64,50 +64,45 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-[101] flex items-end sm:items-center justify-center sm:p-4">
+      <div className="fixed inset-0 z-[101] flex items-center justify-center p-4">
         <div
-          className="bg-white w-full sm:max-w-md rounded-t-[2.5rem] sm:rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border border-secondary-100/40 animate-scale-in overflow-hidden relative transition-all duration-300"
+          className="bg-white w-full max-w-[340px] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border border-secondary-100/40 animate-scale-in overflow-hidden relative transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Subtle Ambient Accent Glows */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-brand/5 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-secondary/5 rounded-full blur-2xl pointer-events-none" />
 
-          {/* Header */}
-          <div className="flex items-center justify-between px-8 pt-6 pb-4 border-b border-secondary-100/40 relative z-10">
-            <div className="inline-flex items-center gap-2">
-              <span className="block w-6 h-1 bg-brand rounded-full" />
-              <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Service Area Check</span>
-            </div>
-            <button
-              onClick={handleClose}
-              className="w-8 h-8 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-secondary-50 transition-all rounded-full"
-            >
-              <X size={18} />
-            </button>
-          </div>
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-3.5 right-3.5 w-7 h-7 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-secondary-50 transition-all rounded-full z-20"
+          >
+            <X size={16} />
+          </button>
 
           {/* Body */}
-          <div className="px-8 py-8 relative z-10">
+          <div className="p-5 relative z-10">
 
             {/* ── Input state ── */}
             {!verified && (
               <>
-                <div className="w-12 h-12 rounded-2xl bg-brand/10 flex items-center justify-center text-brand mb-5 shadow-[0_8px_16px_-6px_rgba(255,0,110,0.3)] animate-pulse-slow">
-                  <MapPin size={24} strokeWidth={2.5} />
+                <div className="flex items-center gap-1.5 text-[9px] font-black text-brand uppercase tracking-[0.25em] mb-2.5">
+                  <MapPin size={11} strokeWidth={2.5} />
+                  <span>Service Area Check</span>
                 </div>
 
-                <h2 className="text-3xl font-black text-secondary tracking-tight leading-none mb-2">
+                <h2 className="text-xl font-black text-secondary tracking-tight leading-none mb-1.5">
                   Confirm your <span className="text-brand">ZIP.</span>
                 </h2>
-                <p className="text-secondary-400 text-sm leading-relaxed mb-6 font-medium">
+                <p className="text-secondary-400 text-xs leading-normal mb-4 font-medium">
                   Service is available in all 50 states — just enter your ZIP code to check local availability.
                 </p>
 
                 {/* Sleek unified Input Pill */}
-                <div className="relative flex items-center bg-secondary-50/50 border border-secondary-200/60 rounded-2xl p-1.5 focus-within:ring-2 focus-within:ring-brand/20 focus-within:border-brand focus-within:bg-white transition-all duration-300 shadow-inner mb-3">
-                  <div className="pl-3 text-secondary-400 pointer-events-none">
-                    <MapPin size={18} />
+                <div className="relative flex items-center bg-secondary-50/50 border border-secondary-200/60 rounded-xl p-1 focus-within:ring-2 focus-within:ring-brand/20 focus-within:border-brand focus-within:bg-white transition-all duration-300 shadow-inner mb-2.5">
+                  <div className="pl-2.5 text-secondary-400 pointer-events-none">
+                    <MapPin size={15} />
                   </div>
                   <input
                     type="text"
@@ -117,35 +112,35 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="e.g. 75201"
-                    className="flex-1 bg-transparent border-0 px-3 py-3 text-base font-extrabold text-secondary placeholder:text-secondary-300 focus:ring-0 focus:outline-none tracking-widest text-center"
+                    className="flex-1 min-w-0 w-full bg-transparent border-0 px-2 py-2 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:ring-0 focus:outline-none tracking-widest text-center"
                     autoFocus
                   />
                   <button
                     onClick={handleZipCheck}
                     disabled={isLoading || zipCode.length !== 5}
-                    className="h-11 px-6 bg-brand text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-brand-600 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(255,0,110,0.2)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.3)] disabled:shadow-none shrink-0"
+                    className="h-8 px-4 bg-brand text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand-600 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(255,0,110,0.15)] hover:shadow-[0_4px_12px_rgba(255,0,110,0.25)] disabled:shadow-none shrink-0"
                   >
                     {isLoading ? (
-                      <Loader2 size={16} className="animate-spin" />
+                      <Loader2 size={12} className="animate-spin" />
                     ) : (
                       <>
                         <span>Check</span>
-                        <ArrowRight size={14} />
+                        <ArrowRight size={11} />
                       </>
                     )}
                   </button>
                 </div>
 
                 {error && (
-                  <p className="text-red-500 text-xs font-extrabold flex items-center gap-1.5 mt-1 px-1">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500" />
+                  <p className="text-red-500 text-[10px] font-extrabold flex items-center gap-1 mt-0.5 px-1">
+                    <span className="inline-block w-1 h-1 rounded-full bg-red-500" />
                     {error}
                   </p>
                 )}
 
-                <div className="flex items-start gap-2.5 mt-6 pt-5 border-t border-secondary-100/50">
-                  <div className="w-1.5 h-1.5 rounded-full bg-brand mt-1.5 shrink-0" />
-                  <p className="text-secondary-400 text-xs leading-relaxed">
+                <div className="flex items-start gap-2 mt-4 pt-3.5 border-t border-secondary-100/50">
+                  <div className="w-1 h-1 rounded-full bg-brand mt-1.5 shrink-0" />
+                  <p className="text-secondary-400 text-[10px] leading-relaxed">
                     <span className="font-bold text-secondary-500">Nationwide coverage:</span> Same flat-rate pricing, same crew standards — wherever you are.
                   </p>
                 </div>
@@ -155,40 +150,40 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
             {/* ── Verified State ── */}
             {verified && (
               <>
-                <div className="flex flex-col items-center text-center pb-2">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white shadow-[0_8px_20px_rgba(16,185,129,0.3)] mb-4 animate-scale-in">
-                    <Check size={32} strokeWidth={3} className="animate-fade-in" />
+                <div className="flex flex-col items-center text-center pb-1">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white shadow-[0_6px_12px_rgba(16,185,129,0.2)] mb-3 animate-scale-in">
+                    <Check size={20} strokeWidth={3} className="animate-fade-in" />
                   </div>
-                  <h2 className="text-2xl font-black text-secondary tracking-tight leading-tight mb-1">
+                  <h2 className="text-lg font-black text-secondary tracking-tight leading-tight mb-0.5">
                     You're in our area!
                   </h2>
-                  <p className="text-secondary-400 text-sm font-medium">
-                    Same-day pickup is available in your region.
+                  <p className="text-secondary-400 text-xs font-semibold">
+                    Same-day pickup is available.
                   </p>
                 </div>
 
                 {/* Shaded Location Details Card */}
-                <div className="bg-secondary-50/50 rounded-2xl p-4 border border-secondary-100/40 flex items-center gap-3.5 my-6 shadow-sm">
-                  <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand shrink-0">
-                    <MapPin size={20} strokeWidth={2} />
+                <div className="bg-secondary-50/50 rounded-xl p-3 border border-secondary-100/40 flex items-center gap-3 my-4 shadow-sm">
+                  <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                    <MapPin size={16} strokeWidth={2} />
                   </div>
                   <div className="flex-1 min-w-0 text-left">
-                    <span className="text-[10px] font-black text-secondary-300 uppercase tracking-wider block">Service Location</span>
-                    <p className="text-base font-extrabold text-secondary truncate">{city}, {stateAbbr}</p>
-                    <p className="text-xs text-brand font-bold">ZIP {zipCode}</p>
+                    <span className="text-[8px] font-black text-secondary-300 uppercase tracking-wider block">Service Location</span>
+                    <p className="text-sm font-extrabold text-secondary truncate">{city}, {stateAbbr}</p>
+                    <p className="text-[10px] text-brand font-bold">ZIP {zipCode}</p>
                   </div>
                 </div>
 
                 <button
                   onClick={handleGetQuote}
-                  className="w-full py-4 bg-gradient-to-r from-secondary to-secondary-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:from-brand hover:to-brand-600 active:scale-98 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(53,80,112,0.15)] hover:shadow-[0_8px_24px_rgba(255,0,110,0.25)]"
+                  className="w-full py-3 bg-gradient-to-r from-secondary to-secondary-600 text-white font-bold text-[10px] uppercase tracking-widest rounded-lg hover:from-brand hover:to-brand-600 active:scale-98 transition-all duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_12px_rgba(53,80,112,0.15)] hover:shadow-[0_6px_16px_rgba(255,0,110,0.25)]"
                 >
                   <span>Get a Free Quote</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={12} />
                 </button>
                 <button
                   onClick={reset}
-                  className="w-full py-3 text-xs font-bold text-secondary-400 hover:text-brand transition-colors mt-2"
+                  className="w-full py-2.5 text-[10px] font-bold text-secondary-400 hover:text-brand transition-colors mt-1"
                 >
                   Check another ZIP code
                 </button>

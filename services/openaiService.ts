@@ -59,7 +59,7 @@ export async function getJunkQuoteFromPhoto(base64Image: string, mimeType: strin
   return {
     itemsDetected: items.map(i => i.name),
     estimatedVolume: price.estimatedVolume,
-    priceRange: price.priceRange,
+    price: price.price,
     summary: price.summary
   };
 }

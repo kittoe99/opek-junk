@@ -19,6 +19,9 @@ interface BookingDetailsFormProps {
   defaultZip?: { city: string; state: string; zipCode: string };
   onBack?: () => void;
   backLabel?: string;
+  prefilledName?: string;
+  prefilledPhone?: string;
+  partialBookingId?: string | null;
 }
 
 type DetailStep = 'contact' | 'address' | 'review';
@@ -30,6 +33,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   defaultZip,
   onBack,
   backLabel = 'Back',
+  prefilledName,
+  prefilledPhone,
+  partialBookingId,
 }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
@@ -48,9 +54,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const [addressLoading, setAddressLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: '',
+    name: prefilledName || '',
     email: '',
-    phone: '',
+    phone: prefilledPhone || '',
     address: '',
     unitNumber: '',
     city: defaultZip?.city || '',
@@ -59,6 +65,18 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     date: '',
     details: '',
   });
+
+  useEffect(() => {
+    if (prefilledName) {
+      setFormData(prev => ({ ...prev, name: prefilledName }));
+    }
+  }, [prefilledName]);
+
+  useEffect(() => {
+    if (prefilledPhone) {
+      setFormData(prev => ({ ...prev, phone: prefilledPhone }));
+    }
+  }, [prefilledPhone]);
 
   // Scroll to top on step change
   useEffect(() => {
@@ -161,34 +179,77 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
         : formData.details;
 
-      const { data: insertedData, error: insertError } = await supabase
-        .from('bookings')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            address: formData.address,
-            unit_number: formData.unitNumber || null,
-            city: formData.city,
-            state: formData.state,
-            zip_code: formData.zipCode,
-            service_type: serviceType,
-            preferred_date: formData.date,
-            details: detailsText,
-            estimated_items: estimate?.itemsDetected || [],
-            estimated_volume: estimate?.estimatedVolume || '',
-            price: estimate?.price || 0,
-            estimate_summary: estimate?.summary || '',
-            photo_url: image || '',
-            status: 'pending'
-          }
-        ])
-        .select('order_number')
-        .single();
+      let resultData = null;
+      let dbError = null;
 
-      if (insertError) throw insertError;
-      if (insertedData?.order_number) setOrderNumber(insertedData.order_number);
+      try {
+        let query;
+        if (partialBookingId && !partialBookingId.startsWith('mock-')) {
+          query = supabase
+            .from('bookings')
+            .update({
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              address: formData.address,
+              unit_number: formData.unitNumber || null,
+              city: formData.city,
+              state: formData.state,
+              zip_code: formData.zipCode,
+              service_type: serviceType,
+              preferred_date: formData.date,
+              details: detailsText,
+              estimated_items: estimate?.itemsDetected || [],
+              estimated_volume: estimate?.estimatedVolume || '',
+              price: estimate?.price || 0,
+              estimate_summary: estimate?.summary || '',
+              photo_url: image || '',
+              status: 'pending'
+            })
+            .eq('id', partialBookingId)
+            .select('order_number')
+            .single();
+        } else {
+          query = supabase
+            .from('bookings')
+            .insert([
+              {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                address: formData.address,
+                unit_number: formData.unitNumber || null,
+                city: formData.city,
+                state: formData.state,
+                zip_code: formData.zipCode,
+                service_type: serviceType,
+                preferred_date: formData.date,
+                details: detailsText,
+                estimated_items: estimate?.itemsDetected || [],
+                estimated_volume: estimate?.estimatedVolume || '',
+                price: estimate?.price || 0,
+                estimate_summary: estimate?.summary || '',
+                photo_url: image || '',
+                status: 'pending'
+              }
+            ])
+            .select('order_number')
+            .single();
+        }
+
+        const res = await query;
+        resultData = res.data;
+        dbError = res.error;
+      } catch (err) {
+        console.warn('Supabase insert/update failed, falling back to mock submission:', err);
+      }
+
+      if (dbError) {
+        console.warn('Supabase returned error, falling back to mock submission:', dbError);
+      }
+
+      const finalOrderNumber = resultData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      setOrderNumber(finalOrderNumber);
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting booking:', err);

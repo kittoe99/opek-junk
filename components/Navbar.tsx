@@ -155,27 +155,29 @@ export const Navbar: React.FC = () => {
                     </button>
                     
                     {/* Mega Menu */}
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[340px] bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
-                      <div className="p-4 space-y-1">
-                        <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
-                        {serviceItems.map((item) => {
-                          const Icon = item.icon;
-                          return (
-                            <button
-                              key={item.name}
-                              onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
-                              className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
-                            >
-                              <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
-                              </div>
-                              <div>
-                                <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
-                                <div className="text-xs text-secondary-400">{item.desc}</div>
-                              </div>
-                            </button>
-                          );
-                        })}
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[340px] transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
+                      <div className="bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden">
+                        <div className="p-4 space-y-1">
+                          <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
+                          {serviceItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                              <button
+                                key={item.name}
+                                onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
+                                className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                  <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                                </div>
+                                <div>
+                                  <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
+                                  <div className="text-xs text-secondary-400">{item.desc}</div>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                   </div>

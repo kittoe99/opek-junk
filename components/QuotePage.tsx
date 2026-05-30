@@ -7,6 +7,7 @@ import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../typ
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase } from '../lib/supabase';
+import { ContactIntakeForm } from './shared/ContactIntakeForm';
 
 // ── Item Catalog ──
 interface CatalogItem {
@@ -195,6 +196,12 @@ export const QuotePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [showInsuranceModal, setShowInsuranceModal] = useState(false);
+
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactName, setContactName] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactLoading, setContactLoading] = useState(false);
+  const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
 
   // Moving Labor State
   const [movingServiceType, setMovingServiceType] = useState<'Loading Only' | 'Unloading Only' | 'Both'>('Both');
@@ -494,6 +501,63 @@ export const QuotePage: React.FC = () => {
 
   const totalSelectedCount = selectedItems.reduce((sum, i) => sum + i.quantity, 0);
 
+  const handleContactReveal = async (name: string, phone: string, items: DetectedItem[], price: PriceEstimate) => {
+    setContactLoading(true);
+    try {
+      const detailsText = `Items: ${items.map(i => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Volume: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
+      
+      const serviceTypeLabel = 
+        selectedService === 'junk_removal' ? 'Junk Removal' :
+        selectedService === 'donation_pickup' ? 'Donation Pick Up' :
+        selectedService === 'moving_labor' ? 'Moving Labor' :
+        selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
+        'Junk Removal';
+
+      let partialId = `mock-lead-${Date.now()}`;
+      try {
+        const { data, error: dbError } = await supabase
+          .from('bookings')
+          .insert([
+            {
+              name,
+              phone,
+              service_type: serviceTypeLabel,
+              zip_code: zipValue || null,
+              estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
+              estimated_volume: price.estimatedVolume,
+              price: price.price,
+              estimate_summary: price.summary,
+              photo_url: image || '',
+              details: detailsText,
+              status: 'partially_submitted'
+            }
+          ])
+          .select('id')
+          .single();
+
+        if (dbError) {
+          console.warn('Supabase lead capture failed, proceeding in mock mode:', dbError);
+        } else if (data?.id) {
+          partialId = data.id;
+        }
+      } catch (err) {
+        console.warn('Supabase lead capture failed, proceeding in mock mode:', err);
+      }
+
+      setPartialBookingId(partialId);
+      setContactName(name);
+      setContactPhone(phone);
+      setContactSubmitted(true);
+    } catch (err) {
+      console.error('Error in handleContactReveal:', err);
+      setContactName(name);
+      setContactPhone(phone);
+      setContactSubmitted(true);
+    } finally {
+      setContactLoading(false);
+    }
+  };
+
   // ── Shared price result renderer ──
   const renderPriceResult = (
     items: DetectedItem[],
@@ -501,6 +565,27 @@ export const QuotePage: React.FC = () => {
     onEditBack: () => void,
     backLabel: string
   ) => {
+    if (!contactSubmitted) {
+      const serviceTypeLabel = 
+        selectedService === 'junk_removal' ? 'Junk Removal' :
+        selectedService === 'donation_pickup' ? 'Donation Pick Up' :
+        selectedService === 'moving_labor' ? 'Moving Labor' :
+        selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
+        'Junk Removal';
+
+      return (
+        <div className="max-w-md mx-auto">
+          <ContactIntakeForm
+            serviceType={serviceTypeLabel}
+            isLoading={contactLoading}
+            onReveal={async (name, phone) => {
+              await handleContactReveal(name, phone, items, price);
+            }}
+          />
+        </div>
+      );
+    }
+
     const pickupFee = Math.round(price.price * 0.65);
     const disposalFee = price.price - pickupFee;
     const isSpecialService = selectedOption === 'moving_labor' || selectedOption === 'donation_pickup';
@@ -717,6 +802,9 @@ export const QuotePage: React.FC = () => {
             defaultZip={defaultZip}
             onBack={() => setShowBookingForm(false)}
             backLabel="Back to estimate"
+            prefilledName={contactName}
+            prefilledPhone={contactPhone}
+            partialBookingId={partialBookingId}
           />
         </div>
 
@@ -753,7 +841,7 @@ export const QuotePage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService } })}
+                onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } })}
                 className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
               >
                 Book Now <ArrowRight size={14} />

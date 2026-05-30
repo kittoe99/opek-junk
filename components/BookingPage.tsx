@@ -7,6 +7,7 @@ import { calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services
 import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
+import { ContactIntakeForm } from './shared/ContactIntakeForm';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -107,6 +108,12 @@ export const BookingPage: React.FC = () => {
     photoUrl: ''
   });
 
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactName, setContactName] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactLoading, setContactLoading] = useState(false);
+  const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
+
   // Auto-reset movingStep on service change
   useEffect(() => {
     if (formData.serviceType !== 'Moving Labor') {
@@ -121,8 +128,20 @@ export const BookingPage: React.FC = () => {
       setEstimate(est);
       setImage(img || null);
       setLoadingState(LoadingState.SUCCESS);
+      
+      const prefName = (estimateData as any).prefilledName || '';
+      const prefPhone = (estimateData as any).prefilledPhone || '';
+      const partId = (estimateData as any).partialBookingId || null;
+
+      if (prefName) setContactName(prefName);
+      if (prefPhone) setContactPhone(prefPhone);
+      if (partId) setPartialBookingId(partId);
+      if (prefName && prefPhone) setContactSubmitted(true);
+
       setFormData(prev => ({
         ...prev,
+        name: prefName,
+        phone: prefPhone,
         serviceType: serviceType || 'Junk Removal',
         estimatedItems: est.itemsDetected,
         estimatedVolume: est.estimatedVolume,
@@ -134,6 +153,58 @@ export const BookingPage: React.FC = () => {
       setCurrentStep(3); // skip ZIP, Service, and photo steps when coming from QuotePage
     }
   }, [estimateData]);
+
+  const handleContactReveal = async (name: string, phone: string, est: QuoteEstimate) => {
+    setContactLoading(true);
+    try {
+      const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
+
+      let partialId = `mock-lead-${Date.now()}`;
+      try {
+        const { data, error: dbError } = await supabase
+          .from('bookings')
+          .insert([
+            {
+              name,
+              phone,
+              service_type: formData.serviceType,
+              zip_code: zipValue || null,
+              estimated_items: est.itemsDetected,
+              estimated_volume: est.estimatedVolume,
+              price: est.price,
+              estimate_summary: est.summary,
+              photo_url: image || '',
+              details: detailsText,
+              status: 'partially_submitted'
+            }
+          ])
+          .select('id')
+          .single();
+
+        if (dbError) {
+          console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', dbError);
+        } else if (data?.id) {
+          partialId = data.id;
+        }
+      } catch (err) {
+        console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', err);
+      }
+
+      setPartialBookingId(partialId);
+      setContactName(name);
+      setContactPhone(phone);
+      setFormData(prev => ({ ...prev, name, phone }));
+      setContactSubmitted(true);
+    } catch (err) {
+      console.error('Error in handleContactReveal in BookingPage:', err);
+      setContactName(name);
+      setContactPhone(phone);
+      setFormData(prev => ({ ...prev, name, phone }));
+      setContactSubmitted(true);
+    } finally {
+      setContactLoading(false);
+    }
+  };
 
   // Close suggestions on outside click
   useEffect(() => {
@@ -726,77 +797,89 @@ export const BookingPage: React.FC = () => {
                   )}
 
                   {loadingState === LoadingState.SUCCESS && estimate && (
-                    <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                      {/* Related banner image */}
-                      <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                        <img 
-                          src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.webp' : '/estimates (1).webp'} 
-                          alt="Service" 
-                          className="w-full h-full object-cover" 
+                    !contactSubmitted ? (
+                      <div className="max-w-md mx-auto">
+                        <ContactIntakeForm
+                          serviceType={formData.serviceType}
+                          isLoading={contactLoading}
+                          onReveal={async (name, phone) => {
+                            await handleContactReveal(name, phone, estimate);
+                          }}
                         />
                       </div>
-                      <div className="mb-4">
-                        <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items Detected</div>
-                        <ul className="space-y-1.5">
-                          {estimate.itemsDetected.map((item, index) => (
-                            <li key={index} className="flex items-start gap-2">
-                              <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
-                              <span className="text-secondary-600 text-sm">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
-                        <div className="space-y-2 mb-3 pb-3 border-b border-secondary-100">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-                            <span className="text-secondary-900 font-bold">${Math.round(estimate.price * 0.65)}</span>
+                    ) : (
+                      <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                        {/* Related banner image */}
+                        <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                          <img 
+                            src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.webp' : '/estimates (1).webp'} 
+                            alt="Service" 
+                            className="w-full h-full object-cover" 
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items Detected</div>
+                          <ul className="space-y-1.5">
+                            {estimate.itemsDetected.map((item, index) => (
+                              <li key={index} className="flex items-start gap-2">
+                                <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                                <span className="text-secondary-600 text-sm">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+                          <div className="space-y-2 mb-3 pb-3 border-b border-secondary-100">
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
+                              <span className="text-secondary-900 font-bold">${Math.round(estimate.price * 0.65)}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
+                              <span className="text-secondary-900 font-bold">${estimate.price - Math.round(estimate.price * 0.65)}</span>
+                            </div>
                           </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
-                            <span className="text-secondary-900 font-bold">${estimate.price - Math.round(estimate.price * 0.65)}</span>
+                          <div className="flex justify-between items-end">
+                            <div>
+                              <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
+                              <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                            </div>
+                            <div className="text-2xl font-black text-brand">${estimate.price}</div>
                           </div>
                         </div>
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                            <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                        {/* Safe Protect Sticker */}
+                        <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                            <ShieldCheck size={18} strokeWidth={2.5} />
                           </div>
-                          <div className="text-2xl font-black text-brand">${estimate.price}</div>
-                        </div>
-                      </div>
-                      {/* Safe Protect Sticker */}
-                      <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
-                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
-                          <ShieldCheck size={18} strokeWidth={2.5} />
-                        </div>
-                        <div className="flex-1 min-w-0 text-left">
-                          <div className="flex items-center gap-2">
-                            <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                            <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                          <div className="flex-1 min-w-0 text-left">
+                            <div className="flex items-center gap-2">
+                              <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                              <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                            </div>
+                            <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                              All bookings are covered by platform damage protection.{' '}
+                              <button 
+                                type="button"
+                                onClick={() => setShowInsuranceModal(true)} 
+                                className="text-emerald-900 font-bold hover:underline"
+                              >
+                                Learn more
+                              </button>
+                            </p>
                           </div>
-                          <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                            All bookings are covered by platform damage protection.{' '}
-                            <button 
-                              type="button"
-                              onClick={() => setShowInsuranceModal(true)} 
-                              className="text-emerald-900 font-bold hover:underline"
-                            >
-                              Learn more
-                            </button>
-                          </p>
                         </div>
-                      </div>
 
-                      <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                      <button
-                        onClick={() => handleNextStep()}
-                        className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                      >
-                        Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                      </button>
-                      <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
-                    </div>
+                        <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
+                        <button
+                          onClick={() => handleNextStep()}
+                          className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                        >
+                          Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                        </button>
+                        <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
+                      </div>
+                    )
                   )}
 
                   {loadingState === LoadingState.ERROR && (
@@ -955,67 +1038,79 @@ export const BookingPage: React.FC = () => {
 
               {/* ESTIMATE RESULT */}
               {dumpsterStep === 'result' && estimate && (
-                <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                  {/* Related banner image */}
-                  <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                    <img src="/dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover" />
+                !contactSubmitted ? (
+                  <div className="max-w-md mx-auto">
+                    <ContactIntakeForm
+                      serviceType={formData.serviceType}
+                      isLoading={contactLoading}
+                      onReveal={async (name, phone) => {
+                        await handleContactReveal(name, phone, estimate);
+                      }}
+                    />
                   </div>
-                  <div className="mb-4">
-                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
-                    <ul className="space-y-1.5">
-                      {estimate.itemsDetected.map((item, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
-                          <span className="text-secondary-600 text-sm">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                        <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                ) : (
+                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                    {/* Related banner image */}
+                    <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                      <img src="/dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="mb-4">
+                      <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
+                      <ul className="space-y-1.5">
+                        {estimate.itemsDetected.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                            <span className="text-secondary-600 text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
+                          <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                        </div>
+                        <div className="text-2xl font-black text-brand">${estimate.price}</div>
                       </div>
-                      <div className="text-2xl font-black text-brand">${estimate.price}</div>
                     </div>
-                  </div>
-                  {/* Safe Protect Sticker */}
-                  <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
-                      <ShieldCheck size={18} strokeWidth={2.5} />
-                    </div>
-                    <div className="flex-1 min-w-0 text-left">
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                        <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                    {/* Safe Protect Sticker */}
+                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                        <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
-                      <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                        All bookings are covered by platform damage protection.{' '}
-                        <button 
-                          type="button"
-                          onClick={() => setShowInsuranceModal(true)} 
-                          className="text-emerald-900 font-bold hover:underline"
-                        >
-                          Learn more
-                        </button>
-                      </p>
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                          <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                        </div>
+                        <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                          All bookings are covered by platform damage protection.{' '}
+                          <button 
+                            type="button"
+                            onClick={() => setShowInsuranceModal(true)} 
+                            className="text-emerald-900 font-bold hover:underline"
+                          >
+                            Learn more
+                          </button>
+                        </p>
+                      </div>
                     </div>
+                    <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
+                    <button
+                      onClick={() => handleNextStep()}
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                    <button
+                      onClick={() => setDumpsterStep('duration')}
+                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                    >
+                      <ArrowLeft size={14} /> Back to duration
+                    </button>
                   </div>
-                  <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                  <button
-                    onClick={() => handleNextStep()}
-                    className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                  >
-                    Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </button>
-                  <button
-                    onClick={() => setDumpsterStep('duration')}
-                    className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                  >
-                    <ArrowLeft size={14} /> Back to duration
-                  </button>
-                </div>
+                )
               )}
             </div>
           )}
@@ -1246,69 +1341,81 @@ export const BookingPage: React.FC = () => {
 
               {/* ESTIMATE RESULT */}
               {movingStep === 'result' && estimate && (
-                <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                  {/* Related banner image */}
-                  <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                    <img src="/opek2.webp" alt="Moving Labor" className="w-full h-full object-cover" />
+                !contactSubmitted ? (
+                  <div className="max-w-md mx-auto">
+                    <ContactIntakeForm
+                      serviceType={formData.serviceType}
+                      isLoading={contactLoading}
+                      onReveal={async (name, phone) => {
+                        await handleContactReveal(name, phone, estimate);
+                      }}
+                    />
                   </div>
-                  <div className="mb-4">
-                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>
-                    <ul className="space-y-1.5">
-                      {estimate.itemsDetected.map((item, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
-                          <span className="text-secondary-600 text-sm">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                        <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                ) : (
+                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                    {/* Related banner image */}
+                    <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
+                      <img src="/opek2.webp" alt="Moving Labor" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="mb-4">
+                      <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>
+                      <ul className="space-y-1.5">
+                        {estimate.itemsDetected.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                            <span className="text-secondary-600 text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
+                          <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                        </div>
+                        <div className="text-2xl font-black text-brand">${estimate.price}</div>
                       </div>
-                      <div className="text-2xl font-black text-brand">${estimate.price}</div>
                     </div>
-                  </div>
-                  {/* Safe Protect Sticker */}
-                  <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
-                      <ShieldCheck size={18} strokeWidth={2.5} />
-                    </div>
-                    <div className="flex-1 min-w-0 text-left">
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                        <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                    {/* Safe Protect Sticker */}
+                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+                        <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
-                      <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                        All bookings are covered by platform damage protection.{' '}
-                        <button 
-                          type="button"
-                          onClick={() => setShowInsuranceModal(true)} 
-                          className="text-emerald-900 font-bold hover:underline"
-                        >
-                          Learn more
-                        </button>
-                      </p>
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+                          <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                        </div>
+                        <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                          All bookings are covered by platform damage protection.{' '}
+                          <button 
+                            type="button"
+                            onClick={() => setShowInsuranceModal(true)} 
+                            className="text-emerald-900 font-bold hover:underline"
+                          >
+                            Learn more
+                          </button>
+                        </p>
+                      </div>
                     </div>
+                    <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
+                    <button
+                      type="button"
+                      onClick={() => handleNextStep()}
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMovingStep('crew')}
+                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                    >
+                      <ArrowLeft size={14} /> Back to crew & time
+                    </button>
                   </div>
-                  <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                  <button
-                    type="button"
-                    onClick={() => handleNextStep()}
-                    className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                  >
-                    Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setMovingStep('crew')}
-                    className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                  >
-                    <ArrowLeft size={14} /> Back to crew & time
-                  </button>
-                </div>
+                )
               )}
             </div>
           )}
@@ -1322,6 +1429,9 @@ export const BookingPage: React.FC = () => {
               defaultZip={zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined}
               onBack={() => setCurrentStep(2)}
               backLabel="Back"
+              prefilledName={contactName}
+              prefilledPhone={contactPhone}
+              partialBookingId={partialBookingId}
             />
           )}
 
