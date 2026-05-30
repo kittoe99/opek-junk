@@ -10,12 +10,12 @@ export const Process: React.FC = () => {
     },
     { 
       title: 'Lock the price', 
-      desc: 'Crew confirms volume and gives a flat quote.',
+      desc: 'Service provider confirms volume and gives a flat quote.',
       icon: Banknote
     },
     { 
-      title: 'Crews haul it', 
-      desc: 'You point, partner crews lift, sweep, and roll out.',
+      title: 'Providers haul it', 
+      desc: 'You point, partner service providers lift, sweep, and roll out.',
       icon: Truck
     },
   ];

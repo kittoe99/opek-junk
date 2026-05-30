@@ -146,9 +146,9 @@ export const ProviderSignupPage: React.FC = () => {
       <PageHero
         eyebrow="Provider Network"
         title={<>Grow your<br />hauling business.</>}
-        subtitle="Join the Opek provider network. Pre-qualified leads, weekly payouts, and a platform built specifically for haulers like you."
+        subtitle="Join the Opek provider network. Pre-qualified leads, weekly payouts, and a platform built specifically for independent haulers like you."
         image="/opek2.webp"
-        imageAlt="Opek provider crew loading a truck"
+        imageAlt="Opek independent provider loading a truck"
         imageCaption="Pre-qualified leads • Weekly payouts • Full control"
         primaryCta={{ label: 'Apply Now', onClick: () => { document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' }); } }}
         secondaryCta={{ label: 'Contact Support', onClick: () => navigate('/contact') }}

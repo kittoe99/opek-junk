@@ -21,7 +21,7 @@ export const PropertyCleanoutPage: React.FC = () => {
       <PageHero
         eyebrow="Professional Service"
         title={<>Property<br />Cleanouts</>}
-        subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — partner crews handle the hard parts so you don't have to."
+        subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — partner service providers handle the hard parts so you don't have to."
         image="/estimates (1).webp"
         imageAlt="Property cleanout team clearing a home"
         imageCaption="Discreet • Vetted Providers • Broom-Swept Finish"
@@ -76,13 +76,13 @@ export const PropertyCleanoutPage: React.FC = () => {
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Thorough & Compassionate Property Clearing Services</h2>
             <p className="mb-4">
-              Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner crews approach every job with compassion and efficiency to leave the space completely broom-swept and ready for its next chapter.
+              Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner providers approach every job with compassion and efficiency to leave the space completely broom-swept and ready for its next chapter.
             </p>
             <p className="mb-4">
-              Providers work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Vetted crews are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> to sorting valuable heirlooms from debris, partner crews work at your pace. Donation pickups can even be coordinated for gently used items to ensure nothing goes to waste unnecessarily.
+              Providers work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Vetted providers are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> to sorting valuable heirlooms from debris, partner providers work at your pace. Donation pickups can even be coordinated for gently used items to ensure nothing goes to waste unnecessarily.
             </p>
             <p>
-              Property cleanout services are available nationwide, serving major areas from <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-medium">Dallas-Fort Worth</Link> to <Link to="/locations/phoenix" className="text-brand hover:underline font-medium">Phoenix</Link> and beyond. Upfront, flat-rate pricing is offered with no hidden fees. If you're a business managing multiple REO properties, a junk removal provider network can also coordinate centralized billing and multi-location support. Let partner crews handle the difficult work so you can move forward.
+              Property cleanout services are available nationwide, serving major areas from <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-medium">Dallas-Fort Worth</Link> to <Link to="/locations/phoenix" className="text-brand hover:underline font-medium">Phoenix</Link> and beyond. Upfront, flat-rate pricing is offered with no hidden fees. If you're a business managing multiple REO properties, a junk removal provider network can also coordinate centralized billing and multi-location support. Let partner providers handle the difficult work so you can move forward.
             </p>
           </div>
         </div>

@@ -40,7 +40,7 @@ export const cities: CityData[] = [
     seo: {
       title: "Junk Removal Dallas-Fort Worth | Same-Day Pickup | Opek",
       description:
-        "Professional junk removal services in Dallas, Fort Worth, Arlington, Plano, and across the DFW Metroplex. Flat-rate pricing, eco-friendly disposal, and vetted local crews.",
+        "Professional junk removal services in Dallas, Fort Worth, Arlington, Plano, and across the DFW Metroplex. Flat-rate pricing, eco-friendly disposal, and vetted local providers.",
       keywords:
         "junk removal Dallas, junk removal Fort Worth, DFW junk hauling, same-day trash pickup Dallas, furniture removal Arlington, dumpster rental Plano",
     },
@@ -49,11 +49,11 @@ export const cities: CityData[] = [
       headlineStart: "Junk gone.",
       headlineAccent: "Dallas.",
       subheadline:
-        "Professional junk removal across the entire DFW Metroplex. Get instant quotes and same-day service from trusted local crews.",
+        "Professional junk removal across the entire DFW Metroplex. Get instant quotes and same-day service from trusted local service providers.",
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured DFW partner crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured DFW partner service providers.",
       dumpsterRental:
         "Roll-off dumpster rentals in various sizes delivered directly to your home, job site, or business in the DFW Metroplex.",
       propertyCleanout:
@@ -61,7 +61,7 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across the DFW Metroplex.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted independent providers provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "Service is live across the DFW Metroplex and expanding fast. Check if a local ZIP is served and get a free quote today.",
@@ -80,17 +80,17 @@ export const cities: CityData[] = [
       {
         question: "Is all of the DFW Metroplex served?",
         answer:
-          "Yes. Partner crews cover Dallas, Fort Worth, and surrounding cities including Plano, Arlington, Irving, Frisco, McKinney, and more. If you're unsure, use the ZIP check to confirm.",
+          "Yes. Partner service providers cover Dallas, Fort Worth, and surrounding cities including Plano, Arlington, Irving, Frisco, McKinney, and more. If you're unsure, use the ZIP check to confirm.",
       },
       {
         question: "How quickly can a pickup be scheduled in Dallas-Fort Worth?",
         answer:
-          "Same-day appointments are available most days. Book online or call and a crew will be dispatched as fast as possible.",
+          "Same-day appointments are available most days. Book online or call and a service provider will be matched and dispatched as fast as possible.",
       },
       {
         question: "What items can be removed in the DFW area?",
         answer:
-          "Furniture, appliances, electronics, yard waste, construction debris, hot tubs, mattresses, office equipment — if you can point to it, the crews will haul it.",
+          "Furniture, appliances, electronics, yard waste, construction debris, hot tubs, mattresses, office equipment — if you can point to it, matched service providers will haul it.",
       },
       {
         question: "How is pricing determined?",
@@ -118,11 +118,11 @@ export const cities: CityData[] = [
       headlineStart: "Junk gone.",
       headlineAccent: "Jacksonville.",
       subheadline:
-        "Professional junk removal across Duval County. Get instant quotes and same-day service from trusted local crews.",
+        "Professional junk removal across Duval County. Get instant quotes and same-day service from trusted local service providers.",
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris removed fast by insured Jacksonville partner crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris removed fast by insured Jacksonville partner service providers.",
       dumpsterRental:
         "Flexible, flat-rate dumpster rentals delivered to your driveway or commercial site anywhere in Jacksonville.",
       propertyCleanout:
@@ -130,7 +130,7 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Jacksonville.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted independent providers provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "Service is live across Jacksonville and expanding fast. Check if a local ZIP is served and get a free quote today.",
@@ -159,7 +159,7 @@ export const cities: CityData[] = [
       {
         question: "Is yard debris and outdoor furniture hauled in Jacksonville?",
         answer:
-          "Yes. Patio furniture, swing sets, yard waste, sheds, and hot tubs are all fair game. Vetted crews handle heavy lifting so you don't have to.",
+          "Yes. Patio furniture, swing sets, yard waste, sheds, and hot tubs are all fair game. Vetted independent providers handle heavy lifting so you don't have to.",
       },
       {
         question: "What does junk removal cost in Jacksonville?",
@@ -187,11 +187,11 @@ export const cities: CityData[] = [
       headlineStart: "Junk gone.",
       headlineAccent: "Atlanta.",
       subheadline:
-        "Professional junk removal across Metro Atlanta. Get instant quotes and same-day service from trusted local crews.",
+        "Professional junk removal across Metro Atlanta. Get instant quotes and same-day service from trusted local service providers.",
     },
     services: {
       junkRemoval:
-        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured Atlanta partner crews.",
+        "Furniture, appliances, household clutter, office furniture, equipment, and commercial debris hauled fast by insured Atlanta partner service providers.",
       dumpsterRental:
         "Convenient roll-off dumpsters for residential cleanups and construction sites across the Atlanta metropolitan area.",
       propertyCleanout:
@@ -199,7 +199,7 @@ export const cities: CityData[] = [
       donationsPickup:
         "Gently used furniture, appliances, and clothing picked up and delivered to local charities across Metro Atlanta.",
       movingLabor:
-        "Hourly labor for heavy lifting, loading, and unloading. Vetted crews provide the muscle, you provide the truck.",
+        "Hourly labor for heavy lifting, loading, and unloading. Vetted independent providers provide the muscle, you provide the truck.",
     },
     serviceAreaSubtext:
         "Service is live across Metro Atlanta and expanding fast. Check if a local ZIP is served and get a free quote today.",

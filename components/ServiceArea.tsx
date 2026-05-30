@@ -80,7 +80,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
                 Nationwide coverage.
               </h3>
               <p className="text-secondary-500 text-xs leading-relaxed">
-                Available in all 50 states. Same flat-rate pricing, same crew standards — wherever you are.
+                Available in all 50 states. Same flat-rate pricing, same independent provider standards — wherever you are.
               </p>
             </div>
             

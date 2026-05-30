@@ -23,7 +23,7 @@ export const WhatWeHaul: React.FC = () => {
             Items Hauled
           </h2>
           <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
-            From a single couch to a full attic clean — same crew, same flat-rate pricing.
+            From a single couch to a full attic clean — consistent service standards, same flat-rate pricing.
           </p>
         </div>
 

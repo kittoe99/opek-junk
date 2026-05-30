@@ -90,7 +90,7 @@ export const ContactPage: React.FC = () => {
         title={<>Get in <span className="text-brand">touch.</span></>}
         subtitle="Question, quote, or partnership — drop a line and an agent will respond within 30 minutes during business hours."
         image="/junk-removal.webp"
-        imageAlt="Opek crew ready to help"
+        imageAlt="Opek independent service provider ready to help"
         imageCaption="Real humans • Fast replies • Nationwide"
         primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}

@@ -401,7 +401,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
               </h2>
               <p className="text-secondary-400 text-xs">
-                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the crew come to collect?'}
+                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the service provider come to collect?'}
               </p>
             </div>
           </div>
@@ -539,7 +539,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.details}
               onChange={handleInputChange}
               rows={3}
-              placeholder={serviceType === 'Moving Labor' ? "Tell the crew about the items needing relocation, access instructions, etc." : "Tell the crew about the items needing removal, access instructions, etc."}
+              placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>

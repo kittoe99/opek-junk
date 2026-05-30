@@ -1412,7 +1412,7 @@ export const BookingPage: React.FC = () => {
                       onClick={() => setMovingStep('crew')}
                       className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                     >
-                      <ArrowLeft size={14} /> Back to crew & time
+                      <ArrowLeft size={14} /> Back to provider & time
                     </button>
                   </div>
                 )
@@ -1480,7 +1480,7 @@ export const BookingPage: React.FC = () => {
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs font-black text-secondary">Same Day Service</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Subject to availability, local crews can get to your site on the same day.</p>
+                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Subject to availability, local service providers can get to your site on the same day.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">

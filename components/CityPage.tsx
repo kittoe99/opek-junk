@@ -63,15 +63,15 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       label: 'Step Two',
       titleStart: 'Lock in a',
       titleAccent: 'fixed price.',
-      desc: `Crew arrives anywhere in ${city.metroArea}, confirms what's getting hauled, and gives you the final number on the spot. No upcharges.`,
+      desc: `Matched provider arrives anywhere in ${city.metroArea}, confirms volume, and gives you a locked-in flat quote. No upcharges.`,
     },
     {
       image: '/junk-removal.webp',
-      alt: 'Professional junk removal team hauling items',
+      alt: 'Professional junk removal provider team hauling items',
       label: 'Step Three',
-      titleStart: 'Crews do',
+      titleStart: 'Providers handle',
       titleAccent: 'the lifting.',
-      desc: `Loading, sweeping, hauling — all handled by your ${city.name} crew. You point, they clear. Same day in most cases.`,
+      desc: `Loading, sweeping, hauling — all handled by your matched ${city.name} provider. You point, they clear. Same day in most cases.`,
     },
   ];
 
@@ -312,7 +312,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
               </h2>
             </div>
             <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right">
-              No quote forms. No phone tag. Just photos, a fixed price, and a crew.
+              No quote forms. No phone tag. Just photos, a fixed price, and a matched provider.
             </p>
           </div>
           <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-6 lg:gap-10">

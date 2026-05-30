@@ -135,7 +135,7 @@ function PropertyCleanoutPageWithSEO() {
 function DonationsPickupPageWithSEO() {
   return (
     <>
-      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. Partner crews pick up and deliver to local charities." />
+      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. Partner service providers pick up and deliver to local charities." />
       <DonationsPickupPage />
     </>
   );

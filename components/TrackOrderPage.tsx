@@ -246,7 +246,7 @@ export const TrackOrderPage: React.FC = () => {
         eyebrow="Track Order"
         EyebrowIcon={MapPinCheck}
         title={<>Track your <span className="text-brand">job.</span></>}
-        subtitle="Enter your phone number or order number to see live status, ETA, and crew details."
+        subtitle="Enter your phone number or order number to see live status, ETA, and matched service provider details."
         image="/junk-removal.webp"
         imageAlt="Tracking your order"
       />
@@ -264,7 +264,7 @@ export const TrackOrderPage: React.FC = () => {
               Find your <span className="text-brand">order.</span>
             </h2>
             <p className="text-secondary-500 text-base leading-relaxed">
-              Enter your phone number or order number below to see live status, ETA, and crew details.
+              Enter your phone number or order number below to see live status, ETA, and matched service provider details.
             </p>
           </div>
 

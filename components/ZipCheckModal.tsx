@@ -141,7 +141,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 <div className="flex items-start gap-2 mt-4 pt-3.5 border-t border-secondary-100/50">
                   <div className="w-1 h-1 rounded-full bg-brand mt-1.5 shrink-0" />
                   <p className="text-secondary-400 text-[10px] leading-relaxed">
-                    <span className="font-bold text-secondary-500">Nationwide coverage:</span> Same flat-rate pricing, same crew standards — wherever you are.
+                    <span className="font-bold text-secondary-500">Nationwide coverage:</span> Same flat-rate pricing, same independent provider standards — wherever you are.
                   </p>
                 </div>
               </>
@@ -155,7 +155,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     <Check size={20} strokeWidth={3} className="animate-fade-in" />
                   </div>
                   <h2 className="text-lg font-black text-secondary tracking-tight leading-tight mb-0.5">
-                    You're in our area!
+                    Service available in your area!
                   </h2>
                   <p className="text-secondary-400 text-xs font-semibold">
                     Same-day pickup is available.

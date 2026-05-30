@@ -81,7 +81,7 @@ export const InHomeEstimatePage: React.FC = () => {
               <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Appointment Requested</p>
               <h2 className="text-2xl md:text-3xl font-black text-secondary">All Set!</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                An agent or crew will contact you within 24 hours to confirm the in-home estimate appointment.
+                A representative or provider will contact you within 24 hours to confirm the in-home estimate appointment.
               </p>
             </div>
 
@@ -98,9 +98,9 @@ export const InHomeEstimatePage: React.FC = () => {
   }
 
   const benefits = [
-    { icon: Eye, title: 'Eyes on the job', desc: 'The visiting crew sees exactly what needs removing so the quote is accurate, not a guess.' },
+    { icon: Eye, title: 'Eyes on the job', desc: 'The visiting service provider sees exactly what needs removing so the quote is accurate, not a guess.' },
     { icon: BadgeCheck, title: 'Free, no-obligation', desc: 'Walk-through is on us. Zero pressure to book if the price isn\'t right.' },
-    { icon: Shield, title: 'Same-day quote', desc: 'Get a written, locked-in price on the spot before the crew leaves.' },
+    { icon: Shield, title: 'Same-day quote', desc: 'Get a written, locked-in price on the spot before the provider leaves.' },
   ];
 
 
@@ -108,8 +108,8 @@ export const InHomeEstimatePage: React.FC = () => {
     <div className="bg-white">
       <PageHero
         eyebrow="Free In-Home Estimate"
-        title={<>Crews come<br />to <span className="text-brand">you.</span></>}
-        subtitle="Schedule a free, no-obligation in-home estimate. Vetted crews visit your property and provide an accurate quote on the spot."
+        title={<>Providers come<br />to <span className="text-brand">you.</span></>}
+        subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
         image="/estimates (1).webp"
         imageAlt="In-home estimate visit"
         imageCaption="Free • No-Obligation • Quote on the Spot"
@@ -215,7 +215,7 @@ export const InHomeEstimatePage: React.FC = () => {
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
                 <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
-                  placeholder="Tell the crew about the items needing removal, access conditions, or any special requirements..."
+                  placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
                   className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none" />
               </div>
 
@@ -237,7 +237,7 @@ export const InHomeEstimatePage: React.FC = () => {
         </div>
       </section>
 
-      <ServiceArea titleStart="Crews come to you." titleAccent="Free estimate." />
+      <ServiceArea titleStart="Providers come to you." titleAccent="Free estimate." />
     </div>
   );
 };

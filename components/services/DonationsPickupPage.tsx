@@ -21,7 +21,7 @@ export const DonationsPickupPage: React.FC = () => {
       <PageHero
         eyebrow="Eco-Friendly Service"
         title={<>Donations<br />Pickup</>}
-        subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. Partner crews sort, transport, and deliver directly to local charities and recycling centers."
+        subtitle="Schedule a pickup for gently used furniture, clothing, and household goods. Partner service providers sort, transport, and deliver directly to local charities and recycling centers."
         image="/opek-nav.webp"
         imageAlt="Donation pickup team loading items"
         imageCaption="Eco-Friendly • Donation Receipts • Same-Day Available"
@@ -79,16 +79,16 @@ export const DonationsPickupPage: React.FC = () => {
               When you're decluttering, upgrading furniture, or dealing with an <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">estate cleanout</Link>, throwing usable items in a landfill shouldn't be the only option. The donations pickup service makes it easy to give gently used goods a second life. Partner providers work with local charities and non-profits to ensure that clothing, furniture, and household items end up in the hands of those who need them most.
             </p>
             <p className="mb-4">
-              Vetted crews handle all heavy lifting, sorting, and transport. Whether it's a single couch or an entire house full of items, background-checked crews will carefully remove donations without damaging the property. Whenever possible, a tax-deductible donation receipt from the receiving charity will be provided. Items that cannot be donated are responsibly recycled to minimize environmental impact.
+              Vetted independent providers handle all heavy lifting, sorting, and transport. Whether it's a single couch or an entire house full of items, background-checked providers will carefully remove donations without damaging the property. Whenever possible, a tax-deductible donation receipt from the receiving charity will be provided. Items that cannot be donated are responsibly recycled to minimize environmental impact.
             </p>
             <p>
-              Available nationwide, from <Link to="/locations/houston" className="text-brand hover:underline font-medium">Houston</Link> to <Link to="/locations/chicago" className="text-brand hover:underline font-medium">Chicago</Link>, an eco-friendly approach is built into the service. If a donation pickup is part of a larger move, partner moving labor crews can also assist with loading a moving truck. Need to clear out an office? Partner junk removal crews ensure old desks and chairs are donated to community organizations, helping keep items out of landfills while supporting the local community.
+              Available nationwide, from <Link to="/locations/houston" className="text-brand hover:underline font-medium">Houston</Link> to <Link to="/locations/chicago" className="text-brand hover:underline font-medium">Chicago</Link>, an eco-friendly approach is built into the service. If a donation pickup is part of a larger move, partner moving labor services can also assist with loading a moving truck. Need to clear out an office? Partner junk removal providers ensure old desks and chairs are donated to community organizations, helping keep items out of landfills while supporting the local community.
             </p>
           </div>
         </div>
       </section>
 
-      <ServiceArea titleStart="Pass it on." titleAccent="Crews do the heavy lifting." />
+      <ServiceArea titleStart="Pass it on." titleAccent="Providers do the heavy lifting." />
     </div>
   );
 };

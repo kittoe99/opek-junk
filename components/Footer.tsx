@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
               <img src="/opek-logo-plain.png" alt="Opek Junk Removal" className="h-28 w-auto object-contain -mt-8" />
             </div>
             <p className="text-secondary-300 text-sm leading-relaxed mb-8 max-w-sm">
-              Professional junk removal services connecting you with trusted providers nationwide. Vetted providers, same day service, and eco-friendly.
+              A technology platform connecting you with trusted local service providers nationwide. Vetted providers, same day service, and eco-friendly.
             </p>
             {/* Contact Info */}
             <a href="tel:8313187139" className="flex items-center gap-3 text-secondary-300 hover:text-white transition-colors group">
@@ -97,7 +97,11 @@ export const Footer: React.FC = () => {
       
       {/* Bottom Bar */}
       <div className="border-t border-secondary-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+          <p className="text-secondary-400 text-[11px] leading-relaxed">
+            Disclaimer: Opek Junk Removal is a technology platform that connects customers with independent local service providers. Opek Junk Removal does not perform junk removal, hauling, or moving labor services itself; all services are performed by independent, third-party service providers who are responsible for their own operations, licensing, and insurance.
+          </p>
+          <div className="h-px bg-secondary-700" />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-secondary-400 text-xs">
               &copy; {new Date().getFullYear()} Opek Junk Removal. All rights reserved.
