@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <!-- Definitions for Gradients and Filters -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Circle -->
+  <circle cx="200" cy="200" r="160" fill="url(#bgGrad)" />
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="8,8" />
+
+  <!-- Stylized Junk Pile (Background of the photo) -->
+  <g transform="translate(100, 100)">
+    <!-- Old Cabinet/Box -->
+    <rect x="25" y="100" width="60" height="70" rx="4" fill="#CBD5E1" />
+    <line x1="55" y1="100" x2="55" y2="170" stroke="#94A3B8" stroke-width="2" />
+    <!-- Drawer Knobs -->
+    <circle cx="40" cy="120" r="3" fill="#355070" />
+    <circle cx="70" cy="120" r="3" fill="#355070" />
+    <circle cx="40" cy="150" r="3" fill="#355070" />
+    <circle cx="70" cy="150" r="3" fill="#355070" />
+
+    <!-- Cardboard Box -->
+    <rect x="110" y="110" width="70" height="60" rx="2" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2" />
+    <!-- Tape -->
+    <rect x="130" y="110" width="30" height="8" fill="#FF006E" opacity="0.8" />
+    <path d="M 130,118 L 130,135" stroke="#FF006E" stroke-width="2" stroke-dasharray="2,2" opacity="0.8" />
+    <path d="M 160,118 L 160,135" stroke="#FF006E" stroke-width="2" stroke-dasharray="2,2" opacity="0.8" />
+
+    <!-- Wooden Chair -->
+    <path d="M 40,40 L 40,110 L 95,110 L 95,40 Z" fill="none" stroke="#4A5D78" stroke-width="3" stroke-linejoin="round" />
+    <path d="M 40,75 L 95,75" stroke="#4A5D78" stroke-width="4" />
+    <line x1="50" y1="40" x2="50" y2="75" stroke="#4A5D78" stroke-width="2" />
+    <line x1="60" y1="40" x2="60" y2="75" stroke="#4A5D78" stroke-width="2" />
+    <line x1="75" y1="40" x2="75" y2="75" stroke="#4A5D78" stroke-width="2" />
+    <line x1="85" y1="40" x2="85" y2="75" stroke="#4A5D78" stroke-width="2" />
+    <!-- Chair legs (overlap background) -->
+    <line x1="45" y1="110" x2="40" y2="170" stroke="#4A5D78" stroke-width="4" stroke-linecap="round" />
+    <line x1="90" y1="110" x2="95" y2="170" stroke="#4A5D78" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Floor Lamp -->
+    <path d="M 160,50 L 140,170" stroke="#355070" stroke-width="3" />
+    <path d="M 155,50 L 175,50 L 165,25 Z" fill="#FF006E" />
+    <!-- Light Glow -->
+    <path d="M 165,50 L 130,100 L 200,100 Z" fill="#FF006E" opacity="0.1" />
+  </g>
+
+  <!-- Hands holding phone (Foreground) -->
+  <!-- Left Hand -->
+  <path d="M 60,340 C 80,310 95,260 115,240 L 125,250 C 110,270 100,320 80,360 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2" />
+  <!-- Right Hand holding with thumb -->
+  <path d="M 340,340 C 320,310 305,260 285,240 L 275,250 C 290,270 300,320 320,360 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2" />
+
+  <!-- Smartphone -->
+  <g filter="url(#dropShadow)">
+    <rect x="120" y="80" width="160" height="270" rx="24" fill="#0F172A" />
+    <!-- Screen -->
+    <rect x="128" y="90" width="144" height="250" rx="18" fill="#FFFFFF" />
+  </g>
+
+  <!-- Screen Content: Camera Viewfinder of the same junk pile -->
+  <g transform="translate(128, 90)">
+    <clipPath id="screenClip">
+      <rect x="0" y="0" width="144" height="250" rx="18" />
+    </clipPath>
+    <g clip-path="url(#screenClip)">
+      <rect x="0" y="0" width="144" height="250" fill="#F8FAFC" />
+      
+      <!-- Mini Junk Pile inside screen -->
+      <g transform="translate(10, 60) scale(0.65)">
+        <!-- Cabinet -->
+        <rect x="25" y="100" width="60" height="70" rx="4" fill="#94A3B8" />
+        <line x1="55" y1="100" x2="55" y2="170" stroke="#64748B" stroke-width="2" />
+        <circle cx="40" cy="120" r="3" fill="#355070" />
+        <circle cx="70" cy="120" r="3" fill="#355070" />
+        <!-- Box -->
+        <rect x="110" y="110" width="70" height="60" rx="2" fill="#CBD5E1" />
+        <rect x="130" y="110" width="30" height="8" fill="#FF006E" />
+        <!-- Chair -->
+        <path d="M 40,40 L 40,110 L 95,110 L 95,40 Z" fill="none" stroke="#355070" stroke-width="3" />
+        <path d="M 40,75 L 95,75" stroke="#355070" stroke-width="4" />
+        <line x1="45" y1="110" x2="40" y2="170" stroke="#355070" stroke-width="4" />
+        <line x1="90" y1="110" x2="95" y2="170" stroke="#355070" stroke-width="4" />
+        <!-- Lamp -->
+        <path d="M 160,50 L 140,170" stroke="#355070" stroke-width="3" />
+        <path d="M 155,50 L 175,50 L 165,25 Z" fill="#FF006E" />
+        <path d="M 165,50 L 130,100 L 200,100 Z" fill="#FF006E" opacity="0.2" />
+      </g>
+
+      <!-- Viewfinder corners -->
+      <path d="M 20,40 L 20,20 L 40,20" fill="none" stroke="#FF006E" stroke-width="3" stroke-linecap="round" />
+      <path d="M 124,40 L 124,20 L 104,20" fill="none" stroke="#FF006E" stroke-width="3" stroke-linecap="round" />
+      <path d="M 20,180 L 20,200 L 40,200" fill="none" stroke="#FF006E" stroke-width="3" stroke-linecap="round" />
+      <path d="M 124,180 L 124,200 L 104,200" fill="none" stroke="#FF006E" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Scanning Line (Horizontal glowing bar) -->
+      <rect x="10" y="110" width="124" height="4" fill="url(#brandPink)" opacity="0.6" rx="2" />
+
+      <!-- UI Camera Button -->
+      <circle cx="72" cy="225" r="18" fill="url(#brandPink)" />
+      <circle cx="72" cy="225" r="14" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M 66,220 L 68,220 L 70,217 L 74,217 L 76,220 L 78,220 C 79,220 80,221 80,222 L 80,228 C 80,229 79,230 78,230 L 66,230 C 65,230 64,229 64,228 L 64,222 C 64,221 65,220 66,220 Z" fill="#FFFFFF" />
+      <circle cx="72" cy="225" r="3" fill="url(#brandPink)" />
+    </g>
+  </g>
+</svg>

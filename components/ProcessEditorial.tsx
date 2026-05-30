@@ -7,7 +7,7 @@ interface ProcessProps {
 export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
   const steps = [
     {
-      image: "/estimates (1).webp",
+      image: "/process-step-1.svg",
       alt: "Customer snapping a photo for an estimate",
       label: "Step One",
       titleStart: "Snap. Send.",
@@ -15,7 +15,7 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
       desc: "A quick photo is all that is needed. AI reads the volume, confirming the price — instantly."
     },
     {
-      image: "/opek2.webp",
+      image: "/process-step-2.svg",
       alt: "Upfront quote on-site",
       label: "Step Two",
       titleStart: "Lock in a",
@@ -23,7 +23,7 @@ export const ProcessEditorial: React.FC<ProcessProps> = ({ onGetQuote }) => {
       desc: "Matched provider arrives, confirms volume, and gives you a locked-in flat quote. No upcharges."
     },
     {
-      image: "/junk-removal.webp",
+      image: "/process-step-3.svg",
       alt: "Professional junk removal provider team hauling items",
       label: "Step Three",
       titleStart: "Providers handle",

@@ -378,7 +378,7 @@ export const Navbar: React.FC = () => {
               <div className="bg-secondary rounded-2xl overflow-hidden">
                 <div className="relative h-20 w-full">
                   <img
-                    src="/opek-nav.webp"
+                    src="/opek-nav.svg"
                     alt="Opek team"
                     className="w-full h-full object-cover object-top"
                   />

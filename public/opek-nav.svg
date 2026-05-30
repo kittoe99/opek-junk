@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Shape -->
+  <rect x="10" y="10" width="380" height="180" rx="20" fill="url(#bgGrad)" />
+  <circle cx="200" cy="180" r="100" fill="#E2E8F0" opacity="0.5" />
+
+  <!-- Three Service Providers Group -->
+  <!-- Left Helper (Man with dark hair) -->
+  <g transform="translate(100, 50)">
+    <!-- Shoulders / Shirt -->
+    <path d="M 10,130 C 10,90 35,80 60,80 C 85,80 110,90 110,130 Z" fill="url(#brandBlue)" />
+    <!-- Pink Trim -->
+    <path d="M 48,80 L 60,95 L 72,80" fill="none" stroke="#FF006E" stroke-width="2.5" />
+    <!-- Head -->
+    <circle cx="60" cy="50" r="18" fill="#E2E8F0" />
+    <!-- Hair -->
+    <path d="M 42,50 C 42,32 50,28 60,28 C 70,28 78,32 78,50 Z" fill="#0F172A" />
+    <!-- Smiley Face -->
+    <circle cx="55" cy="50" r="1" fill="#0F172A" />
+    <circle cx="65" cy="50" r="1" fill="#0F172A" />
+    <path d="M 57,58 Q 60,61 63,58" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Right Helper (Woman with ponytail) -->
+  <g transform="translate(200, 50)">
+    <!-- Shoulders / Shirt -->
+    <path d="M 10,130 C 10,90 35,80 60,80 C 85,80 110,90 110,130 Z" fill="url(#brandBlue)" />
+    <!-- Pink Trim -->
+    <path d="M 48,80 L 60,95 L 72,80" fill="none" stroke="#FF006E" stroke-width="2.5" />
+    <!-- Head -->
+    <circle cx="60" cy="50" r="18" fill="#E2E8F0" />
+    <!-- Hair (Ponytail) -->
+    <path d="M 42,50 C 42,32 50,28 60,28 C 70,28 78,32 78,50 Z" fill="#FF006E" />
+    <path d="M 78,50 C 85,50 90,60 88,68 C 86,65 82,60 78,55 Z" fill="#FF006E" />
+    <!-- Smiley Face -->
+    <circle cx="55" cy="50" r="1" fill="#0F172A" />
+    <circle cx="65" cy="50" r="1" fill="#0F172A" />
+    <path d="M 57,58 Q 60,61 63,58" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Center Helper (Lead / Cap) -->
+  <g transform="translate(150, 40)" filter="url(#dropShadow)">
+    <!-- Shoulders / Shirt -->
+    <path d="M 10,140 C 10,95 35,85 60,85 C 85,85 110,95 110,140 Z" fill="url(#brandBlue)" />
+    <!-- Pink Trim -->
+    <path d="M 45,85 L 60,102 L 75,85" fill="none" stroke="#FF006E" stroke-width="3" />
+    <!-- Head -->
+    <circle cx="60" cy="50" r="20" fill="#E2E8F0" />
+    <!-- Cap -->
+    <path d="M 40,48 C 40,32 55,30 80,35 L 88,35 L 88,40 Z" fill="#FF006E" />
+    <path d="M 40,47 C 40,42 46,39 60,39 C 74,39 80,42 80,47 Z" fill="#FF006E" />
+    <!-- Smiley Face -->
+    <circle cx="54" cy="52" r="1.5" fill="#0F172A" />
+    <circle cx="66" cy="52" r="1.5" fill="#0F172A" />
+    <path d="M 56,61 Q 60,65 64,61" fill="none" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+</svg>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Circle -->
+  <circle cx="200" cy="200" r="160" fill="url(#bgGrad)" />
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="8,8" />
+
+  <!-- Provider Character (Helper) -->
+  <g transform="translate(40, 50)">
+    <!-- Shoulders and Shirt -->
+    <path d="M 60,250 C 60,180 110,160 160,160 C 210,160 260,180 260,250 Z" fill="url(#brandBlue)" />
+    <!-- Collar/V-neck in Brand Pink -->
+    <path d="M 135,160 L 160,190 L 185,160" fill="none" stroke="#FF006E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Neck -->
+    <rect x="145" y="130" width="30" height="35" rx="4" fill="#E2E8F0" />
+    <!-- Head -->
+    <circle cx="160" cy="90" r="45" fill="#E2E8F0" />
+    <!-- Hair (Clean, corporate cut in deep blue-grey) -->
+    <path d="M 115,90 C 115,50 140,40 160,40 C 180,40 205,50 205,90 C 205,90 200,65 190,60 C 180,55 140,55 130,60 C 120,65 115,90 115,90 Z" fill="#0F172A" />
+    <!-- Smiling Face details (Minimalist vector style) -->
+    <!-- Eyes -->
+    <circle cx="145" cy="90" r="3" fill="#0F172A" />
+    <circle cx="175" cy="90" r="3" fill="#0F172A" />
+    <!-- Smile -->
+    <path d="M 150,110 Q 160,122 170,110" fill="none" stroke="#0F172A" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- Presenting Hand (holds tablet) -->
+  <path d="M 160,260 C 170,240 190,220 220,220 L 235,235 C 215,245 195,280 170,290 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2" />
+
+  <!-- Tablet Display (Upfront Quote) -->
+  <g transform="translate(190, 160)" filter="url(#dropShadow)">
+    <!-- Device Frame -->
+    <rect x="0" y="0" width="160" height="120" rx="12" fill="#0F172A" />
+    <!-- Screen -->
+    <rect x="6" y="6" width="148" height="108" rx="8" fill="#FFFFFF" />
+
+    <!-- Screen Content: Quote details -->
+    <!-- Brand Tag -->
+    <rect x="15" y="15" width="45" height="12" rx="4" fill="url(#brandPink)" />
+    <rect x="65" y="18" width="50" height="6" rx="3" fill="#E2E8F0" />
+    
+    <!-- Flat Rate Price Outline -->
+    <text x="15" y="60" font-family="system-ui, sans-serif" font-weight="900" font-size="28" fill="#355070" letter-spacing="-1">
+      $149
+    </text>
+    <text x="15" y="78" font-family="system-ui, sans-serif" font-weight="700" font-size="9" fill="#FF006E" letter-spacing="1">
+      FIXED PRICE
+    </text>
+
+    <!-- Checklist / Guarantee Lines -->
+    <rect x="15" y="90" width="80" height="4" rx="2" fill="#E2E8F0" />
+    <rect x="15" y="98" width="60" height="4" rx="2" fill="#E2E8F0" />
+
+    <!-- Large Green Checkmark (Success / Locked) -->
+    <circle cx="120" cy="55" r="16" fill="#10B981" />
+    <path d="M 112,55 L 117,60 L 128,49" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Small floating padlock (illustrating Locked Price) -->
+  <g transform="translate(300, 120)" filter="url(#dropShadow)">
+    <circle cx="20" cy="20" r="24" fill="#FFFFFF" />
+    <path d="M 14,19 L 14,27 C 14,28 15,29 16,29 L 24,29 C 25,29 26,28 26,27 L 26,19 C 26,18 25,17 24,17 L 16,17 C 15,17 14,18 14,19 Z" fill="#FF006E" />
+    <path d="M 17,17 L 17,13 C 17,11 18,10 20,10 C 22,10 23,11 23,13 L 23,17" fill="none" stroke="#FF006E" stroke-width="2.5" stroke-linecap="round" />
+    <circle cx="20" cy="22" r="2" fill="#FFFFFF" />
+  </g>
+</svg>
