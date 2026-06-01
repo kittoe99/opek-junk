@@ -235,11 +235,11 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                 </div>
               </div>
               <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
+                <div className="relative aspect-[4/5] group">
                   <img
                     src="/hero-truck-loading.png"
                     alt={`Professional junk removal in ${city.name}`}
-                    className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
                     <div className="flex items-center gap-3 text-white">
@@ -323,14 +323,13 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                   index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
                 }`}
               >
-                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-none">
+                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square md:mb-5">
                   <img
                     src={step.image}
                     alt={step.alt}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none hidden md:block" />
                 </div>
                 <div>
                   <h3 className="text-[17px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-1 md:mb-3">

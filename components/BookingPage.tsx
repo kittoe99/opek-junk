@@ -649,8 +649,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                    <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-16 h-16 shrink-0">
+                    <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
@@ -668,8 +668,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                    <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-16 h-16 shrink-0">
+                    <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
@@ -687,8 +687,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                    <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-16 h-16 shrink-0">
+                    <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
@@ -706,8 +706,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-16 h-16 shrink-0">
+                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
@@ -803,7 +803,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="relative border border-secondary-100 rounded-xl overflow-hidden">
+                  <div className="overflow-hidden">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
                       <button
@@ -846,13 +846,12 @@ export const BookingPage: React.FC = () => {
                       <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
                         {/* Elegant Shrunk Image Service Card */}
                         <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
-                          <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
+                          <div className="w-20 h-16 shrink-0">
                             <img 
                               src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'} 
                               alt="Service" 
-                              className="w-full h-full object-cover" 
+                              className="w-full h-full object-contain" 
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 flex-wrap">

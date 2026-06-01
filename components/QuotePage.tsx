@@ -595,7 +595,7 @@ export const QuotePage: React.FC = () => {
       <div className="space-y-6">
         {/* Elegant Premium Service Card with Shrunk Image */}
         <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="w-24 h-20 md:w-32 md:h-24 rounded-xl overflow-hidden shrink-0 border border-secondary-100 relative">
+          <div className="w-24 h-20 md:w-32 md:h-24 shrink-0">
             <img 
               src={
                 selectedService === 'junk_removal' ? '/process-step-1.svg' :
@@ -605,9 +605,8 @@ export const QuotePage: React.FC = () => {
                 '/process-step-1.svg'
               } 
               alt="Service breakdown" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
@@ -982,8 +981,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('junk_removal')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 shrink-0">
+                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
@@ -997,8 +996,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('donation_pickup')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 shrink-0">
+                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
@@ -1012,8 +1011,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('moving_labor')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 shrink-0">
+                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
@@ -1027,8 +1026,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('dumpster_rental')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
-                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 shrink-0">
+                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>

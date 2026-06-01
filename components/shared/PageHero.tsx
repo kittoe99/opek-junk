@@ -126,11 +126,11 @@ export const PageHero: React.FC<PageHeroProps> = ({
             </div>
 
             <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl group">
+              <div className="relative aspect-[4/5] group">
                 <img
                   src={image}
                   alt={imageAlt}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 />
                 {imageCaption && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">

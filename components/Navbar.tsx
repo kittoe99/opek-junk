@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
+import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
@@ -275,10 +275,51 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Menu Toggle */}
           <button 
-            className="md:hidden relative z-[50] p-2 focus:outline-none transition-colors duration-300 text-black"
-            onClick={() => setIsMenuOpen(true)}
+            className="md:hidden relative z-[50] p-2 focus:outline-none group"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
           >
-            <Menu size={28} />
+            <svg
+              width="28"
+              height="20"
+              viewBox="0 0 28 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              {/* Top bar — rotates to form top of X */}
+              <rect
+                x="0" y="1" width="28" height="2.5" rx="1.25"
+                fill="#355070"
+                style={{
+                  transformOrigin: '14px 2.25px',
+                  transform: isMenuOpen ? 'translateY(7.75px) rotate(45deg)' : 'none',
+                  transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
+                }}
+              />
+              {/* Middle bar — brand pink, fades out on open */}
+              <rect
+                x="4" y="9" width="20" height="2.5" rx="1.25"
+                fill="#FF006E"
+                style={{
+                  transformOrigin: '14px 10.25px',
+                  opacity: isMenuOpen ? 0 : 1,
+                  transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                  transition: 'opacity 0.2s ease, transform 0.25s cubic-bezier(0.4,0,0.2,1)',
+                }}
+              />
+              {/* Bottom bar — rotates to form bottom of X */}
+              <rect
+                x="0" y="17" width="28" height="2.5" rx="1.25"
+                fill="#355070"
+                style={{
+                  transformOrigin: '14px 18.25px',
+                  transform: isMenuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none',
+                  transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
+                }}
+              />
+            </svg>
           </button>
         </div>
       </nav>
@@ -326,8 +367,12 @@ export const Navbar: React.FC = () => {
             <button 
               onClick={() => setIsMenuOpen(false)}
               className="w-10 h-10 flex items-center justify-center text-secondary hover:text-brand transition-colors"
+              aria-label="Close menu"
             >
-              <X size={24} />
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="2" y1="2" x2="18" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square"/>
+                <line x1="18" y1="2" x2="2" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square"/>
+              </svg>
             </button>
           </div>
 
