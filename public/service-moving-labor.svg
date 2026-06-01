@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Circle -->
+  <circle cx="200" cy="200" r="160" fill="url(#bgGrad)" />
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="8,8" />
+
+  <!-- Ground shadows -->
+  <ellipse cx="118" cy="336" rx="32" ry="7" fill="#E2E8F0"/>
+  <ellipse cx="282" cy="336" rx="32" ry="7" fill="#E2E8F0"/>
+
+  <!-- Left worker -->
+  <g transform="translate(52, 150)">
+    <!-- Body -->
+    <path d="M 36,120 C 36,88 50,72 68,72 C 86,72 100,88 100,120 Z" fill="url(#brandBlue)"/>
+    <!-- Collar -->
+    <path d="M 52,72 L 68,88 L 84,72" fill="none" stroke="#FF006E" stroke-width="3.5"/>
+    <!-- Head -->
+    <circle cx="68" cy="40" r="30" fill="#E2E8F0"/>
+    <!-- Hair -->
+    <path d="M 38,40 C 38,16 52,8 68,8 C 84,8 98,16 98,40 C 98,40 92,22 80,18 C 68,14 42,18 38,40 Z" fill="#0F172A"/>
+    <!-- Eyes -->
+    <circle cx="60" cy="40" r="2.5" fill="#0F172A"/>
+    <circle cx="76" cy="40" r="2.5" fill="#0F172A"/>
+    <!-- Smile -->
+    <path d="M 62,52 Q 68,60 74,52" fill="none" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Right arm carrying sofa end -->
+    <path d="M 92,100 C 108,96 130,108 148,114 L 148,126 C 128,120 108,110 94,114 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Legs -->
+    <line x1="52" y1="120" x2="44" y2="185" stroke="#355070" stroke-width="10" stroke-linecap="round"/>
+    <line x1="74" y1="120" x2="74" y2="185" stroke="#355070" stroke-width="10" stroke-linecap="round"/>
+    <!-- Shoes -->
+    <rect x="36" y="180" width="18" height="10" rx="3" fill="#0F172A"/>
+    <rect x="66" y="180" width="18" height="10" rx="3" fill="#0F172A"/>
+  </g>
+
+  <!-- Right worker (with pink cap - same style as process-step-3) -->
+  <g transform="translate(248, 150)">
+    <!-- Body -->
+    <path d="M 36,120 C 36,88 50,72 68,72 C 86,72 100,88 100,120 Z" fill="url(#brandBlue)"/>
+    <!-- Collar -->
+    <path d="M 52,72 L 68,88 L 84,72" fill="none" stroke="#FF006E" stroke-width="3.5"/>
+    <!-- Head -->
+    <circle cx="68" cy="40" r="30" fill="#E2E8F0"/>
+    <!-- Pink cap -->
+    <path d="M 38,38 C 38,16 52,12 68,12 C 84,12 98,16 98,38 L 108,38 L 108,46 Z" fill="#FF006E"/>
+    <path d="M 38,36 C 38,28 52,24 68,24 C 84,24 98,28 98,36 Z" fill="#FF006E"/>
+    <!-- Eyes -->
+    <circle cx="60" cy="42" r="2.5" fill="#0F172A"/>
+    <circle cx="76" cy="42" r="2.5" fill="#0F172A"/>
+    <!-- Smile -->
+    <path d="M 62,52 Q 68,60 74,52" fill="none" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Left arm carrying sofa end -->
+    <path d="M 44,100 C 28,96 10,108 -8,114 L -8,126 C 12,120 30,110 46,114 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Legs -->
+    <line x1="54" y1="120" x2="46" y2="185" stroke="#355070" stroke-width="10" stroke-linecap="round"/>
+    <line x1="76" y1="120" x2="80" y2="185" stroke="#355070" stroke-width="10" stroke-linecap="round"/>
+    <!-- Shoes -->
+    <rect x="38" y="180" width="18" height="10" rx="3" fill="#0F172A"/>
+    <rect x="72" y="180" width="18" height="10" rx="3" fill="#0F172A"/>
+  </g>
+
+  <!-- Sofa / couch being carried (centered) -->
+  <g transform="translate(125, 228)" filter="url(#dropShadow)">
+    <!-- Seat cushion -->
+    <rect x="0" y="28" width="150" height="38" rx="6" fill="url(#brandPink)"/>
+    <!-- Backrest -->
+    <rect x="10" y="8" width="130" height="24" rx="4" fill="#FF006E"/>
+    <!-- Left armrest -->
+    <rect x="0" y="18" width="16" height="48" rx="5" fill="#D9005B"/>
+    <!-- Right armrest -->
+    <rect x="134" y="18" width="16" height="48" rx="5" fill="#D9005B"/>
+    <!-- Cushion divider -->
+    <line x1="75" y1="28" x2="75" y2="66" stroke="#D9005B" stroke-width="3" opacity="0.6"/>
+    <!-- Pillow accent -->
+    <rect x="18" y="14" width="22" height="18" rx="3" fill="#355070" opacity="0.8"/>
+    <rect x="110" y="14" width="22" height="18" rx="3" fill="#355070" opacity="0.8"/>
+    <!-- Legs -->
+    <rect x="18" y="66" width="12" height="12" rx="2" fill="#0F172A"/>
+    <rect x="120" y="66" width="12" height="12" rx="2" fill="#0F172A"/>
+  </g>
+
+  <!-- "HOURLY LABOR" tag -->
+  <g transform="translate(155, 82)" filter="url(#dropShadow)">
+    <rect x="0" y="0" width="90" height="28" rx="8" fill="#FFFFFF"/>
+    <rect x="8" y="8" width="26" height="12" rx="4" fill="url(#brandPink)"/>
+    <rect x="40" y="10" width="44" height="4" rx="2" fill="#E2E8F0"/>
+    <rect x="40" y="17" width="32" height="4" rx="2" fill="#E2E8F0"/>
+  </g>
+</svg>

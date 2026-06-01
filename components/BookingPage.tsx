@@ -647,19 +647,18 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand' : 'border-secondary-100 hover:border-secondary-300'} transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200 ${
-                    formData.serviceType === 'Junk Removal' ? 'border-brand bg-brand' : 'border-secondary-300'
-                  }`}>
-                    {formData.serviceType === 'Junk Removal' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                    <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <Trash2 size={20} className={`shrink-0 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary-400 group-hover:text-brand'}`} />
                   <div className="flex-1">
-                    <h3 className={`text-sm font-semibold mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
-                    <p className="text-secondary-400 text-xs">Service providers haul away your unwanted items</p>
+                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
+                    <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
                   </div>
-                  <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                  </div>
                 </button>
 
                 <button
@@ -667,19 +666,18 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Donation Pick Up' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand' : 'border-secondary-100 hover:border-secondary-300'} transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200 ${
-                    formData.serviceType === 'Donation Pick Up' ? 'border-brand bg-brand' : 'border-secondary-300'
-                  }`}>
-                    {formData.serviceType === 'Donation Pick Up' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                    <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <HeartHandshake size={20} className={`shrink-0 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary-400 group-hover:text-brand'}`} />
                   <div className="flex-1">
-                    <h3 className={`text-sm font-semibold mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
-                    <p className="text-secondary-400 text-xs">Service providers deliver gently used items to local charities</p>
+                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
+                    <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
                   </div>
-                  <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                  </div>
                 </button>
 
                 <button
@@ -687,19 +685,18 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Moving Labor' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand' : 'border-secondary-100 hover:border-secondary-300'} transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200 ${
-                    formData.serviceType === 'Moving Labor' ? 'border-brand bg-brand' : 'border-secondary-300'
-                  }`}>
-                    {formData.serviceType === 'Moving Labor' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                    <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <BicepsFlexed size={20} className={`shrink-0 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary-400 group-hover:text-brand'}`} />
                   <div className="flex-1">
-                    <h3 className={`text-sm font-semibold mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
-                    <p className="text-secondary-400 text-xs">Hourly labor for heavy lifting</p>
+                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
+                    <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
                   </div>
-                  <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                  </div>
                 </button>
 
                 <button
@@ -707,19 +704,18 @@ export const BookingPage: React.FC = () => {
                     setFormData(prev => ({ ...prev, serviceType: 'Dumpster Rental' }));
                     handleNextStep();
                   }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand' : 'border-secondary-100 hover:border-secondary-300'} transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group`}
+                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200 ${
-                    formData.serviceType === 'Dumpster Rental' ? 'border-brand bg-brand' : 'border-secondary-300'
-                  }`}>
-                    {formData.serviceType === 'Dumpster Rental' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <Container size={20} className={`shrink-0 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary-400 group-hover:text-brand'}`} />
                   <div className="flex-1">
-                    <h3 className={`text-sm font-semibold mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
-                    <p className="text-secondary-400 text-xs">Roll-off container delivered to your site</p>
+                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
+                    <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
                   </div>
-                  <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                  </div>
                 </button>
               </div>
               
@@ -848,13 +844,28 @@ export const BookingPage: React.FC = () => {
                       </div>
                     ) : (
                       <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                        {/* Related banner image */}
-                        <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                          <img 
-                            src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'} 
-                            alt="Service" 
-                            className="w-full h-full object-cover" 
-                          />
+                        {/* Elegant Shrunk Image Service Card */}
+                        <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                          <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
+                            <img 
+                              src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'} 
+                              alt="Service" 
+                              className="w-full h-full object-cover" 
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                                Instant Estimate
+                              </span>
+                              <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                                Guaranteed
+                              </span>
+                            </div>
+                            <h4 className="text-xs font-black text-secondary mt-1">{formData.serviceType}</h4>
+                            <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                          </div>
                         </div>
                         <div className="mb-4">
                           <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items Detected</div>
@@ -1094,9 +1105,28 @@ export const BookingPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                    {/* Related banner image */}
-                    <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                      <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover" />
+                    {/* Elegant Shrunk Image Service Card */}
+                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                      <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
+                        <img 
+                          src="/dumpster-rental.svg" 
+                          alt="Dumpster Rental" 
+                          className="w-full h-full object-cover" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                            Instant Estimate
+                          </span>
+                          <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                            Guaranteed
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-black text-secondary mt-1">Dumpster Rental</h4>
+                        <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                      </div>
                     </div>
                     <div className="mb-4">
                       <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
@@ -1394,9 +1424,28 @@ export const BookingPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                    {/* Related banner image */}
-                    <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                      <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover" />
+                    {/* Elegant Shrunk Image Service Card */}
+                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                      <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
+                        <img 
+                          src="/process-step-2.svg" 
+                          alt="Moving Labor" 
+                          className="w-full h-full object-cover" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                            Instant Estimate
+                          </span>
+                          <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                            Guaranteed
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-black text-secondary mt-1">Moving Labor</h4>
+                        <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                      </div>
                     </div>
                     <div className="mb-4">
                       <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>

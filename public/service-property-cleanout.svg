@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Circle -->
+  <circle cx="200" cy="200" r="160" fill="url(#bgGrad)" />
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="8,8" />
+
+  <!-- House outline (property) -->
+  <g filter="url(#dropShadow)">
+    <!-- Roof -->
+    <path d="M 90,200 L 200,110 L 310,200 Z" fill="url(#brandBlue)"/>
+    <!-- House body -->
+    <rect x="110" y="198" width="180" height="120" rx="4" fill="#FFFFFF"/>
+    <!-- Front door -->
+    <rect x="175" y="248" width="50" height="70" rx="4" fill="#E2E8F0"/>
+    <rect x="175" y="248" width="50" height="35" rx="4" fill="#CBD5E1"/>
+    <!-- Door knob -->
+    <circle cx="218" cy="286" r="4" fill="#FF006E"/>
+    <!-- Window left -->
+    <rect x="122" y="218" width="40" height="36" rx="3" fill="#E2E8F0"/>
+    <line x1="142" y1="218" x2="142" y2="254" stroke="#CBD5E1" stroke-width="2"/>
+    <line x1="122" y1="236" x2="162" y2="236" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Window right -->
+    <rect x="238" y="218" width="40" height="36" rx="3" fill="#E2E8F0"/>
+    <line x1="258" y1="218" x2="258" y2="254" stroke="#CBD5E1" stroke-width="2"/>
+    <line x1="238" y1="236" x2="278" y2="236" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Chimney -->
+    <rect x="248" y="125" width="24" height="45" rx="3" fill="#94A3B8"/>
+    <rect x="244" y="120" width="32" height="10" rx="2" fill="#64748B"/>
+  </g>
+
+  <!-- Boxes being moved out (cleanout) -->
+  <g transform="translate(-10, 0)">
+    <!-- Box 1 -->
+    <rect x="64" y="268" width="50" height="44" rx="3" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2" filter="url(#dropShadow)"/>
+    <rect x="74" y="268" width="24" height="8" fill="#FF006E" opacity="0.85"/>
+    <line x1="89" y1="268" x2="89" y2="312" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Box 2 (stacked) -->
+    <rect x="68" y="230" width="42" height="38" rx="3" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2" filter="url(#dropShadow)"/>
+    <rect x="76" y="230" width="20" height="7" fill="#FF006E" opacity="0.7"/>
+  </g>
+
+  <!-- Provider worker (right side) -->
+  <g transform="translate(296, 190)">
+    <!-- Body -->
+    <path d="M 20,80 C 20,55 32,45 48,45 C 64,45 76,55 76,80 Z" fill="url(#brandBlue)"/>
+    <!-- Collar -->
+    <path d="M 34,45 L 48,60 L 62,45" fill="none" stroke="#FF006E" stroke-width="3"/>
+    <!-- Head -->
+    <circle cx="48" cy="22" r="26" fill="#E2E8F0"/>
+    <!-- Hair -->
+    <path d="M 22,22 C 22,4 34,0 48,0 C 62,0 74,4 74,22 C 74,22 68,10 58,8 C 48,6 28,8 22,22 Z" fill="#0F172A"/>
+    <!-- Eyes -->
+    <circle cx="41" cy="22" r="2" fill="#0F172A"/>
+    <circle cx="55" cy="22" r="2" fill="#0F172A"/>
+    <!-- Smile -->
+    <path d="M 43,32 Q 48,38 53,32" fill="none" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+    <!-- Arm holding clipboard -->
+    <path d="M 68,65 C 82,62 90,70 88,85 L 78,85 C 78,76 72,72 68,74 Z" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="1.5"/>
+    <!-- Legs -->
+    <line x1="36" y1="80" x2="30" y2="120" stroke="#355070" stroke-width="8" stroke-linecap="round"/>
+    <line x1="54" y1="80" x2="54" y2="120" stroke="#355070" stroke-width="8" stroke-linecap="round"/>
+    <rect x="22" y="116" width="16" height="8" rx="3" fill="#0F172A"/>
+    <rect x="46" y="116" width="16" height="8" rx="3" fill="#0F172A"/>
+  </g>
+
+  <!-- Clipboard in worker's hand -->
+  <g transform="translate(336, 240)" filter="url(#dropShadow)">
+    <rect x="0" y="0" width="44" height="56" rx="4" fill="#FFFFFF"/>
+    <rect x="14" y="-4" width="16" height="8" rx="3" fill="#CBD5E1"/>
+    <rect x="6" y="10" width="32" height="4" rx="2" fill="#E2E8F0"/>
+    <rect x="6" y="18" width="28" height="4" rx="2" fill="#E2E8F0"/>
+    <rect x="6" y="26" width="20" height="4" rx="2" fill="#E2E8F0"/>
+    <!-- Checkmark -->
+    <circle cx="33" cy="43" r="9" fill="#10B981"/>
+    <path d="M 28,43 L 31,46 L 38,39" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

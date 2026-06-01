@@ -162,3 +162,6 @@ ON CONFLICT (name) DO UPDATE SET
     volume = EXCLUDED.volume, 
     min_price_override = EXCLUDED.min_price_override, 
     max_price_override = EXCLUDED.max_price_override;
+
+-- Ensure bookings table has price column
+ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS price INTEGER;

@@ -1,34 +1,33 @@
-import { Trash2, PackageOpen, HeartHandshake, BicepsFlexed, Container } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const serviceItems = [
   {
     title: "Junk Removal",
-    icon: Trash2,
+    icon: "/service-junk-removal.svg",
     description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
     path: "/services/junk-removal"
   },
   {
     title: "Dumpster Rental",
-    icon: Container,
+    icon: "/service-dumpster-rental.svg",
     description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
     path: "/services/dumpster-rental"
   },
   {
     title: "Property Cleanouts",
-    icon: PackageOpen,
+    icon: "/service-property-cleanout.svg",
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
   },
   {
     title: "Donations Pickup",
-    icon: HeartHandshake,
+    icon: "/service-donations-pickup.svg",
     description: "Convenient pickup of gently used furniture, clothing, and household goods, delivered directly to local charities.",
     path: "/services/donations-pickup"
   },
   {
     title: "Moving Labor",
-    icon: BicepsFlexed,
+    icon: "/service-moving-labor.svg",
     description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
     path: "/services/moving-labor"
   }
@@ -60,10 +59,11 @@ export const Services: React.FC = () => {
                 onClick={() => navigate(item.path)}
                 className="group cursor-pointer bg-white p-5 md:p-8 rounded-2xl shadow-sm hover:shadow-md border border-transparent hover:border-secondary-100 transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
               >
-                <div className="md:mb-6 shrink-0 mt-0.5 md:mt-0">
-                  <item.icon
-                    className="w-7 h-7 md:w-12 md:h-12 text-secondary-300 group-hover:text-brand transition-colors duration-500"
-                    strokeWidth={1.25}
+                <div className="w-14 h-14 md:w-20 md:h-20 md:mb-6 shrink-0 mt-0.5 md:mt-0 overflow-hidden">
+                  <img
+                    src={item.icon}
+                    alt={item.title}
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div>

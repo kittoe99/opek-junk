@@ -593,19 +593,42 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className="space-y-6">
-        {/* Related service banner image */}
-        <div className="w-full h-48 rounded-2xl overflow-hidden border border-secondary-100 shadow-sm">
-          <img 
-            src={
-              selectedService === 'junk_removal' ? '/process-step-1.svg' :
-              selectedService === 'donation_pickup' ? '/opek-nav.svg' :
-              selectedService === 'moving_labor' ? '/process-step-2.svg' :
-              selectedService === 'dumpster_rental' ? '/dumpster-rental.svg' :
-              '/process-step-1.svg'
-            } 
-            alt="Service breakdown" 
-            className="w-full h-full object-cover"
-          />
+        {/* Elegant Premium Service Card with Shrunk Image */}
+        <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-24 h-20 md:w-32 md:h-24 rounded-xl overflow-hidden shrink-0 border border-secondary-100 relative">
+            <img 
+              src={
+                selectedService === 'junk_removal' ? '/process-step-1.svg' :
+                selectedService === 'donation_pickup' ? '/opek-nav.svg' :
+                selectedService === 'moving_labor' ? '/process-step-2.svg' :
+                selectedService === 'dumpster_rental' ? '/dumpster-rental.svg' :
+                '/process-step-1.svg'
+              } 
+              alt="Service breakdown" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="px-2 py-0.5 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-wider rounded-full border border-brand/20">
+                Instant Estimate
+              </span>
+              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-wider rounded-full border border-emerald-100">
+                Guaranteed
+              </span>
+            </div>
+            <h3 className="text-sm md:text-base font-black text-secondary">
+              {selectedService === 'junk_removal' ? 'Junk Removal' :
+               selectedService === 'donation_pickup' ? 'Donation Pick Up' :
+               selectedService === 'moving_labor' ? 'Moving Labor' :
+               selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
+               'Junk Removal'}
+            </h3>
+            <p className="text-secondary-400 text-xs mt-1 leading-normal">
+              {price.estimatedVolume}
+            </p>
+          </div>
         </div>
 
         {/* Price header breakdown */}
@@ -957,47 +980,63 @@ export const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedService('junk_removal')}
-              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <Trash2 size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Junk Removal</h3>
-                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Service providers haul away your unwanted items</p>
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              </div>
             </button>
             <button
               onClick={() => setSelectedService('donation_pickup')}
-              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <HeartHandshake size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Donation Pick Up</h3>
-                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Service providers deliver gently used items to local charities</p>
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              </div>
             </button>
             <button
               onClick={() => setSelectedService('moving_labor')}
-              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <BicepsFlexed size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Moving Labor</h3>
-                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Hourly labor for heavy lifting</p>
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              </div>
             </button>
             <button
               onClick={() => setSelectedService('dumpster_rental')}
-              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <Container size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Dumpster Rental</h3>
-                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Roll-off container delivered to your site</p>
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all shadow-sm">
+                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
+              <div className="flex-1">
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
+                <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
+              </div>
+              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              </div>
             </button>
           </div>
         </div>
@@ -2255,24 +2294,32 @@ export const QuotePage: React.FC = () => {
 
               {/* Selection step */}
               {manualStep === 'select' && !manualPricingLoading && (
-                <div className="space-y-6">
-                  {/* Search */}
+                <div className="space-y-5">
+                  {/* Search bar - enhanced */}
                   <div className="relative">
-                    <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-300" />
+                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-300 pointer-events-none" />
                     <input
                       type="text"
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
                       placeholder="Search items..."
-                      className="w-full pl-11 pr-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
                     />
+                    {catalogSearch && (
+                      <button
+                        onClick={() => setCatalogSearch('')}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-secondary-200 hover:bg-secondary-300 flex items-center justify-center transition-colors"
+                      >
+                        <X size={10} className="text-secondary-600" strokeWidth={2.5} />
+                      </button>
+                    )}
                   </div>
 
                   {/* Sidebar and Grid split layout */}
-                  <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
+                  <div className="flex flex-col sm:flex-row gap-0 md:gap-0">
                     {/* Left Sidebar */}
-                    <div className="w-full sm:w-[200px] md:w-[240px] shrink-0 flex flex-row sm:flex-col gap-2 sm:gap-1 border-b sm:border-b-0 sm:border-r border-secondary-100 pb-3 sm:pb-0 pr-0 sm:pr-4 overflow-x-auto sm:overflow-y-visible scrollbar-none py-1 sm:sticky sm:top-36">
-                      {ITEM_CATALOG.map((category) => {
+                    <div className="w-full sm:w-[190px] md:w-[220px] shrink-0 flex flex-row sm:flex-col gap-1 sm:gap-0.5 border-b sm:border-b-0 sm:border-r border-secondary-100 pb-3 sm:pb-0 pr-0 sm:pr-3 overflow-x-auto sm:overflow-y-visible scrollbar-none py-1 sm:py-0 sm:sticky sm:top-36 sm:self-start">
+                      {ITEM_CATALOG.map((category, idx) => {
                         const isActive = expandedCategory === category.label && !catalogSearch.trim();
                         const selectedCount = category.items.filter(i => isItemSelected(i.name)).length;
                         return (
@@ -2282,24 +2329,28 @@ export const QuotePage: React.FC = () => {
                               setExpandedCategory(category.label);
                               setCatalogSearch('');
                             }}
-                            className={`flex flex-row items-center gap-1.5 sm:gap-2.5 p-1.5 sm:p-2 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
+                            className={`flex flex-row items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
                               isActive
-                                ? 'bg-brand/10 text-brand font-black'
+                                ? 'bg-brand text-white shadow-sm shadow-brand/30'
                                 : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
                             }`}
                           >
-                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                              isActive ? 'bg-brand/20 text-brand' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                            <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isActive ? 'bg-white/20 text-white' : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                             }`}>
-                              {category.icon}
+                              <span className="scale-75">{category.icon}</span>
                             </div>
                             <div className="flex-1 min-w-0 text-left">
-                              <p className="text-[10px] sm:text-xs font-bold leading-tight truncate whitespace-nowrap sm:whitespace-normal">
+                              <p className={`text-[10px] sm:text-[11px] leading-tight truncate whitespace-nowrap sm:whitespace-normal ${
+                                isActive ? 'font-black' : 'font-semibold'
+                              }`}>
                                 {category.label}
                               </p>
                             </div>
                             {selectedCount > 0 && (
-                              <span className="bg-brand text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0">
+                              <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0 ${
+                                isActive ? 'bg-white text-brand' : 'bg-brand text-white'
+                              }`}>
                                 {selectedCount}
                               </span>
                             )}
@@ -2309,40 +2360,60 @@ export const QuotePage: React.FC = () => {
                     </div>
 
                     {/* Right Items Grid */}
-                    <div className="flex-1 min-w-0 pr-1 py-1">
+                    <div className="flex-1 min-w-0 sm:pl-4 md:pl-5 pt-3 sm:pt-0">
                       {catalogSearch.trim() ? (
                         <div>
-                          <h3 className="text-[10px] font-black uppercase tracking-wider text-secondary-400 mb-4">
-                            Search Results ({filteredCatalog.reduce((sum, cat) => sum + cat.items.length, 0)} items)
-                          </h3>
+                          <div className="flex items-center gap-2 mb-4">
+                            <h3 className="text-[10px] font-black uppercase tracking-widest text-secondary-400">
+                              Results
+                            </h3>
+                            <span className="px-2 py-0.5 rounded-full bg-secondary-100 text-secondary-500 text-[10px] font-bold">
+                              {filteredCatalog.reduce((sum, cat) => sum + cat.items.length, 0)}
+                            </span>
+                          </div>
                           {filteredCatalog.length === 0 ? (
-                            <p className="text-xs text-secondary-400 py-8 text-center">No items found matching "{catalogSearch}"</p>
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                              <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center mb-3">
+                                <Search size={20} className="text-secondary-300" />
+                              </div>
+                              <p className="text-sm font-semibold text-secondary-400">No items found</p>
+                              <p className="text-xs text-secondary-300 mt-1">Try a different search term</p>
+                            </div>
                           ) : (
-                            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
+                            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                               {filteredCatalog.flatMap(cat => cat.items).map((item) => {
                                 const selected = isItemSelected(item.name);
                                 const selectedItem = selectedItems.find(i => i.name === item.name);
                                 return (
                                   <button
                                     key={item.name}
-                                    className={`group relative flex flex-col items-center gap-1 p-1.5 sm:p-3 rounded-xl transition-all duration-200 text-center cursor-pointer ${
-                                      selected ? 'bg-brand/5 text-brand scale-[1.02]' : 'hover:bg-secondary-50 hover:scale-[1.02] active:scale-[0.98]'
+                                    className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-200 text-center cursor-pointer ${
+                                      selected
+                                        ? 'bg-brand/5 border-brand/30 shadow-sm shadow-brand/10'
+                                        : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-md hover:shadow-secondary/8 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm'
                                     }`}
                                     onClick={() => !selected && toggleCatalogItem(item.name)}
                                   >
                                     {selected && (
                                       <button
                                         onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                        className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 w-4.5 h-4.5 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow transition-colors z-10"
+                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-sm transition-colors z-10"
                                       >
-                                        <X size={10} className="text-white" strokeWidth={3} />
+                                        <X size={9} className="text-white" strokeWidth={3} />
                                       </button>
                                     )}
-                                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
+                                    {selected && (
+                                      <div className="absolute top-1.5 left-1.5 w-4 h-4 bg-brand rounded-full flex items-center justify-center z-10">
+                                        <Check size={8} className="text-white" strokeWidth={3} />
+                                      </div>
+                                    )}
+                                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                                      selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
+                                    }`}>
                                       <img
                                         src={item.image}
                                         alt={item.name}
-                                        className="w-8 h-8 transition-all duration-200"
+                                        className="w-7 h-7 sm:w-8 sm:h-8 transition-all duration-200"
                                         style={{
                                           filter: selected
                                             ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -2350,18 +2421,18 @@ export const QuotePage: React.FC = () => {
                                         }}
                                       />
                                     </div>
-                                    <span className={`text-[10px] sm:text-xs font-black leading-tight line-clamp-2 transition-colors ${
-                                      selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
+                                    <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
+                                      selected ? 'text-brand' : 'text-secondary-700 group-hover:text-secondary'
                                     }`}>{item.name}</span>
                                     
                                     {selected && selectedItem && (
-                                      <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                          <Minus size={10} className="text-secondary-600" />
+                                      <div className="flex items-center gap-1 mt-0.5 bg-white border border-secondary-150 rounded-full px-1.5 py-0.5 shadow-sm" onClick={(e) => e.stopPropagation()}>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                          <Minus size={9} className="text-secondary-500" />
                                         </button>
-                                        <span className="w-4 sm:w-5 text-center text-[10px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                          <Plus size={10} className="text-secondary-600" />
+                                        <span className="w-5 text-center text-[11px] font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <Plus size={9} className="text-secondary-500" />
                                         </button>
                                       </div>
                                     )}
@@ -2375,34 +2446,48 @@ export const QuotePage: React.FC = () => {
                         <div>
                           {ITEM_CATALOG.filter(cat => cat.label === (expandedCategory || 'Popular Items')).map((category) => (
                             <div key={category.label}>
-                              <h3 className="text-[10px] font-black uppercase tracking-wider text-secondary-400 mb-4 flex items-center gap-1.5">
-                                <span className="w-4 h-4 shrink-0 flex items-center justify-center">{category.icon}</span> {category.label} ({category.items.length} items)
-                              </h3>
-                              <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
+                              <div className="flex items-center gap-2 mb-4">
+                                <h3 className="text-[10px] font-black uppercase tracking-widest text-secondary-400">
+                                  {category.label}
+                                </h3>
+                                <span className="px-2 py-0.5 rounded-full bg-secondary-100 text-secondary-400 text-[10px] font-bold">
+                                  {category.items.length}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                                 {category.items.map((item) => {
                                   const selected = isItemSelected(item.name);
                                   const selectedItem = selectedItems.find(i => i.name === item.name);
                                   return (
                                     <button
                                       key={item.name}
-                                      className={`group relative flex flex-col items-center gap-1 p-1.5 sm:p-3 rounded-xl transition-all duration-200 text-center cursor-pointer ${
-                                        selected ? 'bg-brand/5 text-brand scale-[1.02]' : 'hover:bg-secondary-50 hover:scale-[1.02] active:scale-[0.98]'
+                                      className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-200 text-center cursor-pointer ${
+                                        selected
+                                          ? 'bg-brand/5 border-brand/30 shadow-sm shadow-brand/10'
+                                          : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-md hover:shadow-secondary/8 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm'
                                       }`}
                                       onClick={() => !selected && toggleCatalogItem(item.name)}
                                     >
                                       {selected && (
                                         <button
                                           onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                          className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 w-4.5 h-4.5 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow transition-colors z-10"
+                                          className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-sm transition-colors z-10"
                                         >
-                                          <X size={10} className="text-white" strokeWidth={3} />
+                                          <X size={9} className="text-white" strokeWidth={3} />
                                         </button>
                                       )}
-                                      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${selected ? 'bg-brand/10' : 'bg-transparent'}`}>
+                                      {selected && (
+                                        <div className="absolute top-1.5 left-1.5 w-4 h-4 bg-brand rounded-full flex items-center justify-center z-10">
+                                          <Check size={8} className="text-white" strokeWidth={3} />
+                                        </div>
+                                      )}
+                                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                                        selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
+                                      }`}>
                                         <img
                                           src={item.image}
                                           alt={item.name}
-                                          className="w-8 h-8 transition-all duration-200"
+                                          className="w-7 h-7 sm:w-8 sm:h-8 transition-all duration-200"
                                           style={{
                                             filter: selected
                                               ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -2410,18 +2495,18 @@ export const QuotePage: React.FC = () => {
                                           }}
                                         />
                                       </div>
-                                      <span className={`text-[10px] sm:text-xs font-black leading-tight line-clamp-2 transition-colors ${
-                                        selected ? 'text-brand' : 'text-secondary group-hover:text-brand'
+                                      <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
+                                        selected ? 'text-brand' : 'text-secondary-700 group-hover:text-secondary'
                                       }`}>{item.name}</span>
                                       
                                       {selected && selectedItem && (
-                                        <div className="flex items-center gap-0.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded p-0.5 sm:p-1" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                            <Minus size={10} className="text-secondary-600" />
+                                        <div className="flex items-center gap-1 mt-0.5 bg-white border border-secondary-150 rounded-full px-1.5 py-0.5 shadow-sm" onClick={(e) => e.stopPropagation()}>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                            <Minus size={9} className="text-secondary-500" />
                                           </button>
-                                          <span className="w-4 sm:w-5 text-center text-[10px] sm:text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-5 h-5 rounded-sm bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                            <Plus size={10} className="text-secondary-600" />
+                                          <span className="w-5 text-center text-[11px] font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                            <Plus size={9} className="text-secondary-500" />
                                           </button>
                                         </div>
                                       )}
@@ -2437,23 +2522,24 @@ export const QuotePage: React.FC = () => {
                   </div>
 
                   {/* Custom item entry */}
-                  <div>
-                    <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Don't see your item?</p>
+                  <div className="border border-dashed border-secondary-200 rounded-2xl p-4">
+                    <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-3">Don't see your item?</p>
                     <div className="flex gap-2">
                       <input
                         type="text"
                         value={manualNewItemName}
                         onChange={(e) => setManualNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
-                        placeholder="Type item name and add"
-                        className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
+                        placeholder="Type item name and press Enter"
+                        className="flex-1 px-4 py-2.5 text-sm bg-white border border-secondary-200 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
                       />
                       <button
                         onClick={addManualSelectedItem}
                         disabled={!manualNewItemName.trim()}
-                        className="px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="px-4 bg-secondary text-white text-sm font-bold rounded-xl hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5"
                       >
-                        <Plus size={16} />
+                        <Plus size={14} />
+                        <span className="hidden sm:inline text-xs">Add</span>
                       </button>
                     </div>
                   </div>

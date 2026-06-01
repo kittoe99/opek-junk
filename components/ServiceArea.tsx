@@ -21,80 +21,74 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
     else navigate('/quote');
   };
 
-  // Get first 8 cities for the minified clean list
-  const popularCities = cities.slice(0, 8);
+  const popularCities = cities.slice(0, 6);
 
   return (
-    <section id="service-area" className="py-20 md:py-28 bg-white border-t border-secondary-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 lg:gap-16 items-center">
+    <section id="service-area" className="py-16 md:py-24 bg-white border-t border-secondary-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-start">
 
           {/* CTA Column */}
-          <div className="md:col-span-7 space-y-6">
+          <div className="space-y-8">
             <div>
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="block w-6 h-px bg-brand" />
-                <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Ready to start?</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+              <p className="text-[10px] font-bold text-brand uppercase tracking-[0.3em] mb-4">Ready to start?</p>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary leading-tight">
                 {titleStart}<br />
                 <span className="text-brand">{titleAccent}</span>
               </h2>
             </div>
-            
-            <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-stretch sm:items-start md:items-stretch lg:items-start gap-3">
+
+            <div className="flex flex-col gap-3">
               <button
                 onClick={handleQuoteClick}
-                className="px-6 py-3.5 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2 rounded-xl shadow-md hover:shadow-lg active:scale-95"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary text-white text-sm font-bold rounded-xl hover:bg-brand transition-all duration-200 active:scale-95"
               >
-                Get a Free Quote <ArrowRight size={14} />
+                Get a Free Quote
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </button>
               <button
                 onClick={() => navigate('/booking')}
-                className="px-6 py-3.5 bg-white text-secondary font-bold text-xs uppercase tracking-wider hover:bg-secondary-100 transition-all duration-300 inline-flex items-center justify-center gap-2 rounded-xl shadow-sm border border-secondary-200 hover:border-secondary-300 active:scale-95"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary-50 text-secondary text-sm font-bold rounded-xl border border-secondary-200 hover:border-brand hover:text-brand transition-all duration-200 active:scale-95"
               >
-                Book Online <ArrowRight size={14} />
+                Book Online
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </button>
             </div>
 
-            <div>
-              <a
-                href="tel:8313187139"
-                className="inline-flex items-center gap-2 text-secondary-500 hover:text-brand transition-colors text-sm font-semibold group"
-              >
-                <Phone size={14} className="text-secondary-400 group-hover:text-brand transition-colors" />
-                <span>(831) 318-7139</span>
-              </a>
-            </div>
+            <a
+              href="tel:8313187139"
+              className="inline-flex items-center gap-2 text-secondary-400 hover:text-brand transition-colors text-sm group"
+            >
+              <Phone size={13} className="group-hover:text-brand transition-colors" />
+              <span className="font-medium">(831) 318-7139</span>
+            </a>
           </div>
 
           {/* Service Area Column */}
-          <div className="md:col-span-5 space-y-6 md:border-l md:border-secondary-100 md:pl-8 pt-8 md:pt-0 border-t md:border-t-0 border-secondary-100">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2">
-                <MapPin size={13} className="text-brand" />
-                <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Service Area</span>
+          <div className="pt-8 md:pt-0 border-t md:border-t-0 border-secondary-100 space-y-7">
+            <div>
+              <div className="flex items-center gap-1.5 mb-4">
+                <MapPin size={12} className="text-brand" />
+                <p className="text-[10px] font-bold text-brand uppercase tracking-[0.3em]">Service Area</p>
               </div>
-              <h3 className="text-2xl font-black text-secondary tracking-tight">
-                Nationwide coverage.
-              </h3>
-              <p className="text-secondary-500 text-xs leading-relaxed">
+              <h3 className="text-xl font-black text-secondary mb-2">Nationwide coverage.</h3>
+              <p className="text-sm text-secondary-400 leading-relaxed">
                 Available in all 50 states. Same flat-rate pricing, same independent provider standards — wherever you are.
               </p>
             </div>
-            
-            <div className="space-y-3">
-              <p className="text-[9px] font-black text-secondary-400 uppercase tracking-[0.2em]">Popular Cities</p>
-              <div className="grid grid-cols-2 lg:grid-cols-1 gap-x-4 gap-y-2.5">
+
+            <div>
+              <p className="text-[10px] font-bold text-secondary-300 uppercase tracking-[0.25em] mb-3">Popular Cities</p>
+              <div className="space-y-2">
                 {popularCities.map((city) => (
                   <Link
                     key={city.slug}
                     to={`/locations/${city.slug}`}
-                    className="text-secondary hover:text-brand transition-colors text-xs font-semibold inline-flex items-center gap-1.5 group"
+                    className="flex items-center gap-2 text-secondary-500 hover:text-brand transition-colors text-sm group py-0.5"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary-200 group-hover:bg-brand transition-colors shrink-0" />
-                    <span className="truncate">{city.name}, {city.stateAbbr}</span>
+                    <span className="w-1 h-1 rounded-full bg-secondary-200 group-hover:bg-brand transition-colors shrink-0" />
+                    <span>{city.name}, {city.stateAbbr}</span>
                   </Link>
                 ))}
               </div>

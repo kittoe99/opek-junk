@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="brandPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF006E" />
+      <stop offset="100%" stop-color="#D9005B" />
+    </linearGradient>
+    <linearGradient id="brandBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5D78" />
+      <stop offset="100%" stop-color="#355070" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background Decorative Circle -->
+  <circle cx="200" cy="200" r="160" fill="url(#bgGrad)" />
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="8,8" />
+
+  <!-- Junk pile (background) -->
+  <!-- Old chair -->
+  <rect x="80" y="130" width="50" height="40" rx="4" fill="#CBD5E1" />
+  <rect x="80" y="110" width="50" height="22" rx="3" fill="#94A3B8" />
+  <line x1="90" y1="170" x2="86" y2="210" stroke="#64748B" stroke-width="5" stroke-linecap="round"/>
+  <line x1="120" y1="170" x2="124" y2="210" stroke="#64748B" stroke-width="5" stroke-linecap="round"/>
+  <!-- Box -->
+  <rect x="145" y="150" width="55" height="50" rx="3" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="158" y="150" width="30" height="8" fill="#FF006E" opacity="0.85"/>
+  <!-- Floor lamp -->
+  <line x1="230" y1="100" x2="215" y2="205" stroke="#355070" stroke-width="4"/>
+  <path d="M 224,100 L 240,100 L 232,78 Z" fill="#FF006E"/>
+  <path d="M 232,100 L 205,145 L 260,145 Z" fill="#FF006E" opacity="0.12"/>
+
+  <!-- Truck body -->
+  <g filter="url(#dropShadow)">
+    <!-- Cargo box -->
+    <rect x="70" y="220" width="210" height="90" rx="6" fill="url(#brandBlue)"/>
+    <!-- Cargo lid open -->
+    <rect x="70" y="210" width="210" height="14" rx="3" fill="#355070"/>
+    <!-- Cab -->
+    <rect x="270" y="240" width="80" height="70" rx="6" fill="#4A5D78"/>
+    <!-- Cab window -->
+    <rect x="282" y="250" width="56" height="36" rx="4" fill="#E2E8F0"/>
+    <line x1="310" y1="250" x2="310" y2="286" stroke="#CBD5E1" stroke-width="2"/>
+    <!-- Headlight -->
+    <rect x="340" y="272" width="12" height="8" rx="2" fill="#FF006E"/>
+  </g>
+
+  <!-- Truck wheels -->
+  <circle cx="130" cy="314" r="22" fill="#0F172A"/>
+  <circle cx="130" cy="314" r="10" fill="#CBD5E1"/>
+  <circle cx="230" cy="314" r="22" fill="#0F172A"/>
+  <circle cx="230" cy="314" r="10" fill="#CBD5E1"/>
+  <circle cx="318" cy="314" r="22" fill="#0F172A"/>
+  <circle cx="318" cy="314" r="10" fill="#CBD5E1"/>
+
+  <!-- Items sticking out of truck -->
+  <rect x="110" y="185" width="30" height="40" rx="3" fill="#94A3B8"/>
+  <circle cx="125" cy="178" r="14" fill="#CBD5E1"/>
+  <rect x="155" y="192" width="40" height="28" rx="2" fill="#E2E8F0"/>
+  <rect x="162" y="192" width="20" height="6" fill="#FF006E" opacity="0.8"/>
+  <rect x="205" y="188" width="20" height="32" rx="3" fill="#94A3B8"/>
+
+  <!-- Brand badge on truck -->
+  <rect x="100" y="238" width="48" height="16" rx="4" fill="url(#brandPink)"/>
+  <rect x="156" y="241" width="40" height="5" rx="2" fill="#E2E8F0" opacity="0.5"/>
+  <rect x="156" y="249" width="28" height="5" rx="2" fill="#E2E8F0" opacity="0.35"/>
+</svg>
