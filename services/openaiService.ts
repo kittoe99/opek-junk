@@ -55,7 +55,7 @@ Respond in this exact JSON format:
 import { calculateStaticPrice } from './pricingService';
 export async function getJunkQuoteFromPhoto(base64Image: string, mimeType: string): Promise<QuoteEstimate> {
   const items = await detectItemsFromPhoto(base64Image, mimeType);
-  const price = calculateStaticPrice(items);
+  const price = await calculateStaticPrice(items);
   return {
     itemsDetected: items.map(i => i.name),
     estimatedVolume: price.estimatedVolume,

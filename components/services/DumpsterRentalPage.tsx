@@ -75,7 +75,7 @@ export const DumpsterRentalPage: React.FC = () => {
         eyebrow="Flexible & Convenient"
         title={<>Dumpster<br />Rental</>}
         subtitle="Roll-off containers delivered directly to your home or job site. Choose from multiple sizes with transparent, flat-rate pricing and prompt drop-offs."
-        image="/dumpster-rental.png"
+        image="/dumpster-rental.svg"
         imageAlt="A clean roll-off dumpster sitting on a residential driveway"
         imageCaption="Driveway Protection • Flat Rates • Next-Day Available"
         primaryCta={{ label: 'Rent a Dumpster', onClick: () => navigate('/quote') }}

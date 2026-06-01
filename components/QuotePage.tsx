@@ -283,6 +283,7 @@ export const QuotePage: React.FC = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [detectedItems, setDetectedItems] = useState<DetectedItem[]>([]);
   const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
+  const [dumpsterPriceEstimate, setDumpsterPriceEstimate] = useState<PriceEstimate | null>(null);
   const [aiStep, setAiStep] = useState<'tips' | 'upload' | 'items' | 'result'>('tips');
   const [newItemName, setNewItemName] = useState('');
   const [pricingLoading, setPricingLoading] = useState(false);
@@ -396,7 +397,7 @@ export const QuotePage: React.FC = () => {
     setError(null);
     try {
       await new Promise(resolve => setTimeout(resolve, 800));
-      const price = calculateStaticPrice(detectedItems);
+      const price = await calculateStaticPrice(detectedItems);
       setPriceEstimate(price);
       setEstimate({
         itemsDetected: detectedItems.map(i => `${i.quantity}x ${i.name}`),
@@ -473,7 +474,7 @@ export const QuotePage: React.FC = () => {
     setError(null);
     try {
       await new Promise(resolve => setTimeout(resolve, 800));
-      const price = calculateStaticPrice(selectedItems);
+      const price = await calculateStaticPrice(selectedItems);
       setManualPriceEstimate(price);
       setEstimate({
         itemsDetected: selectedItems.map(i => `${i.quantity}x ${i.name}`),
@@ -596,11 +597,11 @@ export const QuotePage: React.FC = () => {
         <div className="w-full h-48 rounded-2xl overflow-hidden border border-secondary-100 shadow-sm">
           <img 
             src={
-              selectedService === 'junk_removal' ? '/estimates (1).webp' :
-              selectedService === 'donation_pickup' ? '/opek-nav.webp' :
-              selectedService === 'moving_labor' ? '/opek2.webp' :
-              selectedService === 'dumpster_rental' ? '/dumpster-rental.png' :
-              '/estimates (1).webp'
+              selectedService === 'junk_removal' ? '/process-step-1.svg' :
+              selectedService === 'donation_pickup' ? '/opek-nav.svg' :
+              selectedService === 'moving_labor' ? '/process-step-2.svg' :
+              selectedService === 'dumpster_rental' ? '/dumpster-rental.svg' :
+              '/process-step-1.svg'
             } 
             alt="Service breakdown" 
             className="w-full h-full object-cover"
@@ -959,7 +960,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/estimates (1).webp" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
@@ -974,7 +975,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/opek-nav.webp" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
@@ -989,7 +990,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/opek2.webp" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
@@ -1004,7 +1005,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/dumpster-rental.png" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
@@ -1588,8 +1589,6 @@ export const QuotePage: React.FC = () => {
 
   // ── Dedicated Dumpster Rental Quote Form ──
   if (selectedOption === 'dumpster_rental') {
-    const dumpsterPrice = calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
-
     return (
       <div className="min-h-screen bg-white">
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1747,13 +1746,31 @@ export const QuotePage: React.FC = () => {
 
               <div className="pt-4">
                 <button
-                  onClick={() => setDumpsterStep('result')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  onClick={async () => {
+                    setPricingLoading(true);
+                    setError(null);
+                    try {
+                      const price = await calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
+                      setDumpsterPriceEstimate(price);
+                      setDumpsterStep('result');
+                    } catch (err: any) {
+                      console.error('Pricing error:', err);
+                      setError('Failed to calculate price. Please try again.');
+                    } finally {
+                      setPricingLoading(false);
+                    }
+                  }}
+                  disabled={pricingLoading}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
                   <span className="text-sm font-black uppercase tracking-wider">
-                    Get Estimate
+                    {pricingLoading ? 'Calculating...' : 'Get Estimate'}
                   </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  {pricingLoading ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  )}
                 </button>
                 <button
                   onClick={() => setDumpsterStep('size')}
@@ -1766,11 +1783,11 @@ export const QuotePage: React.FC = () => {
           )}
 
           {/* STEP 3: ESTIMATE RESULT */}
-          {dumpsterStep === 'result' && (
+          {dumpsterStep === 'result' && dumpsterPriceEstimate && (
             <div>
               {renderPriceResult(
                 [{ id: 'dumpster-rental', name: `${dumpsterSize} dumpster rental - ${dumpsterDuration} days`, quantity: 1 }],
-                dumpsterPrice,
+                dumpsterPriceEstimate,
                 () => setDumpsterStep('duration'),
                 "Back to duration"
               )}

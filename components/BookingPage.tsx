@@ -1004,23 +1004,27 @@ export const BookingPage: React.FC = () => {
 
                   <div className="pt-4">
                     <button
-                      onClick={() => {
-                        const dumpsterPrice = calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
-                        setEstimate({
-                          itemsDetected: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
-                          estimatedVolume: dumpsterPrice.estimatedVolume,
-                          price: dumpsterPrice.price,
-                          summary: dumpsterPrice.summary
-                        });
-                        setFormData(prev => ({
-                          ...prev,
-                          estimatedItems: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
-                          estimatedVolume: dumpsterPrice.estimatedVolume,
-                          price: dumpsterPrice.price,
-                          estimateSummary: dumpsterPrice.summary,
-                          details: `${dumpsterSize} dumpster rental for ${dumpsterDuration} days. ${dumpsterPrice.summary}`
-                        }));
-                        setDumpsterStep('result');
+                      onClick={async () => {
+                        try {
+                          const dumpsterPrice = await calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
+                          setEstimate({
+                            itemsDetected: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                            estimatedVolume: dumpsterPrice.estimatedVolume,
+                            price: dumpsterPrice.price,
+                            summary: dumpsterPrice.summary
+                          });
+                          setFormData(prev => ({
+                            ...prev,
+                            estimatedItems: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                            estimatedVolume: dumpsterPrice.estimatedVolume,
+                            price: dumpsterPrice.price,
+                            estimateSummary: dumpsterPrice.summary,
+                            details: `${dumpsterSize} dumpster rental for ${dumpsterDuration} days. ${dumpsterPrice.summary}`
+                          }));
+                          setDumpsterStep('result');
+                        } catch (err) {
+                          console.error('Failed to get dumpster price:', err);
+                        }
                       }}
                       className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                     >
@@ -1355,7 +1359,7 @@ export const BookingPage: React.FC = () => {
                   <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
                     {/* Related banner image */}
                     <div className="w-full h-40 rounded-xl overflow-hidden border border-secondary-100 shadow-sm mb-4">
-                      <img src="/opek2.webp" alt="Moving Labor" className="w-full h-full object-cover" />
+                      <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover" />
                     </div>
                     <div className="mb-4">
                       <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>

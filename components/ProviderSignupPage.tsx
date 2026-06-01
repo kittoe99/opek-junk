@@ -147,7 +147,7 @@ export const ProviderSignupPage: React.FC = () => {
         eyebrow="Provider Network"
         title={<>Grow your<br />hauling business.</>}
         subtitle="Join the Opek provider network. Pre-qualified leads, weekly payouts, and a platform built specifically for independent haulers like you."
-        image="/opek2.webp"
+        image="/process-step-2.svg"
         imageAlt="Opek independent provider loading a truck"
         imageCaption="Pre-qualified leads • Weekly payouts • Full control"
         primaryCta={{ label: 'Apply Now', onClick: () => { document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' }); } }}

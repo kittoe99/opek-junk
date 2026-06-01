@@ -22,7 +22,7 @@ export const PropertyCleanoutPage: React.FC = () => {
         eyebrow="Professional Service"
         title={<>Property<br />Cleanouts</>}
         subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — partner service providers handle the hard parts so you don't have to."
-        image="/estimates (1).webp"
+        image="/process-step-1.svg"
         imageAlt="Property cleanout team clearing a home"
         imageCaption="Discreet • Vetted Providers • Broom-Swept Finish"
         primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}

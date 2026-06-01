@@ -50,7 +50,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
 
   const processSteps = [
     {
-      image: '/estimates (1).webp',
+      image: '/process-step-1.svg',
       alt: 'Customer snapping a photo for an estimate',
       label: 'Step One',
       titleStart: 'Snap. Send.',
@@ -58,7 +58,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       desc: 'A quick photo is all that is needed. AI reads the volume, confirming the price — instantly.',
     },
     {
-      image: '/opek2.webp',
+      image: '/process-step-2.svg',
       alt: 'Upfront quote on-site',
       label: 'Step Two',
       titleStart: 'Lock in a',
@@ -66,7 +66,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       desc: `Matched provider arrives anywhere in ${city.metroArea}, confirms volume, and gives you a locked-in flat quote. No upcharges.`,
     },
     {
-      image: '/junk-removal.webp',
+      image: '/process-step-3.svg',
       alt: 'Professional junk removal provider team hauling items',
       label: 'Step Three',
       titleStart: 'Providers handle',
@@ -170,7 +170,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         <div className="lg:hidden flex flex-col">
           <div
             className="relative pt-32 pb-10 px-4"
-            style={{ backgroundImage: 'url(/junk-removal.webp)', backgroundSize: 'cover', backgroundPosition: 'center' } as React.CSSProperties}
+            style={{ backgroundImage: 'url(/hero-truck-loading.png)', backgroundSize: 'cover', backgroundPosition: 'center' } as React.CSSProperties}
           >
             <div className="absolute inset-0 bg-black/60" />
             <div className="relative z-10">
@@ -237,9 +237,9 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
               <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 group">
                   <img
-                    src="/junk-removal.webp"
+                    src="/hero-truck-loading.png"
                     alt={`Professional junk removal in ${city.name}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
                     <div className="flex items-center gap-3 text-white">

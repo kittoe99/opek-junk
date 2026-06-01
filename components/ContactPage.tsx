@@ -89,7 +89,7 @@ export const ContactPage: React.FC = () => {
         eyebrow="Contact"
         title={<>Get in <span className="text-brand">touch.</span></>}
         subtitle="Question, quote, or partnership — drop a line and an agent will respond within 30 minutes during business hours."
-        image="/junk-removal.webp"
+        image="/process-step-3.svg"
         imageAlt="Opek independent service provider ready to help"
         imageCaption="Real humans • Fast replies • Nationwide"
         primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}

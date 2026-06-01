@@ -48,7 +48,7 @@ export const JunkRemovalPage: React.FC = () => {
         eyebrow="Professional Service"
         title={<>Junk<br />Removal</>}
         subtitle="Residential & commercial clearing. Furniture, appliances, office decommissioning, and retail fixtures. Upfront pricing, same-day availability, and vetted local providers."
-        image="/junk-removal.webp"
+        image="/process-step-3.svg"
         imageAlt="Junk removal team loading a truck"
         imageCaption="Vetted Providers • Eco-Friendly • Same-Day Available"
         primaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}

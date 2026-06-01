@@ -110,7 +110,7 @@ export const InHomeEstimatePage: React.FC = () => {
         eyebrow="Free In-Home Estimate"
         title={<>Providers come<br />to <span className="text-brand">you.</span></>}
         subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
-        image="/estimates (1).webp"
+        image="/process-step-1.svg"
         imageAlt="In-home estimate visit"
         imageCaption="Free • No-Obligation • Quote on the Spot"
         primaryCta={{ label: 'Schedule Visit', onClick: () => { document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' }); } }}
