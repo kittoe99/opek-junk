@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
@@ -957,63 +957,47 @@ export const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedService('junk_removal')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
+              <Trash2 size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
+                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Junk Removal</h3>
+                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Service providers haul away your unwanted items</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
+              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
             </button>
             <button
               onClick={() => setSelectedService('donation_pickup')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
+              <HeartHandshake size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
+                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Donation Pick Up</h3>
+                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Service providers deliver gently used items to local charities</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
+              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
             </button>
             <button
               onClick={() => setSelectedService('moving_labor')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
+              <BicepsFlexed size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
+                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Moving Labor</h3>
+                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Hourly labor for heavy lifting</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
+              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
             </button>
             <button
               onClick={() => setSelectedService('dumpster_rental')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-secondary-300 transition-all p-4 rounded-xl text-left flex items-center gap-3.5 group"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-secondary-100 group-hover:border-brand transition-all">
-                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
+              <Container size={20} className="text-secondary-400 group-hover:text-brand shrink-0 transition-colors" />
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
+                <h3 className="text-sm font-semibold text-secondary group-hover:text-brand transition-colors">Dumpster Rental</h3>
+                <p className="text-secondary-400 text-xs mt-0.5 leading-normal">Roll-off container delivered to your site</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
+              <ArrowRight size={16} className="text-secondary-300 group-hover:text-brand transition-all group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>
@@ -1053,38 +1037,66 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
-          {/* Progress bar */}
+          {/* Progress Stepper */}
           {(() => {
-            const movingSteps = ['Details', 'Crew & Time', 'Estimate'];
+            const movingSteps = [
+              { label: 'Details', icon: ClipboardList },
+              { label: 'Crew & Time', icon: Users },
+              { label: 'Estimate', icon: Receipt }
+            ];
             const movingStepIndex = movingStep === 'details' ? 0 : movingStep === 'crew' ? 1 : 2;
             return (
-              <div className="mb-10">
-                <div className="flex items-center justify-between mb-2">
-                  {movingSteps.map((label, i) => (
-                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                      i < movingStepIndex ? 'text-brand' : i === movingStepIndex ? 'text-secondary' : 'text-secondary-300'
-                    }`}>
-                      {i < movingStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                    </span>
-                  ))}
-                </div>
-                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                  <div
-                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+              <div className="relative mb-14 px-1">
+                {/* Background Connecting Line */}
+                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
+                  {/* Active Connecting Line */}
+                  <div 
+                    className="h-full bg-brand transition-all duration-500 ease-out"
                     style={{ width: `${(movingStepIndex / (movingSteps.length - 1)) * 100}%` }}
                   />
                 </div>
-                <p className="text-[10px] text-secondary-400 mt-1.5">Step {movingStepIndex + 1} of {movingSteps.length}</p>
+                
+                {/* Steps Nodes */}
+                <div className="flex items-center justify-between relative">
+                  {movingSteps.map((step, i) => {
+                    const StepIcon = step.icon;
+                    const isCompleted = i < movingStepIndex;
+                    const isActive = i === movingStepIndex;
+                    
+                    return (
+                      <div key={step.label} className="relative flex flex-col items-center">
+                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                          isCompleted 
+                            ? 'bg-brand border-brand text-white shadow-sm' 
+                            : isActive 
+                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
+                              : 'bg-white border-secondary-200 text-secondary-300'
+                        }`}>
+                          {isCompleted ? (
+                            <Check size={14} strokeWidth={3} />
+                          ) : (
+                            <StepIcon size={14} />
+                          )}
+                        </div>
+                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
+                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
+                        }`}>
+                          {step.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}
 
           {/* STEP 1: DETAILS */}
           {movingStep === 'details' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               {/* Service Selection */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
                     { label: 'Loading Only', icon: PackagePlus },
@@ -1097,20 +1109,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={service.label}
                         onClick={() => setMovingServiceType(service.label as any)}
-                        className={`group p-3 sm:p-4 border rounded-xl sm:rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-3 transition-all w-full ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={18} className="sm:w-5 sm:h-5" />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
-                          {service.label}
-                        </span>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
+                        <div>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                            {service.label}
+                          </span>
+                        </div>
                       </button>
                     );
                   })}
@@ -1119,8 +1134,8 @@ export const QuotePage: React.FC = () => {
 
               {/* Move Type */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { label: 'Storage Unit', icon: Warehouse },
                     { label: 'Box Truck', icon: Truck },
@@ -1133,20 +1148,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={type.label}
                         onClick={() => setMovingType(type.label as any)}
-                        className={`group p-2.5 sm:p-4 border rounded-xl sm:rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-2.5 transition-all w-full ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={16} className="sm:w-5 sm:h-5" />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <span className={`text-xs sm:text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
-                          {type.label}
-                        </span>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
+                        <div>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                            {type.label}
+                          </span>
+                        </div>
                       </button>
                     );
                   })}
@@ -1156,16 +1174,13 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setMovingStep('crew')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    Continue
-                  </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  Continue <ArrowRight size={14} />
                 </button>
                 <button
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
                   <ArrowLeft size={14} /> Back to services
                 </button>
@@ -1175,80 +1190,72 @@ export const QuotePage: React.FC = () => {
 
           {/* STEP 2: CREW & TIME */}
           {movingStep === 'crew' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               {/* Helpers Selection */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setMovingHelpers(2)}
-                    className={`group p-3 md:p-5 border rounded-xl md:rounded-2xl flex flex-row md:flex-col items-center text-left md:text-center gap-3 transition-all w-full ${
-                      movingHelpers === 2 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
-                    }`}
-                  >
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                      movingHelpers === 2 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
-                    }`}>
-                      <div className="flex -space-x-1">
-                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
-                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
-                      </div>
-                    </div>
-                    <div className="flex-1 md:flex-initial">
-                      <span className={`block text-sm font-black transition-colors ${movingHelpers === 2 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>2 Helpers</span>
-                      <span className={`block text-[10px] mt-0.5 md:mt-1 font-bold ${movingHelpers === 2 ? 'text-brand/80' : 'text-secondary-400'}`}>$149 / hour</span>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => setMovingHelpers(3)}
-                    className={`group p-3 md:p-5 border rounded-xl md:rounded-2xl flex flex-row md:flex-col items-center text-left md:text-center gap-3 transition-all w-full ${
-                      movingHelpers === 3 ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
-                    }`}
-                  >
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                      movingHelpers === 3 ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
-                    }`}>
-                      <div className="flex -space-x-1">
-                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
-                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
-                        <BicepsFlexed size={16} className="md:w-5 md:h-5" />
-                      </div>
-                    </div>
-                    <div className="flex-1 md:flex-initial">
-                      <span className={`block text-sm font-black transition-colors ${movingHelpers === 3 ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>3 Helpers</span>
-                      <span className={`block text-[10px] mt-0.5 md:mt-1 font-bold ${movingHelpers === 3 ? 'text-brand/80' : 'text-secondary-400'}`}>$189 / hour</span>
-                    </div>
-                  </button>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { helpers: 2, price: '$149 / hour', icon: Users },
+                    { helpers: 3, price: '$189 / hour', icon: Users }
+                  ].map((option) => {
+                    const isSelected = movingHelpers === option.helpers;
+                    const Icon = option.icon;
+                    return (
+                      <button
+                        key={option.helpers}
+                        onClick={() => setMovingHelpers(option.helpers)}
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                          isSelected 
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
+                        }`}
+                      >
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                        }`}>
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
+                        <div>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                            {option.helpers} Helpers
+                          </span>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
+                            {option.price}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Hours Selection */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                <div className="flex items-center justify-between p-3 sm:p-4 bg-white border border-secondary-100 rounded-xl sm:rounded-2xl">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
+                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
-                      <Clock size={18} className="sm:w-5 sm:h-5" />
-                    </div>
+                    <Clock size={16} className="text-secondary-400" />
                     <div>
-                      <div className="text-sm font-black text-secondary">Time Needed</div>
-                      <div className="text-[10px] text-secondary-400 font-bold">{movingHours} hours selected</div>
+                      <div className="text-sm font-semibold text-secondary">Time Needed</div>
+                      <div className="text-[11px] text-secondary-400">{movingHours} hours selected</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
                     <button
                       onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                       disabled={movingHours <= 2}
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                     >
-                      <Minus size={16} />
+                      <Minus size={14} />
                     </button>
-                    <span className="w-6 sm:w-8 text-center text-lg sm:text-xl font-black text-brand">{movingHours}</span>
+                    <span className="w-6 text-center text-base font-bold text-brand">{movingHours}</span>
                     <button
                       onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                 </div>
@@ -1257,16 +1264,13 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setMovingStep('result')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    Get Estimate
-                  </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  Get Estimate <ArrowRight size={14} />
                 </button>
                 <button
                   onClick={() => setMovingStep('details')}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
                   <ArrowLeft size={14} /> Back to details
                 </button>
@@ -1333,39 +1337,67 @@ export const QuotePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
-          {/* Progress bar */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8 animate-in fade-in duration-300">
+          {/* Progress Stepper */}
           {(() => {
-            const donationSteps = ['Charity', 'Size & Location', 'Estimate'];
+            const donationSteps = [
+              { label: 'Charity', icon: HeartHandshake },
+              { label: 'Size & Location', icon: Package },
+              { label: 'Estimate', icon: Receipt }
+            ];
             const donationStepIndex = donationStep === 'details' ? 0 : donationStep === 'size' ? 1 : 2;
             return (
-              <div className="mb-10">
-                <div className="flex items-center justify-between mb-2">
-                  {donationSteps.map((label, i) => (
-                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                      i < donationStepIndex ? 'text-brand' : i === donationStepIndex ? 'text-secondary' : 'text-secondary-300'
-                    }`}>
-                      {i < donationStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                    </span>
-                  ))}
-                </div>
-                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                  <div
-                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+              <div className="relative mb-14 px-1">
+                {/* Background Connecting Line */}
+                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
+                  {/* Active Connecting Line */}
+                  <div 
+                    className="h-full bg-brand transition-all duration-500 ease-out"
                     style={{ width: `${(donationStepIndex / (donationSteps.length - 1)) * 100}%` }}
                   />
                 </div>
-                <p className="text-[10px] text-secondary-400 mt-1.5">Step {donationStepIndex + 1} of {donationSteps.length}</p>
+                
+                {/* Steps Nodes */}
+                <div className="flex items-center justify-between relative">
+                  {donationSteps.map((step, i) => {
+                    const StepIcon = step.icon;
+                    const isCompleted = i < donationStepIndex;
+                    const isActive = i === donationStepIndex;
+                    
+                    return (
+                      <div key={step.label} className="relative flex flex-col items-center">
+                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                          isCompleted 
+                            ? 'bg-brand border-brand text-white shadow-sm' 
+                            : isActive 
+                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
+                              : 'bg-white border-secondary-200 text-secondary-300'
+                        }`}>
+                          {isCompleted ? (
+                            <Check size={14} strokeWidth={3} />
+                          ) : (
+                            <StepIcon size={14} />
+                          )}
+                        </div>
+                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
+                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
+                        }`}>
+                          {step.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}
 
           {/* STEP 1: DETAILS */}
           {donationStep === 'details' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               {/* Charity Preference */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Preferred Charity Partner</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Preferred Charity Partner</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { label: 'No Preference', desc: 'First available partner charity', icon: HeartHandshake },
@@ -1379,22 +1411,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={charity.label}
                         onClick={() => setDonationCharity(charity.label as any)}
-                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={18} />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
                         <div>
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
                             {charity.label}
                           </span>
-                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
                             {charity.desc}
                           </span>
                         </div>
@@ -1406,7 +1439,7 @@ export const QuotePage: React.FC = () => {
 
               {/* Tax Receipt Needed */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Tax Donation Receipt</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Tax Donation Receipt</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { label: 'Receipt Requested', value: true, desc: 'A tax receipt from the charity will be emailed', icon: Receipt },
@@ -1418,22 +1451,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={option.label}
                         onClick={() => setDonationReceipt(option.value)}
-                        className={`group p-4 border rounded-2xl flex items-center gap-4 transition-all w-full text-left ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={18} />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
                         <div>
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
                             {option.label}
                           </span>
-                          <span className={`block text-[10px] mt-0.5 font-bold ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
                             {option.desc}
                           </span>
                         </div>
@@ -1446,16 +1480,13 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setDonationStep('size')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    Continue
-                  </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  Continue <ArrowRight size={14} />
                 </button>
                 <button
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
                   <ArrowLeft size={14} /> Back to services
                 </button>
@@ -1465,10 +1496,10 @@ export const QuotePage: React.FC = () => {
 
           {/* STEP 2: SIZE & LOCATION */}
           {donationStep === 'size' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               {/* Size estimation */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Size</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Size</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
                     { label: 'Bagged/Boxed Items', desc: 'Clothes, toys, small housewares', icon: Package },
@@ -1481,22 +1512,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={size.label}
                         onClick={() => setDonationSize(size.label as any)}
-                        className={`group p-4 border rounded-2xl flex flex-row sm:flex-col items-center text-left sm:text-center gap-4 sm:gap-3 transition-all w-full ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={18} />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
                         <div>
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
                             {size.label}
                           </span>
-                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
                             {size.desc}
                           </span>
                         </div>
@@ -1508,7 +1540,7 @@ export const QuotePage: React.FC = () => {
 
               {/* Access Location */}
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Donation Item Location</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Donation Item Location</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { label: 'Curbside/Outside', desc: 'Items are outside, ready on curb/driveway', icon: Truck },
@@ -1522,22 +1554,23 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={loc.label}
                         onClick={() => setDonationLocation(loc.label as any)}
-                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Icon size={18} />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
+                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
                         <div>
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
                             {loc.label}
                           </span>
-                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
                             {loc.desc}
                           </span>
                         </div>
@@ -1550,18 +1583,9 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setDonationStep('result')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    Get Estimate
-                  </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-                <button
-                  onClick={() => setDonationStep('details')}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                >
-                  <ArrowLeft size={14} /> Back to details
+                  Get Estimate <ArrowRight size={14} />
                 </button>
               </div>
             </div>
@@ -1616,37 +1640,65 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
-          {/* Progress bar */}
+          {/* Progress Stepper */}
           {(() => {
-            const dumpsterSteps = ['Size', 'Duration', 'Estimate'];
+            const dumpsterSteps = [
+              { label: 'Size', icon: Container },
+              { label: 'Duration', icon: CalendarCheck },
+              { label: 'Estimate', icon: Receipt }
+            ];
             const dumpsterStepIndex = dumpsterStep === 'size' ? 0 : dumpsterStep === 'duration' ? 1 : 2;
             return (
-              <div className="mb-10">
-                <div className="flex items-center justify-between mb-2">
-                  {dumpsterSteps.map((label, i) => (
-                    <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                      i < dumpsterStepIndex ? 'text-brand' : i === dumpsterStepIndex ? 'text-secondary' : 'text-secondary-300'
-                    }`}>
-                      {i < dumpsterStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                    </span>
-                  ))}
-                </div>
-                <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                  <div
-                    className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+              <div className="relative mb-14 px-1">
+                {/* Background Connecting Line */}
+                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
+                  {/* Active Connecting Line */}
+                  <div 
+                    className="h-full bg-brand transition-all duration-500 ease-out"
                     style={{ width: `${(dumpsterStepIndex / (dumpsterSteps.length - 1)) * 100}%` }}
                   />
                 </div>
-                <p className="text-[10px] text-secondary-400 mt-1.5">Step {dumpsterStepIndex + 1} of {dumpsterSteps.length}</p>
+                
+                {/* Steps Nodes */}
+                <div className="flex items-center justify-between relative">
+                  {dumpsterSteps.map((step, i) => {
+                    const StepIcon = step.icon;
+                    const isCompleted = i < dumpsterStepIndex;
+                    const isActive = i === dumpsterStepIndex;
+                    
+                    return (
+                      <div key={step.label} className="relative flex flex-col items-center">
+                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                          isCompleted 
+                            ? 'bg-brand border-brand text-white shadow-sm' 
+                            : isActive 
+                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
+                              : 'bg-white border-secondary-200 text-secondary-300'
+                        }`}>
+                          {isCompleted ? (
+                            <Check size={14} strokeWidth={3} />
+                          ) : (
+                            <StepIcon size={14} />
+                          )}
+                        </div>
+                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
+                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
+                        }`}>
+                          {step.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}
 
           {/* STEP 1: SIZE SELECTION */}
           {dumpsterStep === 'size' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Select Dumpster Size</label>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Select Dumpster Size</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { label: '10-Yard', desc: 'Small projects, garage cleanouts', price: '$350' },
@@ -1659,25 +1711,26 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={size.label}
                         onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
-                        className={`group p-4 border rounded-2xl flex items-start gap-4 transition-all w-full text-left ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 shadow-md shadow-brand/10 scale-[1.01]' 
-                            : 'border-secondary-100 bg-white hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'
+                            ? 'border-brand bg-white' 
+                            : 'border-secondary-100 bg-white hover:border-secondary-300'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary group-hover:bg-brand/10 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
                         }`}>
-                          <Container size={18} />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
+                        <Container size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
                         <div>
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                          <span className="block text-sm font-semibold text-secondary transition-colors">
                             {size.label}
                           </span>
-                          <span className={`block text-[10px] mt-0.5 font-bold leading-normal ${isSelected ? 'text-brand/80' : 'text-secondary-400'}`}>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
                             {size.desc}
                           </span>
-                          <span className={`block text-xs mt-1 font-bold ${isSelected ? 'text-brand' : 'text-secondary-400'}`}>
+                          <span className="block text-xs mt-1.5 font-semibold text-brand">
                             {size.price} / 7 days
                           </span>
                         </div>
@@ -1690,16 +1743,13 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setDumpsterStep('duration')}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    Continue
-                  </span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  Continue <ArrowRight size={14} />
                 </button>
                 <button
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
                   <ArrowLeft size={14} /> Back to services
                 </button>
@@ -1709,33 +1759,31 @@ export const QuotePage: React.FC = () => {
 
           {/* STEP 2: DURATION SELECTION */}
           {dumpsterStep === 'duration' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-in fade-in duration-300">
               <div>
-                <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
-                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
+                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
-                      <Clock size={18} />
-                    </div>
+                    <Clock size={16} className="text-secondary-400" />
                     <div>
-                      <div className="text-sm font-black text-secondary">Rental Period</div>
-                      <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
+                      <div className="text-sm font-semibold text-secondary">Rental Period</div>
+                      <div className="text-[11px] text-secondary-400">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                  <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
                     <button
                       onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                       disabled={dumpsterDuration <= 1}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                     >
-                      <Minus size={16} />
+                      <Minus size={14} />
                     </button>
-                    <span className="w-8 text-center text-lg font-black text-brand">{dumpsterDuration}</span>
+                    <span className="w-6 text-center text-base font-bold text-brand">{dumpsterDuration}</span>
                     <button
                       onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                 </div>
@@ -1761,20 +1809,18 @@ export const QuotePage: React.FC = () => {
                     }
                   }}
                   disabled={pricingLoading}
-                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider disabled:opacity-50"
                 >
-                  <span className="text-sm font-black uppercase tracking-wider">
-                    {pricingLoading ? 'Calculating...' : 'Get Estimate'}
-                  </span>
+                  {pricingLoading ? 'Calculating...' : 'Get Estimate'}
                   {pricingLoading ? (
-                    <Loader2 size={16} className="animate-spin" />
+                    <Loader2 size={14} className="animate-spin" />
                   ) : (
-                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight size={14} />
                   )}
                 </button>
                 <button
                   onClick={() => setDumpsterStep('size')}
-                  className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
                   <ArrowLeft size={14} /> Back to size
                 </button>
@@ -2153,28 +2199,56 @@ export const QuotePage: React.FC = () => {
           {/* ===== ITEM SELECTION CONTENT ===== */}
           {selectedOption === 'manual' && (
             <div>
-              {/* Progress bar */}
+              {/* Progress Stepper */}
               {(() => {
-                const manualSteps = ['Select Items', 'Review', 'Estimate'];
+                const manualSteps = [
+                  { label: 'Select Items', icon: ClipboardList },
+                  { label: 'Review', icon: Eye },
+                  { label: 'Estimate', icon: Receipt }
+                ];
                 const manualStepIndex = manualStep === 'select' ? 0 : manualStep === 'review' ? 1 : 2;
                 return (
-                  <div className="mb-10">
-                    <div className="flex items-center justify-between mb-2">
-                      {manualSteps.map((label, i) => (
-                        <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                          i < manualStepIndex ? 'text-brand' : i === manualStepIndex ? 'text-secondary' : 'text-secondary-300'
-                        }`}>
-                          {i < manualStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                      <div
-                        className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
+                  <div className="relative mb-14 px-1">
+                    {/* Background Connecting Line */}
+                    <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
+                      {/* Active Connecting Line */}
+                      <div 
+                        className="h-full bg-brand transition-all duration-500 ease-out"
                         style={{ width: `${(manualStepIndex / (manualSteps.length - 1)) * 100}%` }}
                       />
                     </div>
-                    <p className="text-[10px] text-secondary-400 mt-1.5">Step {manualStepIndex + 1} of {manualSteps.length}</p>
+                    
+                    {/* Steps Nodes */}
+                    <div className="flex items-center justify-between relative">
+                      {manualSteps.map((step, i) => {
+                        const StepIcon = step.icon;
+                        const isCompleted = i < manualStepIndex;
+                        const isActive = i === manualStepIndex;
+                        
+                        return (
+                          <div key={step.label} className="relative flex flex-col items-center">
+                            <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                              isCompleted 
+                                ? 'bg-brand border-brand text-white shadow-sm' 
+                                : isActive 
+                                  ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
+                                  : 'bg-white border-secondary-200 text-secondary-300'
+                            }`}>
+                              {isCompleted ? (
+                                <Check size={14} strokeWidth={3} />
+                              ) : (
+                                <StepIcon size={14} />
+                              )}
+                            </div>
+                            <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
+                              isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
+                            }`}>
+                              {step.label}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 );
               })()}

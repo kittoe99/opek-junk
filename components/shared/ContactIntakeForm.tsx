@@ -58,12 +58,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
   };
 
   return (
-    <div className="bg-white border border-secondary-100 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-all duration-300">
-      {/* Visual Ambient Glow */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
-
-      <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+    <div className="w-full transition-all duration-300">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <input type="hidden" name="serviceType" value={serviceType} />
 
         <div className="text-center space-y-2 mb-6">

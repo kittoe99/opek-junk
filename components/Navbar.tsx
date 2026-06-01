@@ -11,37 +11,108 @@ export const Navbar: React.FC = () => {
   const [userCity, setUserCity] = useState<string>('');
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
 
+  const US_STATES_MAP: Record<string, string> = {
+    'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA',
+    'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE', 'florida': 'FL', 'georgia': 'GA',
+    'hawaii': 'HI', 'idaho': 'ID', 'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA',
+    'kansas': 'KS', 'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD',
+    'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS', 'missouri': 'MO',
+    'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
+    'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH',
+    'oklahoma': 'OK', 'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
+    'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT', 'vermont': 'VT',
+    'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV', 'wisconsin': 'WI', 'wyoming': 'WY',
+    'district of columbia': 'DC'
+  };
+
+  const getUSStateAbbreviation = (stateName: string): string => {
+    const clean = stateName.toLowerCase().trim();
+    return US_STATES_MAP[clean] || stateName;
+  };
+
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // ipwho.is: free, HTTPS, CORS-enabled, no API key
-      const res = await fetch('https://ipwho.is/');
-      const data = await res.json();
-      if (data.success && data.city) {
-        const loc = data.country_code === 'US'
-          ? `${data.city}, ${data.region_code}`
-          : `${data.city}, ${data.country_code}`;
-        setUserCity(loc);
-        return;
+      // 1. Try Browser Geolocation API first
+      if (!navigator.geolocation) {
+        throw new Error('Geolocation not supported by browser');
       }
-      throw new Error('ipwho.is failed');
-    } catch {
-      try {
-        // Fallback: ipapi.co
-        const res2 = await fetch('https://ipapi.co/json/');
-        const data2 = await res2.json();
-        if (data2.city) {
-          const loc = data2.country_code === 'US'
-            ? `${data2.city}, ${data2.region_code}`
-            : `${data2.city}, ${data2.country_code}`;
+
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: false,
+          timeout: 6000,
+          maximumAge: 600000 // Cache for 10 minutes
+        });
+      });
+
+      const { latitude, longitude } = position.coords;
+      const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+      if (!geoRes.ok) {
+        throw new Error('Reverse geocoding failed');
+      }
+
+      const geoData = await geoRes.json();
+      const address = geoData.address;
+      if (address) {
+        const city = address.city || address.town || address.village || address.hamlet || '';
+        const state = address.state || '';
+        const countryCode = address.country_code ? address.country_code.toUpperCase() : '';
+
+        if (city) {
+          const displayState = countryCode === 'US' ? getUSStateAbbreviation(state) : state;
+          const loc = countryCode === 'US'
+            ? `${city}, ${displayState}`
+            : `${city}, ${countryCode}`;
+
           setUserCity(loc);
+          localStorage.setItem('user_city', loc);
+          setIsDetectingLocation(false);
           return;
         }
-      } catch {}
-      // Final fallback so the bar still shows
-      setUserCity('United States');
-    } finally {
-      setIsDetectingLocation(false);
+      }
+      throw new Error('Could not parse city from geocoding data');
+    } catch (err: any) {
+      console.warn('Geolocation failed or denied, checking cache...', err.message);
+
+      // 2. Check localStorage
+      const storedCity = localStorage.getItem('user_city');
+      if (storedCity) {
+        setUserCity(storedCity);
+        setIsDetectingLocation(false);
+        return;
+      }
+
+      // 3. Fall back to IP Address Detection
+      try {
+        const res = await fetch('https://ipwho.is/');
+        const data = await res.json();
+        if (data.success && data.city) {
+          const loc = data.country_code === 'US'
+            ? `${data.city}, ${data.region_code}`
+            : `${data.city}, ${data.country_code}`;
+          setUserCity(loc);
+          localStorage.setItem('user_city', loc);
+          return;
+        }
+        throw new Error('ipwho.is failed');
+      } catch {
+        try {
+          const res2 = await fetch('https://ipapi.co/json/');
+          const data2 = await res2.json();
+          if (data2.city) {
+            const loc = data2.country_code === 'US'
+              ? `${data2.city}, ${data2.region_code}`
+              : `${data2.city}, ${data2.country_code}`;
+            setUserCity(loc);
+            localStorage.setItem('user_city', loc);
+            return;
+          }
+        } catch {}
+        setUserCity('United States');
+      } finally {
+        setIsDetectingLocation(false);
+      }
     }
   };
 
