@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowRight, Send, Check, Calendar, Clock, MapPin, Eye, Shield, BadgeCheck } from 'lucide-react';
+import { Home, ArrowRight, ArrowLeft, Send, Check, Calendar, Clock, MapPin, Eye, Shield, BadgeCheck, Loader2, MapPinned, User, ClipboardList, Receipt } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
 
+interface AddressSuggestion {
+  display: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,7 +31,16 @@ export const InHomeEstimatePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [countdown, setCountdown] = useState(5);
 
-  React.useEffect(() => {
+  // Address autocomplete state
+  const [addressQuery, setAddressQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
+  const addressDropdownRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-redirect effect on submit success
+  useEffect(() => {
     if (!submitted) return;
     const interval = setInterval(() => {
       setCountdown(prev => {
@@ -36,6 +54,65 @@ export const InHomeEstimatePage: React.FC = () => {
     return () => clearInterval(interval);
   }, [submitted, navigate]);
 
+  // Close address suggestions on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (addressDropdownRef.current && !addressDropdownRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const fetchAddressSuggestions = useCallback(async (query: string) => {
+    if (query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
+    setAddressLoading(true);
+    try {
+      const res = await fetch(
+        `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=en&lat=39.7392&lon=-104.9903&osm_tag=place:house&osm_tag=building`
+      );
+      const data = await res.json();
+      const results: AddressSuggestion[] = (data.features || [])
+        .filter((f: any) => f.properties?.street || f.properties?.name)
+        .map((f: any) => {
+          const p = f.properties;
+          const street = p.housenumber
+            ? `${p.housenumber} ${p.street || p.name || ''}`
+            : (p.street || p.name || '');
+          const city = p.city || p.town || p.village || p.county || '';
+          const state = p.state || '';
+          const zipCode = p.postcode || '';
+          const display = [street, city, state, zipCode].filter(Boolean).join(', ');
+          return { display, street: street.trim(), city, state, zipCode };
+        })
+        .filter((s: AddressSuggestion) => s.street);
+      setSuggestions(results);
+      setShowSuggestions(results.length > 0);
+    } catch {
+      setSuggestions([]);
+    } finally {
+      setAddressLoading(false);
+    }
+  }, []);
+
+  const handleAddressInput = (value: string) => {
+    setAddressQuery(value);
+    setFormData(prev => ({ ...prev, address: value }));
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => fetchAddressSuggestions(value), 300);
+  };
+
+  const selectSuggestion = (suggestion: AddressSuggestion) => {
+    setAddressQuery(suggestion.display);
+    setFormData(prev => ({ ...prev, address: suggestion.display }));
+    setShowSuggestions(false);
+    setSuggestions([]);
+  };
+
   const timeOptions = [
     'Morning (8am - 12pm)',
     'Afternoon (12pm - 4pm)',
@@ -46,6 +123,24 @@ export const InHomeEstimatePage: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAppointmentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(3);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackStep = () => {
+    if (step === 3) setStep(2);
+    else if (step === 2) setStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,6 +219,12 @@ export const InHomeEstimatePage: React.FC = () => {
     { icon: Shield, title: 'Same-day quote', desc: 'Get a written, locked-in price on the spot before the provider leaves.' },
   ];
 
+  const slicedSteps = [
+    { label: 'Contact', icon: User },
+    { label: 'Appointment', icon: MapPin },
+    { label: 'Review', icon: ClipboardList }
+  ];
+  const stepIndex = step - 1;
 
   return (
     <div className="bg-white">
@@ -172,9 +273,7 @@ export const InHomeEstimatePage: React.FC = () => {
         </div>
       </section>
 
-
-
-      {/* Form */}
+      {/* Form Section */}
       <section id="schedule" className="py-16 md:py-24 bg-white scroll-mt-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
@@ -190,7 +289,53 @@ export const InHomeEstimatePage: React.FC = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 md:border md:border-secondary-100 md:rounded-2xl md:p-8">
+          {/* Steps Progress Nodes */}
+          <div className="relative mb-14 px-1 max-w-md mx-auto">
+            {/* Background Connecting Line */}
+            <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
+              {/* Active Connecting Line */}
+              <div 
+                className="h-full bg-brand transition-all duration-500 ease-out"
+                style={{ width: `${(stepIndex / (slicedSteps.length - 1)) * 100}%` }}
+              />
+            </div>
+            
+            {/* Steps Nodes */}
+            <div className="flex items-center justify-between relative">
+              {slicedSteps.map((stepItem, i) => {
+                const StepIcon = stepItem.icon;
+                const isCompleted = i < stepIndex;
+                const isActive = i === stepIndex;
+                
+                return (
+                  <div key={stepItem.label} className="relative flex flex-col items-center">
+                    <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                      isCompleted 
+                        ? 'bg-brand border-brand text-white shadow-sm' 
+                        : isActive 
+                          ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
+                          : 'bg-white border-secondary-200 text-secondary-300'
+                    }`}>
+                      {isCompleted ? (
+                        <Check size={14} strokeWidth={3} />
+                      ) : (
+                        <StepIcon size={14} />
+                      )}
+                    </div>
+                    <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
+                      isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
+                    }`}>
+                      {stepItem.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 1: Contact Details */}
+          {step === 1 && (
+            <form onSubmit={handleContactSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
@@ -204,28 +349,74 @@ export const InHomeEstimatePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><MapPin size={10} className="inline mr-1" />Address *</label>
-                  <input type="text" name="address" value={formData.address} onChange={handleInputChange} required placeholder="123 Main St, City, State ZIP"
-                    className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
-                </div>
+              <div>
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
+                <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
+              </div>
+
+              <div className="flex pt-4">
+                <button type="submit"
+                  className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  Continue <ArrowRight size={14} />
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Step 2: Appointment Details */}
+          {step === 2 && (
+            <form onSubmit={handleAppointmentSubmit} className="space-y-4">
+              <div ref={addressDropdownRef} className="relative">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
+                  <MapPinned size={11} className="inline mr-1" />
+                  Address *
+                </label>
+                <input
+                  value={addressQuery || formData.address}
+                  onChange={(e) => handleAddressInput(e.target.value)}
+                  onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                  required
+                  placeholder="Start typing an address..."
+                  autoComplete="off"
+                  className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+                {addressLoading && (
+                  <Loader2 size={14} className="absolute right-3 top-[38px] animate-spin text-secondary-300" />
+                )}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {suggestions.map((s, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => selectSuggestion(s)}
+                        className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
+                      >
+                        <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
+                        <span>{s.display}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><Calendar size={10} className="inline mr-1" />Preferred Date</label>
-                  <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange}
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
+                    <Calendar size={10} className="inline mr-1" />
+                    Preferred Date *
+                  </label>
+                  <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange} required
+                    min={new Date().toISOString().split('T')[0]}
                     className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><Clock size={10} className="inline mr-1" />Preferred Time</label>
-                  <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange}
+                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
+                    <Clock size={10} className="inline mr-1" />
+                    Preferred Time *
+                  </label>
+                  <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} required
                     className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors">
                     <option value="">Select a time preference</option>
                     {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
@@ -233,11 +424,43 @@ export const InHomeEstimatePage: React.FC = () => {
                 </div>
               </div>
 
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={handleBackStep}
+                  className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button type="submit"
+                  className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                  Continue <ArrowRight size={14} />
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Step 3: Message & Review */}
+          {step === 3 && (
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
                 <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
                   placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
                   className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none" />
+              </div>
+
+              {/* Review Section */}
+              <div className="border border-secondary-100 bg-secondary-50/50 p-4 rounded-xl">
+                <div className="flex items-center gap-2 mb-3">
+                  <Receipt size={14} className="text-brand" strokeWidth={2.5} />
+                  <h3 className="text-[10px] font-bold text-secondary uppercase tracking-wider">Review Request</h3>
+                </div>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Name</span><span className="font-bold text-secondary text-right">{formData.name}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Phone</span><span className="font-bold text-secondary text-right">{formData.phone}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Email</span><span className="font-bold text-secondary text-right">{formData.email}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Address</span><span className="font-bold text-secondary text-right max-w-[60%] truncate">{formData.address}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Preferred Date</span><span className="font-bold text-secondary text-right">{formData.preferredDate}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-secondary-400">Preferred Time</span><span className="font-bold text-secondary text-right">{formData.preferredTime}</span></div>
+                </div>
               </div>
 
               {error && (
@@ -246,15 +469,23 @@ export const InHomeEstimatePage: React.FC = () => {
                 </div>
               )}
 
-              <button type="submit" disabled={submitting}
-                className="group w-full py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg">
-                {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
-              </button>
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={handleBackStep} disabled={submitting}
+                  className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button type="submit" disabled={submitting}
+                  className="group flex-1 py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg">
+                  {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
+                </button>
+              </div>
 
               <p className="text-[10px] text-secondary-400 text-center">
                 No obligation. The appointment will be confirmed within 24 hours.
               </p>
             </form>
+          )}
+
         </div>
       </section>
 
