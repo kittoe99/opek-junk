@@ -170,7 +170,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         <div className="lg:hidden flex flex-col">
           <div
             className="relative pt-32 pb-10 px-4"
-            style={{ backgroundImage: 'url(/hero-truck-loading.png)', backgroundSize: 'cover', backgroundPosition: 'center' } as React.CSSProperties}
+            style={{ backgroundImage: 'url(/opek2.webp)', backgroundSize: 'cover', backgroundPosition: 'center' } as React.CSSProperties}
           >
             <div className="absolute inset-0 bg-black/60" />
             <div className="relative z-10">
@@ -237,9 +237,9 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
               <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <div className="relative aspect-[4/5] group">
                   <img
-                    src="/hero-truck-loading.png"
+                    src="/opek2.webp"
                     alt={`Professional junk removal in ${city.name}`}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover rounded-2xl shadow-lg border border-secondary-100 group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
                     <div className="flex items-center gap-3 text-white">

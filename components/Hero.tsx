@@ -16,7 +16,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         <div
           className="relative pt-32 pb-10 px-4"
           style={{
-            backgroundImage: 'url(/hero-truck-loading.png)',
+            backgroundImage: 'url(/opek2.webp)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           } as React.CSSProperties}
@@ -94,9 +94,9 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
             <div className="col-span-5 animate-fade-in" style={{animationDelay: '0.4s'}}>
               <div className="relative aspect-square flex items-center justify-center group">
                 <img
-                  src="/hero-truck-loading.png"
-                  alt="Movers loading furniture into a box truck"
-                  className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-700"
+                  src="/opek2.webp"
+                  alt="Opek professional junk removal service in action"
+                  className="w-full h-full object-cover rounded-2xl shadow-lg border border-secondary-100 group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
             </div>
