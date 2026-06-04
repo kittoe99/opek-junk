@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
           } as React.CSSProperties}
         >
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/80" />
+          <div className="absolute inset-0 bg-black/50" />
 
           <div className="relative z-10">
             <div className="mb-3 animate-fade-in">
