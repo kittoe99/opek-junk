@@ -3,6 +3,7 @@ import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receip
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { BookingSuccessView } from './shared/BookingSuccessView';
 
 interface AddressSuggestion {
   display: string;
@@ -280,47 +281,23 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   // ── Success screen ──
   if (submitted) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
-        <div className="relative mx-auto mb-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
-            <PackageCheck size={32} className="text-brand" strokeWidth={2} />
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
-            <Check size={16} className="text-white" strokeWidth={3} />
-          </div>
-        </div>
-
-        <div className="space-y-2 mb-6">
-          <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Booking Confirmed</p>
-          <h2 className="text-2xl md:text-3xl font-black text-secondary">You're All Set!</h2>
-          <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-            A matched provider will contact you within 15 minutes to confirm your appointment.
-          </p>
-        </div>
-
-        {orderNumber && (
-          <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-100">
-            <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-1">Order Number</p>
-            <p className="text-xl font-mono font-black text-secondary tracking-wider">{orderNumber}</p>
-            <p className="text-[11px] text-secondary-400 mt-1">Save this to track your order</p>
-          </div>
-        )}
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={() => navigate('/track-order')}
-            className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
-          >
-            Track Order <ArrowRight size={14} />
-          </button>
-          <button
-            onClick={() => navigate('/')}
-            className="flex-1 py-3.5 border border-secondary-200 text-secondary font-bold uppercase text-xs tracking-wider rounded-xl hover:border-brand hover:text-brand transition-all duration-300"
-          >
-            Return Home
-          </button>
-        </div>
-      </div>
+      <BookingSuccessView
+        orderNumber={orderNumber}
+        serviceType={serviceType}
+        name={formData.name}
+        phone={formData.phone}
+        email={formData.email}
+        address={formData.address}
+        unitNumber={formData.unitNumber}
+        city={formData.city}
+        state={formData.state}
+        zipCode={formData.zipCode}
+        date={formData.date}
+        details={formData.details}
+        price={estimate?.price}
+        itemsDetected={estimate?.itemsDetected}
+        estimatedVolume={estimate?.estimatedVolume}
+      />
     );
   }
 

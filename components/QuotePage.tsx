@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed , Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
@@ -1233,10 +1233,10 @@ export const QuotePage: React.FC = () => {
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
+                  {([
                     { helpers: 2, price: '$149 / hour', icon: Users },
                     { helpers: 3, price: '$189 / hour', icon: Users }
-                  ].map((option) => {
+                  ] as const).map((option) => {
                     const isSelected = movingHelpers === option.helpers;
                     const Icon = option.icon;
                     return (
