@@ -2,3 +2,6 @@ project_id = "mjgwoukwyqwoectxfwqv"
 
 [functions.calculate-price]
 verify_jwt = false
+
+[functions.detect-items]
+verify_jwt = false

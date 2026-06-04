@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
-import { supabase } from '../lib/supabase';
+import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
@@ -389,7 +389,27 @@ export const BookingPage: React.FC = () => {
         .single();
 
       if (insertError) throw insertError;
+      
+      const finalOrderNumber = insertedData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
       if (insertedData?.order_number) setOrderNumber(insertedData.order_number);
+
+      // Trigger booking confirmation email
+      sendConfirmationEmail('booking', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        unit_number: formData.unitNumber || null,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        service_type: formData.serviceType,
+        preferred_date: formData.date,
+        details: formData.details,
+        price: formData.price || null,
+        order_number: finalOrderNumber
+      }).catch(err => console.warn('Failed to send booking confirmation email:', err));
+
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting booking:', err);

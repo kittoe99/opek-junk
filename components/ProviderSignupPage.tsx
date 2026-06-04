@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, DollarSign, Calendar, Truck, Smartphone, UserCheck } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
@@ -71,10 +71,11 @@ export const ProviderSignupPage: React.FC = () => {
     setError(null);
 
     try {
+      const providerName = `${formData.firstName} ${formData.lastName}`;
       const { error: insertError } = await supabase
         .from('provider_signups')
         .insert([{
-          name: `${formData.firstName} ${formData.lastName}`,
+          name: providerName,
           email: formData.email,
           phone: formData.phone,
           service_area: formData.serviceArea,
@@ -89,6 +90,15 @@ export const ProviderSignupPage: React.FC = () => {
 
       if (insertError) throw insertError;
 
+      // Trigger confirmation email
+      sendConfirmationEmail('provider_signup', {
+        name: providerName,
+        email: formData.email,
+        phone: formData.phone,
+        service_area: formData.serviceArea,
+        vehicle_type: formData.vehicleType
+      }).catch(err => console.warn('Failed to send provider signup confirmation email:', err));
+
       setSubmitted(true);
       setTimeout(() => { navigate('/'); }, 3000);
     } catch (err: any) {
@@ -97,6 +107,7 @@ export const ProviderSignupPage: React.FC = () => {
       setSubmitting(false);
     }
   };
+
 
   const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors";
 

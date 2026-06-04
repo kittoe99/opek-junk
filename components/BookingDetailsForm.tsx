@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, User, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
-import { supabase } from '../lib/supabase';
+import { supabase, sendConfirmationEmail } from '../lib/supabase';
 
 interface AddressSuggestion {
   display: string;
@@ -179,41 +179,15 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
         : formData.details;
 
-      let resultData = null;
-      let dbError = null;
-
-      try {
-        let query;
-        if (partialBookingId && !partialBookingId.startsWith('mock-')) {
-          query = supabase
-            .from('bookings')
-            .update({
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-              address: formData.address,
-              unit_number: formData.unitNumber || null,
-              city: formData.city,
-              state: formData.state,
-              zip_code: formData.zipCode,
-              service_type: serviceType,
-              preferred_date: formData.date,
-              details: detailsText,
-              estimated_items: estimate?.itemsDetected || [],
-              estimated_volume: estimate?.estimatedVolume || '',
-              price: estimate?.price || 0,
-              estimate_summary: estimate?.summary || '',
-              photo_url: image || '',
-              status: 'pending'
-            })
-            .eq('id', partialBookingId)
-            .select('order_number')
-            .single();
-        } else {
-          query = supabase
-            .from('bookings')
-            .insert([
-              {
+        let resultData = null;
+        let dbError = null;
+  
+        try {
+          let query;
+          if (partialBookingId && !partialBookingId.startsWith('mock-')) {
+            query = supabase
+              .from('bookings')
+              .update({
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
@@ -231,32 +205,77 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 estimate_summary: estimate?.summary || '',
                 photo_url: image || '',
                 status: 'pending'
-              }
-            ])
-            .select('order_number')
-            .single();
+              })
+              .eq('id', partialBookingId)
+              .select('order_number')
+              .single();
+          } else {
+            query = supabase
+              .from('bookings')
+              .insert([
+                {
+                  name: formData.name,
+                  email: formData.email,
+                  phone: formData.phone,
+                  address: formData.address,
+                  unit_number: formData.unitNumber || null,
+                  city: formData.city,
+                  state: formData.state,
+                  zip_code: formData.zipCode,
+                  service_type: serviceType,
+                  preferred_date: formData.date,
+                  details: detailsText,
+                  estimated_items: estimate?.itemsDetected || [],
+                  estimated_volume: estimate?.estimatedVolume || '',
+                  price: estimate?.price || 0,
+                  estimate_summary: estimate?.summary || '',
+                  photo_url: image || '',
+                  status: 'pending'
+                }
+              ])
+              .select('order_number')
+              .single();
+          }
+  
+          const res = await query;
+          resultData = res.data;
+          dbError = res.error;
+        } catch (err) {
+          console.warn('Supabase insert/update failed, falling back to mock submission:', err);
         }
+  
+        if (dbError) {
+          console.warn('Supabase returned error, falling back to mock submission:', dbError);
+        }
+  
+        const finalOrderNumber = resultData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        
+        // Trigger booking confirmation email
+        sendConfirmationEmail('booking', {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          unit_number: formData.unitNumber || null,
+          city: formData.city,
+          state: formData.state,
+          zip_code: formData.zipCode,
+          service_type: serviceType,
+          preferred_date: formData.date,
+          details: detailsText,
+          price: estimate?.price || null,
+          order_number: finalOrderNumber
+        }).catch(err => console.warn('Failed to send booking confirmation email:', err));
 
-        const res = await query;
-        resultData = res.data;
-        dbError = res.error;
-      } catch (err) {
-        console.warn('Supabase insert/update failed, falling back to mock submission:', err);
+        setOrderNumber(finalOrderNumber);
+        setSubmitted(true);
+      } catch (err: any) {
+        console.error('Error submitting booking:', err);
+        setError(err.message || 'Failed to submit booking. Please try again.');
+        setSubmitting(false);
       }
+    };
 
-      if (dbError) {
-        console.warn('Supabase returned error, falling back to mock submission:', dbError);
-      }
-
-      const finalOrderNumber = resultData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-      setOrderNumber(finalOrderNumber);
-      setSubmitted(true);
-    } catch (err: any) {
-      console.error('Error submitting booking:', err);
-      setError(err.message || 'Failed to submit booking. Please try again.');
-      setSubmitting(false);
-    }
-  };
 
   // ── Success screen ──
   if (submitted) {

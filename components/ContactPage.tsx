@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Send, Check, Phone, Mail } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 
 export const ContactPage: React.FC = () => {
@@ -28,16 +28,25 @@ export const ContactPage: React.FC = () => {
     setError(null);
 
     try {
+      const messageText = `${formData.subject}: ${formData.message}`;
       const { error: insertError } = await supabase
         .from('contacts')
         .insert([{
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          message: `${formData.subject}: ${formData.message}`
+          message: messageText
         }]);
 
       if (insertError) throw insertError;
+
+      // Trigger confirmation email
+      sendConfirmationEmail('contact', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: messageText
+      }).catch(err => console.warn('Failed to send contact confirmation email:', err));
 
       setSubmitted(true);
       setTimeout(() => { navigate('/'); }, 3000);
@@ -47,6 +56,7 @@ export const ContactPage: React.FC = () => {
       setSubmitting(false);
     }
   };
+
 
   if (submitted) {
     return (
