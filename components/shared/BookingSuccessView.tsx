@@ -38,6 +38,20 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
   estimatedVolume
 }) => {
   const navigate = useNavigate();
+  const [countdown, setCountdown] = React.useState(5);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          navigate('/');
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [navigate]);
 
   const formattedDate = React.useMemo(() => {
     if (!date) return 'TBD';
@@ -224,20 +238,18 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
           )}
         </div>
 
-        {/* 3. Bottom Navigational Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-2">
-          <button
-            onClick={() => navigate('/track-order')}
-            className="flex-1 py-3.5 border border-secondary-200 hover:border-secondary text-secondary font-bold uppercase text-xs tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-2 shadow-sm bg-white"
-          >
-            Track Order <ArrowRight size={14} />
-          </button>
-          <button
-            onClick={() => navigate('/')}
-            className="flex-1 py-3.5 bg-secondary hover:bg-brand text-white font-bold uppercase text-xs tracking-wider rounded-xl transition-all shadow-md"
-          >
-            Return Home
-          </button>
+        {/* Redirect Notice countdown bar */}
+        <div className="pt-4 border-t border-secondary-100 flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2 text-xs text-secondary-400 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-brand animate-ping" />
+            Redirecting to home page in <span className="text-brand font-black">{countdown}</span> seconds...
+          </div>
+          <div className="w-full h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-brand transition-all duration-1000 ease-linear"
+              style={{ width: `${(countdown / 5) * 100}%` }}
+            />
+          </div>
         </div>
 
       </div>

@@ -20,6 +20,21 @@ export const InHomeEstimatePage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(5);
+
+  React.useEffect(() => {
+    if (!submitted) return;
+    const interval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          navigate('/');
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [submitted, navigate]);
 
   const timeOptions = [
     'Morning (8am - 12pm)',
@@ -54,7 +69,6 @@ export const InHomeEstimatePage: React.FC = () => {
       if (insertError) throw insertError;
 
       setSubmitted(true);
-      setTimeout(() => { navigate('/'); }, 4000);
     } catch (err: any) {
       console.error('Error submitting in-home estimate form:', err);
       setError(err.message || 'Failed to submit request. Please try again.');
@@ -85,12 +99,19 @@ export const InHomeEstimatePage: React.FC = () => {
               </p>
             </div>
 
-            <button
-              onClick={() => navigate('/')}
-              className="w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
-            >
-              Return Home <ArrowRight size={14} />
-            </button>
+            {/* Redirect Notice countdown bar */}
+            <div className="pt-4 border-t border-secondary-100 flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2 text-xs text-secondary-400 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-brand animate-ping" />
+                Redirecting to home page in <span className="text-brand font-black">{countdown}</span> seconds...
+              </div>
+              <div className="w-full h-1.5 bg-secondary-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-brand transition-all duration-1000 ease-linear"
+                  style={{ width: `${(countdown / 5) * 100}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
