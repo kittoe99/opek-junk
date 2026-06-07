@@ -1,33 +1,35 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Trash2, Container, Home, HeartHandshake, BicepsFlexed } from 'lucide-react';
 
 const serviceItems = [
   {
     title: "Junk Removal",
-    icon: "/service-junk-removal.svg",
+    icon: Trash2,
     description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
     path: "/services/junk-removal"
   },
   {
     title: "Dumpster Rental",
-    icon: "/service-dumpster-rental.svg",
+    icon: Container,
     description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
     path: "/services/dumpster-rental"
   },
   {
     title: "Property Cleanouts",
-    icon: "/service-property-cleanout.svg",
+    icon: Home,
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
   },
   {
     title: "Donations Pickup",
-    icon: "/service-donations-pickup.svg",
+    icon: HeartHandshake,
     description: "Convenient pickup of gently used furniture, clothing, and household goods, delivered directly to local charities.",
     path: "/services/donations-pickup"
   },
   {
     title: "Moving Labor",
-    icon: "/service-moving-labor.svg",
+    icon: BicepsFlexed,
     description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
     path: "/services/moving-labor"
   }
@@ -53,25 +55,27 @@ export const Services: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {serviceItems.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => navigate(item.path)}
-                className="group cursor-pointer bg-white p-5 md:p-8 rounded-2xl shadow-sm hover:shadow-md border border-transparent hover:border-secondary-100 transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
-              >
-                <div className="w-14 h-14 md:w-20 md:h-20 md:mb-6 shrink-0 mt-0.5 md:mt-0 overflow-hidden">
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-                  />
+            {serviceItems.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={index}
+                  onClick={() => navigate(item.path)}
+                  className="group cursor-pointer bg-white p-5 md:p-8 rounded-2xl shadow-sm hover:shadow-md border border-transparent hover:border-secondary-100 transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 md:mb-6 shrink-0 mt-0.5 md:mt-0 bg-secondary-50 group-hover:bg-brand/10 rounded-2xl flex items-center justify-center transition-all duration-300">
+                    <Icon
+                      className="w-6 h-6 md:w-10 md:h-10 text-brand group-hover:scale-105 transition-transform duration-300"
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2 group-hover:text-brand transition-colors duration-300">{item.title}</h3>
+                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.description}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2 group-hover:text-brand transition-colors duration-300">{item.title}</h3>
-                  <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
