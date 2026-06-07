@@ -85,6 +85,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
               </span>
               <input
                 type="text"
+                name="name"
+                autoComplete="name"
                 required
                 disabled={isLoading}
                 value={name}
@@ -105,6 +107,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
               </span>
               <input
                 type="tel"
+                name="phone"
+                autoComplete="tel"
                 required
                 disabled={isLoading}
                 value={formatDisplayPhone(phone)}

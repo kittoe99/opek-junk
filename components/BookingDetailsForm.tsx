@@ -375,6 +375,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Full Name *</label>
             <input
               name="name"
+              autoComplete="name"
               value={formData.name}
               onChange={handleInputChange}
               required
@@ -387,6 +388,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
             <input
               name="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -400,6 +402,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
             <input
               name="phone"
+              autoComplete="tel"
               value={formData.phone}
               onChange={handleInputChange}
               required
@@ -446,7 +449,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
               required
               placeholder="Start typing an address..."
-              autoComplete="off"
+              autoComplete="street-address"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
             {addressLoading && (
@@ -485,6 +488,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">City *</label>
               <input
                 name="city"
+                autoComplete="address-level2"
                 value={formData.city}
                 onChange={handleInputChange}
                 required
@@ -496,6 +500,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
               <input
                 name="state"
+                autoComplete="address-level1"
                 value={formData.state}
                 onChange={handleInputChange}
                 required
@@ -507,6 +512,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Zip Code *</label>
               <input
                 name="zipCode"
+                autoComplete="postal-code"
                 value={formData.zipCode}
                 onChange={handleInputChange}
                 required

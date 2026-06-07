@@ -1259,9 +1259,6 @@ export const QuotePage: React.FC = () => {
                           <span className="block text-sm font-semibold text-secondary transition-colors">
                             {option.helpers} Helpers
                           </span>
-                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
-                            {option.price}
-                          </span>
                         </div>
                       </button>
                     );
