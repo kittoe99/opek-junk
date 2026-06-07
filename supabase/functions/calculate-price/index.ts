@@ -42,6 +42,20 @@ serve(async (req) => {
 
       const rules = configData.value
 
+      // Automatically migrate database value to 20% increase if still at original default
+      if (rules && rules.base_price === 50 && rules.price_per_yard === 50) {
+        rules.base_price = 60
+        rules.price_per_yard = 60
+        try {
+          await supabase
+            .from('pricing_config')
+            .update({ value: rules })
+            .eq('key', 'junk_removal_rules')
+        } catch (err) {
+          console.warn('Failed to auto-update pricing_config in database:', err)
+        }
+      }
+
       // Map DB items for quick lookup
       const itemVolumeMap: Record<string, number> = {}
       const itemPriceOverrides: Record<string, { min: number; max: number }> = {}

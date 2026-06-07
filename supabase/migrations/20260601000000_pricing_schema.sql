@@ -38,8 +38,8 @@ CREATE POLICY "Allow public read access for pricing_config"
 -- Insert pricing_config default settings
 INSERT INTO public.pricing_config (key, value, description) VALUES
 ('junk_removal_rules', '{
-    "base_price": 50,
-    "price_per_yard": 50,
+    "base_price": 60,
+    "price_per_yard": 60,
     "min_price": 169
 }', 'Base pricing variables for junk removal volume calculation'),
 ('dumpster_rental_rules', '{
