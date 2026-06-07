@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, Container, Home, HeartHandshake, BicepsFlexed } from 'lucide-react';
+import { Truck, Container, Home, HeartHandshake, BicepsFlexed } from 'lucide-react';
 
 const serviceItems = [
   {
     title: "Junk Removal",
-    icon: Trash2,
+    icon: Truck,
     description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
     path: "/services/junk-removal"
   },
