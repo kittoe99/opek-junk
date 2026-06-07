@@ -44,10 +44,11 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
-    const val = e.target.value.replace(/\D/g, '');
-    if (val.length <= 10) {
-      setPhone(val);
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length >= 11 && val.startsWith('1')) {
+      val = val.slice(1);
     }
+    setPhone(val.slice(0, 10));
   };
 
   const formatDisplayPhone = (val: string) => {
