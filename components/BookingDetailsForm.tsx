@@ -363,8 +363,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {/* ─── Contact step ─── */}
       {step === 'contact' && (
         <form onSubmit={handleContactSubmit} className="space-y-4">
-          <div className="mb-2 flex items-start gap-3">
-            <CalendarCheck size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+          <div className="mb-2">
             <div>
               <h2 className="text-base font-black text-secondary">Your Contact Details</h2>
               <p className="text-secondary-400 text-xs">How should you be reached to confirm?</p>
@@ -426,8 +425,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {/* ─── Address step ─── */}
       {step === 'address' && (
         <form onSubmit={handleAddressSubmit} className="space-y-4">
-          <div className="mb-2 flex items-start gap-3">
-            <MapPinned size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+          <div className="mb-2">
             <div>
               <h2 className="text-base font-black text-secondary">
                 {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
