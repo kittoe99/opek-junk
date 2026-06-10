@@ -58,15 +58,15 @@ serve(async (req) => {
 
       // Map DB items for quick lookup
       const itemVolumeMap: Record<string, number> = {}
-      const itemPriceOverrides: Record<string, { min: number; max: number }> = {}
+      const itemPricesMap: Record<string, { min: number; max: number }> = {}
 
       for (const dbItem of dbItems) {
         const name = dbItem.name.toLowerCase().trim()
         itemVolumeMap[name] = Number(dbItem.volume)
-        if (dbItem.min_price_override !== null && dbItem.max_price_override !== null) {
-          itemPriceOverrides[name] = {
-            min: dbItem.min_price_override,
-            max: dbItem.max_price_override
+        if (dbItem.min_price !== null && dbItem.max_price !== null) {
+          itemPricesMap[name] = {
+            min: Number(dbItem.min_price),
+            max: Number(dbItem.max_price)
           }
         }
       }
@@ -88,65 +88,62 @@ serve(async (req) => {
         return 0.5 // Fallback default
       }
 
-      let totalVolume = 0
-      let overridePrice = 0
-      let hasOverrides = false
-      let regularItemsVolume = 0
+      function getPriceForItem(name: string): { min: number; max: number } {
+        const norm = normalizeItemName(name)
+        if (itemPricesMap[norm] !== undefined) return itemPricesMap[norm]
 
-      for (const item of items) {
-        const norm = normalizeItemName(item.name)
-        const effectiveQuantity = item.quantity === 1 ? 1 : 1 + (item.quantity - 1) * 0.8
-
-        let isOverride = false
-        for (const [key, price] of Object.entries(itemPriceOverrides)) {
+        // Fuzzy match via includes
+        for (const [key, price] of Object.entries(itemPricesMap)) {
           if (norm.includes(key) || key.includes(norm)) {
-            overridePrice += price.max * effectiveQuantity
-            hasOverrides = true
-            isOverride = true
-            break
+            return price
           }
         }
+        
+        // Fallback default pricing for unknown/miscellaneous items
+        return { min: 60, max: 100 }
+      }
 
+      let totalVolume = 0
+      let totalMinPrice = 0
+      let totalMaxPrice = 0
+
+      for (const item of items) {
+        const effectiveQuantity = item.quantity === 1 ? 1 : 1 + (item.quantity - 1) * 0.85
+        
         const vol = getVolumeForItem(item.name) * effectiveQuantity
         totalVolume += vol
 
-        if (!isOverride) {
-          regularItemsVolume += vol
-        }
+        const priceInfo = getPriceForItem(item.name)
+        totalMinPrice += priceInfo.min * effectiveQuantity
+        totalMaxPrice += priceInfo.max * effectiveQuantity
       }
 
-      let volumePrice = 0
+      // Enforce the company minimum order fee from rules configuration (default to 169)
+      const minOrderPrice = rules.min_price || 169
+      const calculatedPrice = Math.round(totalMaxPrice) // Use the higher-end price range
+      const finalPrice = Math.max(minOrderPrice, calculatedPrice)
+
       let volumeDescription = ''
-
-      if (regularItemsVolume > 0 || !hasOverrides) {
-        volumePrice = Math.max(
-          rules.min_price,
-          Math.round(rules.base_price + (totalVolume * rules.price_per_yard))
-        )
-
-        if (totalVolume <= 2) {
-          volumeDescription = 'Minimum Load (up to 2 yd³)'
-        } else if (totalVolume <= 5) {
-          volumeDescription = '1/4 Truck (3-4 yd³)'
-        } else if (totalVolume <= 8) {
-          volumeDescription = '1/2 Truck (6-8 yd³)'
-        } else if (totalVolume <= 11) {
-          volumeDescription = '3/4 Truck (9-11 yd³)'
-        } else {
-          volumeDescription = 'Full Truck (12-15+ yd³)'
-        }
+      if (totalVolume <= 2) {
+        volumeDescription = 'Minimum Load (up to 2 yd³)'
+      } else if (totalVolume <= 5) {
+        volumeDescription = '1/4 Truck (3-4 yd³)'
+      } else if (totalVolume <= 8) {
+        volumeDescription = '1/2 Truck (6-8 yd³)'
+      } else if (totalVolume <= 11) {
+        volumeDescription = '3/4 Truck (9-11 yd³)'
+      } else {
+        volumeDescription = 'Full Truck (12-15+ yd³)'
       }
 
-      const finalPrice = Math.round(volumePrice + overridePrice)
-
-      let summary = `Estimated load size: ~${totalVolume.toFixed(1)} cubic yards.`
-      if (hasOverrides) {
-        summary += ' Includes heavy/specialty item fees.'
+      let summary = `Itemized pricing for ${items.length} unique item(s). Estimated load size: ~${totalVolume.toFixed(1)} cubic yards.`
+      if (finalPrice === minOrderPrice && calculatedPrice < minOrderPrice) {
+        summary += ` (Job minimum of $${minOrderPrice} applied).`
       }
 
       return new Response(
         JSON.stringify({
-          estimatedVolume: volumeDescription || 'Specialty Items Only',
+          estimatedVolume: volumeDescription,
           price: finalPrice,
           summary
         }),
