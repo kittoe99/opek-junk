@@ -137,23 +137,57 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     """Run a single pass of the booking synchronization."""
     logging.info("Starting ElevenLabs conversations sync pass...")
     
-    # 1. Fetch conversations from ElevenLabs
+    # 1. Fetch conversations from ElevenLabs with pagination support
     headers = {
         "xi-api-key": elevenlabs_key,
         "Content-Type": "application/json"
     }
     
-    url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
-    try:
-        response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status()
-        conversations_data = response.json()
-    except Exception as e:
-        logging.error(f"Failed to fetch conversations from ElevenLabs: {e}")
-        return
-
-    conversations = conversations_data.get("conversations", [])
-    logging.info(f"Found {len(conversations)} conversations from ElevenLabs.")
+    conversations = []
+    cursor = None
+    has_more = True
+    max_pages = 10  # Safeguard to prevent API rate limit abuse
+    page_count = 0
+    
+    while has_more and page_count < max_pages:
+        url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
+        if cursor:
+            url += f"&cursor={cursor}"
+            
+        try:
+            logging.info(f"Fetching page {page_count + 1} of conversations...")
+            response = requests.get(url, headers=headers, timeout=15)
+            response.raise_for_status()
+            data = response.json()
+        except Exception as e:
+            logging.error(f"Failed to fetch conversations from ElevenLabs on page {page_count + 1}: {e}")
+            break
+            
+        page_convs = data.get("conversations", [])
+        if not page_convs:
+            break
+            
+        conversations.extend(page_convs)
+        
+        has_more = data.get("has_more", False)
+        cursor = data.get("next_cursor")
+        page_count += 1
+        
+        # Check if all conversations on this page are older than 7 days
+        # 7 days in seconds = 7 * 24 * 3600 = 604800
+        now_unix = datetime.datetime.utcnow().timestamp()
+        all_older_than_7_days = True
+        for c in page_convs:
+            start_time = c.get("start_time_unix_secs", 0)
+            if now_unix - start_time < 604800:
+                all_older_than_7_days = False
+                break
+                
+        if all_older_than_7_days:
+            logging.info("All conversations on this page are older than 7 days. Stopping pagination.")
+            break
+            
+    logging.info(f"Found {len(conversations)} conversations from ElevenLabs (across {page_count} pages).")
 
     # 2. Setup Supabase headers
     supabase_headers = {
