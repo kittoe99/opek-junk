@@ -216,7 +216,7 @@ serve(async (req) => {
 
     if (resendApiKey) {
       console.log(`Sending real email using Resend to: ${toEmail}`);
-      const response = await fetch('https://api.resend.com/emails', {
+      let response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -230,7 +230,56 @@ serve(async (req) => {
         }),
       })
 
-      const resText = await response.text()
+      let resText = await response.text()
+      
+      // Handle Resend Sandbox / 403 Unverified Domain restriction gracefully
+      if (!response.ok && response.status === 403) {
+        let isValidationError = false;
+        try {
+          const parsed = JSON.parse(resText);
+          if (parsed.name === 'validation_error' || (parsed.message && parsed.message.includes('testing emails'))) {
+            isValidationError = true;
+          }
+        } catch (_) {
+          if (resText.includes('validation_error') || resText.includes('testing emails')) {
+            isValidationError = true;
+          }
+        }
+
+        if (isValidationError) {
+          console.warn(`Resend 403 Sandbox restriction detected. Retrying with fallback email: support@opekjunkremoval.com (original recipient: ${toEmail})`);
+          
+          const fallbackEmail = 'support@opekjunkremoval.com';
+          const sandboxBanner = `
+            <div style="background-color: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-family: sans-serif; font-size: 13px; color: #991b1b; line-height: 1.5;">
+              <strong>[Sandbox Mode Notification]</strong> This email was originally intended for <strong>${toEmail}</strong>, but was redirected to you because the domain is not yet verified on your Resend dashboard. To send directly to customers, please verify your domain at <a href="https://resend.com/domains" style="color: #991b1b; text-decoration: underline;">resend.com/domains</a>.
+            </div>
+          `;
+          
+          let fallbackHtml = htmlContent;
+          if (htmlContent.includes(headerHtml)) {
+            fallbackHtml = htmlContent.replace(headerHtml, `${headerHtml}\n${sandboxBanner}`);
+          } else {
+            fallbackHtml = sandboxBanner + htmlContent;
+          }
+
+          response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${resendApiKey}`,
+            },
+            body: JSON.stringify({
+              from: fromEmail,
+              to: [fallbackEmail],
+              subject: `[Sandbox] ${subject}`,
+              html: fallbackHtml,
+            }),
+          })
+          resText = await response.text()
+        }
+      }
+
       if (!response.ok) {
         throw new Error(`Resend API failed with status ${response.status}: ${resText}`)
       }
