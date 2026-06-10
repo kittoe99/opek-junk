@@ -155,6 +155,9 @@
     }
     </script>
     
+    <!-- ElevenLabs ConvAI Widget -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -321,9 +324,34 @@
         animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
     </style>
+
+    <style>
+      /* ElevenLabs ConvAI Widget — fixed bottom-right, isolated stacking context */
+      #elevenlabs-widget-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 2147483647; /* max safe z-index */
+        isolation: isolate;  /* own stacking context — doesn't bleed into page layers */
+        pointer-events: auto;
+      }
+
+      /* Ensure the widget doesn't inherit any unexpected transforms or filters */
+      #elevenlabs-widget-container elevenlabs-convai {
+        display: block;
+        transform: none !important;
+        filter: none !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- ElevenLabs ConvAI Widget: fixed bottom-right, isolated from page hover buttons -->
+    <div id="elevenlabs-widget-container">
+      <elevenlabs-convai agent-id="agent_5101kgxcwtkgek18m0j13cq16t3y"></elevenlabs-convai>
+    </div>
+
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>
