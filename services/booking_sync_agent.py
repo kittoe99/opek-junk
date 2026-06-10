@@ -9,6 +9,7 @@ import requests
 import pydantic
 import datetime
 import re
+from openai import OpenAI
 from typing import Optional
 
 # Set up logging
@@ -89,8 +90,8 @@ def generate_order_number() -> str:
     chars = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
     return f"OPK-{chars}"
 
-async def extract_booking_details(transcript_text: str, gemini_key: Optional[str], openai_key: Optional[str]) -> Optional[dict]:
-    """Extract booking details using either Gemini or OpenAI as fallback."""
+async def extract_booking_details(transcript_text: str, openai_key: str) -> Optional[dict]:
+    """Extract booking details using OpenAI structured outputs."""
     current_date = datetime.date.today().strftime("%Y-%m-%d")
     system_instruction = (
         f"You are an expert booking extraction agent. Analyze the provided "
@@ -112,46 +113,26 @@ async def extract_booking_details(transcript_text: str, gemini_key: Optional[str
         f"--- TRANSCRIPT END ---\n"
     )
 
-    # If Gemini key is available, try using Google Antigravity SDK
-    if gemini_key:
-        try:
-            from google.antigravity import Agent, LocalAgentConfig
-            logging.info("Using Gemini (via Google Antigravity SDK) for structured extraction...")
-            config = LocalAgentConfig(
-                model="gemini-2.5-flash",
-                response_schema=BookingExtraction,
-                system_instructions=system_instruction
-            )
-            async with Agent(config=config) as agent:
-                resp = await agent.chat(prompt)
-                data = await resp.structured_output()
-                return data
-        except Exception as e:
-            logging.warning(f"Failed with Gemini / Antigravity SDK: {e}. Falling back to OpenAI...")
-
-    # Fallback to OpenAI structured outputs
-    if openai_key:
-        try:
-            from openai import OpenAI
-            logging.info("Using OpenAI (GPT-4o-mini) for structured extraction...")
-            client = OpenAI(api_key=openai_key)
-            completion = client.beta.chat.completions.parse(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": system_instruction},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format=BookingExtraction,
-            )
-            parsed = completion.choices[0].message.parsed
-            if parsed:
-                return parsed.model_dump()
-        except Exception as e:
-            logging.error(f"Failed with OpenAI structured output: {e}")
+    try:
+        logging.info("Using OpenAI (GPT-4o-mini) for structured extraction...")
+        client = OpenAI(api_key=openai_key)
+        completion = client.beta.chat.completions.parse(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_instruction},
+                {"role": "user", "content": prompt}
+            ],
+            response_format=BookingExtraction,
+        )
+        parsed = completion.choices[0].message.parsed
+        if parsed:
+            return parsed.model_dump()
+    except Exception as e:
+        logging.error(f"Failed with OpenAI structured output: {e}")
             
     return None
 
-async def sync_bookings_pass(elevenlabs_key: str, gemini_key: Optional[str], openai_key: Optional[str]):
+async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     """Run a single pass of the booking synchronization."""
     logging.info("Starting ElevenLabs conversations sync pass...")
     
@@ -236,7 +217,7 @@ async def sync_bookings_pass(elevenlabs_key: str, gemini_key: Optional[str], ope
         transcript_text = "\n".join(transcript_lines)
 
         # 5. Extract structured data using AI
-        extracted_data = await extract_booking_details(transcript_text, gemini_key, openai_key)
+        extracted_data = await extract_booking_details(transcript_text, openai_key)
 
         if not extracted_data:
             logging.warning(f"No structured output returned for conversation {conv_id}.")
@@ -367,25 +348,21 @@ async def main():
         logging.error("ELEVENLABS_API_KEY is not defined. Please set it in your environment or elevenlabs-mcp-server/.env")
         sys.exit(1)
 
-    gemini_key = os.getenv("GEMINI_API_KEY")
     openai_key = load_openai_api_key()
-
-    if not gemini_key and not openai_key:
-        logging.error("Neither GEMINI_API_KEY nor OPENAI_API_KEY is defined. At least one LLM key is required.")
+    if not openai_key:
+        logging.error("OPENAI_API_KEY is not defined. OpenAI key is required.")
         sys.exit(1)
 
     # If --run-once is passed, just do a single run and exit
     if len(sys.argv) > 1 and sys.argv[1] == "--run-once":
-        await sync_bookings_pass(elevenlabs_key, gemini_key, openai_key)
+        await sync_bookings_pass(elevenlabs_key, openai_key)
         return
 
     logging.info("Starting Booking Sync Agent in background mode...")
     
-    # We use a simple sleep loop for background sync to support environments without Gemini API key 
-    # while retaining robust background capability.
     while True:
         try:
-            await sync_bookings_pass(elevenlabs_key, gemini_key, openai_key)
+            await sync_bookings_pass(elevenlabs_key, openai_key)
         except Exception as e:
             logging.exception(f"Unhandled error in sync pass: {e}")
         
