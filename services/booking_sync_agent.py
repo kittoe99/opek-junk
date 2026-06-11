@@ -208,9 +208,60 @@ async def extract_transcript_details(transcript_text: str, openai_key: str) -> O
             
     return None
 
+def load_agent_state(supabase_headers: dict) -> dict:
+    """Load sync agent state from pricing_config table."""
+    default_state = {
+        "last_processed_timestamp": 0,
+        "processed_ids": []
+    }
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/pricing_config?key=eq.booking_sync_agent_state"
+        resp = requests.get(url, headers=supabase_headers, timeout=15)
+        resp.raise_for_status()
+        rows = resp.json()
+        if rows:
+            val = rows[0].get("value")
+            if isinstance(val, dict):
+                return {
+                    "last_processed_timestamp": val.get("last_processed_timestamp", 0),
+                    "processed_ids": val.get("processed_ids", [])
+                }
+    except Exception as e:
+        logging.warning(f"Failed to load agent state from database: {e}")
+    return default_state
+
+def save_agent_state(state: dict, supabase_headers: dict):
+    """Save sync agent state to pricing_config table."""
+    try:
+        headers = supabase_headers.copy()
+        headers["Prefer"] = "resolution=merge-duplicates"
+        url = f"{SUPABASE_URL}/rest/v1/pricing_config"
+        payload = {
+            "key": "booking_sync_agent_state",
+            "value": state,
+            "description": "Persistent state for the background booking sync agent"
+        }
+        resp = requests.post(url, headers=headers, json=payload, timeout=15)
+        resp.raise_for_status()
+    except Exception as e:
+        logging.error(f"Failed to save agent state to database: {e}")
+
 async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     """Run a single pass of the booking and contact synchronization."""
     logging.info("Starting ElevenLabs conversations sync pass...")
+    
+    # Setup Supabase headers
+    supabase_headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
+    }
+
+    # Load persistent state
+    state = load_agent_state(supabase_headers)
+    last_processed_ts = state["last_processed_timestamp"]
+    processed_ids = set(state["processed_ids"])
     
     # 1. Fetch conversations from ElevenLabs with pagination support
     headers = {
@@ -223,8 +274,9 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     has_more = True
     max_pages = 10  # Safeguard to prevent API rate limit abuse
     page_count = 0
+    stop_paginating = False
     
-    while has_more and page_count < max_pages:
+    while has_more and page_count < max_pages and not stop_paginating:
         url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
         if cursor:
             url += f"&cursor={cursor}"
@@ -242,8 +294,26 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
         if not page_convs:
             break
             
-        conversations.extend(page_convs)
+        for c in page_convs:
+            conv_id = c.get("conversation_id")
+            start_time = c.get("start_time_unix_secs", 0)
+            
+            # If the conversation is in processed_ids, we skip adding it to our queue
+            if conv_id in processed_ids:
+                continue
+                
+            # If the conversation is older than our last processed timestamp (with a 30-minute buffer for overlap/in-progress calls),
+            # we can stop paging/processing because all subsequent calls will be even older.
+            if start_time < last_processed_ts - 1800:
+                logging.info(f"Reached conversation {conv_id} which is older than last_processed_timestamp minus buffer. Stopping pagination.")
+                stop_paginating = True
+                break
+                
+            conversations.append(c)
         
+        if stop_paginating:
+            break
+            
         has_more = data.get("has_more", False)
         cursor = data.get("next_cursor")
         page_count += 1
@@ -262,30 +332,45 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             logging.info("All conversations on this page are older than 7 days. Stopping pagination.")
             break
             
-    logging.info(f"Found {len(conversations)} conversations from ElevenLabs (across {page_count} pages).")
+    logging.info(f"Found {len(conversations)} new/unprocessed conversations to inspect.")
 
-    # 2. Setup Supabase headers
-    supabase_headers = {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-    }
+    new_processed_ids = []
+    max_ts_this_pass = last_processed_ts
 
     for conv in conversations:
         conv_id = conv.get("conversation_id")
         if not conv_id:
             continue
 
+        start_time = conv.get("start_time_unix_secs", 0)
+        
+        # Double check in memory
+        if conv_id in processed_ids:
+            continue
+            
+        # Only process completed calls
+        status = conv.get("status")
+        if status != "done":
+            logging.info(f"Skipping call {conv_id} because status is '{status}' (not completed).")
+            continue
+
         # Check if conversation status is done/completed or has messages
         message_count = conv.get("message_count", 0)
         if message_count < 2:
-            logging.debug(f"Skipping call {conv_id} because of low message count ({message_count}).")
+            logging.info(f"Skipping call {conv_id} because of low message count ({message_count}). Marking as processed.")
+            processed_ids.add(conv_id)
+            new_processed_ids.append(conv_id)
+            if start_time > max_ts_this_pass:
+                max_ts_this_pass = start_time
             continue
 
         # 3. Check if conversation has already been synced to any table
         if check_already_synced(conv_id, supabase_headers):
-            logging.info(f"Conversation {conv_id} already has a record recorded in database. Skipping.")
+            logging.info(f"Conversation {conv_id} already has a record recorded in database. Adding to state and skipping.")
+            processed_ids.add(conv_id)
+            new_processed_ids.append(conv_id)
+            if start_time > max_ts_this_pass:
+                max_ts_this_pass = start_time
             continue
 
         logging.info(f"Processing new conversation: {conv_id}...")
@@ -302,7 +387,11 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
 
         transcript_list = conv_details.get("transcript", [])
         if not transcript_list:
-            logging.info(f"Conversation {conv_id} transcript is empty. Skipping.")
+            logging.info(f"Conversation {conv_id} transcript is empty. Marking as processed.")
+            processed_ids.add(conv_id)
+            new_processed_ids.append(conv_id)
+            if start_time > max_ts_this_pass:
+                max_ts_this_pass = start_time
             continue
 
         # Format the transcript text
@@ -398,6 +487,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             email = email or ""
 
         # Process insertions based on decided submission_type
+        sync_success = False
         if submission_type == "booking":
             address = extracted_data.get("address")
             city = extracted_data.get("city")
@@ -455,6 +545,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                     logging.error(f"Failed to insert booking: {insert_resp.status_code} - {insert_resp.text}")
                     continue
                 logging.info(f"Successfully inserted booking with order number {order_number}.")
+                sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert booking: {e}")
                 continue
@@ -506,6 +597,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                     logging.error(f"Failed to insert contact: {insert_resp.status_code} - {insert_resp.text}")
                     continue
                 logging.info(f"Successfully inserted contact ticket.")
+                sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert contact: {e}")
                 continue
@@ -557,6 +649,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                     logging.error(f"Failed to insert provider: {insert_resp.status_code} - {insert_resp.text}")
                     continue
                 logging.info(f"Successfully inserted provider signup.")
+                sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert provider: {e}")
                 continue
@@ -574,6 +667,24 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 }
             }
             await trigger_email_function(email_payload, supabase_headers)
+
+        # Update tracking state if sync was successful
+        if sync_success:
+            processed_ids.add(conv_id)
+            new_processed_ids.append(conv_id)
+            if start_time > max_ts_this_pass:
+                max_ts_this_pass = start_time
+
+    # Save updated state back to database
+    if new_processed_ids or max_ts_this_pass > last_processed_ts:
+        recent_ids = list(processed_ids)
+        if len(recent_ids) > 100:
+            recent_ids = recent_ids[-100:]
+        
+        state["last_processed_timestamp"] = max(last_processed_ts, max_ts_this_pass)
+        state["processed_ids"] = recent_ids
+        save_agent_state(state, supabase_headers)
+        logging.info(f"Saved state to database: last_processed_timestamp={state['last_processed_timestamp']}, tracked_ids_count={len(recent_ids)}")
 
     logging.info("Sync pass completed.")
 
