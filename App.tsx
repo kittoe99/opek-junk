@@ -22,6 +22,8 @@ import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { InHomeEstimatePage } from './components/InHomeEstimatePage';
 import { ZipCheckModal } from './components/ZipCheckModal';
+import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
+import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SEO, seoConfig } from './components/SEO';
 import { CityPage } from './components/CityPage';
 import { PageLoader } from './components/PageLoader';
@@ -177,6 +179,24 @@ function InHomeEstimatePageWithSEO() {
   );
 }
 
+function PrivacyPolicyPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.privacy} />
+      <PrivacyPolicyPage />
+    </>
+  );
+}
+
+function TermsOfServicePageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.terms} />
+      <TermsOfServicePage />
+    </>
+  );
+}
+
 function CityPageRouteWrapper() {
   const { slug } = useParams<{ slug: string }>();
   const city = getCityBySlug(slug ?? '');
@@ -208,6 +228,8 @@ function App() {
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
+          <Route path="/privacy" element={<PrivacyPolicyPageWithSEO />} />
+          <Route path="/terms" element={<TermsOfServicePageWithSEO />} />
           <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
         </Routes>
         </main>
