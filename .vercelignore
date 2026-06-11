@@ -6,7 +6,8 @@ dist
 scratch
 .vercel
 requirements.txt
-services
+services/booking_sync_agent.py
+services/__pycache__
 supabase
 *.log
 .env.local
