@@ -1,0 +1,13 @@
+# Exclude ElevenLabs MCP server and node_modules
+elevenlabs-mcp-server
+node_modules
+dist
+.git
+scratch
+.vercel
+requirements.txt
+services
+supabase
+*.log
+.env.local
+.env
