@@ -27,9 +27,7 @@
     "noEmit": true
   },
   "exclude": [
-    "supabase/functions",
-    "components",
-    "App.tsx",
-    "index.tsx"
+    "supabase/functions"
   ]
+
 }

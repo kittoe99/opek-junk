@@ -1326,7 +1326,7 @@ export const BookingPage: React.FC = () => {
                           <button
                             key={option.helpers}
                             type="button"
-                            onClick={() => setMovingHelpers(option.helpers)}
+                            onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
                             className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                               isSelected 
                                 ? 'border-brand bg-white' 

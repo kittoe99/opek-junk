@@ -173,10 +173,11 @@ export const QuotePage: React.FC = () => {
   } | null;
 
   // Map incoming serviceType string to internal service type if present
-  const mappedServiceType: 'junk_removal' | 'moving_labor' | 'dumpster_rental' | null =
+  const mappedServiceType: 'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null =
     incomingState?.serviceType
       ? (incomingState.serviceType.toLowerCase().includes('moving') ? 'moving_labor'
         : incomingState.serviceType.toLowerCase().includes('dumpster') ? 'dumpster_rental'
+        : incomingState.serviceType.toLowerCase().includes('donation') ? 'donation_pickup'
         : 'junk_removal')
       : null;
 
@@ -189,8 +190,8 @@ export const QuotePage: React.FC = () => {
       ? { city: incomingState.zipResult.city, state: incomingState.zipResult.state, servedCity: { city: incomingState.zipResult.city, state: incomingState.zipResult.state } }
       : null
   );
-  const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | null>(mappedServiceType);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null>(mappedServiceType);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -1256,7 +1257,7 @@ export const QuotePage: React.FC = () => {
                     return (
                       <button
                         key={option.helpers}
-                        onClick={() => setMovingHelpers(option.helpers)}
+                        onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
                         className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
                           isSelected 
                             ? 'border-brand bg-white' 
