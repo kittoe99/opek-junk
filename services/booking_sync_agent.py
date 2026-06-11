@@ -10,7 +10,7 @@ import pydantic
 import datetime
 import re
 from openai import OpenAI
-from typing import Optional
+from typing import Optional, List
 
 # Set up logging
 logging.basicConfig(
@@ -32,19 +32,32 @@ SUPABASE_ANON_KEY = os.getenv(
 )
 
 # Define Pydantic Schema for Structured Output
-class BookingExtraction(pydantic.BaseModel):
-    bookingRequested: bool
+class SyncExtraction(pydantic.BaseModel):
+    submissionType: str  # "booking", "contact", "provider_signup", or "none"
     name: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
+    
+    # Booking specific fields
     address: Optional[str] = None
     unitNumber: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None
     zipCode: Optional[str] = None
-    serviceType: Optional[str] = None  # "Junk Removal" or "Moving Labor"
+    serviceType: Optional[str] = None  # "Junk Removal", "Moving Labor", "Donation Pick Up", "Dumpster Rental"
     date: Optional[str] = None  # YYYY-MM-DD
     details: Optional[str] = None
+    
+    # Contact/Support specific fields
+    contactSubject: Optional[str] = None
+    contactMessage: Optional[str] = None
+    
+    # Provider signup specific fields
+    providerServiceArea: Optional[str] = None
+    providerVehicleType: Optional[str] = None
+    providerScheduleAvailability: Optional[List[str]] = None
+    providerBusinessName: Optional[str] = None
+    providerAdditionalInfo: Optional[str] = None
 
 def load_elevenlabs_api_key():
     """Load ElevenLabs API key from env or relative .env file."""
@@ -91,35 +104,87 @@ def generate_order_number() -> str:
     chars = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
     return f"OPK-{chars}"
 
-async def extract_booking_details(transcript_text: str, openai_key: str) -> Optional[dict]:
-    """Extract booking details using OpenAI structured outputs."""
+def check_already_synced(conv_id: str, supabase_headers: dict) -> bool:
+    """Check if the conversation has already been synced to bookings, contacts, or provider_signups."""
+    # 1. Check bookings table
+    try:
+        check_url = f"{SUPABASE_URL}/rest/v1/bookings"
+        params = {"details": f"ilike.*{conv_id}*"}
+        resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
+        resp.raise_for_status()
+        if resp.json():
+            logging.info(f"Conversation {conv_id} already has a booking recorded in database.")
+            return True
+    except Exception as e:
+        logging.error(f"Failed to query bookings for duplicate {conv_id}: {e}")
+
+    # 2. Check contacts table
+    try:
+        check_url = f"{SUPABASE_URL}/rest/v1/contacts"
+        params = {"message": f"ilike.*{conv_id}*"}
+        resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
+        resp.raise_for_status()
+        if resp.json():
+            logging.info(f"Conversation {conv_id} already has a contact/enquiry recorded in database.")
+            return True
+    except Exception as e:
+        logging.error(f"Failed to query contacts for duplicate {conv_id}: {e}")
+
+    # 3. Check provider_signups table
+    try:
+        check_url = f"{SUPABASE_URL}/rest/v1/provider_signups"
+        params = {"availability->>convId": f"eq.{conv_id}"}
+        resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
+        resp.raise_for_status()
+        if resp.json():
+            logging.info(f"Conversation {conv_id} already has a provider signup recorded in database.")
+            return True
+    except Exception as e:
+        logging.error(f"Failed to query provider_signups for duplicate {conv_id}: {e}")
+
+    return False
+
+async def trigger_email_function(email_payload: dict, supabase_headers: dict):
+    """Trigger the send-email edge function on Supabase."""
+    try:
+        email_resp = requests.post(
+            f"{SUPABASE_URL}/functions/v1/send-email",
+            headers=supabase_headers,
+            json=email_payload,
+            timeout=10
+        )
+        if email_resp.status_code == 200:
+            logging.info("Confirmation email sent successfully.")
+        else:
+            logging.warning(f"Edge Function returned status {email_resp.status_code}: {email_resp.text}")
+    except Exception as e:
+        logging.warning(f"Failed to trigger confirmation email: {e}")
+
+async def extract_transcript_details(transcript_text: str, openai_key: str) -> Optional[dict]:
+    """Extract booking, contact, or provider details using OpenAI structured outputs with gpt-5-mini."""
     current_date = datetime.date.today().strftime("%Y-%m-%d")
     system_instruction = (
-        f"You are an expert booking extraction agent. Analyze the provided "
-        f"transcript of a phone call conversation between an office agent (Macy) "
-        f"and a customer. Your job is to determine if the customer requested to "
-        f"book a service (Junk Removal or Moving Labor) and provided booking "
-        f"details. If they agreed/decided to book, extract all fields accurately.\n\n"
-        f"CRITICAL DATE RULE:\n"
-        f"The current local date is {current_date}. You MUST convert any relative or "
-        f"informal dates mentioned (e.g. 'tomorrow', 'next Monday', 'June 11th', 'this Friday') "
-        f"into the exact YYYY-MM-DD format (e.g. '2026-06-11'). Never return informal text like "
-        f"'June 11th' or 'tomorrow' for the date field. If a valid calendar date cannot be "
-        f"resolved or is not mentioned, set date to null.\n\n"
+        f"You are an expert transcription analysis agent for Opek Junk Removal. Analyze the provided "
+        f"transcript of a phone call conversation between an office agent (Macy) and a customer/caller. "
+        f"Your first job is to determine what the caller wants to submit. Decide the appropriate 'submissionType':\n"
+        f"- 'booking': The caller wants to book one of our services (Junk Removal, Moving Labor, Dumpster Rental, Donation Pick Up) and provided details.\n"
+        f"- 'contact': The caller has a general enquiry, question, request for callback, or complaint (support/FAQ request) that is NOT a booking or provider signup.\n"
+        f"- 'provider_signup': An independent hauler/provider wants to sign up or apply to join our network.\n"
+        f"- 'none': No valid request, prank call, or they hung up immediately.\n\n"
+        f"Based on the 'submissionType', extract and fill the corresponding fields:\n"
+        f"1. For 'booking': Fill name, email, phone, address, unitNumber, city, state, zipCode, serviceType, date, and details.\n"
+        f"2. For 'contact': Fill name, email, phone, contactSubject, and contactMessage (the message describing their question or support request).\n"
+        f"3. For 'provider_signup': Fill name, email, phone, providerServiceArea, providerVehicleType, providerScheduleAvailability, providerBusinessName, and providerAdditionalInfo.\n\n"
+        f"CRITICAL DATE RULE (for bookings):\n"
+        f"The current local date is {current_date}. You MUST convert any relative or informal dates mentioned (e.g. 'tomorrow', 'next Monday', 'June 11th', 'this Friday') "
+        f"into the exact YYYY-MM-DD format (e.g. '2026-06-11'). Never return informal text like 'June 11th' or 'tomorrow'. If date cannot be resolved, set to null.\n\n"
         f"EMAIL CLEANUP RULE:\n"
-        f"If the customer spells out their email address letter-by-letter or phonetically "
-        f"(e.g., 'K-O-F-I at gmail dot com', 'k o f i @ gmail . com', 'k dash o dash f dash i at gmail.com'), "
-        f"you MUST clean and format it into a standard, valid email address (e.g., 'kofi@gmail.com'). "
-        f"Strip any spaces, hyphens, or literal spelling artifacts, and convert to lowercase.\n\n"
+        f"If the email is spelled out letter-by-letter or phonetically, clean and format it into a standard lowercase email address (e.g. 'kofi@gmail.com').\n\n"
         f"ADDRESS CORRECTION & STANDARDIZATION RULE:\n"
-        f"Verify and correct the street address, city, state, and zip code for typos. "
-        f"Often the voice-to-text transcript contains phonetic misspellings of street names or cities "
-        f"(e.g., 'Main Stree', 'San Josey'). Standardize the street suffix (e.g., 'St', 'Ave', 'Dr', 'Rd') "
-        f"and use your geographic knowledge of the US to ensure the street, city, state, and zip code "
-        f"align correctly. If a minor mismatch is detected, correct it to the actual valid geographic name."
+        f"Verify and correct the street address, city, state, and zip code for typos (e.g. 'Main Stree' -> 'Main Street'). Use US geographic knowledge to align them."
     )
     prompt = (
-        f"Please analyze the following transcript and extract the booking details:\n\n"
+        f"Please analyze the following transcript and extract the details:\n\n"
         f"--- TRANSCRIPT START ---\n"
         f"{transcript_text}\n"
         f"--- TRANSCRIPT END ---\n"
@@ -134,7 +199,7 @@ async def extract_booking_details(transcript_text: str, openai_key: str) -> Opti
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": prompt}
             ],
-            response_format=BookingExtraction,
+            response_format=SyncExtraction,
         )
         parsed = completion.choices[0].message.parsed
         if parsed:
@@ -145,7 +210,7 @@ async def extract_booking_details(transcript_text: str, openai_key: str) -> Opti
     return None
 
 async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
-    """Run a single pass of the booking synchronization."""
+    """Run a single pass of the booking and contact synchronization."""
     logging.info("Starting ElevenLabs conversations sync pass...")
     
     # 1. Fetch conversations from ElevenLabs with pagination support
@@ -219,21 +284,9 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             logging.debug(f"Skipping call {conv_id} because of low message count ({message_count}).")
             continue
 
-        # 3. Check if booking already exists in Supabase
-        check_url = f"{SUPABASE_URL}/rest/v1/bookings"
-        check_params = {
-            "details": f"ilike.*{conv_id}*"
-        }
-        try:
-            check_resp = requests.get(check_url, headers=supabase_headers, params=check_params, timeout=10)
-            check_resp.raise_for_status()
-            existing_bookings = check_resp.json()
-        except Exception as e:
-            logging.error(f"Failed to query Supabase for conversation {conv_id}: {e}")
-            continue
-
-        if existing_bookings:
-            logging.info(f"Conversation {conv_id} already has a booking recorded in database. Skipping.")
+        # 3. Check if conversation has already been synced to any table
+        if check_already_synced(conv_id, supabase_headers):
+            logging.info(f"Conversation {conv_id} already has a record recorded in database. Skipping.")
             continue
 
         logging.info(f"Processing new conversation: {conv_id}...")
@@ -263,115 +316,93 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
         transcript_text = "\n".join(transcript_lines)
 
         # 5. Extract structured data using AI
-        extracted_data = await extract_booking_details(transcript_text, openai_key)
+        extracted_data = await extract_transcript_details(transcript_text, openai_key)
 
         if not extracted_data:
             logging.warning(f"No structured output returned for conversation {conv_id}.")
             continue
 
-        # Check if booking was requested
-        is_requested = extracted_data.get("bookingRequested", False)
-        if not is_requested:
-            logging.info(f"Conversation {conv_id} did not result in a booking request according to LLM analysis.")
-            continue
+        submission_type = extracted_data.get("submissionType", "none")
+        if submission_type == "none":
+            # If it's none, we record it as a contact enquiry anyway so it doesn't get re-processed
+            logging.info(f"Conversation {conv_id} classified as 'none'. Recording as a general log in contacts.")
+            submission_type = "contact"
+            extracted_data["contactSubject"] = "General Call Log"
+            extracted_data["contactMessage"] = f"Caller discussed general topics or call was empty. Conversation ID: {conv_id}."
 
-        # Validate required fields
-        name = extracted_data.get("name")
-        phone = extracted_data.get("phone")
-        address = extracted_data.get("address")
-        city = extracted_data.get("city")
-        state = extracted_data.get("state")
-        zip_code = extracted_data.get("zipCode")
-        service_type = extracted_data.get("serviceType")
-        date = extracted_data.get("date")
+        name = extracted_data.get("name") or "Phone Caller"
+        phone = extracted_data.get("phone") or "N/A"
+        email = extracted_data.get("email") or ""
 
-        missing = []
-        if not name: missing.append("name")
-        if not phone: missing.append("phone")
-        if not address: missing.append("address")
-        if not city: missing.append("city")
-        if not state: missing.append("state")
-        if not zip_code: missing.append("zipCode")
-        if not service_type: missing.append("serviceType")
-        if not date: missing.append("date")
+        # Validate bookings requirements
+        if submission_type == "booking":
+            address = extracted_data.get("address")
+            city = extracted_data.get("city")
+            state = extracted_data.get("state")
+            zip_code = extracted_data.get("zipCode")
+            service_type = extracted_data.get("serviceType")
+            date = extracted_data.get("date")
 
-        if missing:
-            logging.warning(
-                f"Conversation {conv_id} wanted to book, but is missing required fields: {', '.join(missing)}. "
-                f"Details extracted: {extracted_data}"
-            )
-            continue
+            missing = []
+            if not name or name == "Phone Caller": missing.append("name")
+            if phone == "N/A": missing.append("phone")
+            if not address: missing.append("address")
+            if not city: missing.append("city")
+            if not state: missing.append("state")
+            if not zip_code: missing.append("zipCode")
+            if not service_type: missing.append("serviceType")
+            if not date: missing.append("date")
 
-        # Validate date format (must be YYYY-MM-DD)
-        if date and not re.match(r"^\d{4}-\d{2}-\d{2}$", date):
-            logging.warning(
-                f"Conversation {conv_id} wanted to book, but date is not in YYYY-MM-DD format: '{date}'. "
-                f"Skipping to prevent database errors."
-            )
-            continue
+            if missing:
+                logging.warning(
+                    f"Conversation {conv_id} wanted to book, but is missing required fields: {', '.join(missing)}. "
+                    f"Recording as contact/enquiry ticket for callback."
+                )
+                submission_type = "contact"
+                extracted_data["contactSubject"] = "Incomplete Booking Callback"
+                extracted_data["contactMessage"] = (
+                    f"Caller wanted to book but was missing required fields: {', '.join(missing)}.\n"
+                    f"Details: {extracted_data}\n\nPlease callback to complete."
+                )
 
-        # Formulate the details field, embedding the conversation ID as tracking
-        details_text = extracted_data.get("details") or ""
-        details_field = f"{details_text}\n\n[ElevenLabs ConvID: {conv_id}]"
+        if submission_type == "booking":
+            date = extracted_data.get("date")
+            if date and not re.match(r"^\d{4}-\d{2}-\d{2}$", date):
+                logging.warning(f"Conversation {conv_id} has invalid date '{date}'. Falling back to contact ticket.")
+                submission_type = "contact"
+                extracted_data["contactSubject"] = "Booking Date Issue Callback"
+                extracted_data["contactMessage"] = f"Caller wanted to book but date format was invalid: '{date}'."
 
-        # Normalize service type
-        norm_service_type = "Junk Removal"
-        if service_type:
-            service_type_lower = service_type.lower()
-            if "donation" in service_type_lower:
-                norm_service_type = "Donation Pick Up"
-            elif "moving" in service_type_lower:
-                norm_service_type = "Moving Labor"
-            elif "dumpster" in service_type_lower:
-                norm_service_type = "Dumpster Rental"
-            else:
-                norm_service_type = "Junk Removal"
+        # Process insertions based on decided submission_type
+        if submission_type == "booking":
+            address = extracted_data.get("address")
+            city = extracted_data.get("city")
+            state = extracted_data.get("state")
+            zip_code = extracted_data.get("zipCode")
+            service_type = extracted_data.get("serviceType")
+            date = extracted_data.get("date")
 
-        order_number = generate_order_number()
+            details_text = extracted_data.get("details") or ""
+            details_field = f"{details_text}\n\n[ElevenLabs ConvID: {conv_id}]"
 
-        # 6. Insert booking into Supabase
-        insert_payload = {
-            "name": name,
-            "email": extracted_data.get("email") or "",
-            "phone": phone,
-            "address": address,
-            "unit_number": extracted_data.get("unitNumber") or None,
-            "city": city,
-            "state": state,
-            "zip_code": zip_code,
-            "service_type": norm_service_type,
-            "preferred_date": date,
-            "details": details_field,
-            "status": "pending",
-            "price": 0,
-            "estimated_volume": "",
-            "estimated_items": [],
-            "order_number": order_number
-        }
+            # Normalize service type
+            norm_service_type = "Junk Removal"
+            if service_type:
+                service_type_lower = service_type.lower()
+                if "donation" in service_type_lower:
+                    norm_service_type = "Donation Pick Up"
+                elif "moving" in service_type_lower:
+                    norm_service_type = "Moving Labor"
+                elif "dumpster" in service_type_lower:
+                    norm_service_type = "Dumpster Rental"
+                else:
+                    norm_service_type = "Junk Removal"
 
-        logging.info(f"Inserting new booking for {name} ({phone}) to Supabase...")
-        try:
-            insert_resp = requests.post(
-                f"{SUPABASE_URL}/rest/v1/bookings",
-                headers=supabase_headers,
-                json=insert_payload,
-                timeout=15
-            )
-            if insert_resp.status_code >= 400:
-                logging.error(f"Failed to insert booking into Supabase: {insert_resp.status_code} - {insert_resp.text}")
-                continue
-            logging.info(f"Successfully inserted booking into Supabase with order number {order_number}.")
-        except Exception as e:
-            logging.error(f"Failed to insert booking into Supabase: {e}")
-            continue
+            order_number = generate_order_number()
 
-        # 7. Trigger the Supabase Edge Function to send the confirmation email
-        logging.info(f"Triggering confirmation email Edge Function for order {order_number}...")
-        email_payload = {
-            "type": "booking",
-            "record": {
+            insert_payload = {
                 "name": name,
-                "email": extracted_data.get("email") or "",
+                "email": email,
                 "phone": phone,
                 "address": address,
                 "unit_number": extracted_data.get("unitNumber") or None,
@@ -381,23 +412,144 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 "service_type": norm_service_type,
                 "preferred_date": date,
                 "details": details_field,
+                "status": "pending",
                 "price": 0,
+                "estimated_volume": "",
+                "estimated_items": [],
                 "order_number": order_number
             }
-        }
-        try:
-            email_resp = requests.post(
-                f"{SUPABASE_URL}/functions/v1/send-email",
-                headers=supabase_headers,
-                json=email_payload,
-                timeout=10
-            )
-            if email_resp.status_code == 200:
-                logging.info("Confirmation email sent successfully.")
-            else:
-                logging.warning(f"Edge Function returned status {email_resp.status_code}: {email_resp.text}")
-        except Exception as e:
-            logging.warning(f"Failed to trigger confirmation email: {e}")
+
+            logging.info(f"Inserting new booking for {name} to Supabase...")
+            try:
+                insert_resp = requests.post(
+                    f"{SUPABASE_URL}/rest/v1/bookings",
+                    headers=supabase_headers,
+                    json=insert_payload,
+                    timeout=15
+                )
+                if insert_resp.status_code >= 400:
+                    logging.error(f"Failed to insert booking: {insert_resp.status_code} - {insert_resp.text}")
+                    continue
+                logging.info(f"Successfully inserted booking with order number {order_number}.")
+            except Exception as e:
+                logging.error(f"Failed to insert booking: {e}")
+                continue
+
+            # Send email
+            logging.info(f"Triggering email Edge Function for booking {order_number}...")
+            email_payload = {
+                "type": "booking",
+                "record": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "address": address,
+                    "unit_number": extracted_data.get("unitNumber") or None,
+                    "city": city,
+                    "state": state,
+                    "zip_code": zip_code,
+                    "service_type": norm_service_type,
+                    "preferred_date": date,
+                    "details": details_field,
+                    "price": 0,
+                    "order_number": order_number
+                }
+            }
+            await trigger_email_function(email_payload, supabase_headers)
+
+        elif submission_type == "contact":
+            subject = extracted_data.get("contactSubject") or "General Enquiry"
+            message = extracted_data.get("contactMessage") or "No message details."
+            
+            message_field = f"{subject}: {message}\n\n[ElevenLabs ConvID: {conv_id}]"
+
+            insert_payload = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "message": message_field
+            }
+
+            logging.info(f"Inserting new contact/enquiry for {name} to Supabase...")
+            try:
+                insert_resp = requests.post(
+                    f"{SUPABASE_URL}/rest/v1/contacts",
+                    headers=supabase_headers,
+                    json=insert_payload,
+                    timeout=15
+                )
+                if insert_resp.status_code >= 400:
+                    logging.error(f"Failed to insert contact: {insert_resp.status_code} - {insert_resp.text}")
+                    continue
+                logging.info(f"Successfully inserted contact ticket.")
+            except Exception as e:
+                logging.error(f"Failed to insert contact: {e}")
+                continue
+
+            # Send email
+            logging.info(f"Triggering email Edge Function for contact enquiry...")
+            email_payload = {
+                "type": "contact",
+                "record": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "message": message_field
+                }
+            }
+            await trigger_email_function(email_payload, supabase_headers)
+
+        elif submission_type == "provider_signup":
+            service_area = extracted_data.get("providerServiceArea") or "N/A"
+            vehicle_type = extracted_data.get("providerVehicleType") or "Pickup Truck"
+            schedule = extracted_data.get("providerScheduleAvailability") or []
+            business_name = extracted_data.get("providerBusinessName") or ""
+            info = extracted_data.get("providerAdditionalInfo") or ""
+
+            insert_payload = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "service_area": service_area,
+                "vehicle_type": vehicle_type,
+                "availability": {
+                  "schedule": schedule,
+                  "businessName": business_name,
+                  "additionalInfo": info,
+                  "convId": conv_id
+                },
+                "status": "pending"
+            }
+
+            logging.info(f"Inserting new provider signup for {name} to Supabase...")
+            try:
+                insert_resp = requests.post(
+                    f"{SUPABASE_URL}/rest/v1/provider_signups",
+                    headers=supabase_headers,
+                    json=insert_payload,
+                    timeout=15
+                )
+                if insert_resp.status_code >= 400:
+                    logging.error(f"Failed to insert provider: {insert_resp.status_code} - {insert_resp.text}")
+                    continue
+                logging.info(f"Successfully inserted provider signup.")
+            except Exception as e:
+                logging.error(f"Failed to insert provider: {e}")
+                continue
+
+            # Send email
+            logging.info(f"Triggering email Edge Function for provider signup...")
+            email_payload = {
+                "type": "provider_signup",
+                "record": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "service_area": service_area,
+                    "vehicle_type": vehicle_type
+                }
+            }
+            await trigger_email_function(email_payload, supabase_headers)
 
     logging.info("Sync pass completed.")
 
