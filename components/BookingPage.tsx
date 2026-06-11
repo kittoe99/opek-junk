@@ -3,7 +3,7 @@ import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanS
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
-import { calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
+import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -89,6 +89,31 @@ export const BookingPage: React.FC = () => {
   const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
   const [movingHours, setMovingHours] = useState<number>(2);
   const [movingStep, setMovingStep] = useState<'details' | 'crew' | 'result'>('details');
+  const [movingRates, setMovingRates] = useState<{ rate2: number; rate3: number }>({ rate2: 149, rate3: 189 });
+  const [movingPricingLoading, setMovingPricingLoading] = useState(false);
+  const [movingPricingError, setMovingPricingError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadMovingRates() {
+      try {
+        const { data, error } = await supabase
+          .from('pricing_config')
+          .select('value')
+          .eq('key', 'moving_labor_rules')
+          .single();
+        if (data && data.value) {
+          setMovingRates({
+            rate2: data.value.price_per_hour_2_helpers || 149,
+            rate3: data.value.price_per_hour_3_helpers || 189
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load moving rates:', err);
+      }
+    }
+    loadMovingRates();
+  }, []);
+
   const [showInsuranceModal, setShowInsuranceModal] = useState(false);
   // Address autocomplete state
   const [addressQuery, setAddressQuery] = useState('');
@@ -177,7 +202,7 @@ export const BookingPage: React.FC = () => {
       let partialId = `mock-lead-${Date.now()}`;
       try {
         const { data, error: dbError } = await supabase
-          .from('bookings')
+          .from('Prebooking')
           .insert([
             {
               name,
@@ -1288,14 +1313,13 @@ export const BookingPage: React.FC = () => {
               {/* CREW & TIME SELECTION */}
               {movingStep === 'crew' && (
                 <div className="space-y-4 animate-in fade-in duration-300">
-                  {/* Helpers Selection */}
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Number of Helpers</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {([
-                        { helpers: 2, price: '$149 / hour', icon: Users },
-                        { helpers: 3, price: '$189 / hour', icon: Users }
-                      ] as const).map((option) => {
+                      {[
+                        { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: Users },
+                        { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: Users }
+                      ].map((option) => {
                         const isSelected = movingHelpers === option.helpers;
                         const Icon = option.icon;
                         return (
@@ -1361,38 +1385,59 @@ export const BookingPage: React.FC = () => {
                     </div>
                   </div>
 
+                  {movingPricingError && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl text-center">
+                      {movingPricingError}
+                    </div>
+                  )}
+
                   <div className="pt-4 flex gap-3">
                     <button
                       type="button"
                       onClick={() => setMovingStep('details')}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2"
+                      disabled={movingPricingLoading}
+                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        const movingPricePerHour = movingHelpers === 2 ? 149 : 189;
-                        const movingEstimateTotal = movingPricePerHour * movingHours;
-                        setEstimate({
-                          itemsDetected: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
-                          estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
-                          price: movingEstimateTotal,
-                          summary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
-                        });
-                        setFormData(prev => ({
-                          ...prev,
-                          estimatedItems: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
-                          estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
-                          price: movingEstimateTotal,
-                          estimateSummary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`,
-                          details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
-                        }));
-                        setMovingStep('result');
+                      onClick={async () => {
+                        setMovingPricingLoading(true);
+                        setMovingPricingError(null);
+                        try {
+                          const result = await calculateMovingLaborPrice(movingHelpers, movingHours);
+                          setEstimate({
+                            itemsDetected: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
+                            estimatedVolume: result.estimatedVolume,
+                            price: result.price,
+                            summary: result.summary
+                          });
+                          setFormData(prev => ({
+                            ...prev,
+                            estimatedItems: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
+                            estimatedVolume: result.estimatedVolume,
+                            price: result.price,
+                            estimateSummary: result.summary,
+                            details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
+                          }));
+                          setMovingStep('result');
+                        } catch (err: any) {
+                          console.error('Moving labor pricing error:', err);
+                          setMovingPricingError('Failed to calculate price. Please try again.');
+                        } finally {
+                          setMovingPricingLoading(false);
+                        }
                       }}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2"
+                      disabled={movingPricingLoading}
+                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
                     >
-                      Get Estimate <ArrowRight size={14} />
+                      {movingPricingLoading ? 'Calculating...' : 'Get Estimate'}
+                      {movingPricingLoading ? (
+                        <Loader2 size={14} className="animate-spin" />
+                      ) : (
+                        <ArrowRight size={14} />
+                      )}
                     </button>
                   </div>
                 </div>

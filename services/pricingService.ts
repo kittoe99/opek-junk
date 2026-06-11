@@ -57,3 +57,25 @@ export async function calculateDumpsterRentalPrice(options: DumpsterRentalOption
 
   return response.json();
 }
+
+export async function calculateMovingLaborPrice(helpers: number, hours: number): Promise<PriceEstimate> {
+  const response = await fetch(`${supabaseUrl}/functions/v1/calculate-price`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': supabaseAnonKey,
+      'Authorization': `Bearer ${supabaseAnonKey}`
+    },
+    body: JSON.stringify({
+      type: 'moving_labor',
+      helpers,
+      hours
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to calculate moving labor price on the backend');
+  }
+
+  return response.json();
+}

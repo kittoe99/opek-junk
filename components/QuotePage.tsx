@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
-import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions } from '../services/pricingService';
+import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -256,6 +256,30 @@ export const QuotePage: React.FC = () => {
     }
   }, [zipResult]);
 
+  // Load moving labor rates from Supabase config
+  const [movingRates, setMovingRates] = useState<{ rate2: number; rate3: number }>({ rate2: 149, rate3: 189 });
+
+  useEffect(() => {
+    async function loadMovingRates() {
+      try {
+        const { data, error } = await supabase
+          .from('pricing_config')
+          .select('value')
+          .eq('key', 'moving_labor_rules')
+          .single();
+        if (data && data.value) {
+          setMovingRates({
+            rate2: data.value.price_per_hour_2_helpers || 149,
+            rate3: data.value.price_per_hour_3_helpers || 189
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load moving rates:', err);
+      }
+    }
+    loadMovingRates();
+  }, []);
+
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
     if (!/^\d{5}$/.test(zip)) { setZipError('Please enter a valid 5-digit ZIP code.'); return; }
@@ -283,6 +307,7 @@ export const QuotePage: React.FC = () => {
   const [detectedItems, setDetectedItems] = useState<DetectedItem[]>([]);
   const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
   const [dumpsterPriceEstimate, setDumpsterPriceEstimate] = useState<PriceEstimate | null>(null);
+  const [movingPriceEstimate, setMovingPriceEstimate] = useState<PriceEstimate | null>(null);
   const [aiStep, setAiStep] = useState<'tips' | 'upload' | 'items' | 'result'>('tips');
   const [newItemName, setNewItemName] = useState('');
   const [pricingLoading, setPricingLoading] = useState(false);
@@ -516,7 +541,7 @@ export const QuotePage: React.FC = () => {
       let partialId = `mock-lead-${Date.now()}`;
       try {
         const { data, error: dbError } = await supabase
-          .from('bookings')
+          .from('Prebooking')
           .insert([
             {
               name,
@@ -1037,9 +1062,6 @@ export const QuotePage: React.FC = () => {
 
   // ── Dedicated Moving Labor Quote Form ──
   if (selectedOption === 'moving_labor') {
-    const movingPricePerHour = movingHelpers === 2 ? 149 : 189;
-    const movingEstimateTotal = movingPricePerHour * movingHours;
-
     return (
       <div className="min-h-screen bg-white">
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1221,14 +1243,14 @@ export const QuotePage: React.FC = () => {
           {/* STEP 2: CREW & TIME */}
           {movingStep === 'crew' && (
             <div className="space-y-8 animate-in fade-in duration-300">
-              {/* Helpers Selection */}
-              <div>
+               {/* Helpers Selection */}
+               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {([
-                    { helpers: 2, price: '$149 / hour', icon: Users },
-                    { helpers: 3, price: '$189 / hour', icon: Users }
-                  ] as const).map((option) => {
+                  {[
+                    { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: Users },
+                    { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: Users }
+                  ].map((option) => {
                     const isSelected = movingHelpers === option.helpers;
                     const Icon = option.icon;
                     return (
@@ -1250,6 +1272,9 @@ export const QuotePage: React.FC = () => {
                         <div>
                           <span className="block text-sm font-semibold text-secondary transition-colors">
                             {option.helpers} Helpers
+                          </span>
+                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
+                            {option.price}
                           </span>
                         </div>
                       </button>
@@ -1288,12 +1313,37 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
 
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl text-center">
+                  {error}
+                </div>
+              )}
+
               <div className="pt-4">
                 <button
-                  onClick={() => setMovingStep('result')}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
+                  onClick={async () => {
+                    setPricingLoading(true);
+                    setError(null);
+                    try {
+                      const price = await calculateMovingLaborPrice(movingHelpers, movingHours);
+                      setMovingPriceEstimate(price);
+                      setMovingStep('result');
+                    } catch (err: any) {
+                      console.error('Pricing error:', err);
+                      setError('Failed to calculate price. Please try again.');
+                    } finally {
+                      setPricingLoading(false);
+                    }
+                  }}
+                  disabled={pricingLoading}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider disabled:opacity-50"
                 >
-                  Get Estimate <ArrowRight size={14} />
+                  {pricingLoading ? 'Calculating...' : 'Get Estimate'}
+                  {pricingLoading ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <ArrowRight size={14} />
+                  )}
                 </button>
                 <button
                   onClick={() => setMovingStep('details')}
@@ -1306,15 +1356,11 @@ export const QuotePage: React.FC = () => {
           )}
 
           {/* STEP 3: ESTIMATE RESULT */}
-          {movingStep === 'result' && (
+          {movingStep === 'result' && movingPriceEstimate && (
             <div>
               {renderPriceResult(
                 [{ id: 'moving-labor', name: `${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`, quantity: 1 }],
-                {
-                  price: movingEstimateTotal,
-                  estimatedVolume: `${movingHelpers} Helpers for ${movingHours} hours`,
-                  summary: `${movingServiceType} service for ${movingType}. Professional movers bring their own equipment (dollies, straps). Moving truck is not included.`
-                },
+                movingPriceEstimate,
                 () => setMovingStep('crew'),
                 "Back to crew & time"
               )}

@@ -198,6 +198,43 @@ serve(async (req) => {
       )
     } 
     
+    else if (type === 'moving_labor') {
+      const { helpers, hours } = payload
+
+      // Fetch config
+      const { data: configData, error: configError } = await supabase
+        .from('pricing_config')
+        .select('*')
+        .eq('key', 'moving_labor_rules')
+        .single()
+
+      if (configError) throw configError
+
+      const rules = configData.value
+      const rate2 = rules?.price_per_hour_2_helpers ?? 149
+      const rate3 = rules?.price_per_hour_3_helpers ?? 189
+
+      let pricePerHour = rate2
+      if (helpers === 3) {
+        pricePerHour = rate3
+      } else if (helpers > 3) {
+        pricePerHour = rate3
+      }
+
+      const finalPrice = Math.round(pricePerHour * hours)
+
+      const summary = `Moving Labor: ${helpers} helpers for ${hours} hours at $${pricePerHour}/hour.`
+
+      return new Response(
+        JSON.stringify({
+          estimatedVolume: `${helpers} Helpers for ${hours} hours`,
+          price: finalPrice,
+          summary
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     else {
       return new Response(
         JSON.stringify({ error: 'Invalid calculation type' }),

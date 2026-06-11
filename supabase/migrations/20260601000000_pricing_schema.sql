@@ -53,7 +53,11 @@ INSERT INTO public.pricing_config (key, value, description) VALUES
     "extra_day_price": 25,
     "discount_days_threshold": 14,
     "discount_percent": 10
-}', 'Pricing variables for dumpster rental calculations')
+}', 'Pricing variables for dumpster rental calculations'),
+('moving_labor_rules', '{
+    "price_per_hour_2_helpers": 149,
+    "price_per_hour_3_helpers": 189
+}', 'Pricing variables for moving labor calculations (hourly rates)')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 -- Populate pricing_items

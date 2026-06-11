@@ -182,7 +182,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
       if (currentPartialId && !currentPartialId.startsWith('mock-')) {
         await supabase
-          .from('bookings')
+          .from('Prebooking')
           .update({
             name: formData.name,
             email: formData.email,
@@ -199,7 +199,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           .eq('id', currentPartialId);
       } else {
         const { data, error: dbError } = await supabase
-          .from('bookings')
+          .from('Prebooking')
           .insert([
             {
               name: formData.name,
@@ -264,11 +264,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         let dbError = null;
   
         try {
-          let query;
-          if (partialId && !partialId.startsWith('mock-')) {
-            query = supabase
-              .from('bookings')
-              .update({
+          const query = supabase
+            .from('bookings')
+            .insert([
+              {
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
@@ -286,41 +285,26 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 estimate_summary: estimate?.summary || '',
                 photo_url: image || '',
                 status: 'pending'
-              })
-              .eq('id', partialId)
-              .select('order_number')
-              .single();
-          } else {
-            query = supabase
-              .from('bookings')
-              .insert([
-                {
-                  name: formData.name,
-                  email: formData.email,
-                  phone: formData.phone,
-                  address: formData.address,
-                  unit_number: formData.unitNumber || null,
-                  city: formData.city,
-                  state: formData.state,
-                  zip_code: formData.zipCode,
-                  service_type: normalizedServiceType,
-                  preferred_date: formData.date,
-                  details: detailsText,
-                  estimated_items: estimate?.itemsDetected || [],
-                  estimated_volume: estimate?.estimatedVolume || '',
-                  price: estimate?.price || 0,
-                  estimate_summary: estimate?.summary || '',
-                  photo_url: image || '',
-                  status: 'pending'
-                }
-              ])
-              .select('order_number')
-              .single();
-          }
+              }
+            ])
+            .select('order_number')
+            .single();
   
           const res = await query;
           resultData = res.data;
           dbError = res.error;
+
+          if (!dbError && partialId && !partialId.startsWith('mock-')) {
+            supabase
+              .from('Prebooking')
+              .update({ status: 'converted' })
+              .eq('id', partialId)
+              .then(({ error: updateErr }) => {
+                if (updateErr) {
+                  console.warn('Failed to mark prebooking as converted:', updateErr);
+                }
+              });
+          }
         } catch (err) {
           console.warn('Supabase insert/update failed, falling back to mock submission:', err);
         }
