@@ -1,0 +1,29 @@
+name: opek-booking-sync-agent
+region: nyc
+features:
+  - buildpack-stack=ubuntu-22
+
+workers:
+  - name: booking-sync-agent
+    git:
+      repo_clone_url: https://github.com/kittoe99/opek-junk.git
+      branch: master
+    source_dir: /
+    run_command: python services/booking_sync_agent.py
+    build_command: pip install -r do-requirements.txt
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    envs:
+      - key: ELEVENLABS_API_KEY
+        type: SECRET
+        # Set via DigitalOcean dashboard or doctl
+      - key: OPENAI_API_KEY
+        type: SECRET
+        # Set via DigitalOcean dashboard or doctl
+      - key: SUPABASE_URL
+        value: "https://mjgwoukwyqwoectxfwqv.supabase.co"
+        type: GENERAL
+      - key: SUPABASE_ANON_KEY
+        type: SECRET
+        # Set via DigitalOcean dashboard or doctl
