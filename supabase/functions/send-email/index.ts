@@ -215,7 +215,11 @@ serve(async (req) => {
     }
 
     if (resendApiKey) {
-      console.log(`Sending real email using Resend to: ${toEmail}`);
+      const toRecipients = [toEmail];
+      if (toEmail.toLowerCase() !== 'support@opekjunkremoval.com') {
+        toRecipients.push('support@opekjunkremoval.com');
+      }
+      console.log(`Sending real email using Resend to: ${toRecipients.join(', ')}`);
       let response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -224,7 +228,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           from: fromEmail,
-          to: [toEmail],
+          to: toRecipients,
           subject: subject,
           html: htmlContent,
         }),
