@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY do-requirements.txt .
+RUN pip install --no-cache-dir -r do-requirements.txt
+
+# Copy only the agent and its dependencies
+COPY services/booking_sync_agent.py services/
+COPY elevenlabs-mcp-server/.env elevenlabs-mcp-server/.env
+
+CMD ["python", "services/booking_sync_agent.py"]
