@@ -23,3 +23,6 @@ workers:
       - key: SUPABASE_ANON_KEY
         type: SECRET
         # Set via DigitalOcean dashboard — do NOT commit value here
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        type: SECRET
+        # Set via DigitalOcean dashboard — do NOT commit value here

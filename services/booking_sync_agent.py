@@ -24,8 +24,7 @@ logging.basicConfig(
 # Constants
 AGENT_ID = "agent_5101kgxcwtkgek18m0j13cq16t3y"
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://mjgwoukwyqwoectxfwqv.supabase.co")
-SUPABASE_ANON_KEY = os.getenv(
-    "SUPABASE_ANON_KEY",
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY") or (
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1"
     "qZ3dvdWt3eXF3b2VjdHhmd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3NjAzNjcsIm"
     "V4cCI6MjA3MDMzNjM2N30.3ee-rHN_BYQKaZmLOTiyoVxU4fYLDnNnfToI8veH5F8"
@@ -267,8 +266,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
 
     # 2. Setup Supabase headers
     supabase_headers = {
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
         "Content-Type": "application/json",
         "Prefer": "return=representation"
     }
