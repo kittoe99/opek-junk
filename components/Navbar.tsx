@@ -140,7 +140,6 @@ export const Navbar: React.FC = () => {
     { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: Trash2 },
     { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: Container },
     { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: KeyRound },
-    { name: 'Donations Pickup', desc: 'Pickup and delivery to local charities', path: '/services/donations-pickup', icon: HeartHandshake },
     { name: 'Moving Labor', desc: 'Hourly labor for loading and heavy lifting', path: '/services/moving-labor', icon: BicepsFlexed },
   ];
 

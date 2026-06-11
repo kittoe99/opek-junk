@@ -16,7 +16,6 @@ import { ProcessEditorial } from './components/ProcessEditorial';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
-import { DonationsPickupPage } from './components/services/DonationsPickupPage';
 import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
@@ -134,14 +133,7 @@ function PropertyCleanoutPageWithSEO() {
   );
 }
 
-function DonationsPickupPageWithSEO() {
-  return (
-    <>
-      <SEO title="Donations Pickup | Opek Junk Removal" description="Donate gently used furniture, clothing, and household goods. Partner service providers pick up and deliver to local charities." />
-      <DonationsPickupPage />
-    </>
-  );
-}
+
 
 function MovingLaborPageWithSEO() {
   return (
@@ -223,7 +215,7 @@ function App() {
           <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
           <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
           <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
-          <Route path="/services/donations-pickup" element={<DonationsPickupPageWithSEO />} />
+          <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
           <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />

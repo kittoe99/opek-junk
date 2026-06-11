@@ -173,10 +173,9 @@ export const QuotePage: React.FC = () => {
   } | null;
 
   // Map incoming serviceType string to internal service type if present
-  const mappedServiceType: 'junk_removal' | 'donation_pickup' | 'moving_labor' | 'dumpster_rental' | null =
+  const mappedServiceType: 'junk_removal' | 'moving_labor' | 'dumpster_rental' | null =
     incomingState?.serviceType
-      ? (incomingState.serviceType.toLowerCase().includes('donation') ? 'donation_pickup'
-        : incomingState.serviceType.toLowerCase().includes('moving') ? 'moving_labor'
+      ? (incomingState.serviceType.toLowerCase().includes('moving') ? 'moving_labor'
         : incomingState.serviceType.toLowerCase().includes('dumpster') ? 'dumpster_rental'
         : 'junk_removal')
       : null;
@@ -190,8 +189,8 @@ export const QuotePage: React.FC = () => {
       ? { city: incomingState.zipResult.city, state: incomingState.zipResult.state, servedCity: { city: incomingState.zipResult.city, state: incomingState.zipResult.state } }
       : null
   );
-  const [selectedService, setSelectedService] = useState<'junk_removal' | 'donation_pickup' | 'moving_labor' | 'dumpster_rental' | null>(mappedServiceType);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | null>(mappedServiceType);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -864,7 +863,15 @@ export const QuotePage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => navigate('/booking', { state: { estimate, image, serviceType: selectedService, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } })}
+                onClick={() => {
+                  const serviceTypeLabel =
+                    selectedService === 'junk_removal' ? 'Junk Removal'
+                    : selectedService === 'donation_pickup' ? 'Donation Pick Up'
+                    : selectedService === 'moving_labor' ? 'Moving Labor'
+                    : selectedService === 'dumpster_rental' ? 'Dumpster Rental'
+                    : 'Junk Removal';
+                  navigate('/booking', { state: { estimate, image, serviceType: serviceTypeLabel, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } });
+                }}
                 className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
               >
                 Book Now <ArrowRight size={14} />
@@ -987,21 +994,6 @@ export const QuotePage: React.FC = () => {
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
                 <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
-              </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedService('donation_pickup')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
-            >
-              <div className="w-16 h-16 shrink-0">
-                <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Donation Pick Up</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
               </div>
               <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />

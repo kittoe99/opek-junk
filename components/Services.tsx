@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sofa, Container, Home, HeartHandshake, BicepsFlexed } from 'lucide-react';
+import { Sofa, Container, Home, BicepsFlexed } from 'lucide-react';
 
 const serviceItems = [
   {
@@ -20,12 +20,6 @@ const serviceItems = [
     icon: Home,
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
-  },
-  {
-    title: "Donations Pickup",
-    icon: HeartHandshake,
-    description: "Convenient pickup of gently used furniture, clothing, and household goods, delivered directly to local charities.",
-    path: "/services/donations-pickup"
   },
   {
     title: "Moving Labor",

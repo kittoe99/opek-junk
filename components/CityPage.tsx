@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, HeartHandshake, BicepsFlexed, Phone, Trash2, Container } from 'lucide-react';
+import { CheckCircle2, Home, Building2, PackageOpen, ChevronDown, MapPin, ArrowRight, ExternalLink, BicepsFlexed, Phone, Trash2, Container } from 'lucide-react';
 import { SEO } from './SEO';
 import { cities } from '../lib/cityData';
 import type { CityData } from '../lib/cityData';
@@ -33,12 +33,6 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       icon: PackageOpen,
       description: city.services.propertyCleanout,
       path: '/services/property-cleanout',
-    },
-    {
-      title: 'Donations Pickup',
-      icon: HeartHandshake,
-      description: city.services.donationsPickup,
-      path: '/services/donations-pickup',
     },
     {
       title: 'Moving Labor',
@@ -113,7 +107,6 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Junk Removal in ${city.name}`, url: 'https://opekjunkremoval.com/services/junk-removal' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Dumpster Rental in ${city.name}`, url: `https://opekjunkremoval.com/services/dumpster-rental` } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Property Cleanouts in ${city.name}`, url: 'https://opekjunkremoval.com/services/property-cleanout' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Donations Pickup in ${city.name}`, url: 'https://opekjunkremoval.com/services/donations-pickup' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: `Moving Labor in ${city.name}`, url: 'https://opekjunkremoval.com/services/moving-labor' } },
       ],
     },
@@ -462,7 +455,6 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                 {[
                   { label: 'Junk removal', path: '/services/junk-removal' },
                   { label: 'Dumpster rental', path: '/services/dumpster-rental' },
-                  { label: 'Donations pickup', path: '/services/donations-pickup' },
                   { label: 'Moving labor', path: '/services/moving-labor' },
                 ].map((s) => (
                   <Link

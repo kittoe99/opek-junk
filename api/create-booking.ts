@@ -45,6 +45,13 @@ export default async function handler(
       });
     }
 
+    const normalizedServiceType = serviceType
+      ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+        : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+        : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+        : 'Junk Removal')
+      : 'Junk Removal';
+
     const orderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
     // Insert into Supabase bookings table
@@ -60,7 +67,7 @@ export default async function handler(
           city,
           state,
           zip_code: zipCode,
-          service_type: serviceType,
+          service_type: normalizedServiceType,
           preferred_date: date,
           details: details || '',
           status: 'pending',
@@ -97,7 +104,7 @@ export default async function handler(
             city,
             state,
             zip_code: zipCode,
-            service_type: serviceType,
+            service_type: normalizedServiceType,
             preferred_date: date,
             details: details || '',
             price: 0,

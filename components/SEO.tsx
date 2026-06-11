@@ -139,7 +139,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
 export const seoConfig = {
   home: {
     title: 'Opek Junk Removal | Nationwide Service in All 50 States',
-    description: 'Nationwide junk removal, donations pickup, and moving labor. Available in all 50 states with same-day service, upfront flat-rate pricing, and vetted local providers.',
+    description: 'Nationwide junk removal, dumpster rental, and moving labor. Available in all 50 states with same-day service, upfront flat-rate pricing, and vetted local providers.',
     keywords: 'nationwide junk removal, junk removal near me, junk hauling, trash removal, furniture removal, appliance removal, same-day junk removal, eco-friendly disposal, all 50 states',
     schema: {
       "@context": "https://schema.org",

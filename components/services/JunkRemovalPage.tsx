@@ -137,7 +137,7 @@ export const JunkRemovalPage: React.FC = () => {
               Partner service providers specialize in both <strong>residential and commercial junk removal</strong>, serving communities nationwide. For homeowners, they handle everything from single furniture items to full attic and estate cleanouts. For business clients, they understand the importance of speed and compliance, offering after-hours scheduling, secure e-waste disposal, volume pricing, and full Certificates of Insurance (COI) to meet building management requirements.
             </p>
             <p className="mb-4">
-              Beyond standard junk removal, partner service providers also provide specialized <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link> for estates, foreclosures, and tenant turnovers. If you have gently used items that shouldn't go to waste, donation pickups can be coordinated to ensure they reach local charities. Need help loading or unloading a moving truck? Check out <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> services for reliable, hourly assistance.
+              Beyond standard junk removal, partner service providers also provide specialized <Link to="/services/property-cleanout" className="text-brand hover:underline font-medium">property cleanouts</Link> for estates, foreclosures, and tenant turnovers. Need help loading or unloading a moving truck? Check out <Link to="/services/moving-labor" className="text-brand hover:underline font-medium">moving labor</Link> services for reliable, hourly assistance.
             </p>
           </div>
         </div>

@@ -22,7 +22,7 @@ export const PrivacyPolicyPage: React.FC = () => {
             Welcome to <strong>Opek Junk Removal</strong> ("Opek," "we," "us," or "our"). We are committed to protecting your privacy and ensuring you have a positive experience when using our technology platform, website, mobile applications, or calling/texting our services.
           </p>
           <p className="mb-4">
-            Opek operates a technology platform that connects customers (users looking for junk removal, dumpster rentals, property cleanouts, donations pickup, or moving labor) with independent, vetted, third-party local service providers (each, a "Provider").
+            Opek operates a technology platform that connects customers (users looking for junk removal, dumpster rentals, property cleanouts, or moving labor) with independent, vetted, third-party local service providers (each, a "Provider").
           </p>
           <p>
             By accessing or using our services, website, or voice booking system, you consent to the collection, transfer, storage, disclosure, and use of your personal information as described in this Privacy Policy.

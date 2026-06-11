@@ -23,6 +23,13 @@ export const BookingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const estimateData = location.state as { estimate?: QuoteEstimate; image?: string; serviceType?: string } | null;
+  const rawServiceType = estimateData?.serviceType;
+  const initialServiceType = rawServiceType
+    ? (rawServiceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+      : rawServiceType.toLowerCase().includes('moving') ? 'Moving Labor'
+      : rawServiceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+      : 'Junk Removal')
+    : 'Junk Removal';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const addressDropdownRef = useRef<HTMLDivElement>(null);
@@ -100,7 +107,7 @@ export const BookingPage: React.FC = () => {
     state: '',
     zipCode: '',
     date: '',
-    serviceType: 'Junk Removal',
+    serviceType: initialServiceType,
     details: '',
     estimatedItems: [] as string[],
     estimatedVolume: '',
@@ -139,11 +146,18 @@ export const BookingPage: React.FC = () => {
       if (partId) setPartialBookingId(partId);
       if (prefName && prefPhone) setContactSubmitted(true);
 
+      const normalizedService = serviceType
+        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+          : 'Junk Removal')
+        : 'Junk Removal';
+
       setFormData(prev => ({
         ...prev,
         name: prefName,
         phone: prefPhone,
-        serviceType: serviceType || 'Junk Removal',
+        serviceType: normalizedService,
         estimatedItems: est.itemsDetected,
         estimatedVolume: est.estimatedVolume,
         price: est.price,
@@ -649,25 +663,6 @@ export const BookingPage: React.FC = () => {
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
                     <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, serviceType: 'Donation Pick Up' }));
-                    handleNextStep();
-                  }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Donation Pick Up' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
-                >
-                  <div className="w-16 h-16 shrink-0">
-                    <img src="/opek-nav.svg" alt="Donation Pick Up" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Donation Pick Up' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Donation Pick Up</h3>
-                    <p className="text-secondary-400 text-xs md:text-sm">Service providers deliver gently used items to local charities</p>
                   </div>
                   <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                     <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />

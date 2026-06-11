@@ -45,6 +45,15 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [partialId, setPartialId] = useState<string | null>(partialBookingId || null);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (partialBookingId) {
+      setPartialId(partialBookingId);
+    }
+  }, [partialBookingId]);
+
   const addressDropdownRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -154,9 +163,73 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep('address');
+    setContactSubmitting(true);
+    try {
+      const detailsText = estimate
+        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
+        : formData.details;
+
+      const normalizedServiceType = serviceType
+        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+          : 'Junk Removal')
+        : 'Junk Removal';
+
+      let currentPartialId = partialId;
+
+      if (currentPartialId && !currentPartialId.startsWith('mock-')) {
+        await supabase
+          .from('bookings')
+          .update({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            service_type: normalizedServiceType,
+            details: detailsText,
+            estimated_items: estimate?.itemsDetected || [],
+            estimated_volume: estimate?.estimatedVolume || '',
+            price: estimate?.price || 0,
+            estimate_summary: estimate?.summary || '',
+            photo_url: image || '',
+            status: 'partially_submitted'
+          })
+          .eq('id', currentPartialId);
+      } else {
+        const { data, error: dbError } = await supabase
+          .from('bookings')
+          .insert([
+            {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              service_type: normalizedServiceType,
+              zip_code: defaultZip?.zipCode || formData.zipCode || null,
+              details: detailsText,
+              estimated_items: estimate?.itemsDetected || [],
+              estimated_volume: estimate?.estimatedVolume || '',
+              price: estimate?.price || 0,
+              estimate_summary: estimate?.summary || '',
+              photo_url: image || '',
+              status: 'partially_submitted'
+            }
+          ])
+          .select('id')
+          .single();
+
+        if (!dbError && data?.id) {
+          currentPartialId = data.id;
+          setPartialId(data.id);
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to save partial booking lead on contact step:', err);
+    } finally {
+      setContactSubmitting(false);
+      setStep('address');
+    }
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -180,12 +253,19 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
         : formData.details;
 
+      const normalizedServiceType = serviceType
+        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+          : 'Junk Removal')
+        : 'Junk Removal';
+
         let resultData = null;
         let dbError = null;
   
         try {
           let query;
-          if (partialBookingId && !partialBookingId.startsWith('mock-')) {
+          if (partialId && !partialId.startsWith('mock-')) {
             query = supabase
               .from('bookings')
               .update({
@@ -197,7 +277,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 city: formData.city,
                 state: formData.state,
                 zip_code: formData.zipCode,
-                service_type: serviceType,
+                service_type: normalizedServiceType,
                 preferred_date: formData.date,
                 details: detailsText,
                 estimated_items: estimate?.itemsDetected || [],
@@ -207,7 +287,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 photo_url: image || '',
                 status: 'pending'
               })
-              .eq('id', partialBookingId)
+              .eq('id', partialId)
               .select('order_number')
               .single();
           } else {
@@ -223,7 +303,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   city: formData.city,
                   state: formData.state,
                   zip_code: formData.zipCode,
-                  service_type: serviceType,
+                  service_type: normalizedServiceType,
                   preferred_date: formData.date,
                   details: detailsText,
                   estimated_items: estimate?.itemsDetected || [],
@@ -261,7 +341,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           city: formData.city,
           state: formData.state,
           zip_code: formData.zipCode,
-          service_type: serviceType,
+          service_type: normalizedServiceType,
           preferred_date: formData.date,
           details: detailsText,
           price: estimate?.price || null,
@@ -280,10 +360,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   // ── Success screen ──
   if (submitted) {
+    const normalizedServiceType = serviceType
+      ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+        : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+        : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+        : 'Junk Removal')
+      : 'Junk Removal';
+
     return (
       <BookingSuccessView
         orderNumber={orderNumber}
-        serviceType={serviceType}
+        serviceType={normalizedServiceType}
         name={formData.name}
         phone={formData.phone}
         email={formData.email}
@@ -378,8 +465,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.name}
               onChange={handleInputChange}
               required
+              disabled={contactSubmitting}
               placeholder="John Smith"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
 
@@ -391,9 +479,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.email}
               onChange={handleInputChange}
               required
+              disabled={contactSubmitting}
               type="email"
               placeholder="john@example.com"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
 
@@ -405,18 +494,19 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.phone}
               onChange={handleInputChange}
               required
+              disabled={contactSubmitting}
               type="tel"
               placeholder="(555) 123-4567"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
               <ArrowLeft size={14} /> {onBack ? backLabel : 'Back'}
             </button>
-            <button type="submit" className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
-              Continue <ArrowRight size={14} />
+            <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              {contactSubmitting ? 'Saving...' : <>Continue <ArrowRight size={14} /></>}
             </button>
           </div>
         </form>
