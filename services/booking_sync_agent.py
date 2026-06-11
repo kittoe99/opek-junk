@@ -126,10 +126,10 @@ async def extract_booking_details(transcript_text: str, openai_key: str) -> Opti
     )
 
     try:
-        logging.info("Using OpenAI (GPT-4o-mini) for structured extraction...")
+        logging.info("Using OpenAI (gpt-5-mini) for structured extraction...")
         client = OpenAI(api_key=openai_key)
         completion = client.beta.chat.completions.parse(
-            model="gpt-4o-mini",
+            model="gpt-5-mini",
             messages=[
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": prompt}
@@ -314,6 +314,19 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
         details_text = extracted_data.get("details") or ""
         details_field = f"{details_text}\n\n[ElevenLabs ConvID: {conv_id}]"
 
+        # Normalize service type
+        norm_service_type = "Junk Removal"
+        if service_type:
+            service_type_lower = service_type.lower()
+            if "donation" in service_type_lower:
+                norm_service_type = "Donation Pick Up"
+            elif "moving" in service_type_lower:
+                norm_service_type = "Moving Labor"
+            elif "dumpster" in service_type_lower:
+                norm_service_type = "Dumpster Rental"
+            else:
+                norm_service_type = "Junk Removal"
+
         order_number = generate_order_number()
 
         # 6. Insert booking into Supabase
@@ -326,7 +339,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             "city": city,
             "state": state,
             "zip_code": zip_code,
-            "service_type": service_type,
+            "service_type": norm_service_type,
             "preferred_date": date,
             "details": details_field,
             "status": "pending",
@@ -365,7 +378,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 "city": city,
                 "state": state,
                 "zip_code": zip_code,
-                "service_type": service_type,
+                "service_type": norm_service_type,
                 "preferred_date": date,
                 "details": details_field,
                 "price": 0,
