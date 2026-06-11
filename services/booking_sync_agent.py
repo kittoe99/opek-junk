@@ -173,7 +173,7 @@ async def extract_transcript_details(transcript_text: str, openai_key: str) -> O
         f"- 'none': No valid request, prank call, or they hung up immediately.\n\n"
         f"Based on the 'submissionType', extract and fill the corresponding fields:\n"
         f"1. For 'booking': Fill name, email, phone, address, unitNumber, city, state, zipCode, serviceType, date, and details.\n"
-        f"2. For 'contact': Fill name, email, phone, contactSubject, and contactMessage (the message describing their question or support request).\n"
+        f"2. For 'contact': Fill name, email, phone, contactSubject, and contactMessage (which MUST be a clear, concise summary of what the caller inquired about or their message/concern).\n"
         f"3. For 'provider_signup': Fill name, email, phone, providerServiceArea, providerVehicleType, providerScheduleAvailability, providerBusinessName, and providerAdditionalInfo.\n\n"
         f"CRITICAL DATE RULE (for bookings):\n"
         f"The current local date is {current_date}. You MUST convert any relative or informal dates mentioned (e.g. 'tomorrow', 'next Monday', 'June 11th', 'this Friday') "
@@ -323,18 +323,11 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             continue
 
         submission_type = extracted_data.get("submissionType", "none")
-        if submission_type == "none":
-            # If it's none, we record it as a contact enquiry anyway so it doesn't get re-processed
-            logging.info(f"Conversation {conv_id} classified as 'none'. Recording as a general log in contacts.")
-            submission_type = "contact"
-            extracted_data["contactSubject"] = "General Call Log"
-            extracted_data["contactMessage"] = f"Caller discussed general topics or call was empty. Conversation ID: {conv_id}."
+        name = extracted_data.get("name")
+        phone = extracted_data.get("phone")
+        email = extracted_data.get("email")
 
-        name = extracted_data.get("name") or "Phone Caller"
-        phone = extracted_data.get("phone") or "N/A"
-        email = extracted_data.get("email") or ""
-
-        # Validate bookings requirements
+        # 1. Validate bookings requirements
         if submission_type == "booking":
             address = extracted_data.get("address")
             city = extracted_data.get("city")
@@ -344,8 +337,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             date = extracted_data.get("date")
 
             missing = []
-            if not name or name == "Phone Caller": missing.append("name")
-            if phone == "N/A": missing.append("phone")
+            if not name or name.strip().lower() in ["phone caller", "unknown", "none", "null", ""]: missing.append("name")
+            if not phone or phone.strip().lower() in ["n/a", "unknown", "none", "null", ""]: missing.append("phone")
             if not address: missing.append("address")
             if not city: missing.append("city")
             if not state: missing.append("state")
@@ -372,6 +365,38 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 submission_type = "contact"
                 extracted_data["contactSubject"] = "Booking Date Issue Callback"
                 extracted_data["contactMessage"] = f"Caller wanted to book but date format was invalid: '{date}'."
+
+        # 2. Validate general enquiries (contact type)
+        if submission_type == "contact" or submission_type == "none":
+            clean_name = (name or "").strip()
+            clean_email = (email or "").strip()
+            clean_phone = (phone or "").strip()
+            
+            has_name = bool(clean_name and clean_name.lower() not in ["phone caller", "unknown", "none", "null", "n/a", ""])
+            has_email = bool(clean_email and "@" in clean_email)
+            has_phone = bool(clean_phone and clean_phone.lower() not in ["n/a", "unknown", "none", "null", ""])
+
+            is_valid_contact = has_name and (has_email or has_phone)
+
+            if not is_valid_contact:
+                # Downgrade to system call log to prevent infinite loops while keeping list clean
+                logging.info(f"Conversation {conv_id} lacks name or contact details. Logging as a general log in contacts to mark as synced.")
+                submission_type = "contact"
+                name = "Call Log (No Contact Details)"
+                phone = phone or "N/A"
+                email = email or ""
+                extracted_data["contactSubject"] = "System Call Log"
+                extracted_data["contactMessage"] = f"Conversation completed but did not contain booking, signup, or contact details. ID: {conv_id}."
+            else:
+                name = clean_name
+                phone = clean_phone if has_phone else "N/A"
+                email = clean_email if has_email else ""
+                logging.info(f"Conversation {conv_id} classified as a valid customer contact enquiry: {name}.")
+        else:
+            # provider_signup or valid booking
+            name = name or "Phone Caller"
+            phone = phone or "N/A"
+            email = email or ""
 
         # Process insertions based on decided submission_type
         if submission_type == "booking":
