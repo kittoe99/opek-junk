@@ -212,7 +212,8 @@ def load_agent_state(supabase_headers: dict) -> dict:
     """Load sync agent state from pricing_config table."""
     default_state = {
         "last_processed_timestamp": 0,
-        "processed_ids": []
+        "processed_ids": [],
+        "failed_attempts": {}
     }
     try:
         url = f"{SUPABASE_URL}/rest/v1/pricing_config?key=eq.booking_sync_agent_state"
@@ -224,7 +225,8 @@ def load_agent_state(supabase_headers: dict) -> dict:
             if isinstance(val, dict):
                 return {
                     "last_processed_timestamp": val.get("last_processed_timestamp", 0),
-                    "processed_ids": val.get("processed_ids", [])
+                    "processed_ids": val.get("processed_ids", []),
+                    "failed_attempts": val.get("failed_attempts", {})
                 }
     except Exception as e:
         logging.warning(f"Failed to load agent state from database: {e}")
@@ -262,13 +264,52 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     state = load_agent_state(supabase_headers)
     last_processed_ts = state["last_processed_timestamp"]
     processed_ids = set(state["processed_ids"])
+    failed_attempts = state.setdefault("failed_attempts", {})
     
-    # 1. Fetch conversations from ElevenLabs with pagination support
+    # 1. Fetch first page of conversations from ElevenLabs to check for candidate records
     headers = {
         "xi-api-key": elevenlabs_key,
         "Content-Type": "application/json"
     }
     
+    url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
+    try:
+        logging.info("Checking first page of conversations from ElevenLabs...")
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        first_page_data = response.json()
+    except Exception as e:
+        logging.error(f"Failed to fetch conversations from ElevenLabs on page 1: {e}")
+        return
+        
+    page_convs = first_page_data.get("conversations", [])
+    if not page_convs:
+        logging.info("No conversations returned by ElevenLabs. Nothing to sync.")
+        return
+
+    # Early exit check: Are there any potentially new completed calls on the first page?
+    has_candidates = False
+    for c in page_convs:
+        conv_id = c.get("conversation_id")
+        start_time = c.get("start_time_unix_secs", 0)
+        status = c.get("status")
+        message_count = c.get("message_count", 0)
+
+        if conv_id in processed_ids:
+            continue
+        if start_time < last_processed_ts - 1800:
+            continue
+        if status != "done" or message_count < 2:
+            continue
+
+        has_candidates = True
+        break
+
+    if not has_candidates:
+        logging.info("No new completed conversations in buffer window. Skipping sync pass.")
+        return
+
+    # 2. Fetch conversations with pagination support (reusing the first page we already fetched)
     conversations = []
     cursor = None
     has_more = True
@@ -277,19 +318,22 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
     stop_paginating = False
     
     while has_more and page_count < max_pages and not stop_paginating:
-        url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
-        if cursor:
-            url += f"&cursor={cursor}"
-            
-        try:
-            logging.info(f"Fetching page {page_count + 1} of conversations...")
-            response = requests.get(url, headers=headers, timeout=15)
-            response.raise_for_status()
-            data = response.json()
-        except Exception as e:
-            logging.error(f"Failed to fetch conversations from ElevenLabs on page {page_count + 1}: {e}")
-            break
-            
+        if page_count == 0:
+            data = first_page_data
+        else:
+            url = f"https://api.elevenlabs.io/v1/convai/conversations?agent_id={AGENT_ID}"
+            if cursor:
+                url += f"&cursor={cursor}"
+                
+            try:
+                logging.info(f"Fetching page {page_count + 1} of conversations...")
+                response = requests.get(url, headers=headers, timeout=15)
+                response.raise_for_status()
+                data = response.json()
+            except Exception as e:
+                logging.error(f"Failed to fetch conversations from ElevenLabs on page {page_count + 1}: {e}")
+                break
+                
         page_convs = data.get("conversations", [])
         if not page_convs:
             break
@@ -336,6 +380,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
 
     new_processed_ids = []
     max_ts_this_pass = last_processed_ts
+    state_changed = False
 
     for conv in conversations:
         conv_id = conv.get("conversation_id")
@@ -360,6 +405,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             logging.info(f"Skipping call {conv_id} because of low message count ({message_count}). Marking as processed.")
             processed_ids.add(conv_id)
             new_processed_ids.append(conv_id)
+            state_changed = True
             if start_time > max_ts_this_pass:
                 max_ts_this_pass = start_time
             continue
@@ -369,6 +415,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             logging.info(f"Conversation {conv_id} already has a record recorded in database. Adding to state and skipping.")
             processed_ids.add(conv_id)
             new_processed_ids.append(conv_id)
+            state_changed = True
             if start_time > max_ts_this_pass:
                 max_ts_this_pass = start_time
             continue
@@ -383,6 +430,14 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             conv_details = detail_resp.json()
         except Exception as e:
             logging.error(f"Failed to fetch conversation details for {conv_id}: {e}")
+            failed_attempts[conv_id] = failed_attempts.get(conv_id, 0) + 1
+            if failed_attempts[conv_id] >= 3:
+                logging.warning(f"Conversation {conv_id} details fetch failed 3 times. Skipping further retries.")
+                processed_ids.add(conv_id)
+                new_processed_ids.append(conv_id)
+                state_changed = True
+                if conv_id in failed_attempts:
+                    del failed_attempts[conv_id]
             continue
 
         transcript_list = conv_details.get("transcript", [])
@@ -390,6 +445,7 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             logging.info(f"Conversation {conv_id} transcript is empty. Marking as processed.")
             processed_ids.add(conv_id)
             new_processed_ids.append(conv_id)
+            state_changed = True
             if start_time > max_ts_this_pass:
                 max_ts_this_pass = start_time
             continue
@@ -408,6 +464,14 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
 
         if not extracted_data:
             logging.warning(f"No structured output returned for conversation {conv_id}.")
+            failed_attempts[conv_id] = failed_attempts.get(conv_id, 0) + 1
+            if failed_attempts[conv_id] >= 3:
+                logging.warning(f"Conversation {conv_id} structured extraction failed 3 times. Skipping further retries.")
+                processed_ids.add(conv_id)
+                new_processed_ids.append(conv_id)
+                state_changed = True
+                if conv_id in failed_attempts:
+                    del failed_attempts[conv_id]
             continue
 
         submission_type = extracted_data.get("submissionType", "none")
@@ -543,34 +607,34 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 )
                 if insert_resp.status_code >= 400:
                     logging.error(f"Failed to insert booking: {insert_resp.status_code} - {insert_resp.text}")
-                    continue
-                logging.info(f"Successfully inserted booking with order number {order_number}.")
-                sync_success = True
+                else:
+                    logging.info(f"Successfully inserted booking with order number {order_number}.")
+                    sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert booking: {e}")
-                continue
 
-            # Send email
-            logging.info(f"Triggering email Edge Function for booking {order_number}...")
-            email_payload = {
-                "type": "booking",
-                "record": {
-                    "name": name,
-                    "email": email,
-                    "phone": phone,
-                    "address": address,
-                    "unit_number": extracted_data.get("unitNumber") or None,
-                    "city": city,
-                    "state": state,
-                    "zip_code": zip_code,
-                    "service_type": norm_service_type,
-                    "preferred_date": date,
-                    "details": details_field,
-                    "price": 0,
-                    "order_number": order_number
+            if sync_success:
+                # Send email
+                logging.info(f"Triggering email Edge Function for booking {order_number}...")
+                email_payload = {
+                    "type": "booking",
+                    "record": {
+                        "name": name,
+                        "email": email,
+                        "phone": phone,
+                        "address": address,
+                        "unit_number": extracted_data.get("unitNumber") or None,
+                        "city": city,
+                        "state": state,
+                        "zip_code": zip_code,
+                        "service_type": norm_service_type,
+                        "preferred_date": date,
+                        "details": details_field,
+                        "price": 0,
+                        "order_number": order_number
+                    }
                 }
-            }
-            await trigger_email_function(email_payload, supabase_headers)
+                await trigger_email_function(email_payload, supabase_headers)
 
         elif submission_type == "contact":
             subject = extracted_data.get("contactSubject") or "General Enquiry"
@@ -595,25 +659,25 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 )
                 if insert_resp.status_code >= 400:
                     logging.error(f"Failed to insert contact: {insert_resp.status_code} - {insert_resp.text}")
-                    continue
-                logging.info(f"Successfully inserted contact ticket.")
-                sync_success = True
+                else:
+                    logging.info(f"Successfully inserted contact ticket.")
+                    sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert contact: {e}")
-                continue
 
-            # Send email
-            logging.info(f"Triggering email Edge Function for contact enquiry...")
-            email_payload = {
-                "type": "contact",
-                "record": {
-                    "name": name,
-                    "email": email,
-                    "phone": phone,
-                    "message": message_field
+            if sync_success:
+                # Send email
+                logging.info(f"Triggering email Edge Function for contact enquiry...")
+                email_payload = {
+                    "type": "contact",
+                    "record": {
+                        "name": name,
+                        "email": email,
+                        "phone": phone,
+                        "message": message_field
+                    }
                 }
-            }
-            await trigger_email_function(email_payload, supabase_headers)
+                await trigger_email_function(email_payload, supabase_headers)
 
         elif submission_type == "provider_signup":
             service_area = extracted_data.get("providerServiceArea") or "N/A"
@@ -647,42 +711,55 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                 )
                 if insert_resp.status_code >= 400:
                     logging.error(f"Failed to insert provider: {insert_resp.status_code} - {insert_resp.text}")
-                    continue
-                logging.info(f"Successfully inserted provider signup.")
-                sync_success = True
+                else:
+                    logging.info(f"Successfully inserted provider signup.")
+                    sync_success = True
             except Exception as e:
                 logging.error(f"Failed to insert provider: {e}")
-                continue
 
-            # Send email
-            logging.info(f"Triggering email Edge Function for provider signup...")
-            email_payload = {
-                "type": "provider_signup",
-                "record": {
-                    "name": name,
-                    "email": email,
-                    "phone": phone,
-                    "service_area": service_area,
-                    "vehicle_type": vehicle_type
+            if sync_success:
+                # Send email
+                logging.info(f"Triggering email Edge Function for provider signup...")
+                email_payload = {
+                    "type": "provider_signup",
+                    "record": {
+                        "name": name,
+                        "email": email,
+                        "phone": phone,
+                        "service_area": service_area,
+                        "vehicle_type": vehicle_type
+                    }
                 }
-            }
-            await trigger_email_function(email_payload, supabase_headers)
+                await trigger_email_function(email_payload, supabase_headers)
 
-        # Update tracking state if sync was successful
+        # Update tracking state if sync was successful or if we hit max retries
         if sync_success:
             processed_ids.add(conv_id)
             new_processed_ids.append(conv_id)
+            state_changed = True
             if start_time > max_ts_this_pass:
                 max_ts_this_pass = start_time
+            if conv_id in failed_attempts:
+                del failed_attempts[conv_id]
+        else:
+            failed_attempts[conv_id] = failed_attempts.get(conv_id, 0) + 1
+            if failed_attempts[conv_id] >= 3:
+                logging.warning(f"Conversation {conv_id} sync failed 3 times. Skipping further retries.")
+                processed_ids.add(conv_id)
+                new_processed_ids.append(conv_id)
+                state_changed = True
+                if conv_id in failed_attempts:
+                    del failed_attempts[conv_id]
 
     # Save updated state back to database
-    if new_processed_ids or max_ts_this_pass > last_processed_ts:
+    if state_changed or max_ts_this_pass > last_processed_ts:
         recent_ids = list(processed_ids)
         if len(recent_ids) > 100:
             recent_ids = recent_ids[-100:]
         
         state["last_processed_timestamp"] = max(last_processed_ts, max_ts_this_pass)
         state["processed_ids"] = recent_ids
+        state["failed_attempts"] = failed_attempts
         save_agent_state(state, supabase_headers)
         logging.info(f"Saved state to database: last_processed_timestamp={state['last_processed_timestamp']}, tracked_ids_count={len(recent_ids)}")
 
