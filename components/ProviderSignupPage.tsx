@@ -90,15 +90,19 @@ export const ProviderSignupPage: React.FC = () => {
       const { error: insertError } = await supabase
         .from('provider_signups')
         .insert([{
-          name: providerName,
-          email: formData.email,
-          phone: formData.phone,
-          service_area: formData.serviceArea,
-          vehicle_type: formData.vehicleType,
-          availability: {
-            schedule: formData.scheduleAvailability,
-            businessName: formData.businessName,
-            additionalInfo: formData.additionalInfo
+          customer_info: {
+            name: providerName,
+            email: formData.email,
+            phone: formData.phone
+          },
+          provider_info: {
+            service_area: formData.serviceArea,
+            vehicle_type: formData.vehicleType,
+            availability: {
+              schedule: formData.scheduleAvailability,
+              businessName: formData.businessName,
+              additionalInfo: formData.additionalInfo
+            }
           },
           status: 'pending'
         }]);

@@ -8,19 +8,30 @@ import { ServiceArea } from './ServiceArea';
 interface BookingResult {
   id: string;
   order_number: string;
-  name: string;
-  phone: string;
-  address: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  service_type: string;
-  preferred_date: string;
+  customer_info: {
+    name: string;
+    phone: string;
+    email: string;
+  };
+  location_info: {
+    address: string;
+    unit_number: string | null;
+    city: string;
+    state: string;
+    zip_code: string;
+  };
+  booking_details: {
+    service_type: string;
+    preferred_date: string;
+    details: string;
+    estimated_items: string[] | null;
+    estimated_volume: string | null;
+    price: number | null;
+    estimate_summary: string | null;
+    photo_url: string | null;
+  };
   status: string;
   created_at: string;
-  estimated_volume: string | null;
-  price_range_min: number | null;
-  price_range_max: number | null;
 }
 
 interface StatusHistoryItem {
@@ -66,12 +77,12 @@ export const TrackOrderPage: React.FC = () => {
     try {
       let query = supabase
         .from('bookings')
-        .select('id, order_number, name, phone, address, city, state, zip_code, service_type, preferred_date, status, created_at, estimated_volume, price_range_min, price_range_max')
+        .select('id, order_number, customer_info, location_info, booking_details, status, created_at')
         .order('created_at', { ascending: false });
 
       if (searchType === 'phone') {
         const digits = value.replace(/\D/g, '');
-        query = query.like('phone', `%${digits}%`);
+        query = query.like('customer_info->>phone', `%${digits}%`);
       } else {
         const normalized = value.toUpperCase().trim();
         query = query.eq('order_number', normalized);
@@ -196,34 +207,38 @@ export const TrackOrderPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Customer</p>
-                  <p className="text-sm font-bold text-secondary">{selectedOrder.name}</p>
+                  <p className="text-sm font-bold text-secondary">{selectedOrder.customer_info?.name}</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Phone</p>
-                  <p className="text-sm font-bold text-secondary">{selectedOrder.phone}</p>
+                  <p className="text-sm font-bold text-secondary">{selectedOrder.customer_info?.phone}</p>
                 </div>
               </div>
               <div>
                 <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Service Address</p>
                 <p className="text-sm font-bold text-secondary">
-                  {selectedOrder.address}{selectedOrder.city && `, ${selectedOrder.city}`}{selectedOrder.state && `, ${selectedOrder.state}`}{selectedOrder.zip_code && ` ${selectedOrder.zip_code}`}
+                  {selectedOrder.location_info?.address}
+                  {selectedOrder.location_info?.unit_number && `, ${selectedOrder.location_info.unit_number}`}
+                  {selectedOrder.location_info?.city && `, ${selectedOrder.location_info.city}`}
+                  {selectedOrder.location_info?.state && `, ${selectedOrder.location_info.state}`}
+                  {selectedOrder.location_info?.zip_code && ` ${selectedOrder.location_info.zip_code}`}
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Service Type</p>
-                  <p className="text-sm font-bold text-secondary capitalize">{selectedOrder.service_type?.replace(/_/g, ' ') || 'General'}</p>
+                  <p className="text-sm font-bold text-secondary capitalize">{selectedOrder.booking_details?.service_type?.replace(/_/g, ' ') || 'General'}</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Preferred Date</p>
-                  <p className="text-sm font-bold text-secondary">{selectedOrder.preferred_date ? formatDate(selectedOrder.preferred_date) : 'Not specified'}</p>
+                  <p className="text-sm font-bold text-secondary">{selectedOrder.booking_details?.preferred_date ? formatDate(selectedOrder.booking_details.preferred_date) : 'Not specified'}</p>
                 </div>
               </div>
-              {(selectedOrder.price_range_min || selectedOrder.price_range_max) && (
+              {selectedOrder.booking_details?.price !== undefined && selectedOrder.booking_details?.price !== null && (
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Estimated Price</p>
-                  <p className="text-3xl font-black text-brand">${selectedOrder.price_range_min} &ndash; ${selectedOrder.price_range_max}</p>
-                  {selectedOrder.estimated_volume && <p className="text-xs text-secondary-400 mt-1">Volume: {selectedOrder.estimated_volume}</p>}
+                  <p className="text-3xl font-black text-brand">${selectedOrder.booking_details.price}</p>
+                  {selectedOrder.booking_details.estimated_volume && <p className="text-xs text-secondary-400 mt-1">Volume: {selectedOrder.booking_details.estimated_volume}</p>}
                 </div>
               )}
             </div>
@@ -354,12 +369,12 @@ export const TrackOrderPage: React.FC = () => {
                               </span>
                             </div>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary-500">
-                              {order.service_type && <span className="capitalize">{order.service_type.replace(/_/g, ' ')}</span>}
-                              {order.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatDate(order.preferred_date)}</span>}
-                              {order.city && <span className="flex items-center gap-1"><MapPin size={11} />{order.city}, {order.state}</span>}
+                              {order.booking_details?.service_type && <span className="capitalize">{order.booking_details.service_type.replace(/_/g, ' ')}</span>}
+                              {order.booking_details?.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatDate(order.booking_details.preferred_date)}</span>}
+                              {order.location_info?.city && <span className="flex items-center gap-1"><MapPin size={11} />{order.location_info.city}, {order.location_info.state}</span>}
                             </div>
-                            {(order.price_range_min || order.price_range_max) && (
-                              <p className="text-sm font-black text-brand mt-2">${order.price_range_min} &ndash; ${order.price_range_max}</p>
+                            {order.booking_details?.price !== undefined && order.booking_details?.price !== null && (
+                              <p className="text-sm font-black text-brand mt-2">${order.booking_details.price}</p>
                             )}
                           </div>
                           <ChevronRight size={18} className="text-secondary-300 group-hover:text-brand transition-colors shrink-0" />

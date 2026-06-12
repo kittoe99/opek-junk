@@ -54,26 +54,40 @@ export default async function handler(
 
     const orderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
+    const customerInfo = {
+      name,
+      email: email || '',
+      phone
+    };
+
+    const locationInfo = {
+      address,
+      unit_number: unitNumber || null,
+      city,
+      state,
+      zip_code: zipCode
+    };
+
+    const bookingDetails = {
+      service_type: normalizedServiceType,
+      preferred_date: date,
+      details: details || '',
+      estimated_items: [],
+      estimated_volume: '',
+      price: 0,
+      estimate_summary: '',
+      photo_url: ''
+    };
+
     // Insert into Supabase bookings table
     const { data, error } = await supabase
       .from('bookings')
       .insert([
         {
-          name,
-          email: email || '',
-          phone,
-          address,
-          unit_number: unitNumber || null,
-          city,
-          state,
-          zip_code: zipCode,
-          service_type: normalizedServiceType,
-          preferred_date: date,
-          details: details || '',
+          customer_info: customerInfo,
+          location_info: locationInfo,
+          booking_details: bookingDetails,
           status: 'pending',
-          price: 0,
-          estimated_volume: '',
-          estimated_items: [],
           order_number: orderNumber
         }
       ])

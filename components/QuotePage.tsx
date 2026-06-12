@@ -27,6 +27,8 @@ const ITEM_CATALOG: CatalogCategory[] = [
     items: [
       { name: 'Sofa / Couch', image: '/items/sofa.svg' },
       { name: 'Mattress', image: '/items/mattress.svg' },
+      { name: 'Box Spring', image: '/items/box-spring.svg' },
+      { name: 'Dresser', image: '/items/dresser.svg' },
       { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
       { name: 'Washer / Dryer', image: '/items/washer.svg' },
       { name: 'TV', image: '/items/tv.svg' },
@@ -40,6 +42,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
     icon: <Armchair size={18} />,
     items: [
       { name: 'Sofa / Couch', image: '/items/sofa.svg' },
+      { name: 'Sectional Couch (2 piece)', image: '/items/sofa.svg' },
       { name: 'Loveseat', image: '/items/loveseat.svg' },
       { name: 'Chair', image: '/items/chair.svg' },
       { name: 'Ottoman', image: '/items/ottoman.svg' },
@@ -191,7 +194,9 @@ export const QuotePage: React.FC = () => {
       : null
   );
   const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null>(mappedServiceType);
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(incomingState?.serviceType ? 'manual' : null);
+  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(
+    mappedServiceType === 'junk_removal' ? 'manual' : (incomingState?.serviceType ? 'manual' : null)
+  );
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -248,6 +253,10 @@ export const QuotePage: React.FC = () => {
       setSelectedOption('donation_pickup');
     } else if (selectedService === 'dumpster_rental') {
       setSelectedOption('dumpster_rental');
+    } else if (selectedService === 'junk_removal') {
+      setSelectedOption('manual');
+    } else if (selectedService === null) {
+      setSelectedOption(null);
     }
   }, [selectedService]);
   useEffect(() => {
@@ -541,20 +550,29 @@ export const QuotePage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
+        const customerInfo = {
+          name,
+          phone,
+          email: ''
+        };
+
+        const bookingDetails = {
+          service_type: serviceTypeLabel,
+          zip_code: zipValue || null,
+          details: detailsText,
+          estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
+          estimated_volume: price.estimatedVolume,
+          price: price.price,
+          estimate_summary: price.summary,
+          photo_url: image || ''
+        };
+
         const { data, error: dbError } = await supabase
           .from('Prebooking')
           .insert([
             {
-              name,
-              phone,
-              service_type: serviceTypeLabel,
-              zip_code: zipValue || null,
-              estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
-              estimated_volume: price.estimatedVolume,
-              price: price.price,
-              estimate_summary: price.summary,
-              photo_url: image || '',
-              details: detailsText,
+              customer_info: customerInfo,
+              booking_details: bookingDetails,
               status: 'partially_submitted'
             }
           ])
@@ -1041,18 +1059,21 @@ export const QuotePage: React.FC = () => {
               </div>
             </button>
             <button
-              onClick={() => setSelectedService('dumpster_rental')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
+              disabled
+              className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
             >
-              <div className="w-16 h-16 shrink-0">
-                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 shrink-0 grayscale">
+                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Dumpster Rental</h3>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="text-sm md:text-base font-black text-secondary-500">Dumpster Rental</h3>
+                  <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-secondary-100 text-secondary-500 rounded-full">Coming Soon</span>
+                </div>
                 <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+              <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-secondary-50 text-secondary-300">
+                <ArrowRight size={14} />
               </div>
             </button>
           </div>
@@ -1273,9 +1294,6 @@ export const QuotePage: React.FC = () => {
                         <div>
                           <span className="block text-sm font-semibold text-secondary transition-colors">
                             {option.helpers} Helpers
-                          </span>
-                          <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
-                            {option.price}
                           </span>
                         </div>
                       </button>

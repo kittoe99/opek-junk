@@ -190,7 +190,7 @@ export const BookingPage: React.FC = () => {
         photoUrl: img || '',
         details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`
       }));
-      setCurrentStep(3); // skip ZIP, Service, and photo steps when coming from QuotePage
+      setCurrentStep(normalizedService === 'Junk Removal' ? 2 : 3); // skip ZIP, Service, and photo steps when coming from QuotePage
     }
   }, [estimateData]);
 
@@ -201,20 +201,29 @@ export const BookingPage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
+        const customerInfo = {
+          name,
+          phone,
+          email: ''
+        };
+
+        const bookingDetails = {
+          service_type: formData.serviceType,
+          zip_code: zipValue || null,
+          details: detailsText,
+          estimated_items: est.itemsDetected,
+          estimated_volume: est.estimatedVolume,
+          price: est.price,
+          estimate_summary: est.summary,
+          photo_url: image || ''
+        };
+
         const { data, error: dbError } = await supabase
           .from('Prebooking')
           .insert([
             {
-              name,
-              phone,
-              service_type: formData.serviceType,
-              zip_code: zipValue || null,
-              estimated_items: est.itemsDetected,
-              estimated_volume: est.estimatedVolume,
-              price: est.price,
-              estimate_summary: est.summary,
-              photo_url: image || '',
-              details: detailsText,
+              customer_info: customerInfo,
+              booking_details: bookingDetails,
               status: 'partially_submitted'
             }
           ])
@@ -402,26 +411,38 @@ export const BookingPage: React.FC = () => {
     setError(null);
 
     try {
+      const customerInfo = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone
+      };
+
+      const locationInfo = {
+        address: formData.address,
+        unit_number: formData.unitNumber || null,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode
+      };
+
+      const bookingDetails = {
+        service_type: formData.serviceType,
+        preferred_date: formData.date,
+        details: formData.details,
+        estimated_items: formData.estimatedItems,
+        estimated_volume: formData.estimatedVolume,
+        price: formData.price,
+        estimate_summary: formData.estimateSummary,
+        photo_url: formData.photoUrl
+      };
+
       const { data: insertedData, error: insertError } = await supabase
         .from('bookings')
         .insert([
           {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            address: formData.address,
-            unit_number: formData.unitNumber || null,
-            city: formData.city,
-            state: formData.state,
-            zip_code: formData.zipCode,
-            service_type: formData.serviceType,
-            preferred_date: formData.date,
-            details: formData.details,
-            estimated_items: formData.estimatedItems,
-            estimated_volume: formData.estimatedVolume,
-            price: formData.price,
-            estimate_summary: formData.estimateSummary,
-            photo_url: formData.photoUrl,
+            customer_info: customerInfo,
+            location_info: locationInfo,
+            booking_details: bookingDetails,
             status: 'pending'
           }
         ])
@@ -458,12 +479,14 @@ export const BookingPage: React.FC = () => {
     }
   };
 
-  const stepLabels = [
-    'ZIP Check', 
-    'Service', 
-    formData.serviceType === 'Moving Labor' ? 'Options' : formData.serviceType === 'Dumpster Rental' ? 'Options' : 'Photo', 
-    'Booking'
-  ];
+  const stepLabels = formData.serviceType === 'Junk Removal'
+    ? ['ZIP Check', 'Service', 'Booking']
+    : [
+        'ZIP Check', 
+        'Service', 
+        formData.serviceType === 'Moving Labor' ? 'Options' : formData.serviceType === 'Dumpster Rental' ? 'Options' : 'Photo', 
+        'Booking'
+      ];
 
   if (submitted) {
     return (
@@ -677,8 +700,13 @@ export const BookingPage: React.FC = () => {
               <div className="grid grid-cols-1 gap-3">
                 <button
                   onClick={() => {
-                    setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
-                    handleNextStep();
+                    navigate('/quote', { 
+                      state: { 
+                        zipResult: zipResult ? { city: zipResult.city, state: zipResult.state } : null, 
+                        zipValue, 
+                        serviceType: 'Junk Removal' 
+                      } 
+                    });
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
@@ -714,21 +742,22 @@ export const BookingPage: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, serviceType: 'Dumpster Rental' }));
-                    handleNextStep();
-                  }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Dumpster Rental' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
+                  disabled
+                  type="button"
+                  className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
                 >
-                  <div className="w-16 h-16 shrink-0">
-                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-16 h-16 shrink-0 grayscale">
+                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1">
-                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Dumpster Rental' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Dumpster Rental</h3>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="text-sm md:text-base font-black text-secondary-500">Dumpster Rental</h3>
+                      <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-secondary-100 text-secondary-500 rounded-full">Coming Soon</span>
+                    </div>
                     <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
                   </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-secondary-50 text-secondary-300">
+                    <ArrowRight size={14} />
                   </div>
                 </button>
               </div>
@@ -742,7 +771,7 @@ export const BookingPage: React.FC = () => {
           )}
 
           {/* ═══ Step 2: Photo Upload & Estimate (Junk Removal / Donation Pick Up) ═══ */}
-          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && formData.serviceType !== 'Moving Labor' && (
+          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Junk Removal' && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -1343,9 +1372,6 @@ export const BookingPage: React.FC = () => {
                               <span className="block text-sm font-semibold text-secondary transition-colors">
                                 {option.helpers} Helpers
                               </span>
-                              <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
-                                {option.price}
-                              </span>
                             </div>
                           </button>
                         );
@@ -1544,13 +1570,13 @@ export const BookingPage: React.FC = () => {
           )}
 
           {/* ═══ Step 3+: Contact + Address + Review (shared form) ═══ */}
-          {currentStep >= 3 && (
+          {(currentStep >= 3 || (currentStep === 2 && formData.serviceType === 'Junk Removal')) && (
             <BookingDetailsForm
               estimate={estimate}
               image={image}
               serviceType={formData.serviceType}
               defaultZip={zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined}
-              onBack={() => setCurrentStep(2)}
+              onBack={() => setCurrentStep(formData.serviceType === 'Junk Removal' ? 1 : 2)}
               backLabel="Back"
               prefilledName={contactName}
               prefilledPhone={contactPhone}

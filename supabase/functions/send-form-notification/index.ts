@@ -84,15 +84,17 @@ const formatDate = (d: string | null) => {
 // --- ADMIN emails ---
 
 function adminContact(r: Record<string, any>): { subject: string; html: string } {
+  const customer = r.customer_info || {};
+  const contact = r.contact_info || {};
   return {
-    subject: `Contact form: ${r.name}`,
+    subject: `Contact form: ${customer.name || ''}`,
     html: emailLayout(
       heading('New contact submission') +
       detailsBlock(
-        detailRow('Name', r.name) +
-        detailRow('Email', r.email) +
-        detailRow('Phone', r.phone) +
-        detailRow('Message', r.message)
+        detailRow('Name', customer.name) +
+        detailRow('Email', customer.email) +
+        detailRow('Phone', customer.phone) +
+        detailRow('Message', contact.message)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
     ),
@@ -100,18 +102,21 @@ function adminContact(r: Record<string, any>): { subject: string; html: string }
 }
 
 function adminQuote(r: Record<string, any>): { subject: string; html: string } {
+  const customer = r.customer_info || {};
+  const location = r.location_info || {};
+  const visit = r.visit_details || {};
   return {
-    subject: `Quote request: ${r.name}`,
+    subject: `Quote request: ${customer.name || ''}`,
     html: emailLayout(
       heading('New quote request') +
       detailsBlock(
-        detailRow('Name', r.name) +
-        detailRow('Email', r.email) +
-        detailRow('Phone', r.phone) +
-        detailRow('Address', r.address) +
-        detailRow('Zip', r.zip_code) +
-        detailRow('Preferred date', r.preferred_date) +
-        detailRow('Details', r.details)
+        detailRow('Name', customer.name) +
+        detailRow('Email', customer.email) +
+        detailRow('Phone', customer.phone) +
+        detailRow('Address', location.address) +
+        detailRow('Zip', location.zip_code) +
+        detailRow('Preferred date', visit.preferred_date) +
+        detailRow('Details', visit.details)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
     ),
@@ -119,17 +124,19 @@ function adminQuote(r: Record<string, any>): { subject: string; html: string } {
 }
 
 function adminProvider(r: Record<string, any>): { subject: string; html: string } {
-  const a = r.availability || {};
+  const customer = r.customer_info || {};
+  const provider = r.provider_info || {};
+  const a = provider.availability || {};
   return {
-    subject: `Provider application: ${r.name}`,
+    subject: `Provider application: ${customer.name || ''}`,
     html: emailLayout(
       heading('New provider application') +
       detailsBlock(
-        detailRow('Name', r.name) +
-        detailRow('Email', r.email) +
-        detailRow('Phone', r.phone) +
-        detailRow('Service area', r.service_area) +
-        detailRow('Vehicle', r.vehicle_type) +
+        detailRow('Name', customer.name) +
+        detailRow('Email', customer.email) +
+        detailRow('Phone', customer.phone) +
+        detailRow('Service area', provider.service_area) +
+        detailRow('Vehicle', provider.vehicle_type) +
         detailRow('Business', a.businessName) +
         detailRow('Schedule', Array.isArray(a.schedule) ? a.schedule.join(', ') : '') +
         detailRow('Notes', a.additionalInfo)
@@ -140,23 +147,36 @@ function adminProvider(r: Record<string, any>): { subject: string; html: string 
 }
 
 function adminBooking(r: Record<string, any>): { subject: string; html: string } {
-  const price = r.price_range_min && r.price_range_max ? `$${r.price_range_min}\u2013$${r.price_range_max}` : '';
+  const customer = r.customer_info || {};
+  const location = r.location_info || {};
+  const details = r.booking_details || {};
+  
+  const fullAddress = [
+    location.address,
+    location.unit_number,
+    location.city,
+    location.state,
+    location.zip_code
+  ].filter(Boolean).join(', ');
+
+  const priceVal = details.price ? `$${details.price}` : '';
+
   return {
-    subject: `New booking: ${r.name}`,
+    subject: `New booking: ${customer.name || ''}`,
     html: emailLayout(
       heading('New booking received') +
       detailsBlock(
-        detailRow('Name', r.name) +
-        detailRow('Email', r.email) +
-        detailRow('Phone', r.phone) +
-        detailRow('Service', r.service_type) +
-        detailRow('Address', r.address) +
-        detailRow('Zip', r.zip_code) +
-        detailRow('Date', r.preferred_date) +
-        detailRow('Est. price', price) +
-        detailRow('Items', r.estimated_items) +
-        detailRow('Volume', r.estimated_volume) +
-        detailRow('Details', r.details)
+        detailRow('Name', customer.name) +
+        detailRow('Email', customer.email) +
+        detailRow('Phone', customer.phone) +
+        detailRow('Service', details.service_type) +
+        detailRow('Address', fullAddress) +
+        detailRow('Zip', location.zip_code) +
+        detailRow('Date', details.preferred_date) +
+        detailRow('Est. price', priceVal) +
+        detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
+        detailRow('Volume', details.estimated_volume) +
+        detailRow('Details', details.details)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
     ),
@@ -166,8 +186,10 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
 // --- USER confirmation emails ---
 
 function userContact(r: Record<string, any>): { subject: string; html: string } {
-  const name = (r.name || '').split(' ')[0] || 'there';
-  const parts = (r.message || '').split(':');
+  const customer = r.customer_info || {};
+  const contact = r.contact_info || {};
+  const name = (customer.name || '').split(' ')[0] || 'there';
+  const parts = (contact.message || '').split(':');
   const subj = parts[0] || '';
   const msg = parts.slice(1).join(':').trim() || '';
   return {
@@ -187,17 +209,20 @@ function userContact(r: Record<string, any>): { subject: string; html: string } 
 }
 
 function userQuote(r: Record<string, any>): { subject: string; html: string } {
-  const name = (r.name || '').split(' ')[0] || 'there';
+  const customer = r.customer_info || {};
+  const location = r.location_info || {};
+  const visit = r.visit_details || {};
+  const name = (customer.name || '').split(' ')[0] || 'there';
   return {
     subject: `Your quote request is confirmed, ${name}`,
     html: emailLayout(
       heading(`Hi ${name}, we received your quote request`) +
       paragraph('A local provider will reach out shortly to discuss pricing and schedule your pickup. No obligation, no hidden fees.') +
       detailsBlock(
-        detailRow('Address', r.address) +
-        detailRow('Zip', r.zip_code) +
-        detailRow('Preferred date', r.preferred_date) +
-        detailRow('Details', r.details)
+        detailRow('Address', location.address) +
+        detailRow('Zip', location.zip_code) +
+        detailRow('Preferred date', visit.preferred_date) +
+        detailRow('Details', visit.details)
       ) +
       paragraph('<strong>What happens next:</strong>') +
       steps([
@@ -212,15 +237,17 @@ function userQuote(r: Record<string, any>): { subject: string; html: string } {
 }
 
 function userProvider(r: Record<string, any>): { subject: string; html: string } {
-  const name = (r.name || '').split(' ')[0] || 'there';
+  const customer = r.customer_info || {};
+  const provider = r.provider_info || {};
+  const name = (customer.name || '').split(' ')[0] || 'there';
   return {
     subject: `Application received, ${name}`,
     html: emailLayout(
       heading(`Welcome, ${name}`) +
       paragraph('Thank you for applying to the Opek provider network. We\u2019re reviewing your application and will follow up within 1\u20132 business days.') +
       detailsBlock(
-        detailRow('Service area', r.service_area) +
-        detailRow('Vehicle', r.vehicle_type)
+        detailRow('Service area', provider.service_area) +
+        detailRow('Vehicle', provider.vehicle_type)
       ) +
       paragraph('<strong>What happens next:</strong>') +
       steps([
@@ -236,20 +263,33 @@ function userProvider(r: Record<string, any>): { subject: string; html: string }
 }
 
 function userBooking(r: Record<string, any>): { subject: string; html: string } {
-  const name = (r.name || '').split(' ')[0] || 'there';
-  const price = r.price_range_min && r.price_range_max ? `$${r.price_range_min}\u2013$${r.price_range_max}` : '';
+  const customer = r.customer_info || {};
+  const location = r.location_info || {};
+  const details = r.booking_details || {};
+
+  const fullAddress = [
+    location.address,
+    location.unit_number,
+    location.city,
+    location.state,
+    location.zip_code
+  ].filter(Boolean).join(', ');
+
+  const name = (customer.name || '').split(' ')[0] || 'there';
+  const priceVal = details.price ? `$${details.price}` : '';
+
   return {
     subject: `Booking confirmed, ${name}`,
     html: emailLayout(
       heading(`Hi ${name}, your pickup is scheduled`) +
       paragraph('Your junk removal booking is confirmed. A matched provider will contact you within 15 minutes to finalize the details.') +
       detailsBlock(
-        detailRow('Service', r.service_type) +
-        detailRow('Address', r.address) +
-        detailRow('Date', r.preferred_date) +
-        (price ? detailRow('Est. price', price) : '') +
-        detailRow('Items', r.estimated_items) +
-        detailRow('Details', r.details)
+        detailRow('Service', details.service_type) +
+        detailRow('Address', fullAddress) +
+        detailRow('Date', details.preferred_date) +
+        (priceVal ? detailRow('Est. price', priceVal) : '') +
+        detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
+        detailRow('Details', details.details)
       ) +
       paragraph('<strong>What to expect:</strong>') +
       steps([
@@ -317,9 +357,11 @@ Deno.serve(async (req: Request) => {
         });
     }
 
+    const recipientEmail = record.customer_info?.email;
+
     const results = await Promise.allSettled([
       sendEmail(NOTIFY_EMAIL, admin.subject, admin.html),
-      record.email ? sendEmail(record.email, user.subject, user.html) : Promise.resolve({ skipped: true }),
+      recipientEmail ? sendEmail(recipientEmail, user.subject, user.html) : Promise.resolve({ skipped: true }),
     ]);
 
     return new Response(JSON.stringify({

@@ -47,10 +47,14 @@ export const ContactPage: React.FC = () => {
       const { error: insertError } = await supabase
         .from('contacts')
         .insert([{
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: messageText
+          customer_info: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone
+          },
+          contact_info: {
+            message: messageText
+          }
         }]);
 
       if (insertError) throw insertError;

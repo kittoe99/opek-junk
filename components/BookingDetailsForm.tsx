@@ -180,20 +180,29 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
       let currentPartialId = partialId;
 
+      const customerInfo = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone
+      };
+
+      const bookingDetails = {
+        service_type: normalizedServiceType,
+        zip_code: defaultZip?.zipCode || formData.zipCode || null,
+        details: detailsText,
+        estimated_items: estimate?.itemsDetected || [],
+        estimated_volume: estimate?.estimatedVolume || '',
+        price: estimate?.price || 0,
+        estimate_summary: estimate?.summary || '',
+        photo_url: image || ''
+      };
+
       if (currentPartialId && !currentPartialId.startsWith('mock-')) {
         await supabase
           .from('Prebooking')
           .update({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            service_type: normalizedServiceType,
-            details: detailsText,
-            estimated_items: estimate?.itemsDetected || [],
-            estimated_volume: estimate?.estimatedVolume || '',
-            price: estimate?.price || 0,
-            estimate_summary: estimate?.summary || '',
-            photo_url: image || '',
+            customer_info: customerInfo,
+            booking_details: bookingDetails,
             status: 'partially_submitted'
           })
           .eq('id', currentPartialId);
@@ -202,17 +211,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           .from('Prebooking')
           .insert([
             {
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-              service_type: normalizedServiceType,
-              zip_code: defaultZip?.zipCode || formData.zipCode || null,
-              details: detailsText,
-              estimated_items: estimate?.itemsDetected || [],
-              estimated_volume: estimate?.estimatedVolume || '',
-              price: estimate?.price || 0,
-              estimate_summary: estimate?.summary || '',
-              photo_url: image || '',
+              customer_info: customerInfo,
+              booking_details: bookingDetails,
               status: 'partially_submitted'
             }
           ])
@@ -264,26 +264,38 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         let dbError = null;
   
         try {
+          const customerInfo = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone
+          };
+
+          const locationInfo = {
+            address: formData.address,
+            unit_number: formData.unitNumber || null,
+            city: formData.city,
+            state: formData.state,
+            zip_code: formData.zipCode
+          };
+
+          const bookingDetails = {
+            service_type: normalizedServiceType,
+            preferred_date: formData.date,
+            details: detailsText,
+            estimated_items: estimate?.itemsDetected || [],
+            estimated_volume: estimate?.estimatedVolume || '',
+            price: estimate?.price || 0,
+            estimate_summary: estimate?.summary || '',
+            photo_url: image || ''
+          };
+
           const query = supabase
             .from('bookings')
             .insert([
               {
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                address: formData.address,
-                unit_number: formData.unitNumber || null,
-                city: formData.city,
-                state: formData.state,
-                zip_code: formData.zipCode,
-                service_type: normalizedServiceType,
-                preferred_date: formData.date,
-                details: detailsText,
-                estimated_items: estimate?.itemsDetected || [],
-                estimated_volume: estimate?.estimatedVolume || '',
-                price: estimate?.price || 0,
-                estimate_summary: estimate?.summary || '',
-                photo_url: image || '',
+                customer_info: customerInfo,
+                location_info: locationInfo,
+                booking_details: bookingDetails,
                 status: 'pending'
               }
             ])

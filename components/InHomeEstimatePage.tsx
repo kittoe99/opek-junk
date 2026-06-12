@@ -152,13 +152,19 @@ export const InHomeEstimatePage: React.FC = () => {
       const { error: insertError } = await supabase
         .from('in_home_estimates')
         .insert([{
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          preferred_date: formData.preferredDate,
-          preferred_time: formData.preferredTime,
-          message: formData.message
+          customer_info: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone
+          },
+          location_info: {
+            address: formData.address
+          },
+          estimate_details: {
+            preferred_date: formData.preferredDate,
+            preferred_time: formData.preferredTime,
+            message: formData.message
+          }
         }]);
 
       if (insertError) throw insertError;

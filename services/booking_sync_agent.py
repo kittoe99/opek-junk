@@ -108,7 +108,7 @@ def check_already_synced(conv_id: str, supabase_headers: dict) -> bool:
     # 1. Check bookings table
     try:
         check_url = f"{SUPABASE_URL}/rest/v1/bookings"
-        params = {"details": f"ilike.*{conv_id}*"}
+        params = {"booking_details->>details": f"ilike.*{conv_id}*"}
         resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
         resp.raise_for_status()
         if resp.json():
@@ -120,7 +120,7 @@ def check_already_synced(conv_id: str, supabase_headers: dict) -> bool:
     # 2. Check contacts table
     try:
         check_url = f"{SUPABASE_URL}/rest/v1/contacts"
-        params = {"message": f"ilike.*{conv_id}*"}
+        params = {"contact_info->>message": f"ilike.*{conv_id}*"}
         resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
         resp.raise_for_status()
         if resp.json():
@@ -132,7 +132,7 @@ def check_already_synced(conv_id: str, supabase_headers: dict) -> bool:
     # 3. Check provider_signups table
     try:
         check_url = f"{SUPABASE_URL}/rest/v1/provider_signups"
-        params = {"availability->>convId": f"eq.{conv_id}"}
+        params = {"provider_info->availability->>convId": f"eq.{conv_id}"}
         resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
         resp.raise_for_status()
         if resp.json():
@@ -579,21 +579,29 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             order_number = generate_order_number()
 
             insert_payload = {
-                "name": name,
-                "email": email,
-                "phone": phone,
-                "address": address,
-                "unit_number": extracted_data.get("unitNumber") or None,
-                "city": city,
-                "state": state,
-                "zip_code": zip_code,
-                "service_type": norm_service_type,
-                "preferred_date": date,
-                "details": details_field,
+                "customer_info": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone
+                },
+                "location_info": {
+                    "address": address,
+                    "unit_number": extracted_data.get("unitNumber") or None,
+                    "city": city,
+                    "state": state,
+                    "zip_code": zip_code
+                },
+                "booking_details": {
+                    "service_type": norm_service_type,
+                    "preferred_date": date,
+                    "details": details_field,
+                    "price": 0,
+                    "estimated_volume": "",
+                    "estimated_items": [],
+                    "estimate_summary": "",
+                    "photo_url": ""
+                },
                 "status": "pending",
-                "price": 0,
-                "estimated_volume": "",
-                "estimated_items": [],
                 "order_number": order_number
             }
 
@@ -643,10 +651,14 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             message_field = f"{subject}: {message}\n\n[ElevenLabs ConvID: {conv_id}]"
 
             insert_payload = {
-                "name": name,
-                "email": email,
-                "phone": phone,
-                "message": message_field
+                "customer_info": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone
+                },
+                "contact_info": {
+                    "message": message_field
+                }
             }
 
             logging.info(f"Inserting new contact/enquiry for {name} to Supabase...")
@@ -687,16 +699,20 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             info = extracted_data.get("providerAdditionalInfo") or ""
 
             insert_payload = {
-                "name": name,
-                "email": email,
-                "phone": phone,
-                "service_area": service_area,
-                "vehicle_type": vehicle_type,
-                "availability": {
-                  "schedule": schedule,
-                  "businessName": business_name,
-                  "additionalInfo": info,
-                  "convId": conv_id
+                "customer_info": {
+                    "name": name,
+                    "email": email,
+                    "phone": phone
+                },
+                "provider_info": {
+                    "service_area": service_area,
+                    "vehicle_type": vehicle_type,
+                    "availability": {
+                      "schedule": schedule,
+                      "businessName": business_name,
+                      "additionalInfo": info,
+                      "convId": conv_id
+                    }
                 },
                 "status": "pending"
             }
