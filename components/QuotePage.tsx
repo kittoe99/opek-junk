@@ -2292,7 +2292,7 @@ export const QuotePage: React.FC = () => {
           {selectedOption === 'manual' && (
             <div>
               {/* Progress Stepper */}
-              {(() => {
+              {manualStep !== 'select' && (() => {
                 const manualSteps = [
                   { label: 'Select Items', icon: ClipboardList },
                   { label: 'Review', icon: Eye },
