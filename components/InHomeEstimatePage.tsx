@@ -193,10 +193,9 @@ export const InHomeEstimatePage: React.FC = () => {
             </div>
 
             <div className="space-y-2 mb-6">
-              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Appointment Requested</p>
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">All Set!</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                A representative or provider will contact you within 24 hours to confirm the in-home estimate appointment.
+                Your submission was successful.
               </p>
             </div>
 

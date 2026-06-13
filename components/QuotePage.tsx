@@ -898,10 +898,9 @@ export const QuotePage: React.FC = () => {
             </div>
 
             <div className="space-y-2 mb-6">
-              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Estimate Submitted</p>
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">Request Received</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Opek is reviewing your items. A matched provider will contact you within 15 minutes to confirm your estimate.
+                Your submission was successful.
               </p>
             </div>
 

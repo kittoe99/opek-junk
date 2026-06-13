@@ -154,10 +154,9 @@ export const ProviderSignupPage: React.FC = () => {
             </div>
 
             <div className="space-y-2 mb-6">
-              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Application Received</p>
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">Welcome Aboard!</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Applications are reviewed and responses sent within 1–2 business days to get you started.
+                Your submission was successful.
               </p>
             </div>
 

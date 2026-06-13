@@ -92,10 +92,9 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <div className="space-y-2 mb-6">
-              <p className="text-[11px] font-bold text-brand uppercase tracking-widest">Message Sent</p>
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">Message Received</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
               <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Thanks for reaching out. An agent will respond within 30 minutes during business hours.
+                Your submission was successful.
               </p>
             </div>
 
