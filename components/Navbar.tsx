@@ -415,77 +415,84 @@ export const Navbar: React.FC = () => {
           {/* Navigation Links */}
           <nav className="flex-1 overflow-y-auto px-5 py-4">
             <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Menu</p>
-            <div className="space-y-0.5">
+            <div className="flex flex-col gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-2xl overflow-hidden shadow-sm">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path.split('#')[0]));
                 return (
-                <div key={link.name}>
-                  {link.hasMega ? (
-                    <div className="border-b border-secondary-50 last:border-0">
-                      <button
-                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full flex items-center justify-between py-3 text-sm font-bold transition-colors"
-                      >
-                        <span className="flex items-center gap-3 text-secondary">
-                          <span className="w-8 h-8 flex items-center justify-center text-brand">{link.icon}</span>
-                          {link.name}
-                        </span>
-                        <ChevronDown size={18} className={`text-secondary-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
-                      </button>
-                      
-                      {/* Services Submenu */}
-                      <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[400px] opacity-100 pb-3' : 'max-h-0 opacity-0'}`}>
-                        <div className="space-y-1 pt-1">
-                          {serviceItems.map((item) => {
-                            const Icon = item.icon;
-                            return (
-                              <button
-                                key={item.name}
-                                onClick={() => { setMobileServicesOpen(false); handleLinkClick(item.path); }}
-                                className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
-                              >
-                                <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                  <Icon size={14} className="text-secondary-500 group-hover:text-brand transition-colors" />
-                                </div>
-                                <div>
-                                  <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors leading-tight">{item.name}</div>
-                                  <div className="text-[10px] text-secondary-400 leading-tight">{item.desc}</div>
-                                </div>
-                              </button>
-                            );
-                          })}
+                  <div key={link.name} className="bg-white group">
+                    {link.hasMega ? (
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold text-secondary"
+                        >
+                          <span className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-secondary-50 flex items-center justify-center shrink-0 text-brand animate-pulse">
+                              {link.icon}
+                            </div>
+                            <span>{link.name}</span>
+                          </span>
+                          <ChevronDown size={18} className={`text-secondary-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        
+                        {/* Services Submenu */}
+                        <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[400px] border-t border-secondary-100/60 bg-secondary-50/10' : 'max-h-0'}`}>
+                          <div className="divide-y divide-secondary-100/60 flex flex-col">
+                            {serviceItems.map((item) => {
+                              const Icon = item.icon;
+                              return (
+                                <button
+                                  key={item.name}
+                                  onClick={() => { setMobileServicesOpen(false); setIsMenuOpen(false); navigate(item.path); }}
+                                  className="w-full text-left px-6 py-3.5 hover:bg-secondary-50/40 transition-colors group flex items-center gap-3"
+                                >
+                                  <div className="w-8 h-8 rounded-lg bg-white border border-secondary-200/50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                    <Icon size={14} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors leading-tight">{item.name}</div>
+                                    <div className="text-[10px] text-secondary-400 leading-tight mt-0.5">{item.desc}</div>
+                                  </div>
+                                  <ArrowRight size={12} className="text-secondary-300 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0.5 shrink-0" />
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => handleLinkClick(link.path)}
-                      className={`w-full flex items-center gap-3 py-3 text-sm font-bold border-b border-secondary-50 last:border-0 transition-colors ${
-                        isActive ? 'text-brand' : 'text-secondary hover:text-brand'
-                      }`}
-                    >
-                      <span className={`w-8 h-8 flex items-center justify-center ${isActive ? 'text-brand' : 'text-brand'}`}>
-                        {link.icon}
-                      </span>
-                      {link.name}
-                    </button>
-                  )}
-                </div>
-              );
+                    ) : (
+                      <button
+                        onClick={() => handleLinkClick(link.path)}
+                        className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold ${
+                          isActive ? 'text-brand' : 'text-secondary hover:text-brand'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors ${
+                          isActive ? 'bg-brand/10 text-brand' : 'text-brand'
+                        }`}>
+                          {link.icon}
+                        </div>
+                        <span className="flex-1 text-left">{link.name}</span>
+                        <ArrowRight size={14} className="text-secondary-300 group-hover:text-brand transition-transform group-hover:translate-x-0.5" />
+                      </button>
+                    )}
+                  </div>
+                );
               })}
-            </div>
 
-            {/* Additional Links */}
-            <div className="mt-4 pt-4 border-t border-secondary-100 space-y-0.5">
-              <button
-                onClick={() => handleLinkClick('/in-home-estimate')}
-                className="w-full flex items-center gap-3 py-3 text-sm font-bold text-secondary hover:text-brand transition-colors"
-              >
-                <span className="w-8 h-8 flex items-center justify-center text-brand">
-                  <CheckSquare size={16} />
-                </span>
-                In-Home Estimate
-              </button>
+              {/* In-Home Estimate Link */}
+              <div className="bg-white group border-t border-secondary-100/60">
+                <button
+                  onClick={() => handleLinkClick('/in-home-estimate')}
+                  className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold text-secondary hover:text-brand"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 text-brand transition-colors">
+                    <CheckSquare size={16} />
+                  </div>
+                  <span className="flex-1 text-left">In-Home Estimate</span>
+                  <ArrowRight size={14} className="text-secondary-300 group-hover:text-brand transition-transform group-hover:translate-x-0.5" />
+                </button>
+              </div>
             </div>
 
             {/* Promo block */}
