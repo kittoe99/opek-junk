@@ -194,7 +194,7 @@ export const ProviderSignupPage: React.FC = () => {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border border-secondary-100 rounded-3xl p-6 md:p-10 shadow-xl shadow-secondary/5">
+        <div>
           
           {/* Progress Stepper (Quote page style) */}
           <div className="relative mb-14 px-1">
