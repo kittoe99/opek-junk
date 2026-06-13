@@ -495,29 +495,34 @@ export const Navbar: React.FC = () => {
               </div>
             </div>
 
-            {/* Promo block */}
+            {/* Promo block - Charity Banner Optimized Version */}
             <div className="mt-4 pt-4 border-t border-secondary-100">
               <div className="bg-secondary rounded-2xl overflow-hidden border border-white/5 shadow-xl bg-gradient-to-b from-secondary-900 to-secondary flex flex-col">
-                <div className="h-20 w-full overflow-hidden shrink-0">
+                <div className="h-24 w-full overflow-hidden shrink-0 relative bg-secondary-950">
                   <img
-                    src="/opek-nav.svg"
-                    alt="Opek team"
-                    className="w-full h-full object-cover object-center"
+                    src="/charity-childrens-heart-clean.png"
+                    alt="Children's health charity impact"
+                    className="w-full h-full object-cover object-center opacity-85"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent pointer-events-none" />
                 </div>
                 <div className="p-4 flex flex-col flex-1">
                   <div className="flex items-center gap-1.5 mb-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-                    <span className="text-[10px] font-black text-brand uppercase tracking-[0.2em]">Same-day available</span>
+                    <Heart size={12} className="text-brand fill-brand animate-pulse" />
+                    <span className="text-[10px] font-black text-brand uppercase tracking-[0.2em]">Community Impact</span>
                   </div>
-                  <h3 className="text-sm font-black text-white leading-snug mb-3">
-                    Junk gone today. <span className="text-brand">Free upfront quote.</span>
+                  <h3 className="text-xs font-black uppercase tracking-wider text-white leading-snug mb-1">
+                    Five percent. <span className="text-brand">For children's health.</span>
                   </h3>
+                  <p className="text-[10px] text-white/60 mb-3.5 leading-relaxed">
+                    We donate 5% of all sales directly to children's hospitals.
+                  </p>
                   <button
                     onClick={() => handleLinkClick('/quote')}
                     className="group w-full py-3 bg-brand text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand/90 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 hover:scale-[1.01]"
                   >
-                    Get a Free Quote <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    <span>Book With Purpose</span>
+                    <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                   </button>
                 </div>
               </div>
