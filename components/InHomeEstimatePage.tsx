@@ -235,32 +235,6 @@ export const InHomeEstimatePage: React.FC = () => {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Steps Progress Indicator (Quote/Booking style) */}
-        {(() => {
-          const steps = ['Contact', 'Appointment', 'Review'];
-          const activeIndex = step - 1;
-          return (
-            <div className="mb-10">
-              <div className="flex items-center justify-between mb-2">
-                {steps.map((label, i) => (
-                  <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                    i < activeIndex ? 'text-brand' : i === activeIndex ? 'text-secondary' : 'text-secondary-300'
-                  }`}>
-                    {i < activeIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                  </span>
-                ))}
-              </div>
-              <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                <div
-                  className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${(activeIndex / (steps.length - 1)) * 100}%` }}
-                />
-              </div>
-              <p className="text-[10px] text-secondary-400 mt-1.5">Step {step} of {steps.length}</p>
-            </div>
-          );
-        })()}
-
         {/* Step 1: Contact Details */}
         {step === 1 && (
           <form onSubmit={handleContactSubmit} className="space-y-6">

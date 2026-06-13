@@ -195,53 +195,6 @@ export const ProviderSignupPage: React.FC = () => {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div>
-          
-          {/* Progress Stepper (Quote page style) */}
-          <div className="relative mb-14 px-1">
-            {/* Background Connecting Line */}
-            <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
-              {/* Active Connecting Line */}
-              <div 
-                className="h-full bg-brand transition-all duration-500 ease-out"
-                style={{ width: `${((step - 1) / (signupSteps.length - 1)) * 100}%` }}
-              />
-            </div>
-            
-            {/* Steps Nodes */}
-            <div className="flex items-center justify-between relative">
-              {signupSteps.map((stepItem, i) => {
-                const StepIcon = stepItem.icon;
-                const isCompleted = i + 1 < step;
-                const isActive = i + 1 === step;
-                
-                return (
-                  <div key={stepItem.label} className="relative flex flex-col items-center">
-                    <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                      isCompleted 
-                        ? 'bg-brand border-brand text-white shadow-sm' 
-                        : isActive 
-                          ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
-                          : 'bg-white border-secondary-200 text-secondary-300'
-                    }`}>
-                      {isCompleted ? (
-                        <Check size={14} strokeWidth={3} />
-                      ) : (
-                        <StepIcon size={14} />
-                      )}
-                    </div>
-                    <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
-                      isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
-                    }`}>
-                      {stepItem.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Form Step Contents */}
-
           {/* Step 1: Personal Details */}
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">

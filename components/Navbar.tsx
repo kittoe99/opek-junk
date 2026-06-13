@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
+import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, Heart, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {

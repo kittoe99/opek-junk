@@ -1110,59 +1110,6 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
-          {/* Progress Stepper */}
-          {(() => {
-            const movingSteps = [
-              { label: 'Details', icon: ClipboardList },
-              { label: 'Crew & Time', icon: Users },
-              { label: 'Estimate', icon: Receipt }
-            ];
-            const movingStepIndex = movingStep === 'details' ? 0 : movingStep === 'crew' ? 1 : 2;
-            return (
-              <div className="relative mb-14 px-1">
-                {/* Background Connecting Line */}
-                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
-                  {/* Active Connecting Line */}
-                  <div 
-                    className="h-full bg-brand transition-all duration-500 ease-out"
-                    style={{ width: `${(movingStepIndex / (movingSteps.length - 1)) * 100}%` }}
-                  />
-                </div>
-                
-                {/* Steps Nodes */}
-                <div className="flex items-center justify-between relative">
-                  {movingSteps.map((step, i) => {
-                    const StepIcon = step.icon;
-                    const isCompleted = i < movingStepIndex;
-                    const isActive = i === movingStepIndex;
-                    
-                    return (
-                      <div key={step.label} className="relative flex flex-col items-center">
-                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                          isCompleted 
-                            ? 'bg-brand border-brand text-white shadow-sm' 
-                            : isActive 
-                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
-                              : 'bg-white border-secondary-200 text-secondary-300'
-                        }`}>
-                          {isCompleted ? (
-                            <Check size={14} strokeWidth={3} />
-                          ) : (
-                            <StepIcon size={14} />
-                          )}
-                        </div>
-                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
-                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
-                        }`}>
-                          {step.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })()}
 
           {/* STEP 1: DETAILS */}
           {movingStep === 'details' && (
@@ -1429,59 +1376,6 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8 animate-in fade-in duration-300">
-          {/* Progress Stepper */}
-          {(() => {
-            const donationSteps = [
-              { label: 'Charity', icon: HeartHandshake },
-              { label: 'Size & Location', icon: Package },
-              { label: 'Estimate', icon: Receipt }
-            ];
-            const donationStepIndex = donationStep === 'details' ? 0 : donationStep === 'size' ? 1 : 2;
-            return (
-              <div className="relative mb-14 px-1">
-                {/* Background Connecting Line */}
-                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
-                  {/* Active Connecting Line */}
-                  <div 
-                    className="h-full bg-brand transition-all duration-500 ease-out"
-                    style={{ width: `${(donationStepIndex / (donationSteps.length - 1)) * 100}%` }}
-                  />
-                </div>
-                
-                {/* Steps Nodes */}
-                <div className="flex items-center justify-between relative">
-                  {donationSteps.map((step, i) => {
-                    const StepIcon = step.icon;
-                    const isCompleted = i < donationStepIndex;
-                    const isActive = i === donationStepIndex;
-                    
-                    return (
-                      <div key={step.label} className="relative flex flex-col items-center">
-                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                          isCompleted 
-                            ? 'bg-brand border-brand text-white shadow-sm' 
-                            : isActive 
-                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
-                              : 'bg-white border-secondary-200 text-secondary-300'
-                        }`}>
-                          {isCompleted ? (
-                            <Check size={14} strokeWidth={3} />
-                          ) : (
-                            <StepIcon size={14} />
-                          )}
-                        </div>
-                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
-                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
-                        }`}>
-                          {step.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })()}
 
           {/* STEP 1: DETAILS */}
           {donationStep === 'details' && (
@@ -1731,59 +1625,6 @@ export const QuotePage: React.FC = () => {
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
-          {/* Progress Stepper */}
-          {(() => {
-            const dumpsterSteps = [
-              { label: 'Size', icon: Container },
-              { label: 'Duration', icon: CalendarCheck },
-              { label: 'Estimate', icon: Receipt }
-            ];
-            const dumpsterStepIndex = dumpsterStep === 'size' ? 0 : dumpsterStep === 'duration' ? 1 : 2;
-            return (
-              <div className="relative mb-14 px-1">
-                {/* Background Connecting Line */}
-                <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
-                  {/* Active Connecting Line */}
-                  <div 
-                    className="h-full bg-brand transition-all duration-500 ease-out"
-                    style={{ width: `${(dumpsterStepIndex / (dumpsterSteps.length - 1)) * 100}%` }}
-                  />
-                </div>
-                
-                {/* Steps Nodes */}
-                <div className="flex items-center justify-between relative">
-                  {dumpsterSteps.map((step, i) => {
-                    const StepIcon = step.icon;
-                    const isCompleted = i < dumpsterStepIndex;
-                    const isActive = i === dumpsterStepIndex;
-                    
-                    return (
-                      <div key={step.label} className="relative flex flex-col items-center">
-                        <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                          isCompleted 
-                            ? 'bg-brand border-brand text-white shadow-sm' 
-                            : isActive 
-                              ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
-                              : 'bg-white border-secondary-200 text-secondary-300'
-                        }`}>
-                          {isCompleted ? (
-                            <Check size={14} strokeWidth={3} />
-                          ) : (
-                            <StepIcon size={14} />
-                          )}
-                        </div>
-                        <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
-                          isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
-                        }`}>
-                          {step.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })()}
 
           {/* STEP 1: SIZE SELECTION */}
           {dumpsterStep === 'size' && (
@@ -2047,31 +1888,6 @@ export const QuotePage: React.FC = () => {
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (
             <div>
-              {/* Step indicator */}
-              {(() => {
-                const aiSteps = ['Tips', 'Upload', 'Review Items', 'Estimate'];
-                const aiStepIndex = aiStep === 'tips' ? 0 : aiStep === 'upload' ? 1 : aiStep === 'items' ? 2 : 3;
-                return (
-                  <div className="mb-10">
-                    <div className="flex items-center justify-between mb-2">
-                      {aiSteps.map((label, i) => (
-                        <span key={label} className={`text-[10px] font-black uppercase tracking-wider transition-colors ${
-                          i < aiStepIndex ? 'text-brand' : i === aiStepIndex ? 'text-secondary' : 'text-secondary-300'
-                        }`}>
-                          {i < aiStepIndex ? <Check size={11} className="inline mb-0.5 mr-0.5" strokeWidth={3} /> : null}{label}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="relative h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                      <div
-                        className="absolute inset-y-0 left-0 bg-brand rounded-full transition-all duration-500 ease-out"
-                        style={{ width: `${(aiStepIndex / (aiSteps.length - 1)) * 100}%` }}
-                      />
-                    </div>
-                    <p className="text-[10px] text-secondary-400 mt-1.5">Step {aiStepIndex + 1} of {aiSteps.length}</p>
-                  </div>
-                );
-              })()}
 
               {/* Step 0: Photo Tips */}
               {aiStep === 'tips' && (
@@ -2290,59 +2106,6 @@ export const QuotePage: React.FC = () => {
           {/* ===== ITEM SELECTION CONTENT ===== */}
           {selectedOption === 'manual' && (
             <div>
-              {/* Progress Stepper */}
-              {manualStep !== 'select' && (() => {
-                const manualSteps = [
-                  { label: 'Select Items', icon: ClipboardList },
-                  { label: 'Review', icon: Eye },
-                  { label: 'Estimate', icon: Receipt }
-                ];
-                const manualStepIndex = manualStep === 'select' ? 0 : manualStep === 'review' ? 1 : 2;
-                return (
-                  <div className="relative mb-14 px-1">
-                    {/* Background Connecting Line */}
-                    <div className="absolute top-[18px] left-[18px] right-[18px] h-0.5 bg-secondary-100 -translate-y-1/2 pointer-events-none">
-                      {/* Active Connecting Line */}
-                      <div 
-                        className="h-full bg-brand transition-all duration-500 ease-out"
-                        style={{ width: `${(manualStepIndex / (manualSteps.length - 1)) * 100}%` }}
-                      />
-                    </div>
-                    
-                    {/* Steps Nodes */}
-                    <div className="flex items-center justify-between relative">
-                      {manualSteps.map((step, i) => {
-                        const StepIcon = step.icon;
-                        const isCompleted = i < manualStepIndex;
-                        const isActive = i === manualStepIndex;
-                        
-                        return (
-                          <div key={step.label} className="relative flex flex-col items-center">
-                            <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                              isCompleted 
-                                ? 'bg-brand border-brand text-white shadow-sm' 
-                                : isActive 
-                                  ? 'bg-white border-brand text-brand ring-4 ring-brand/10' 
-                                  : 'bg-white border-secondary-200 text-secondary-300'
-                            }`}>
-                              {isCompleted ? (
-                                <Check size={14} strokeWidth={3} />
-                              ) : (
-                                <StepIcon size={14} />
-                              )}
-                            </div>
-                            <span className={`absolute top-11 whitespace-nowrap text-[10px] font-black uppercase tracking-wider transition-colors duration-300 ${
-                              isActive || isCompleted ? 'text-secondary' : 'text-secondary-300'
-                            }`}>
-                              {step.label}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })()}
 
               {/* Selection step */}
               {manualStep === 'select' && !manualPricingLoading && (
