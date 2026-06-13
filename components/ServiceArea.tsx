@@ -30,7 +30,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-start">
 
           {/* CTA Column */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" className="w-full h-auto max-w-[400px] mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" className="w-full h-auto max-w-[220px] md:max-w-[400px] mx-auto">
             <defs>
               <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#F8FAFC" />
