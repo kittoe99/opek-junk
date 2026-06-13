@@ -17,8 +17,8 @@ export const CharityBanner: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
             <div className="relative shrink-0 w-24 h-16 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-secondary-800">
               <img 
-                src="/charity-childrens-hospital-vector.png" 
-                alt="Children's Hospital Kids Care vector illustration" 
+                src="/charity-childrens-heart.png" 
+                alt="Happy children holding giant heart illustration" 
                 className="w-full h-full object-cover"
               />
             </div>
@@ -29,7 +29,7 @@ export const CharityBanner: React.FC = () => {
                 <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Community Impact</span>
               </div>
               <h3 className="text-white text-lg md:text-xl font-black uppercase tracking-wide leading-tight">
-                Five percent. <span className="text-brand">For the neighborhood.</span>
+                Five percent. <span className="text-brand">For children's health.</span>
               </h3>
               <p className="text-white/60 text-xs font-medium">
                 We donate 5% of all sales directly to children's hospitals.
