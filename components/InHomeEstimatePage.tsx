@@ -229,6 +229,8 @@ export const InHomeEstimatePage: React.FC = () => {
         image="/process-step-1.svg"
         imageAlt="Vetted provider visiting property"
         imageCaption="On-site service • No obligation • Free estimate"
+        primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
+        secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
         compact
       />
 

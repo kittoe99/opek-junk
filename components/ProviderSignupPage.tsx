@@ -188,6 +188,8 @@ export const ProviderSignupPage: React.FC = () => {
         image="/process-step-2.svg"
         imageAlt="Independent contractor dispatching jobs"
         imageCaption="Vetted contractors • Weekly payouts • Dispatch app"
+        primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
+        secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
         compact
       />
 
