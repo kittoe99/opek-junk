@@ -4,7 +4,6 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TrustBadges } from './components/TrustBadges';
 import { Services } from './components/Services';
-import { Process } from './components/Process';
 import { ServiceArea } from './components/ServiceArea';
 import { Footer } from './components/Footer';
 import { QuotePage } from './components/QuotePage';
@@ -66,7 +65,6 @@ function HomePage() {
       <TrustBadges />
       <Services />
       <CharityBanner />
-      <Process />
       <ProcessEditorial />
       <WhatWeHaul />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
