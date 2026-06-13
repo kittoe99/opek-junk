@@ -138,14 +138,14 @@ export const ContactPage: React.FC = () => {
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
               <input
-                type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required
+                type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
                 className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
               />
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
               <input
-                type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required
+                type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
                 className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
               />
             </div>
@@ -154,7 +154,7 @@ export const ContactPage: React.FC = () => {
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
             <input
-              type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required
+              type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>
@@ -163,6 +163,7 @@ export const ContactPage: React.FC = () => {
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Message *</label>
             <textarea
               name="message" value={formData.message} onChange={handleInputChange} required rows={5}
+              placeholder="Describe the service needs..."
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none"
             />
           </div>

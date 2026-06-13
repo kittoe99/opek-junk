@@ -546,6 +546,7 @@ export const BookingPage: React.FC = () => {
                   value={zipValue}
                   onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
                   onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                  placeholder="Enter ZIP code"
                   className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
                 />
                 <button

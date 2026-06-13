@@ -962,6 +962,7 @@ export const QuotePage: React.FC = () => {
                 value={zipValue}
                 onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                placeholder="Enter ZIP code"
                 className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
               />
               <button
@@ -2247,6 +2248,7 @@ export const QuotePage: React.FC = () => {
                         value={newItemName}
                         onChange={(e) => setNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
+                        placeholder="e.g. Old Desk"
                         className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
                       />
                       <button onClick={addManualItem} disabled={!newItemName.trim()} className="group px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
@@ -2352,7 +2354,8 @@ export const QuotePage: React.FC = () => {
                       type="text"
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-2xl text-secondary focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
+                      placeholder="Search items..."
+                      className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
                     />
                     {catalogSearch && (
                       <button
@@ -2579,6 +2582,7 @@ export const QuotePage: React.FC = () => {
                         value={manualNewItemName}
                         onChange={(e) => setManualNewItemName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
+                        placeholder="Type item name and press Enter"
                         className="flex-1 px-4 py-2.5 text-sm bg-white border border-secondary-200 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
                       />
                       <button
