@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, ClipboardList, Truck, Calendar, UserCheck, ShieldCheck, DollarSign, Smartphone } from 'lucide-react';
+import { PageHero } from './shared/PageHero';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 
@@ -180,20 +181,17 @@ export const ProviderSignupPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white pb-24">
-      {/* Header section */}
-      <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <span className="inline-block px-3 py-1.5 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-lg mb-4">
-          Provider Network
-        </span>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-          Grow your <span className="text-brand">hauling business.</span>
-        </h1>
-        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-          Already booked jobs, weekly payouts, and a dispatch app designed for independent contractors.
-        </p>
-      </div>
+      <PageHero
+        eyebrow="Provider Network"
+        title={<>Grow your <span className="text-brand">hauling business.</span></>}
+        subtitle="Already booked jobs, weekly payouts, and a dispatch app designed for independent contractors."
+        image="/process-step-2.svg"
+        imageAlt="Independent contractor dispatching jobs"
+        imageCaption="Vetted contractors • Weekly payouts • Dispatch app"
+        compact
+      />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div>
           {/* Step 1: Personal Details */}
           {step === 1 && (

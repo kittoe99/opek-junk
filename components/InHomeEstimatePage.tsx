@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, ArrowRight, ArrowLeft, Send, Check, Calendar, Clock, Loader2, MapPinned, Receipt } from 'lucide-react';
+import { PageHero } from './shared/PageHero';
 import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
@@ -221,20 +222,17 @@ export const InHomeEstimatePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white pb-24">
-      {/* Header section */}
-      <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <span className="inline-block px-3 py-1.5 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-lg mb-4">
-          Free In-Home Estimate
-        </span>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-          Providers come <span className="text-brand">to you.</span>
-        </h1>
-        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-          Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot.
-        </p>
-      </div>
+      <PageHero
+        eyebrow="Free In-Home Estimate"
+        title={<>Providers come <span className="text-brand">to you.</span></>}
+        subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
+        image="/process-step-1.svg"
+        imageAlt="Vetted provider visiting property"
+        imageCaption="On-site service • No obligation • Free estimate"
+        compact
+      />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Step 1: Contact Details */}
         {step === 1 && (
           <form onSubmit={handleContactSubmit} className="space-y-6">
