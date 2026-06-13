@@ -17,8 +17,8 @@ export const CharityBanner: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
             <div className="relative shrink-0 w-24 h-16 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-secondary-800">
               <img 
-                src="/charity-childrens-heart.png" 
-                alt="Happy children holding giant heart illustration" 
+                src="/charity-childrens-heart-clean.png" 
+                alt="Clean illustration of children holding a glowing heart" 
                 className="w-full h-full object-cover"
               />
             </div>
