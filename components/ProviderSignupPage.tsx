@@ -190,7 +190,7 @@ export const ProviderSignupPage: React.FC = () => {
           Grow your <span className="text-brand">hauling business.</span>
         </h1>
         <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-          Pre-qualified leads, weekly payouts, and a dispatch app designed for independent contractors.
+          Already booked jobs, weekly payouts, and a dispatch app designed for independent contractors.
         </p>
       </div>
 

@@ -209,7 +209,7 @@ export const seoConfig = {
   },
   providerSignup: {
     title: 'Become a Provider - Opek Junk Removal | Partner With Opek',
-    description: 'Join the Opek network of trusted junk removal providers. Grow your business with qualified leads and nationwide exposure.',
+    description: 'Join the Opek network of trusted junk removal providers. Grow your business with already booked jobs and nationwide exposure.',
     keywords: 'junk removal provider, partner program, junk removal business, provider signup',
   },
   privacy: {
