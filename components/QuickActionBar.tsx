@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, Calendar } from 'lucide-react';
 
 interface QuickActionBarProps {
@@ -6,8 +6,48 @@ interface QuickActionBarProps {
 }
 
 export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Apply visibility logic to mobile and tablet screens (< 1024px)
+      if (window.innerWidth >= 1024) {
+        setIsVisible(true);
+        return;
+      }
+
+      const footer = document.querySelector('footer');
+      if (!footer) return;
+
+      const footerRect = footer.getBoundingClientRect();
+      // Hide the bar if the footer starts entering the viewport
+      if (footerRect.top < window.innerHeight) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-40 animate-in slide-in-from-bottom duration-500">
+    <div 
+      className={`fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-40 transition-all duration-300 ease-in-out ${
+        isVisible 
+          ? 'opacity-100 translate-y-0 pointer-events-auto' 
+          : 'opacity-0 translate-y-10 pointer-events-none'
+      }`}
+    >
       <div className="bg-secondary-700 text-white rounded-full shadow-2xl px-4 py-3 md:px-6 md:py-4 flex items-center justify-between md:justify-center gap-3 md:gap-4 border border-white/10 max-w-2xl mx-auto">
         {/* Phone Number */}
         <a 
@@ -33,3 +73,4 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
     </div>
   );
 };
+
