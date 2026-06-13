@@ -104,7 +104,9 @@ function adminContact(r: Record<string, any>): { subject: string; html: string }
 function adminQuote(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const location = r.location_info || {};
-  const visit = r.visit_details || {};
+  const visit = r.visit_details || r.estimate_details || {};
+  const visitDate = visit.preferred_date ? (visit.preferred_date + (visit.preferred_time ? ` (${visit.preferred_time})` : '')) : '';
+  const visitDetails = visit.details || visit.message || '';
   return {
     subject: `Quote request: ${customer.name || ''}`,
     html: emailLayout(
@@ -115,8 +117,8 @@ function adminQuote(r: Record<string, any>): { subject: string; html: string } {
         detailRow('Phone', customer.phone) +
         detailRow('Address', location.address) +
         detailRow('Zip', location.zip_code) +
-        detailRow('Preferred date', visit.preferred_date) +
-        detailRow('Details', visit.details)
+        detailRow('Preferred date', visitDate) +
+        detailRow('Details', visitDetails)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
     ),
@@ -211,8 +213,10 @@ function userContact(r: Record<string, any>): { subject: string; html: string } 
 function userQuote(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const location = r.location_info || {};
-  const visit = r.visit_details || {};
+  const visit = r.visit_details || r.estimate_details || {};
   const name = (customer.name || '').split(' ')[0] || 'there';
+  const visitDate = visit.preferred_date ? (visit.preferred_date + (visit.preferred_time ? ` (${visit.preferred_time})` : '')) : '';
+  const visitDetails = visit.details || visit.message || '';
   return {
     subject: `Your quote request is confirmed, ${name}`,
     html: emailLayout(
@@ -221,8 +225,8 @@ function userQuote(r: Record<string, any>): { subject: string; html: string } {
       detailsBlock(
         detailRow('Address', location.address) +
         detailRow('Zip', location.zip_code) +
-        detailRow('Preferred date', visit.preferred_date) +
-        detailRow('Details', visit.details)
+        detailRow('Preferred date', visitDate) +
+        detailRow('Details', visitDetails)
       ) +
       paragraph('<strong>What happens next:</strong>') +
       steps([
@@ -339,6 +343,7 @@ Deno.serve(async (req: Request) => {
         user = userContact(record);
         break;
       case 'schedule_visits':
+      case 'in_home_estimates':
         admin = adminQuote(record);
         user = userQuote(record);
         break;
