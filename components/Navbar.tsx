@@ -490,23 +490,27 @@ export const Navbar: React.FC = () => {
 
             {/* Promo block */}
             <div className="mt-4 pt-4 border-t border-secondary-100">
-              <div className="bg-secondary rounded-2xl overflow-hidden">
-                <div className="relative h-20 w-full">
+              <div className="bg-secondary rounded-2xl overflow-hidden border border-white/5 shadow-xl bg-gradient-to-b from-secondary-900 to-secondary flex flex-col">
+                <div className="h-20 w-full overflow-hidden shrink-0">
                   <img
                     src="/opek-nav.svg"
                     alt="Opek team"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-center"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
                 </div>
-                <div className="px-4 pb-4 -mt-2">
-                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Same-day available</p>
-                  <p className="text-sm font-black text-white leading-snug mb-3">Junk gone today.<br /><span className="text-brand">Free upfront quote.</span></p>
+                <div className="p-4 flex flex-col flex-1">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+                    <span className="text-[10px] font-black text-brand uppercase tracking-[0.2em]">Same-day available</span>
+                  </div>
+                  <h3 className="text-sm font-black text-white leading-snug mb-3">
+                    Junk gone today. <span className="text-brand">Free upfront quote.</span>
+                  </h3>
                   <button
                     onClick={() => handleLinkClick('/quote')}
-                    className="w-full py-2.5 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-brand-600 transition-colors inline-flex items-center justify-center gap-2"
+                    className="group w-full py-3 bg-brand text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand/90 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 hover:scale-[1.01]"
                   >
-                    Get a Free Quote <ArrowRight size={13} />
+                    Get a Free Quote <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                   </button>
                 </div>
               </div>
