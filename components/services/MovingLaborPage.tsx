@@ -71,7 +71,7 @@ export const MovingLaborPage: React.FC = () => {
       </section>
 
       {/* SEO Content */}
-      <section className="py-16 bg-gray-50 border-t border-secondary-100">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
             <h2 className="text-2xl font-bold text-secondary mb-4">Heavy Lifting & Professional Moving Labor Services</h2>

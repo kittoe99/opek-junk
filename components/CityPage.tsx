@@ -339,7 +339,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       </section>
 
       {/* ── SERVICE AREA CTA ── */}
-      <section id="service-area" className="py-16 md:py-24 bg-white border-t border-secondary-100">
+      <section id="service-area" className="py-16 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-secondary-50/50 rounded-3xl p-8 md:p-12 border border-secondary-100">
             <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
@@ -408,7 +408,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       </section>
 
       {/* ── OTHER CITIES + EXTERNAL CITATIONS ── */}
-      <section className="py-10 md:py-14 bg-white border-t border-secondary-100">
+      <section className="py-10 md:py-14 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 
@@ -474,7 +474,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-14 md:py-20 bg-secondary-50 border-t border-secondary-100">
+      <section className="py-14 md:py-20 bg-secondary-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header — stacked and compact */}
           <div className="mb-8 md:mb-10">

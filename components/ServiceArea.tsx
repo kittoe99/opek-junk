@@ -24,7 +24,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
   const popularCities = cities.slice(0, 6);
 
   return (
-    <section id="service-area" className="py-16 md:py-24 bg-white border-t border-secondary-100">
+    <section id="service-area" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-start">
