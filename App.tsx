@@ -12,6 +12,7 @@ import { ContactPage } from './components/ContactPage';
 import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { WhatWeHaul } from './components/WhatWeHaul';
+import { CharityBanner } from './components/CharityBanner';
 import { ProcessEditorial } from './components/ProcessEditorial';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
@@ -64,6 +65,7 @@ function HomePage() {
       />
       <TrustBadges />
       <Services />
+      <CharityBanner />
       <Process />
       <ProcessEditorial />
       <WhatWeHaul />
