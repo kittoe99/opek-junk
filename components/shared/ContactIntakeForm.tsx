@@ -92,7 +92,6 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 disabled={isLoading}
                 value={name}
                 onChange={(e) => { setName(e.target.value); setError(null); }}
-                placeholder="John Smith"
                 className="w-full pl-10 pr-4 py-3 bg-secondary-50/50 border border-secondary-200/60 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
               />
             </div>
@@ -114,7 +113,6 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 disabled={isLoading}
                 value={formatDisplayPhone(phone)}
                 onChange={handlePhoneChange}
-                placeholder="(555) 000-0000"
                 className="w-full pl-10 pr-4 py-3 bg-secondary-50/50 border border-secondary-200/60 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
               />
             </div>

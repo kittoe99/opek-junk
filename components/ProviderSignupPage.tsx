@@ -249,26 +249,26 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">First Name *</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={inputCls} />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required className={inputCls} />
                   </div>
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Last Name *</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={inputCls} />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required className={inputCls} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email Address *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={inputCls} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required className={inputCls} />
                   </div>
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone Number *</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={inputCls} />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required className={inputCls} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Business Name (Optional)</label>
-                  <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="e.g. John's Hauling LLC" className={inputCls} />
+                  <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} className={inputCls} />
                 </div>
               </div>
 
@@ -289,7 +289,7 @@ export const ProviderSignupPage: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Primary Service Area *</label>
-                  <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required placeholder="e.g. Denver Metro, LA County" className={inputCls} />
+                  <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required className={inputCls} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Vehicle Type *</label>
@@ -349,7 +349,6 @@ export const ProviderSignupPage: React.FC = () => {
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details (Optional)</label>
                   <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleInputChange} rows={3}
-                    placeholder="Share details about your experience, equipment, license status, or team size..."
                     className={`${inputCls} resize-none`} />
                 </div>
               </div>

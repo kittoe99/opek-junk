@@ -344,19 +344,19 @@ export const InHomeEstimatePage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
-                  <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
+                  <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required
                     className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-                  <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
+                  <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required
                     className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-                <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
+                <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required
                   className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors" />
               </div>
 
@@ -382,7 +382,6 @@ export const InHomeEstimatePage: React.FC = () => {
                   onChange={(e) => handleAddressInput(e.target.value)}
                   onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
                   required
-                  placeholder="Start typing an address..."
                   autoComplete="off"
                   className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
                 />
@@ -448,7 +447,6 @@ export const InHomeEstimatePage: React.FC = () => {
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
                 <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
-                  placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
                   className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors resize-none" />
               </div>
 

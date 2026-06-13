@@ -462,7 +462,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               onChange={handleInputChange}
               required
               disabled={contactSubmitting}
-              placeholder="John Smith"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
@@ -477,7 +476,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               required
               disabled={contactSubmitting}
               type="email"
-              placeholder="john@example.com"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
@@ -492,7 +490,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               required
               disabled={contactSubmitting}
               type="tel"
-              placeholder="(555) 123-4567"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
             />
           </div>
@@ -532,7 +529,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               onChange={(e) => handleAddressInput(e.target.value)}
               onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
               required
-              placeholder="Start typing an address..."
               autoComplete="street-address"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
@@ -562,7 +558,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               name="unitNumber"
               value={formData.unitNumber}
               onChange={handleInputChange}
-              placeholder="e.g. Apt 4B, Suite 200"
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>
@@ -576,7 +571,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.city}
                 onChange={handleInputChange}
                 required
-                placeholder="Dallas"
                 className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
               />
             </div>
@@ -588,7 +582,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.state}
                 onChange={handleInputChange}
                 required
-                placeholder="TX"
                 className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
               />
             </div>
@@ -600,7 +593,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.zipCode}
                 onChange={handleInputChange}
                 required
-                placeholder="75201"
                 className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
               />
             </div>
@@ -658,7 +650,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               value={formData.details}
               onChange={handleInputChange}
               rows={3}
-              placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
               className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
             />
           </div>
