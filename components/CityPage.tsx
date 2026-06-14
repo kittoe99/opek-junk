@@ -45,11 +45,11 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
   const processSteps = [
     {
       image: '/process-step-1.svg',
-      alt: 'Customer snapping a photo for an estimate',
+      alt: 'Instant junk removal quote',
       label: 'Step One',
-      titleStart: 'Snap. Send.',
-      titleAccent: 'Done.',
-      desc: 'A quick photo is all that is needed. AI reads the volume, confirming the price — instantly.',
+      titleStart: 'quotes.',
+      titleAccent: 'simplified.',
+      desc: 'Get an instant, flat-rate junk removal quote online.',
     },
     {
       image: '/process-step-2.svg',
