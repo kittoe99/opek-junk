@@ -14,7 +14,7 @@ export const MattressDisposalPage: React.FC = () => {
         eyebrow="Same-Day Mattress Pickup"
         title={<>Mattress<br />Disposal & Recycling</>}
         subtitle="Hassle-free, eco-friendly mattress removal. Upfront pricing, background-checked loaders, and zero heavy lifting. We load it from any room and recycle up to 80% of its parts."
-        image="/mattress-disposal.webp"
+        image="/opek-clean-space.png"
         imageAlt="Loaders removing a mattress"
         imageCaption="Nationwide Service • Eco-Friendly Recycling • Fully Insured"
         primaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}
@@ -31,7 +31,7 @@ export const MattressDisposalPage: React.FC = () => {
             {/* Image Column */}
             <div className="relative">
               <img 
-                src="/opek-clean-space.png" 
+                src="/mattress-disposal.webp" 
                 alt="Clean bedroom space after mattress disposal" 
                 className="w-full h-auto rounded-3xl object-cover shadow-xl border border-secondary-100"
               />
