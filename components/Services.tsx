@@ -1,29 +1,28 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sofa, Container, Home, BicepsFlexed } from 'lucide-react';
 
 const serviceItems = [
   {
     title: "Junk Removal",
-    icon: Sofa,
+    image: "/service-junk-removal.png",
     description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
     path: "/services/junk-removal"
   },
   {
     title: "Dumpster Rental",
-    icon: Container,
+    image: "/service-dumpster-rental.png",
     description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
     path: "/services/dumpster-rental"
   },
   {
     title: "Property Cleanouts",
-    icon: Home,
+    image: "/service-property-cleanout.png",
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
   },
   {
     title: "Moving Labor",
-    icon: BicepsFlexed,
+    image: "/service-moving-labor.png",
     description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
     path: "/services/moving-labor"
   }
@@ -60,17 +59,17 @@ export const Services: React.FC = () => {
           <div className="lg:col-span-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
               {serviceItems.map((item) => {
-                const Icon = item.icon;
                 return (
                   <div 
                     key={item.title} 
                     onClick={() => navigate(item.path)}
                     className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
                   >
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
-                      <Icon 
-                        className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
-                        strokeWidth={1.5} 
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300 overflow-hidden p-1.5">
+                      <img 
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" 
                       />
                     </div>
                     <div className="space-y-1">
