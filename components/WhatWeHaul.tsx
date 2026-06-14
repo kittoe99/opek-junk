@@ -35,15 +35,15 @@ export const WhatWeHaul: React.FC = () => {
             </p>
           </div>
 
-          {/* Right Column: Clean Border-Separated Bento Grid */}
+          {/* Right Column: Clean, Open Grid */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
               {itemTypes.map((item) => (
                 <div 
                   key={item.label} 
-                  className="group bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
+                  className="group flex items-start gap-5 p-2"
                 >
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-all duration-300">
                     <item.icon 
                       className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
                       strokeWidth={1.5} 
