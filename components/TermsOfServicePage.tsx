@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall } from 'lucide-react';
+import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare } from 'lucide-react';
 
 interface TermsSection {
   id: string;
@@ -62,13 +62,19 @@ export const TermsOfServicePage: React.FC = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
-              <strong>Cancellation Policy:</strong> Bookings may be canceled or rescheduled without fee up to 24 hours before your scheduled arrival window.
+              <strong>Cancellation Policy:</strong> Bookings may be canceled or rescheduled without fee up to 72 hours before your scheduled arrival window.
             </li>
             <li>
-              <strong>Late Cancellations:</strong> Cancellations made less than 24 hours prior to the appointment window, or cases where the provider arrives and cannot complete the service due to access issues or customer absence, are subject to a cancellation/truck fee of $99.
+              <strong>Late Cancellations:</strong> A cancellation fee of $69 will be applied for all cancellations made less than 72 hours before the original booking date.
             </li>
             <li>
               <strong>Dumpster Rental Cancellations:</strong> Dumpster rental cancellations within 48 hours of scheduled drop-off are subject to a $150 dry run/holding fee.
+            </li>
+            <li>
+              <strong>Right to Cancel:</strong> We reserve the discretionary right to cancel any booked service on our platform without any explanation. In that case, a full refund will be issued if payments were made and service was not provided.
+            </li>
+            <li>
+              <strong>Provider Discretion:</strong> A service provider may decline a service upon arrival at their own discretion.
             </li>
           </ul>
         </>
@@ -85,10 +91,13 @@ export const TermsOfServicePage: React.FC = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
-              <strong>Quote Adjustments:</strong> The price provided at booking is an estimate. If the actual volume, weight, accessibility, or type of junk (e.g., hazardous materials, excessive concrete) differs from the booking request, the Provider may adjust the price on-site. You will have the option to approve the adjusted rate before loading begins.
+              <strong>Quote Adjustments:</strong> Price may be adjusted after a price quote if items were not accurately listed or some items were omitted at the time of booking. You will have the option to approve the adjusted rate before loading begins.
             </li>
             <li>
-              <strong>Payment Method:</strong> You must supply a valid credit or debit card at the time of booking. A temporary pre-authorization hold may be placed on your card before the scheduled job. Full payment is captured upon completion of the service.
+              <strong>Payment Schedule:</strong> A full or partial payment may be debited from customer’s payment method at least 24 hours or whatever was agreed upon during the time of making the reservation or booking. Full or partial payment must be made before or on the service day before the provider arrives to the job site.
+            </li>
+            <li>
+              <strong>Refunds Policy:</strong> We offer no refunds for services completed.
             </li>
             <li>
               <strong>Extra Fees:</strong> Standard fees cover standard transit. Additional fees apply for municipal dump surcharges, mattresses, tires, hazardous materials, or excessive stairs/carry distance, which will be disclosed prior to booking or on-site.
@@ -107,10 +116,13 @@ export const TermsOfServicePage: React.FC = () => {
             Customers must provide a safe environment for the independent Providers. This includes securing pets, pointing out structural hazards, and clearing access paths.
           </p>
           <p className="mb-4">
-            <strong>Damage Policy:</strong> Providers are independent contractors and are solely liable for any physical property damage or personal injury that occurs during the performance of services.
+            <strong>Liability Limitation:</strong> We are not responsible for property damage or any damages at all that arise from services rendered by independent service providers. Providers are independent contractors and are solely liable for any physical property damage or personal injury that occurs during the performance of services.
+          </p>
+          <p className="mb-4">
+            In the event of property damage caused by a Provider, you must file a claim directly with that Provider and their insurance carrier. Opek will assist by providing the Provider’s contact details, business registry, and insurance coverage information.
           </p>
           <p>
-            In the event of property damage caused by a Provider, you must file a claim directly with that Provider and their insurance carrier. Opek will assist by providing the Provider’s contact details, business registry, and insurance coverage information, but Opek assumes no liability for property damage or physical disputes.
+            <strong>SafeProtect Platform Protection:</strong> Our “SafeProtect” platform protection is not an insurance policy. It has a limit of $500 per occurrence. We may increase that amount in our discretion on a case-by-case basis.
           </p>
         </>
       ),
@@ -128,7 +140,7 @@ export const TermsOfServicePage: React.FC = () => {
             TO THE FULLEST EXTENT PERMITTED BY LAW, OPEK JUNK REMOVAL, ITS AFFILIATES, AND ITS OFFICERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE PLATFORM USE OR THE SERVICES PERFORMED BY INDEPENDENT LOCAL SERVICE PROVIDERS.
           </p>
           <p className="text-sm">
-            OPEK'S MAXIMUM LIABILITY TO YOU FOR ANY CLAIMS ARISING FROM THE PLATFORM OR COMPLETED SERVICES SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO OPEK FOR THE SPECIFIC BOOKING GIVING RISE TO LIABILITY.
+            OPEK'S MAXIMUM LIABILITY TO YOU FOR ANY CLAIMS ARISING FROM THE PLATFORM OR COMPLETED SERVICES SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO OPEK FOR THE SPECIFIC BOOKING GIVING RISE TO LIABILITY, OR UP TO THE DISCRETIONARY $500 LIMIT UNDER OUR SAFEPROTECT PLATFORM PROTECTION POLICY.
           </p>
         </>
       ),
@@ -143,7 +155,7 @@ export const TermsOfServicePage: React.FC = () => {
             These Terms and any dispute arising out of them will be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law principles.
           </p>
           <p className="mb-4">
-            <strong>Mandatory Arbitration:</strong> Any dispute, controversy, or claim arising out of or relating to these Terms or the breach, termination, enforcement, or validity thereof, will be settled by binding arbitration administered by the American Arbitration Association (AAA) rather than in court.
+            <strong>Dispute Resolution Procedure:</strong> Resolutions must be initially resolved through us. If not resolved to your satisfaction, then the dispute, controversy, or claim arising out of or relating to these Terms or the breach, termination, enforcement, or validity thereof will be settled by binding arbitration before any court action.
           </p>
           <p className="font-bold">
             You agree to waive any right to participate as a class representative or class member in any class action lawsuit or class-wide arbitration.
@@ -152,8 +164,49 @@ export const TermsOfServicePage: React.FC = () => {
       ),
     },
     {
+      id: 'general-user-customer',
+      title: '8. Terms – General User & Customer',
+      icon: <CheckSquare size={18} className="text-brand shrink-0" />,
+      content: (
+        <>
+          <p className="mb-4 font-bold text-secondary">
+            The following general terms apply to all users and customers booking services through the Opek platform:
+          </p>
+          <ol className="list-decimal pl-6 space-y-3 font-semibold text-secondary-800">
+            <li>
+              Our “SafeProtect” platform protection is not an insurance policy. It has a limit of $500 per occurrence. We may increase that amount in our discretion on a case by case basis.
+            </li>
+            <li>
+              A full or partial payment may be debited from customer’s payment method at least 24 hours or whatever was agreed upon during time of making the reservation or booking. We offer no refunds for services completed.
+            </li>
+            <li>
+              A cancellation fee of $69 will be applied for all cancellations less than 72 hours before the original booking date.
+            </li>
+            <li>
+              Resolutions must be initially resolved through us, if not resolved then arbitration before court.
+            </li>
+            <li>
+              We are not responsible for property damage or any damages at all that arise from services rendered by independent service providers.
+            </li>
+            <li>
+              We reserve the discretionary right to cancel any booked service on our platform without any explanation, in that case, a full refund will be issued if payments were made and service was not provided.
+            </li>
+            <li>
+              Price may be adjusted after a price quote if items were not accurately listed or some items were omitted at the time of booking.
+            </li>
+            <li>
+              A service provider may decline a service upon arrival at their own discretion.
+            </li>
+            <li>
+              Full or partial payment must be made before or on service day before the provider arrives to the job site.
+            </li>
+          </ol>
+        </>
+      ),
+    },
+    {
       id: 'contact',
-      title: '8. Contact Info',
+      title: '9. Contact Info',
       icon: <PhoneCall size={18} className="text-brand shrink-0" />,
       content: (
         <>
