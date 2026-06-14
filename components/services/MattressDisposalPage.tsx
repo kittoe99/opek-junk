@@ -24,7 +24,7 @@ export const MattressDisposalPage: React.FC = () => {
       desc: "Vetted crews retrieve your mattress from any room or floor. No curb dragging."
     },
     {
-      image: "/process-step-1.svg",
+      image: "/eco-disposal-step.png",
       alt: "Eco-friendly mattress recycling",
       titleStart: "Eco",
       titleAccent: "disposal.",
