@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
@@ -221,7 +221,7 @@ export const QuotePage: React.FC = () => {
     incomingState?.preselectItems ? 'junk_removal' : mappedServiceType
   );
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(
-    incomingState?.preselectItems ? 'manual' : (mappedServiceType === 'junk_removal' ? 'manual' : (incomingState?.serviceType ? 'manual' : null))
+    incomingState?.preselectItems ? 'manual' : (mappedServiceType === 'junk_removal' ? null : (incomingState?.serviceType ? 'manual' : null))
   );
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -280,7 +280,7 @@ export const QuotePage: React.FC = () => {
     } else if (selectedService === 'dumpster_rental') {
       setSelectedOption('dumpster_rental');
     } else if (selectedService === 'junk_removal') {
-      setSelectedOption('manual');
+      setSelectedOption(null);
     } else if (selectedService === null) {
       setSelectedOption(null);
     }
@@ -450,9 +450,33 @@ export const QuotePage: React.FC = () => {
       const base64Data = image.split(',')[1];
       const mimeType = image.split(';')[0].split(':')[1];
       const items = await detectItemsFromPhoto(base64Data, mimeType);
-      setDetectedItems(items);
-      setAiStep('items');
-      setLoadingState(LoadingState.SUCCESS);
+      
+      // Add detected items to standard selectedItems state
+      setSelectedItems(prev => {
+        const newItems = [...prev];
+        items.forEach(newItem => {
+          const existing = newItems.find(item => item.name.toLowerCase() === newItem.name.toLowerCase());
+          if (existing) {
+            existing.quantity += newItem.quantity;
+          } else {
+            newItems.push({
+              id: `ai-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              name: newItem.name,
+              quantity: newItem.quantity
+            });
+          }
+        });
+        return newItems;
+      });
+
+      // Clear AI temporary upload state and set loading state
+      setImage(null);
+      setDetectedItems([]);
+      setLoadingState(LoadingState.IDLE);
+      
+      // Navigate user to manual review screen with auto-selected items
+      setSelectedOption('manual');
+      setManualStep('review');
     } catch (err: any) {
       console.error('AI analysis error:', err);
       setError(err?.message || 'Failed to analyze photo. Please try again.');
@@ -1843,31 +1867,32 @@ export const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
             <button
               onClick={() => setSelectedOption('ai')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <ScanSearch size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
+                <Sparkles size={22} className="text-secondary group-hover:text-brand transition-colors fill-secondary/5 group-hover:fill-brand/10" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">AI Photo Estimate</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Snap a photo for instant AI pricing</p>
+                <p className="text-secondary-400 text-xs md:text-sm mb-2">Snap a photo for instant AI pricing</p>
+                <span className="inline-block px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-brand text-white rounded-none border border-brand shadow-sm">Fastest</span>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+              <div className="w-8 h-8 rounded-none border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
             <button
               onClick={() => setSelectedOption('manual')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                <ListChecks size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
+                <Boxes size={22} className="text-secondary group-hover:text-brand transition-colors" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
                 <p className="text-secondary-400 text-xs md:text-sm">Pick items from the catalog for a quote</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
+              <div className="w-8 h-8 rounded-none border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
                 <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
               </div>
             </button>
@@ -1880,7 +1905,7 @@ export const QuotePage: React.FC = () => {
             <div className="flex flex-wrap gap-3 items-center">
               <button
                 onClick={() => navigate('/contact')}
-                className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors inline-flex items-center gap-2"
+                className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-none hover:bg-brand transition-colors inline-flex items-center gap-2"
               >
                 Contact Us <ArrowRight size={16} />
               </button>
@@ -1902,10 +1927,20 @@ export const QuotePage: React.FC = () => {
     <div className="min-h-screen bg-white">
       <div className={`pt-32 pb-8 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
         <button
-          onClick={() => setSelectedService(null)}
+          onClick={() => {
+            if (selectedService === 'junk_removal') {
+              if (selectedOption === 'manual' && manualStep === 'review' && selectedItems.length > 0) {
+                setManualStep('select');
+              } else {
+                setSelectedOption(null);
+              }
+            } else {
+              setSelectedService(null);
+            }
+          }}
           className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
         >
-          <ArrowLeft size={14} /> Back to services
+          <ArrowLeft size={14} /> Back
         </button>
 
         <div ref={contentTopRef} className="mb-8">
@@ -1983,7 +2018,7 @@ export const QuotePage: React.FC = () => {
 
                   <button
                     onClick={() => setAiStep('upload')}
-                    className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-lg inline-flex items-center justify-center gap-2 mt-4"
+                    className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-none inline-flex items-center justify-center gap-2 mt-4"
                   >
                     Got it — Continue <ArrowRight size={14} />
                   </button>
@@ -1998,7 +2033,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => cameraInputRef.current?.click()}
-                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-2xl rounded-xl text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-none text-left flex items-center gap-4 group"
                       >
                         <Camera size={24} className="text-brand shrink-0" />
                         <div className="flex-1">
@@ -2012,7 +2047,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 md:rounded-2xl rounded-xl text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-none text-left flex items-center gap-4 group"
                       >
                         <Upload size={24} className="text-secondary shrink-0" />
                         <div className="flex-1">
@@ -2032,19 +2067,19 @@ export const QuotePage: React.FC = () => {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="relative border border-secondary-100 rounded-xl overflow-hidden">
+                      <div className="relative border border-secondary-100 rounded-none overflow-hidden">
                         <img src={image} alt="Upload" className="w-full" />
                         {loadingState !== LoadingState.ANALYZING && (
                           <button
                             onClick={() => { setImage(null); setEstimate(null); setDetectedItems([]); }}
-                            className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-lg"
+                            className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-none"
                           >
                             Change Photo
                           </button>
                         )}
                       </div>
                       {loadingState === LoadingState.IDLE && (
-                        <button onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-lg inline-flex items-center justify-center gap-2">
+                        <button onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-none inline-flex items-center justify-center gap-2">
                           <ScanSearch size={14} /> Analyze Photo
                         </button>
                       )}
@@ -2055,7 +2090,7 @@ export const QuotePage: React.FC = () => {
                         </div>
                       )}
                       {loadingState === LoadingState.ERROR && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-none text-center">
                           <p className="text-red-700 text-sm font-bold mb-1">Failed to analyze photo</p>
                           {error && <p className="text-red-600 text-xs mb-2">{error}</p>}
                           <button onClick={handleAnalyze} className="text-sm font-bold text-secondary underline hover:text-brand transition-colors">Try again</button>
