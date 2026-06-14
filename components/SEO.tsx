@@ -222,4 +222,9 @@ export const seoConfig = {
     description: 'Review the terms, conditions, and disclaimers for using the Opek Junk Removal platform and booking local hauling or dumpster rentals.',
     keywords: 'terms of service, user agreement, opek terms, legal agreement, hauling disclaimer',
   },
+  mattressDisposal: {
+    title: 'Same-Day Mattress Disposal & Recycling | Opek — Upfront Pricing',
+    description: 'Upfront flat-rate pricing for mattress disposal and recycling. Vetted local providers pick up from any room. Same-day service available nationwide.',
+    keywords: 'mattress disposal, mattress recycling, remove old mattress, mattress pickup, get rid of mattress near me, box spring removal',
+  },
 };
