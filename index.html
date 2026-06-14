@@ -217,6 +217,23 @@
       [class*="rounded-"]:has(picture) {
         border-radius: 0px !important;
       }
+
+      /* Force all form fields and their immediate containers to have squared edges */
+      input:not([type="radio"]):not([type="checkbox"]),
+      select,
+      textarea,
+      [class*="rounded-"]:has(> input:not([type="radio"]):not([type="checkbox"])),
+      [class*="rounded-"]:has(> select),
+      [class*="rounded-"]:has(> textarea) {
+        border-radius: 0px !important;
+      }
+
+      /* Force all buttons, button-like links, and custom button links to have squared edges, except in the quick action bar */
+      button:not(.quick-action-bar):not(.quick-action-bar *),
+      [role="button"]:not(.quick-action-bar):not(.quick-action-bar *),
+      a[class*="px-"][class*="py-"][class*="rounded-"]:not(.quick-action-bar):not(.quick-action-bar *) {
+        border-radius: 0px !important;
+      }
       
       html {
         scroll-behavior: smooth;

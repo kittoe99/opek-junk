@@ -64,13 +64,13 @@ export const MattressDisposalPage: React.FC = () => {
           </div>
           <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <button
-              onClick={() => navigate('/quote')}
+              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
             >
               View Pricing
             </button>
             <button
-              onClick={() => navigate('/booking')}
+              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
             >
               Book Online
@@ -97,13 +97,13 @@ export const MattressDisposalPage: React.FC = () => {
                 </p>
                 <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
                   <button
-                    onClick={() => navigate('/quote')}
+                    onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                   >
                     View Pricing
                   </button>
                   <button
-                    onClick={() => navigate('/booking')}
+                    onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                   >
                     Book Online
@@ -180,7 +180,17 @@ export const MattressDisposalPage: React.FC = () => {
                   return (
                     <div 
                       key={item.title} 
-                      onClick={() => navigate('/quote')}
+                      onClick={() => {
+                        let preselect = [{ name: 'Mattress', quantity: 1 }];
+                        if (item.title === 'Box Springs') preselect = [{ name: 'Box Spring', quantity: 1 }];
+                        else if (item.title === 'Bed Frames') preselect = [{ name: 'Bed Frame', quantity: 1 }];
+                        else if (item.title === 'Complete Sets') preselect = [
+                          { name: 'Mattress', quantity: 1 },
+                          { name: 'Box Spring', quantity: 1 },
+                          { name: 'Bed Frame', quantity: 1 }
+                        ];
+                        navigate('/quote', { state: { preselectItems: preselect } });
+                      }}
                       className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
                     >
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
@@ -242,7 +252,7 @@ export const MattressDisposalPage: React.FC = () => {
             {/* Right Side: CTA Button */}
             <div className="flex-shrink-0 w-full sm:w-auto">
               <button
-                onClick={() => navigate('/booking')}
+                onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
                 className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded bg-brand hover:bg-brand-600 px-6 py-3 text-xs font-black uppercase tracking-wider text-white hover:shadow-xl transition-all duration-300 whitespace-nowrap"
               >
                 <span>Book Eco-Haul</span>
@@ -311,7 +321,7 @@ export const MattressDisposalPage: React.FC = () => {
           {/* Centered CTA */}
           <div className="mt-16 md:mt-24 text-center">
             <button
-              onClick={() => navigate('/quote')}
+              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
               className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               <span>View Pricing & Book</span>

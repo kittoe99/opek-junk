@@ -42,7 +42,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
 
   return (
     <div 
-      className={`fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-40 transition-all duration-300 ease-in-out ${
+      className={`quick-action-bar fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-40 transition-all duration-300 ease-in-out ${
         isVisible 
           ? 'opacity-100 translate-y-0 pointer-events-auto' 
           : 'opacity-0 translate-y-10 pointer-events-none'

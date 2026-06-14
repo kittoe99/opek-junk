@@ -1,28 +1,29 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Trash2, Container, PackageOpen, BicepsFlexed } from 'lucide-react';
 
 const serviceItems = [
   {
     title: "Junk Removal",
-    image: "/service-junk-removal.png",
+    icon: Trash2,
     description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
     path: "/services/junk-removal"
   },
   {
     title: "Dumpster Rental",
-    image: "/service-dumpster-rental.png",
+    icon: Container,
     description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
     path: "/services/dumpster-rental"
   },
   {
     title: "Property Cleanouts",
-    image: "/service-property-cleanout.png",
+    icon: PackageOpen,
     description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
     path: "/services/property-cleanout"
   },
   {
     title: "Moving Labor",
-    image: "/service-moving-labor.png",
+    icon: BicepsFlexed,
     description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
     path: "/services/moving-labor"
   }
@@ -65,11 +66,10 @@ export const Services: React.FC = () => {
                     onClick={() => navigate(item.path)}
                     className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
                   >
-                    <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shrink-0">
-                      <img 
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" 
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
+                      <item.icon 
+                        className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
+                        strokeWidth={1.5} 
                       />
                     </div>
                     <div className="space-y-1">

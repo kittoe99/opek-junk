@@ -45,17 +45,23 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Sectional Couch (2 piece)', image: '/items/sofa.svg' },
       { name: 'Loveseat', image: '/items/loveseat.svg' },
       { name: 'Chair', image: '/items/chair.svg' },
+      { name: 'Recliner', image: '/items/recliner.svg' },
       { name: 'Ottoman', image: '/items/ottoman.svg' },
       { name: 'Table', image: '/items/table.svg' },
+      { name: 'Dining Table', image: '/items/table.svg' },
+      { name: 'Coffee Table', image: '/items/table.svg' },
       { name: 'TV Stand / Entertainment Center', image: '/items/tv-stand.svg' },
       { name: 'Bookshelf', image: '/items/bookshelf.svg' },
       { name: 'Desk', image: '/items/desk.svg' },
+      { name: 'Desk Chair / Office Chair', image: '/items/chair.svg' },
+      { name: 'Bar Stools', image: '/items/chair.svg' },
       { name: 'Filing Cabinet', image: '/items/cabinet.svg' },
       { name: 'Dresser', image: '/items/dresser.svg' },
       { name: 'Nightstand', image: '/items/nightstand.svg' },
       { name: 'Wardrobe / Armoire', image: '/items/wardrobe.svg' },
       { name: 'China Cabinet', image: '/items/cabinet.svg' },
       { name: 'Patio Furniture Set', image: '/items/patio-set.svg' },
+      { name: 'Patio Chair', image: '/items/chair.svg' },
     ],
   },
   {
@@ -66,6 +72,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Box Spring', image: '/items/box-spring.svg' },
       { name: 'Bed Frame', image: '/items/bed-frame.svg' },
       { name: 'Futon', image: '/items/futon.svg' },
+      { name: 'Futon Mattress', image: '/items/mattress.svg' },
       { name: 'Bunk Bed', image: '/items/bunk-bed.svg' },
       { name: 'Crib', image: '/items/crib.svg' },
     ],
@@ -75,7 +82,10 @@ const ITEM_CATALOG: CatalogCategory[] = [
     icon: <Plug size={18} />,
     items: [
       { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
+      { name: 'Mini Fridge', image: '/items/fridge.svg' },
       { name: 'Washer / Dryer', image: '/items/washer.svg' },
+      { name: 'Washing Machine', image: '/items/washer.svg' },
+      { name: 'Dryer', image: '/items/washer.svg' },
       { name: 'Dishwasher', image: '/items/dishwasher.svg' },
       { name: 'Oven / Stove', image: '/items/oven.svg' },
       { name: 'Microwave', image: '/items/microwave.svg' },
@@ -83,6 +93,9 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Water Heater', image: '/items/water-heater.svg' },
       { name: 'Vacuum Cleaner', image: '/items/vacuum.svg' },
       { name: 'Exercise Equipment', image: '/items/exercise.svg' },
+      { name: 'Treadmill', image: '/items/exercise.svg' },
+      { name: 'Dehumidifier', image: '/items/ac-unit.svg' },
+      { name: 'Water Dispenser / Cooler', image: '/items/water-heater.svg' },
     ],
   },
   {
@@ -93,7 +106,9 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Computer / Monitor', image: '/items/computer.svg' },
       { name: 'Printer / Scanner', image: '/items/printer.svg' },
       { name: 'Stereo / Speakers', image: '/items/speakers.svg' },
+      { name: 'Speakers (Large)', image: '/items/speakers.svg' },
       { name: 'Gaming Console', image: '/items/gaming.svg' },
+      { name: 'Projector', image: '/items/computer.svg' },
       { name: 'Electronics Box', image: '/items/electronics-box.svg' },
     ],
   },
@@ -102,6 +117,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
     icon: <TreePine size={18} />,
     items: [
       { name: 'Lawn Mower', image: '/items/lawn-mower.svg' },
+      { name: 'Riding Mower', image: '/items/lawn-mower.svg' },
       { name: 'Grill / BBQ', image: '/items/grill.svg' },
       { name: 'Trampoline', image: '/items/trampoline.svg' },
       { name: 'Swing Set / Playground', image: '/items/swing-set.svg' },
@@ -110,6 +126,8 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Fencing', image: '/items/fencing.svg' },
       { name: 'Yard Debris / Brush', image: '/items/yard-debris.svg' },
       { name: 'Garden Tools', image: '/items/garden-tools.svg' },
+      { name: 'Wheelbarrow', image: '/items/garden-tools.svg' },
+      { name: 'Leaf Blower', image: '/items/garden-tools.svg' },
       { name: 'Firewood Pile', image: '/items/firewood.svg' },
     ],
   },
@@ -139,11 +157,13 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Bicycle', image: '/items/bicycle.svg' },
       { name: 'Toolbox / Workbench', image: '/items/toolbox.svg' },
       { name: 'Shelving Unit', image: '/items/shelving.svg' },
+      { name: 'Metal Shelving', image: '/items/shelving.svg' },
       { name: 'Storage Bins / Boxes', image: '/items/storage-bins.svg' },
       { name: 'Clothing / Bags', image: '/items/clothing.svg' },
       { name: 'Luggage', image: '/items/luggage.svg' },
       { name: 'Sports Equipment', image: '/items/sports.svg' },
       { name: 'Kids Toys', image: '/items/kids-toys.svg' },
+      { name: 'Ladder', image: '/items/toolbox.svg' },
     ],
   },
   {
@@ -158,6 +178,9 @@ const ITEM_CATALOG: CatalogCategory[] = [
       { name: 'Light Fixture', image: '/items/light-fixture.svg' },
       { name: 'Bags of Trash', image: '/items/trash-bags.svg' },
       { name: 'Boxes of Junk', image: '/items/junk-boxes.svg' },
+      { name: 'Safe (Medium/Large)', image: '/items/misc-item.svg' },
+      { name: 'Pet Crate / Kennel', image: '/items/misc-item.svg' },
+      { name: 'Stroller', image: '/items/misc-item.svg' },
       { name: 'Miscellaneous Item', image: '/items/misc-item.svg' },
     ],
   },
@@ -173,6 +196,7 @@ export const QuotePage: React.FC = () => {
     zipResult?: { city: string; state: string; served?: boolean } | null;
     zipValue?: string;
     serviceType?: string;
+    preselectItems?: { name: string; quantity: number }[];
   } | null;
 
   // Map incoming serviceType string to internal service type if present
@@ -193,9 +217,11 @@ export const QuotePage: React.FC = () => {
       ? { city: incomingState.zipResult.city, state: incomingState.zipResult.state, servedCity: { city: incomingState.zipResult.city, state: incomingState.zipResult.state } }
       : null
   );
-  const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null>(mappedServiceType);
+  const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null>(
+    incomingState?.preselectItems ? 'junk_removal' : mappedServiceType
+  );
   const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(
-    mappedServiceType === 'junk_removal' ? 'manual' : (incomingState?.serviceType ? 'manual' : null)
+    incomingState?.preselectItems ? 'manual' : (mappedServiceType === 'junk_removal' ? 'manual' : (incomingState?.serviceType ? 'manual' : null))
   );
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -326,7 +352,16 @@ export const QuotePage: React.FC = () => {
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
 
   // Item Selection State
-  const [selectedItems, setSelectedItems] = useState<DetectedItem[]>([]);
+  const [selectedItems, setSelectedItems] = useState<DetectedItem[]>(() => {
+    if (incomingState?.preselectItems) {
+      return incomingState.preselectItems.map((item, idx) => ({
+        id: `pre-${idx}-${Date.now()}`,
+        name: item.name,
+        quantity: item.quantity
+      }));
+    }
+    return [];
+  });
   const [catalogSearch, setCatalogSearch] = useState('');
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Popular Items');
   const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>('select');
@@ -524,6 +559,13 @@ export const QuotePage: React.FC = () => {
       setManualPricingLoading(false);
     }
   };
+
+  // Auto-trigger review step if preselected items are provided from service page
+  useEffect(() => {
+    if (zipVerified && incomingState?.preselectItems && selectedItems.length > 0 && manualStep === 'select') {
+      setManualStep('review');
+    }
+  }, [zipVerified, incomingState, selectedItems, manualStep]);
 
   const isItemSelected = (itemName: string) => selectedItems.some(i => i.name === itemName);
 
@@ -2146,12 +2188,12 @@ export const QuotePage: React.FC = () => {
                             }}
                             className={`flex flex-row items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
                               isActive
-                                ? 'bg-brand text-white shadow-sm shadow-brand/30'
+                                ? 'bg-brand/10 text-brand'
                                 : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
                             }`}
                           >
                             <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                              isActive ? 'bg-white/20 text-white' : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                              isActive ? 'bg-brand/20 text-brand' : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                             }`}>
                               <span className="scale-75">{category.icon}</span>
                             </div>
@@ -2163,9 +2205,7 @@ export const QuotePage: React.FC = () => {
                               </p>
                             </div>
                             {selectedCount > 0 && (
-                              <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0 ${
-                                isActive ? 'bg-white text-brand' : 'bg-brand text-white'
-                              }`}>
+                              <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0 bg-brand text-white">
                                 {selectedCount}
                               </span>
                             )}
@@ -2202,33 +2242,25 @@ export const QuotePage: React.FC = () => {
                                 return (
                                   <button
                                     key={item.name}
-                                    className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-200 text-center cursor-pointer ${
+                                    className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
                                       selected
-                                        ? 'bg-brand/5 border-brand/30 shadow-sm shadow-brand/10'
-                                        : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-md hover:shadow-secondary/8 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm'
+                                        ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
+                                        : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
                                     }`}
-                                    onClick={() => !selected && toggleCatalogItem(item.name)}
+                                    onClick={() => toggleCatalogItem(item.name)}
                                   >
                                     {selected && (
-                                      <button
-                                        onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-sm transition-colors z-10"
-                                      >
-                                        <X size={9} className="text-white" strokeWidth={3} />
-                                      </button>
-                                    )}
-                                    {selected && (
-                                      <div className="absolute top-1.5 left-1.5 w-4 h-4 bg-brand rounded-full flex items-center justify-center z-10">
-                                        <Check size={8} className="text-white" strokeWidth={3} />
+                                      <div className="absolute top-2 right-2 w-5 h-5 bg-brand text-white rounded-full flex items-center justify-center shadow-md animate-scale-in z-10">
+                                        <Check size={11} strokeWidth={3.5} />
                                       </div>
                                     )}
-                                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
                                       selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
                                     }`}>
                                       <img
                                         src={item.image}
                                         alt={item.name}
-                                        className="w-7 h-7 sm:w-8 sm:h-8 transition-all duration-200"
+                                        className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
                                         style={{
                                           filter: selected
                                             ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -2241,12 +2273,12 @@ export const QuotePage: React.FC = () => {
                                     }`}>{item.name}</span>
                                     
                                     {selected && selectedItem && (
-                                      <div className="flex items-center gap-1 mt-0.5 bg-white border border-secondary-150 rounded-full px-1.5 py-0.5 shadow-sm" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                      <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-200 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
                                           <Minus size={9} className="text-secondary-500" />
                                         </button>
-                                        <span className="w-5 text-center text-[11px] font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                        <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                           <Plus size={9} className="text-secondary-500" />
                                         </button>
                                       </div>
@@ -2276,33 +2308,25 @@ export const QuotePage: React.FC = () => {
                                   return (
                                     <button
                                       key={item.name}
-                                      className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-200 text-center cursor-pointer ${
+                                      className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
                                         selected
-                                          ? 'bg-brand/5 border-brand/30 shadow-sm shadow-brand/10'
-                                          : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-md hover:shadow-secondary/8 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm'
+                                          ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
+                                          : 'bg-white border-secondary-100 hover:border-secondary-200 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
                                       }`}
-                                      onClick={() => !selected && toggleCatalogItem(item.name)}
+                                      onClick={() => toggleCatalogItem(item.name)}
                                     >
                                       {selected && (
-                                        <button
-                                          onClick={(e) => { e.stopPropagation(); toggleCatalogItem(item.name); }}
-                                          className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 shadow-sm transition-colors z-10"
-                                        >
-                                          <X size={9} className="text-white" strokeWidth={3} />
-                                        </button>
-                                      )}
-                                      {selected && (
-                                        <div className="absolute top-1.5 left-1.5 w-4 h-4 bg-brand rounded-full flex items-center justify-center z-10">
-                                          <Check size={8} className="text-white" strokeWidth={3} />
+                                        <div className="absolute top-2 right-2 w-5 h-5 bg-brand text-white rounded-full flex items-center justify-center shadow-md animate-scale-in z-10">
+                                          <Check size={11} strokeWidth={3.5} />
                                         </div>
                                       )}
-                                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
                                         selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
                                       }`}>
                                         <img
                                           src={item.image}
                                           alt={item.name}
-                                          className="w-7 h-7 sm:w-8 sm:h-8 transition-all duration-200"
+                                          className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
                                           style={{
                                             filter: selected
                                               ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
@@ -2315,12 +2339,12 @@ export const QuotePage: React.FC = () => {
                                       }`}>{item.name}</span>
                                       
                                       {selected && selectedItem && (
-                                        <div className="flex items-center gap-1 mt-0.5 bg-white border border-secondary-150 rounded-full px-1.5 py-0.5 shadow-sm" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                        <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-200 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
                                             <Minus size={9} className="text-secondary-500" />
                                           </button>
-                                          <span className="w-5 text-center text-[11px] font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4 h-4 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                             <Plus size={9} className="text-secondary-500" />
                                           </button>
                                         </div>
@@ -2401,10 +2425,10 @@ export const QuotePage: React.FC = () => {
                   </div>
 
                   {/* Items list */}
-                  <div className="border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden bg-white">
+                  <div className="border border-secondary-100 rounded-none divide-y divide-secondary-100 overflow-hidden bg-white">
                     {selectedItems.map((item) => (
                       <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-secondary-50/50 transition-colors">
-                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-secondary-50 flex items-center justify-center shrink-0">
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
                           <img
                             src={getItemImage(item.name)}
                             alt={item.name}
@@ -2417,23 +2441,75 @@ export const QuotePage: React.FC = () => {
                           <p className="text-[11px] text-secondary-400">Qty: {item.quantity}</p>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-lg border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                          <button onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-none border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
                             <Minus size={14} />
                           </button>
                           <span className="w-6 text-center text-sm font-black text-secondary">{item.quantity}</span>
-                          <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-lg border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                          <button onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-none border border-secondary-200 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
                             <Plus size={14} />
                           </button>
                         </div>
                         <button
                           onClick={() => toggleCatalogItem(item.name)}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 transition-colors shrink-0"
+                          className="w-8 h-8 rounded-none flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 transition-colors shrink-0"
                           aria-label={`Remove ${item.name}`}
                         >
                           <Trash2 size={14} />
                         </button>
                       </div>
                     ))}
+                  </div>
+
+                  {/* Suggested Add-ons (Upsells) */}
+                  <div className="border border-secondary-100 rounded-none bg-secondary-50/30 p-4 md:p-5 space-y-3">
+                    <p className="text-xs font-black uppercase tracking-wider text-secondary flex items-center gap-1.5">
+                      <span>Suggested Add-ons</span>
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {[
+                        { name: 'Box Spring', desc: 'Dispose of the matching box spring' },
+                        { name: 'Bed Frame', desc: 'Dispose of the metal or wooden bed frame' }
+                      ].map((upsell) => {
+                        const isAdded = isItemSelected(upsell.name);
+                        return (
+                          <div key={upsell.name} className="bg-white border border-secondary-100 p-3 flex items-center justify-between gap-3 shadow-sm hover:shadow transition-shadow rounded-none">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
+                                <img
+                                  src={getItemImage(upsell.name)}
+                                  alt={upsell.name}
+                                  className="w-6 h-6 object-contain"
+                                  style={{ filter: 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)' }}
+                                />
+                              </div>
+                              <div>
+                                <p className="text-xs font-bold text-secondary leading-tight">{upsell.name}</p>
+                                <p className="text-[10px] text-secondary-400">{upsell.desc}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => toggleCatalogItem(upsell.name)}
+                              className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-none border transition-all duration-200 ${
+                                isAdded
+                                  ? 'bg-emerald-500 border-emerald-500 text-white hover:bg-emerald-600 font-bold'
+                                  : 'bg-brand border-brand text-white hover:bg-brand-600 font-bold'
+                              }`}
+                            >
+                              {isAdded ? 'Added ✓' : '+ Add'}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Add More Items Option */}
+                    <button
+                      onClick={() => setManualStep('select')}
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border border-dashed border-secondary-200 text-secondary-600 hover:border-brand hover:text-brand font-bold text-xs uppercase tracking-wider rounded-none transition-all shadow-sm"
+                    >
+                      <Plus size={14} />
+                      <span>Add more items</span>
+                    </button>
                   </div>
 
                   {/* Helper actions */}
@@ -2457,7 +2533,7 @@ export const QuotePage: React.FC = () => {
                     <button
                       onClick={handleGetManualPrice}
                       disabled={selectedItems.length === 0}
-                      className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-full shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-none shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
                       <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
