@@ -10,21 +10,21 @@ export const MattressDisposalPage: React.FC = () => {
 
   const steps = [
     {
-      image: "/mattress-pickup.webp",
+      image: "/process-step-2.svg",
       alt: "Instant mattress disposal quote",
       titleStart: "quotes.",
       titleAccent: "simplified.",
       desc: "Get an instant, flat-rate mattress disposal quote online."
     },
     {
-      image: "/process-step-2.svg",
+      image: "/process-step-3.svg",
       alt: "In-home mattress removal service",
       titleStart: "Zero",
       titleAccent: "lifting.",
       desc: "Vetted crews retrieve your mattress from any room or floor. No curb dragging."
     },
     {
-      image: "/process-step-3.svg",
+      image: "/process-step-1.svg",
       alt: "Eco-friendly mattress recycling",
       titleStart: "Eco",
       titleAccent: "disposal.",
