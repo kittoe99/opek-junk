@@ -1869,8 +1869,11 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('ai')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
-                <Sparkles size={22} className="text-secondary group-hover:text-brand transition-colors fill-secondary/5 group-hover:fill-brand/10" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
+                <div className="relative">
+                  <Camera size={22} className="text-secondary group-hover:text-brand transition-colors" />
+                  <Sparkles size={11} className="absolute -top-1 -right-1.5 text-brand animate-pulse fill-brand" />
+                </div>
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">AI Photo Estimate</h3>
@@ -1885,8 +1888,11 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('manual')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
-                <Boxes size={22} className="text-secondary group-hover:text-brand transition-colors" />
+              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
+                <div className="relative">
+                  <Boxes size={22} className="text-secondary group-hover:text-brand transition-colors" />
+                  <Plus size={10} className="absolute -bottom-0.5 -right-0.5 text-brand stroke-[4px]" />
+                </div>
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
