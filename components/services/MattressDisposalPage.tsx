@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { PageHero } from '../shared/PageHero';
 import { TrustBadges } from '../TrustBadges';
+import { ServiceArea } from '../ServiceArea';
 
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
@@ -114,6 +115,8 @@ export const MattressDisposalPage: React.FC = () => {
 
         </div>
       </section>
+
+      <ServiceArea titleStart="Clear your space." titleAccent="Same-day booking available." />
     </div>
   );
 };
