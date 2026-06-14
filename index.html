@@ -209,6 +209,14 @@
         font-family: 'Inter', system-ui, sans-serif;
         letter-spacing: -0.02em;
       }
+
+      /* Force all images and their clipping containers to have squared edges */
+      img,
+      picture,
+      [class*="rounded-"]:has(img),
+      [class*="rounded-"]:has(picture) {
+        border-radius: 0px !important;
+      }
       
       html {
         scroll-behavior: smooth;
