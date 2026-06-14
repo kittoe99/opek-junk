@@ -17,14 +17,14 @@ export const MattressDisposalPage: React.FC = () => {
       desc: "Upload a photo of your mattress to get an instant, flat-rate quote."
     },
     {
-      image: "/mattress-pickup.webp",
+      image: "/process-step-2.svg",
       alt: "In-home mattress removal service",
       titleStart: "Zero",
       titleAccent: "lifting.",
       desc: "Vetted crews retrieve your mattress from any room or floor. No curb dragging."
     },
     {
-      image: "/mattress-disposal.webp",
+      image: "/process-step-3.svg",
       alt: "Eco-friendly mattress recycling",
       titleStart: "Eco",
       titleAccent: "disposal.",
@@ -42,7 +42,7 @@ export const MattressDisposalPage: React.FC = () => {
           <div
             className="relative pt-32 pb-10 px-4"
             style={{
-              backgroundImage: 'url(/mattress-disposal.webp)',
+              backgroundImage: 'url(/mattress-pickup.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             } as React.CSSProperties}
@@ -114,7 +114,7 @@ export const MattressDisposalPage: React.FC = () => {
               <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <div className="relative aspect-square flex items-center justify-center group">
                   <img
-                    src="/mattress-disposal.webp"
+                    src="/mattress-pickup.webp"
                     alt="Opek mattress removal service in action"
                     className="w-full h-full object-cover rounded-2xl shadow-lg border border-secondary-100 group-hover:scale-105 transition-transform duration-700"
                   />
