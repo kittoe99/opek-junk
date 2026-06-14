@@ -108,7 +108,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
 
           {/* Right Column: 3-column alphabetical city list */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-3">
               {metroCities.map((city) => (
                 <Link
                   key={city.name}
