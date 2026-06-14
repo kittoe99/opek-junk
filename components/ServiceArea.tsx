@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Phone, MapPin, ArrowRight } from 'lucide-react';
-import { cities } from '../lib/cityData';
+import { MapPin } from 'lucide-react';
 
 interface ServiceAreaProps {
   onGetQuote?: () => void;
@@ -11,58 +10,119 @@ interface ServiceAreaProps {
 
 export const ServiceArea: React.FC<ServiceAreaProps> = ({ 
   onGetQuote,
-  titleStart = "Empty the space.",
-  titleAccent = "On schedule."
+  titleStart = "Get junk removal",
+  titleAccent = "in these metro areas"
 }) => {
   const navigate = useNavigate();
   
-  const handleQuoteClick = () => {
-    if (onGetQuote) onGetQuote();
-    else navigate('/quote');
+  const handleCityClick = (slug: string, e: React.MouseEvent) => {
+    // If it's a real served route, let the Link handle it normally
+    if (['dallas-fort-worth', 'jacksonville', 'atlanta'].includes(slug)) {
+      return;
+    }
+    
+    // Otherwise, prevent default and trigger zip checker or quote routing
+    e.preventDefault();
+    if (onGetQuote) {
+      onGetQuote();
+    } else {
+      navigate('/quote');
+    }
   };
 
-  const popularCities = cities.slice(0, 6);
+  const metroCities = [
+    { name: "Alexandria, VA", slug: "alexandria" },
+    { name: "Annapolis, MD", slug: "annapolis" },
+    { name: "Atlanta, GA", slug: "atlanta" },
+    { name: "Austin, TX", slug: "austin" },
+    { name: "Baltimore, MD", slug: "baltimore" },
+    { name: "Boston, MA", slug: "boston" },
+    { name: "Boulder, CO", slug: "boulder" },
+    { name: "Brooklyn, NY", slug: "brooklyn" },
+    { name: "Chicago, IL", slug: "chicago" },
+    { name: "Dallas, TX", slug: "dallas-fort-worth" },
+    { name: "Denver, CO", slug: "denver" },
+    { name: "Fort Collins, CO", slug: "fort-collins" },
+    { name: "Fort Lauderdale, FL", slug: "fort-lauderdale" },
+    { name: "Fort Worth, TX", slug: "dallas-fort-worth" },
+    { name: "Hartford, CT", slug: "hartford" },
+    { name: "Houston, TX", slug: "houston" },
+    { name: "Jersey City, NJ", slug: "jersey-city" },
+    { name: "Las Vegas, NV", slug: "las-vegas" },
+    { name: "Los Angeles, CA", slug: "los-angeles" },
+    { name: "Miami, FL", slug: "miami" },
+    { name: "Nashua, NH", slug: "nashua" },
+    { name: "New Haven, CT", slug: "new-haven" },
+    { name: "New York City, NY", slug: "new-york" },
+    { name: "Newark, NJ", slug: "newark" },
+    { name: "Oakland, CA", slug: "oakland" },
+    { name: "Olympia, WA", slug: "olympia" },
+    { name: "Orange County, CA", slug: "orange-county" },
+    { name: "Philadelphia, PA", slug: "philadelphia" },
+    { name: "Phoenix, AZ", slug: "phoenix" },
+    { name: "Portland, OR", slug: "portland" },
+    { name: "Providence, RI", slug: "providence" },
+    { name: "Sacramento, CA", slug: "sacramento" },
+    { name: "Salt Lake City, UT", slug: "salt-lake-city" },
+    { name: "San Antonio, TX", slug: "san-antonio" },
+    { name: "San Diego, CA", slug: "san-diego" },
+    { name: "San Francisco, CA", slug: "san-francisco" },
+    { name: "San Jose, CA", slug: "san-jose" },
+    { name: "Santa Cruz, CA", slug: "santa-cruz" },
+    { name: "Santa Rosa, CA", slug: "santa-rosa" },
+    { name: "Seattle, WA", slug: "seattle" },
+    { name: "Tacoma, WA", slug: "tacoma" },
+    { name: "Trenton, NJ", slug: "trenton" },
+    { name: "Vancouver, WA", slug: "vancouver" },
+    { name: "Washington, D.C.", slug: "washington-dc" },
+    { name: "West Palm Beach, FL", slug: "west-palm-beach" },
+    { name: "Wilmington, DE", slug: "wilmington" },
+    { name: "Worcester, MA", slug: "worcester" }
+  ];
 
   return (
-    <section id="service-area" className="py-16 md:py-24 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-start">
-
-          {/* CTA Column */}
-          <img 
-            src="/estimates (1).webp" 
-            alt="Service areas" 
-            className="w-full h-auto rounded-3xl object-cover shadow-lg border border-secondary-100 max-w-[400px] mx-auto"
-          />
-
-          {/* Service Area Column */}
-          <div className="pt-8 md:pt-0 border-t md:border-t-0 border-secondary-100 space-y-7">
+    <section id="service-area" className="py-16 md:py-24 bg-white border-b border-secondary-100/60 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          {/* Left Column: Typography & US Map */}
+          <div className="lg:col-span-4 space-y-6">
             <div>
-              <div className="flex items-center gap-1.5 mb-4">
-                <MapPin size={12} className="text-brand" />
-                <p className="text-[10px] font-bold text-brand uppercase tracking-[0.3em]">Service Area</p>
-              </div>
-              <h3 className="text-xl font-black text-secondary mb-2">Nationwide coverage.</h3>
-              <p className="text-sm text-secondary-400 leading-relaxed">
-                Available in all 50 states. Same flat-rate pricing, same independent provider standards — wherever you are.
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight mb-4">
+                {titleStart} <span className="text-brand">{titleAccent}</span>
+              </h2>
+              <p className="text-secondary-400 text-sm leading-relaxed max-w-sm font-semibold">
+                Junk removal in thousands of cities across the United States. Big or small, get the most affordable upfront flat-rates from trusted local loaders.
               </p>
             </div>
+            
+            {/* Map Container */}
+            <div className="flex items-center justify-center pt-4">
+              <img 
+                src="/service_area_themed.png" 
+                alt="Opek nationwide service area map" 
+                className="w-full max-w-[320px] h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
+              />
+            </div>
+          </div>
 
-            <div>
-              <p className="text-[10px] font-bold text-secondary-300 uppercase tracking-[0.25em] mb-3">Popular Cities</p>
-              <div className="space-y-2">
-                {popularCities.map((city) => (
-                  <Link
-                    key={city.slug}
-                    to={`/locations/${city.slug}`}
-                    className="flex items-center gap-2 text-secondary-500 hover:text-brand transition-colors text-sm group py-0.5"
-                  >
-                    <span className="w-1 h-1 rounded-full bg-secondary-200 group-hover:bg-brand transition-colors shrink-0" />
-                    <span>{city.name}, {city.stateAbbr}</span>
-                  </Link>
-                ))}
-              </div>
+          {/* Right Column: 3-column alphabetical city list */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3.5">
+              {metroCities.map((city) => (
+                <Link
+                  key={city.name}
+                  to={['dallas-fort-worth', 'jacksonville', 'atlanta'].includes(city.slug) ? `/locations/${city.slug}` : `/quote`}
+                  onClick={(e) => handleCityClick(city.slug, e)}
+                  className="group flex items-center gap-2 text-secondary hover:text-brand text-[13px] font-bold transition-colors duration-200 py-0.5"
+                >
+                  <MapPin 
+                    size={14} 
+                    className="text-secondary-300 group-hover:text-brand transition-colors duration-200 shrink-0" 
+                  />
+                  <span>{city.name}</span>
+                </Link>
+              ))}
             </div>
           </div>
 

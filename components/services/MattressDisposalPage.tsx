@@ -1,12 +1,35 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { PageHero } from '../shared/PageHero';
 import { TrustBadges } from '../TrustBadges';
-import { ServiceArea } from '../ServiceArea';
 
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
+
+  const steps = [
+    {
+      image: "/process-step-1.svg",
+      alt: "Snap a photo of the mattress",
+      titleStart: "Snap. Send.",
+      titleAccent: "Quote.",
+      desc: "Upload a photo of your mattress to get an instant, flat-rate quote."
+    },
+    {
+      image: "/mattress-pickup.webp",
+      alt: "In-home mattress removal service",
+      titleStart: "Zero",
+      titleAccent: "lifting.",
+      desc: "Vetted crews retrieve your mattress from any room or floor. No curb dragging."
+    },
+    {
+      image: "/mattress-disposal.webp",
+      alt: "Eco-friendly mattress recycling",
+      titleStart: "Eco",
+      titleAccent: "disposal.",
+      desc: "Up to 80% of mattress components are recycled, keeping them out of landfills."
+    }
+  ];
 
   return (
     <div className="bg-white min-h-screen">
@@ -24,68 +47,73 @@ export const MattressDisposalPage: React.FC = () => {
 
       <TrustBadges />
 
-      {/* Two-Column Sales Section */}
-      <section className="py-16 bg-white border-b border-secondary-100">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Image Column */}
-            <div className="relative">
-              <img 
-                src="/mattress-pickup.webp" 
-                alt="Mattress pickup service" 
-                className="w-full h-auto rounded-3xl object-cover shadow-xl border border-secondary-100"
-              />
-              <div className="absolute -bottom-4 -right-4 bg-brand text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl shadow-lg">
-                Eco-Friendly
-              </div>
-            </div>
+      {/* Localized Process section modeled after ProcessEditorial */}
+      <section className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {/* Sales Copy Column */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Hassle-Free Removal</span>
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 md:mb-20">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="block w-8 h-px bg-brand"></span>
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Disposal Process</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
-                Clear your space without lifting a finger.
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight">
+                Mattress disposal<br className="hidden md:block" /> in <span className="text-brand">three moves.</span>
               </h2>
-              <p className="text-sm text-secondary-400 leading-relaxed">
-                Getting rid of an old, heavy mattress shouldn't be a workout. Our professional two-person crews handle all the heavy lifting, navigate stairs, and load it safely from any room in your home.
-              </p>
-              
-              <ul className="space-y-3.5">
-                {[
-                  { title: 'Eco-Friendly First', desc: 'Up to 80% of mattress parts (steel, foam, fabric, wood) are recycled rather than sent to landfills.' },
-                  { title: 'Full-Service Inside Pickup', desc: 'No need to drag it to the curb. We lift and load it from any floor or room.' },
-                  { title: 'Same-Day Availability', desc: 'Book online in seconds, select your preferred window, and track our loaders in real time.' },
-                ].map((item, i) => (
-                  <li key={i} className="flex gap-3 items-start">
-                    <div className="w-5 h-5 rounded-full bg-brand/10 text-brand flex items-center justify-center shrink-0 mt-0.5">
-                      <Check size={12} strokeWidth={3} />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-secondary">{item.title}</h4>
-                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="pt-2">
-                <button
-                  onClick={() => navigate('/quote')}
-                  className="px-8 py-4 bg-brand text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand-600 transition-all duration-300 shadow-md shadow-brand/10 inline-flex items-center gap-2"
-                >
-                  <span>View Pricing & Book</span>
-                  <ArrowRight size={13} strokeWidth={2} />
-                </button>
-              </div>
             </div>
+            <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right font-medium">
+              Upfront pricing, in-home pickup, and responsible recycling.
+            </p>
           </div>
+
+          {/* Steps — staggered editorial layout */}
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-6 lg:gap-10">
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none ${
+                  index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
+                }`}
+              >
+                {/* Image */}
+                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-none border border-secondary-100/60">
+                  <img
+                    src={step.image}
+                    alt={step.alt}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 via-transparent to-transparent pointer-events-none hidden md:block"></div>
+                </div>
+
+                {/* Text */}
+                <div>
+                  <h3 className="text-[17px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-1 md:mb-3">
+                    {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
+                  </h3>
+                  <p className="text-secondary-500 text-xs md:text-[15px] leading-relaxed max-w-sm">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Centered CTA */}
+          <div className="mt-16 md:mt-24 text-center">
+            <button
+              onClick={() => navigate('/quote')}
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+            >
+              <span>View Pricing & Book</span>
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </button>
+          </div>
+
         </div>
       </section>
-
-      <ServiceArea titleStart="Clear your space." titleAccent="Same-day booking available." />
     </div>
   );
 };

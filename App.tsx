@@ -12,6 +12,7 @@ import { ContactPage } from './components/ContactPage';
 import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { WhatWeHaul } from './components/WhatWeHaul';
+import { FullServiceSection } from './components/FullServiceSection';
 import { CharityBanner } from './components/CharityBanner';
 import { ProcessEditorial } from './components/ProcessEditorial';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
@@ -70,6 +71,7 @@ function HomePage() {
       <Process />
       <ProcessEditorial />
       <WhatWeHaul />
+      <FullServiceSection />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
       <QuickActionBar onBookOnline={() => navigate('/booking')} />
       
