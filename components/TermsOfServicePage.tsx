@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare } from 'lucide-react';
+import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare, ShieldCheck, AlertCircle } from 'lucide-react';
 
 interface TermsSection {
   id: string;
@@ -45,8 +45,11 @@ export const TermsOfServicePage: React.FC = () => {
           <p className="mb-4">
             By booking a service through Opek, you understand that you are contracting directly with the independent Provider who executes the service. 
           </p>
-          <p>
+          <p className="mb-4">
             Opek facilitates this arrangement by providing pricing estimations, offering software platforms, scheduling windows, handling secure credit card billing, and providing general support. We are not responsible for the actions, omissions, quality, safety, or legality of services rendered by independent Providers.
+          </p>
+          <p className="font-bold">
+            No Employment or Agency: You acknowledge that Providers are independent contractors and are not employees, agents, joint ventures, or partners of Opek. Providers retain sole control over how they perform services.
           </p>
         </>
       ),
@@ -76,13 +79,16 @@ export const TermsOfServicePage: React.FC = () => {
             <li>
               <strong>Provider Discretion:</strong> A service provider may decline a service upon arrival at their own discretion.
             </li>
+            <li>
+              <strong>No Guarantee of Performance:</strong> Opek does not guarantee that a Provider will accept a booking request, arrive at a specific time, or successfully complete the service. We are not liable for any delay or failure to perform.
+            </li>
           </ul>
         </>
       ),
     },
     {
       id: 'payment-pricing',
-      title: '4. Payments & Estimates',
+      title: '4. Payments, Estimates & Refunds',
       icon: <CreditCard size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -107,8 +113,54 @@ export const TermsOfServicePage: React.FC = () => {
       ),
     },
     {
+      id: 'prohibited-warranties',
+      title: '5. Prohibited Items & Warranties',
+      icon: <AlertCircle size={18} className="text-brand shrink-0" />,
+      content: (
+        <>
+          <p className="mb-4">
+            To protect our Providers and avoid hazardous situations, customers are bound by strict warranties regarding item ownership and prohibited materials.
+          </p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>
+              <strong>Ownership Warranty:</strong> You warrant that you are the legal owner of all items requested for removal, or that you have explicit, written authority from the owner to dispose of such items. You agree to fully indemnify Opek for any claims arising from disputed ownership.
+            </li>
+            <li>
+              <strong>Prohibited Items:</strong> You are strictly prohibited from booking removal for hazardous materials, toxic chemicals, ammunition, firearms, explosives, biohazards, medical waste, lead-acid batteries, gasoline, propane tanks, asbestos, wet paint, or any materials containing hazardous or illegal compounds.
+            </li>
+            <li>
+              <strong>Right of Refusal:</strong> Providers reserve the absolute right to refuse to handle, load, or transport any items they deem unsafe, toxic, illegal, or hazardous.
+            </li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      id: 'platform-disintermediation',
+      title: '6. Off-Platform Transactions (Disintermediation)',
+      icon: <ShieldCheck size={18} className="text-brand shrink-0" />,
+      content: (
+        <>
+          <p className="mb-4">
+            Opek invests significant resources to match customers with high-quality, vetted Providers. To ensure platform safety and security, all bookings and payments must be processed directly through the platform.
+          </p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>
+              <strong>Ban on Direct Bookings:</strong> You are strictly prohibited from soliciting, negotiating, or completing bookings directly with any Provider matched through Opek, outside of the Opek platform.
+            </li>
+            <li>
+              <strong>Direct Payments Ban:</strong> All service payments, including tips and adjustments, must be routed through Opek's secure billing system. You are prohibited from paying Providers directly in cash, check, or via external peer-to-peer payment apps (e.g., Venmo, CashApp, Zelle).
+            </li>
+            <li>
+              <strong>Consequences of Violation:</strong> Bypassing the Opek platform immediately voids any protection under our "SafeProtect" policy, releases Opek from any liability whatsoever for the service, and may result in permanent suspension from our platform.
+            </li>
+          </ul>
+        </>
+      ),
+    },
+    {
       id: 'conduct-damages',
-      title: '5. Work Environment & Damage Claims',
+      title: '7. Work Environment & Damage Claims',
       icon: <Hammer size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -119,17 +171,20 @@ export const TermsOfServicePage: React.FC = () => {
             <strong>Liability Limitation:</strong> We are not responsible for property damage or any damages at all that arise from services rendered by independent service providers. Providers are independent contractors and are solely liable for any physical property damage or personal injury that occurs during the performance of services.
           </p>
           <p className="mb-4">
-            In the event of property damage caused by a Provider, you must file a claim directly with that Provider and their insurance carrier. Opek will assist by providing the Provider’s contact details, business registry, and insurance coverage information.
+            <strong>Property Damage Claim Window:</strong> In the event of property damage caused by a Provider, you must submit a written claim with photographic proof to Opek and the Provider within forty-eight (48) hours of the service completion. Claims submitted after 48 hours are permanently waived and barred.
+          </p>
+          <p className="mb-4">
+            <strong>SafeProtect Platform Protection:</strong> Our “SafeProtect” platform protection is not an insurance policy. It has a limit of $500 per occurrence. We may increase that amount in our discretion on a case-by-case basis.
           </p>
           <p>
-            <strong>SafeProtect Platform Protection:</strong> Our “SafeProtect” platform protection is not an insurance policy. It has a limit of $500 per occurrence. We may increase that amount in our discretion on a case-by-case basis.
+            <strong>Exclusions:</strong> SafeProtect does not cover pre-existing damage, delicate surfaces (such as hardwood floors, linoleum, or drywall) that were not adequately protected or cleared by the customer, cash, jewelry, heirlooms, fine art, antiques, electronics, or theft.
           </p>
         </>
       ),
     },
     {
       id: 'disclaimers',
-      title: '6. Disclaimers & Limits of Liability',
+      title: '8. Disclaimers & Limits of Liability',
       icon: <ShieldAlert size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -137,17 +192,23 @@ export const TermsOfServicePage: React.FC = () => {
             THE OPEK PLATFORM IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND.
           </p>
           <p className="mb-4 text-sm">
-            TO THE FULLEST EXTENT PERMITTED BY LAW, OPEK JUNK REMOVAL, ITS AFFILIATES, AND ITS OFFICERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE PLATFORM USE OR THE SERVICES PERFORMED BY INDEPENDENT LOCAL SERVICE PROVIDERS.
+            TO THE FULLEST EXTENT PERMITTED BY LAW, OPEK JUNK REMOVAL, ITS AFFILIATES, AND ITS OFFICERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF PROFITS, LOSS OF USE, OR BUSINESS INTERRUPTION) ARISING OUT OF THE PLATFORM USE OR THE SERVICES PERFORMED BY INDEPENDENT LOCAL SERVICE PROVIDERS.
           </p>
-          <p className="text-sm">
+          <p className="mb-4 text-sm">
             OPEK'S MAXIMUM LIABILITY TO YOU FOR ANY CLAIMS ARISING FROM THE PLATFORM OR COMPLETED SERVICES SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO OPEK FOR THE SPECIFIC BOOKING GIVING RISE TO LIABILITY, OR UP TO THE DISCRETIONARY $500 LIMIT UNDER OUR SAFEPROTECT PLATFORM PROTECTION POLICY.
+          </p>
+          <p className="mb-4 text-sm">
+            <strong>Indemnification:</strong> You agree to indemnify, defend, and hold harmless Opek, its affiliates, officers, employees, and agents from any claims, damages, liabilities, losses, costs, and expenses (including reasonable attorneys' fees) arising out of your use of the platform, your breach of these Terms, your violation of any third-party rights, or any property damage or injury caused by your acts or omissions.
+          </p>
+          <p className="text-sm font-bold text-secondary">
+            <strong>Statute of Limitations:</strong> You agree that any claim or cause of action arising out of or related to these Terms, the platform, or the services must be filed within one (1) year after such claim or cause of action arose, or be forever barred.
           </p>
         </>
       ),
     },
     {
       id: 'disputes-law',
-      title: '7. Governing Law & Dispute Resolution',
+      title: '9. Governing Law & Dispute Resolution',
       icon: <AlertTriangle size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -157,15 +218,18 @@ export const TermsOfServicePage: React.FC = () => {
           <p className="mb-4">
             <strong>Dispute Resolution Procedure:</strong> Resolutions must be initially resolved through us. If not resolved to your satisfaction, then the dispute, controversy, or claim arising out of or relating to these Terms or the breach, termination, enforcement, or validity thereof will be settled by binding arbitration before any court action.
           </p>
-          <p className="font-bold">
+          <p className="font-bold mb-4">
             You agree to waive any right to participate as a class representative or class member in any class action lawsuit or class-wide arbitration.
+          </p>
+          <p className="text-sm">
+            Arbitrations will be administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. The arbitration will be held on an individual basis, and the arbitrator's decision will be final and binding.
           </p>
         </>
       ),
     },
     {
       id: 'general-user-customer',
-      title: '8. Terms – General User & Customer',
+      title: '10. Terms – General User & Customer',
       icon: <CheckSquare size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -206,7 +270,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'contact',
-      title: '9. Contact Info',
+      title: '11. Contact Info',
       icon: <PhoneCall size={18} className="text-brand shrink-0" />,
       content: (
         <>
