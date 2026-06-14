@@ -66,22 +66,30 @@ export const FullServiceSection: React.FC = () => {
               Our flat rates cover <span className="text-brand">everything.</span> You just point.
             </h2>
             
-            <ul className="space-y-3.5 text-secondary-500 text-sm md:text-base font-semibold">
-              <li className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand shrink-0 animate-pulse" />
-                <span>No curb dragging — we retrieve items from any room or floor</span>
+            <ul className="space-y-4 text-secondary-600 text-sm md:text-[15px] font-semibold">
+              <li className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                  <Check size={12} strokeWidth={3} />
+                </div>
+                <span className="leading-snug">No curb dragging — we retrieve items from any room or floor</span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand shrink-0 animate-pulse" />
-                <span>Fully insured, vetted, and background-checked local crews</span>
+              <li className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                  <Check size={12} strokeWidth={3} />
+                </div>
+                <span className="leading-snug">Fully insured, vetted, and background-checked local crews</span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand shrink-0 animate-pulse" />
-                <span>All labor, heavy lifting, and sweeping cleanup included</span>
+              <li className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                  <Check size={12} strokeWidth={3} />
+                </div>
+                <span className="leading-snug">All labor, heavy lifting, and sweeping cleanup included</span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand shrink-0 animate-pulse" />
-                <span>All disposal, transfer station, and recycling fees covered</span>
+              <li className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                  <Check size={12} strokeWidth={3} />
+                </div>
+                <span className="leading-snug">All disposal, transfer station, and recycling fees covered</span>
               </li>
             </ul>
 
