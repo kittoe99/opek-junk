@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Loader2, Check } from 'lucide-react';
+import { MapPin, Loader2, Check, Search, AlertCircle } from 'lucide-react';
 
 export const FullServiceSection: React.FC = () => {
   const navigate = useNavigate();
   const [zipCode, setZipCode] = useState('');
-  const [city, setCity] = useState('');
-  const [stateAbbr, setStateAbbr] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [verified, setVerified] = useState(false);
 
   const handleZipCheck = async () => {
     if (zipCode.length !== 5 || !/^\d+$/.test(zipCode)) {
@@ -18,7 +15,6 @@ export const FullServiceSection: React.FC = () => {
     }
     setIsLoading(true);
     setError('');
-    setVerified(false);
     try {
       const response = await fetch(`https://api.zippopotam.us/us/${zipCode}`);
       if (!response.ok) {
@@ -28,9 +24,17 @@ export const FullServiceSection: React.FC = () => {
       const data = await response.json();
       if (data.places && data.places.length > 0) {
         const place = data.places[0];
-        setCity(place['place name']);
-        setStateAbbr(place['state abbreviation']);
-        setVerified(true);
+        const cityVal = place['place name'];
+        const stateVal = place['state abbreviation'];
+        
+        // Auto open the quote page with the validation success details
+        navigate('/quote', {
+          state: {
+            zipResult: { city: cityVal, state: stateVal, served: true },
+            zipValue: zipCode,
+            serviceType: 'junk_removal'
+          }
+        });
       } else {
         setError('ZIP code not found.');
       }
@@ -83,63 +87,40 @@ export const FullServiceSection: React.FC = () => {
 
             {/* Availability Check form card */}
             <div className="bg-white rounded-3xl p-6 shadow-[0_15px_45px_rgba(0,0,0,0.04)] border border-secondary-100 max-w-lg mt-8">
-              {!verified ? (
-                <div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <div className="relative flex-1 flex items-center bg-secondary-50/50 border border-secondary-200/60 rounded-xl p-1 focus-within:ring-2 focus-within:ring-brand/20 focus-within:border-brand focus-within:bg-white transition-all duration-300">
-                      <div className="pl-3 text-secondary-400 pointer-events-none">
-                        <MapPin size={16} />
-                      </div>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={5}
-                        value={zipCode}
-                        onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
-                        onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
-                        placeholder="Enter Zip Code"
-                        className="flex-1 bg-transparent border-0 px-3 py-2.5 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:ring-0 focus:outline-none tracking-widest"
-                      />
-                    </div>
-                    <button
-                      onClick={handleZipCheck}
-                      disabled={isLoading || zipCode.length !== 5}
-                      className="px-6 py-3 bg-brand text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-brand-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg whitespace-nowrap inline-flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
+              <div>
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={5}
+                    value={zipCode}
+                    onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
+                    onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                    placeholder="Enter ZIP code"
+                    className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
+                  />
+                  <button
+                    onClick={handleZipCheck}
+                    disabled={zipCode.length !== 5 || isLoading}
+                    className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Search size={16} />
                         <span>Check Availability</span>
-                      )}
-                    </button>
-                  </div>
-                  {error && <p className="text-red-500 text-xs font-bold mt-2 px-1">{error}</p>}
+                      </>
+                    )}
+                  </button>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 bg-green-50 text-green-800 p-3.5 rounded-xl border border-green-100">
-                    <Check className="w-5 h-5 text-green-600 shrink-0" strokeWidth={3} />
-                    <div className="text-xs leading-normal">
-                      <span className="font-extrabold block">Service is available in your area!</span>
-                      <span className="opacity-90">{city}, {stateAbbr} (ZIP {zipCode})</span>
-                    </div>
+                {error && (
+                  <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mt-3">
+                    <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
+                    <p className="text-red-700 text-xs font-semibold">{error}</p>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() => navigate('/quote')}
-                      className="flex-grow py-3 px-6 bg-[#ff006e] text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-brand-600 transition-colors shadow-md shadow-brand/10"
-                    >
-                      Get a Free Quote
-                    </button>
-                    <button
-                      onClick={() => { setVerified(false); setZipCode(''); }}
-                      className="py-3 px-6 border border-secondary-200 text-secondary hover:bg-secondary-50 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
-                    >
-                      Check Another Zip
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
           </div>
