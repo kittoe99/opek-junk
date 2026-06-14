@@ -32,60 +32,50 @@ export const Services: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="services" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Asymmetric Typography Panel */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-              <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Services</span>
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Fast pickup.<br />
-              <span className="text-brand">Fair pricing.</span>
+    <section id="services" className="py-16 md:py-24 lg:py-32 bg-secondary-50 border-b border-secondary-100/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col">
+          {/* Header Section */}
+          <div className="mb-12">
+            <span className="inline-block px-4 py-2 bg-secondary text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-lg mb-6">
+              Services
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-secondary leading-tight mb-4 tracking-tight">
+              Fast pickup. <span className="text-brand">Fair pricing.</span>
             </h2>
-            
-            <div className="w-12 h-0.5 bg-secondary-100" />
-            
-            <p className="text-secondary-500 text-sm md:text-base leading-relaxed max-w-sm font-medium">
+            <p className="text-secondary-500 text-base md:text-lg leading-relaxed max-w-2xl font-medium">
               Trusted professionals in your area. We offer transparent flat-rates, flexible schedules, and vetted local providers for home and office.
             </p>
           </div>
 
-          {/* Right Column: Clean Border-Separated Bento Grid */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-              {serviceItems.map((item) => {
-                return (
-                  <div 
-                    key={item.title} 
-                    onClick={() => navigate(item.path)}
-                    className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
-                  >
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300 overflow-hidden p-1.5">
-                      <img 
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" 
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
-                        {item.title}
-                      </h3>
-                      <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
+          {/* Grid of Individual Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {serviceItems.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => navigate(item.path)}
+                  className="group cursor-pointer bg-white p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md border border-transparent hover:border-secondary-100 transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 md:mb-6 shrink-0 mt-0.5 md:mt-0 flex items-center justify-center transition-all duration-300">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                );
-              })}
-            </div>
+                  <div>
+                    <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2 group-hover:text-brand transition-colors duration-300">
+                      {item.title}
+                    </h3>
+                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
         </div>
       </div>
     </section>
