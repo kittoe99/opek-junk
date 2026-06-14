@@ -10,11 +10,11 @@ export const MattressDisposalPage: React.FC = () => {
 
   const steps = [
     {
-      image: "/process-step-1.svg",
-      alt: "Snap a photo of the mattress",
-      titleStart: "Snap. Send.",
-      titleAccent: "Quote.",
-      desc: "Upload a photo of your mattress to get an instant, flat-rate quote."
+      image: "/mattress-pickup.webp",
+      alt: "Instant mattress disposal quote",
+      titleStart: "quotes.",
+      titleAccent: "simplified.",
+      desc: "Get an instant, flat-rate mattress disposal quote online."
     },
     {
       image: "/process-step-2.svg",
