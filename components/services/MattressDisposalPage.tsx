@@ -31,7 +31,7 @@ export const MattressDisposalPage: React.FC = () => {
             {/* Image Column */}
             <div className="relative">
               <img 
-                src="/opek-clean-space.png" 
+                src="/mattress-disposal.webp" 
                 alt="Clean bedroom space after mattress disposal" 
                 className="w-full h-auto rounded-3xl object-cover shadow-xl border border-secondary-100"
               />
