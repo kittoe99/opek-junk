@@ -1,52 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BedDouble, Check, Recycle, Clock, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { PageHero } from '../shared/PageHero';
 import { TrustBadges } from '../TrustBadges';
 import { ServiceArea } from '../ServiceArea';
 
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const pricingPackages = [
-    {
-      name: 'Single Mattress / Box Spring',
-      desc: 'Disposal of a single mattress OR box spring from any room.',
-      price: 'From $99',
-      features: ['Two-person lifting included', 'Disposal surcharges covered', 'Eco-friendly recycling first'],
-    },
-    {
-      name: 'Mattress & Box Spring Set',
-      desc: 'Disposal of a matching mattress and box spring set.',
-      price: 'From $149',
-      popular: true,
-      features: ['Set discount applied', 'Two-person lifting included', 'Eco-friendly recycling first'],
-    },
-    {
-      name: 'Bulk / Commercial removal',
-      desc: 'Best for hotels, dorms, residential landlords, and businesses.',
-      price: 'Custom Quote',
-      features: ['Commercial volume rates', 'After-hours windows available', 'COI available on request'],
-    },
-  ];
-
-  const highlights = [
-    {
-      title: 'Eco-Friendly Recycling',
-      desc: 'Up to 80% of mattress parts (steel, foam, fabric, wood) are recycled.',
-      icon: Recycle,
-    },
-    {
-      title: 'Inside Pickup',
-      desc: 'Vetted professionals load it from any room. No curb dragging required.',
-      icon: BedDouble,
-    },
-    {
-      title: 'Same-Day Booking',
-      desc: 'Select your preferred arrival window and track loaders in real time.',
-      icon: Clock,
-    },
-  ];
 
   return (
     <div className="bg-white min-h-screen">
@@ -64,87 +24,63 @@ export const MattressDisposalPage: React.FC = () => {
 
       <TrustBadges />
 
-      {/* Pricing Section */}
+      {/* Two-Column Sales Section */}
       <section className="py-16 bg-white border-b border-secondary-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Upfront Flat Rates</span>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Image Column */}
+            <div className="relative">
+              <img 
+                src="/opek-clean-space.png" 
+                alt="Clean bedroom space after mattress disposal" 
+                className="w-full h-auto rounded-3xl object-cover shadow-xl border border-secondary-100"
+              />
+              <div className="absolute -bottom-4 -right-4 bg-brand text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl shadow-lg">
+                Eco-Friendly
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight">
-              Transparent Pricing Packages
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            {pricingPackages.map((pkg, i) => (
-              <div 
-                key={i} 
-                className={`relative bg-white rounded-3xl border p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl ${
-                  pkg.popular 
-                    ? 'border-brand ring-2 ring-brand/10 md:-translate-y-2' 
-                    : 'border-secondary-100'
-                }`}
-              >
-                {pkg.popular && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
-                    Most Popular
-                  </span>
-                )}
-                <div>
-                  <h3 className="text-lg font-black text-secondary mb-2">{pkg.name}</h3>
-                  <p className="text-xs text-secondary-400 leading-relaxed mb-6">{pkg.desc}</p>
-                  
-                  <div className="mb-6">
-                    <span className="text-3xl font-black text-secondary">{pkg.price}</span>
-                  </div>
+            {/* Sales Copy Column */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2">
+                <span className="block w-8 h-px bg-brand" />
+                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Hassle-Free Removal</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
+                Clear your space without lifting a finger.
+              </h2>
+              <p className="text-sm text-secondary-400 leading-relaxed">
+                Getting rid of an old, heavy mattress shouldn't be a workout. Our professional two-person crews handle all the heavy lifting, navigate stairs, and load it safely from any room in your home.
+              </p>
+              
+              <ul className="space-y-3.5">
+                {[
+                  { title: 'Eco-Friendly First', desc: 'Up to 80% of mattress parts (steel, foam, fabric, wood) are recycled rather than sent to landfills.' },
+                  { title: 'Full-Service Inside Pickup', desc: 'No need to drag it to the curb. We lift and load it from any floor or room.' },
+                  { title: 'Same-Day Availability', desc: 'Book online in seconds, select your preferred window, and track our loaders in real time.' },
+                ].map((item, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <div className="w-5 h-5 rounded-full bg-brand/10 text-brand flex items-center justify-center shrink-0 mt-0.5">
+                      <Check size={12} strokeWidth={3} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-secondary">{item.title}</h4>
+                      <p className="text-[11px] text-secondary-400 mt-0.5 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
 
-                  <ul className="space-y-3 mb-8">
-                    {pkg.features.map((feature, j) => (
-                      <li key={j} className="flex items-start gap-2.5 text-xs text-secondary-500">
-                        <Check size={14} className="text-brand shrink-0 mt-0.5" strokeWidth={3} />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
+              <div className="pt-2">
                 <button
                   onClick={() => navigate('/quote')}
-                  className={`w-full py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${
-                    pkg.popular
-                      ? 'bg-brand text-white hover:bg-brand-600 shadow-md shadow-brand/10'
-                      : 'bg-secondary text-white hover:bg-secondary-600'
-                  }`}
+                  className="px-8 py-4 bg-brand text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand-600 transition-all duration-300 shadow-md shadow-brand/10 inline-flex items-center gap-2"
                 >
-                  <span>View Pricing</span>
+                  <span>View Pricing & Book</span>
                   <ArrowRight size={13} strokeWidth={2} />
                 </button>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Highlights Section */}
-      <section className="py-16 bg-secondary-50/50 border-b border-secondary-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {highlights.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div key={i} className="p-6 bg-white rounded-2xl border border-secondary-100 shadow-sm flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0">
-                    <Icon size={20} strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-secondary mb-1">{item.title}</h3>
-                    <p className="text-xs text-secondary-400 leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
+            </div>
           </div>
         </div>
       </section>
