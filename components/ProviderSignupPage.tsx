@@ -133,7 +133,7 @@ export const ProviderSignupPage: React.FC = () => {
     }
   };
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
 
   const signupSteps = [
     { label: 'About You', icon: ClipboardList },
@@ -145,7 +145,7 @@ export const ProviderSignupPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12 animate-fade-in">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-none shadow-xl border border-secondary-100 p-8 md:p-10 text-center">
+          <div className="bg-white rounded-3xl shadow-xl border border-secondary-100 p-8 md:p-10 text-center">
             <div className="relative mx-auto mb-6">
               <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
                 <UserCheck size={32} className="text-brand" strokeWidth={2} />
@@ -254,7 +254,7 @@ export const ProviderSignupPage: React.FC = () => {
               <div className="pt-4">
                 <button 
                   type="submit" 
-                  className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
                 >
                   Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
@@ -293,13 +293,13 @@ export const ProviderSignupPage: React.FC = () => {
                 <button 
                   type="button" 
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-none hover:border-secondary transition-colors"
+                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
                 <button 
                   type="submit" 
-                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
                 >
                   Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
@@ -349,7 +349,7 @@ export const ProviderSignupPage: React.FC = () => {
               </div>
 
               {error && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-none">
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
                   <p className="text-red-700 text-xs font-bold">{error}</p>
                 </div>
               )}
@@ -358,14 +358,14 @@ export const ProviderSignupPage: React.FC = () => {
                 <button 
                   type="button" 
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-none hover:border-secondary transition-colors"
+                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
                 <button 
                   type="submit" 
                   disabled={submitting || formData.scheduleAvailability.length === 0}
-                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
                 >
                   {submitting ? 'Submitting...' : <><Check size={14} strokeWidth={3} /> Submit Application</>}
                 </button>

@@ -182,7 +182,7 @@ export const InHomeEstimatePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-none shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
+          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
             {/* Animated success icon */}
             <div className="relative mx-auto mb-6">
               <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
@@ -219,7 +219,7 @@ export const InHomeEstimatePage: React.FC = () => {
     );
   }
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -277,7 +277,7 @@ export const InHomeEstimatePage: React.FC = () => {
 
             <div className="pt-4">
               <button type="submit"
-                className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+                className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20">
                 Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>
@@ -311,7 +311,7 @@ export const InHomeEstimatePage: React.FC = () => {
                   <Loader2 size={14} className="absolute right-4 top-[40px] animate-spin text-secondary-300" />
                 )}
                 {showSuggestions && suggestions.length > 0 && (
-                  <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-none shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
                     {suggestions.map((s, i) => (
                       <button
                         key={i}
@@ -363,11 +363,11 @@ export const InHomeEstimatePage: React.FC = () => {
 
             <div className="flex gap-3 pt-4">
               <button type="button" onClick={handleBackStep}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-none hover:border-secondary transition-colors">
+                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors">
                 <ArrowLeft size={14} /> Back
               </button>
               <button type="submit"
-                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20">
                 Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>
@@ -391,7 +391,7 @@ export const InHomeEstimatePage: React.FC = () => {
               </div>
 
               {/* Review Section */}
-              <div className="bg-white border border-secondary-100 rounded-none p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+              <div className="border border-secondary-100 bg-secondary-50/30 p-5 rounded-2xl">
                 <div className="flex items-center gap-2.5 mb-4">
                   <Receipt size={15} className="text-brand" strokeWidth={2.5} />
                   <h3 className="text-[10px] font-black text-secondary uppercase tracking-[0.15em]">Review Request</h3>
@@ -415,11 +415,11 @@ export const InHomeEstimatePage: React.FC = () => {
 
             <div className="flex gap-3 pt-4">
               <button type="button" onClick={handleBackStep} disabled={submitting}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-none hover:border-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 <ArrowLeft size={14} /> Back
               </button>
               <button type="submit" disabled={submitting}
-                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-none shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed">
                 {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
               </button>
             </div>

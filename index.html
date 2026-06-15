@@ -210,24 +210,6 @@
         letter-spacing: -0.02em;
       }
 
-      /* Force all images and their clipping containers to have squared edges */
-      img,
-      picture,
-      [class*="rounded-"]:has(img),
-      [class*="rounded-"]:has(picture) {
-        border-radius: 0px !important;
-      }
-
-      /* Force all form fields and their immediate containers to have squared edges */
-      input:not([type="radio"]):not([type="checkbox"]),
-      select,
-      textarea,
-      [class*="rounded-"]:has(> input:not([type="radio"]):not([type="checkbox"])),
-      [class*="rounded-"]:has(> select),
-      [class*="rounded-"]:has(> textarea) {
-        border-radius: 0px !important;
-      }
-
       /* Premium form fields design system */
       input:not([type="radio"]):not([type="checkbox"]),
       select,
@@ -251,13 +233,6 @@
         background-color: #ffffff;
         box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.1);
         outline: none;
-      }
-
-      /* Force all buttons, button-like links, and custom button links to have squared edges, except in the quick action bar */
-      button:not(.quick-action-bar):not(.quick-action-bar *),
-      [role="button"]:not(.quick-action-bar):not(.quick-action-bar *),
-      a[class*="px-"][class*="py-"][class*="rounded-"]:not(.quick-action-bar):not(.quick-action-bar *) {
-        border-radius: 0px !important;
       }
       
       html {

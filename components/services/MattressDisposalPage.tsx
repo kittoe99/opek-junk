@@ -65,13 +65,13 @@ export const MattressDisposalPage: React.FC = () => {
           <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <button
               onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
             >
               View Pricing
             </button>
             <button
               onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
             >
               Book Online
             </button>
@@ -98,13 +98,13 @@ export const MattressDisposalPage: React.FC = () => {
                 <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
                   <button
                     onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
                   >
                     View Pricing
                   </button>
                   <button
                     onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
                   >
                     Book Online
                   </button>
@@ -289,12 +289,12 @@ export const MattressDisposalPage: React.FC = () => {
             {steps.map((step, index) => (
               <div
                 key={index}
-                className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none ${
+                className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-2xl ${
                   index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
                 }`}
               >
                 {/* Image */}
-                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-none border border-secondary-100/60">
+                <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square overflow-hidden md:mb-5 shadow-sm md:shadow-md rounded-xl md:rounded-2xl border border-secondary-100/60">
                   <img
                     src={step.image}
                     alt={step.alt}
@@ -322,7 +322,7 @@ export const MattressDisposalPage: React.FC = () => {
           <div className="mt-16 md:mt-24 text-center">
             <button
               onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               <span>View Pricing & Book</span>
               <ArrowRight size={14} strokeWidth={2.5} />
