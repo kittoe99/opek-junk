@@ -356,7 +356,7 @@ export const InHomeEstimatePage: React.FC = () => {
                       <option value="">Select a time preference</option>
                       {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
                     </select>
-                  </div>>
+                  </div>
                 </div>
               </div>
             </div>

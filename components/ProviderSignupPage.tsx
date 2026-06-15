@@ -285,7 +285,7 @@ export const ProviderSignupPage: React.FC = () => {
                       <option value="">Select vehicle type</option>
                       {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
                     </select>
-                  </div>>
+                  </div>
                 </div>
               </div>
 

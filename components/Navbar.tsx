@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, Heart, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { JunkIcon, DumpsterIcon, PropertyCleanoutIcon, MovingLaborIcon } from './icons/ServiceIcons';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -137,10 +138,10 @@ export const Navbar: React.FC = () => {
   ];
 
   const serviceItems = [
-    { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: Trash2 },
-    { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: Container },
-    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: KeyRound },
-    { name: 'Moving Labor', desc: 'Hourly labor for loading and heavy lifting', path: '/services/moving-labor', icon: BicepsFlexed },
+    { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: JunkIcon },
+    { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
+    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
+    { name: 'Moving Labor', desc: 'Hourly labor for loading and heavy lifting', path: '/services/moving-labor', icon: MovingLaborIcon },
   ];
 
   const handleLinkClick = (path: string) => {
