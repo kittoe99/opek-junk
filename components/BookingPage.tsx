@@ -539,7 +539,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 transition-all duration-300 mb-4 max-w-md p-1">
+              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 max-w-md p-1 rounded-xl">
                 <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                   <InputZipIcon size={18} />
                 </span>
@@ -557,7 +557,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   onClick={handleZipCheck}
                   disabled={zipValue.length !== 5 || zipLoading}
-                  className="px-5 py-2.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0"
+                  className="px-5 py-2.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
                 >
                   {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
                 </button>
