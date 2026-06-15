@@ -363,7 +363,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
                   </button>
                   <button
                     onClick={() => navigate('/booking')}
-                    className="w-full sm:w-auto px-6 py-3.5 bg-white text-secondary font-bold text-xs uppercase tracking-wider hover:bg-secondary-100 transition-colors inline-flex items-center justify-center gap-2 rounded-xl shadow-sm border border-secondary-200"
+                    className="w-full sm:w-auto px-6 py-3.5 bg-white text-secondary font-bold text-xs uppercase tracking-wider hover:bg-secondary-100 transition-colors inline-flex items-center justify-center gap-2 rounded-xl shadow-sm border border-secondary-100"
                   >
                     Book Online <ArrowRight size={14} />
                   </button>

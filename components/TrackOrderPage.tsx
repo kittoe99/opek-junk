@@ -286,7 +286,7 @@ export const TrackOrderPage: React.FC = () => {
 
           <div className="bg-white border border-secondary-100 md:border-secondary-100 rounded-3xl p-6 md:p-10 shadow-xl">
             {/* Toggle */}
-            <div className="flex bg-white border border-secondary-200 rounded-full p-1 mb-6">
+            <div className="flex bg-white border border-secondary-100 rounded-full p-1 mb-6">
               <button
                 onClick={() => { setSearchType('phone'); setSearchValue(''); setSearched(false); setResults([]); setError(null); }}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.15em] transition-all ${
@@ -315,7 +315,7 @@ export const TrackOrderPage: React.FC = () => {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full pl-10 pr-4 py-4 text-sm bg-white border border-secondary-200 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
                   required
                 />
               </div>

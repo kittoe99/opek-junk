@@ -80,7 +80,7 @@ export const FullServiceSection: React.FC = () => {
           <div className="w-full lg:max-w-md shrink-0 relative min-h-[56px] sm:min-h-[56px]">
             <div className={`transition-all duration-500 ease-out absolute inset-0 ${isSuccess ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 z-10'}`}>
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative group flex-1 flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 p-1">
+                <div className="relative group flex-1 flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 transition-all duration-300 p-1">
                   <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                     <InputZipIcon size={18} />
                   </span>

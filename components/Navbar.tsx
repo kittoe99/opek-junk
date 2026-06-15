@@ -447,7 +447,7 @@ export const Navbar: React.FC = () => {
                                   onClick={() => { setMobileServicesOpen(false); setIsMenuOpen(false); navigate(item.path); }}
                                   className="w-full text-left px-6 py-3.5 hover:bg-secondary-50/40 transition-colors group flex items-center gap-3"
                                 >
-                                  <div className="w-8 h-8 rounded-lg bg-white border border-secondary-200/50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                  <div className="w-8 h-8 rounded-lg bg-white border border-secondary-100/50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
                                     <Icon size={14} className="text-secondary-500 group-hover:text-brand transition-colors" />
                                   </div>
                                   <div className="flex-1">

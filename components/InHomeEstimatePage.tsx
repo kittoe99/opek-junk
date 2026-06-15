@@ -219,7 +219,7 @@ export const InHomeEstimatePage: React.FC = () => {
     );
   }
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-200 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -363,7 +363,7 @@ export const InHomeEstimatePage: React.FC = () => {
 
             <div className="flex gap-3 pt-4">
               <button type="button" onClick={handleBackStep}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-200 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors">
+                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors">
                 <ArrowLeft size={14} /> Back
               </button>
               <button type="submit"
@@ -415,7 +415,7 @@ export const InHomeEstimatePage: React.FC = () => {
 
             <div className="flex gap-3 pt-4">
               <button type="button" onClick={handleBackStep} disabled={submitting}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-200 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 <ArrowLeft size={14} /> Back
               </button>
               <button type="submit" disabled={submitting}

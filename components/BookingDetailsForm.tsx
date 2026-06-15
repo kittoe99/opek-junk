@@ -425,7 +425,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 disabled={contactSubmitting}
                 placeholder="John Smith"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -445,7 +445,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="email"
                 placeholder="john@example.com"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -465,13 +465,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="tel"
                 placeholder="(555) 123-4567"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
               <ArrowLeft size={14} /> {onBack ? backLabel : 'Back'}
             </button>
             <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -511,7 +511,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 placeholder="Start typing an address..."
                 autoComplete="street-address"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
             {addressLoading && (
@@ -545,7 +545,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.unitNumber}
                 onChange={handleInputChange}
                 placeholder="e.g. Apt 4B, Suite 200"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
@@ -564,7 +564,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="Dallas"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -581,7 +581,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="TX"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -598,14 +598,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="75201"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
               <ArrowLeft size={14} /> Back
             </button>
             <button type="submit" className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
@@ -632,7 +632,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <input
                 readOnly
                 value={serviceType}
-                className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary font-bold focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg text-sm text-secondary font-bold focus:outline-none transition-colors"
               />
             </div>
             <div>
@@ -648,7 +648,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   required
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -666,7 +666,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
@@ -686,7 +686,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Service</span><span className="font-bold text-secondary text-right">{serviceType}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Date</span><span className="font-bold text-secondary text-right">{formData.date || '—'}</span></div>
               {estimate && (
-                <div className="flex justify-between gap-4 pt-1.5 mt-1.5 border-t border-secondary-200"><span className="text-secondary-400">Estimated Total</span><span className="font-black text-brand text-right">${estimate.price}</span></div>
+                <div className="flex justify-between gap-4 pt-1.5 mt-1.5 border-t border-secondary-100"><span className="text-secondary-400">Estimated Total</span><span className="font-black text-brand text-right">${estimate.price}</span></div>
               )}
             </div>
           </div>
@@ -702,7 +702,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               type="button"
               onClick={handleBackStep}
               disabled={submitting}
-              className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ArrowLeft size={14} /> Back
             </button>

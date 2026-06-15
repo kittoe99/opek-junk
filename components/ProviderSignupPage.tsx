@@ -133,7 +133,7 @@ export const ProviderSignupPage: React.FC = () => {
     }
   };
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-200 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
 
   const signupSteps = [
     { label: 'About You', icon: ClipboardList },
@@ -293,7 +293,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <button 
                   type="button" 
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-200 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
+                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
@@ -320,7 +320,7 @@ export const ProviderSignupPage: React.FC = () => {
                         <label key={option} className={`flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer transition-all duration-200 text-xs font-semibold ${
                           isSelected 
                             ? 'border-brand bg-brand/5 text-secondary shadow-sm' 
-                            : 'border-secondary-100 bg-white text-secondary-500 hover:border-secondary-200'
+                            : 'border-secondary-100 bg-white text-secondary-500 hover:border-secondary-100'
                         }`}>
                           <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
                             isSelected ? 'bg-brand border-brand' : 'border-secondary-300'
@@ -358,7 +358,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <button 
                   type="button" 
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-200 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
+                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
                 >
                   <ArrowLeft size={14} /> Back
                 </button>

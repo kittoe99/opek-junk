@@ -539,7 +539,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative group flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 mb-4 max-w-md p-1">
+              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 transition-all duration-300 mb-4 max-w-md p-1">
                 <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                   <InputZipIcon size={18} />
                 </span>
@@ -590,7 +590,7 @@ export const BookingPage: React.FC = () => {
               {/* Price breakdown */}
               <div className="bg-white rounded-2xl p-5 border border-secondary-100 mb-4">
                 {formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Dumpster Rental' && (
-                  <div className="space-y-3 mb-4 pb-4 border-b border-secondary-200">
+                  <div className="space-y-3 mb-4 pb-4 border-b border-secondary-100">
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
                       <span className="text-secondary-900 font-bold">${Math.round(formData.price * 0.65)}</span>
@@ -691,7 +691,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   disabled
                   type="button"
-                  className="w-full bg-white border border-secondary-200 p-4 rounded-none text-left flex items-center gap-4 cursor-not-allowed opacity-60"
+                  className="w-full bg-white border border-secondary-100 p-4 rounded-none text-left flex items-center gap-4 cursor-not-allowed opacity-60"
                 >
                   <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
                     <DumpsterIcon className="w-full h-full" />
@@ -710,7 +710,7 @@ export const BookingPage: React.FC = () => {
               </div>
               
               <div className="pt-4 flex">
-                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
                   <ArrowLeft size={14} /> Back
                 </button>
               </div>
@@ -1272,7 +1272,7 @@ export const BookingPage: React.FC = () => {
                   </div>
 
                   <div className="pt-4 flex gap-3">
-                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-brand hover:text-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
@@ -1369,7 +1369,7 @@ export const BookingPage: React.FC = () => {
                       type="button"
                       onClick={() => setMovingStep('details')}
                       disabled={movingPricingLoading}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-200 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
