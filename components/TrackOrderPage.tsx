@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPinCheck, Clock, CheckCircle, Circle, ArrowLeft, Search, Phone, Hash, ArrowRight, AlertCircle, ChevronRight, Check } from 'lucide-react';
+import { MapPinCheck, Clock, CheckCircle, Circle, ArrowLeft, Search, Phone, Hash, ArrowRight, AlertCircle, ChevronRight, Check, Calendar, MapPin } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';

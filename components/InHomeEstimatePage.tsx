@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, Calendar, Clock, Receipt, Home } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, Calendar, Clock, Receipt, Home, Send } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { InputUserIcon, InputPhoneIcon, InputMailIcon, InputMapPinIcon, InputCalendarIcon, InputMessageIcon } from './icons/ServiceIcons';
 import { PageHero } from './shared/PageHero';

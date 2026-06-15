@@ -1,9 +1,19 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { BookingSuccessView } from './shared/BookingSuccessView';
+import { 
+  InputUserIcon, 
+  InputMailIcon, 
+  InputPhoneIcon, 
+  InputMapPinIcon, 
+  InputBuildingIcon, 
+  InputZipIcon, 
+  InputCalendarIcon, 
+  InputMessageIcon 
+} from './icons/ServiceIcons';
 
 interface AddressSuggestion {
   display: string;

@@ -942,7 +942,7 @@ export const QuotePage: React.FC = () => {
 
           <BookingDetailsForm
             estimate={estimate}
-            image={image}
+            image={images.length > 0 ? images[0] : null}
             serviceType={serviceTypeLabel}
             defaultZip={defaultZip}
             onBack={() => setShowBookingForm(false)}
@@ -992,7 +992,7 @@ export const QuotePage: React.FC = () => {
                     : selectedService === 'moving_labor' ? 'Moving Labor'
                     : selectedService === 'dumpster_rental' ? 'Dumpster Rental'
                     : 'Junk Removal';
-                  navigate('/booking', { state: { estimate, image, serviceType: serviceTypeLabel, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } });
+                  navigate('/booking', { state: { estimate, image: images.length > 0 ? images[0] : null, serviceType: serviceTypeLabel, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } });
                 }}
                 className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
               >
@@ -2140,9 +2140,9 @@ export const QuotePage: React.FC = () => {
               {/* Step 2: Review & Edit Items */}
               {aiStep === 'items' && (
                 <div className="space-y-6">
-                  {image && (
+                  {images.length > 0 && (
                     <div className="flex gap-4 items-start p-4 border border-secondary-100 rounded-xl bg-secondary-50/50">
-                      <img src={image} alt="Your photo" className="w-20 h-20 object-cover rounded-lg border border-secondary-100" />
+                      <img src={images[0]} alt="Your photo" className="w-20 h-20 object-cover rounded-lg border border-secondary-100" />
                       <div>
                         <p className="text-sm font-black text-secondary">{detectedItems.length} items detected</p>
                         <p className="text-xs text-secondary-400 mt-1">Review, edit quantities, remove items, or add any additional items.</p>
