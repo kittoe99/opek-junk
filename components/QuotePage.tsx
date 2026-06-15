@@ -338,7 +338,7 @@ export const QuotePage: React.FC = () => {
   };
 
   // AI Photo State
-  const [image, setImage] = useState<string | null>(null);
+  const [images, setImages] = useState<string[]>([]);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [detectedItems, setDetectedItems] = useState<DetectedItem[]>([]);
   const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
@@ -428,33 +428,47 @@ export const QuotePage: React.FC = () => {
 
   // ── AI Photo handlers ──
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
       try {
-        const compressedImage = await compressImage(file);
-        setImage(compressedImage);
+        const compressedList = await Promise.all(
+          Array.from(files).map(file => compressImage(file))
+        );
+        setImages(prev => [...prev, ...compressedList]);
         setEstimate(null);
         setDetectedItems([]);
         setLoadingState(LoadingState.IDLE);
       } catch (err) {
-        console.error('Error compressing image:', err);
+        console.error('Error compressing images:', err);
       }
+      // Reset input value so the same file can be selected/taken again
+      event.target.value = '';
     }
   };
 
+  const removeUploadedImage = (index: number) => {
+    setImages(prev => prev.filter((_, idx) => idx !== index));
+  };
+
   const handleAnalyze = async () => {
-    if (!image) return;
+    if (images.length === 0) return;
     setLoadingState(LoadingState.ANALYZING);
     setError(null);
     try {
-      const base64Data = image.split(',')[1];
-      const mimeType = image.split(';')[0].split(':')[1];
-      const items = await detectItemsFromPhoto(base64Data, mimeType);
+      // Analyze all photos concurrently in parallel
+      const analysisPromises = images.map(async (imgStr) => {
+        const base64Data = imgStr.split(',')[1];
+        const mimeType = imgStr.split(';')[0].split(':')[1];
+        return detectItemsFromPhoto(base64Data, mimeType);
+      });
+      
+      const results = await Promise.all(analysisPromises);
+      const allDetectedItems = results.flat();
       
       // Add detected items to standard selectedItems state
       setSelectedItems(prev => {
         const newItems = [...prev];
-        items.forEach(newItem => {
+        allDetectedItems.forEach(newItem => {
           const existing = newItems.find(item => item.name.toLowerCase() === newItem.name.toLowerCase());
           if (existing) {
             existing.quantity += newItem.quantity;
@@ -470,7 +484,7 @@ export const QuotePage: React.FC = () => {
       });
 
       // Clear AI temporary upload state and set loading state
-      setImage(null);
+      setImages([]);
       setDetectedItems([]);
       setLoadingState(LoadingState.IDLE);
       
@@ -479,7 +493,7 @@ export const QuotePage: React.FC = () => {
       setManualStep('review');
     } catch (err: any) {
       console.error('AI analysis error:', err);
-      setError(err?.message || 'Failed to analyze photo. Please try again.');
+      setError(err?.message || 'Failed to analyze photos. Please try again.');
       setLoadingState(LoadingState.ERROR);
     }
   };
@@ -630,7 +644,7 @@ export const QuotePage: React.FC = () => {
           estimated_volume: price.estimatedVolume,
           price: price.price,
           estimate_summary: price.summary,
-          photo_url: image || ''
+          photo_url: images[0] || ''
         };
 
         const { data, error: dbError } = await supabase
@@ -2035,7 +2049,11 @@ export const QuotePage: React.FC = () => {
               {/* Step 1: Upload */}
               {aiStep === 'upload' && (
                 <>
-                  {!image ? (
+                  {/* Hidden inputs defined once at the top level */}
+                  <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" multiple onChange={handleFileChange} />
+                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" multiple onChange={handleFileChange} />
+
+                  {images.length === 0 ? (
                     <div className="space-y-3">
                       <button
                         type="button"
@@ -2048,7 +2066,6 @@ export const QuotePage: React.FC = () => {
                           <p className="text-secondary-400 text-sm">Use your camera to capture the junk</p>
                         </div>
                         <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
-                        <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
                       </button>
 
                       <button
@@ -2062,7 +2079,6 @@ export const QuotePage: React.FC = () => {
                           <p className="text-secondary-400 text-sm">Choose an existing photo from your device</p>
                         </div>
                         <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
-                        <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                       </button>
 
                       <button
@@ -2074,31 +2090,60 @@ export const QuotePage: React.FC = () => {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="relative border border-secondary-100 rounded-none overflow-hidden">
-                        <img src={image} alt="Upload" className="w-full" />
-                        {loadingState !== LoadingState.ANALYZING && (
-                          <button
-                            onClick={() => { setImage(null); setEstimate(null); setDetectedItems([]); }}
-                            className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-none"
-                          >
-                            Change Photo
-                          </button>
-                        )}
+                      {/* Grid of thumbnails */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {images.map((imgSrc, index) => (
+                          <div key={index} className="relative aspect-[4/3] border border-secondary-100 bg-secondary-50 overflow-hidden rounded-none">
+                            <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
+                            {loadingState !== LoadingState.ANALYZING && (
+                              <button
+                                onClick={() => removeUploadedImage(index)}
+                                className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors text-xs font-bold border border-white/20 rounded-none shadow"
+                                aria-label="Remove photo"
+                              >
+                                <X size={12} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
                       </div>
+
+                      {/* Sequential upload/capture buttons */}
+                      {loadingState !== LoadingState.ANALYZING && (
+                        <div className="flex gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() => cameraInputRef.current?.click()}
+                            className="flex-1 py-3 border border-secondary-200 hover:border-brand hover:text-brand bg-white text-secondary text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors rounded-none"
+                          >
+                            <Camera size={14} /> Take another
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="flex-1 py-3 border border-secondary-200 hover:border-brand hover:text-brand bg-white text-secondary text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors rounded-none"
+                          >
+                            <Upload size={14} /> Add more
+                          </button>
+                        </div>
+                      )}
+
                       {loadingState === LoadingState.IDLE && (
                         <button onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-none inline-flex items-center justify-center gap-2">
-                          <ScanSearch size={14} /> Analyze Photo
+                          <ScanSearch size={14} /> Analyze {images.length === 1 ? 'Photo' : `${images.length} Photos`}
                         </button>
                       )}
+                      
                       {loadingState === LoadingState.ANALYZING && (
                         <div className="py-12 text-center">
                           <Loader2 size={40} className="animate-spin mx-auto mb-3 text-brand" />
-                          <p className="text-secondary-400 text-sm">Identifying items in your photo...</p>
+                          <p className="text-secondary-400 text-sm">Identifying items in your {images.length === 1 ? 'photo' : 'photos'}...</p>
                         </div>
                       )}
+                      
                       {loadingState === LoadingState.ERROR && (
                         <div className="p-4 bg-red-50 border border-red-200 rounded-none text-center">
-                          <p className="text-red-700 text-sm font-bold mb-1">Failed to analyze photo</p>
+                          <p className="text-red-700 text-sm font-bold mb-1">Failed to analyze photo{images.length > 1 ? 's' : ''}</p>
                           {error && <p className="text-red-600 text-xs mb-2">{error}</p>}
                           <button onClick={handleAnalyze} className="text-sm font-bold text-secondary underline hover:text-brand transition-colors">Try again</button>
                         </div>
