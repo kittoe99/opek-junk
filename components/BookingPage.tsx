@@ -539,7 +539,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
+              <div className="relative group flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 mb-4 max-w-md p-1">
                 <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                   <InputZipIcon size={18} />
                 </span>
@@ -588,7 +588,7 @@ export const BookingPage: React.FC = () => {
           {estimateData?.estimate && (
             <div className="border-b border-secondary-100 pb-6 mb-6">
               {/* Price breakdown */}
-              <div className="bg-secondary-50 rounded-2xl p-5 border border-secondary-100 mb-4">
+              <div className="bg-white rounded-2xl p-5 border border-secondary-100 mb-4">
                 {formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Dumpster Rental' && (
                   <div className="space-y-3 mb-4 pb-4 border-b border-secondary-200">
                     <div className="flex justify-between items-center text-sm">
@@ -691,7 +691,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   disabled
                   type="button"
-                  className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
+                  className="w-full bg-white border border-secondary-200 p-4 rounded-none text-left flex items-center gap-4 cursor-not-allowed opacity-60"
                 >
                   <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
                     <DumpsterIcon className="w-full h-full" />
@@ -703,7 +703,7 @@ export const BookingPage: React.FC = () => {
                     </div>
                     <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
                   </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-secondary-50 text-secondary-300">
+                  <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-white text-secondary-300">
                     <ArrowRight size={14} />
                   </div>
                 </button>
@@ -735,7 +735,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => cameraInputRef.current?.click()}
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                       <Camera size={22} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -753,7 +753,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => fileInputRef.current?.click()}
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                       <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -771,7 +771,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => navigate('/quote', { state: { zipResult, zipValue, serviceType: formData.serviceType } })}
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                       <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -1012,7 +1012,7 @@ export const BookingPage: React.FC = () => {
                     <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
                     <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-secondary">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-secondary">
                           <CalendarCheck size={18} />
                         </div>
                         <div>
@@ -1020,7 +1020,7 @@ export const BookingPage: React.FC = () => {
                           <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                      <div className="flex items-center gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
                         <button
                           onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                           disabled={dumpsterDuration <= 1}
@@ -1337,7 +1337,7 @@ export const BookingPage: React.FC = () => {
                           <div className="text-[11px] text-secondary-400">{movingHours} hours selected</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                      <div className="flex items-center gap-3 sm:gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.max(2, h - 1))}
@@ -1554,7 +1554,7 @@ export const BookingPage: React.FC = () => {
               <button 
                 type="button"
                 onClick={() => setShowInsuranceModal(false)}
-                className="w-8 h-8 rounded-full bg-secondary-50 hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
+                className="w-8 h-8 rounded-full bg-white hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
               >
                 <X size={16} />
               </button>

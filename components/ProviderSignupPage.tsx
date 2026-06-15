@@ -133,7 +133,7 @@ export const ProviderSignupPage: React.FC = () => {
     }
   };
 
-  const inputCls = "w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/10 focus:border-brand focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-200 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand focus:bg-white transition-all duration-200";
 
   const signupSteps = [
     { label: 'About You', icon: ClipboardList },

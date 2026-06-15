@@ -77,7 +77,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute top-3.5 right-3.5 w-7 h-7 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-secondary-50 transition-all rounded-full z-20"
+            className="absolute top-3.5 right-3.5 w-7 h-7 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-white transition-all rounded-full z-20"
           >
             <X size={16} />
           </button>
@@ -101,7 +101,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 </p>
 
                 {/* Sleek unified Input Pill */}
-                <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1 mb-2.5">
+                <div className="relative group flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 p-1 mb-2.5">
                   <div className="pl-2.5 text-secondary-400 pointer-events-none group-focus-within:text-brand transition-colors">
                     <InputZipIcon size={18} />
                   </div>
@@ -165,7 +165,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 </div>
 
                 {/* Shaded Location Details Card */}
-                <div className="bg-secondary-50/50 rounded-xl p-3 border border-secondary-100/40 flex items-center gap-3 my-4 shadow-sm">
+                <div className="bg-white rounded-xl p-3 border border-secondary-100/40 flex items-center gap-3 my-4 shadow-sm">
                   <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center text-brand shrink-0">
                     <MapPin size={16} strokeWidth={2} />
                   </div>

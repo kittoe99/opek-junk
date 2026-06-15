@@ -425,7 +425,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 disabled={contactSubmitting}
                 placeholder="John Smith"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -445,7 +445,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="email"
                 placeholder="john@example.com"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -465,7 +465,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="tel"
                 placeholder="(555) 123-4567"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -511,7 +511,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 placeholder="Start typing an address..."
                 autoComplete="street-address"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
               />
             </div>
             {addressLoading && (
@@ -545,7 +545,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.unitNumber}
                 onChange={handleInputChange}
                 placeholder="e.g. Apt 4B, Suite 200"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
               />
             </div>
           </div>
@@ -564,7 +564,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="Dallas"
-                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
                 />
               </div>
             </div>
@@ -581,7 +581,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="TX"
-                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
                 />
               </div>
             </div>
@@ -598,7 +598,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="75201"
-                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
                 />
               </div>
             </div>
@@ -632,7 +632,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <input
                 readOnly
                 value={serviceType}
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary font-bold focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary font-bold focus:outline-none transition-colors"
               />
             </div>
             <div>
@@ -648,7 +648,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   required
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
                 />
               </div>
             </div>
@@ -666,7 +666,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-colors"
               />
             </div>
           </div>

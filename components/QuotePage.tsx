@@ -756,7 +756,7 @@ export const QuotePage: React.FC = () => {
         </div>
 
         {/* Price header breakdown */}
-        <div className="bg-secondary-50 rounded-2xl p-5 md:p-6 border border-secondary-100">
+        <div className="bg-white rounded-none p-5 md:p-6 border border-secondary-200">
           {!isSpecialService && (
             <div className="space-y-3 mb-5 pb-5 border-b border-secondary-200">
               <div className="flex justify-between items-center text-sm md:text-base">
@@ -861,7 +861,7 @@ export const QuotePage: React.FC = () => {
                 </div>
                 <button 
                   onClick={() => setShowInsuranceModal(false)}
-                  className="w-8 h-8 rounded-full bg-secondary-50 hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
+                  className="w-8 h-8 rounded-full bg-white hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -935,7 +935,7 @@ export const QuotePage: React.FC = () => {
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           {/* Mini estimate banner */}
-          <div className="bg-secondary-50 rounded-2xl p-4 border border-secondary-100 mb-8 flex items-center justify-between">
+          <div className="bg-white rounded-2xl p-4 border border-secondary-100 mb-8 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
               <p className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</p>
@@ -1036,7 +1036,7 @@ export const QuotePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
+            <div className="relative group flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 mb-4 max-w-md p-1">
               <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                 <InputZipIcon size={18} />
               </span>
@@ -1145,7 +1145,7 @@ export const QuotePage: React.FC = () => {
             </button>
             <button
               disabled
-              className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
+              className="w-full bg-white border border-secondary-200 p-4 rounded-none text-left flex items-center gap-4 cursor-not-allowed opacity-60"
             >
               <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
                 <DumpsterIcon className="w-full h-full" />
@@ -1157,7 +1157,7 @@ export const QuotePage: React.FC = () => {
                 </div>
                 <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-secondary-50 text-secondary-300">
+              <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-white text-secondary-300">
                 <ArrowRight size={14} />
               </div>
             </button>
@@ -1217,14 +1217,14 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={service.label}
                         onClick={() => setMovingServiceType(service.label as any)}
-                        className={`group p-5 border-2 rounded-none flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-5 border border-secondary-200 rounded-none flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
+                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-200 bg-white hover:border-brand'
                         }`}
                       >
                         <div className={`w-12 h-12 rounded-none flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                         }`}>
                           <Icon size={24} className="transition-colors" />
                         </div>
@@ -1233,8 +1233,8 @@ export const QuotePage: React.FC = () => {
                             {service.label}
                           </span>
                         </div>
-                        <div className={`absolute top-4 right-4 w-5 h-5 border-2 rounded-none flex items-center justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        <div className={`absolute top-4 right-4 w-5 h-5 border border-secondary-200 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand'
                         }`}>
                           {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                         </div>
@@ -1280,14 +1280,14 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={type.label}
                         onClick={() => setMovingType(type.label as any)}
-                        className={`group p-5 border-2 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-5 border border-secondary-200 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
+                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-200 bg-white hover:border-brand'
                         }`}
                       >
                         <div className={`w-10 h-10 rounded-none flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                         }`}>
                           <Icon size={20} className="transition-colors" />
                         </div>
@@ -1296,8 +1296,8 @@ export const QuotePage: React.FC = () => {
                             {type.label}
                           </span>
                         </div>
-                        <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border-2 rounded-none flex items-center justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border border-secondary-200 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand'
                         }`}>
                           {isSelected && <Check size={10} strokeWidth={4} className="text-white" />}
                         </div>
@@ -1341,14 +1341,14 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={option.helpers}
                         onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                        className={`group p-5 border-2 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-5 border border-secondary-200 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
+                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-200 bg-white hover:border-brand'
                         }`}
                       >
                         <div className={`w-12 h-12 rounded-none flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
+                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                         }`}>
                           <Icon size={24} className="transition-colors" />
                         </div>
@@ -1360,8 +1360,8 @@ export const QuotePage: React.FC = () => {
                             {option.price}
                           </span>
                         </div>
-                        <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border-2 rounded-none flex items-center justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border border-secondary-200 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand'
                         }`}>
                           {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                         </div>
@@ -1374,9 +1374,9 @@ export const QuotePage: React.FC = () => {
               {/* Hours Selection */}
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border-2 border-secondary-100 rounded-none gap-4 transition-all focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border border-secondary-200 rounded-none gap-4 transition-all focus-within:border-brand focus-within:ring-1 focus-within:ring-brand">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-secondary-50 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 bg-transparent flex items-center justify-center shrink-0">
                       <Clock size={20} className="text-secondary-400" />
                     </div>
                     <div>
@@ -1384,18 +1384,18 @@ export const QuotePage: React.FC = () => {
                       <div className="text-xs font-semibold text-brand mt-0.5">{movingHours} hours selected</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 bg-secondary-50 border-2 border-secondary-100 rounded-none p-1 w-full sm:w-auto">
+                  <div className="flex items-center gap-1 bg-white border border-secondary-200 rounded-none p-1 w-full sm:w-auto">
                     <button
                       onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                       disabled={movingHours <= 2}
-                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border-2 border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                     >
                       <Minus size={16} strokeWidth={3} />
                     </button>
                     <span className="w-12 text-center text-lg font-black text-secondary">{movingHours}</span>
                     <button
                       onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border-2 border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                     >
                       <Plus size={16} strokeWidth={3} />
                     </button>
@@ -1827,7 +1827,7 @@ export const QuotePage: React.FC = () => {
                       <div className="text-[11px] text-secondary-400">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                  <div className="flex items-center gap-3 sm:gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
                     <button
                       onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                       disabled={dumpsterDuration <= 1}
@@ -1928,7 +1928,7 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('ai')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
+              <div className="w-12 h-12 bg-white border border-secondary-200 group-hover:border-brand rounded-none flex items-center justify-center shrink-0 transition-colors relative">
                 <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
               </div>
               <div className="flex-1">
@@ -1944,7 +1944,7 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedOption('manual')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
+              <div className="w-12 h-12 bg-white border border-secondary-200 group-hover:border-brand rounded-none flex items-center justify-center shrink-0 transition-colors relative">
                 <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
               </div>
               <div className="flex-1">
@@ -2084,7 +2084,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => cameraInputRef.current?.click()}
-                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-none text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-200 hover:border-brand transition-all p-6 bg-white rounded-none text-left flex items-center gap-4 group"
                       >
                         <Camera size={24} className="text-brand shrink-0" />
                         <div className="flex-1">
@@ -2097,7 +2097,7 @@ export const QuotePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full md:border border-secondary-100 hover:border-brand hover:bg-brand/5 transition-all p-6 rounded-none text-left flex items-center gap-4 group"
+                        className="w-full md:border border-secondary-200 hover:border-brand transition-all p-6 bg-white rounded-none text-left flex items-center gap-4 group"
                       >
                         <Upload size={24} className="text-secondary shrink-0" />
                         <div className="flex-1">
@@ -2119,7 +2119,7 @@ export const QuotePage: React.FC = () => {
                       {/* Grid of thumbnails */}
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {images.map((imgSrc, index) => (
-                          <div key={index} className="relative aspect-[4/3] border border-secondary-100 bg-secondary-50 overflow-hidden rounded-none">
+                          <div key={index} className="relative aspect-[4/3] border border-secondary-100 bg-white overflow-hidden rounded-none">
                             <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                             {loadingState !== LoadingState.ANALYZING && (
                               <button
@@ -2183,7 +2183,7 @@ export const QuotePage: React.FC = () => {
               {aiStep === 'items' && (
                 <div className="space-y-6">
                   {images.length > 0 && (
-                    <div className="flex gap-4 items-start p-4 border border-secondary-100 rounded-xl bg-secondary-50/50">
+                    <div className="flex gap-4 items-start p-4 border border-secondary-100 rounded-xl bg-white">
                       <img src={images[0]} alt="Your photo" className="w-20 h-20 object-cover rounded-lg border border-secondary-100" />
                       <div>
                         <p className="text-sm font-black text-secondary">{detectedItems.length} items detected</p>
@@ -2197,11 +2197,11 @@ export const QuotePage: React.FC = () => {
                         <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-10 h-10 object-contain" />
                         <span className="flex-1 text-sm font-medium text-secondary">{item.name}</span>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-secondary-50 flex items-center justify-center hover:border-brand transition-colors">
+                          <button onClick={() => updateItemQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
                             <Minus size={14} className="text-secondary-500" />
                           </button>
                           <span className="w-6 text-center text-sm font-bold text-secondary">{item.quantity}</span>
-                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-secondary-50 flex items-center justify-center hover:border-brand transition-colors">
+                          <button onClick={() => updateItemQuantity(item.id, 1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-white flex items-center justify-center hover:border-brand transition-colors">
                             <Plus size={14} className="text-secondary-500" />
                           </button>
                           <button onClick={() => removeItem(item.id)} className="w-7 h-7 rounded-md bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors ml-1">
@@ -2224,7 +2224,7 @@ export const QuotePage: React.FC = () => {
                           onChange={(e) => setNewItemName(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
                           placeholder="e.g. Old Desk"
-                          className="w-full pl-10 pr-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
+                          className="w-full pl-10 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-none text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors"
                         />
                       </div>
                       <button onClick={addManualItem} disabled={!newItemName.trim()} className="group px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
@@ -2309,7 +2309,7 @@ export const QuotePage: React.FC = () => {
                             className={`flex flex-row items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
                               isActive
                                 ? 'bg-brand/10 text-brand'
-                                : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
+                                : 'hover:bg-white text-secondary-500 hover:text-secondary'
                             }`}
                           >
                             <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
@@ -2348,7 +2348,7 @@ export const QuotePage: React.FC = () => {
                           </div>
                           {filteredCatalog.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center">
-                              <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center mb-3">
+                              <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center mb-3">
                                 <Search size={20} className="text-secondary-300" />
                               </div>
                               <p className="text-sm font-semibold text-secondary-400">No items found</p>
@@ -2375,7 +2375,7 @@ export const QuotePage: React.FC = () => {
                                       </div>
                                     )}
                                     <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                                      selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
+                                      selected ? 'bg-brand/10' : 'bg-white group-hover:bg-secondary-100'
                                     }`}>
                                       <ItemIconRenderer
                                         imagePath={item.image}
@@ -2388,11 +2388,11 @@ export const QuotePage: React.FC = () => {
                                     
                                     {selected && selectedItem && (
                                       <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-200 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
                                           <Minus size={9} className="text-secondary-500" />
                                         </button>
                                         <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                           <Plus size={9} className="text-secondary-500" />
                                         </button>
                                       </div>
@@ -2435,7 +2435,7 @@ export const QuotePage: React.FC = () => {
                                         </div>
                                       )}
                                       <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                                        selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
+                                        selected ? 'bg-brand/10' : 'bg-white group-hover:bg-secondary-100'
                                       }`}>
                                         <ItemIconRenderer
                                           imagePath={item.image}
@@ -2448,11 +2448,11 @@ export const QuotePage: React.FC = () => {
                                       
                                       {selected && selectedItem && (
                                         <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-200 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
                                             <Minus size={9} className="text-secondary-500" />
                                           </button>
                                           <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-secondary-50 flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
+                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
                                             <Plus size={9} className="text-secondary-500" />
                                           </button>
                                         </div>
@@ -2540,8 +2540,8 @@ export const QuotePage: React.FC = () => {
                   {/* Items list */}
                   <div className="border border-secondary-100 rounded-none divide-y divide-secondary-100 overflow-hidden bg-white">
                     {selectedItems.map((item) => (
-                      <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-secondary-50/50 transition-colors">
-                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
+                      <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-white transition-colors">
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-none bg-white flex items-center justify-center shrink-0">
                           <ItemIconRenderer
                             imagePath={getItemImage(item.name)}
                             className="w-8 h-8 md:w-9 md:h-9"
@@ -2572,7 +2572,7 @@ export const QuotePage: React.FC = () => {
                   </div>
 
                   {/* Suggested Add-ons (Upsells) */}
-                  <div className="border border-secondary-100 rounded-none bg-secondary-50/30 p-4 md:p-5 space-y-3">
+                  <div className="border border-secondary-200 rounded-none bg-white p-4 md:p-5 space-y-3">
                     <p className="text-xs font-black uppercase tracking-wider text-secondary flex items-center gap-1.5">
                       <span>Suggested Add-ons</span>
                     </p>
@@ -2585,7 +2585,7 @@ export const QuotePage: React.FC = () => {
                         return (
                           <div key={upsell.name} className="bg-white border border-secondary-100 p-3 flex items-center justify-between gap-3 shadow-sm hover:shadow transition-shadow rounded-none">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
+                              <div className="w-10 h-10 rounded-none bg-white flex items-center justify-center shrink-0">
                                 <ItemIconRenderer
                                   imagePath={getItemImage(upsell.name)}
                                   className="w-6 h-6 object-contain"

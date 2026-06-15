@@ -80,7 +80,7 @@ export const FullServiceSection: React.FC = () => {
           <div className="w-full lg:max-w-md shrink-0 relative min-h-[56px] sm:min-h-[56px]">
             <div className={`transition-all duration-500 ease-out absolute inset-0 ${isSuccess ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 z-10'}`}>
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative group flex-1 flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
+                <div className="relative group flex-1 flex items-center bg-white border border-secondary-200 hover:border-brand focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-all duration-300 p-1">
                   <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
                     <InputZipIcon size={18} />
                   </span>
@@ -120,7 +120,7 @@ export const FullServiceSection: React.FC = () => {
             </div>
 
             <div className={`transition-all duration-500 ease-out absolute inset-0 flex items-center justify-center ${isSuccess ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-105 pointer-events-none'}`}>
-              <div className="w-full bg-green-50 border-2 border-green-500 p-3 flex items-center gap-4 shadow-[0_0_20px_rgba(34,197,94,0.2)]">
+              <div className="w-full bg-white border border-green-500 p-3 flex items-center gap-4 shadow-[0_0_20px_rgba(34,197,94,0.2)]">
                 <div className="w-10 h-10 bg-green-500 flex items-center justify-center shrink-0">
                   <CheckCircle2 size={24} className="text-white animate-scale-in" />
                 </div>
