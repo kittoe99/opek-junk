@@ -1213,22 +1213,26 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={service.label}
                         onClick={() => setMovingServiceType(service.label as any)}
-                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                        className={`group p-5 border-2 rounded-none flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-white' 
-                            : 'border-secondary-100 bg-white hover:border-secondary-300'
+                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
                         }`}
                       >
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                        <div className={`w-12 h-12 rounded-none flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                         }`}>
-                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          <Icon size={24} className="transition-colors" />
                         </div>
-                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                        <div>
-                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                        <div className="flex-1">
+                          <span className={`block text-base font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {service.label}
                           </span>
+                        </div>
+                        <div className={`absolute top-4 right-4 w-5 h-5 border-2 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        }`}>
+                          {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                         </div>
                       </button>
                     );
@@ -1252,22 +1256,26 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={type.label}
                         onClick={() => setMovingType(type.label as any)}
-                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                        className={`group p-5 border-2 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-white' 
-                            : 'border-secondary-100 bg-white hover:border-secondary-300'
+                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
                         }`}
                       >
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                        <div className={`w-10 h-10 rounded-none flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                         }`}>
-                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          <Icon size={20} className="transition-colors" />
                         </div>
-                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                        <div>
-                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                        <div className="flex-1">
+                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {type.label}
                           </span>
+                        </div>
+                        <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border-2 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        }`}>
+                          {isSelected && <Check size={10} strokeWidth={4} className="text-white" />}
                         </div>
                       </button>
                     );
@@ -1278,9 +1286,9 @@ export const QuotePage: React.FC = () => {
               <div className="pt-4">
                 <button
                   onClick={() => setMovingStep('crew')}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-none transition-all duration-300 font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
                 >
-                  Continue <ArrowRight size={14} />
+                  Continue <ArrowRight size={16} strokeWidth={2.5} />
                 </button>
                 <button
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
@@ -1309,22 +1317,29 @@ export const QuotePage: React.FC = () => {
                       <button
                         key={option.helpers}
                         onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                        className={`group p-5 border-2 rounded-none flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                           isSelected 
-                            ? 'border-brand bg-white' 
-                            : 'border-secondary-100 bg-white hover:border-secondary-300'
+                            ? 'border-brand bg-brand/5 ring-4 ring-brand/10 shadow-[0_0_20px_rgba(255,0,110,0.05)]' 
+                            : 'border-secondary-100 bg-white hover:border-brand/50 hover:bg-secondary-50'
                         }`}
                       >
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                        <div className={`w-12 h-12 rounded-none flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-brand text-white' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                         }`}>
-                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          <Icon size={24} className="transition-colors" />
                         </div>
-                        <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                        <div>
-                          <span className="block text-sm font-semibold text-secondary transition-colors">
+                        <div className="flex-1">
+                          <span className={`block text-lg font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {option.helpers} Helpers
                           </span>
+                          <span className="block text-xs font-bold text-secondary-400 mt-0.5">
+                            {option.price}
+                          </span>
+                        </div>
+                        <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border-2 rounded-none flex items-center justify-center transition-all ${
+                          isSelected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white group-hover:border-brand/50'
+                        }`}>
+                          {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                         </div>
                       </button>
                     );
@@ -1335,28 +1350,30 @@ export const QuotePage: React.FC = () => {
               {/* Hours Selection */}
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border-2 border-secondary-100 rounded-none gap-4 transition-all focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10">
                   <div className="flex items-center gap-3">
-                    <Clock size={16} className="text-secondary-400" />
+                    <div className="w-10 h-10 bg-secondary-50 flex items-center justify-center shrink-0">
+                      <Clock size={20} className="text-secondary-400" />
+                    </div>
                     <div>
-                      <div className="text-sm font-semibold text-secondary">Time Needed</div>
-                      <div className="text-[11px] text-secondary-400">{movingHours} hours selected</div>
+                      <div className="text-sm font-black text-secondary uppercase tracking-wider">Time Needed</div>
+                      <div className="text-xs font-semibold text-brand mt-0.5">{movingHours} hours selected</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 sm:gap-4 bg-secondary-50 border border-secondary-100 rounded-xl p-1.5 w-max">
+                  <div className="flex items-center gap-1 bg-secondary-50 border-2 border-secondary-100 rounded-none p-1 w-full sm:w-auto">
                     <button
                       onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                       disabled={movingHours <= 2}
-                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border-2 border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                     >
-                      <Minus size={14} />
+                      <Minus size={16} strokeWidth={3} />
                     </button>
-                    <span className="w-6 text-center text-base font-bold text-brand">{movingHours}</span>
+                    <span className="w-12 text-center text-lg font-black text-secondary">{movingHours}</span>
                     <button
                       onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                      className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border-2 border-transparent shadow-sm flex items-center justify-center transition-all"
                     >
-                      <Plus size={14} />
+                      <Plus size={16} strokeWidth={3} />
                     </button>
                   </div>
                 </div>
@@ -1385,13 +1402,13 @@ export const QuotePage: React.FC = () => {
                     }
                   }}
                   disabled={pricingLoading}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-secondary hover:bg-brand text-white rounded-full transition-all duration-300 font-semibold text-xs uppercase tracking-wider disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-none transition-all duration-300 font-black text-sm uppercase tracking-widest disabled:opacity-50 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
                 >
                   {pricingLoading ? 'Calculating...' : 'Get Estimate'}
                   {pricingLoading ? (
-                    <Loader2 size={14} className="animate-spin" />
+                    <Loader2 size={16} className="animate-spin" />
                   ) : (
-                    <ArrowRight size={14} />
+                    <ArrowRight size={16} strokeWidth={2.5} />
                   )}
                 </button>
                 <button
