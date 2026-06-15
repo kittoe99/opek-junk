@@ -43,7 +43,7 @@ export const FullServiceSection: React.FC = () => {
               zipValue: zipCode
             }
           });
-        }, 1500);
+        }, 2000);
       } else {
         setError('ZIP code not found.');
         setIsLoading(false);
@@ -77,52 +77,59 @@ export const FullServiceSection: React.FC = () => {
           </div>
 
           {/* Right Side: ZIP code validator */}
-          <div className="w-full lg:max-w-md shrink-0">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="relative group flex-1 flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
-                <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
-                  <InputZipIcon size={18} />
-                </span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={5}
-                  value={zipCode}
-                  onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
-                  onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
-                  placeholder="Enter ZIP code"
-                  className="flex-1 pl-2.5 pr-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
-                  style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
-                />
+          <div className="w-full lg:max-w-md shrink-0 relative min-h-[56px] sm:min-h-[56px]">
+            <div className={`transition-all duration-500 ease-out absolute inset-0 ${isSuccess ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 z-10'}`}>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative group flex-1 flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
+                  <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
+                    <InputZipIcon size={18} />
+                  </span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={5}
+                    value={zipCode}
+                    onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
+                    onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                    placeholder="Enter ZIP code"
+                    className="flex-1 pl-2.5 pr-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
+                    style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
+                  />
+                </div>
+                <button
+                  onClick={handleZipCheck}
+                  disabled={zipCode.length !== 5 || isLoading}
+                  className="px-6 py-3.5 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto bg-secondary hover:bg-brand"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Search size={16} />
+                      <span>Check Availability</span>
+                    </>
+                  )}
+                </button>
               </div>
-              <button
-                onClick={handleZipCheck}
-                disabled={zipCode.length !== 5 || isLoading || isSuccess}
-                className={`px-6 py-3.5 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto ${
-                  isSuccess ? 'bg-green-500 hover:bg-green-600' : 'bg-secondary hover:bg-brand'
-                }`}
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : isSuccess ? (
-                  <>
-                    <CheckCircle2 size={16} className="animate-bounce" />
-                    <span>Available! Redirecting...</span>
-                  </>
-                ) : (
-                  <>
-                    <Search size={16} />
-                    <span>Check Availability</span>
-                  </>
-                )}
-              </button>
+              {error && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 mt-3 relative z-20">
+                  <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
+                  <p className="text-red-700 text-xs font-semibold">{error}</p>
+                </div>
+              )}
             </div>
-            {error && (
-              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mt-3">
-                <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
-                <p className="text-red-700 text-xs font-semibold">{error}</p>
+
+            <div className={`transition-all duration-500 ease-out absolute inset-0 flex items-center justify-center ${isSuccess ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-105 pointer-events-none'}`}>
+              <div className="w-full bg-green-50 border-2 border-green-500 p-3 flex items-center gap-4 shadow-[0_0_20px_rgba(34,197,94,0.2)]">
+                <div className="w-10 h-10 bg-green-500 flex items-center justify-center shrink-0">
+                  <CheckCircle2 size={24} className="text-white animate-scale-in" />
+                </div>
+                <div>
+                  <p className="text-green-800 font-black uppercase tracking-wider text-sm leading-tight">Service Available!</p>
+                  <p className="text-green-600 text-[11px] font-bold mt-0.5 flex items-center gap-1.5"><Loader2 size={10} className="animate-spin" /> Preparing your quote...</p>
+                </div>
               </div>
-            )}
+            </div>
           </div>
 
         </div>

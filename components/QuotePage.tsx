@@ -3,6 +3,7 @@ import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks
 import { useNavigate, useLocation } from 'react-router-dom';
 import { JunkIcon, MovingLaborIcon, DumpsterIcon, PhotoEstimateIcon, ManualEntryIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PopularItemsIcon, FurnitureIcon, BeddingIcon, AppliancesIcon, ElectronicsIcon, YardOutdoorIcon, ConstructionIcon, GarageStorageIcon, BaggedBoxedIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
 import { detectItemsFromPhotos } from '../services/openaiService';
+import { ItemIconRenderer } from './icons/JunkItemIcons';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
@@ -2152,7 +2153,7 @@ export const QuotePage: React.FC = () => {
                   <div className="space-y-2">
                     {detectedItems.map((item) => (
                       <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl border border-secondary-100 bg-white">
-                        <img src={getItemImage(item.name)} alt={item.name} className="w-10 h-10 object-contain" />
+                        <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-10 h-10 object-contain" />
                         <span className="flex-1 text-sm font-medium text-secondary">{item.name}</span>
                         <div className="flex items-center gap-2">
                           <button onClick={() => updateItemQuantity(item.id, -1)} className="w-7 h-7 rounded-md border border-secondary-200 bg-secondary-50 flex items-center justify-center hover:border-brand transition-colors">
@@ -2335,15 +2336,9 @@ export const QuotePage: React.FC = () => {
                                     <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
                                       selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
                                     }`}>
-                                      <img
-                                        src={item.image}
-                                        alt={item.name}
+                                      <ItemIconRenderer
+                                        imagePath={item.image}
                                         className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
-                                        style={{
-                                          filter: selected
-                                            ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
-                                            : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
-                                        }}
                                       />
                                     </div>
                                     <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
@@ -2401,15 +2396,9 @@ export const QuotePage: React.FC = () => {
                                       <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
                                         selected ? 'bg-brand/10' : 'bg-secondary-50 group-hover:bg-secondary-100'
                                       }`}>
-                                        <img
-                                          src={item.image}
-                                          alt={item.name}
+                                        <ItemIconRenderer
+                                          imagePath={item.image}
                                           className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
-                                          style={{
-                                            filter: selected
-                                              ? 'brightness(0) saturate(100%) invert(54%) sepia(88%) saturate(2476%) hue-rotate(316deg) brightness(101%) contrast(101%)'
-                                              : 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)'
-                                          }}
                                         />
                                       </div>
                                       <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
@@ -2512,11 +2501,9 @@ export const QuotePage: React.FC = () => {
                     {selectedItems.map((item) => (
                       <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-secondary-50/50 transition-colors">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
-                          <img
-                            src={getItemImage(item.name)}
-                            alt={item.name}
+                          <ItemIconRenderer
+                            imagePath={getItemImage(item.name)}
                             className="w-8 h-8 md:w-9 md:h-9"
-                            style={{ filter: 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)' }}
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -2558,11 +2545,9 @@ export const QuotePage: React.FC = () => {
                           <div key={upsell.name} className="bg-white border border-secondary-100 p-3 flex items-center justify-between gap-3 shadow-sm hover:shadow transition-shadow rounded-none">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 rounded-none bg-secondary-50 flex items-center justify-center shrink-0">
-                                <img
-                                  src={getItemImage(upsell.name)}
-                                  alt={upsell.name}
+                                <ItemIconRenderer
+                                  imagePath={getItemImage(upsell.name)}
                                   className="w-6 h-6 object-contain"
-                                  style={{ filter: 'brightness(0) saturate(100%) invert(28%) sepia(31%) saturate(745%) hue-rotate(178deg) brightness(94%) contrast(91%)' }}
                                 />
                               </div>
                               <div>
