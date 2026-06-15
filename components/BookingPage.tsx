@@ -564,7 +564,7 @@ export const BookingPage: React.FC = () => {
               </div>
 
               {zipError && (
-                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-none">
                   <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
                   <p className="text-red-700 text-sm">{zipError}</p>
                 </div>
@@ -588,7 +588,7 @@ export const BookingPage: React.FC = () => {
           {estimateData?.estimate && (
             <div className="border-b border-secondary-100 pb-6 mb-6">
               {/* Price breakdown */}
-              <div className="bg-white rounded-2xl p-5 border border-secondary-100 mb-4">
+              <div className="bg-white rounded-none p-5 border border-secondary-100 mb-4">
                 {formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Dumpster Rental' && (
                   <div className="space-y-3 mb-4 pb-4 border-b border-secondary-100">
                     <div className="flex justify-between items-center text-sm">
@@ -710,7 +710,7 @@ export const BookingPage: React.FC = () => {
               </div>
               
               <div className="pt-4 flex">
-                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
+                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-none flex items-center justify-center gap-2">
                   <ArrowLeft size={14} /> Back
                 </button>
               </div>
@@ -733,7 +733,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                       <Camera size={22} className="text-secondary group-hover:text-brand transition-colors" />
@@ -751,9 +751,9 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
                       <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -769,9 +769,9 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => navigate('/quote', { state: { zipResult, zipValue, serviceType: formData.serviceType } })}
-                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-none flex items-center justify-center shrink-0 transition-colors">
                       <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -798,7 +798,7 @@ export const BookingPage: React.FC = () => {
                     {loadingState !== LoadingState.ANALYZING && (
                       <button
                         onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
-                        className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-lg inline-flex items-center gap-1"
+                        className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-none inline-flex items-center gap-1"
                       >
                         <X size={12} /> Change
                       </button>
@@ -808,7 +808,7 @@ export const BookingPage: React.FC = () => {
                   {loadingState === LoadingState.IDLE && (
                     <button
                       onClick={handleAnalyze}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       <ScanSearch size={14} className="transition-transform duration-300 group-hover:scale-110" /> Analyze Photo
                     </button>
@@ -835,7 +835,7 @@ export const BookingPage: React.FC = () => {
                     ) : (
                       <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
                         {/* Elegant Shrunk Image Service Card */}
-                        <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                        <div className="bg-white border border-secondary-100 rounded-none p-3 flex items-center gap-3.5 mb-4 shadow-sm">
                           <div className="w-20 h-16 shrink-0">
                             <img 
                               src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'} 
@@ -912,7 +912,7 @@ export const BookingPage: React.FC = () => {
                         <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
                         <button
                           onClick={() => handleNextStep()}
-                          className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                          className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                         >
                           Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                         </button>
@@ -926,7 +926,7 @@ export const BookingPage: React.FC = () => {
                       <p className="text-red-700 text-sm font-bold mb-3">Failed to analyze photo</p>
                       <button
                         onClick={handleAnalyze}
-                        className="px-5 py-2 bg-secondary text-white font-bold uppercase text-xs hover:bg-brand transition-colors rounded-lg"
+                        className="px-5 py-2 bg-secondary text-white font-bold uppercase text-xs hover:bg-brand transition-colors rounded-none"
                       >
                         Try Again
                       </button>
@@ -997,7 +997,7 @@ export const BookingPage: React.FC = () => {
                   <div className="pt-4">
                     <button
                       onClick={() => setDumpsterStep('duration')}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
@@ -1010,7 +1010,7 @@ export const BookingPage: React.FC = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
-                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
+                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-none">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-secondary">
                           <CalendarCheck size={18} />
@@ -1020,18 +1020,18 @@ export const BookingPage: React.FC = () => {
                           <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
+                      <div className="flex items-center gap-4 bg-white border border-secondary-100 rounded-none p-1.5 w-max">
                         <button
                           onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                           disabled={dumpsterDuration <= 1}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                         >
                           <ArrowLeft size={16} />
                         </button>
                         <span className="w-8 text-center text-lg font-black text-brand">{dumpsterDuration}</span>
                         <button
                           onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                         >
                           <ArrowRight size={16} />
                         </button>
@@ -1066,7 +1066,7 @@ export const BookingPage: React.FC = () => {
                           console.error('Failed to get dumpster price:', err);
                         }
                       }}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       Get Estimate <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
@@ -1093,9 +1093,9 @@ export const BookingPage: React.FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-none">
                     {/* Elegant Shrunk Image Service Card */}
-                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                    <div className="bg-white border border-secondary-100 rounded-none p-3 flex items-center gap-3.5 mb-4 shadow-sm">
                       <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
                         <img 
                           src="/dumpster-rental.svg" 
@@ -1162,7 +1162,7 @@ export const BookingPage: React.FC = () => {
                     <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
                     <button
                       onClick={() => handleNextStep()}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
@@ -1272,13 +1272,13 @@ export const BookingPage: React.FC = () => {
                   </div>
 
                   <div className="pt-4 flex gap-3">
-                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
+                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-none flex items-center justify-center gap-2">
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setMovingStep('crew')}
-                      className="flex-1 group py-3 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="flex-1 group py-3 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
@@ -1329,7 +1329,7 @@ export const BookingPage: React.FC = () => {
                   {/* Hours Selection */}
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Estimated Hours (2 hr min)</label>
-                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl">
+                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-none">
                       <div className="flex items-center gap-3">
                         <Clock size={16} className="text-secondary-400" />
                         <div>
@@ -1337,12 +1337,12 @@ export const BookingPage: React.FC = () => {
                           <div className="text-[11px] text-secondary-400">{movingHours} hours selected</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 sm:gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
+                      <div className="flex items-center gap-3 sm:gap-4 bg-white border border-secondary-100 rounded-none p-1.5 w-max">
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                           disabled={movingHours <= 2}
-                          className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                          className="w-8 h-8 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                         >
                           <Minus size={14} />
                         </button>
@@ -1350,7 +1350,7 @@ export const BookingPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                          className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                          className="w-8 h-8 rounded-none bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                         >
                           <Plus size={14} />
                         </button>
@@ -1369,7 +1369,7 @@ export const BookingPage: React.FC = () => {
                       type="button"
                       onClick={() => setMovingStep('details')}
                       disabled={movingPricingLoading}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-secondary-600 transition-colors rounded-none flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
@@ -1403,7 +1403,7 @@ export const BookingPage: React.FC = () => {
                         }
                       }}
                       disabled={movingPricingLoading}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-none flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {movingPricingLoading ? 'Calculating...' : 'Get Estimate'}
                       {movingPricingLoading ? (
@@ -1431,7 +1431,7 @@ export const BookingPage: React.FC = () => {
                 ) : (
                   <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
                     {/* Elegant Shrunk Image Service Card */}
-                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                    <div className="bg-white border border-secondary-100 rounded-none p-3 flex items-center gap-3.5 mb-4 shadow-sm">
                       <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
                         <img 
                           src="/process-step-2.svg" 
@@ -1499,7 +1499,7 @@ export const BookingPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleNextStep()}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-none flex items-center justify-center gap-2"
                     >
                       Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
@@ -1540,10 +1540,10 @@ export const BookingPage: React.FC = () => {
       {/* Insurance Modal */}
       {showInsuranceModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
-          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-none p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                <div className="w-10 h-10 rounded-none bg-emerald-500 text-white flex items-center justify-center">
                   <ShieldCheck size={22} strokeWidth={2.5} />
                 </div>
                 <div>

@@ -139,7 +139,7 @@ export const TrackOrderPage: React.FC = () => {
   if (selectedOrder) {
     const s = getStatus(selectedOrder.status);
     return (
-      <div className="bg-secondary-50 min-h-screen">
+      <div className="bg-white min-h-screen">
         <div className="pt-32 pb-16 md:pt-40 md:pb-24 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => { setSelectedOrder(null); setStatusHistory([]); }}
@@ -148,7 +148,7 @@ export const TrackOrderPage: React.FC = () => {
             <ArrowLeft size={16} /> Back to results
           </button>
 
-          <div className="bg-white border border-secondary-100 rounded-3xl overflow-hidden shadow-xl">
+          <div className="bg-white border border-secondary-100 rounded-none overflow-hidden shadow-xl">
             {/* Header */}
             <div className="p-6 md:p-8 border-b border-secondary-100">
               <div className="flex items-start justify-between gap-4 mb-4">
@@ -245,7 +245,7 @@ export const TrackOrderPage: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-6 md:p-8 bg-secondary-50 border-t border-secondary-100">
+            <div className="p-6 md:p-8 bg-white border-t border-secondary-100">
               <p className="text-xs text-secondary-500 text-center">
                 Questions? Call support at <a href="tel:8313187139" className="font-black text-secondary hover:text-brand transition-colors">(831) 318-7139</a>
               </p>
@@ -315,14 +315,14 @@ export const TrackOrderPage: React.FC = () => {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full pl-10 pr-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
+                  className="w-full pl-10 pr-4 py-4 text-sm bg-white border border-secondary-100 rounded-none text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading || !searchValue.trim()}
-                className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed rounded-xl flex items-center justify-center gap-2"
+                className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed rounded-none flex items-center justify-center gap-2"
               >
                 {loading ? 'Searching...' : <>Track Order <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></>}
               </button>
@@ -341,8 +341,8 @@ export const TrackOrderPage: React.FC = () => {
           {searched && !loading && !error && (
             <div className="mt-10">
               {results.length === 0 ? (
-                <div className="text-center py-12 px-6 bg-white border border-secondary-100 rounded-3xl">
-                  <div className="w-14 h-14 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center py-12 px-6 bg-white border border-secondary-100 rounded-none">
+                  <div className="w-14 h-14 bg-white border border-secondary-100 shadow-sm rounded-full flex items-center justify-center mx-auto mb-4">
                     <Search size={22} className="text-secondary-300" />
                   </div>
                   <h3 className="text-lg font-black text-secondary mb-2">No orders found</h3>
@@ -361,7 +361,7 @@ export const TrackOrderPage: React.FC = () => {
                       <button
                         key={order.id}
                         onClick={() => handleSelectOrder(order)}
-                        className="w-full bg-white border border-secondary-100 rounded-2xl p-4 md:p-5 hover:border-brand hover:shadow-md transition-all text-left group"
+                        className="w-full bg-white border border-secondary-100 rounded-none p-4 md:p-5 hover:border-brand hover:shadow-md transition-all text-left group"
                       >
                         <div className="flex items-center justify-between gap-3">
                           <div className="flex-1 min-w-0">

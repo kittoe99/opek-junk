@@ -93,8 +93,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 disabled={isLoading}
                 value={name}
                 onChange={(e) => { setName(e.target.value); setError(null); }}
-                placeholder="John Smith"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50/50 border border-secondary-100/60 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
               />
             </div>
           </div>
@@ -115,8 +114,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 disabled={isLoading}
                 value={formatDisplayPhone(phone)}
                 onChange={handlePhoneChange}
-                placeholder="(555) 000-0000"
-                className="w-full pl-10 pr-4 py-3 bg-secondary-50/50 border border-secondary-100/60 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
               />
             </div>
           </div>
