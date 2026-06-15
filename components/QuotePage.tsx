@@ -244,10 +244,9 @@ export const QuotePage: React.FC = () => {
   const [movingStep, setMovingStep] = useState<'service' | 'type' | 'crew' | 'result'>('service');
 
   useEffect(() => {
-    if (selectedOption === 'moving_labor') {
-      setSelectedOption(null);
+    if (selectedOption !== 'moving_labor') {
       setMovingStep('service');
-      setMovingServiceType('Loading Only');
+      setMovingServiceType('Both');
     }
   }, [selectedOption]);
 
