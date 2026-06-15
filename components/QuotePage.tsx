@@ -1998,28 +1998,24 @@ export const QuotePage: React.FC = () => {
                   <div className="space-y-5">
                     {[
                       {
-                        num: '01',
                         title: 'Good lighting',
                         desc: 'Take photos in daylight or well-lit areas. Avoid dark shadows.'
                       },
                       {
-                        num: '02',
                         title: 'All items visible',
                         desc: 'Make sure everything you want removed is in the frame.'
                       },
                       {
-                        num: '03',
                         title: 'Items only',
                         desc: 'Photos of just the junk items work best. Avoid people or pets.'
                       },
                       {
-                        num: '04',
                         title: 'Multiple angles',
                         desc: 'For large piles, you can upload several photos of different sections.'
                       }
-                    ].map((tip) => (
-                      <div key={tip.num} className="flex gap-4">
-                        <span className="text-sm font-black text-brand font-mono leading-none pt-0.5">{tip.num}</span>
+                    ].map((tip, idx) => (
+                      <div key={idx} className="flex gap-4">
+                        <Check size={16} className="text-brand shrink-0 mt-0.5" strokeWidth={3} />
                         <div>
                           <h4 className="text-sm font-bold text-secondary mb-0.5">{tip.title}</h4>
                           <p className="text-xs text-secondary-400 leading-relaxed">{tip.desc}</p>
