@@ -718,7 +718,7 @@ export const BookingPage: React.FC = () => {
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
                 <div>
-                  <h2 className="text-base font-black text-secondary">AI Photo Estimate</h2>
+                  <h2 className="text-base font-black text-secondary">Photo Estimate</h2>
                   <p className="text-secondary-400 text-xs">Snap a photo for instant volume + price detection</p>
                 </div>
               </div>

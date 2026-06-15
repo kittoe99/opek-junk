@@ -1888,7 +1888,7 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">AI Photo Estimate</h3>
+                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Photo Estimate</h3>
                 <p className="text-secondary-400 text-xs md:text-sm mb-2">Snap a photo for instant AI pricing</p>
                 <span className="inline-block px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-brand text-white rounded-none border border-brand shadow-sm">Fastest</span>
               </div>
