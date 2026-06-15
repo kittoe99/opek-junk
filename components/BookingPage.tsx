@@ -1191,10 +1191,10 @@ export const BookingPage: React.FC = () => {
 
               {/* DETAILS SELECTION */}
               {movingStep === 'details' && (
-                <div className="space-y-4">
+                <div className="space-y-6 animate-in fade-in duration-300">
                   {/* Service Selection */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Service Selection</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {[
                         { label: 'Loading Only', icon: LoadingIcon },
@@ -1208,22 +1208,26 @@ export const BookingPage: React.FC = () => {
                             key={service.label}
                             type="button"
                             onClick={() => setMovingServiceType(service.label as any)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white' 
-                                : 'border-secondary-100 bg-white hover:border-secondary-300'
+                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
                             }`}
                           >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                             }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                              <Icon size={24} className="transition-colors" />
                             </div>
-                            <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                            <div>
-                              <span className="block text-sm font-semibold text-secondary transition-colors">
+                            <div className="flex-1">
+                              <span className={`block text-base font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                                 {service.label}
                               </span>
+                            </div>
+                            <div className={`absolute top-4 right-4 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
+                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            }`}>
+                              {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1233,7 +1237,7 @@ export const BookingPage: React.FC = () => {
 
                   {/* Move Type */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Type of Move</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
                         { label: 'Storage Unit', icon: StorageUnitIcon },
@@ -1248,22 +1252,26 @@ export const BookingPage: React.FC = () => {
                             key={type.label}
                             type="button"
                             onClick={() => setMovingType(type.label as any)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white' 
-                                : 'border-secondary-100 bg-white hover:border-secondary-300'
+                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
                             }`}
                           >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                             }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                              <Icon size={20} className="transition-colors" />
                             </div>
-                            <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                            <div>
-                              <span className="block text-sm font-semibold text-secondary transition-colors">
+                            <div className="flex-1">
+                              <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                                 {type.label}
                               </span>
+                            </div>
+                            <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
+                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            }`}>
+                              {isSelected && <Check size={10} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1288,9 +1296,9 @@ export const BookingPage: React.FC = () => {
 
               {/* CREW & TIME SELECTION */}
               {movingStep === 'crew' && (
-                <div className="space-y-4 animate-in fade-in duration-300">
+                <div className="space-y-6 animate-in fade-in duration-300">
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Number of Helpers</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
                         { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: TwoHelpersIcon },
@@ -1303,22 +1311,29 @@ export const BookingPage: React.FC = () => {
                             key={option.helpers}
                             type="button"
                             onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
+                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white' 
-                                : 'border-secondary-100 bg-white hover:border-secondary-300'
+                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
                             }`}
                           >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
                             }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                              <Icon size={24} className="transition-colors" />
                             </div>
-                            <Icon size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                            <div>
-                              <span className="block text-sm font-semibold text-secondary transition-colors">
+                            <div className="flex-1">
+                              <span className={`block text-lg font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                                 {option.helpers} Helpers
                               </span>
+                              <span className="block text-xs font-bold text-secondary-400 mt-0.5">
+                                {option.price}
+                              </span>
+                            </div>
+                            <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
+                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            }`}>
+                              {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1328,31 +1343,33 @@ export const BookingPage: React.FC = () => {
 
                   {/* Hours Selection */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Estimated Hours (2 hr min)</label>
-                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl">
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border border-secondary-100 rounded-xl gap-4 transition-all focus-within:border-brand focus-within:ring-1 focus-within:ring-brand">
                       <div className="flex items-center gap-3">
-                        <Clock size={16} className="text-secondary-400" />
+                        <div className="w-10 h-10 bg-transparent flex items-center justify-center shrink-0">
+                          <Clock size={20} className="text-secondary-400" />
+                        </div>
                         <div>
-                          <div className="text-sm font-semibold text-secondary">Time Needed</div>
-                          <div className="text-[11px] text-secondary-400">{movingHours} hours selected</div>
+                          <div className="text-sm font-black text-secondary uppercase tracking-wider">Time Needed</div>
+                          <div className="text-xs font-semibold text-brand mt-0.5">{movingHours} hours selected</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 sm:gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
+                      <div className="flex items-center gap-1 bg-white border border-secondary-100 rounded-lg p-1 w-full sm:w-auto">
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                           disabled={movingHours <= 2}
-                          className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
                         >
-                          <Minus size={14} />
+                          <Minus size={16} strokeWidth={3} />
                         </button>
-                        <span className="w-6 text-center text-base font-bold text-brand">{movingHours}</span>
+                        <span className="w-12 text-center text-lg font-black text-secondary">{movingHours}</span>
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                          className="w-8 h-8 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
                         >
-                          <Plus size={14} />
+                          <Plus size={16} strokeWidth={3} />
                         </button>
                       </div>
                     </div>
