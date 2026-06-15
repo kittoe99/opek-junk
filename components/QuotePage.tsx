@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles } from 'lucide-react';
+import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { detectItemsFromPhoto } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
@@ -1975,51 +1975,52 @@ export const QuotePage: React.FC = () => {
               {/* Step 0: Photo Tips */}
               {aiStep === 'tips' && (
                 <div className="space-y-6">
-                  <div className="text-center mb-6">
-                    <p className="text-[10px] font-medium text-brand uppercase tracking-wider mb-2">Photo Tips</p>
-                    <h3 className="text-lg font-black text-secondary">Take clear photos for best results</h3>
+                  <div className="text-center mb-2">
+                    <p className="text-[10px] font-black text-brand uppercase tracking-wider mb-2">Photo Tips</p>
+                    <h3 className="text-lg md:text-xl font-black text-secondary">Take clear photos for best results</h3>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
-                        <span className="text-xs font-black text-brand">1</span>
+                  {/* Photo Tips Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      {
+                        num: '01',
+                        icon: <Sun size={20} className="text-brand" />,
+                        title: 'Good lighting',
+                        desc: 'Take photos in daylight or well-lit areas. Avoid dark shadows.'
+                      },
+                      {
+                        num: '02',
+                        icon: <Maximize size={20} className="text-brand" />,
+                        title: 'All items visible',
+                        desc: 'Make sure everything you want removed is in the frame.'
+                      },
+                      {
+                        num: '03',
+                        icon: <Package size={20} className="text-brand" />,
+                        title: 'Items only',
+                        desc: 'Photos of just the junk items work best. Avoid people or pets.'
+                      },
+                      {
+                        num: '04',
+                        icon: <Layers size={20} className="text-brand" />,
+                        title: 'Multiple angles',
+                        desc: 'For large piles, you can upload several photos of different sections.'
+                      }
+                    ].map((tip) => (
+                      <div key={tip.num} className="bg-white border border-secondary-100 p-4 relative flex flex-col justify-between hover:border-brand/35 hover:shadow-md transition-all duration-300 rounded-none">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="w-9 h-9 bg-brand/5 border border-brand/10 flex items-center justify-center rounded-none shrink-0">
+                            {tip.icon}
+                          </div>
+                          <span className="text-[10px] font-black text-secondary-300 font-mono">{tip.num}</span>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-secondary mb-1">{tip.title}</h4>
+                          <p className="text-xs text-secondary-400 leading-normal">{tip.desc}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-secondary">Good lighting</p>
-                        <p className="text-xs text-secondary-400">Take photos in daylight or well-lit areas. Avoid dark shadows.</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
-                        <span className="text-xs font-black text-brand">2</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-secondary">All items visible</p>
-                        <p className="text-xs text-secondary-400">Make sure everything you want removed is in the frame.</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
-                        <span className="text-xs font-black text-brand">3</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-secondary">Items only</p>
-                        <p className="text-xs text-secondary-400">Photos of just the junk items work best. Avoid people or pets.</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
-                        <span className="text-xs font-black text-brand">4</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-secondary">Multiple angles</p>
-                        <p className="text-xs text-secondary-400">For large piles, you can upload several photos of different sections.</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   <button
