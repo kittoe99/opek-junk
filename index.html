@@ -228,6 +228,31 @@
         border-radius: 0px !important;
       }
 
+      /* Premium form fields design system */
+      input:not([type="radio"]):not([type="checkbox"]),
+      select,
+      textarea {
+        border: 2px solid #e1e5ea;
+        background-color: #f4f6f8;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        color: #355070;
+      }
+
+      input:not([type="radio"]):not([type="checkbox"]):hover,
+      select:hover,
+      textarea:hover {
+        border-color: #9aa6b7;
+      }
+
+      input:not([type="radio"]):not([type="checkbox"]):focus,
+      select:focus,
+      textarea:focus {
+        border-color: #ff006e;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 5px rgba(255, 0, 110, 0.15);
+        outline: none;
+      }
+
       /* Force all buttons, button-like links, and custom button links to have squared edges, except in the quick action bar */
       button:not(.quick-action-bar):not(.quick-action-bar *),
       [role="button"]:not(.quick-action-bar):not(.quick-action-bar *),

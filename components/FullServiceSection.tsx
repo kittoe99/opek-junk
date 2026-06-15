@@ -69,7 +69,10 @@ export const FullServiceSection: React.FC = () => {
 
           {/* Right Side: ZIP code validator */}
           <div className="w-full lg:max-w-md shrink-0">
-            <div className="flex flex-col sm:flex-row gap-2.5">
+            <div className="relative flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
+              <span className="pl-3 text-secondary-400">
+                <MapPin size={18} />
+              </span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -78,12 +81,13 @@ export const FullServiceSection: React.FC = () => {
                 onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                 placeholder="Enter ZIP code"
-                className="flex-1 px-4 py-3 text-sm bg-white border border-secondary-200 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors font-mono tracking-wider"
+                className="flex-1 pl-2.5 pr-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
+                style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
               />
               <button
                 onClick={handleZipCheck}
                 disabled={zipCode.length !== 5 || isLoading}
-                className="px-6 py-3 bg-secondary hover:bg-brand text-white font-bold text-sm uppercase tracking-wider rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                className="px-5 py-2.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0"
               >
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
