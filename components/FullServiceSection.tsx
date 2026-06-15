@@ -46,7 +46,7 @@ export const FullServiceSection: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-[#f8f9fa] py-10 md:py-12 overflow-hidden border-b border-secondary-100/60">
+    <section className="relative bg-[#f8f9fa] bg-[url('/light-bg-pattern.png')] bg-cover bg-center md:bg-none py-10 md:py-12 overflow-hidden border-b border-secondary-100/60">
       {/* Background subtle glowing effect */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-brand/5 rounded-full blur-[100px] pointer-events-none" />
       
