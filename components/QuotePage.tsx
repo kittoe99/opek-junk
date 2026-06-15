@@ -241,11 +241,13 @@ export const QuotePage: React.FC = () => {
   const [movingType, setMovingType] = useState<'Storage Unit' | 'Box Truck' | 'Inside Home' | 'Other'>('Inside Home');
   const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
   const [movingHours, setMovingHours] = useState<number>(2);
-  const [movingStep, setMovingStep] = useState<'details' | 'crew' | 'result'>('details');
+  const [movingStep, setMovingStep] = useState<'service' | 'type' | 'crew' | 'result'>('service');
 
   useEffect(() => {
-    if (selectedOption !== 'moving_labor') {
-      setMovingStep('details');
+    if (selectedOption === 'moving_labor') {
+      setSelectedOption(null);
+      setMovingStep('service');
+      setMovingServiceType('Loading Only');
     }
   }, [selectedOption]);
 
@@ -1173,7 +1175,9 @@ export const QuotePage: React.FC = () => {
           <button
             onClick={() => {
               if (movingStep === 'crew') {
-                setMovingStep('details');
+                setMovingStep('type');
+              } else if (movingStep === 'type') {
+                setMovingStep('service');
               } else if (movingStep === 'result') {
                 setMovingStep('crew');
               } else {
@@ -1183,7 +1187,7 @@ export const QuotePage: React.FC = () => {
             }}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            <ArrowLeft size={14} /> {movingStep === 'crew' ? 'Back to details' : movingStep === 'result' ? 'Back to crew & time' : 'Back to services'}
+            <ArrowLeft size={14} /> {movingStep === 'result' ? 'Back to crew & time' : movingStep === 'crew' ? 'Back to type of move' : movingStep === 'type' ? 'Back to service selection' : 'Back to services'}
           </button>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
             Book <span className="text-brand">Moving Labor.</span>
@@ -1195,8 +1199,8 @@ export const QuotePage: React.FC = () => {
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
 
-          {/* STEP 1: DETAILS */}
-          {movingStep === 'details' && (
+          {/* STEP 1: SERVICE SELECTION */}
+          {movingStep === 'service' && (
             <div className="space-y-8 animate-in fade-in duration-300">
               {/* Service Selection */}
               <div>
@@ -1240,6 +1244,26 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
 
+              <div className="pt-4">
+                <button
+                  onClick={() => setMovingStep('type')}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-none transition-all duration-300 font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
+                >
+                  Continue <ArrowRight size={16} strokeWidth={2.5} />
+                </button>
+                <button
+                  onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
+                >
+                  <ArrowLeft size={14} /> Back to services
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: TYPE OF MOVE */}
+          {movingStep === 'type' && (
+            <div className="space-y-8 animate-in fade-in duration-300">
               {/* Move Type */}
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
@@ -1291,16 +1315,16 @@ export const QuotePage: React.FC = () => {
                   Continue <ArrowRight size={16} strokeWidth={2.5} />
                 </button>
                 <button
-                  onClick={() => { setSelectedService(null); setSelectedOption(null); }}
+                  onClick={() => setMovingStep('service')}
                   className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to services
+                  <ArrowLeft size={14} /> Back to service selection
                 </button>
               </div>
             </div>
           )}
 
-          {/* STEP 2: CREW & TIME */}
+          {/* STEP 3: CREW & TIME */}
           {movingStep === 'crew' && (
             <div className="space-y-8 animate-in fade-in duration-300">
                {/* Helpers Selection */}
@@ -1412,16 +1436,16 @@ export const QuotePage: React.FC = () => {
                   )}
                 </button>
                 <button
-                  onClick={() => setMovingStep('details')}
+                  onClick={() => setMovingStep('type')}
                   className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to details
+                  <ArrowLeft size={14} /> Back to type of move
                 </button>
               </div>
             </div>
           )}
 
-          {/* STEP 3: ESTIMATE RESULT */}
+          {/* STEP 4: ESTIMATE RESULT */}
           {movingStep === 'result' && movingPriceEstimate && (
             <div>
               {renderPriceResult(
