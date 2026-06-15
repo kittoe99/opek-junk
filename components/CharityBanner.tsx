@@ -6,16 +6,16 @@ export const CharityBanner: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative bg-secondary py-8 md:py-10 overflow-hidden border-b border-secondary-800">
+    <section className="relative bg-[#f8f9fa] bg-[url('/light-bg-pattern.png')] bg-repeat bg-[size:500px] py-8 md:py-10 overflow-hidden border-b border-secondary-100/60">
       {/* Background subtle glowing effect */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-brand/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-brand/5 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
           
           {/* Left Side: Thumbnail Image + Text Copy */}
           <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-            <div className="relative shrink-0 w-24 h-16 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-secondary-800">
+            <div className="relative shrink-0 w-24 h-16 rounded-xl overflow-hidden border border-secondary-100 shadow-lg bg-white">
               <img 
                 src="/charity-childrens-heart-clean.png" 
                 alt="Clean illustration of children holding a glowing heart" 
@@ -28,10 +28,10 @@ export const CharityBanner: React.FC = () => {
                 <Heart size={12} className="text-brand fill-brand animate-pulse" />
                 <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Community Impact</span>
               </div>
-              <h3 className="text-white text-lg md:text-xl font-black uppercase tracking-wide leading-tight">
+              <h3 className="text-secondary text-lg md:text-xl font-black uppercase tracking-wide leading-tight">
                 Five percent. <span className="text-brand">For children's health.</span>
               </h3>
-              <p className="text-white/60 text-xs font-medium">
+              <p className="text-secondary-400 text-xs font-medium">
                 We donate 5% of all sales directly to children's hospitals.
               </p>
             </div>
