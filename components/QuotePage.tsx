@@ -1994,44 +1994,35 @@ export const QuotePage: React.FC = () => {
                     <h3 className="text-lg md:text-xl font-black text-secondary">Take clear photos for best results</h3>
                   </div>
 
-                  {/* Photo Tips Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Photo Tips Minimalist Layout */}
+                  <div className="space-y-5">
                     {[
                       {
                         num: '01',
-                        icon: <Sun size={20} className="text-brand" />,
                         title: 'Good lighting',
                         desc: 'Take photos in daylight or well-lit areas. Avoid dark shadows.'
                       },
                       {
                         num: '02',
-                        icon: <Maximize size={20} className="text-brand" />,
                         title: 'All items visible',
                         desc: 'Make sure everything you want removed is in the frame.'
                       },
                       {
                         num: '03',
-                        icon: <Package size={20} className="text-brand" />,
                         title: 'Items only',
                         desc: 'Photos of just the junk items work best. Avoid people or pets.'
                       },
                       {
                         num: '04',
-                        icon: <Layers size={20} className="text-brand" />,
                         title: 'Multiple angles',
                         desc: 'For large piles, you can upload several photos of different sections.'
                       }
                     ].map((tip) => (
-                      <div key={tip.num} className="bg-white border border-secondary-100 p-4 relative flex flex-col justify-between hover:border-brand/35 hover:shadow-md transition-all duration-300 rounded-none">
-                        <div className="flex items-start justify-between gap-3 mb-2">
-                          <div className="w-9 h-9 bg-brand/5 border border-brand/10 flex items-center justify-center rounded-none shrink-0">
-                            {tip.icon}
-                          </div>
-                          <span className="text-[10px] font-black text-secondary-300 font-mono">{tip.num}</span>
-                        </div>
+                      <div key={tip.num} className="flex gap-4">
+                        <span className="text-sm font-black text-brand font-mono leading-none pt-0.5">{tip.num}</span>
                         <div>
-                          <h4 className="text-sm font-bold text-secondary mb-1">{tip.title}</h4>
-                          <p className="text-xs text-secondary-400 leading-normal">{tip.desc}</p>
+                          <h4 className="text-sm font-bold text-secondary mb-0.5">{tip.title}</h4>
+                          <p className="text-xs text-secondary-400 leading-relaxed">{tip.desc}</p>
                         </div>
                       </div>
                     ))}
