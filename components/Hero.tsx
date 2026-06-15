@@ -43,13 +43,13 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         <div className="flex flex-row animate-slide-up" style={{animationDelay: '0.3s'}}>
           <button
             onClick={onGetQuote}
-            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
           >
             View Pricing
           </button>
           <button
             onClick={onBookOnline}
-            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
           >
             Book Online
           </button>
@@ -77,13 +77,13 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               <div className="flex flex-row gap-0 animate-slide-up" style={{animationDelay: '0.3s'}}>
                 <button
                   onClick={onGetQuote}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                 >
                   View Pricing
                 </button>
                 <button
                   onClick={onBookOnline}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                 >
                   Book Online
                 </button>
