@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { detectItemsFromPhoto } from '../services/openaiService';
+import { detectItemsFromPhotos } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
@@ -455,15 +455,13 @@ export const QuotePage: React.FC = () => {
     setLoadingState(LoadingState.ANALYZING);
     setError(null);
     try {
-      // Analyze all photos concurrently in parallel
-      const analysisPromises = images.map(async (imgStr) => {
-        const base64Data = imgStr.split(',')[1];
+      const payloadImages = images.map((imgStr) => {
+        const base64Image = imgStr.split(',')[1];
         const mimeType = imgStr.split(';')[0].split(':')[1];
-        return detectItemsFromPhoto(base64Data, mimeType);
+        return { base64Image, mimeType };
       });
       
-      const results = await Promise.all(analysisPromises);
-      const allDetectedItems = results.flat();
+      const allDetectedItems = await detectItemsFromPhotos(payloadImages);
       
       // Add detected items to standard selectedItems state
       setSelectedItems(prev => {

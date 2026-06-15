@@ -1,10 +1,10 @@
 import { supabase } from '../lib/supabase';
 import { QuoteEstimate, DetectedItem } from '../types';
 
-// Step 1: Detect items from photo (via Supabase Edge Function)
-export async function detectItemsFromPhoto(base64Image: string, mimeType: string): Promise<DetectedItem[]> {
+// Step 1: Detect items from photos (via Supabase Edge Function)
+export async function detectItemsFromPhotos(images: { base64Image: string; mimeType: string }[]): Promise<DetectedItem[]> {
   const { data, error } = await supabase.functions.invoke('detect-items', {
-    body: { base64Image, mimeType }
+    body: { images }
   });
 
   if (error) {
@@ -16,10 +16,14 @@ export async function detectItemsFromPhoto(base64Image: string, mimeType: string
   }
 
   return data.items.map((name: string, i: number) => ({
-    id: `item-${Date.now()}-${i}`,
+    id: `item-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
     name,
     quantity: 1
   }));
+}
+
+export async function detectItemsFromPhoto(base64Image: string, mimeType: string): Promise<DetectedItem[]> {
+  return detectItemsFromPhotos([{ base64Image, mimeType }]);
 }
 
 // Combined function for backward compatibility
