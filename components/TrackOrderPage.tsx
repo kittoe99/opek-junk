@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Search, MapPin, MapPinCheck, Calendar, Phone, Hash, ChevronRight, AlertCircle, CheckCircle, Circle, Clock, ArrowRight, ArrowLeft } from 'lucide-react';
+import { MapPinCheck, Clock, CheckCircle, Circle, ArrowLeft, Search, Phone, Hash, ArrowRight, AlertCircle, ChevronRight, Check } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
+import { InputPhoneIcon } from './icons/ServiceIcons';
 
 interface BookingResult {
   id: string;
@@ -305,14 +306,16 @@ export const TrackOrderPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSearch}>
-              <div className="relative mb-4">
-                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-300" />
+              <div className="relative mb-4 group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                  {searchType === 'phone' ? <InputPhoneIcon size={18} /> : <Search size={18} />}
+                </div>
                 <input
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full pl-12 pr-4 py-4 text-sm bg-secondary-50 border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                  className="w-full pl-10 pr-4 py-4 text-sm bg-secondary-50 border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
                   required
                 />
               </div>

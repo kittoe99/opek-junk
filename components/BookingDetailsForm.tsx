@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
@@ -403,46 +403,61 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Full Name *</label>
-            <input
-              name="name"
-              autoComplete="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-              disabled={contactSubmitting}
-              placeholder="John Smith"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
-            />
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <InputUserIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <input
+                name="name"
+                autoComplete="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                disabled={contactSubmitting}
+                placeholder="John Smith"
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-            <input
-              name="email"
-              autoComplete="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-              disabled={contactSubmitting}
-              type="email"
-              placeholder="john@example.com"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
-            />
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <InputMailIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <input
+                name="email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                disabled={contactSubmitting}
+                type="email"
+                placeholder="john@example.com"
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-            <input
-              name="phone"
-              autoComplete="tel"
-              value={formData.phone}
-              onChange={handleInputChange}
-              required
-              disabled={contactSubmitting}
-              type="tel"
-              placeholder="(555) 123-4567"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
-            />
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <InputPhoneIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <input
+                name="phone"
+                autoComplete="tel"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+                disabled={contactSubmitting}
+                type="tel"
+                placeholder="(555) 123-4567"
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors disabled:opacity-55"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
@@ -475,15 +490,20 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <MapPinned size={11} className="inline mr-1" />
               Service Address *
             </label>
-            <input
-              value={addressQuery}
-              onChange={(e) => handleAddressInput(e.target.value)}
-              onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-              required
-              placeholder="Start typing an address..."
-              autoComplete="street-address"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-            />
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <InputMapPinIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <input
+                value={addressQuery}
+                onChange={(e) => handleAddressInput(e.target.value)}
+                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                required
+                placeholder="Start typing an address..."
+                autoComplete="street-address"
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              />
+            </div>
             {addressLoading && (
               <Loader2 size={14} className="absolute right-3 top-[38px] animate-spin text-secondary-300" />
             )}
@@ -506,51 +526,71 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span></label>
-            <input
-              name="unitNumber"
-              value={formData.unitNumber}
-              onChange={handleInputChange}
-              placeholder="e.g. Apt 4B, Suite 200"
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-            />
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <InputBuildingIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <input
+                name="unitNumber"
+                value={formData.unitNumber}
+                onChange={handleInputChange}
+                placeholder="e.g. Apt 4B, Suite 200"
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="col-span-2 md:col-span-1">
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">City *</label>
-              <input
-                name="city"
-                autoComplete="address-level2"
-                value={formData.city}
-                onChange={handleInputChange}
-                required
-                placeholder="Dallas"
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-              />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <InputBuildingIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+                </div>
+                <input
+                  name="city"
+                  autoComplete="address-level2"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Dallas"
+                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
-              <input
-                name="state"
-                autoComplete="address-level1"
-                value={formData.state}
-                onChange={handleInputChange}
-                required
-                placeholder="TX"
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-              />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <InputMapPinIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+                </div>
+                <input
+                  name="state"
+                  autoComplete="address-level1"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="TX"
+                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Zip Code *</label>
-              <input
-                name="zipCode"
-                autoComplete="postal-code"
-                value={formData.zipCode}
-                onChange={handleInputChange}
-                required
-                placeholder="75201"
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-              />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <InputZipIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+                </div>
+                <input
+                  name="zipCode"
+                  autoComplete="postal-code"
+                  value={formData.zipCode}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="75201"
+                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
             </div>
           </div>
 
@@ -587,28 +627,38 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>
-              <input
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                required
-                type="date"
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-              />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <InputCalendarIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+                </div>
+                <input
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  required
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+                />
+              </div>
             </div>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
-            <textarea
-              name="details"
-              value={formData.details}
-              onChange={handleInputChange}
-              rows={3}
-              placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-              className="w-full px-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
-            />
+            <div className="relative group">
+              <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none">
+                <InputMessageIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
+              </div>
+              <textarea
+                name="details"
+                value={formData.details}
+                onChange={handleInputChange}
+                rows={3}
+                placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
+                className="w-full pl-10 pr-4 py-3 bg-secondary-50 border border-secondary-100 rounded-lg text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-colors"
+              />
+            </div>
           </div>
 
           {/* Review Section */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { User, Phone, ArrowRight, Loader2, Info } from 'lucide-react';
+import { ArrowRight, Loader2, Info } from 'lucide-react';
+import { InputUserIcon, InputPhoneIcon } from '../icons/ServiceIcons';
 
 interface ContactIntakeFormProps {
   serviceType: string;
@@ -80,9 +81,9 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
               Full Name *
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-300">
-                <User size={16} />
+            <div className="relative group">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-300 group-focus-within:text-brand transition-colors">
+                <InputUserIcon size={18} />
               </span>
               <input
                 type="text"
@@ -102,9 +103,9 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
               Phone Number *
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-300">
-                <Phone size={16} />
+            <div className="relative group">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-300 group-focus-within:text-brand transition-colors">
+                <InputPhoneIcon size={18} />
               </span>
               <input
                 type="tel"

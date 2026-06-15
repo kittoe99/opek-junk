@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { JunkIcon, MovingLaborIcon, DumpsterIcon, PhotoEstimateIcon, ManualEntryIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PopularItemsIcon, FurnitureIcon, BeddingIcon, AppliancesIcon, ElectronicsIcon, YardOutdoorIcon, ConstructionIcon, GarageStorageIcon, BaggedBoxedIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
 import { detectItemsFromPhotos } from '../services/openaiService';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
@@ -23,7 +24,7 @@ interface CatalogCategory {
 const ITEM_CATALOG: CatalogCategory[] = [
   {
     label: 'Popular Items',
-    icon: <Heart size={18} className="text-brand fill-brand/10" />,
+    icon: <PopularItemsIcon size={18} />,
     items: [
       { name: 'Sofa / Couch', image: '/items/sofa.svg' },
       { name: 'Mattress', image: '/items/mattress.svg' },
@@ -39,7 +40,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Furniture',
-    icon: <Armchair size={18} />,
+    icon: <FurnitureIcon size={18} />,
     items: [
       { name: 'Sofa / Couch', image: '/items/sofa.svg' },
       { name: 'Sectional Couch (2 piece)', image: '/items/sofa.svg' },
@@ -66,7 +67,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Mattresses & Bedding',
-    icon: <BedDouble size={18} />,
+    icon: <BeddingIcon size={18} />,
     items: [
       { name: 'Mattress', image: '/items/mattress.svg' },
       { name: 'Box Spring', image: '/items/box-spring.svg' },
@@ -79,7 +80,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Appliances',
-    icon: <Plug size={18} />,
+    icon: <AppliancesIcon size={18} />,
     items: [
       { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
       { name: 'Mini Fridge', image: '/items/fridge.svg' },
@@ -100,7 +101,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Electronics',
-    icon: <Monitor size={18} />,
+    icon: <ElectronicsIcon size={18} />,
     items: [
       { name: 'TV', image: '/items/tv.svg' },
       { name: 'Computer / Monitor', image: '/items/computer.svg' },
@@ -114,7 +115,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Yard & Outdoor',
-    icon: <TreePine size={18} />,
+    icon: <YardOutdoorIcon size={18} />,
     items: [
       { name: 'Lawn Mower', image: '/items/lawn-mower.svg' },
       { name: 'Riding Mower', image: '/items/lawn-mower.svg' },
@@ -133,7 +134,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Construction & Debris',
-    icon: <HardHat size={18} />,
+    icon: <ConstructionIcon size={18} />,
     items: [
       { name: 'Drywall / Sheetrock', image: '/items/drywall.svg' },
       { name: 'Lumber / Wood', image: '/items/lumber.svg' },
@@ -150,7 +151,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Garage & Storage',
-    icon: <Warehouse size={18} />,
+    icon: <GarageStorageIcon size={18} />,
     items: [
       { name: 'Tires', image: '/items/tires.svg' },
       { name: 'Car Battery', image: '/items/car-battery.svg' },
@@ -168,7 +169,7 @@ const ITEM_CATALOG: CatalogCategory[] = [
   },
   {
     label: 'Miscellaneous',
-    icon: <Package size={18} />,
+    icon: <BaggedBoxedIcon size={18} />,
     items: [
       { name: 'Piano / Organ', image: '/items/piano.svg' },
       { name: 'Pool / Game Table', image: '/items/game-table.svg' },
@@ -1032,9 +1033,9 @@ export const QuotePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
-              <span className="pl-3 text-secondary-400">
-                <MapPin size={18} />
+            <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
+              <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
+                <InputZipIcon size={18} />
               </span>
               <input
                 type="text"
@@ -1113,8 +1114,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('junk_removal')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 shrink-0">
-                <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
+                <JunkIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Junk Removal</h3>
@@ -1128,8 +1129,8 @@ export const QuotePage: React.FC = () => {
               onClick={() => setSelectedService('moving_labor')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
-              <div className="w-16 h-16 shrink-0">
-                <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
+                <MovingLaborIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Moving Labor</h3>
@@ -1143,8 +1144,8 @@ export const QuotePage: React.FC = () => {
               disabled
               className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
             >
-              <div className="w-16 h-16 shrink-0 grayscale">
-                <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
+              <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
+                <DumpsterIcon className="w-full h-full" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-0.5">
@@ -1201,9 +1202,9 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { label: 'Loading Only', icon: PackagePlus },
-                    { label: 'Unloading Only', icon: PackageMinus },
-                    { label: 'Both', icon: ArrowLeftRight }
+                    { label: 'Loading Only', icon: LoadingIcon },
+                    { label: 'Unloading Only', icon: UnloadingIcon },
+                    { label: 'Both', icon: LoadingUnloadingIcon }
                   ].map((service) => {
                     const isSelected = movingServiceType === service.label;
                     const Icon = service.icon;
@@ -1239,10 +1240,10 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { label: 'Storage Unit', icon: Warehouse },
-                    { label: 'Box Truck', icon: Truck },
-                    { label: 'Inside Home', icon: Home },
-                    { label: 'Other', icon: Boxes }
+                    { label: 'Storage Unit', icon: StorageUnitIcon },
+                    { label: 'Box Truck', icon: BoxTruckIcon },
+                    { label: 'Inside Home', icon: InsideHomeIcon },
+                    { label: 'Other', icon: OtherMoveIcon }
                   ].map((type) => {
                     const isSelected = movingType === type.label;
                     const Icon = type.icon;
@@ -1298,8 +1299,8 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: Users },
-                    { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: Users }
+                    { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: TwoHelpersIcon },
+                    { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: ThreeHelpersIcon }
                   ].map((option) => {
                     const isSelected = movingHelpers === option.helpers;
                     const Icon = option.icon;
@@ -1886,10 +1887,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
               <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
-                <div className="relative">
-                  <Camera size={22} className="text-secondary group-hover:text-brand transition-colors" />
-                  <Sparkles size={11} className="absolute -top-1 -right-1.5 text-brand animate-pulse fill-brand" />
-                </div>
+                <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Photo Estimate</h3>
@@ -1905,10 +1903,7 @@ export const QuotePage: React.FC = () => {
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-none text-left flex items-center gap-4 group"
             >
               <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 border border-secondary-100 group-hover:border-brand/20 rounded-none flex items-center justify-center shrink-0 transition-colors relative">
-                <div className="relative">
-                  <Boxes size={22} className="text-secondary group-hover:text-brand transition-colors" />
-                  <Plus size={10} className="absolute -bottom-0.5 -right-0.5 text-brand stroke-[4px]" />
-                </div>
+                <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
@@ -2177,14 +2172,19 @@ export const QuotePage: React.FC = () => {
                   <div>
                     <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Add an item</p>
                     <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={newItemName}
-                        onChange={(e) => setNewItemName(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
-                        placeholder="e.g. Old Desk"
-                        className="flex-1 px-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
-                      />
+                      <div className="relative group flex-1">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                          <InputMessageIcon size={18} />
+                        </div>
+                        <input
+                          type="text"
+                          value={newItemName}
+                          onChange={(e) => setNewItemName(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
+                          placeholder="e.g. Old Desk"
+                          className="w-full pl-10 pr-4 py-3 text-sm bg-secondary-50 border border-secondary-100 rounded-lg text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-2 focus:ring-secondary/10 transition-colors"
+                        />
+                      </div>
                       <button onClick={addManualItem} disabled={!newItemName.trim()} className="group px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
                         <Plus size={16} className="transition-transform duration-300 group-hover:scale-110" />
                       </button>
@@ -2229,14 +2229,16 @@ export const QuotePage: React.FC = () => {
               {manualStep === 'select' && !manualPricingLoading && (
                 <div className="space-y-5">
                   {/* Search bar - enhanced */}
-                  <div className="relative">
-                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-300 pointer-events-none" />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                      <Search size={18} />
+                    </div>
                     <input
                       type="text"
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
                       placeholder="Search items..."
-                      className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
+                      className="w-full pl-10 pr-4 py-3 text-sm bg-white border border-secondary-200 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
                     />
                     {catalogSearch && (
                       <button
@@ -2440,14 +2442,19 @@ export const QuotePage: React.FC = () => {
                   <div className="border border-dashed border-secondary-200 rounded-2xl p-4">
                     <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-3">Don't see your item?</p>
                     <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={manualNewItemName}
-                        onChange={(e) => setManualNewItemName(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
-                        placeholder="Type item name and press Enter"
-                        className="flex-1 px-4 py-2.5 text-sm bg-white border border-secondary-200 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
-                      />
+                      <div className="relative group flex-1">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                          <InputMessageIcon size={18} />
+                        </div>
+                        <input
+                          type="text"
+                          value={manualNewItemName}
+                          onChange={(e) => setManualNewItemName(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
+                          placeholder="Type item name and press Enter"
+                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-secondary-200 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
+                        />
+                      </div>
                       <button
                         onClick={addManualSelectedItem}
                         disabled={!manualNewItemName.trim()}

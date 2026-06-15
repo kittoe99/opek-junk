@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowRight, ArrowLeft, Send, Check, Calendar, Clock, Loader2, MapPinned, Receipt } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, Calendar, Clock, Receipt, Home } from 'lucide-react';
+import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { InputUserIcon, InputPhoneIcon, InputMailIcon, InputMapPinIcon, InputCalendarIcon, InputMessageIcon } from './icons/ServiceIcons';
 import { PageHero } from './shared/PageHero';
-import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
 
@@ -242,20 +243,35 @@ export const InHomeEstimatePage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
-                  <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
-                    className={inputCls} />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                      <InputUserIcon size={18} />
+                    </div>
+                    <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
+                      className={`${inputCls} pl-10`} />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-                  <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                    className={inputCls} />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                      <InputPhoneIcon size={18} />
+                    </div>
+                    <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
+                      className={`${inputCls} pl-10`} />
+                  </div>
                 </div>
               </div>
 
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-                <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                  className={inputCls} />
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                    <InputMailIcon size={18} />
+                  </div>
+                  <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
+                    className={`${inputCls} pl-10`} />
+                </div>
               </div>
             </div>
 
@@ -277,15 +293,20 @@ export const InHomeEstimatePage: React.FC = () => {
                   <MapPinned size={11} className="inline mr-1" />
                   Address *
                 </label>
-                <input
-                  value={addressQuery || formData.address}
-                  onChange={(e) => handleAddressInput(e.target.value)}
-                  onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                  required
-                  placeholder="Start typing an address..."
-                  autoComplete="off"
-                  className={inputCls}
-                />
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                    <InputMapPinIcon size={18} />
+                  </div>
+                  <input
+                    value={addressQuery || formData.address}
+                    onChange={(e) => handleAddressInput(e.target.value)}
+                    onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                    required
+                    placeholder="Start typing an address..."
+                    autoComplete="off"
+                    className={`${inputCls} pl-10`}
+                  />
+                </div>
                 {addressLoading && (
                   <Loader2 size={14} className="absolute right-4 top-[40px] animate-spin text-secondary-300" />
                 )}
@@ -312,20 +333,30 @@ export const InHomeEstimatePage: React.FC = () => {
                     <Calendar size={10} className="inline mr-1" />
                     Preferred Date *
                   </label>
-                  <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange} required
-                    min={new Date().toISOString().split('T')[0]}
-                    className={inputCls} />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                      <InputCalendarIcon size={18} />
+                    </div>
+                    <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange} required
+                      min={new Date().toISOString().split('T')[0]}
+                      className={`${inputCls} pl-10`} />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
                     <Clock size={10} className="inline mr-1" />
                     Preferred Time *
                   </label>
-                  <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} required
-                    className={inputCls}>
-                    <option value="">Select a time preference</option>
-                    {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
-                  </select>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                      <Clock size={18} />
+                    </div>
+                    <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} required
+                      className={`${inputCls} pl-10`}>
+                      <option value="">Select a time preference</option>
+                      {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </div>>
                 </div>
               </div>
             </div>
@@ -349,9 +380,14 @@ export const InHomeEstimatePage: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
-                <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
-                  placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
-                  className={`${inputCls} resize-none`} />
+                <div className="relative group">
+                  <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
+                    <InputMessageIcon size={18} />
+                  </div>
+                  <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
+                    placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
+                    className={`${inputCls} pl-10 resize-none`} />
+                </div>
               </div>
 
               {/* Review Section */}

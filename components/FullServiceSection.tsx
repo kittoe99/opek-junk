@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Search, AlertCircle, MapPin } from 'lucide-react';
+import { Loader2, Search, AlertCircle, MapPin, CheckCircle2 } from 'lucide-react';
+import { InputZipIcon } from './icons/ServiceIcons';
 
 export const FullServiceSection: React.FC = () => {
   const navigate = useNavigate();
   const [zipCode, setZipCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const handleZipCheck = async () => {
@@ -15,10 +17,13 @@ export const FullServiceSection: React.FC = () => {
     }
     setIsLoading(true);
     setError('');
+    setIsSuccess(false);
+
     try {
       const response = await fetch(`https://api.zippopotam.us/us/${zipCode}`);
       if (!response.ok) {
         setError('ZIP code not found. Please try again.');
+        setIsLoading(false);
         return;
       }
       const data = await response.json();
@@ -27,20 +32,24 @@ export const FullServiceSection: React.FC = () => {
         const cityVal = place['place name'];
         const stateVal = place['state abbreviation'];
         
-        // Auto open the quote page with the validation success details
-        navigate('/quote', {
-          state: {
-            zipResult: { city: cityVal, state: stateVal, served: true },
-            zipValue: zipCode,
-            serviceType: 'junk_removal'
-          }
-        });
+        setIsLoading(false);
+        setIsSuccess(true);
+        
+        // Auto open the quote page with the validation success details after a short delay
+        setTimeout(() => {
+          navigate('/quote', {
+            state: {
+              zipResult: { city: cityVal, state: stateVal, served: true },
+              zipValue: zipCode
+            }
+          });
+        }, 1500);
       } else {
         setError('ZIP code not found.');
+        setIsLoading(false);
       }
     } catch {
       setError('Unable to validate ZIP code. Please try again.');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -70,9 +79,9 @@ export const FullServiceSection: React.FC = () => {
           {/* Right Side: ZIP code validator */}
           <div className="w-full lg:max-w-md shrink-0">
             <div className="flex flex-col sm:flex-row gap-3">
-              <div className="relative flex-1 flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
-                <span className="pl-3 text-secondary-400">
-                  <MapPin size={18} />
+              <div className="relative group flex-1 flex items-center bg-white border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1">
+                <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
+                  <InputZipIcon size={18} />
                 </span>
                 <input
                   type="text"
@@ -88,11 +97,18 @@ export const FullServiceSection: React.FC = () => {
               </div>
               <button
                 onClick={handleZipCheck}
-                disabled={zipCode.length !== 5 || isLoading}
-                className="px-6 py-3.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto"
+                disabled={zipCode.length !== 5 || isLoading || isSuccess}
+                className={`px-6 py-3.5 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto ${
+                  isSuccess ? 'bg-green-500 hover:bg-green-600' : 'bg-secondary hover:bg-brand'
+                }`}
               >
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
+                ) : isSuccess ? (
+                  <>
+                    <CheckCircle2 size={16} className="animate-bounce" />
+                    <span>Available! Redirecting...</span>
+                  </>
                 ) : (
                   <>
                     <Search size={16} />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, MapPin, Check, Loader2, ArrowRight } from 'lucide-react';
+import { InputZipIcon } from './icons/ServiceIcons';
 
 interface ZipCheckModalProps {
   isOpen: boolean;
@@ -100,9 +101,9 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 </p>
 
                 {/* Sleek unified Input Pill */}
-                <div className="relative flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1 mb-2.5">
-                  <div className="pl-2.5 text-secondary-400 pointer-events-none">
-                    <MapPin size={15} />
+                <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 p-1 mb-2.5">
+                  <div className="pl-2.5 text-secondary-400 pointer-events-none group-focus-within:text-brand transition-colors">
+                    <InputZipIcon size={18} />
                   </div>
                   <input
                     type="text"

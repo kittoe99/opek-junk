@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PhotoEstimateIcon, ManualEntryIcon, InputZipIcon } from './icons/ServiceIcons';
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
@@ -538,9 +539,9 @@ export const BookingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
-                <span className="pl-3 text-secondary-400">
-                  <MapPin size={18} />
+              <div className="relative group flex items-center bg-secondary-50/50 border-2 border-secondary-100 hover:border-secondary-300 focus-within:border-brand focus-within:bg-white focus-within:ring-4 focus-within:ring-brand/10 transition-all duration-300 mb-4 max-w-md p-1">
+                <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
+                  <InputZipIcon size={18} />
                 </span>
                 <input
                   type="text"
@@ -656,8 +657,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 shrink-0">
-                    <img src="/process-step-1.svg" alt="Junk Removal" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
+                    <JunkIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
@@ -675,8 +676,8 @@ export const BookingPage: React.FC = () => {
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
-                  <div className="w-16 h-16 shrink-0">
-                    <img src="/process-step-2.svg" alt="Moving Labor" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                  <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
+                    <MovingLaborIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
@@ -692,8 +693,8 @@ export const BookingPage: React.FC = () => {
                   type="button"
                   className="w-full bg-secondary-50/50 border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
                 >
-                  <div className="w-16 h-16 shrink-0 grayscale">
-                    <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
+                  <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
+                    <DumpsterIcon className="w-full h-full" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-0.5">
@@ -753,7 +754,7 @@ export const BookingPage: React.FC = () => {
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                      <Upload size={22} className="text-secondary group-hover:text-brand transition-colors" />
+                      <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Upload Photo</h3>
@@ -771,7 +772,7 @@ export const BookingPage: React.FC = () => {
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 bg-secondary-50 group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                      <ClipboardList size={22} className="text-secondary group-hover:text-brand transition-colors" />
+                      <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Items</h3>
@@ -1196,9 +1197,9 @@ export const BookingPage: React.FC = () => {
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Service Selection</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {[
-                        { label: 'Loading Only', icon: PackagePlus },
-                        { label: 'Unloading Only', icon: PackageMinus },
-                        { label: 'Both', icon: ArrowLeftRight }
+                        { label: 'Loading Only', icon: LoadingIcon },
+                        { label: 'Unloading Only', icon: UnloadingIcon },
+                        { label: 'Both', icon: LoadingUnloadingIcon }
                       ].map((service) => {
                         const isSelected = movingServiceType === service.label;
                         const Icon = service.icon;
@@ -1235,10 +1236,10 @@ export const BookingPage: React.FC = () => {
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Type of Move</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
-                        { label: 'Storage Unit', icon: Warehouse },
-                        { label: 'Box Truck', icon: Truck },
-                        { label: 'Inside Home', icon: Home },
-                        { label: 'Other', icon: Boxes }
+                        { label: 'Storage Unit', icon: StorageUnitIcon },
+                        { label: 'Box Truck', icon: BoxTruckIcon },
+                        { label: 'Inside Home', icon: InsideHomeIcon },
+                        { label: 'Other', icon: OtherMoveIcon }
                       ].map((type) => {
                         const isSelected = movingType === type.label;
                         const Icon = type.icon;
@@ -1292,8 +1293,8 @@ export const BookingPage: React.FC = () => {
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-2">Number of Helpers</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
-                        { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: Users },
-                        { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: Users }
+                        { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: TwoHelpersIcon },
+                        { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: ThreeHelpersIcon }
                       ].map((option) => {
                         const isSelected = movingHelpers === option.helpers;
                         const Icon = option.icon;
