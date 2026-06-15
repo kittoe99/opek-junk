@@ -39,26 +39,30 @@ serve(async (req) => {
 
     const openai = new OpenAI({ apiKey })
 
-    const prompt = `You are a professional junk removal estimator. Analyze the provided photo(s) and list every individual item you can see that needs to be removed.
+    const prompt = `You are a professional junk removal estimator. Analyze the provided photo(s) and detect every individual item that needs to be removed along with its quantity.
 
 CRITICAL INSTRUCTIONS FOR MULTIPLE PHOTOS:
 - If multiple photos are provided, they may show the same items from different angles, distances, or positions.
 - You MUST identify and deduplicate matching items across all photos to prevent double-counting. Each unique item should only be listed once, regardless of how many photos it appears in.
+- Combine observations of identical items to determine the absolute count (e.g., if photo 1 shows a sofa and photo 2 shows the same sofa, quantity is 1; if photo 1 shows two chairs and photo 2 shows a third separate chair, quantity is 3).
 
 FOCUS & FILTERING RULES:
 - Ignore any distant items, items in the background, neighboring lawns/properties, or items clearly not meant for removal (like permanent fixtures, structures, walls, or built-in elements).
 - Focus ONLY on clear, close-enough, individual items that are the main subject of the photos.
 
-LISTING RULES:
-- List each distinct item separately (e.g. "Sofa", "Office Chair", "Cardboard Box")
-- Be specific: say "Queen Mattress" not just "Mattress", say "Mini Fridge" not just "Appliance"
-- For groups of similar small items, list them as one entry (e.g. "Assorted Clothing Bags", "Cardboard Boxes")
-- Do NOT include pricing, weight, or volume estimates
-- Return between 1 and 20 items
+LISTING & QUANTITY RULES:
+- List each distinct item type along with its count (e.g., {"name": "Office Chair", "quantity": 3}).
+- Be specific: say "Queen Mattress" not just "Mattress", say "Mini Fridge" not just "Appliance".
+- For groups of similar small items, combine them and specify a reasonable estimate of the quantity (e.g., {"name": "Cardboard Box", "quantity": 8}).
+- Do NOT include pricing, weight, or volume estimates.
+- Return between 1 and 20 items.
 
 Respond in this exact JSON format:
 {
-  "items": ["Item 1", "Item 2", "Item 3"]
+  "items": [
+    { "name": "Item Name", "quantity": 1 },
+    { "name": "Another Item Name", "quantity": 2 }
+  ]
 }`;
 
     const contentParts = [

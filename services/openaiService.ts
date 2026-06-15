@@ -15,11 +15,20 @@ export async function detectItemsFromPhotos(images: { base64Image: string; mimeT
     throw new Error('Invalid response from AI detection service');
   }
 
-  return data.items.map((name: string, i: number) => ({
-    id: `item-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
-    name,
-    quantity: 1
-  }));
+  return data.items.map((item: any, i: number) => {
+    if (typeof item === 'string') {
+      return {
+        id: `item-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
+        name: item,
+        quantity: 1
+      };
+    }
+    return {
+      id: `item-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
+      name: item.name || 'Unknown Item',
+      quantity: typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1
+    };
+  });
 }
 
 export async function detectItemsFromPhoto(base64Image: string, mimeType: string): Promise<DetectedItem[]> {
