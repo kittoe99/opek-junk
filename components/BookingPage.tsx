@@ -516,10 +516,10 @@ export const BookingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
+        <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
           Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
         </h1>
-        <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
+        <p className="text-sm text-secondary-400">
           Three quick steps — details, address, review. A matched provider confirms within 15 minutes.
         </p>
       </div>
@@ -1180,12 +1180,28 @@ export const BookingPage: React.FC = () => {
 
           {/* ═══ Step 2: Moving Labor Flow ═══ */}
           {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
-            <div className="space-y-4">
-              <div className="mb-2 flex items-start gap-3">
-                <BicepsFlexed size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
-                <div>
-                  <h2 className="text-base font-black text-secondary">Moving Labor Options</h2>
-                  <p className="text-secondary-400 text-xs">Configure your helpers and hours</p>
+            <div className="space-y-6">
+              {/* Section header */}
+              <div className="flex items-center justify-between pb-4 border-b border-secondary-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center shrink-0">
+                    <BicepsFlexed size={20} className="text-brand" strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-secondary tracking-tight">Moving Labor</h2>
+                    <p className="text-secondary-400 text-xs mt-0.5">Professional heavy-lifting assistance · 2-hr minimum</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
+                    movingStep === 'details' ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary-400'
+                  }`}>1 Service</span>
+                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
+                    movingStep === 'crew' ? 'bg-brand text-white' : movingStep === 'result' ? 'bg-emerald-500 text-white' : 'bg-secondary-100 text-secondary-400'
+                  }`}>2 Crew</span>
+                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
+                    movingStep === 'result' ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary-400'
+                  }`}>3 Quote</span>
                 </div>
               </div>
 
@@ -1194,7 +1210,7 @@ export const BookingPage: React.FC = () => {
                 <div className="space-y-6 animate-in fade-in duration-300">
                   {/* Service Selection */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">What service do you need?</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {[
                         { label: 'Loading Only', icon: LoadingIcon },
@@ -1208,14 +1224,14 @@ export const BookingPage: React.FC = () => {
                             key={service.label}
                             type="button"
                             onClick={() => setMovingServiceType(service.label as any)}
-                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                            className={`group p-5 border shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] rounded-2xl flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                                ? 'border-brand bg-white ring-2 ring-brand/20 shadow-[0_0_20px_rgba(255,0,110,0.1)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+                              isSelected ? 'bg-brand text-white shadow-[0_4px_12px_rgba(255,0,110,0.3)]' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                             }`}>
                               <Icon size={24} className="transition-colors" />
                             </div>
@@ -1224,10 +1240,10 @@ export const BookingPage: React.FC = () => {
                                 {service.label}
                               </span>
                             </div>
-                            <div className={`absolute top-4 right-4 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            <div className={`absolute top-3.5 right-3.5 w-5 h-5 rounded-md flex items-center justify-center transition-all ${
+                              isSelected ? 'bg-brand border-brand' : 'bg-white border border-secondary-200 group-hover:border-brand/40'
                             }`}>
-                              {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
+                              {isSelected && <Check size={11} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1237,8 +1253,8 @@ export const BookingPage: React.FC = () => {
 
                   {/* Move Type */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of move</label>
+                    <div className="grid grid-cols-2 gap-3">
                       {[
                         { label: 'Storage Unit', icon: StorageUnitIcon },
                         { label: 'Box Truck', icon: BoxTruckIcon },
@@ -1252,14 +1268,14 @@ export const BookingPage: React.FC = () => {
                             key={type.label}
                             type="button"
                             onClick={() => setMovingType(type.label as any)}
-                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                            className={`group p-5 border shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] rounded-2xl flex items-center gap-3 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                                ? 'border-brand bg-white ring-2 ring-brand/20 shadow-[0_0_20px_rgba(255,0,110,0.1)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+                              isSelected ? 'bg-brand text-white shadow-[0_4px_12px_rgba(255,0,110,0.3)]' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                             }`}>
                               <Icon size={20} className="transition-colors" />
                             </div>
@@ -1268,10 +1284,10 @@ export const BookingPage: React.FC = () => {
                                 {type.label}
                               </span>
                             </div>
-                            <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            <div className={`absolute top-1/2 -translate-y-1/2 right-3.5 w-4 h-4 rounded-md flex items-center justify-center transition-all ${
+                              isSelected ? 'bg-brand border-brand' : 'bg-white border border-secondary-200 group-hover:border-brand/40'
                             }`}>
-                              {isSelected && <Check size={10} strokeWidth={4} className="text-white" />}
+                              {isSelected && <Check size={9} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1279,16 +1295,16 @@ export const BookingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-4 flex gap-3">
-                    <button type="button" onClick={handlePrevStep} className="flex-1 py-3 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
+                  <div className="pt-2 flex gap-3">
+                    <button type="button" onClick={handlePrevStep} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setMovingStep('crew')}
-                      className="flex-1 group py-3 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                      className="flex-1 group py-3.5 text-xs font-black uppercase tracking-widest bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
                     >
-                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   </div>
                 </div>
@@ -1298,7 +1314,7 @@ export const BookingPage: React.FC = () => {
               {movingStep === 'crew' && (
                 <div className="space-y-6 animate-in fade-in duration-300">
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of helpers</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
                         { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: TwoHelpersIcon },
@@ -1311,14 +1327,14 @@ export const BookingPage: React.FC = () => {
                             key={option.helpers}
                             type="button"
                             onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                            className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                            className={`group p-5 border shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
                               isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                                : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                                ? 'border-brand bg-white ring-2 ring-brand/20 shadow-[0_0_20px_rgba(255,0,110,0.1)]' 
+                                : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                              isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+                              isSelected ? 'bg-brand text-white shadow-[0_4px_12px_rgba(255,0,110,0.3)]' : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                             }`}>
                               <Icon size={24} className="transition-colors" />
                             </div>
@@ -1330,10 +1346,10 @@ export const BookingPage: React.FC = () => {
                                 {option.price}
                               </span>
                             </div>
-                            <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
+                            <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-5 h-5 rounded-md flex items-center justify-center transition-all ${
+                              isSelected ? 'bg-brand border-brand' : 'bg-white border border-secondary-200 group-hover:border-brand/40'
                             }`}>
-                              {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
+                              {isSelected && <Check size={11} strokeWidth={4} className="text-white" />}
                             </div>
                           </button>
                         );
@@ -1343,31 +1359,33 @@ export const BookingPage: React.FC = () => {
 
                   {/* Hours Selection */}
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border border-secondary-100 rounded-xl gap-4 transition-all focus-within:border-brand focus-within:ring-1 focus-within:ring-brand">
+                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated hours needed (2 hr min)</label>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border border-secondary-100 rounded-2xl gap-4 transition-all hover:border-brand/30 hover:shadow-[0_4px_20px_rgba(255,0,110,0.06)]">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-transparent flex items-center justify-center shrink-0">
-                          <Clock size={20} className="text-secondary-400" />
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                          movingHours > 2 ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary-400'
+                        }`}>
+                          <Clock size={20} />
                         </div>
                         <div>
-                          <div className="text-sm font-black text-secondary uppercase tracking-wider">Time Needed</div>
-                          <div className="text-xs font-semibold text-brand mt-0.5">{movingHours} hours selected</div>
+                          <div className="text-sm font-black text-secondary">Time Needed</div>
+                          <div className={`text-xs font-bold mt-0.5 ${movingHours > 2 ? 'text-brand' : 'text-secondary-400'}`}>{movingHours} hours selected</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 bg-white border border-secondary-100 rounded-lg p-1 w-full sm:w-auto">
+                      <div className="flex items-center gap-2 bg-secondary-50 rounded-xl p-1.5 w-full sm:w-auto">
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                           disabled={movingHours <= 2}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand border border-secondary-100 hover:border-brand/40 shadow-sm disabled:opacity-40 flex items-center justify-center transition-all"
                         >
                           <Minus size={16} strokeWidth={3} />
                         </button>
-                        <span className="w-12 text-center text-lg font-black text-secondary">{movingHours}</span>
+                        <span className="w-12 text-center text-xl font-black text-secondary">{movingHours}</span>
                         <button
                           type="button"
                           onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand border border-secondary-100 hover:border-brand/40 shadow-sm flex items-center justify-center transition-all"
                         >
                           <Plus size={16} strokeWidth={3} />
                         </button>
@@ -1381,12 +1399,12 @@ export const BookingPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="pt-4 flex gap-3">
+                  <div className="pt-2 flex gap-3">
                     <button
                       type="button"
                       onClick={() => setMovingStep('details')}
                       disabled={movingPricingLoading}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-secondary-600 transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
@@ -1420,7 +1438,7 @@ export const BookingPage: React.FC = () => {
                         }
                       }}
                       disabled={movingPricingLoading}
-                      className="flex-1 py-3 text-xs font-semibold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 group py-3.5 text-xs font-black uppercase tracking-widest bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
                     >
                       {movingPricingLoading ? 'Calculating...' : 'Get Estimate'}
                       {movingPricingLoading ? (

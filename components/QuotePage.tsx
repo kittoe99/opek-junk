@@ -926,10 +926,10 @@ export const QuotePage: React.FC = () => {
           >
             <ArrowLeft size={14} /> Back to estimate
           </button>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
+          <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
             Book your <span className="text-brand">{selectedService === 'moving_labor' ? 'service' : 'pickup'}.</span>
           </h1>
-          <p className="text-secondary-400 text-base">A matched provider confirms within 15 minutes.</p>
+          <p className="text-sm text-secondary-400">A matched provider confirms within 15 minutes.</p>
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
@@ -1017,13 +1017,9 @@ export const QuotePage: React.FC = () => {
   if (!zipVerified) {
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            Free quote in <span className="text-brand">two minutes.</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Nationwide coverage in all 50 states — start by confirming your ZIP.
-          </p>
+        <div className="pt-32 pb-6 md:pt-40 md:pb-8 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Get a <span className="text-brand">free quote.</span></h1>
+          <p className="text-sm text-secondary-400">Nationwide coverage in all 50 states — start by confirming your ZIP.</p>
         </div>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
           <div>
@@ -1095,19 +1091,9 @@ export const QuotePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero */}
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => { setZipVerified(false); setZipResult(null); setZipValue(''); }}
-            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
-          >
-            <ArrowLeft size={14} /> Back
-          </button>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            What do you <span className="text-brand">need?</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Select a service below to continue.
-          </p>
+        <div className="pt-32 pb-6 md:pt-40 md:pb-8 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">What do you <span className="text-brand">need?</span></h1>
+          <p className="text-sm text-secondary-400">Select a service below to continue.</p>
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
@@ -1188,12 +1174,12 @@ export const QuotePage: React.FC = () => {
           >
             <ArrowLeft size={14} /> {movingStep === 'result' ? 'Back to crew & time' : movingStep === 'crew' ? 'Back to type of move' : movingStep === 'type' ? 'Back to service selection' : 'Back to services'}
           </button>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            Book <span className="text-brand">Moving Labor.</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Get professional heavy-lifting assistance. 2-hour minimum applies.
-          </p>
+          {movingStep !== 'result' && (
+            <>
+              <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Book <span className="text-brand">moving labor.</span></h1>
+              <p className="text-sm text-secondary-400">Professional heavy-lifting assistance. 2-hour minimum applies.</p>
+            </>
+          )}
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
@@ -1491,12 +1477,12 @@ export const QuotePage: React.FC = () => {
           >
             <ArrowLeft size={14} /> {donationStep === 'size' ? 'Back to details' : donationStep === 'result' ? 'Back to size & location' : 'Back to services'}
           </button>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            Schedule <span className="text-brand">Donation Pickup.</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Get your gently used items picked up and delivered to charity. Upfront pricing.
-          </p>
+          {donationStep !== 'result' && (
+            <>
+              <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Schedule <span className="text-brand">donation pickup.</span></h1>
+              <p className="text-sm text-secondary-400">Gently used items picked up and delivered to charity. Upfront pricing.</p>
+            </>
+          )}
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8 animate-in fade-in duration-300">
@@ -1740,12 +1726,12 @@ export const QuotePage: React.FC = () => {
           >
             <ArrowLeft size={14} /> {dumpsterStep === 'duration' ? 'Back to size' : dumpsterStep === 'result' ? 'Back to duration' : 'Back to services'}
           </button>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            Rent a <span className="text-brand">Dumpster.</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Roll-off dumpster delivered to your site. Flat-rate pricing with flexible rental periods.
-          </p>
+          {dumpsterStep !== 'result' && (
+            <>
+              <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Rent a <span className="text-brand">dumpster.</span></h1>
+              <p className="text-sm text-secondary-400">Roll-off dumpster delivered to your site. Flat-rate pricing, flexible rental periods.</p>
+            </>
+          )}
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
@@ -1906,18 +1892,8 @@ export const QuotePage: React.FC = () => {
       <div className="min-h-screen bg-white">
         {/* Hero */}
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => setSelectedService(null)}
-            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
-          >
-            <ArrowLeft size={14} /> Back to services
-          </button>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight leading-[1.1] mb-5">
-            Free quote in <span className="text-brand">two minutes.</span>
-          </h1>
-          <p className="text-secondary-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Snap a photo for instant AI pricing, or pick items from the catalog. Either way, you get an upfront estimate — no obligations.
-          </p>
+          <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Junk <span className="text-brand">removal.</span></h1>
+          <p className="text-sm text-secondary-400">Snap a photo or pick items from the catalog — upfront estimate, no obligations.</p>
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
@@ -1956,25 +1932,7 @@ export const QuotePage: React.FC = () => {
             </button>
           </div>
 
-          {/* Bottom CTA */}
-          <div className="mt-16 md:mt-24">
-            <h2 className="text-xl font-black text-secondary mb-2">Prefer to talk to someone?</h2>
-            <p className="text-secondary-400 text-sm mb-4">Call support for a phone estimate or to ask any questions — support is available 24/7.</p>
-            <div className="flex flex-wrap gap-3 items-center">
-              <button
-                onClick={() => navigate('/contact')}
-                className="px-6 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-brand transition-colors inline-flex items-center gap-2"
-              >
-                Contact Us <ArrowRight size={16} />
-              </button>
-              <a
-                href="tel:8313187139"
-                className="text-secondary font-bold text-sm uppercase tracking-wider underline underline-offset-4 decoration-secondary-300 hover:decoration-brand hover:text-brand transition-colors"
-              >
-                (831) 318-7139
-              </a>
-            </div>
-          </div>
+
         </div>
       </div>
     );
@@ -1983,39 +1941,26 @@ export const QuotePage: React.FC = () => {
   // ── Main flow ──
   return (
     <div className="min-h-screen bg-white">
-      <div className={`pt-32 pb-8 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
-        <button
-          onClick={() => {
-            if (selectedService === 'junk_removal') {
-              if (selectedOption === 'manual' && manualStep === 'review' && selectedItems.length > 0) {
-                setManualStep('select');
-              } else {
-                setSelectedOption(null);
-              }
-            } else {
-              setSelectedService(null);
-            }
-          }}
-          className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
-        >
-          <ArrowLeft size={14} /> Back
-        </button>
+      <div className={`pt-32 pb-4 md:pt-40 md:pb-6 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
 
-        <div ref={contentTopRef} className="mb-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary tracking-tight leading-[1.1] mb-3">
-            {selectedOption === 'ai'
-              ? <>Snap, <span className="text-brand">price.</span></>
-              : manualStep === 'review'
-                ? <>Review your <span className="text-brand">list.</span></>
-                : <>Pick your <span className="text-brand">items.</span></>}
-          </h1>
-          {selectedOption === 'manual' && manualStep === 'select' && (
-            <p className="text-secondary-400 text-base">Browse categories, pick what you need, get your AI-powered estimate.</p>
-          )}
-          {selectedOption === 'manual' && manualStep === 'review' && (
-            <p className="text-secondary-400 text-base">Confirm your items to calculate the estimate.</p>
-          )}
-        </div>
+        {((selectedOption === 'ai' && aiStep !== 'result') || (selectedOption === 'manual' && manualStep !== 'result')) && (
+          <div ref={contentTopRef} className="mb-6">
+            <h2 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
+              {selectedOption === 'ai'
+                ? <><span className="text-brand">AI photo</span> estimate.</>  
+                : manualStep === 'review'
+                  ? <>Review your <span className="text-brand">list.</span></>  
+                  : <>Pick your <span className="text-brand">items.</span></>}
+            </h2>
+            <p className="text-sm text-secondary-400">
+              {selectedOption === 'ai'
+                ? 'Upload a photo and we\'ll estimate the cost automatically.'
+                : manualStep === 'review'
+                  ? 'Confirm your items to calculate the estimate.'
+                  : 'Browse categories and pick what you need.'}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
@@ -2524,17 +2469,6 @@ export const QuotePage: React.FC = () => {
               {/* ===== REVIEW STEP ===== */}
               {manualStep === 'review' && !manualPricingLoading && (
                 <div className="space-y-6">
-                  {/* Header card */}
-                  <div className="rounded-2xl p-5 md:p-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Receipt size={14} className="text-brand" strokeWidth={2.5} />
-                      <span className="text-[10px] font-black text-brand uppercase tracking-widest">Review your list</span>
-                    </div>
-                    <h2 className="text-2xl md:text-3xl font-black text-secondary leading-tight mb-1">
-                      {totalSelectedCount} {totalSelectedCount === 1 ? 'item' : 'items'} ready for pickup
-                    </h2>
-                    <p className="text-sm text-secondary-400">Adjust quantities or remove items before getting your estimate.</p>
-                  </div>
 
                   {/* Items list */}
                   <div className="border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden bg-white">
