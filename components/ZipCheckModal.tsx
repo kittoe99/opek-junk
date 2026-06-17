@@ -102,9 +102,6 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
 
                 {/* Sleek unified Input Pill */}
                 <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 p-1 mb-2.5 rounded-xl">
-                  <div className="pl-2.5 text-secondary-400 pointer-events-none group-focus-within:text-brand transition-colors">
-                    <InputZipIcon size={18} />
-                  </div>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -113,7 +110,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="e.g. 75201"
-                    className="flex-1 min-w-0 w-full bg-transparent border-none px-2 py-2 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:outline-none tracking-widest text-center"
+                    className="flex-1 min-w-0 w-full bg-transparent border-none px-4 py-2 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:outline-none tracking-widest text-center"
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                     autoFocus
                   />

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, Calendar, Clock, Receipt, Home, Send } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
-import { InputUserIcon, InputPhoneIcon, InputMailIcon, InputMapPinIcon, InputCalendarIcon, InputMessageIcon } from './icons/ServiceIcons';
+
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
@@ -244,21 +244,15 @@ export const InHomeEstimatePage: React.FC = () => {
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputUserIcon size={18} />
-                    </div>
                     <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
-                      className={`${inputCls} pl-10`} />
+                      className={inputCls} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputPhoneIcon size={18} />
-                    </div>
                     <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                      className={`${inputCls} pl-10`} />
+                      className={inputCls} />
                   </div>
                 </div>
               </div>
@@ -266,11 +260,8 @@ export const InHomeEstimatePage: React.FC = () => {
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                    <InputMailIcon size={18} />
-                  </div>
                   <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                    className={`${inputCls} pl-10`} />
+                    className={inputCls} />
                 </div>
               </div>
             </div>
@@ -294,9 +285,6 @@ export const InHomeEstimatePage: React.FC = () => {
                   Address *
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                    <InputMapPinIcon size={18} />
-                  </div>
                   <input
                     value={addressQuery || formData.address}
                     onChange={(e) => handleAddressInput(e.target.value)}
@@ -304,7 +292,7 @@ export const InHomeEstimatePage: React.FC = () => {
                     required
                     placeholder="Start typing an address..."
                     autoComplete="off"
-                    className={`${inputCls} pl-10`}
+                    className={inputCls}
                   />
                 </div>
                 {addressLoading && (
@@ -334,12 +322,9 @@ export const InHomeEstimatePage: React.FC = () => {
                     Preferred Date *
                   </label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputCalendarIcon size={18} />
-                    </div>
                     <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange} required
                       min={new Date().toISOString().split('T')[0]}
-                      className={`${inputCls} pl-10`} />
+                      className={inputCls} />
                   </div>
                 </div>
                 <div>
@@ -348,11 +333,8 @@ export const InHomeEstimatePage: React.FC = () => {
                     Preferred Time *
                   </label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <Clock size={18} />
-                    </div>
                     <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} required
-                      className={`${inputCls} pl-10`}>
+                      className={inputCls}>
                       <option value="">Select a time preference</option>
                       {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
                     </select>
@@ -381,12 +363,9 @@ export const InHomeEstimatePage: React.FC = () => {
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
                 <div className="relative group">
-                  <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                    <InputMessageIcon size={18} />
-                  </div>
                   <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
                     placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
-                    className={`${inputCls} pl-10 resize-none`} />
+                    className={`${inputCls} resize-none`} />
                 </div>
               </div>
 

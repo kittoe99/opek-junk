@@ -4,7 +4,7 @@ import { ArrowRight, ArrowLeft, Check, ClipboardList, Truck, Calendar, UserCheck
 import { PageHero } from './shared/PageHero';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
-import { InputUserIcon, InputMailIcon, InputPhoneIcon, InputBuildingIcon, InputMapPinIcon, InputMessageIcon } from './icons/ServiceIcons';
+
 
 export const ProviderSignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -204,19 +204,13 @@ export const ProviderSignupPage: React.FC = () => {
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">First Name *</label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                        <InputUserIcon size={18} />
-                      </div>
-                      <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={`${inputCls} pl-10`} />
+                      <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={inputCls} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Last Name *</label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                        <InputUserIcon size={18} />
-                      </div>
-                      <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={`${inputCls} pl-10`} />
+                      <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={inputCls} />
                     </div>
                   </div>
                 </div>
@@ -224,29 +218,20 @@ export const ProviderSignupPage: React.FC = () => {
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email Address *</label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                        <InputMailIcon size={18} />
-                      </div>
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={`${inputCls} pl-10`} />
+                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={inputCls} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone Number *</label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                        <InputPhoneIcon size={18} />
-                      </div>
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={`${inputCls} pl-10`} />
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={inputCls} />
                     </div>
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Business Name (Optional)</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputBuildingIcon size={18} />
-                    </div>
-                    <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="e.g. John's Hauling LLC" className={`${inputCls} pl-10`} />
+                    <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} placeholder="e.g. John's Hauling LLC" className={inputCls} />
                   </div>
                 </div>
               </div>
@@ -269,19 +254,13 @@ export const ProviderSignupPage: React.FC = () => {
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Primary Service Area *</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputMapPinIcon size={18} />
-                    </div>
-                    <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required placeholder="e.g. Denver Metro, LA County" className={`${inputCls} pl-10`} />
+                    <input type="text" name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} required placeholder="e.g. Denver Metro, LA County" className={inputCls} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Vehicle Type *</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputBuildingIcon size={18} />
-                    </div>
-                    <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={`${inputCls} pl-10`}>
+                    <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={inputCls}>
                       <option value="">Select vehicle type</option>
                       {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
                     </select>
@@ -338,12 +317,9 @@ export const ProviderSignupPage: React.FC = () => {
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details (Optional)</label>
                   <div className="relative group">
-                    <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <InputMessageIcon size={18} />
-                    </div>
                     <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleInputChange} rows={3}
                       placeholder="Share details about your experience, equipment, license status, or team size..."
-                      className={`${inputCls} pl-10 resize-none`} />
+                      className={`${inputCls} resize-none`} />
                   </div>
                 </div>
               </div>

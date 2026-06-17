@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
-import { InputPhoneIcon } from './icons/ServiceIcons';
+
 
 interface BookingResult {
   id: string;
@@ -307,15 +307,12 @@ export const TrackOrderPage: React.FC = () => {
 
             <form onSubmit={handleSearch}>
               <div className="relative mb-4 group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                  {searchType === 'phone' ? <InputPhoneIcon size={18} /> : <Search size={18} />}
-                </div>
                 <input
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full pl-10 pr-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
+                  className="w-full px-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
                   required
                 />
               </div>

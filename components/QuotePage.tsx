@@ -1032,9 +1032,6 @@ export const QuotePage: React.FC = () => {
             </div>
 
             <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 max-w-md p-1 rounded-xl">
-              <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
-                <InputZipIcon size={18} />
-              </span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -1043,7 +1040,7 @@ export const QuotePage: React.FC = () => {
                 onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                 placeholder="Enter ZIP code"
-                className="flex-1 pl-2.5 pr-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
+                className="flex-1 px-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
                 style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
               />
               <button
@@ -1189,39 +1186,36 @@ export const QuotePage: React.FC = () => {
             <div className="space-y-8 animate-in fade-in duration-300">
               {/* Service Selection */}
               <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Service Selection</label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Service Selection</label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   {[
-                    { label: 'Loading Only', icon: LoadingIcon },
-                    { label: 'Unloading Only', icon: UnloadingIcon },
-                    { label: 'Both', icon: LoadingUnloadingIcon }
+                    { label: 'Loading Only', desc: 'Pack a rental truck, container, or storage unit' },
+                    { label: 'Unloading Only', desc: 'Unpack into your new home, office, or storage' },
+                    { label: 'Both', desc: 'Help with both loading and unloading' }
                   ].map((service) => {
                     const isSelected = movingServiceType === service.label;
-                    const Icon = service.icon;
                     return (
                       <button
                         key={service.label}
                         onClick={() => setMovingServiceType(service.label as any)}
-                        className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
                           isSelected 
-                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                            ? 'border-brand bg-white ring-1 ring-brand/10' 
+                            : 'border-secondary-100 bg-white hover:border-brand/40'
                         }`}
                       >
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                          isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
                         }`}>
-                          <Icon size={24} className="transition-colors" />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <div className="flex-1">
-                          <span className={`block text-base font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
+                        <div className="flex-1 min-w-0">
+                          <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {service.label}
                           </span>
-                        </div>
-                        <div className={`absolute top-4 right-4 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
-                        }`}>
-                          {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
+                          <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
+                            {service.desc}
+                          </span>
                         </div>
                       </button>
                     );
@@ -1251,40 +1245,37 @@ export const QuotePage: React.FC = () => {
             <div className="space-y-8 animate-in fade-in duration-300">
               {/* Move Type */}
               <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Type of Move</label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Type of Move</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
-                    { label: 'Storage Unit', icon: StorageUnitIcon },
-                    { label: 'Box Truck', icon: BoxTruckIcon },
-                    { label: 'Inside Home', icon: InsideHomeIcon },
-                    { label: 'Other', icon: OtherMoveIcon }
+                    { label: 'Storage Unit', desc: 'PODS, U-Pack, or local storage facility' },
+                    { label: 'Box Truck', desc: 'Rental trucks like U-Haul, Penske, or Ryder' },
+                    { label: 'Inside Home', desc: 'Rearranging furniture staging or room-to-room loading' },
+                    { label: 'Other', desc: 'Custom labor requests and heavy lifting' }
                   ].map((type) => {
                     const isSelected = movingType === type.label;
-                    const Icon = type.icon;
                     return (
                       <button
                         key={type.label}
                         onClick={() => setMovingType(type.label as any)}
-                        className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
                           isSelected 
-                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                            ? 'border-brand bg-white ring-1 ring-brand/10' 
+                            : 'border-secondary-100 bg-white hover:border-brand/40'
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                          isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
                         }`}>
-                          <Icon size={20} className="transition-colors" />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <div className="flex-1">
-                          <span className={`block text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
+                        <div className="flex-1 min-w-0">
+                          <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {type.label}
                           </span>
-                        </div>
-                        <div className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
-                        }`}>
-                          {isSelected && <Check size={10} strokeWidth={4} className="text-white" />}
+                          <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
+                            {type.desc}
+                          </span>
                         </div>
                       </button>
                     );
@@ -1314,41 +1305,38 @@ export const QuotePage: React.FC = () => {
             <div className="space-y-8 animate-in fade-in duration-300">
                {/* Helpers Selection */}
                <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Number of Helpers</label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Number of Helpers</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
-                    { helpers: 2, price: `$${movingRates.rate2} / hour`, icon: TwoHelpersIcon },
-                    { helpers: 3, price: `$${movingRates.rate3} / hour`, icon: ThreeHelpersIcon }
+                    { helpers: 2, price: `$${movingRates.rate2} / hour`, desc: 'Apartment moves, loading containers, and light lifting' },
+                    { helpers: 3, price: `$${movingRates.rate3} / hour`, desc: 'House moves, large trucks, and heavy items' }
                   ].map((option) => {
                     const isSelected = movingHelpers === option.helpers;
-                    const Icon = option.icon;
                     return (
                       <button
                         key={option.helpers}
                         onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                        className={`group p-5 border border-secondary-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)] hover:border-brand/40 rounded-2xl flex items-center gap-4 transition-all duration-300 w-full text-left relative overflow-hidden ${
+                        className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
                           isSelected 
-                            ? 'border-brand bg-white ring-1 ring-brand shadow-[0_0_15px_rgba(255,0,110,0.05)]' 
-                            : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_8px_30px_rgba(255,0,110,0.12)]'
+                            ? 'border-brand bg-white ring-1 ring-brand/10' 
+                            : 'border-secondary-100 bg-white hover:border-brand/40'
                         }`}
                       >
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? 'bg-brand text-white' : 'bg-transparent text-secondary-400 group-hover:text-brand'
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                          isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
                         }`}>
-                          <Icon size={24} className="transition-colors" />
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <div className="flex-1">
-                          <span className={`block text-lg font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
+                        <div className="flex-1 min-w-0">
+                          <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {option.helpers} Helpers
                           </span>
-                          <span className="block text-xs font-bold text-secondary-400 mt-0.5">
+                          <span className="block text-xs font-bold text-brand mt-0.5">
                             {option.price}
                           </span>
-                        </div>
-                        <div className={`absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 border border-secondary-100 rounded-md flex items-center shadow-sm group-hover:border-brand/40 justify-center transition-all ${
-                          isSelected ? 'border-brand bg-brand' : 'border-secondary-100 bg-white group-hover:border-brand'
-                        }`}>
-                          {isSelected && <Check size={12} strokeWidth={4} className="text-white" />}
+                          <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
+                            {option.desc}
+                          </span>
                         </div>
                       </button>
                     );
@@ -1358,31 +1346,26 @@ export const QuotePage: React.FC = () => {
 
               {/* Hours Selection */}
               <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-wider mb-3">Estimated Hours (2 hr min)</label>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-white border border-secondary-100 rounded-xl gap-4 transition-all focus-within:border-brand focus-within:ring-1 focus-within:ring-brand">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-transparent flex items-center justify-center shrink-0">
-                      <Clock size={20} className="text-secondary-400" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-black text-secondary uppercase tracking-wider">Time Needed</div>
-                      <div className="text-xs font-semibold text-brand mt-0.5">{movingHours} hours selected</div>
-                    </div>
+                <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Estimated Hours (2 hr min)</label>
+                <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl gap-4 transition-all duration-200 hover:border-secondary-300">
+                  <div>
+                    <div className="text-sm font-bold text-secondary">Time Needed</div>
+                    <div className="text-xs text-secondary-400 mt-0.5">{movingHours} hours selected</div>
                   </div>
-                  <div className="flex items-center gap-1 bg-white border border-secondary-100 rounded-lg p-1 w-full sm:w-auto">
+                  <div className="flex items-center gap-1 border border-secondary-100 rounded-lg p-1 bg-white">
                     <button
                       onClick={() => setMovingHours(h => Math.max(2, h - 1))}
                       disabled={movingHours <= 2}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded bg-transparent hover:bg-secondary-50 text-secondary disabled:opacity-30 flex items-center justify-center transition-colors"
                     >
-                      <Minus size={16} strokeWidth={3} />
+                      <Minus size={14} strokeWidth={2.5} />
                     </button>
-                    <span className="w-12 text-center text-lg font-black text-secondary">{movingHours}</span>
+                    <span className="w-10 text-center text-sm font-bold text-secondary">{movingHours}</span>
                     <button
                       onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                      className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded bg-transparent hover:bg-secondary-50 text-secondary flex items-center justify-center transition-colors"
                     >
-                      <Plus size={16} strokeWidth={3} />
+                      <Plus size={14} strokeWidth={2.5} />
                     </button>
                   </div>
                 </div>
@@ -2159,16 +2142,13 @@ export const QuotePage: React.FC = () => {
                     <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Add an item</p>
                     <div className="flex gap-2">
                       <div className="relative group flex-1">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                          <InputMessageIcon size={18} />
-                        </div>
                         <input
                           type="text"
                           value={newItemName}
                           onChange={(e) => setNewItemName(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && addManualItem()}
                           placeholder="e.g. Old Desk"
-                          className="w-full pl-10 pr-4 py-3 text-sm bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                          className="w-full px-4 py-3 text-sm bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                         />
                       </div>
                       <button onClick={addManualItem} disabled={!newItemName.trim()} className="group px-4 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-brand hover:shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
@@ -2216,15 +2196,12 @@ export const QuotePage: React.FC = () => {
                 <div className="space-y-5">
                   {/* Search bar - enhanced */}
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                      <Search size={18} />
-                    </div>
                     <input
                       type="text"
                       value={catalogSearch}
                       onChange={(e) => setCatalogSearch(e.target.value)}
                       placeholder="Search items..."
-                      className="w-full pl-10 pr-4 py-3 text-sm bg-white border border-secondary-100 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
+                      className="w-full px-4 py-3 text-sm bg-white border border-secondary-100 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
                     />
                     {catalogSearch && (
                       <button
@@ -2417,16 +2394,13 @@ export const QuotePage: React.FC = () => {
                     <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-3">Don't see your item?</p>
                     <div className="flex gap-2">
                       <div className="relative group flex-1">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                          <InputMessageIcon size={18} />
-                        </div>
                         <input
                           type="text"
                           value={manualNewItemName}
                           onChange={(e) => setManualNewItemName(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
                           placeholder="Type item name and press Enter"
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
+                          className="w-full px-4 py-2.5 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
                         />
                       </div>
                       <button

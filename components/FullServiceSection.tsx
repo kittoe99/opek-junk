@@ -83,9 +83,6 @@ export const FullServiceSection: React.FC = () => {
             <div className={`transition-all duration-500 ease-out absolute inset-0 ${isSuccess ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 z-10'}`}>
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative group flex-1 flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 p-1 rounded-xl">
-                  <span className="pl-3 text-secondary-400 group-focus-within:text-brand transition-colors">
-                    <InputZipIcon size={18} />
-                  </span>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -94,7 +91,7 @@ export const FullServiceSection: React.FC = () => {
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="Enter ZIP code"
-                    className="flex-1 pl-2.5 pr-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
+                    className="flex-1 px-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                   />
                 </div>

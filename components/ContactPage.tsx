@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Send, Check, Phone, Mail } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
-import { InputUserIcon, InputPhoneIcon, InputMailIcon, InputMessageIcon } from './icons/ServiceIcons';
+
 import { PageHero } from './shared/PageHero';
 
 export const ContactPage: React.FC = () => {
@@ -139,24 +139,18 @@ export const ContactPage: React.FC = () => {
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                  <InputUserIcon size={18} />
-                </div>
                 <input
                   type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                  <InputPhoneIcon size={18} />
-                </div>
                 <input
                   type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -165,12 +159,9 @@ export const ContactPage: React.FC = () => {
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                <InputMailIcon size={18} />
-              </div>
               <input
                 type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
@@ -178,13 +169,10 @@ export const ContactPage: React.FC = () => {
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Message *</label>
             <div className="relative group">
-              <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none text-secondary-300 group-focus-within:text-brand transition-colors">
-                <InputMessageIcon size={18} />
-              </div>
               <textarea
                 name="message" value={formData.message} onChange={handleInputChange} required rows={5}
                 placeholder="Describe the service needs..."
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors resize-none"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors resize-none"
               />
             </div>
           </div>

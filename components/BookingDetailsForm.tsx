@@ -4,16 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 import { BookingSuccessView } from './shared/BookingSuccessView';
-import { 
-  InputUserIcon, 
-  InputMailIcon, 
-  InputPhoneIcon, 
-  InputMapPinIcon, 
-  InputBuildingIcon, 
-  InputZipIcon, 
-  InputCalendarIcon, 
-  InputMessageIcon 
-} from './icons/ServiceIcons';
+
 
 interface AddressSuggestion {
   display: string;
@@ -414,9 +405,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Full Name *</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <InputUserIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <input
                 name="name"
                 autoComplete="name"
@@ -425,7 +413,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 disabled={contactSubmitting}
                 placeholder="John Smith"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -433,9 +421,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <InputMailIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <input
                 name="email"
                 autoComplete="email"
@@ -445,7 +430,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="email"
                 placeholder="john@example.com"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -453,9 +438,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <InputPhoneIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <input
                 name="phone"
                 autoComplete="tel"
@@ -465,7 +447,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="tel"
                 placeholder="(555) 123-4567"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
           </div>
@@ -501,9 +483,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               Service Address *
             </label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <InputMapPinIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <input
                 value={addressQuery}
                 onChange={(e) => handleAddressInput(e.target.value)}
@@ -511,7 +490,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 placeholder="Start typing an address..."
                 autoComplete="street-address"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
             {addressLoading && (
@@ -537,15 +516,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span></label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <InputBuildingIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <input
                 name="unitNumber"
                 value={formData.unitNumber}
                 onChange={handleInputChange}
                 placeholder="e.g. Apt 4B, Suite 200"
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
@@ -554,9 +530,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <div className="col-span-2 md:col-span-1">
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">City *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <InputBuildingIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-                </div>
                 <input
                   name="city"
                   autoComplete="address-level2"
@@ -564,16 +537,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="Dallas"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <InputMapPinIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-                </div>
                 <input
                   name="state"
                   autoComplete="address-level1"
@@ -581,16 +551,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="TX"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Zip Code *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <InputZipIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-                </div>
                 <input
                   name="zipCode"
                   autoComplete="postal-code"
@@ -598,7 +565,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="75201"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -638,9 +605,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <div>
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <InputCalendarIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-                </div>
                 <input
                   name="date"
                   value={formData.date}
@@ -648,7 +612,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   required
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
                 />
               </div>
             </div>
@@ -657,16 +621,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
             <div className="relative group">
-              <div className="absolute top-3.5 left-0 pl-3.5 flex items-start pointer-events-none">
-                <InputMessageIcon size={18} className="text-secondary-300 group-focus-within:text-brand transition-colors" />
-              </div>
               <textarea
                 name="details"
                 value={formData.details}
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="w-full pl-10 pr-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
