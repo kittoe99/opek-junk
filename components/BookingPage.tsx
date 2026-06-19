@@ -5,7 +5,7 @@ import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, Lo
 import { QuoteEstimate, LoadingState } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
-import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
@@ -202,6 +202,16 @@ export const BookingPage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
+        let uploadedUrl = image || '';
+        if (uploadedUrl && uploadedUrl.startsWith('data:')) {
+          const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
+          const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
+          if (publicUrl) {
+            uploadedUrl = publicUrl;
+            setImage(publicUrl);
+          }
+        }
+
         const customerInfo = {
           name,
           phone,
@@ -216,7 +226,7 @@ export const BookingPage: React.FC = () => {
           estimated_volume: est.estimatedVolume,
           price: est.price,
           estimate_summary: est.summary,
-          photo_url: image || ''
+          photo_url: uploadedUrl
         };
 
         const { data, error: dbError } = await supabase
@@ -437,10 +447,13 @@ export const BookingPage: React.FC = () => {
         photo_url: formData.photoUrl
       };
 
+      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
       const { data: insertedData, error: insertError } = await supabase
         .from('bookings')
         .insert([
           {
+            order_number: generatedOrderNumber,
             customer_info: customerInfo,
             location_info: locationInfo,
             booking_details: bookingDetails,
@@ -452,7 +465,7 @@ export const BookingPage: React.FC = () => {
 
       if (insertError) throw insertError;
       
-      const finalOrderNumber = insertedData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const finalOrderNumber = insertedData?.order_number || generatedOrderNumber;
       if (insertedData?.order_number) setOrderNumber(insertedData.order_number);
 
       // Trigger booking confirmation email

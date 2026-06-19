@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
-import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 
 
@@ -42,6 +42,56 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
   const [submitting, setSubmitting] = useState(false);
+  const [localImage, setLocalImage] = useState<string | null>(image);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setLocalImage(image);
+  }, [image]);
+
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxWidth = 1920;
+          const maxHeight = 1920;
+          if (width > height) {
+            if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+          } else {
+            if (height > maxHeight) { width = (width * maxHeight) / height; height = maxHeight; }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.8));
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const compressedImage = await compressImage(file);
+        setLocalImage(compressedImage);
+        setError(null);
+      } catch (err) {
+        console.error('Error compressing image:', err);
+      }
+    }
+  };
   const [submitted, setSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -181,6 +231,16 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
       let currentPartialId = partialId;
 
+      let uploadedUrl = localImage || '';
+      if (uploadedUrl && uploadedUrl.startsWith('data:')) {
+        const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
+        const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
+        if (publicUrl) {
+          uploadedUrl = publicUrl;
+          setLocalImage(publicUrl);
+        }
+      }
+
       const customerInfo = {
         name: formData.name,
         email: formData.email,
@@ -195,7 +255,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         estimated_volume: estimate?.estimatedVolume || '',
         price: estimate?.price || 0,
         estimate_summary: estimate?.summary || '',
-        photo_url: image || ''
+        photo_url: uploadedUrl
       };
 
       if (currentPartialId && !currentPartialId.startsWith('mock-')) {
@@ -246,6 +306,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isJunkRemoval = serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
+    if (isJunkRemoval && !localImage) {
+      setError('A photo of the items to be hauled away is required to complete your booking. This helps improve service accuracy.');
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
@@ -265,6 +332,18 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         let dbError = null;
   
         try {
+          const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+          let uploadedUrl = localImage || '';
+          if (uploadedUrl && uploadedUrl.startsWith('data:')) {
+            const fileName = `booking_${generatedOrderNumber}.jpg`;
+            const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
+            if (publicUrl) {
+              uploadedUrl = publicUrl;
+              setLocalImage(publicUrl);
+            }
+          }
+
           const customerInfo = {
             name: formData.name,
             email: formData.email,
@@ -287,13 +366,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             estimated_volume: estimate?.estimatedVolume || '',
             price: estimate?.price || 0,
             estimate_summary: estimate?.summary || '',
-            photo_url: image || ''
+            photo_url: uploadedUrl
           };
 
           const query = supabase
             .from('bookings')
             .insert([
               {
+                order_number: generatedOrderNumber,
                 customer_info: customerInfo,
                 location_info: locationInfo,
                 booking_details: bookingDetails,
@@ -306,6 +386,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           const res = await query;
           resultData = res.data;
           dbError = res.error;
+          
+          if (dbError) {
+            console.warn('Supabase returned error:', dbError);
+          }
 
           if (!dbError && partialId && !partialId.startsWith('mock-')) {
             supabase
@@ -320,10 +404,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           }
         } catch (err) {
           console.warn('Supabase insert/update failed, falling back to mock submission:', err);
-        }
-  
-        if (dbError) {
-          console.warn('Supabase returned error, falling back to mock submission:', dbError);
         }
   
         const finalOrderNumber = resultData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
@@ -617,6 +697,71 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Photo Upload Section for Junk Removal */}
+          {(serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal') && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">
+                  Photo of Items *
+                </label>
+                <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-full border border-brand/10 animate-pulse-slow">
+                  Required to Book
+                </span>
+              </div>
+
+              {localImage ? (
+                <div className="relative border border-secondary-100 bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm group animate-fade-in">
+                  <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-secondary-100 bg-secondary-50">
+                    <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="text-xs font-black text-secondary">Items Photo Uploaded</p>
+                    <p className="text-[10px] text-secondary-400 mt-0.5">This image will be used to verify volume and service details.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setLocalImage(null)}
+                    className="bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 p-2 rounded-xl transition-colors shrink-0 flex items-center justify-center"
+                    aria-label="Remove photo"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ) : (
+                <div className="border border-dashed border-secondary-200 hover:border-brand/40 bg-secondary-50/20 p-5 rounded-2xl text-center space-y-4 transition-all duration-300">
+                  <div className="max-w-md mx-auto space-y-2">
+                    <p className="text-xs text-secondary-500 font-medium">
+                      Please upload or capture a photo of the items you need hauled away.
+                    </p>
+                    <p className="text-[10px] text-secondary-400 leading-normal">
+                      This is <strong className="text-secondary-600 font-black">required to book</strong> in order to improve service accuracy, assess the load size, and match you with the correct crew and vehicle.
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto justify-center">
+                    <button
+                      type="button"
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <Camera size={14} /> Take Photo
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <Upload size={14} /> Upload Photo
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+              {/* Hidden file inputs */}
+              <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
+              <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+            </div>
+          )}
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>

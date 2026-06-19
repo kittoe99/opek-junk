@@ -28,3 +28,39 @@ export async function sendConfirmationEmail(type: 'booking' | 'contact' | 'provi
   }
 }
 
+export async function uploadBookingPhoto(base64Image: string, fileName: string): Promise<string | null> {
+  try {
+    if (!base64Image || !base64Image.startsWith('data:')) {
+      // It's already a URL or empty, no need to upload
+      return base64Image || null;
+    }
+
+    // 1. Convert base64 to blob
+    const response = await fetch(base64Image);
+    const blob = await response.blob();
+
+    // 2. Upload to storage
+    const { data, error } = await supabase.storage
+      .from('booking-photos')
+      .upload(fileName, blob, {
+        contentType: blob.type || 'image/jpeg',
+        upsert: true
+      });
+
+    if (error) {
+      console.warn('Error uploading photo to Supabase storage:', error);
+      return null;
+    }
+
+    // 3. Get the public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('booking-photos')
+      .getPublicUrl(fileName);
+
+    return publicUrl;
+  } catch (err) {
+    console.warn('Failed to upload booking photo, falling back to base64 database storage:', err);
+    return null;
+  }
+}
+

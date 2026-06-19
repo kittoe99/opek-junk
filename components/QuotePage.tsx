@@ -8,7 +8,7 @@ import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptio
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
-import { supabase } from '../lib/supabase';
+import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 
 // ── Item Catalog ──
@@ -631,6 +631,16 @@ export const QuotePage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
+        let uploadedUrl = images[0] || '';
+        if (uploadedUrl && uploadedUrl.startsWith('data:')) {
+          const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
+          const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
+          if (publicUrl) {
+            uploadedUrl = publicUrl;
+            setImages(prev => [publicUrl, ...prev.slice(1)]);
+          }
+        }
+
         const customerInfo = {
           name,
           phone,
@@ -645,7 +655,7 @@ export const QuotePage: React.FC = () => {
           estimated_volume: price.estimatedVolume,
           price: price.price,
           estimate_summary: price.summary,
-          photo_url: images[0] || ''
+          photo_url: uploadedUrl
         };
 
         const { data, error: dbError } = await supabase
