@@ -91,12 +91,12 @@ export const MattressDisposalPage: React.FC = () => {
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/90">Eco-Haul Service</span>
               </div>
               <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                Same-Day Mattress Disposal.
+                Mattress Disposal.
                 <br />
-                <span className="text-brand">From $75 • Eco-Friendly</span>
+                <span className="text-brand">From $75</span>
               </h1>
               <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Get an instant flat-rate quote and book in minutes. Vetted local crews retrieve your mattress from any room — zero heavy lifting or curb dragging.
+                Same-day pickup from any room. Zero heavy lifting.
               </p>
 
               {/* ZIP Checker Form */}
@@ -153,12 +153,12 @@ export const MattressDisposalPage: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">Eco-Haul Service</span>
                 </div>
                 <h1 className="text-6xl lg:text-7xl font-black text-secondary tracking-tight mb-6 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                  Same-Day Mattress Disposal.
+                  Mattress Disposal.
                   <br />
-                  <span className="text-brand">From $75 • Eco-Friendly</span>
+                  <span className="text-brand">From $75</span>
                 </h1>
                 <p className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                  Get an instant flat-rate quote and book in minutes. Vetted local crews retrieve your mattress from any room — zero heavy lifting or curb dragging.
+                  Same-day pickup from any room. Zero heavy lifting.
                 </p>
 
                 {/* ZIP Checker Form */}
