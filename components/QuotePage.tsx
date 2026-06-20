@@ -12,17 +12,17 @@ import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 
 // ── Item Catalog ──
-interface CatalogItem {
+export interface CatalogItem {
   name: string;
   image: string;
 }
-interface CatalogCategory {
+export interface CatalogCategory {
   label: string;
   icon: React.ReactNode;
   items: CatalogItem[];
 }
 
-const ITEM_CATALOG: CatalogCategory[] = [
+export const ITEM_CATALOG: CatalogCategory[] = [
   {
     label: 'Popular Items',
     icon: <PopularItemsIcon size={18} />,

@@ -257,7 +257,7 @@ export const MattressDisposalPage: React.FC = () => {
           {/* Buttons sit flush below the image background */}
           <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <button
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              onClick={() => (document.querySelector('input[type="text"]') as HTMLInputElement | null)?.focus()}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
             >
               <span>View Pricing</span>
@@ -319,7 +319,7 @@ export const MattressDisposalPage: React.FC = () => {
 
                 <div className="flex flex-row gap-0 animate-slide-up mb-8" style={{ animationDelay: '0.25s' }}>
                   <button
-                    onClick={() => document.querySelector('input[type="text"]')?.focus()}
+                    onClick={() => (document.querySelector('input[type="text"]') as HTMLInputElement | null)?.focus()}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
                   >
                     <span>View Pricing</span>
