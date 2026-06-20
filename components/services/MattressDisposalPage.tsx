@@ -263,7 +263,7 @@ export const MattressDisposalPage: React.FC = () => {
               <span>View Pricing</span>
             </button>
             <button
-              onClick={() => navigate('/booking')}
+              onClick={() => navigate('/booking/mattress')}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
             >
               Book Online
@@ -325,7 +325,7 @@ export const MattressDisposalPage: React.FC = () => {
                     <span>View Pricing</span>
                   </button>
                   <button
-                    onClick={() => navigate('/booking')}
+                    onClick={() => navigate('/booking/mattress')}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                   >
                     Book Online
@@ -538,7 +538,7 @@ export const MattressDisposalPage: React.FC = () => {
         titleAccent="Same-day booking available." 
       />
 
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
+      <QuickActionBar onBookOnline={() => navigate('/booking/mattress')} />
 
       <ZipCheckModal 
         isOpen={isZipModalOpen}
