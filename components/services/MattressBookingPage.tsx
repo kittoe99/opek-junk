@@ -1,12 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, User, Phone, Mail, Home, Layers, Package, Minus, Plus, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, Mail, Home, Layers, Package, Minus, Plus, X } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
 import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../QuotePage';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
+import { ContactIntakeForm } from '../shared/ContactIntakeForm';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
+
+const MINIMUM_JUNK_REMOVAL_PRICE = 169;
+const MATTRESS_PRICE = 105;
+const BOX_SPRING_PRICE = 66;
+const BED_FRAME_PRICE = 72;
+const MATTRESS_FULL_SET_PRICE = 269;
 
 interface BookingItem {
   id: string;
@@ -75,7 +82,7 @@ export const MattressBookingPage: React.FC = () => {
     preselectItems?: { name: string; quantity: number }[];
   } | null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1); // Step 4 is success
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6>(1); // Step 6 is success
   
   // Step 1: Zip
   const [zipCode, setZipCode] = useState('');
@@ -85,11 +92,11 @@ export const MattressBookingPage: React.FC = () => {
   // Step 2: Items Selection & Custom Additions
   const [selectedItems, setSelectedItems] = useState<BookingItem[]>(() => {
     const defaultItems: BookingItem[] = [
-      { id: 'mattress', name: 'Mattress', quantity: 1, icon: MattressIcon, basePriceEstimate: 75 },
-      { id: 'boxspring', name: 'Box Spring', quantity: 0, icon: BoxSpringIcon, basePriceEstimate: 65 },
-      { id: 'bedframe', name: 'Bed Frame', quantity: 0, icon: BedFrameIcon, basePriceEstimate: 70 },
-      { id: 'dresser', name: 'Dresser', quantity: 0, icon: Layers, basePriceEstimate: 75 },
-      { id: 'nightstand', name: 'Nightstand', quantity: 0, icon: BedDouble, basePriceEstimate: 45 },
+      { id: 'mattress', name: 'Mattress', quantity: 1, icon: MattressIcon, basePriceEstimate: MATTRESS_PRICE },
+      { id: 'boxspring', name: 'Box Spring', quantity: 0, icon: BoxSpringIcon, basePriceEstimate: BOX_SPRING_PRICE },
+      { id: 'bedframe', name: 'Bed Frame', quantity: 0, icon: BedFrameIcon, basePriceEstimate: BED_FRAME_PRICE },
+      { id: 'dresser', name: 'Dresser', quantity: 0, icon: Layers, basePriceEstimate: 99 },
+      { id: 'nightstand', name: 'Nightstand', quantity: 0, icon: BedDouble, basePriceEstimate: 50 },
       { id: 'bedding', name: 'Bedding / Pillows (Bagged)', quantity: 0, icon: Package, basePriceEstimate: 20 }
     ];
 
@@ -156,6 +163,7 @@ export const MattressBookingPage: React.FC = () => {
     zipCode: ''
   });
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [contactLoading, setContactLoading] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const handleZipSubmit = async (e: React.FormEvent) => {
@@ -345,37 +353,77 @@ export const MattressBookingPage: React.FC = () => {
 
     let bundleTotal = 0;
 
-    // 1. Triple sets (Mattress + Box Spring + Bed Frame) -> $175
+    // 1. Triple sets (Mattress + Box Spring + Bed Frame) -> target package price
     const tripleSets = Math.min(m, b, f);
-    bundleTotal += tripleSets * 175;
+    bundleTotal += tripleSets * MATTRESS_FULL_SET_PRICE;
     m -= tripleSets;
     b -= tripleSets;
     f -= tripleSets;
 
-    // 2. Mattress + Box Spring sets -> $125
+    // 2. Mattress + Box Spring sets
     const doubleSets = Math.min(m, b);
-    bundleTotal += doubleSets * 125;
+    bundleTotal += doubleSets * (MATTRESS_PRICE + BOX_SPRING_PRICE);
     m -= doubleSets;
     b -= doubleSets;
 
-    // 3. Mattress + Bed Frame sets -> $125
+    // 3. Mattress + Bed Frame sets
     const mfSets = Math.min(m, f);
-    bundleTotal += mfSets * 125;
+    bundleTotal += mfSets * (MATTRESS_PRICE + BED_FRAME_PRICE);
     m -= mfSets;
     f -= mfSets;
 
-    // 4. Box Spring + Bed Frame sets -> $115
+    // 4. Box Spring + Bed Frame sets
     const bfSets = Math.min(b, f);
-    bundleTotal += bfSets * 115;
+    bundleTotal += bfSets * (BOX_SPRING_PRICE + BED_FRAME_PRICE);
     b -= bfSets;
     f -= bfSets;
 
     // 5. Standalone items
-    bundleTotal += m * 75;
-    bundleTotal += b * 65;
-    bundleTotal += f * 70;
+    bundleTotal += m * MATTRESS_PRICE;
+    bundleTotal += b * BOX_SPRING_PRICE;
+    bundleTotal += f * BED_FRAME_PRICE;
 
-    return bundleTotal + extraCost;
+    const subtotal = bundleTotal + extraCost;
+    return subtotal > 0 ? Math.max(MINIMUM_JUNK_REMOVAL_PRICE, subtotal) : 0;
+  };
+
+  const handleContactReveal = async (name: string, phone: string) => {
+    setContactLoading(true);
+    try {
+      const totalPrice = calculateTotal();
+      const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
+
+      try {
+        const { error } = await supabase
+          .from('Prebooking')
+          .insert([{
+            customer_info: {
+              name,
+              phone,
+              email: ''
+            },
+            booking_details: {
+              service_type: 'Mattress Disposal',
+              zip_code: zipCode || null,
+              details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
+              estimated_items: itemsList,
+              price: totalPrice
+            },
+            status: 'partially_submitted'
+          }]);
+
+        if (error) {
+          console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', err);
+      }
+
+      setFormData(prev => ({ ...prev, name, phone }));
+      setStep(4);
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
@@ -442,7 +490,7 @@ export const MattressBookingPage: React.FC = () => {
       });
 
       setOrderNumber(generatedOrderNumber);
-      setStep(4);
+      setStep(6);
     } catch (err) {
       console.error('Error submitting booking:', err);
     } finally {
@@ -518,7 +566,7 @@ export const MattressBookingPage: React.FC = () => {
       <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
         <div className="text-center space-y-2 mb-6">
           <h2 className="text-lg font-black text-secondary uppercase tracking-wider">What are we picking up?</h2>
-          <p className="text-secondary-400 text-xs">Select your items. Transparent upfront flat-rates.</p>
+          <p className="text-secondary-400 text-xs">Select your items, then reveal your custom estimate.</p>
         </div>
 
         {/* Primary Options Grid */}
@@ -672,15 +720,6 @@ export const MattressBookingPage: React.FC = () => {
           </div>
         )}
 
-        {/* Total Price and Proceed */}
-        <div className="bg-secondary-50/50 rounded-3xl p-5 md:p-6 border border-secondary-100 mt-8 flex justify-between items-end">
-          <div>
-            <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
-            <p className="text-xs text-secondary-500 mt-1">Upfront Flat-Rate pricing</p>
-          </div>
-          <p className="text-2xl md:text-3xl font-black text-brand">${calculateTotal()}</p>
-        </div>
-
         <div className="pt-6 flex gap-3">
           <button 
             type="button" 
@@ -699,7 +738,7 @@ export const MattressBookingPage: React.FC = () => {
             disabled={calculateTotal() === 0}
             className="flex-1 py-4 bg-brand hover:bg-brand-600 text-white font-black text-sm uppercase tracking-widest rounded-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
           >
-            Continue to Booking <ArrowRight size={14} />
+            Reveal Price <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -707,6 +746,102 @@ export const MattressBookingPage: React.FC = () => {
   };
 
   const renderStep3 = () => (
+    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+      <ContactIntakeForm
+        serviceType="Mattress Disposal"
+        isLoading={contactLoading}
+        onReveal={handleContactReveal}
+      />
+
+      <button 
+        type="button" 
+        onClick={() => setStep(2)} 
+        className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+      >
+        <ArrowLeft size={14} /> Back to Items
+      </button>
+    </div>
+  );
+
+  const renderStep4 = () => (
+    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+      <div className="text-center space-y-2 mb-6">
+        <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+          Estimate Ready
+        </span>
+        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Your Mattress Removal Price</h2>
+        <p className="text-secondary-400 text-xs">Review your estimate and selected items before booking pickup.</p>
+      </div>
+
+      <div className="bg-secondary text-white rounded-3xl p-6 border border-secondary-100 shadow-xl shadow-secondary/10 text-center">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">Estimated Total</p>
+        <p className="text-5xl font-black text-brand mt-2">${calculateTotal()}</p>
+        <p className="text-xs text-white/70 mt-2">Upfront flat-rate pricing. Minimum order is ${MINIMUM_JUNK_REMOVAL_PRICE}.</p>
+      </div>
+
+      <div className="bg-white border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden shadow-sm">
+        <div className="bg-secondary-50/50 px-4 py-3 flex items-center justify-between">
+          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Selected Items</p>
+          <button 
+            type="button"
+            onClick={() => setStep(2)} 
+            className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
+          >
+            Change
+          </button>
+        </div>
+        {selectedItems.filter(i => i.quantity > 0).map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.id} className="flex items-center justify-between p-4 bg-white">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-secondary-50 flex items-center justify-center shrink-0">
+                  <Icon className="w-5 h-5 text-secondary-500" />
+                </div>
+                <p className="text-sm font-bold text-secondary">{item.name}</p>
+              </div>
+              <span className="text-xs font-black text-secondary-400">x{item.quantity}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="p-4 bg-white rounded-2xl border border-secondary-100 flex justify-between items-center shadow-sm">
+        <div className="min-w-0 flex-1 pr-4">
+          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Contact Info</p>
+          <p className="font-bold text-secondary text-xs mt-0.5 truncate">
+            {formData.name} - {formData.phone}
+          </p>
+        </div>
+        <button 
+          type="button"
+          onClick={() => setStep(3)} 
+          className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
+        >
+          Change
+        </button>
+      </div>
+
+      <div className="pt-2 flex gap-3">
+        <button 
+          type="button" 
+          onClick={() => setStep(3)} 
+          className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+        >
+          <ArrowLeft size={14} /> Back
+        </button>
+        <button
+          type="button"
+          onClick={() => setStep(5)}
+          className="flex-1 py-3.5 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+        >
+          Continue to Booking <ArrowRight size={14} />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderStep5 = () => (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       <div className="text-center space-y-2 mb-6">
         <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Reservation Details</h2>
@@ -722,7 +857,23 @@ export const MattressBookingPage: React.FC = () => {
         </div>
         <button 
           type="button"
-          onClick={() => setStep(2)} 
+          onClick={() => setStep(4)} 
+          className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
+        >
+          Review
+        </button>
+      </div>
+
+      <div className="p-4 bg-white rounded-2xl border border-secondary-100 flex justify-between items-center shadow-sm">
+        <div className="min-w-0 flex-1 pr-4">
+          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Contact Info</p>
+          <p className="font-bold text-secondary text-xs mt-0.5 truncate">
+            {formData.name} - {formData.phone}
+          </p>
+        </div>
+        <button 
+          type="button"
+          onClick={() => setStep(3)} 
           className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
         >
           Change
@@ -748,57 +899,20 @@ export const MattressBookingPage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Full Name</label>
+          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Email</label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <User className="w-5 h-5 text-secondary-400" />
+              <Mail className="w-5 h-5 text-secondary-400" />
             </div>
             <input
-              type="text"
+              type="email"
               required
-              autoComplete="name"
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
-              placeholder="John Doe"
+              autoComplete="email"
+              value={formData.email}
+              onChange={e => setFormData({ ...formData, email: e.target.value })}
+              placeholder="john@example.com"
               className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
             />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Phone</label>
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Phone className="w-5 h-5 text-secondary-400" />
-              </div>
-              <input
-                type="tel"
-                required
-                autoComplete="tel"
-                value={formData.phone}
-                onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="(555) 123-4567"
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Email</label>
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Mail className="w-5 h-5 text-secondary-400" />
-              </div>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                value={formData.email}
-                onChange={e => setFormData({ ...formData, email: e.target.value })}
-                placeholder="john@example.com"
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
-              />
-            </div>
           </div>
         </div>
 
@@ -904,7 +1018,7 @@ export const MattressBookingPage: React.FC = () => {
         <div className="pt-2 flex gap-3">
           <button 
             type="button" 
-            onClick={() => setStep(2)} 
+            onClick={() => setStep(4)} 
             className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
           >
             <ArrowLeft size={14} /> Back
@@ -974,7 +1088,7 @@ export const MattressBookingPage: React.FC = () => {
           Book mattress <span className="text-brand">removal.</span>
         </h1>
         <p className="text-sm text-secondary-400">
-          Three quick steps — check availability, select options, complete booking. A matched local provider confirms within 15 minutes.
+          A few quick steps to check availability, select options, reveal your price, and complete booking. A matched local provider confirms within 15 minutes.
         </p>
       </div>
 
@@ -985,7 +1099,9 @@ export const MattressBookingPage: React.FC = () => {
           {step === 1 && renderStep1()}
           {step === 2 && renderStep2()}
           {step === 3 && renderStep3()}
-          {step === 4 && renderSuccess()}
+          {step === 4 && renderStep4()}
+          {step === 5 && renderStep5()}
+          {step === 6 && renderSuccess()}
         </div>
       </div>
       
