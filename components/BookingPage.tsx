@@ -533,7 +533,7 @@ export const BookingPage: React.FC = () => {
           Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
         </h1>
         <p className="text-sm text-secondary-400">
-          Three quick steps — details, address, review. A matched provider confirms within 15 minutes.
+          Four quick steps — contact, schedule, address, review. A matched provider confirms within 15 minutes.
         </p>
       </div>
 

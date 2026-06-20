@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, Mail, Home, Layers, Package, Minus, Plus, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, Mail, Home, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
 import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../QuotePage';
@@ -13,6 +13,7 @@ const MINIMUM_JUNK_REMOVAL_PRICE = 169;
 const MATTRESS_PRICE = 105;
 const BOX_SPRING_PRICE = 66;
 const BED_FRAME_PRICE = 72;
+const MATTRESS_TWO_ITEM_BUNDLE_PRICE = 189;
 const MATTRESS_FULL_SET_PRICE = 269;
 
 interface BookingItem {
@@ -82,7 +83,7 @@ export const MattressBookingPage: React.FC = () => {
     preselectItems?: { name: string; quantity: number }[];
   } | null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6>(1); // Step 6 is success
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(1); // Step 7 is success
   
   // Step 1: Zip
   const [zipCode, setZipCode] = useState('');
@@ -144,13 +145,14 @@ export const MattressBookingPage: React.FC = () => {
   const [catalogSearch, setCatalogSearch] = useState('');
   const [expandedCategory, setExpandedCategory] = useState('Popular Items');
   const [showCatalogModal, setShowCatalogModal] = useState(false);
+  const stepContentRef = useRef<HTMLDivElement>(null);
   const addressDropdownRef = useRef<HTMLDivElement>(null);
   const addressDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
   const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
   const [addressLoading, setAddressLoading] = useState(false);
 
-  // Step 3: Reservation Details Form
+  // Reservation details shared across the final booking steps
   const [formData, setFormData] = useState({
     date: '',
     name: '',
@@ -271,6 +273,19 @@ export const MattressBookingPage: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const scrollTarget = stepContentRef.current;
+    if (!scrollTarget) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.requestAnimationFrame(() => {
+      scrollTarget.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    });
+  }, [step]);
+
   const fetchAddressSuggestions = useCallback(async (query: string) => {
     if (query.trim().length < 3) {
       setAddressSuggestions([]);
@@ -350,6 +365,22 @@ export const MattressBookingPage: React.FC = () => {
         extraCost += item.quantity * item.basePriceEstimate;
       }
     });
+
+    const mattressItemCount = m + b + f;
+    if (extraCost > 0) {
+      const itemizedSubtotal = (m * MATTRESS_PRICE) + (b * BOX_SPRING_PRICE) + (f * BED_FRAME_PRICE) + extraCost;
+      return Math.max(MINIMUM_JUNK_REMOVAL_PRICE, itemizedSubtotal);
+    }
+
+    if (extraCost === 0) {
+      if (m === 1 && b === 1 && f === 1) {
+        return MATTRESS_FULL_SET_PRICE;
+      }
+
+      if (mattressItemCount === 2) {
+        return MATTRESS_TWO_ITEM_BUNDLE_PRICE;
+      }
+    }
 
     let bundleTotal = 0;
 
@@ -490,7 +521,7 @@ export const MattressBookingPage: React.FC = () => {
       });
 
       setOrderNumber(generatedOrderNumber);
-      setStep(6);
+      setStep(7);
     } catch (err) {
       console.error('Error submitting booking:', err);
     } finally {
@@ -724,7 +755,7 @@ export const MattressBookingPage: React.FC = () => {
           <button 
             type="button" 
             onClick={() => setStep(1)} 
-            className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
           >
             <ArrowLeft size={14} /> Back
           </button>
@@ -736,7 +767,7 @@ export const MattressBookingPage: React.FC = () => {
               }
             }}
             disabled={calculateTotal() === 0}
-            className="flex-1 py-4 bg-brand hover:bg-brand-600 text-white font-black text-sm uppercase tracking-widest rounded-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
           >
             Reveal Price <ArrowRight size={14} />
           </button>
@@ -756,96 +787,145 @@ export const MattressBookingPage: React.FC = () => {
       <button 
         type="button" 
         onClick={() => setStep(2)} 
-        className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+        className="w-full py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
       >
         <ArrowLeft size={14} /> Back to Items
       </button>
     </div>
   );
 
-  const renderStep4 = () => (
-    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-      <div className="text-center space-y-2 mb-6">
-        <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
-          Estimate Ready
-        </span>
-        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Your Mattress Removal Price</h2>
-        <p className="text-secondary-400 text-xs">Review your estimate and selected items before booking pickup.</p>
-      </div>
+  const renderStep4 = () => {
+    const total = calculateTotal();
+    const pickupFee = Math.round(total * 0.65);
+    const disposalFee = total - pickupFee;
+    const visibleItems = selectedItems.filter(i => i.quantity > 0);
+    const totalItems = visibleItems.reduce((sum, item) => sum + item.quantity, 0);
 
-      <div className="bg-secondary text-white rounded-3xl p-6 border border-secondary-100 shadow-xl shadow-secondary/10 text-center">
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">Estimated Total</p>
-        <p className="text-5xl font-black text-brand mt-2">${calculateTotal()}</p>
-        <p className="text-xs text-white/70 mt-2">Upfront flat-rate pricing. Minimum order is ${MINIMUM_JUNK_REMOVAL_PRICE}.</p>
-      </div>
-
-      <div className="bg-white border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden shadow-sm">
-        <div className="bg-secondary-50/50 px-4 py-3 flex items-center justify-between">
-          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Selected Items</p>
-          <button 
-            type="button"
-            onClick={() => setStep(2)} 
-            className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
-          >
-            Change
-          </button>
+    return (
+      <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+        <div className="text-center space-y-2 mb-6">
+          <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+            Estimate Ready
+          </span>
+          <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Your Mattress Removal Price</h2>
+          <p className="text-secondary-400 text-xs">Review your estimate and selected items before booking pickup.</p>
         </div>
-        {selectedItems.filter(i => i.quantity > 0).map((item) => {
-          const Icon = item.icon;
-          return (
-            <div key={item.id} className="flex items-center justify-between p-4 bg-white">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-secondary-50 flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5 text-secondary-500" />
-                </div>
-                <p className="text-sm font-bold text-secondary">{item.name}</p>
-              </div>
-              <span className="text-xs font-black text-secondary-400">x{item.quantity}</span>
+
+        <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-24 h-20 shrink-0 rounded-xl overflow-hidden bg-secondary-50 border border-secondary-100">
+            <img 
+              src="/mattress-pickup.webp"
+              alt="Mattress removal estimate"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="px-2 py-0.5 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-wider rounded-full border border-brand/20">
+                Instant Estimate
+              </span>
+              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-wider rounded-full border border-emerald-100">
+                Guaranteed
+              </span>
             </div>
-          );
-        })}
-      </div>
-
-      <div className="p-4 bg-white rounded-2xl border border-secondary-100 flex justify-between items-center shadow-sm">
-        <div className="min-w-0 flex-1 pr-4">
-          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Contact Info</p>
-          <p className="font-bold text-secondary text-xs mt-0.5 truncate">
-            {formData.name} - {formData.phone}
-          </p>
+            <h3 className="text-sm font-black text-secondary">Mattress Disposal</h3>
+            <p className="text-secondary-400 text-xs mt-1 leading-normal">
+              {totalItems} item{totalItems === 1 ? '' : 's'} selected
+            </p>
+          </div>
         </div>
-        <button 
-          type="button"
-          onClick={() => setStep(3)} 
-          className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
-        >
-          Change
-        </button>
-      </div>
 
-      <div className="pt-2 flex gap-3">
-        <button 
-          type="button" 
-          onClick={() => setStep(3)} 
-          className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
-        >
-          <ArrowLeft size={14} /> Back
-        </button>
-        <button
-          type="button"
-          onClick={() => setStep(5)}
-          className="flex-1 py-3.5 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
-        >
-          Continue to Booking <ArrowRight size={14} />
-        </button>
+        <div className="bg-white rounded-3xl p-5 border border-secondary-100">
+          <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
+              <span className="text-secondary-900 font-bold">${pickupFee}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
+              <span className="text-secondary-900 font-bold">${disposalFee}</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+              <p className="text-xs text-secondary-500 mt-1">Minimum order is ${MINIMUM_JUNK_REMOVAL_PRICE}</p>
+            </div>
+            <p className="text-3xl font-black text-brand">${total}</p>
+          </div>
+        </div>
+
+        <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+            <ShieldCheck size={18} strokeWidth={2.5} />
+          </div>
+          <div className="flex-1 min-w-0 text-left">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
+              <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+            </div>
+            <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+              All bookings are covered by platform damage protection.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider">
+              {totalItems} item{totalItems === 1 ? '' : 's'}
+            </p>
+            <button 
+              type="button"
+              onClick={() => setStep(2)} 
+              className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
+            >
+              Change
+            </button>
+          </div>
+          <div className="space-y-1">
+            {visibleItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between text-sm">
+                <span className="text-secondary-600">{item.name}</span>
+                {item.quantity > 1 && <span className="text-secondary-400 text-xs">×{item.quantity}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-xs text-secondary-500 leading-relaxed">
+          Upfront flat-rate pricing for mattress pickup and disposal. Final details are confirmed by your matched local provider.
+        </p>
+
+        <div className="space-y-3 pt-2">
+          <button
+            type="button"
+            onClick={() => setStep(5)}
+            className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+          >
+            <span className="text-sm font-black uppercase tracking-wider">
+              Continue to Booking
+            </span>
+            <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setStep(3)}
+            className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1 bg-transparent cursor-pointer"
+          >
+            <ArrowLeft size={14} /> Back
+          </button>
+          <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderStep5 = () => (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       <div className="text-center space-y-2 mb-6">
-        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Reservation Details</h2>
-        <p className="text-secondary-400 text-xs">Tell us when and where to pick up your mattress.</p>
+        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Schedule Pickup</h2>
+        <p className="text-secondary-400 text-xs">Choose your preferred date and confirmation email.</p>
       </div>
 
       <div className="p-4 bg-secondary-50/50 rounded-2xl border border-secondary-100 flex justify-between items-center shadow-sm">
@@ -880,7 +960,13 @@ export const MattressBookingPage: React.FC = () => {
         </button>
       </div>
 
-      <form onSubmit={handleFinalSubmit} className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setStep(6);
+        }}
+        className="space-y-4"
+      >
         <div>
           <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Preferred Date</label>
           <div className="relative group">
@@ -916,6 +1002,49 @@ export const MattressBookingPage: React.FC = () => {
           </div>
         </div>
 
+        <div className="pt-2 flex gap-3">
+          <button 
+            type="button" 
+            onClick={() => setStep(4)} 
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+          >
+            <ArrowLeft size={14} /> Back
+          </button>
+          <button
+            type="submit"
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+          >
+            Continue to Address <ArrowRight size={14} />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+
+  const renderStep6 = () => (
+    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+      <div className="text-center space-y-2 mb-6">
+        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Pickup Address</h2>
+        <p className="text-secondary-400 text-xs">Tell us where to pick up your mattress.</p>
+      </div>
+
+      <div className="p-4 bg-secondary-50/50 rounded-2xl border border-secondary-100 flex justify-between items-center shadow-sm">
+        <div className="min-w-0 flex-1 pr-4">
+          <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Schedule</p>
+          <p className="font-bold text-secondary text-xs mt-0.5 truncate">
+            {formData.date ? new Date(formData.date).toLocaleDateString() : 'Date not selected'} - {formData.email}
+          </p>
+        </div>
+        <button 
+          type="button"
+          onClick={() => setStep(5)} 
+          className="text-brand text-xs font-black uppercase tracking-wider hover:underline transition-colors border-none bg-transparent cursor-pointer shrink-0"
+        >
+          Change
+        </button>
+      </div>
+
+      <form onSubmit={handleFinalSubmit} className="space-y-4">
         <div ref={addressDropdownRef} className="relative">
           <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Pickup Address</label>
           <div className="relative group">
@@ -972,61 +1101,59 @@ export const MattressBookingPage: React.FC = () => {
           </div>
         </div>
 
-        {(formData.city || formData.state || formData.zipCode) && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">City</label>
-              <input
-                type="text"
-                autoComplete="address-level2"
-                value={formData.city}
-                onChange={e => setFormData({ ...formData, city: e.target.value })}
-                placeholder="City"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">State</label>
-              <input
-                type="text"
-                autoComplete="address-level1"
-                value={formData.state}
-                onChange={e => setFormData({ ...formData, state: e.target.value })}
-                placeholder="State"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">ZIP</label>
-              <input
-                type="text"
-                inputMode="numeric"
-                autoComplete="postal-code"
-                value={formData.zipCode || zipCode}
-                onChange={e => {
-                  const nextZip = e.target.value.replace(/\D/g, '').slice(0, 5);
-                  setFormData({ ...formData, zipCode: nextZip });
-                  setZipCode(nextZip);
-                }}
-                placeholder="ZIP"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-              />
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
+          <div>
+            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">City</label>
+            <input
+              type="text"
+              autoComplete="address-level2"
+              value={formData.city}
+              onChange={e => setFormData({ ...formData, city: e.target.value })}
+              placeholder="City"
+              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+            />
           </div>
-        )}
+          <div>
+            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">State</label>
+            <input
+              type="text"
+              autoComplete="address-level1"
+              value={formData.state}
+              onChange={e => setFormData({ ...formData, state: e.target.value })}
+              placeholder="State"
+              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">ZIP</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
+              value={formData.zipCode || zipCode}
+              onChange={e => {
+                const nextZip = e.target.value.replace(/\D/g, '').slice(0, 5);
+                setFormData({ ...formData, zipCode: nextZip });
+                setZipCode(nextZip);
+              }}
+              placeholder="ZIP"
+              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+            />
+          </div>
+        </div>
 
         <div className="pt-2 flex gap-3">
           <button 
             type="button" 
-            onClick={() => setStep(4)} 
-            className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+            onClick={() => setStep(5)} 
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
           >
             <ArrowLeft size={14} /> Back
           </button>
           <button
             type="submit"
             disabled={submitLoading}
-            className="flex-1 py-3.5 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
           >
             {submitLoading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Confirm Booking'}
           </button>
@@ -1095,13 +1222,14 @@ export const MattressBookingPage: React.FC = () => {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
 
 
-        <div className="mt-8">
+        <div ref={stepContentRef} className="mt-8 scroll-mt-28 md:scroll-mt-36">
           {step === 1 && renderStep1()}
           {step === 2 && renderStep2()}
           {step === 3 && renderStep3()}
           {step === 4 && renderStep4()}
           {step === 5 && renderStep5()}
-          {step === 6 && renderSuccess()}
+          {step === 6 && renderStep6()}
+          {step === 7 && renderSuccess()}
         </div>
       </div>
       
@@ -1342,7 +1470,7 @@ export const MattressBookingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowCatalogModal(false)}
-                className="px-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-md shadow-brand/10 hover:shadow-brand/20 cursor-pointer"
+                className="px-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-secondary/10 hover:shadow-brand/20 cursor-pointer"
               >
                 Confirm & Close
               </button>

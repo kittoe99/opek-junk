@@ -26,7 +26,7 @@ interface BookingDetailsFormProps {
   partialBookingId?: string | null;
 }
 
-type DetailStep = 'contact' | 'address' | 'review';
+type DetailStep = 'contact' | 'schedule' | 'address' | 'review';
 
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
@@ -289,8 +289,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       console.warn('Failed to save partial booking lead on contact step:', err);
     } finally {
       setContactSubmitting(false);
-      setStep('address');
+      setStep('schedule');
     }
+  };
+
+  const handleScheduleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep('address');
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -300,7 +305,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   const handleBackStep = () => {
     if (step === 'review') setStep('address');
-    else if (step === 'address') setStep('contact');
+    else if (step === 'address') setStep('schedule');
+    else if (step === 'schedule') setStep('contact');
     else if (onBack) onBack();
   };
 
@@ -466,8 +472,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   }
 
   // Step labels for indicator
-  const stepLabels = ['Contact', 'Address', 'Review'];
-  const stepIndex = step === 'contact' ? 0 : step === 'address' ? 1 : 2;
+  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review'];
+  const stepIndex = step === 'contact' ? 0 : step === 'schedule' ? 1 : step === 'address' ? 2 : 3;
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
@@ -538,6 +544,49 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </button>
             <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20">
               {contactSubmitting ? 'Saving...' : <>Continue <ArrowRight size={14} /></>}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* ─── Schedule step ─── */}
+      {step === 'schedule' && (
+        <form onSubmit={handleScheduleSubmit} className="space-y-4">
+          <div className="text-center space-y-2 mb-6">
+            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+              <CalendarCheck className="w-6 h-6 text-brand" strokeWidth={2.5} />
+            </div>
+            <div>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Schedule Pickup</h2>
+              <p className="text-secondary-400 text-xs">
+                Choose your preferred service date before adding the address.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
+              <CalendarCheck size={11} className="inline mr-1" /> Preferred Date *
+            </label>
+            <div className="relative group">
+              <input
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                required
+                type="date"
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
+              <ArrowLeft size={14} /> Back
+            </button>
+            <button type="submit" className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+              Continue to Address <ArrowRight size={14} />
             </button>
           </div>
         </form>
@@ -671,7 +720,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Details & Review</h2>
-              <p className="text-secondary-400 text-xs">Pick a date and review your booking</p>
+              <p className="text-secondary-400 text-xs">Review your booking before confirming</p>
             </div>
           </div>
 
@@ -685,18 +734,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
             </div>
             <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date *</label>
-              <div className="relative group">
-                <input
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  required
-                  type="date"
-                  min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-                />
-              </div>
+              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date</label>
+              <input
+                readOnly
+                value={formData.date}
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary font-bold focus:outline-none transition-colors"
+              />
             </div>
           </div>
 
