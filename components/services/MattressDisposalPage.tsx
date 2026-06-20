@@ -6,6 +6,40 @@ import { ServiceArea } from '../ServiceArea';
 import { QuickActionBar } from '../QuickActionBar';
 import { ZipCheckModal } from '../ZipCheckModal';
 
+const MattressIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="3" y="8" width="18" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 12h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="2 4"/>
+    <circle cx="8" cy="12" r="1" className="stroke-brand" strokeWidth="1.5"/>
+    <circle cx="16" cy="12" r="1" className="stroke-brand" strokeWidth="1.5"/>
+  </svg>
+);
+
+const BoxSpringIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="3" y="10" width="18" height="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6 10v8M12 10v8M18 10v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 14h18" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const BedFrameIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M4 4v16M20 10v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4 14h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4 8h5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4 11h5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const CompleteSetIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M4 8h16v4H4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4 12h16v4H4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4 16v4M20 16v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9 10l2 2 4-4" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
   const [isZipModalOpen, setIsZipModalOpen] = useState(false);
@@ -253,22 +287,22 @@ export const MattressDisposalPage: React.FC = () => {
                 {[
                   {
                     title: "Mattresses (From $75)",
-                    icon: BedDouble,
+                    icon: MattressIcon,
                     description: "Standard innerspring, memory foam, latex, hybrid, pillow-top, futons, and crib mattresses of any size (Twin to California King)."
                   },
                   {
                     title: "Box Springs (From $65)",
-                    icon: Sparkles,
+                    icon: BoxSpringIcon,
                     description: "Traditional wood box springs, metal foundations, split box springs, or low-profile bases retrieved from any floor."
                   },
                   {
                     title: "Bed Frames (From $70)",
-                    icon: Leaf,
+                    icon: BedFrameIcon,
                     description: "Steel bed frames, wooden headboards, footboards, wood slats, adjustables, platform beds, bunk beds, and daybeds."
                   },
                   {
                     title: "Complete Sets (Save 15%)",
-                    icon: Check,
+                    icon: CompleteSetIcon,
                     description: "Bundle your mattress, box spring, and frame removal into a single flat-rate package for maximum pricing discount."
                   }
                 ].map((item) => {
@@ -289,10 +323,9 @@ export const MattressDisposalPage: React.FC = () => {
                       }}
                       className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
                     >
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-secondary-900 flex items-center justify-center shrink-0 transition-colors duration-300">
                         <Icon 
                           className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
-                          strokeWidth={1.5} 
                         />
                       </div>
                       <div className="space-y-1">
