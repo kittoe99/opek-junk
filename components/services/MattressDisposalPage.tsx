@@ -127,13 +127,12 @@ export const MattressDisposalPage: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.35s' }}>
-            <a
-              href="tel:8313187139"
+            <button
+              onClick={() => document.querySelector('input[type="text"]')?.focus()}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
             >
-              <Phone size={14} className="fill-white" />
-              <span>Call (831) 318-7139</span>
-            </a>
+              <span>View Pricing</span>
+            </button>
             <button
               onClick={() => navigate('/booking')}
               className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
@@ -187,13 +186,12 @@ export const MattressDisposalPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-                  <a
-                    href="tel:8313187139"
+                  <button
+                    onClick={() => document.querySelector('input[type="text"]')?.focus()}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
                   >
-                    <Phone size={14} className="fill-white" />
-                    <span>Call (831) 318-7139</span>
-                  </a>
+                    <span>View Pricing</span>
+                  </button>
                   <button
                     onClick={() => navigate('/booking')}
                     className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
