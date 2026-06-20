@@ -99,7 +99,7 @@ export const MattressDisposalPage: React.FC = () => {
                 Same-day pickup from any room. Zero heavy lifting.
               </p>
 
-              <div className="flex flex-row gap-4 animate-slide-up mb-8" style={{ animationDelay: '0.3s' }}>
+              <div className="flex flex-row gap-4 animate-slide-up mb-2" style={{ animationDelay: '0.3s' }}>
                 <button
                   onClick={() => document.querySelector('input[type="text"]')?.focus()}
                   className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
@@ -114,32 +114,34 @@ export const MattressDisposalPage: React.FC = () => {
                 </button>
               </div>
 
-              {/* ZIP Checker Form */}
-              <div className="animate-slide-up space-y-3" style={{ animationDelay: '0.35s' }}>
-                <p className="text-xs font-bold text-white uppercase tracking-wider mb-2">Check your pricing instantly</p>
-                <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={5}
-                    value={zipValue}
-                    onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); }}
-                    onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
-                    placeholder="Enter ZIP code for pricing"
-                    className="flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary focus:outline-none font-mono tracking-wider"
-                    style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
-                  />
-                  <button
-                    onClick={handleZipCheck}
-                    disabled={zipValue.length !== 5 || zipLoading}
-                    className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
-                  >
-                    {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
-                  </button>
-                </div>
-                {zipError && <p className="text-xs text-red-500 font-semibold">{zipError}</p>}
-              </div>
+            </div>
+          </div>
 
+          {/* ZIP Checker Form (Mobile) */}
+          <div className="bg-secondary-50 px-4 py-8 border-b border-secondary-200">
+            <div className="max-w-md mx-auto space-y-3 animate-slide-up" style={{ animationDelay: '0.35s' }}>
+              <p className="text-sm font-bold text-secondary uppercase tracking-wider text-center mb-2">Check your pricing instantly</p>
+              <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={5}
+                  value={zipValue}
+                  onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); }}
+                  onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                  placeholder="Enter ZIP code for pricing"
+                  className="flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary focus:outline-none font-mono tracking-wider"
+                  style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
+                />
+                <button
+                  onClick={handleZipCheck}
+                  disabled={zipValue.length !== 5 || zipLoading}
+                  className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                >
+                  {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
+                </button>
+              </div>
+              {zipError && <p className="text-xs text-red-500 font-semibold text-center">{zipError}</p>}
             </div>
           </div>
         </div>
