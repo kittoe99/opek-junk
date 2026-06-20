@@ -118,6 +118,10 @@ export const ContactPage: React.FC = () => {
     );
   }
 
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300";
+  const labelCls = "block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5";
+  const primaryButtonCls = "group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20";
+
   return (
     <div className="bg-white">
       <PageHero
@@ -133,46 +137,46 @@ export const ContactPage: React.FC = () => {
       />
 
       <div className="flex items-center justify-center px-4 py-16 bg-white">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-md mx-auto space-y-6 animate-fade-in">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
+              <label className={labelCls}>Name *</label>
               <div className="relative group">
                 <input
                   type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className={inputCls}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
+              <label className={labelCls}>Phone *</label>
               <div className="relative group">
                 <input
                   type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                  className={inputCls}
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
+            <label className={labelCls}>Email *</label>
             <div className="relative group">
               <input
                 type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className={inputCls}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Message *</label>
+            <label className={labelCls}>Message *</label>
             <div className="relative group">
               <textarea
                 name="message" value={formData.message} onChange={handleInputChange} required rows={5}
                 placeholder="Describe the service needs..."
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors resize-none"
+                className={`${inputCls} resize-none`}
               />
             </div>
           </div>
@@ -183,7 +187,7 @@ export const ContactPage: React.FC = () => {
 
           <button
             type="submit" disabled={submitting}
-            className="group w-full py-4 bg-secondary text-white font-bold text-xs uppercase tracking-wider hover:bg-brand transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+            className={primaryButtonCls}
           >
             {submitting ? 'Sending...' : <><Send size={14} /> Send Message</>}
           </button>

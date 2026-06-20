@@ -219,7 +219,7 @@ export const InHomeEstimatePage: React.FC = () => {
     );
   }
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300";
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -235,10 +235,14 @@ export const InHomeEstimatePage: React.FC = () => {
         compact
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
         {/* Step 1: Contact Details */}
         {step === 1 && (
           <form onSubmit={handleContactSubmit} className="space-y-6">
+            <div className="text-center space-y-2 mb-6">
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Contact Details</h2>
+              <p className="text-secondary-400 text-xs">Tell us how to confirm your free estimate.</p>
+            </div>
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -278,6 +282,10 @@ export const InHomeEstimatePage: React.FC = () => {
         {/* Step 2: Appointment Details */}
         {step === 2 && (
           <form onSubmit={handleAppointmentSubmit} className="space-y-6">
+            <div className="text-center space-y-2 mb-6">
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Appointment Details</h2>
+              <p className="text-secondary-400 text-xs">Choose where and when providers should visit.</p>
+            </div>
             <div className="space-y-4">
               <div ref={addressDropdownRef} className="relative">
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
@@ -359,6 +367,13 @@ export const InHomeEstimatePage: React.FC = () => {
         {/* Step 3: Message & Review */}
         {step === 3 && (
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="text-center space-y-2 mb-6">
+              <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+                <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
+              </div>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Review Request</h2>
+              <p className="text-secondary-400 text-xs">Add final notes and confirm your request.</p>
+            </div>
             <div className="space-y-4">
               <div>
                 <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
@@ -370,7 +385,7 @@ export const InHomeEstimatePage: React.FC = () => {
               </div>
 
               {/* Review Section */}
-              <div className="border border-secondary-100 bg-secondary-50/30 p-5 rounded-2xl">
+              <div className="border border-secondary-100 bg-secondary-50/50 p-5 rounded-2xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-4">
                   <Receipt size={15} className="text-brand" strokeWidth={2.5} />
                   <h3 className="text-[10px] font-black text-secondary uppercase tracking-[0.15em]">Review Request</h3>
@@ -410,7 +425,7 @@ export const InHomeEstimatePage: React.FC = () => {
         )}
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <TrustBadges />
       </div>
 

@@ -929,7 +929,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => setShowBookingForm(false)}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
@@ -942,9 +942,9 @@ export const QuotePage: React.FC = () => {
           <p className="text-sm text-secondary-400">A matched provider confirms within 15 minutes.</p>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           {/* Mini estimate banner */}
-          <div className="bg-white rounded-2xl p-4 border border-secondary-100 mb-8 flex items-center justify-between">
+          <div className="bg-secondary-50/50 rounded-3xl p-5 md:p-6 border border-secondary-100 mb-8 flex items-end justify-between shadow-sm">
             <div>
               <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
               <p className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</p>
@@ -1027,21 +1027,21 @@ export const QuotePage: React.FC = () => {
   if (!zipVerified) {
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-6 md:pt-40 md:pb-8 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Get a <span className="text-brand">free quote.</span></h1>
           <p className="text-sm text-secondary-400">Nationwide coverage in all 50 states — start by confirming your ZIP.</p>
         </div>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-          <div>
-            <div className="flex items-start gap-3 mb-6">
-              <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
-              <div>
-                <h2 className="text-base font-black text-secondary">Confirm Your ZIP Code</h2>
-                <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+            <div className="text-center space-y-2 mb-8">
+              <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+                <MapPin className="w-6 h-6 text-brand" />
               </div>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Confirm Your ZIP Code</h2>
+              <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
             </div>
 
-            <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 max-w-md p-1 rounded-xl">
+            <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 p-1 rounded-xl w-full">
               <input
                 type="text"
                 inputMode="numeric"
@@ -1056,7 +1056,7 @@ export const QuotePage: React.FC = () => {
               <button
                 onClick={handleZipCheck}
                 disabled={zipValue.length !== 5 || zipLoading}
-                className="px-5 py-2.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
+                className="px-5 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
               >
                 {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
               </button>
@@ -1098,13 +1098,13 @@ export const QuotePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero */}
-        <div className="pt-32 pb-6 md:pt-40 md:pb-8 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">What do you <span className="text-brand">need?</span></h1>
           <p className="text-sm text-secondary-400">Select a service below to continue.</p>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl mx-auto">
             <button
               onClick={() => setSelectedService('junk_removal')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
@@ -1163,7 +1163,7 @@ export const QuotePage: React.FC = () => {
   if (selectedOption === 'moving_labor') {
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => {
               if (movingStep === 'crew') {
@@ -1189,7 +1189,7 @@ export const QuotePage: React.FC = () => {
           )}
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
 
           {/* STEP 1: SERVICE SELECTION */}
           {movingStep === 'service' && (
@@ -1454,7 +1454,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => {
               if (donationStep === 'size') {
@@ -1478,7 +1478,7 @@ export const QuotePage: React.FC = () => {
           )}
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8 animate-in fade-in duration-300">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8 animate-in fade-in duration-300">
 
           {/* STEP 1: DETAILS */}
           {donationStep === 'details' && (
@@ -1703,7 +1703,7 @@ export const QuotePage: React.FC = () => {
   if (selectedOption === 'dumpster_rental') {
     return (
       <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => {
               if (dumpsterStep === 'duration') {
@@ -1727,7 +1727,7 @@ export const QuotePage: React.FC = () => {
           )}
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
 
           {/* STEP 1: SIZE SELECTION */}
           {dumpsterStep === 'size' && (
@@ -1884,14 +1884,14 @@ export const QuotePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero */}
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Junk <span className="text-brand">removal.</span></h1>
           <p className="text-sm text-secondary-400">Snap a photo or pick items from the catalog — upfront estimate, no obligations.</p>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           {/* Method Selection */}
-          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl">
+          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl mx-auto">
             <button
               onClick={() => setSelectedOption('ai')}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
@@ -1934,7 +1934,7 @@ export const QuotePage: React.FC = () => {
   // ── Main flow ──
   return (
     <div className="min-h-screen bg-white">
-      <div className={`pt-32 pb-4 md:pt-40 md:pb-6 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
+      <div className={`pt-32 pb-10 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-5xl' : 'max-w-2xl'}`}>
 
         {((selectedOption === 'ai' && aiStep !== 'result') || (selectedOption === 'manual' && manualStep !== 'result')) && (
           <div ref={contentTopRef} className="mb-6">
@@ -1956,7 +1956,7 @@ export const QuotePage: React.FC = () => {
         )}
       </div>
 
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-4xl' : 'max-w-3xl'}`}>
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-5xl' : 'max-w-2xl'}`}>
 
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (

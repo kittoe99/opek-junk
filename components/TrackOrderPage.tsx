@@ -270,7 +270,7 @@ export const TrackOrderPage: React.FC = () => {
       <TrustBadges />
 
       <section className="py-10 md:py-16 bg-white scroll-mt-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 mb-3">
               <span className="block w-8 h-px bg-brand" />
@@ -284,7 +284,7 @@ export const TrackOrderPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white border border-secondary-100 md:border-secondary-100 rounded-3xl p-6 md:p-10 shadow-xl">
+          <div className="bg-white border border-secondary-100 rounded-3xl p-6 md:p-8 shadow-xl shadow-secondary/5 max-w-md mx-auto">
             {/* Toggle */}
             <div className="flex bg-white border border-secondary-100 rounded-full p-1 mb-6">
               <button
@@ -312,14 +312,14 @@ export const TrackOrderPage: React.FC = () => {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                  className="w-full px-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand/60 focus:shadow-[0_4px_20px_rgba(255,0,110,0.12)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
+                  className="w-full px-4 py-4 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 transition-all duration-300"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading || !searchValue.trim()}
-                className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed rounded-xl flex items-center justify-center gap-2"
+                className="group w-full py-4 bg-secondary text-white font-black uppercase text-xs tracking-widest hover:bg-brand transition-all duration-300 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl flex items-center justify-center gap-2"
               >
                 {loading ? 'Searching...' : <>Track Order <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></>}
               </button>

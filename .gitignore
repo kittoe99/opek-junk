@@ -26,3 +26,16 @@ dist-ssr
 scratch/
 .vercel
 .env*
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Editor files
+.cursor/
+
+# Scratch files
+scratch_push_copy.cjs
+

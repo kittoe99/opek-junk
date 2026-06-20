@@ -528,7 +528,7 @@ export const BookingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
           Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
         </h1>
@@ -537,22 +537,22 @@ export const BookingPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {/* Form */}
         <div>
 
           {/* ═══ Step 0: ZIP Check ═══ */}
           {currentStep === 0 && (
-            <div className="space-y-4">
-              <div className="flex items-start gap-3 mb-2">
-                <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
-                <div>
-                  <h2 className="text-base font-black text-secondary">Confirm Your ZIP Code</h2>
-                  <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
+            <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+              <div className="text-center space-y-2 mb-8">
+                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+                  <MapPin className="w-6 h-6 text-brand" />
                 </div>
+                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Confirm Your ZIP Code</h2>
+                <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
               </div>
 
-              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 max-w-md p-1 rounded-xl">
+              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 p-1 rounded-xl w-full">
                 <input
                   type="text"
                   inputMode="numeric"
@@ -567,7 +567,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   onClick={handleZipCheck}
                   disabled={zipValue.length !== 5 || zipLoading}
-                  className="px-5 py-2.5 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
+                  className="px-5 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
                 >
                   {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
                 </button>

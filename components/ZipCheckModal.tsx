@@ -67,7 +67,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
       {/* Modal Container */}
       <div className="fixed inset-0 z-[101] flex items-center justify-center p-4">
         <div
-          className="bg-white w-full max-w-[340px] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border border-secondary-100/40 animate-scale-in overflow-hidden relative transition-all duration-300"
+          className="bg-white w-full max-w-md rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border border-secondary-100 animate-scale-in overflow-hidden relative transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Subtle Ambient Accent Glows */}
@@ -83,22 +83,23 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
           </button>
 
           {/* Body */}
-          <div className="p-5 relative z-10">
+          <div className="p-6 relative z-10">
 
             {/* ── Input state ── */}
             {!verified && (
               <>
-                <div className="flex items-center gap-1.5 text-[9px] font-black text-brand uppercase tracking-[0.25em] mb-2.5">
-                  <MapPin size={11} strokeWidth={2.5} />
-                  <span>Service Area Check</span>
+                <div className="text-center space-y-2 mb-6">
+                  <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+                    <MapPin className="w-6 h-6 text-brand" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-[10px] font-black text-brand uppercase tracking-[0.25em]">Service Area Check</span>
+                  <h2 className="text-xl font-black text-secondary tracking-tight leading-none">
+                    Confirm your <span className="text-brand">ZIP.</span>
+                  </h2>
+                  <p className="text-secondary-400 text-xs leading-normal font-medium">
+                    Service is available in all 50 states — just enter your ZIP code to check local availability.
+                  </p>
                 </div>
-
-                <h2 className="text-xl font-black text-secondary tracking-tight leading-none mb-1.5">
-                  Confirm your <span className="text-brand">ZIP.</span>
-                </h2>
-                <p className="text-secondary-400 text-xs leading-normal mb-4 font-medium">
-                  Service is available in all 50 states — just enter your ZIP code to check local availability.
-                </p>
 
                 {/* Sleek unified Input Pill */}
                 <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 p-1 mb-2.5 rounded-xl">
@@ -110,14 +111,14 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="e.g. 75201"
-                    className="flex-1 min-w-0 w-full bg-transparent border-none px-4 py-2 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:outline-none tracking-widest text-center"
+                    className="flex-1 min-w-0 w-full bg-transparent border-none px-4 py-3 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:outline-none tracking-widest text-center"
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                     autoFocus
                   />
                   <button
                     onClick={handleZipCheck}
                     disabled={isLoading || zipCode.length !== 5}
-                    className="h-8 px-4 bg-brand text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand-600 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(255,0,110,0.15)] hover:shadow-[0_4px_12px_rgba(255,0,110,0.25)] disabled:shadow-none shrink-0"
+                    className="px-5 py-3 bg-secondary text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(53,80,112,0.15)] hover:shadow-[0_4px_12px_rgba(255,0,110,0.25)] disabled:shadow-none shrink-0"
                   >
                     {isLoading ? (
                       <Loader2 size={12} className="animate-spin" />
@@ -175,7 +176,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
 
                 <button
                   onClick={handleGetQuote}
-                  className="w-full py-3 bg-gradient-to-r from-secondary to-secondary-600 text-white font-bold text-[10px] uppercase tracking-widest rounded-lg hover:from-brand hover:to-brand-600 active:scale-98 transition-all duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_12px_rgba(53,80,112,0.15)] hover:shadow-[0_6px_16px_rgba(255,0,110,0.25)]"
+                  className="w-full py-4 bg-secondary text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-brand active:scale-98 transition-all duration-300 flex items-center justify-center gap-1.5 shadow-lg shadow-secondary/10 hover:shadow-brand/20"
                 >
                   <span>Get a Free Quote</span>
                   <ArrowRight size={12} />

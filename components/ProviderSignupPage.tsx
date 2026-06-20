@@ -133,7 +133,7 @@ export const ProviderSignupPage: React.FC = () => {
     }
   };
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 focus:bg-white transition-all duration-200";
+  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300";
 
   const signupSteps = [
     { label: 'About You', icon: ClipboardList },
@@ -194,11 +194,15 @@ export const ProviderSignupPage: React.FC = () => {
         compact
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
         <div>
           {/* Step 1: Personal Details */}
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
+              <div className="text-center space-y-2 mb-6">
+                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">About You</h2>
+                <p className="text-secondary-400 text-xs">Start with your contact and business details.</p>
+              </div>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -250,6 +254,10 @@ export const ProviderSignupPage: React.FC = () => {
           {/* Step 2: Operations */}
           {step === 2 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
+              <div className="text-center space-y-2 mb-6">
+                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Operations</h2>
+                <p className="text-secondary-400 text-xs">Tell us where you work and what equipment you use.</p>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Primary Service Area *</label>
@@ -289,6 +297,13 @@ export const ProviderSignupPage: React.FC = () => {
           {/* Step 3: Availability */}
           {step === 3 && (
             <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
+              <div className="text-center space-y-2 mb-6">
+                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+                  <Calendar className="w-6 h-6 text-brand" strokeWidth={2.5} />
+                </div>
+                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Availability</h2>
+                <p className="text-secondary-400 text-xs">Choose when you can accept matched jobs.</p>
+              </div>
               <div className="space-y-5">
                 <div>
                   <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Weekly Availability *</label>

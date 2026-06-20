@@ -470,14 +470,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const stepIndex = step === 'contact' ? 0 : step === 'address' ? 1 : 2;
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
 
       {/* ─── Contact step ─── */}
       {step === 'contact' && (
         <form onSubmit={handleContactSubmit} className="space-y-4">
-          <div className="mb-2">
+          <div className="text-center space-y-2 mb-6">
             <div>
-              <h2 className="text-base font-black text-secondary">Your Contact Details</h2>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Your Contact Details</h2>
               <p className="text-secondary-400 text-xs">How should you be reached to confirm?</p>
             </div>
           </div>
@@ -533,10 +533,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
               <ArrowLeft size={14} /> {onBack ? backLabel : 'Back'}
             </button>
-            <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20">
               {contactSubmitting ? 'Saving...' : <>Continue <ArrowRight size={14} /></>}
             </button>
           </div>
@@ -546,9 +546,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {/* ─── Address step ─── */}
       {step === 'address' && (
         <form onSubmit={handleAddressSubmit} className="space-y-4">
-          <div className="mb-2">
+          <div className="text-center space-y-2 mb-6">
             <div>
-              <h2 className="text-base font-black text-secondary">
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">
                 {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
               </h2>
               <p className="text-secondary-400 text-xs">
@@ -652,10 +652,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
+            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
               <ArrowLeft size={14} /> Back
             </button>
-            <button type="submit" className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2">
+            <button type="submit" className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20">
               Continue <ArrowRight size={14} />
             </button>
           </div>
@@ -665,10 +665,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {/* ─── Review step ─── */}
       {step === 'review' && (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="mb-2 flex items-start gap-3">
-            <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
+          <div className="text-center space-y-2 mb-6">
+            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+              <ClipboardList className="w-6 h-6 text-brand" strokeWidth={2.5} />
+            </div>
             <div>
-              <h2 className="text-base font-black text-secondary">Details & Review</h2>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Details & Review</h2>
               <p className="text-secondary-400 text-xs">Pick a date and review your booking</p>
             </div>
           </div>
@@ -778,7 +780,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {/* Review Section */}
-          <div className="border border-secondary-100 bg-secondary-50/50 p-4 rounded-xl">
+          <div className="border border-secondary-100 bg-secondary-50/50 p-4 rounded-2xl shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <Receipt size={14} className="text-brand" strokeWidth={2.5} />
               <h3 className="text-[10px] font-bold text-secondary uppercase tracking-wider">Review Your Booking</h3>
@@ -808,14 +810,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               type="button"
               onClick={handleBackStep}
               disabled={submitting}
-              className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ArrowLeft size={14} /> Back
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 py-4 text-xs font-bold uppercase tracking-wider bg-secondary text-white hover:bg-brand transition-colors rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20"
             >
               {submitting ? 'Submitting...' : <>Confirm Booking <Check size={14} strokeWidth={3} /></>}
             </button>

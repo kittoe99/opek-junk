@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, User, Phone, Mail, Home, Layers, Package, Minus, Plus, X } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
@@ -14,6 +14,14 @@ interface BookingItem {
   quantity: number;
   icon: React.ComponentType<{ className?: string }>;
   basePriceEstimate: number;
+}
+
+interface AddressSuggestion {
+  display: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
 }
 
 const MattressIcon = ({ className }: { className?: string }) => (
@@ -129,6 +137,11 @@ export const MattressBookingPage: React.FC = () => {
   const [catalogSearch, setCatalogSearch] = useState('');
   const [expandedCategory, setExpandedCategory] = useState('Popular Items');
   const [showCatalogModal, setShowCatalogModal] = useState(false);
+  const addressDropdownRef = useRef<HTMLDivElement>(null);
+  const addressDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
+  const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
 
   // Step 3: Reservation Details Form
   const [formData, setFormData] = useState({
@@ -136,7 +149,11 @@ export const MattressBookingPage: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    address: ''
+    address: '',
+    unitNumber: '',
+    city: '',
+    state: '',
+    zipCode: ''
   });
   const [submitLoading, setSubmitLoading] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
@@ -230,6 +247,84 @@ export const MattressBookingPage: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (addressDropdownRef.current && !addressDropdownRef.current.contains(e.target as Node)) {
+        setShowAddressSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (addressDebounceRef.current) {
+        clearTimeout(addressDebounceRef.current);
+      }
+    };
+  }, []);
+
+  const fetchAddressSuggestions = useCallback(async (query: string) => {
+    if (query.trim().length < 3) {
+      setAddressSuggestions([]);
+      setShowAddressSuggestions(false);
+      return;
+    }
+
+    setAddressLoading(true);
+    try {
+      const biasedQuery = zipCode ? `${query} ${zipCode}` : query;
+      const res = await fetch(
+        `https://photon.komoot.io/api/?q=${encodeURIComponent(biasedQuery)}&limit=5&lang=en&osm_tag=place:house&osm_tag=building`
+      );
+      const data = await res.json();
+      const results: AddressSuggestion[] = (data.features || [])
+        .filter((f: any) => f.properties?.street || f.properties?.name)
+        .map((f: any) => {
+          const p = f.properties;
+          const street = p.housenumber
+            ? `${p.housenumber} ${p.street || p.name || ''}`
+            : (p.street || p.name || '');
+          const city = p.city || p.town || p.village || p.county || '';
+          const state = p.state || '';
+          const suggestionZip = p.postcode || '';
+          const display = [street, city, state, suggestionZip].filter(Boolean).join(', ');
+          return { display, street: street.trim(), city, state, zipCode: suggestionZip };
+        })
+        .filter((s: AddressSuggestion) => s.street);
+
+      setAddressSuggestions(results);
+      setShowAddressSuggestions(results.length > 0);
+    } catch {
+      setAddressSuggestions([]);
+      setShowAddressSuggestions(false);
+    } finally {
+      setAddressLoading(false);
+    }
+  }, [zipCode]);
+
+  const handleAddressInput = (value: string) => {
+    setFormData(prev => ({ ...prev, address: value }));
+    if (addressDebounceRef.current) {
+      clearTimeout(addressDebounceRef.current);
+    }
+    addressDebounceRef.current = setTimeout(() => fetchAddressSuggestions(value), 300);
+  };
+
+  const selectAddressSuggestion = (suggestion: AddressSuggestion) => {
+    setFormData(prev => ({
+      ...prev,
+      address: suggestion.street,
+      city: suggestion.city,
+      state: suggestion.state,
+      zipCode: suggestion.zipCode
+    }));
+    if (suggestion.zipCode) {
+      setZipCode(suggestion.zipCode);
+    }
+    setShowAddressSuggestions(false);
+    setAddressSuggestions([]);
+  };
+
   const calculateTotal = () => {
     let m = 0;
     let b = 0;
@@ -309,7 +404,10 @@ export const MattressBookingPage: React.FC = () => {
 
       const locationInfo = {
         address: formData.address,
-        zip_code: zipCode
+        unit_number: formData.unitNumber || null,
+        city: formData.city || null,
+        state: formData.state || null,
+        zip_code: formData.zipCode || zipCode
       };
 
       const { error } = await supabase
@@ -332,6 +430,10 @@ export const MattressBookingPage: React.FC = () => {
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
+        unit_number: formData.unitNumber || null,
+        city: formData.city || null,
+        state: formData.state || null,
+        zip_code: formData.zipCode || zipCode,
         date: formData.date,
         service: `Mattress Disposal`,
         details: itemsSummaryText,
@@ -363,6 +465,7 @@ export const MattressBookingPage: React.FC = () => {
           <input
             type="text"
             inputMode="numeric"
+            autoComplete="postal-code"
             maxLength={5}
             value={zipCode}
             onChange={(e) => {
@@ -430,7 +533,7 @@ export const MattressBookingPage: React.FC = () => {
               <button
                 key={option.id}
                 type="button"
-                className={`group relative flex flex-col items-center justify-between p-2 sm:p-4 md:p-5 rounded-2xl border transition-all duration-300 text-center cursor-pointer min-h-[140px] sm:min-h-[180px] ${
+                className={`group relative flex flex-col items-center justify-between p-3 sm:p-4 md:p-5 rounded-2xl border transition-all duration-300 text-center cursor-pointer min-h-[132px] sm:min-h-[172px] ${
                   selected
                     ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
                     : 'bg-white border-secondary-100 hover:border-secondary-100 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
@@ -444,10 +547,10 @@ export const MattressBookingPage: React.FC = () => {
                 )}
                 
                 <div className="flex flex-col items-center flex-1 w-full justify-center">
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-1.5 sm:mb-3 transition-all duration-300 ${
+                  <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-2 sm:mb-3 transition-all duration-300 ${
                     selected ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary-400 group-hover:bg-secondary-100 group-hover:text-secondary-500'
                   }`}>
-                    <Icon className="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 group-hover:scale-110" />
+                    <Icon className="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110" />
                   </div>
                   
                   <span className={`text-[10px] sm:text-xs md:text-sm font-black leading-tight transition-colors px-0.5 ${
@@ -653,6 +756,7 @@ export const MattressBookingPage: React.FC = () => {
             <input
               type="text"
               required
+              autoComplete="name"
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
               placeholder="John Doe"
@@ -671,6 +775,7 @@ export const MattressBookingPage: React.FC = () => {
               <input
                 type="tel"
                 required
+                autoComplete="tel"
                 value={formData.phone}
                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="(555) 123-4567"
@@ -687,6 +792,7 @@ export const MattressBookingPage: React.FC = () => {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                 placeholder="john@example.com"
@@ -696,7 +802,7 @@ export const MattressBookingPage: React.FC = () => {
           </div>
         </div>
 
-        <div>
+        <div ref={addressDropdownRef} className="relative">
           <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Pickup Address</label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -705,13 +811,95 @@ export const MattressBookingPage: React.FC = () => {
             <input
               type="text"
               required
+              autoComplete="street-address"
               value={formData.address}
-              onChange={e => setFormData({ ...formData, address: e.target.value })}
-              placeholder="123 Main St"
+              onChange={e => handleAddressInput(e.target.value)}
+              onFocus={() => addressSuggestions.length > 0 && setShowAddressSuggestions(true)}
+              placeholder="Start typing your pickup address..."
+              className="w-full pl-12 pr-10 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
+            />
+            {addressLoading && (
+              <Loader2 size={14} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-secondary-300" />
+            )}
+          </div>
+          {showAddressSuggestions && addressSuggestions.length > 0 && (
+            <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-52 overflow-y-auto">
+              {addressSuggestions.map((suggestion, index) => (
+                <button
+                  key={`${suggestion.display}-${index}`}
+                  type="button"
+                  onClick={() => selectAddressSuggestion(suggestion)}
+                  className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
+                >
+                  <MapPin size={14} className="text-brand mt-0.5 shrink-0" />
+                  <span>{suggestion.display}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
+            Apartment / Unit / Suite <span className="text-secondary-300 normal-case tracking-normal">(optional)</span>
+          </label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Home className="w-5 h-5 text-secondary-400" />
+            </div>
+            <input
+              type="text"
+              autoComplete="address-line2"
+              value={formData.unitNumber}
+              onChange={e => setFormData({ ...formData, unitNumber: e.target.value })}
+              placeholder="Apt 4B, Suite 200, Gate code..."
               className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
             />
           </div>
         </div>
+
+        {(formData.city || formData.state || formData.zipCode) && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
+            <div>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">City</label>
+              <input
+                type="text"
+                autoComplete="address-level2"
+                value={formData.city}
+                onChange={e => setFormData({ ...formData, city: e.target.value })}
+                placeholder="City"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">State</label>
+              <input
+                type="text"
+                autoComplete="address-level1"
+                value={formData.state}
+                onChange={e => setFormData({ ...formData, state: e.target.value })}
+                placeholder="State"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">ZIP</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                value={formData.zipCode || zipCode}
+                onChange={e => {
+                  const nextZip = e.target.value.replace(/\D/g, '').slice(0, 5);
+                  setFormData({ ...formData, zipCode: nextZip });
+                  setZipCode(nextZip);
+                }}
+                placeholder="ZIP"
+                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
+              />
+            </div>
+          </div>
+        )}
 
         <div className="pt-2 flex gap-3">
           <button 
@@ -772,6 +960,12 @@ export const MattressBookingPage: React.FC = () => {
     </div>
   );
 
+  const catalogQuery = catalogSearch.trim().toLowerCase();
+  const visibleCatalogItems = catalogQuery
+    ? ITEM_CATALOG.flatMap(cat => cat.items).filter(item => item.name.toLowerCase().includes(catalogQuery))
+    : ITEM_CATALOG.find(cat => cat.label === expandedCategory)?.items || [];
+  const selectedCatalogCount = selectedItems.filter(i => !['mattress', 'boxspring', 'bedframe'].includes(i.id) && i.quantity > 0).length;
+
   return (
     <div className="min-h-screen bg-white">
       {/* Asymmetric Typography Header */}
@@ -801,17 +995,17 @@ export const MattressBookingPage: React.FC = () => {
 
       {/* Junk Removal Catalog Modal Overlay */}
       {showCatalogModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 md:p-6 bg-secondary/70 backdrop-blur-md transition-all duration-300 animate-fade-in">
-          <div className="bg-white w-full h-full sm:h-[85vh] sm:max-w-4xl sm:rounded-3xl shadow-2xl border border-secondary-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed inset-0 z-50 flex items-stretch justify-center p-2 sm:p-4 md:p-6 bg-secondary/70 backdrop-blur-md transition-all duration-300 animate-fade-in">
+          <div className="bg-white w-full h-full max-h-full sm:max-w-5xl sm:rounded-3xl shadow-2xl border border-secondary-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-secondary-100 flex items-center justify-between bg-white shrink-0">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-secondary-100 flex items-center justify-between bg-white shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
                   <Plus size={20} strokeWidth={2.5} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h3 className="font-black text-secondary text-sm sm:text-base uppercase tracking-wider">Junk Removal Catalog</h3>
-                  <p className="text-[10px] text-secondary-400 mt-0.5 font-bold uppercase tracking-wider">Select any other items to haul away</p>
+                  <p className="hidden sm:block text-[10px] text-secondary-400 mt-0.5 font-bold uppercase tracking-wider">Select any other items to haul away</p>
                 </div>
               </div>
               <button
@@ -824,31 +1018,31 @@ export const MattressBookingPage: React.FC = () => {
             </div>
 
             {/* Search box */}
-            <div className="px-6 py-3 border-b border-secondary-100 bg-secondary-50/30 flex items-center gap-3 shrink-0">
+            <div className="px-4 sm:px-6 py-2.5 sm:py-3 border-b border-secondary-100 bg-secondary-50/40 flex items-center gap-3 shrink-0">
               <div className="relative group flex-1">
                 <input
                   type="text"
                   value={catalogSearch}
                   onChange={(e) => setCatalogSearch(e.target.value)}
                   placeholder="Search catalog items (e.g. Refrigerator, Sofa)..."
-                  className="w-full px-4 py-2.5 text-xs bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
+                  className="w-full px-4 py-2.5 sm:py-3 text-sm bg-white border border-secondary-100 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
                 />
                 {catalogSearch && (
                   <button
                     type="button"
                     onClick={() => setCatalogSearch('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-secondary-200 hover:bg-secondary-300 flex items-center justify-center transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-secondary-200 hover:bg-secondary-300 flex items-center justify-center transition-colors"
                   >
-                    <X size={8} className="text-secondary-600" strokeWidth={3} />
+                    <X size={10} className="text-secondary-600" strokeWidth={2.5} />
                   </button>
                 )}
               </div>
             </div>
 
             {/* Main Content: Sidebar and Grid */}
-            <div className="flex-1 min-h-0 flex flex-col sm:flex-row overflow-hidden bg-white">
+            <div className="flex-1 min-h-0 flex flex-col sm:flex-row overflow-hidden bg-secondary-50/20">
               {/* Left Sidebar Categories Selector */}
-              <div className="w-full sm:w-[200px] shrink-0 flex flex-row sm:flex-col gap-1 sm:gap-0.5 border-b sm:border-b-0 sm:border-r border-secondary-100 p-3 overflow-x-auto sm:overflow-y-auto scrollbar-none">
+              <div className="w-full sm:w-[210px] md:w-[230px] shrink-0 flex flex-row sm:flex-col gap-1 sm:gap-0.5 border-b sm:border-b-0 sm:border-r border-secondary-100 p-3 sm:p-4 overflow-x-auto sm:overflow-y-auto scrollbar-none bg-white">
                 {ITEM_CATALOG.map((category) => {
                   const isActive = expandedCategory === category.label && !catalogSearch.trim();
                   const selectedCount = selectedItems.filter(i => {
@@ -864,22 +1058,26 @@ export const MattressBookingPage: React.FC = () => {
                         setExpandedCategory(category.label);
                         setCatalogSearch('');
                       }}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
+                      className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
                         isActive
-                          ? 'bg-brand/10 text-brand font-black'
+                          ? 'bg-brand/10 text-brand'
                           : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
                       }`}
                     >
-                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                         isActive ? 'bg-brand/20 text-brand' : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
                       }`}>
                         <span className="scale-75">{category.icon}</span>
                       </div>
-                      <span className="text-[10px] sm:text-[11px] leading-tight truncate whitespace-nowrap sm:whitespace-normal font-semibold">
-                        {category.label}
-                      </span>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className={`text-[10px] sm:text-[11px] leading-tight truncate whitespace-nowrap sm:whitespace-normal ${
+                          isActive ? 'font-black' : 'font-semibold'
+                        }`}>
+                          {category.label}
+                        </p>
+                      </div>
                       {selectedCount > 0 && (
-                        <span className="text-[9px] font-black px-1.5 py-0.2 bg-brand text-white rounded-full ml-auto">
+                        <span className="text-[9px] font-black px-1.5 py-0.5 bg-brand text-white rounded-full ml-auto shrink-0">
                           {selectedCount}
                         </span>
                       )}
@@ -889,20 +1087,29 @@ export const MattressBookingPage: React.FC = () => {
               </div>
 
               {/* Items Grid & Custom Entry */}
-              <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5 overflow-y-auto bg-secondary-50/10">
-                <div className="flex-1 min-h-0">
-                  <div className="flex items-center gap-2 mb-3">
+              <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 md:p-6">
+                <div className="space-y-5">
+                  <div className="flex items-center gap-2">
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-secondary-400">
                       {catalogSearch.trim() ? 'Search Results' : expandedCategory}
                     </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-white border border-secondary-100 text-secondary-400 text-[10px] font-bold">
+                      {visibleCatalogItems.length}
+                    </span>
                   </div>
                   
                   {/* Grid */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                    {(catalogSearch.trim()
-                      ? ITEM_CATALOG.flatMap(cat => cat.items).filter(i => i.name.toLowerCase().includes(catalogSearch.toLowerCase()))
-                      : ITEM_CATALOG.find(cat => cat.label === expandedCategory)?.items || []
-                    ).map((item) => {
+                  {visibleCatalogItems.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-14 text-center border border-dashed border-secondary-100 rounded-3xl bg-white">
+                      <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center mb-3">
+                        <Package size={20} className="text-secondary-300" />
+                      </div>
+                      <p className="text-sm font-semibold text-secondary-400">No items found</p>
+                      <p className="text-xs text-secondary-300 mt-1">Try another search or add a custom item below.</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
+                    {visibleCatalogItems.map((item) => {
                       const selectedItem = selectedItems.find(i => i.name.toLowerCase() === item.name.toLowerCase());
                       const quantity = selectedItem?.quantity || 0;
                       const selected = quantity > 0;
@@ -911,7 +1118,7 @@ export const MattressBookingPage: React.FC = () => {
                         <button
                           key={item.name}
                           type="button"
-                          className={`group relative flex flex-col items-center justify-between p-2 sm:p-3.5 rounded-2xl border transition-all duration-300 text-center cursor-pointer min-h-[110px] sm:min-h-[145px] ${
+                          className={`group relative flex flex-col items-center gap-1 p-2 sm:p-3 rounded-2xl border transition-all duration-300 text-center cursor-pointer min-h-[104px] sm:min-h-[150px] ${
                             selected
                               ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
                               : 'bg-white border-secondary-100 hover:border-secondary-100 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
@@ -919,49 +1126,51 @@ export const MattressBookingPage: React.FC = () => {
                           onClick={() => toggleCatalogItem(item.name)}
                         >
                           {selected && (
-                            <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-brand text-white rounded-full flex items-center justify-center shadow-sm animate-scale-in z-10">
-                              <Check size={9} strokeWidth={4} />
+                            <div className="absolute top-2 right-2 w-5 h-5 bg-brand text-white rounded-full flex items-center justify-center shadow-md animate-scale-in z-10">
+                              <Check size={11} strokeWidth={3.5} />
                             </div>
                           )}
                           
-                          <div className="flex flex-col items-center flex-1 w-full justify-center">
-                            <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center mb-1 sm:mb-1.5 transition-all duration-300 ${
-                              selected ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary-400 group-hover:bg-secondary-100 group-hover:text-secondary-500'
+                          <div className="flex flex-col items-center flex-1 w-full justify-center gap-1 sm:gap-1.5">
+                            <div className={`w-9 h-9 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                              selected ? 'bg-brand/10' : 'bg-white group-hover:bg-secondary-100'
                             }`}>
                               <ItemIconRenderer
                                 imagePath={item.image}
-                                className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 transition-transform duration-300 group-hover:scale-110"
+                                className="w-5.5 h-5.5 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
                               />
                             </div>
                             
-                            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold leading-tight line-clamp-2 px-0.5 text-secondary-700 group-hover:text-secondary">
+                            <span className={`text-[9px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
+                              selected ? 'text-brand' : 'text-secondary-700 group-hover:text-secondary'
+                            }`}>
                               {item.name}
                             </span>
                           </div>
                           
                           <div className="mt-1 flex flex-col items-center shrink-0 w-full" onClick={(e) => e.stopPropagation()}>
-                            {selected ? (
-                              <div className="flex items-center gap-0.5 sm:gap-1 mt-1 bg-white border border-secondary-100 rounded-full px-1 py-0.5 sm:px-1.5 sm:py-0.5 shadow-sm">
+                            {selected && selectedItem ? (
+                              <div className="flex items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1 bg-white border border-secondary-100 rounded-full px-1.5 sm:px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205">
                                 <button
                                   type="button"
                                   onClick={() => updateItemQuantity(selectedItem.id, -1)}
-                                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
+                                  className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
                                 >
-                                  <Minus size={7} className="text-secondary-500" />
+                                  <Minus size={8} className="text-secondary-500" />
                                 </button>
-                                <span className="w-3.5 sm:w-4 text-center text-[9px] sm:text-[10px] font-black text-secondary leading-none">{quantity}</span>
+                                <span className="w-4 sm:w-5 text-center text-[10px] sm:text-xs font-black text-secondary leading-none">{quantity}</span>
                                 <button
                                   type="button"
                                   onClick={() => updateItemQuantity(selectedItem.id, 1)}
-                                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors cursor-pointer"
+                                  className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors cursor-pointer"
                                 >
-                                  <Plus size={7} className="text-secondary-500" />
+                                  <Plus size={8} className="text-secondary-500" />
                                 </button>
                               </div>
                             ) : (
                               <div 
                                 onClick={() => toggleCatalogItem(item.name)}
-                                className="mt-1 px-1.5 py-0.5 text-[7px] sm:text-[8px] font-black uppercase tracking-wider rounded border border-secondary-100 text-secondary-400 group-hover:border-brand group-hover:text-brand group-hover:bg-brand/5 transition-all cursor-pointer"
+                                className="mt-0.5 sm:mt-1 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[7px] sm:text-[8px] font-black uppercase tracking-wider rounded-lg border border-secondary-100 text-secondary-400 group-hover:border-brand group-hover:text-brand group-hover:bg-brand/5 transition-all cursor-pointer"
                               >
                                 + Add
                               </div>
@@ -970,12 +1179,12 @@ export const MattressBookingPage: React.FC = () => {
                         </button>
                       );
                     })}
-                  </div>
-                </div>
+                    </div>
+                  )}
 
                 {/* Custom entry at the bottom */}
-                <div className="pt-4 mt-4 border-t border-dashed border-secondary-200 shrink-0">
-                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-2">Don't see your item?</p>
+                <div className="border border-dashed border-secondary-100 rounded-2xl p-4 bg-white">
+                  <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-3">Don't see your item?</p>
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -988,8 +1197,8 @@ export const MattressBookingPage: React.FC = () => {
                           setCustomItemInput('');
                         }
                       }}
-                      placeholder="e.g. Old Chair, Lamp, Rug"
-                      className="flex-1 px-4 py-2.5 text-xs bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all shadow-sm"
+                      placeholder="Type item name and press Enter"
+                      className="flex-1 px-4 py-2.5 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
                     />
                     <button
                       type="button"
@@ -998,19 +1207,21 @@ export const MattressBookingPage: React.FC = () => {
                         setCustomItemInput('');
                       }}
                       disabled={!customItemInput.trim()}
-                      className="px-4 bg-secondary text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 shrink-0 cursor-pointer shadow-sm"
+                      className="px-4 bg-secondary text-white text-sm font-bold rounded-xl hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shrink-0 cursor-pointer"
                     >
-                      + Add
+                      <Plus size={14} />
+                      <span className="hidden sm:inline text-xs">Add</span>
                     </button>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
 
             {/* Sticky Footer */}
-            <div className="px-6 py-4 border-t border-secondary-100 bg-secondary-50/30 flex items-center justify-between shrink-0">
+            <div className="px-4 sm:px-6 py-4 border-t border-secondary-100 bg-white flex items-center justify-between shrink-0 shadow-[0_-8px_24px_rgba(15,23,42,0.04)]">
               <span className="text-xs font-bold text-secondary-500">
-                {selectedItems.filter(i => !['mattress', 'boxspring', 'bedframe'].includes(i.id) && i.quantity > 0).length} catalog item(s) selected
+                {selectedCatalogCount} catalog item(s) selected
               </span>
               <button
                 type="button"
