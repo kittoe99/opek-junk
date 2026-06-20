@@ -99,8 +99,24 @@ export const MattressDisposalPage: React.FC = () => {
                 Same-day pickup from any room. Zero heavy lifting.
               </p>
 
+              <div className="flex flex-row gap-4 animate-slide-up mb-8" style={{ animationDelay: '0.3s' }}>
+                <button
+                  onClick={() => document.querySelector('input[type="text"]')?.focus()}
+                  className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
+                >
+                  <span>View Pricing</span>
+                </button>
+                <button
+                  onClick={() => navigate('/booking')}
+                  className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                >
+                  Book Online
+                </button>
+              </div>
+
               {/* ZIP Checker Form */}
-              <div className="animate-slide-up space-y-3" style={{ animationDelay: '0.3s' }}>
+              <div className="animate-slide-up space-y-3" style={{ animationDelay: '0.35s' }}>
+                <p className="text-xs font-bold text-white uppercase tracking-wider mb-2">Check your pricing instantly</p>
                 <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
                   <input
                     type="text"
@@ -126,20 +142,6 @@ export const MattressDisposalPage: React.FC = () => {
 
             </div>
           </div>
-          <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.35s' }}>
-            <button
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
-            >
-              <span>View Pricing</span>
-            </button>
-            <button
-              onClick={() => navigate('/booking')}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-            >
-              Book Online
-            </button>
-          </div>
         </div>
 
         {/* Desktop layout */}
@@ -160,8 +162,24 @@ export const MattressDisposalPage: React.FC = () => {
                   Same-day pickup from any room. Zero heavy lifting.
                 </p>
 
+                <div className="flex flex-row gap-4 animate-slide-up mb-8" style={{ animationDelay: '0.25s' }}>
+                  <button
+                    onClick={() => document.querySelector('input[type="text"]')?.focus()}
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+                  >
+                    <span>View Pricing</span>
+                  </button>
+                  <button
+                    onClick={() => navigate('/booking')}
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                  >
+                    Book Online
+                  </button>
+                </div>
+
                 {/* ZIP Checker Form */}
-                <div className="animate-slide-up space-y-4 mb-6" style={{ animationDelay: '0.25s' }}>
+                <div className="animate-slide-up space-y-4" style={{ animationDelay: '0.3s' }}>
+                  <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-2">Check your pricing instantly</p>
                   <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
                     <input
                       type="text"
@@ -183,21 +201,6 @@ export const MattressDisposalPage: React.FC = () => {
                     </button>
                   </div>
                   {zipError && <p className="text-xs text-red-500 font-semibold">{zipError}</p>}
-                </div>
-
-                <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-                  <button
-                    onClick={() => document.querySelector('input[type="text"]')?.focus()}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
-                  >
-                    <span>View Pricing</span>
-                  </button>
-                  <button
-                    onClick={() => navigate('/booking')}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-                  >
-                    Book Online
-                  </button>
                 </div>
               </div>
               {/* Right Column - Image */}
