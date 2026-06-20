@@ -93,10 +93,10 @@ export const MattressDisposalPage: React.FC = () => {
               <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 Same-Day Mattress Disposal.
                 <br />
-                <span className="text-brand">From $75. Eco-Friendly.</span>
+                <span className="text-brand">From $75 • Eco-Friendly</span>
               </h1>
               <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Instant upfront pricing. Book online or call now. Our vetted local crews retrieve your mattress, box spring, and bed frame from any room. Up to 80% recycled.
+                Get an instant flat-rate quote and book in minutes. Vetted local crews retrieve your mattress from any room — zero heavy lifting or curb dragging.
               </p>
 
               {/* ZIP Checker Form */}
@@ -155,10 +155,10 @@ export const MattressDisposalPage: React.FC = () => {
                 <h1 className="text-6xl lg:text-7xl font-black text-secondary tracking-tight mb-6 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
                   Same-Day Mattress Disposal.
                   <br />
-                  <span className="text-brand">From $75. Eco-Friendly.</span>
+                  <span className="text-brand">From $75 • Eco-Friendly</span>
                 </h1>
                 <p className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                  Get an instant flat-rate quote and book online in minutes. Vetted, local loading crews retrieve your mattress, box spring, or bed frame from any room. No heavy lifting, no curb dragging.
+                  Get an instant flat-rate quote and book in minutes. Vetted local crews retrieve your mattress from any room — zero heavy lifting or curb dragging.
                 </p>
 
                 {/* ZIP Checker Form */}
