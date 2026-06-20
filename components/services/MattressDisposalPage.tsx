@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf, BedDouble, Check, Sparkles, Loader2, Phone } from 'lucide-react';
+import { ArrowRight, Leaf, BedDouble, Check, Sparkles, Loader2, Phone, MapPin } from 'lucide-react';
 import { TrustBadges } from '../TrustBadges';
 import { ServiceArea } from '../ServiceArea';
 import { QuickActionBar } from '../QuickActionBar';
@@ -46,6 +46,14 @@ export const MattressDisposalPage: React.FC = () => {
   const [zipValue, setZipValue] = useState('');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
+  const [userCity, setUserCity] = useState<string>('');
+
+  React.useEffect(() => {
+    const stored = localStorage.getItem('user_city');
+    if (stored) {
+      setUserCity(stored);
+    }
+  }, []);
 
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
@@ -129,9 +137,16 @@ export const MattressDisposalPage: React.FC = () => {
                 <br />
                 <span className="text-brand">From $75</span>
               </h1>
-              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-3 animate-slide-up" style={{ animationDelay: '0.2s' }}>
                 Same-day pickup from any room. Zero heavy lifting.
               </p>
+              
+              <div className="flex items-center gap-1.5 mb-6 animate-slide-up" style={{ animationDelay: '0.25s' }}>
+                <MapPin size={12} className="text-brand" />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-white/90 underline decoration-dotted underline-offset-2">
+                  {userCity || 'Detecting location...'}
+                </span>
+              </div>
 
             </div>
           </div>
