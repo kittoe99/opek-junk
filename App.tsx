@@ -19,6 +19,7 @@ import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
+import { MattressBookingPage } from './components/services/MattressBookingPage';
 import { ProviderSignupPage } from './components/ProviderSignupPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { InHomeEstimatePage } from './components/InHomeEstimatePage';
@@ -230,6 +231,7 @@ function App() {
           <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
           <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
           <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
+          <Route path="/booking/mattress" element={<MattressBookingPage />} />
           <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
           <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
           <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
