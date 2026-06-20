@@ -1,8 +1,34 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Apple, Smartphone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
+  const location = useLocation();
+  const isAdsLandingPage = location.pathname === '/services/mattress-disposal';
+
+  if (isAdsLandingPage) {
+    return (
+      <footer className="bg-secondary text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
+          <p className="text-secondary-400 text-[11px] leading-relaxed">
+            Disclaimer: Opek Junk Removal is a technology platform that connects customers with independent local service providers. Opek Junk Removal does not perform junk removal, hauling, or moving labor services itself; all services are performed by independent, third-party service providers who are responsible for their own operations, licensing, and insurance.
+          </p>
+          <div className="h-px bg-secondary-700" />
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-secondary-400 text-xs">
+              &copy; {new Date().getFullYear()} Opek Junk Removal. All rights reserved.
+            </p>
+            <div className="flex gap-6 text-xs">
+              <Link to="/privacy" className="text-secondary-400 hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="text-secondary-400 hover:text-white transition-colors">Terms of Service</Link>
+              <a href="#" className="text-secondary-400 hover:text-white transition-colors">Accessibility</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="bg-secondary text-white">
       {/* Main Footer Content */}

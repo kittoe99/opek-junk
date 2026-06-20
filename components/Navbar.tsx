@@ -6,6 +6,7 @@ import { JunkIcon, DumpsterIcon, PropertyCleanoutIcon, MovingLaborIcon } from '.
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdsLandingPage = location.pathname === '/services/mattress-disposal';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -161,20 +162,22 @@ export const Navbar: React.FC = () => {
         style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60 }}
       >
         {/* Top Bar - Desktop Only */}
-        <div className="hidden md:block bg-gray-50 py-1.5 px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-center">
-            <button
-              onClick={fetchUserLocation}
-              disabled={isDetectingLocation}
-              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
-            >
-              <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
-              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
-                {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
-              </span>
-            </button>
+        {!isAdsLandingPage && (
+          <div className="hidden md:block bg-gray-50 py-1.5 px-6">
+            <div className="max-w-7xl mx-auto flex items-center justify-center">
+              <button
+                onClick={fetchUserLocation}
+                disabled={isDetectingLocation}
+                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
+              >
+                <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
+                <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
+                  {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
+                </span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
       {/* Main Navbar */}
       <nav className="py-4 bg-white px-6">
@@ -192,154 +195,179 @@ export const Navbar: React.FC = () => {
             />
           </div>
 
-          {/* Mobile Location - Centered (Mobile Only) */}
-          <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
-            <button
-              onClick={fetchUserLocation}
-              disabled={isDetectingLocation}
-              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
-            >
-              <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
-              <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
-                {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
-              </span>
-            </button>
-          </div>
+          {isAdsLandingPage ? (
+            <div className="flex items-center gap-3">
+              {/* Desktop click-to-call CTA */}
+              <a 
+                href="tel:8313187139" 
+                className="hidden md:flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95"
+              >
+                <Phone size={14} className="fill-white" />
+                <span>Call (831) 318-7139</span>
+              </a>
+              {/* Mobile click-to-call CTA */}
+              <a 
+                href="tel:8313187139" 
+                className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full shadow-md hover:bg-brand-600 transition-colors"
+                aria-label="Call Opek Junk Removal"
+              >
+                <Phone size={18} className="fill-white" />
+              </a>
+            </div>
+          ) : (
+            <>
+              {/* Mobile Location - Centered (Mobile Only) */}
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
+                <button
+                  onClick={fetchUserLocation}
+                  disabled={isDetectingLocation}
+                  className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
+                >
+                  <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
+                  <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
+                    {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
+                  </span>
+                </button>
+              </div>
 
-          {/* Right Section - Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            
-            {navLinks.map((link) => (
-              <div key={link.name} className="relative">
-                {link.hasMega ? (
-                  <div 
-                    onMouseEnter={() => setShowServicesMega(true)}
-                    onMouseLeave={() => setShowServicesMega(false)}
-                  >
-                    <button 
-                      onClick={() => handleLinkClick(link.path)}
-                      className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600 flex items-center gap-1"
-                    >
-                      {link.name}
-                      <ChevronDown size={14} className={`transition-transform duration-300 ${showServicesMega ? 'rotate-180' : ''}`} />
-                      <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-secondary-400"></span>
-                    </button>
-                    
-                    {/* Mega Menu */}
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[340px] transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
-                      <div className="bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden">
-                        <div className="p-4 space-y-1">
-                          <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
-                          {serviceItems.map((item) => {
-                            const Icon = item.icon;
-                            return (
-                              <button
-                                key={item.name}
-                                onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
-                                className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
-                              >
-                                <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                  <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
-                                </div>
-                                <div>
-                                  <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
-                                  <div className="text-xs text-secondary-400">{item.desc}</div>
-                                </div>
-                              </button>
-                            );
-                          })}
+              {/* Right Section - Desktop Navigation */}
+              <div className="hidden md:flex items-center space-x-8">
+                
+                {navLinks.map((link) => (
+                  <div key={link.name} className="relative">
+                    {link.hasMega ? (
+                      <div 
+                        onMouseEnter={() => setShowServicesMega(true)}
+                        onMouseLeave={() => setShowServicesMega(false)}
+                      >
+                        <button 
+                          onClick={() => handleLinkClick(link.path)}
+                          className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600 flex items-center gap-1"
+                        >
+                          {link.name}
+                          <ChevronDown size={14} className={`transition-transform duration-300 ${showServicesMega ? 'rotate-180' : ''}`} />
+                          <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-secondary-400"></span>
+                        </button>
+                        
+                        {/* Mega Menu */}
+                        <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[340px] transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
+                          <div className="bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden">
+                            <div className="p-4 space-y-1">
+                              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
+                              {serviceItems.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                  <button
+                                    key={item.name}
+                                    onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
+                                    className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
+                                  >
+                                    <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                      <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                                    </div>
+                                    <div>
+                                      <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
+                                      <div className="text-xs text-secondary-400">{item.desc}</div>
+                                    </div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <button 
+                        onClick={() => handleLinkClick(link.path)}
+                        className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600"
+                      >
+                        {link.name}
+                        <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-brand"></span>
+                      </button>
+                    )}
                   </div>
-                ) : (
-                  <button 
-                    onClick={() => handleLinkClick(link.path)}
-                    className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600"
-                  >
-                    {link.name}
-                    <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-brand"></span>
-                  </button>
-                )}
+                ))}
+                
+                <button 
+                  onClick={() => navigate('/quote')}
+                  className="group px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 hover:shadow-xl rounded-lg shadow-md inline-flex items-center gap-2"
+                >
+                  Get A Quote
+                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                </button>
               </div>
-            ))}
-            
-            <button 
-              onClick={() => navigate('/quote')}
-              className="group px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 hover:shadow-xl rounded-lg shadow-md inline-flex items-center gap-2"
-            >
-              Get A Quote
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-            </button>
-          </div>
 
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden relative z-[50] p-2 focus:outline-none group"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isMenuOpen}
-          >
-            <svg
-              width="28"
-              height="20"
-              viewBox="0 0 28 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              {/* Top bar — rotates to form top of X */}
-              <rect
-                x="0" y="1" width="28" height="2.5" rx="1.25"
-                fill="#355070"
-                style={{
-                  transformOrigin: '14px 2.25px',
-                  transform: isMenuOpen ? 'translateY(7.75px) rotate(45deg)' : 'none',
-                  transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
-                }}
-              />
-              {/* Middle bar — brand pink, fades out on open */}
-              <rect
-                x="4" y="9" width="20" height="2.5" rx="1.25"
-                fill="#FF006E"
-                style={{
-                  transformOrigin: '14px 10.25px',
-                  opacity: isMenuOpen ? 0 : 1,
-                  transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
-                  transition: 'opacity 0.2s ease, transform 0.25s cubic-bezier(0.4,0,0.2,1)',
-                }}
-              />
-              {/* Bottom bar — rotates to form bottom of X */}
-              <rect
-                x="0" y="17" width="28" height="2.5" rx="1.25"
-                fill="#355070"
-                style={{
-                  transformOrigin: '14px 18.25px',
-                  transform: isMenuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none',
-                  transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
-                }}
-              />
-            </svg>
-          </button>
+              {/* Mobile Menu Toggle */}
+              <button 
+                className="md:hidden relative z-[50] p-2 focus:outline-none group"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMenuOpen}
+              >
+                <svg
+                  width="28"
+                  height="20"
+                  viewBox="0 0 28 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  {/* Top bar — rotates to form top of X */}
+                  <rect
+                    x="0" y="1" width="28" height="2.5" rx="1.25"
+                    fill="#355070"
+                    style={{
+                      transformOrigin: '14px 2.25px',
+                      transform: isMenuOpen ? 'translateY(7.75px) rotate(45deg)' : 'none',
+                      transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
+                    }}
+                  />
+                  {/* Middle bar — brand pink, fades out on open */}
+                  <rect
+                    x="4" y="9" width="20" height="2.5" rx="1.25"
+                    fill="#FF006E"
+                    style={{
+                      transformOrigin: '14px 10.25px',
+                      opacity: isMenuOpen ? 0 : 1,
+                      transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                      transition: 'opacity 0.2s ease, transform 0.25s cubic-bezier(0.4,0,0.2,1)',
+                    }}
+                  />
+                  {/* Bottom bar — rotates to form bottom of X */}
+                  <rect
+                    x="0" y="17" width="28" height="2.5" rx="1.25"
+                    fill="#355070"
+                    style={{
+                      transformOrigin: '14px 18.25px',
+                      transform: isMenuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none',
+                      transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
+                    }}
+                  />
+                </svg>
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
       {/* Announcement Bar - In-Home Estimates */}
-      <div className="bg-secondary px-3 py-2">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
-          <span className="min-w-0 text-white text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
-            <span className="hidden sm:inline">Free In-Home Estimates — Providers visit your property</span>
-            <span className="sm:hidden">Free In-Home Estimates</span>
-          </span>
-          <button
-            onClick={() => navigate('/in-home-estimate')}
-            className="group flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 hover:shadow-lg transition-all duration-300 whitespace-nowrap inline-flex items-center gap-1"
-          >
-            Schedule
-            <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </button>
+      {!isAdsLandingPage && (
+        <div className="bg-secondary px-3 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
+            <span className="min-w-0 text-white text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
+              <span className="hidden sm:inline">Free In-Home Estimates — Providers visit your property</span>
+              <span className="sm:hidden">Free In-Home Estimates</span>
+            </span>
+            <button
+              onClick={() => navigate('/in-home-estimate')}
+              className="group flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 hover:shadow-lg transition-all duration-300 whitespace-nowrap inline-flex items-center gap-1"
+            >
+              Schedule
+              <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       </header>
 
       {/* Mobile Sidebar Overlay */}

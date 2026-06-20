@@ -1,12 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf, BedDouble, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Leaf, BedDouble, Check, Sparkles, Loader2, Phone } from 'lucide-react';
 import { TrustBadges } from '../TrustBadges';
 import { ServiceArea } from '../ServiceArea';
 import { FullServiceSection } from '../FullServiceSection';
+import { QuickActionBar } from '../QuickActionBar';
+import { ZipCheckModal } from '../ZipCheckModal';
 
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
+  const [isZipModalOpen, setIsZipModalOpen] = useState(false);
+  const [zipValue, setZipValue] = useState('');
+  const [zipLoading, setZipLoading] = useState(false);
+  const [zipError, setZipError] = useState<string | null>(null);
+
+  const handleZipCheck = async () => {
+    const zip = zipValue.trim();
+    if (!/^\d{5}$/.test(zip)) {
+      setZipError('Enter a valid 5-digit ZIP.');
+      return;
+    }
+    setZipLoading(true);
+    setZipError(null);
+    try {
+      const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+      if (!res.ok) {
+        setZipError('ZIP not found.');
+        return;
+      }
+      const data = await res.json();
+      const city = data.places?.[0]?.['place name'] ?? '';
+      const state = data.places?.[0]?.['state abbreviation'] ?? '';
+      
+      navigate('/quote', {
+        state: {
+          zipResult: { city, state, served: true },
+          zipValue: zip,
+          serviceType: 'Junk Removal',
+          preselectItems: [{ name: 'Mattress', quantity: 1 }]
+        }
+      });
+    } catch {
+      setZipError('Check failed. Try again.');
+    } finally {
+      setZipLoading(false);
+    }
+  };
 
   const steps = [
     {
@@ -53,25 +92,52 @@ export const MattressDisposalPage: React.FC = () => {
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/90">Eco-Haul Service</span>
               </div>
               <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                Mattress gone.
+                Same-Day Mattress Disposal.
                 <br />
-                <span className="text-brand">Recycled.</span>
+                <span className="text-brand">From $75. Eco-Friendly.</span>
               </h1>
-              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Hassle-free, eco-friendly mattress removal. Vetted crews retrieve your mattress, box spring, and bed frame from any room. Up to 80% recycled.
+              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                Instant upfront pricing. Book online or call now. Our vetted local crews retrieve your mattress, box spring, and bed frame from any room. Up to 80% recycled.
               </p>
+
+              {/* ZIP Checker Form */}
+              <div className="animate-slide-up space-y-3" style={{ animationDelay: '0.3s' }}>
+                <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={5}
+                    value={zipValue}
+                    onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); }}
+                    onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                    placeholder="Enter ZIP code for pricing"
+                    className="flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary focus:outline-none font-mono tracking-wider"
+                    style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
+                  />
+                  <button
+                    onClick={handleZipCheck}
+                    disabled={zipValue.length !== 5 || zipLoading}
+                    className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                  >
+                    {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
+                  </button>
+                </div>
+                {zipError && <p className="text-xs text-red-500 font-semibold">{zipError}</p>}
+              </div>
+
             </div>
           </div>
-          <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <button
-              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+          <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.35s' }}>
+            <a
+              href="tel:8313187139"
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
             >
-              View Pricing
-            </button>
+              <Phone size={14} className="fill-white" />
+              <span>Call (831) 318-7139</span>
+            </a>
             <button
-              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+              onClick={() => navigate('/booking')}
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
             >
               Book Online
             </button>
@@ -79,7 +145,7 @@ export const MattressDisposalPage: React.FC = () => {
         </div>
 
         {/* Desktop layout */}
-        <div className="hidden lg:flex min-h-screen flex-col items-center justify-center pt-40 pb-32">
+        <div className="hidden lg:flex min-h-[85vh] flex-col items-center justify-center pt-32 pb-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="grid grid-cols-12 gap-16 items-center">
               {/* Left Column */}
@@ -88,23 +154,50 @@ export const MattressDisposalPage: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">Eco-Haul Service</span>
                 </div>
                 <h1 className="text-6xl lg:text-7xl font-black text-secondary tracking-tight mb-6 leading-[1.05] animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                  Mattress gone.
+                  Same-Day Mattress Disposal.
                   <br />
-                  <span className="text-brand">Recycled.</span>
+                  <span className="text-brand">From $75. Eco-Friendly.</span>
                 </h1>
                 <p className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                  Hassle-free, eco-friendly mattress removal. Vetted crews retrieve your mattress, box spring, and bed frame from any room. Up to 80% recycled.
+                  Get an instant flat-rate quote and book online in minutes. Vetted, local loading crews retrieve your mattress, box spring, or bed frame from any room. No heavy lifting, no curb dragging.
                 </p>
+
+                {/* ZIP Checker Form */}
+                <div className="animate-slide-up space-y-4 mb-6" style={{ animationDelay: '0.25s' }}>
+                  <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={5}
+                      value={zipValue}
+                      onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); }}
+                      onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
+                      placeholder="Enter ZIP code for pricing"
+                      className="flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary focus:outline-none font-mono tracking-wider"
+                      style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
+                    />
+                    <button
+                      onClick={handleZipCheck}
+                      disabled={zipValue.length !== 5 || zipLoading}
+                      className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                    >
+                      {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
+                    </button>
+                  </div>
+                  {zipError && <p className="text-xs text-red-500 font-semibold">{zipError}</p>}
+                </div>
+
                 <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-                  <button
-                    onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                  <a
+                    href="tel:8313187139"
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
                   >
-                    View Pricing
-                  </button>
+                    <Phone size={14} className="fill-white" />
+                    <span>Call (831) 318-7139</span>
+                  </a>
                   <button
-                    onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
+                    onClick={() => navigate('/booking')}
+                    className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
                   >
                     Book Online
                   </button>
@@ -156,22 +249,22 @@ export const MattressDisposalPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                 {[
                   {
-                    title: "Mattresses",
+                    title: "Mattresses (From $75)",
                     icon: BedDouble,
                     description: "Standard innerspring, memory foam, latex, hybrid, pillow-top, futons, and crib mattresses of any size (Twin to California King)."
                   },
                   {
-                    title: "Box Springs",
+                    title: "Box Springs (From $65)",
                     icon: Sparkles,
                     description: "Traditional wood box springs, metal foundations, split box springs, or low-profile bases retrieved from any floor."
                   },
                   {
-                    title: "Bed Frames",
+                    title: "Bed Frames (From $70)",
                     icon: Leaf,
                     description: "Steel bed frames, wooden headboards, footboards, wood slats, adjustables, platform beds, bunk beds, and daybeds."
                   },
                   {
-                    title: "Complete Sets",
+                    title: "Complete Sets (Save 15%)",
                     icon: Check,
                     description: "Bundle your mattress, box spring, and frame removal into a single flat-rate package for maximum pricing discount."
                   }
@@ -182,9 +275,9 @@ export const MattressDisposalPage: React.FC = () => {
                       key={item.title} 
                       onClick={() => {
                         let preselect = [{ name: 'Mattress', quantity: 1 }];
-                        if (item.title === 'Box Springs') preselect = [{ name: 'Box Spring', quantity: 1 }];
-                        else if (item.title === 'Bed Frames') preselect = [{ name: 'Bed Frame', quantity: 1 }];
-                        else if (item.title === 'Complete Sets') preselect = [
+                        if (item.title.includes('Box Springs')) preselect = [{ name: 'Box Spring', quantity: 1 }];
+                        else if (item.title.includes('Bed Frames')) preselect = [{ name: 'Bed Frame', quantity: 1 }];
+                        else if (item.title.includes('Complete Sets')) preselect = [
                           { name: 'Mattress', quantity: 1 },
                           { name: 'Box Spring', quantity: 1 },
                           { name: 'Bed Frame', quantity: 1 }
@@ -252,7 +345,7 @@ export const MattressDisposalPage: React.FC = () => {
             {/* Right Side: CTA Button */}
             <div className="flex-shrink-0 w-full sm:w-auto">
               <button
-                onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
+                onClick={() => navigate('/booking')}
                 className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded bg-brand hover:bg-brand-600 px-6 py-3 text-xs font-black uppercase tracking-wider text-white hover:shadow-xl transition-all duration-300 whitespace-nowrap"
               >
                 <span>Book Eco-Haul</span>
@@ -321,10 +414,10 @@ export const MattressDisposalPage: React.FC = () => {
           {/* Centered CTA */}
           <div className="mt-16 md:mt-24 text-center">
             <button
-              onClick={() => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } })}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
-              <span>View Pricing & Book</span>
+              <span>Check Rates & Book</span>
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>
           </div>
@@ -332,74 +425,21 @@ export const MattressDisposalPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Custom WhatWeHaul for Bedroom items */}
-      <section className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
-            {/* Left Column: Asymmetric Typography Panel */}
-            <div className="lg:col-span-4 space-y-6">
-              <div className="inline-flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-                <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Accepted Items</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-                We haul<br />
-                <span className="text-brand">it all.</span>
-              </h2>
-              
-              <div className="w-12 h-0.5 bg-secondary-100" />
-              
-              <p className="text-secondary-500 text-sm md:text-base leading-relaxed max-w-sm font-medium">
-                Vetted crews retrieve your old bedding from any room or floor. No need to haul heavy mattresses to the curb.
-              </p>
-            </div>
-
-            {/* Right Column: Bento Grid */}
-            <div className="lg:col-span-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-                {[
-                  { label: 'Twin & Full Mattresses', desc: 'Inner spring, memory foam, futon, or crib sizes', icon: BedDouble },
-                  { label: 'Queen & King Mattresses', desc: 'Standard Queen, King, or California King mattress types', icon: BedDouble },
-                  { label: 'Box Springs', desc: 'Standard, low-profile, or split box spring units', icon: Sparkles },
-                  { label: 'Steel Rails & Foundations', desc: 'Adjustable base frames, steel rails, and brackets', icon: Check },
-                  { label: 'Platform Beds', desc: 'Wooden platform frames, daybeds, and bunk bed systems', icon: Leaf },
-                  { label: 'Headboards & Footboards', desc: 'Upholstered, wood, metal headboards and footboards', icon: Sparkles },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div 
-                      key={item.label} 
-                      className="group bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
-                    >
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-brand flex items-center justify-center shrink-0 transition-colors duration-300">
-                        <Icon 
-                          className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
-                          strokeWidth={1.5} 
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
-                          {item.label}
-                        </h3>
-                        <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
       <FullServiceSection />
 
-      <ServiceArea titleStart="Clear your space." titleAccent="Same-day booking available." />
+      <ServiceArea 
+        onGetQuote={() => setIsZipModalOpen(true)}
+        titleStart="Clear your space." 
+        titleAccent="Same-day booking available." 
+      />
+
+      <QuickActionBar onBookOnline={() => navigate('/booking')} />
+
+      <ZipCheckModal 
+        isOpen={isZipModalOpen}
+        onClose={() => setIsZipModalOpen(false)}
+        onGetQuote={() => navigate('/quote')}
+      />
     </div>
   );
 };
