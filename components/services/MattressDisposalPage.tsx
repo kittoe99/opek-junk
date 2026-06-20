@@ -99,22 +99,23 @@ export const MattressDisposalPage: React.FC = () => {
                 Same-day pickup from any room. Zero heavy lifting.
               </p>
 
-              <div className="flex flex-row gap-0 animate-slide-up mb-2" style={{ animationDelay: '0.3s' }}>
-                <button
-                  onClick={() => document.querySelector('input[type="text"]')?.focus()}
-                  className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
-                >
-                  <span>View Pricing</span>
-                </button>
-                <button
-                  onClick={() => navigate('/booking')}
-                  className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-                >
-                  Book Online
-                </button>
-              </div>
-
             </div>
+          </div>
+
+          {/* Buttons sit flush below the image background */}
+          <div className="flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <button
+              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center inline-flex items-center justify-center gap-2"
+            >
+              <span>View Pricing</span>
+            </button>
+            <button
+              onClick={() => navigate('/booking')}
+              className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+            >
+              Book Online
+            </button>
           </div>
 
           {/* ZIP Checker Form (Mobile) */}
