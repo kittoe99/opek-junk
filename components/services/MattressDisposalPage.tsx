@@ -119,7 +119,7 @@ export const MattressDisposalPage: React.FC = () => {
           </div>
 
           {/* ZIP Checker Form (Mobile) */}
-          <div className="bg-secondary-50 px-4 py-8 border-b border-secondary-200">
+          <div className="px-4 py-8">
             <div className="max-w-md mx-auto space-y-3 animate-slide-up" style={{ animationDelay: '0.35s' }}>
               <p className="text-sm font-bold text-secondary uppercase tracking-wider text-center mb-2">Check your pricing instantly</p>
               <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full">
