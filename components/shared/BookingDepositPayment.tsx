@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Check, CreditCard, Loader2, Lock, AlertCircle } from 'lucide-react';
+import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';
+import { isStripeConfigured, isStripeTestMode, stripePromise } from '../../lib/stripe';
 
-const DEPOSIT_AMOUNT = 1;
-
-interface BookingDepositPaymentProps {
+interface DepositPaymentFormProps {
   appointmentDate: string;
   estimatedTotal: number;
   isLoading?: boolean;
   onBack: () => void;
-  onPay: () => Promise<void>;
+  onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
 }
 
-export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
+const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   appointmentDate,
   estimatedTotal,
   isLoading = false,
   onBack,
-  onPay,
+  onPaymentSuccess,
 }) => {
+  const stripe = useStripe();
+  const elements = useElements();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
 
   const formattedDate = appointmentDate
     ? new Date(`${appointmentDate}T12:00:00`).toLocaleDateString(undefined, {
@@ -40,16 +44,200 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
       return;
     }
 
+    if (!stripe || !elements) {
+      setError('Payment form is still loading. Please try again.');
+      return;
+    }
+
+    setProcessing(true);
+
     try {
-      await onPay();
+      const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: 'if_required',
+      });
+
+      if (confirmError) {
+        setError(confirmError.message || 'Payment failed. Please try again.');
+        return;
+      }
+
+      if (paymentIntent?.status === 'succeeded') {
+        await onPaymentSuccess(paymentIntent.id);
+        return;
+      }
+
+      setError('Payment could not be completed. Please try again.');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Payment failed. Please try again.';
       setError(message);
+    } finally {
+      setProcessing(false);
     }
   };
 
-  const inputCls =
-    'w-full px-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300';
+  const busy = processing || isLoading;
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="bg-white rounded-2xl border border-secondary-100 p-4 space-y-4 shadow-sm">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-black text-secondary-400 uppercase tracking-wider">Payment details</p>
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-secondary-400 uppercase tracking-wider">
+            <Lock size={12} className="text-[#635BFF]" />
+            Secured by Stripe
+          </div>
+        </div>
+        <PaymentElement
+          options={{
+            layout: 'tabs',
+          }}
+        />
+      </div>
+
+      <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+        <div className="relative shrink-0 mt-0.5">
+          <input
+            type="checkbox"
+            checked={termsAccepted}
+            onChange={(e) => {
+              setTermsAccepted(e.target.checked);
+              if (e.target.checked) setError(null);
+            }}
+            className="sr-only"
+          />
+          <div
+            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+              termsAccepted ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+            }`}
+          >
+            {termsAccepted && <Check size={12} className="text-white" strokeWidth={3.5} />}
+          </div>
+        </div>
+        <span className="text-xs text-secondary-600 leading-relaxed">
+          I agree to the{' '}
+          <Link
+            to="/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand font-bold hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Terms of Service
+          </Link>{' '}
+          and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described.
+        </span>
+      </label>
+
+      {error && (
+        <p className="text-xs text-red-500 font-semibold text-center">{error}</p>
+      )}
+
+      <div className="pt-2 flex gap-3">
+        <button
+          type="button"
+          onClick={onBack}
+          disabled={busy}
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer disabled:opacity-50"
+        >
+          <ArrowLeft size={14} /> Back
+        </button>
+        <button
+          type="submit"
+          disabled={busy || !termsAccepted || !stripe || !elements}
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+        >
+          {busy ? (
+            <>
+              <Loader2 className="animate-spin w-4 h-4" />
+              Processing...
+            </>
+          ) : (
+            <>Pay ${BOOKING_DEPOSIT_AMOUNT} Deposit</>
+          )}
+        </button>
+      </div>
+
+      <p className="text-[10px] text-secondary-400 text-center leading-relaxed">
+        Scheduled for {formattedDate}
+        {estimatedTotal > 0 ? ` · Estimated total $${estimatedTotal}` : ''}
+      </p>
+    </form>
+  );
+};
+
+interface BookingDepositPaymentProps {
+  appointmentDate: string;
+  estimatedTotal: number;
+  customerEmail?: string;
+  serviceType?: string;
+  isLoading?: boolean;
+  onBack: () => void;
+  onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
+}
+
+export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
+  appointmentDate,
+  estimatedTotal,
+  customerEmail,
+  serviceType,
+  isLoading = false,
+  onBack,
+  onPaymentSuccess,
+}) => {
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [initError, setInitError] = useState<string | null>(null);
+  const [initializing, setInitializing] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const createPaymentIntent = async () => {
+      setInitializing(true);
+      setInitError(null);
+
+      try {
+        const response = await fetch('/api/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: customerEmail,
+            serviceType,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to initialize payment.');
+        }
+
+        if (!cancelled) {
+          setClientSecret(data.clientSecret);
+        }
+      } catch (err: unknown) {
+        if (!cancelled) {
+          const message = err instanceof Error ? err.message : 'Failed to initialize payment.';
+          setInitError(message);
+        }
+      } finally {
+        if (!cancelled) {
+          setInitializing(false);
+        }
+      }
+    };
+
+    if (isStripeConfigured) {
+      createPaymentIntent();
+    } else {
+      setInitError('Stripe publishable key is missing. Add VITE_STRIPE_PUBLISHABLE_KEY to your environment.');
+      setInitializing(false);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [customerEmail, serviceType]);
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
@@ -61,25 +249,22 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
         <p className="text-secondary-400 text-xs">Pay a small deposit to confirm your reservation.</p>
       </div>
 
+      {isStripeTestMode && (
+        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 text-center">
+          <p className="text-[11px] font-bold text-indigo-900 uppercase tracking-wider">Stripe test mode</p>
+          <p className="text-[11px] text-indigo-700 mt-1">
+            Use card <span className="font-mono font-bold">4242 4242 4242 4242</span>, any future expiry, any CVC.
+          </p>
+        </div>
+      )}
+
       <div className="bg-white rounded-3xl p-5 border border-secondary-100 shadow-sm">
-        <div className="flex justify-between items-start gap-4 pb-4 border-b border-secondary-100">
+        <div className="flex justify-between items-start gap-4">
           <div>
             <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Booking deposit</p>
             <p className="text-xs text-secondary-500 mt-1">Due today to hold your appointment</p>
           </div>
-          <p className="text-3xl font-black text-brand">${DEPOSIT_AMOUNT}</p>
-        </div>
-        <div className="pt-4 space-y-2 text-sm">
-          <div className="flex justify-between items-center">
-            <span className="text-secondary-600">Scheduled service</span>
-            <span className="text-secondary-900 font-semibold text-xs text-right max-w-[55%]">{formattedDate}</span>
-          </div>
-          {estimatedTotal > 0 && (
-            <div className="flex justify-between items-center">
-              <span className="text-secondary-600">Estimated service total</span>
-              <span className="text-secondary-900 font-bold">${estimatedTotal}</span>
-            </div>
-          )}
+          <p className="text-3xl font-black text-brand">${BOOKING_DEPOSIT_AMOUNT}</p>
         </div>
       </div>
 
@@ -90,138 +275,47 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="bg-white rounded-2xl border border-secondary-100 p-4 space-y-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-black text-secondary-400 uppercase tracking-wider">Payment details</p>
-            <div className="flex items-center gap-1.5 text-[10px] font-bold text-secondary-400 uppercase tracking-wider">
-              <Lock size={12} className="text-[#635BFF]" />
-              Secured by Stripe
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-              Name on card
-            </label>
-            <input
-              type="text"
-              required
-              autoComplete="cc-name"
-              placeholder="Jane Doe"
-              className={inputCls}
-            />
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-              Card number
-            </label>
-            <input
-              type="text"
-              required
-              inputMode="numeric"
-              autoComplete="cc-number"
-              placeholder="4242 4242 4242 4242"
-              className={inputCls}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-                Expiry
-              </label>
-              <input
-                type="text"
-                required
-                inputMode="numeric"
-                autoComplete="cc-exp"
-                placeholder="MM / YY"
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-                CVC
-              </label>
-              <input
-                type="text"
-                required
-                inputMode="numeric"
-                autoComplete="cc-csc"
-                placeholder="123"
-                className={inputCls}
-              />
-            </div>
-          </div>
+      {initializing && (
+        <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
+          <Loader2 className="animate-spin w-4 h-4" />
+          Preparing secure checkout...
         </div>
+      )}
 
-        <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
-          <div className="relative shrink-0 mt-0.5">
-            <input
-              type="checkbox"
-              checked={termsAccepted}
-              onChange={(e) => {
-                setTermsAccepted(e.target.checked);
-                if (e.target.checked) setError(null);
-              }}
-              className="sr-only"
-            />
-            <div
-              className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                termsAccepted ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
-              }`}
-            >
-              {termsAccepted && <Check size={12} className="text-white" strokeWidth={3.5} />}
-            </div>
-          </div>
-          <span className="text-xs text-secondary-600 leading-relaxed">
-            I agree to the{' '}
-            <Link
-              to="/terms"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand font-bold hover:underline"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Terms of Service
-            </Link>{' '}
-            and authorize Opek Junk Removal to charge my payment method for the ${DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described.
-          </span>
-        </label>
-
-        {error && (
-          <p className="text-xs text-red-500 font-semibold text-center">{error}</p>
-        )}
-
-        <div className="pt-2 flex gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            disabled={isLoading}
-            className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer disabled:opacity-50"
-          >
-            <ArrowLeft size={14} /> Back
-          </button>
-          <button
-            type="submit"
-            disabled={isLoading || !termsAccepted}
-            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin w-4 h-4" />
-                Processing...
-              </>
-            ) : (
-              <>Pay ${DEPOSIT_AMOUNT} Deposit</>
-            )}
-          </button>
+      {initError && !initializing && (
+        <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-center space-y-2">
+          <p className="text-xs text-red-700 font-semibold">{initError}</p>
+          <p className="text-[10px] text-red-600">
+            For local testing, run <span className="font-mono">npm run dev:stripe</span> with Stripe test keys in <span className="font-mono">.env.local</span>.
+          </p>
         </div>
-      </form>
+      )}
+
+      {clientSecret && stripePromise && !initError && (
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret,
+            appearance: {
+              theme: 'stripe',
+              variables: {
+                colorPrimary: '#ff006e',
+                borderRadius: '12px',
+              },
+            },
+          }}
+        >
+          <DepositPaymentForm
+            appointmentDate={appointmentDate}
+            estimatedTotal={estimatedTotal}
+            isLoading={isLoading}
+            onBack={onBack}
+            onPaymentSuccess={onPaymentSuccess}
+          />
+        </Elements>
+      )}
     </div>
   );
 };
 
-export const BOOKING_DEPOSIT_AMOUNT = DEPOSIT_AMOUNT;
+export { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';

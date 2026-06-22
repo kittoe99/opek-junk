@@ -7,6 +7,7 @@ import { ITEM_CATALOG } from '../QuotePage';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 import { ContactIntakeForm } from '../shared/ContactIntakeForm';
 import { MattressDepositPayment, MATTRESS_DEPOSIT_AMOUNT } from '../shared/MattressDepositPayment';
+import { BookingDepositIntro } from '../shared/BookingDepositIntro';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -84,7 +85,7 @@ export const MattressBookingPage: React.FC = () => {
     preselectItems?: { name: string; quantity: number }[];
   } | null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>(1); // Step 7 is payment, step 8 is success
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>(1); // Step 7 deposit intro, step 8 payment, step 9 success
   
   // Step 1: Zip
   const [zipCode, setZipCode] = useState('');
@@ -458,8 +459,7 @@ export const MattressBookingPage: React.FC = () => {
     }
   };
 
-  const handleFinalSubmit = async (e?: React.FormEvent) => {
-    e?.preventDefault();
+  const handleFinalSubmit = async (paymentIntentId: string) => {
     setSubmitLoading(true);
 
     try {
@@ -482,6 +482,7 @@ export const MattressBookingPage: React.FC = () => {
         price: totalPrice,
         deposit_amount: MATTRESS_DEPOSIT_AMOUNT,
         deposit_paid: true,
+        stripe_payment_intent_id: paymentIntentId,
         terms_accepted_at: new Date().toISOString()
       };
 
@@ -525,9 +526,10 @@ export const MattressBookingPage: React.FC = () => {
       });
 
       setOrderNumber(generatedOrderNumber);
-      setStep(8);
+      setStep(9);
     } catch (err) {
       console.error('Error submitting booking:', err);
+      throw err instanceof Error ? err : new Error('Failed to complete booking after payment.');
     } finally {
       setSubmitLoading(false);
     }
@@ -1172,12 +1174,21 @@ export const MattressBookingPage: React.FC = () => {
   );
 
   const renderStep7 = () => (
+    <BookingDepositIntro
+      onBack={() => setStep(6)}
+      onContinue={() => setStep(8)}
+    />
+  );
+
+  const renderStep8 = () => (
     <MattressDepositPayment
       appointmentDate={formData.date}
       estimatedTotal={calculateTotal()}
+      customerEmail={formData.email}
+      serviceType="Mattress Disposal"
       isLoading={submitLoading}
-      onBack={() => setStep(6)}
-      onPay={handleFinalSubmit}
+      onBack={() => setStep(7)}
+      onPaymentSuccess={handleFinalSubmit}
     />
   );
 
@@ -1253,7 +1264,8 @@ export const MattressBookingPage: React.FC = () => {
           {step === 5 && renderStep5()}
           {step === 6 && renderStep6()}
           {step === 7 && renderStep7()}
-          {step === 8 && renderSuccess()}
+          {step === 8 && renderStep8()}
+          {step === 9 && renderSuccess()}
         </div>
       </div>
       

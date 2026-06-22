@@ -5,6 +5,7 @@ import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
+import { BookingDepositIntro } from './shared/BookingDepositIntro';
 
 
 interface AddressSuggestion {
@@ -27,7 +28,7 @@ interface BookingDetailsFormProps {
   partialBookingId?: string | null;
 }
 
-type DetailStep = 'contact' | 'schedule' | 'address' | 'review' | 'payment';
+type DetailStep = 'contact' | 'schedule' | 'address' | 'review' | 'deposit' | 'payment';
 
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
@@ -305,7 +306,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   };
 
   const handleBackStep = () => {
-    if (step === 'payment') setStep('review');
+    if (step === 'payment') setStep('deposit');
+    else if (step === 'deposit') setStep('review');
     else if (step === 'review') setStep('address');
     else if (step === 'address') setStep('schedule');
     else if (step === 'schedule') setStep('contact');
@@ -322,12 +324,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     }
 
     setError(null);
-    setStep('payment');
+    setStep('deposit');
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-
+  const handleSubmit = async (paymentIntentId: string) => {
     setSubmitting(true);
     setError(null);
 
@@ -384,6 +384,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             photo_url: uploadedUrl,
             deposit_amount: BOOKING_DEPOSIT_AMOUNT,
             deposit_paid: true,
+            stripe_payment_intent_id: paymentIntentId,
             terms_accepted_at: new Date().toISOString()
           };
 
@@ -484,13 +485,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   }
 
   // Step labels for indicator
-  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review', 'Payment'];
+  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review', 'Deposit', 'Payment'];
   const stepIndex =
     step === 'contact' ? 0
     : step === 'schedule' ? 1
     : step === 'address' ? 2
     : step === 'review' ? 3
-    : 4;
+    : step === 'deposit' ? 4
+    : 5;
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
@@ -888,13 +890,22 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         </form>
       )}
 
+      {step === 'deposit' && (
+        <BookingDepositIntro
+          onBack={() => setStep('review')}
+          onContinue={() => setStep('payment')}
+        />
+      )}
+
       {step === 'payment' && (
         <BookingDepositPayment
           appointmentDate={formData.date}
           estimatedTotal={estimate?.price || 0}
+          customerEmail={formData.email}
+          serviceType={serviceType}
           isLoading={submitting}
-          onBack={() => setStep('review')}
-          onPay={handleSubmit}
+          onBack={() => setStep('deposit')}
+          onPaymentSuccess={handleSubmit}
         />
       )}
     </div>
