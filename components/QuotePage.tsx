@@ -939,7 +939,7 @@ export const QuotePage: React.FC = () => {
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
             Book your <span className="text-brand">{selectedService === 'moving_labor' ? 'service' : 'pickup'}.</span>
           </h1>
-          <p className="text-sm text-secondary-400">A matched provider confirms within 15 minutes.</p>
+          <p className="text-sm text-secondary-400">Contact, schedule, address, review, and deposit. A matched provider confirms within 15 minutes.</p>
         </div>
 
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">

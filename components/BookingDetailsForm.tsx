@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
 import { BookingSuccessView } from './shared/BookingSuccessView';
+import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
 
 
 interface AddressSuggestion {
@@ -26,7 +27,7 @@ interface BookingDetailsFormProps {
   partialBookingId?: string | null;
 }
 
-type DetailStep = 'contact' | 'schedule' | 'address' | 'review';
+type DetailStep = 'contact' | 'schedule' | 'address' | 'review' | 'payment';
 
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
@@ -304,13 +305,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   };
 
   const handleBackStep = () => {
-    if (step === 'review') setStep('address');
+    if (step === 'payment') setStep('review');
+    else if (step === 'review') setStep('address');
     else if (step === 'address') setStep('schedule');
     else if (step === 'schedule') setStep('contact');
     else if (onBack) onBack();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const isJunkRemoval = serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
@@ -318,6 +320,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       setError('A photo of the items to be hauled away is required to complete your booking. This helps improve service accuracy.');
       return;
     }
+
+    setError(null);
+    setStep('payment');
+  };
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
 
     setSubmitting(true);
     setError(null);
@@ -372,7 +381,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             estimated_volume: estimate?.estimatedVolume || '',
             price: estimate?.price || 0,
             estimate_summary: estimate?.summary || '',
-            photo_url: uploadedUrl
+            photo_url: uploadedUrl,
+            deposit_amount: BOOKING_DEPOSIT_AMOUNT,
+            deposit_paid: true,
+            terms_accepted_at: new Date().toISOString()
           };
 
           const query = supabase
@@ -435,8 +447,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         setSubmitted(true);
       } catch (err: any) {
         console.error('Error submitting booking:', err);
-        setError(err.message || 'Failed to submit booking. Please try again.');
         setSubmitting(false);
+        throw new Error(err.message || 'Failed to submit booking. Please try again.');
       }
     };
 
@@ -472,8 +484,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   }
 
   // Step labels for indicator
-  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review'];
-  const stepIndex = step === 'contact' ? 0 : step === 'schedule' ? 1 : step === 'address' ? 2 : 3;
+  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review', 'Payment'];
+  const stepIndex =
+    step === 'contact' ? 0
+    : step === 'schedule' ? 1
+    : step === 'address' ? 2
+    : step === 'review' ? 3
+    : 4;
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
@@ -713,7 +730,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
       {/* ─── Review step ─── */}
       {step === 'review' && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleReviewSubmit} className="space-y-4">
           <div className="text-center space-y-2 mb-6">
             <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
               <ClipboardList className="w-6 h-6 text-brand" strokeWidth={2.5} />
@@ -859,10 +876,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </button>
             <button
               type="submit"
-              disabled={submitting}
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20"
             >
-              {submitting ? 'Submitting...' : <>Confirm Booking <Check size={14} strokeWidth={3} /></>}
+              Continue <ArrowRight size={14} />
             </button>
           </div>
 
@@ -870,6 +886,16 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             Opek matches you with a provider who confirms within 15 minutes
           </p>
         </form>
+      )}
+
+      {step === 'payment' && (
+        <BookingDepositPayment
+          appointmentDate={formData.date}
+          estimatedTotal={estimate?.price || 0}
+          isLoading={submitting}
+          onBack={() => setStep('review')}
+          onPay={handleSubmit}
+        />
       )}
     </div>
   );

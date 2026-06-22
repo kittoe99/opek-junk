@@ -6,6 +6,7 @@ import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../QuotePage';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 import { ContactIntakeForm } from '../shared/ContactIntakeForm';
+import { MattressDepositPayment, MATTRESS_DEPOSIT_AMOUNT } from '../shared/MattressDepositPayment';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -83,7 +84,7 @@ export const MattressBookingPage: React.FC = () => {
     preselectItems?: { name: string; quantity: number }[];
   } | null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(1); // Step 7 is success
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>(1); // Step 7 is payment, step 8 is success
   
   // Step 1: Zip
   const [zipCode, setZipCode] = useState('');
@@ -457,8 +458,8 @@ export const MattressBookingPage: React.FC = () => {
     }
   };
 
-  const handleFinalSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFinalSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setSubmitLoading(true);
 
     try {
@@ -478,7 +479,10 @@ export const MattressBookingPage: React.FC = () => {
         items: selectedItems.filter(i => i.quantity > 0).map(i => ({ name: i.name, quantity: i.quantity })),
         details: `Mattress Disposal service. Items: ${itemsSummaryText}. Total Price: $${totalPrice}`,
         preferred_date: formData.date,
-        price: totalPrice
+        price: totalPrice,
+        deposit_amount: MATTRESS_DEPOSIT_AMOUNT,
+        deposit_paid: true,
+        terms_accepted_at: new Date().toISOString()
       };
 
       const locationInfo = {
@@ -521,7 +525,7 @@ export const MattressBookingPage: React.FC = () => {
       });
 
       setOrderNumber(generatedOrderNumber);
-      setStep(7);
+      setStep(8);
     } catch (err) {
       console.error('Error submitting booking:', err);
     } finally {
@@ -1044,7 +1048,13 @@ export const MattressBookingPage: React.FC = () => {
         </button>
       </div>
 
-      <form onSubmit={handleFinalSubmit} className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setStep(7);
+        }}
+        className="space-y-4"
+      >
         <div ref={addressDropdownRef} className="relative">
           <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Pickup Address</label>
           <div className="relative group">
@@ -1152,14 +1162,23 @@ export const MattressBookingPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            disabled={submitLoading}
-            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
           >
-            {submitLoading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Confirm Booking'}
+            Continue <ArrowRight size={14} />
           </button>
         </div>
       </form>
     </div>
+  );
+
+  const renderStep7 = () => (
+    <MattressDepositPayment
+      appointmentDate={formData.date}
+      estimatedTotal={calculateTotal()}
+      isLoading={submitLoading}
+      onBack={() => setStep(6)}
+      onPay={handleFinalSubmit}
+    />
   );
 
   const renderSuccess = () => (
@@ -1181,6 +1200,10 @@ export const MattressBookingPage: React.FC = () => {
         <div className="pt-2 border-t border-secondary-100 flex justify-between items-center">
           <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Confirmed Price</span>
           <span className="text-brand font-black text-sm">${calculateTotal()}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Deposit Paid</span>
+          <span className="text-emerald-600 font-black text-sm">${MATTRESS_DEPOSIT_AMOUNT}</span>
         </div>
       </div>
 
@@ -1229,7 +1252,8 @@ export const MattressBookingPage: React.FC = () => {
           {step === 4 && renderStep4()}
           {step === 5 && renderStep5()}
           {step === 6 && renderStep6()}
-          {step === 7 && renderSuccess()}
+          {step === 7 && renderStep7()}
+          {step === 8 && renderSuccess()}
         </div>
       </div>
       
