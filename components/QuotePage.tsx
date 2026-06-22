@@ -295,29 +295,6 @@ export const QuotePage: React.FC = () => {
     }
   }, [zipResult]);
 
-  // Load moving labor rates from Supabase config
-  const [movingRates, setMovingRates] = useState<{ rate2: number; rate3: number }>({ rate2: 149, rate3: 189 });
-
-  useEffect(() => {
-    async function loadMovingRates() {
-      try {
-        const { data, error } = await supabase
-          .from('pricing_config')
-          .select('value')
-          .eq('key', 'moving_labor_rules')
-          .single();
-        if (data && data.value) {
-          setMovingRates({
-            rate2: data.value.price_per_hour_2_helpers || 149,
-            rate3: data.value.price_per_hour_3_helpers || 189
-          });
-        }
-      } catch (err) {
-        console.error('Failed to load moving rates:', err);
-      }
-    }
-    loadMovingRates();
-  }, []);
 
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
@@ -1164,23 +1141,6 @@ export const QuotePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white">
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => {
-              if (movingStep === 'crew') {
-                setMovingStep('type');
-              } else if (movingStep === 'type') {
-                setMovingStep('service');
-              } else if (movingStep === 'result') {
-                setMovingStep('crew');
-              } else {
-                setSelectedService(null);
-                setSelectedOption(null);
-              }
-            }}
-            className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
-          >
-            <ArrowLeft size={14} /> {movingStep === 'result' ? 'Back to crew & time' : movingStep === 'crew' ? 'Back to type of move' : movingStep === 'type' ? 'Back to service selection' : 'Back to services'}
-          </button>
           {movingStep !== 'result' && (
             <>
               <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Book <span className="text-brand">moving labor.</span></h1>
@@ -1233,18 +1193,22 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-4">
-                <button
-                  onClick={() => setMovingStep('type')}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-xl transition-all duration-300 font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
-                >
-                  Continue <ArrowRight size={16} strokeWidth={2.5} />
-                </button>
+              <div className="flex items-center justify-between text-xs pt-2">
                 <button
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
-                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
+                  className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to services
+                  <ArrowLeft size={12} /> Back to services
+                </button>
+              </div>
+
+              <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+                <button
+                  onClick={() => setMovingStep('type')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">Continue</span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
@@ -1293,18 +1257,22 @@ export const QuotePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-4">
-                <button
-                  onClick={() => setMovingStep('crew')}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-xl transition-all duration-300 font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
-                >
-                  Continue <ArrowRight size={16} strokeWidth={2.5} />
-                </button>
+              <div className="flex items-center justify-between text-xs pt-2">
                 <button
                   onClick={() => setMovingStep('service')}
-                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
+                  className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to service selection
+                  <ArrowLeft size={12} /> Back to service selection
+                </button>
+              </div>
+
+              <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+                <button
+                  onClick={() => setMovingStep('crew')}
+                  className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-sm font-black uppercase tracking-wider">Continue</span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
@@ -1318,8 +1286,8 @@ export const QuotePage: React.FC = () => {
                 <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Number of Helpers</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
-                    { helpers: 2, price: `$${movingRates.rate2} / hour`, desc: 'Apartment moves, loading containers, and light lifting' },
-                    { helpers: 3, price: `$${movingRates.rate3} / hour`, desc: 'House moves, large trucks, and heavy items' }
+                    { helpers: 2, desc: 'Apartment moves, loading containers, and light lifting' },
+                    { helpers: 3, desc: 'House moves, large trucks, and heavy items' }
                   ].map((option) => {
                     const isSelected = movingHelpers === option.helpers;
                     return (
@@ -1340,9 +1308,6 @@ export const QuotePage: React.FC = () => {
                         <div className="flex-1 min-w-0">
                           <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                             {option.helpers} Helpers
-                          </span>
-                          <span className="block text-xs font-bold text-brand mt-0.5">
-                            {option.price}
                           </span>
                           <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
                             {option.desc}
@@ -1387,7 +1352,17 @@ export const QuotePage: React.FC = () => {
                 </div>
               )}
 
-              <div className="pt-4">
+              <div className="flex items-center justify-between text-xs pt-2">
+                <button
+                  onClick={() => setMovingStep('type')}
+                  disabled={pricingLoading}
+                  className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1 disabled:opacity-50"
+                >
+                  <ArrowLeft size={12} /> Back to type of move
+                </button>
+              </div>
+
+              <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
                 <button
                   onClick={async () => {
                     setPricingLoading(true);
@@ -1404,21 +1379,21 @@ export const QuotePage: React.FC = () => {
                     }
                   }}
                   disabled={pricingLoading}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-secondary hover:bg-brand text-white rounded-xl transition-all duration-300 font-black text-sm uppercase tracking-widest disabled:opacity-50 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
+                  className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  {pricingLoading ? 'Calculating...' : 'Get Estimate'}
-                  {pricingLoading ? (
-                    <Loader2 size={16} className="animate-spin" />
-                  ) : (
-                    <ArrowRight size={16} strokeWidth={2.5} />
-                  )}
+                  <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
+                  <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
-                <button
-                  onClick={() => setMovingStep('type')}
-                  className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
-                >
-                  <ArrowLeft size={14} /> Back to type of move
-                </button>
+              </div>
+            </div>
+          )}
+
+          {pricingLoading && movingStep === 'crew' && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+              <div className="text-center">
+                <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
+                <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
               </div>
             </div>
           )}

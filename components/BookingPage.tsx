@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, BicepsFlexed, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PhotoEstimateIcon, ManualEntryIcon, InputZipIcon } from './icons/ServiceIcons';
 import { QuoteEstimate, LoadingState } from '../types';
@@ -89,31 +89,9 @@ export const BookingPage: React.FC = () => {
   const [movingType, setMovingType] = useState<'Storage Unit' | 'Box Truck' | 'Inside Home' | 'Other'>('Inside Home');
   const [movingHelpers, setMovingHelpers] = useState<2 | 3>(2);
   const [movingHours, setMovingHours] = useState<number>(2);
-  const [movingStep, setMovingStep] = useState<'details' | 'crew' | 'result'>('details');
-  const [movingRates, setMovingRates] = useState<{ rate2: number; rate3: number }>({ rate2: 149, rate3: 189 });
+  const [movingStep, setMovingStep] = useState<'service' | 'type' | 'crew' | 'result'>('service');
   const [movingPricingLoading, setMovingPricingLoading] = useState(false);
   const [movingPricingError, setMovingPricingError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadMovingRates() {
-      try {
-        const { data, error } = await supabase
-          .from('pricing_config')
-          .select('value')
-          .eq('key', 'moving_labor_rules')
-          .single();
-        if (data && data.value) {
-          setMovingRates({
-            rate2: data.value.price_per_hour_2_helpers || 149,
-            rate3: data.value.price_per_hour_3_helpers || 189
-          });
-        }
-      } catch (err) {
-        console.error('Failed to load moving rates:', err);
-      }
-    }
-    loadMovingRates();
-  }, []);
 
   const [showInsuranceModal, setShowInsuranceModal] = useState(false);
   // Address autocomplete state
@@ -148,10 +126,9 @@ export const BookingPage: React.FC = () => {
   const [contactLoading, setContactLoading] = useState(false);
   const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
 
-  // Auto-reset movingStep on service change
   useEffect(() => {
     if (formData.serviceType !== 'Moving Labor') {
-      setMovingStep('details');
+      setMovingStep('service');
     }
   }, [formData.serviceType]);
 
@@ -529,12 +506,27 @@ export const BookingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-          Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
-        </h1>
-        <p className="text-sm text-secondary-400">
-          Four quick steps — contact, schedule, address, review, and deposit. A matched provider confirms within 15 minutes.
-        </p>
+        {currentStep === 2 && formData.serviceType === 'Moving Labor' ? (
+          movingStep !== 'result' ? (
+            <>
+              <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
+                Book <span className="text-brand">moving labor.</span>
+              </h1>
+              <p className="text-sm text-secondary-400">
+                Professional heavy-lifting assistance. 2-hour minimum applies.
+              </p>
+            </>
+          ) : null
+        ) : (
+          <>
+            <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
+              Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
+            </h1>
+            <p className="text-sm text-secondary-400">
+              Four quick steps — contact, schedule, address, review, and deposit. A matched provider confirms within 15 minutes.
+            </p>
+          </>
+        )}
       </div>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
@@ -1190,37 +1182,13 @@ export const BookingPage: React.FC = () => {
 
           {/* ═══ Step 2: Moving Labor Flow ═══ */}
           {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
-            <div className="space-y-6">
-              {/* Section header */}
-              <div className="flex items-center justify-between pb-4 border-b border-secondary-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center shrink-0">
-                    <BicepsFlexed size={20} className="text-brand" strokeWidth={2.5} />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-black text-secondary tracking-tight">Moving Labor</h2>
-                    <p className="text-secondary-400 text-xs mt-0.5">Professional heavy-lifting assistance · 2-hr minimum</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
-                    movingStep === 'details' ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary-400'
-                  }`}>1 Service</span>
-                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
-                    movingStep === 'crew' ? 'bg-brand text-white' : movingStep === 'result' ? 'bg-emerald-500 text-white' : 'bg-secondary-100 text-secondary-400'
-                  }`}>2 Crew</span>
-                  <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-wider rounded-full ${
-                    movingStep === 'result' ? 'bg-brand text-white' : 'bg-secondary-100 text-secondary-400'
-                  }`}>3 Quote</span>
-                </div>
-              </div>
+            <div className="space-y-8 pb-24">
 
-              {/* DETAILS SELECTION */}
-              {movingStep === 'details' && (
-                <div className="space-y-6 animate-in fade-in duration-300">
-                  {/* Service Selection */}
+              {/* STEP 1: SERVICE SELECTION */}
+              {movingStep === 'service' && (
+                <div className="space-y-8 animate-in fade-in duration-300">
                   <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">What service do you need?</label>
+                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Service Selection</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                       {[
                         { label: 'Loading Only', desc: 'Pack a rental truck, container, or storage unit' },
@@ -1232,10 +1200,10 @@ export const BookingPage: React.FC = () => {
                           <button
                             key={service.label}
                             type="button"
-                            onClick={() => setMovingServiceType(service.label as any)}
+                            onClick={() => setMovingServiceType(service.label as typeof movingServiceType)}
                             className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand/10' 
+                              isSelected
+                                ? 'border-brand bg-white ring-1 ring-brand/10'
                                 : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
@@ -1258,9 +1226,34 @@ export const BookingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Move Type */}
+                  <div className="flex items-center justify-between text-xs pt-2">
+                    <button
+                      type="button"
+                      onClick={handlePrevStep}
+                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+                    >
+                      <ArrowLeft size={12} /> Back to services
+                    </button>
+                  </div>
+
+                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+                    <button
+                      type="button"
+                      onClick={() => setMovingStep('type')}
+                      className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <span className="text-sm font-black uppercase tracking-wider">Continue</span>
+                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2: TYPE OF MOVE */}
+              {movingStep === 'type' && (
+                <div className="space-y-8 animate-in fade-in duration-300">
                   <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Type of move</label>
+                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Type of Move</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {[
                         { label: 'Storage Unit', desc: 'PODS, U-Pack, or local storage facility' },
@@ -1273,10 +1266,10 @@ export const BookingPage: React.FC = () => {
                           <button
                             key={type.label}
                             type="button"
-                            onClick={() => setMovingType(type.label as any)}
+                            onClick={() => setMovingType(type.label as typeof movingType)}
                             className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand/10' 
+                              isSelected
+                                ? 'border-brand bg-white ring-1 ring-brand/10'
                                 : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
@@ -1299,30 +1292,38 @@ export const BookingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-2 flex gap-3">
-                    <button type="button" onClick={handlePrevStep} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
-                      <ArrowLeft size={14} /> Back
+                  <div className="flex items-center justify-between text-xs pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setMovingStep('service')}
+                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+                    >
+                      <ArrowLeft size={12} /> Back to service selection
                     </button>
+                  </div>
+
+                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
                     <button
                       type="button"
                       onClick={() => setMovingStep('crew')}
-                      className="flex-1 group py-3.5 text-xs font-black uppercase tracking-widest bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5"
+                      className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                      <span className="text-sm font-black uppercase tracking-wider">Continue</span>
+                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* CREW & TIME SELECTION */}
+              {/* STEP 3: CREW & TIME */}
               {movingStep === 'crew' && (
-                <div className="space-y-6 animate-in fade-in duration-300">
+                <div className="space-y-8 animate-in fade-in duration-300">
                   <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Number of helpers</label>
+                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Number of Helpers</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {[
-                        { helpers: 2, price: `$${movingRates.rate2} / hour`, desc: 'Apartment moves, loading containers, and light lifting' },
-                        { helpers: 3, price: `$${movingRates.rate3} / hour`, desc: 'House moves, large trucks, and heavy items' }
+                        { helpers: 2, desc: 'Apartment moves, loading containers, and light lifting' },
+                        { helpers: 3, desc: 'House moves, large trucks, and heavy items' }
                       ].map((option) => {
                         const isSelected = movingHelpers === option.helpers;
                         return (
@@ -1331,8 +1332,8 @@ export const BookingPage: React.FC = () => {
                             type="button"
                             onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
                             className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected 
-                                ? 'border-brand bg-white ring-1 ring-brand/10' 
+                              isSelected
+                                ? 'border-brand bg-white ring-1 ring-brand/10'
                                 : 'border-secondary-100 bg-white hover:border-brand/40'
                             }`}
                           >
@@ -1345,9 +1346,6 @@ export const BookingPage: React.FC = () => {
                               <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
                                 {option.helpers} Helpers
                               </span>
-                              <span className="block text-xs font-bold text-brand mt-0.5">
-                                {option.price}
-                              </span>
                               <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
                                 {option.desc}
                               </span>
@@ -1358,9 +1356,8 @@ export const BookingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Hours Selection */}
                   <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Estimated hours needed (2 hr min)</label>
+                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Estimated Hours (2 hr min)</label>
                     <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl gap-4 transition-all duration-200 hover:border-secondary-300">
                       <div>
                         <div className="text-sm font-bold text-secondary">Time Needed</div>
@@ -1393,15 +1390,18 @@ export const BookingPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="pt-2 flex gap-3">
+                  <div className="flex items-center justify-between text-xs pt-2">
                     <button
                       type="button"
-                      onClick={() => setMovingStep('details')}
+                      onClick={() => setMovingStep('type')}
                       disabled={movingPricingLoading}
-                      className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1 disabled:opacity-50"
                     >
-                      <ArrowLeft size={14} /> Back
+                      <ArrowLeft size={12} /> Back to type of move
                     </button>
+                  </div>
+
+                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
                     <button
                       type="button"
                       onClick={async () => {
@@ -1424,7 +1424,7 @@ export const BookingPage: React.FC = () => {
                             details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
                           }));
                           setMovingStep('result');
-                        } catch (err: any) {
+                        } catch (err) {
                           console.error('Moving labor pricing error:', err);
                           setMovingPricingError('Failed to calculate price. Please try again.');
                         } finally {
@@ -1432,20 +1432,26 @@ export const BookingPage: React.FC = () => {
                         }
                       }}
                       disabled={movingPricingLoading}
-                      className="flex-1 group py-3.5 text-xs font-black uppercase tracking-widest bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(26,26,26,0.25)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.4)] hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                      className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      {movingPricingLoading ? 'Calculating...' : 'Get Estimate'}
-                      {movingPricingLoading ? (
-                        <Loader2 size={14} className="animate-spin" />
-                      ) : (
-                        <ArrowRight size={14} />
-                      )}
+                      <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
+                      <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* ESTIMATE RESULT */}
+              {movingPricingLoading && movingStep === 'crew' && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                  <div className="text-center">
+                    <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
+                    <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4: ESTIMATE RESULT */}
               {movingStep === 'result' && estimate && (
                 !contactSubmitted ? (
                   <div className="max-w-md mx-auto">
@@ -1458,65 +1464,53 @@ export const BookingPage: React.FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                    {/* Elegant Shrunk Image Service Card */}
-                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
-                      <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
-                        <img 
-                          src="/process-step-2.svg" 
-                          alt="Moving Labor" 
-                          className="w-full h-full object-cover" 
+                  <div className="space-y-6">
+                    <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="w-24 h-20 md:w-32 md:h-24 shrink-0">
+                        <img
+                          src="/process-step-2.svg"
+                          alt="Moving Labor"
+                          className="w-full h-full object-contain"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                          <span className="px-2 py-0.5 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-wider rounded-full border border-brand/20">
                             Instant Estimate
                           </span>
-                          <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                          <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-wider rounded-full border border-emerald-100">
                             Guaranteed
                           </span>
                         </div>
-                        <h4 className="text-xs font-black text-secondary mt-1">Moving Labor</h4>
-                        <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                        <h3 className="text-sm md:text-base font-black text-secondary">Moving Labor</h3>
+                        <p className="text-secondary-400 text-xs mt-1 leading-normal">{estimate.estimatedVolume}</p>
                       </div>
                     </div>
-                    <div className="mb-4">
-                      <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Service Details</div>
-                      <ul className="space-y-1.5">
-                        {estimate.itemsDetected.map((item, index) => (
-                          <li key={index} className="flex items-start gap-2">
-                            <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
-                            <span className="text-secondary-600 text-sm">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
+
+                    <div className="bg-white rounded-3xl p-5 md:p-6 border border-secondary-100">
                       <div className="flex justify-between items-end">
                         <div>
-                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                          <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
+                          <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+                          <p className="text-xs text-secondary-500 mt-1">{estimate.estimatedVolume}</p>
                         </div>
-                        <div className="text-2xl font-black text-brand">${estimate.price}</div>
+                        <p className="text-3xl md:text-4xl font-black text-brand">${estimate.price}</p>
                       </div>
                     </div>
-                    {/* Safe Protect Sticker */}
-                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
+
+                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
                         <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
-                      <div className="flex-1 min-w-0 text-left">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
                           <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
                         </div>
                         <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
                           All bookings are covered by platform damage protection.{' '}
-                          <button 
+                          <button
                             type="button"
-                            onClick={() => setShowInsuranceModal(true)} 
+                            onClick={() => setShowInsuranceModal(true)}
                             className="text-emerald-900 font-bold hover:underline"
                           >
                             Learn more
@@ -1524,21 +1518,42 @@ export const BookingPage: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                    <button
-                      type="button"
-                      onClick={() => handleNextStep()}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                    >
-                      Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setMovingStep('crew')}
-                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                    >
-                      <ArrowLeft size={14} /> Back to provider & time
-                    </button>
+
+                    <div>
+                      <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">1 item</p>
+                      <div className="space-y-1">
+                        {estimate.itemsDetected.map((item, index) => (
+                          <div key={index} className="flex items-center justify-between text-sm">
+                            <span className="text-secondary-600">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-secondary-500 leading-relaxed">{estimate.summary}</p>
+
+                    <div className="space-y-3 pt-2">
+                      <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
+                        <button
+                          type="button"
+                          onClick={() => handleNextStep()}
+                          className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <span className="text-sm font-black uppercase tracking-wider">
+                            Continue to Booking
+                          </span>
+                          <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setMovingStep('crew')}
+                        className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
+                      >
+                        <ArrowLeft size={14} /> Back to crew & time
+                      </button>
+                      <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
+                    </div>
                   </div>
                 )
               )}
