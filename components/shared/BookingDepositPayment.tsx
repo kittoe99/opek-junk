@@ -206,10 +206,24 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
           }),
         });
 
-        const data = await response.json();
+        const responseText = await response.text();
+        let data: { clientSecret?: string; error?: string };
+        try {
+          data = JSON.parse(responseText) as { clientSecret?: string; error?: string };
+        } catch {
+          throw new Error(
+            responseText.trimStart().startsWith('<')
+              ? 'Payment API is unavailable. If testing locally, add Stripe keys to .env.local and restart npm run dev.'
+              : 'Payment server returned an invalid response. Please try again.'
+          );
+        }
 
         if (!response.ok) {
           throw new Error(data.error || 'Failed to initialize payment.');
+        }
+
+        if (!data.clientSecret) {
+          throw new Error('Failed to initialize payment.');
         }
 
         if (!cancelled) {
@@ -286,7 +300,7 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
         <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-center space-y-2">
           <p className="text-xs text-red-700 font-semibold">{initError}</p>
           <p className="text-[10px] text-red-600">
-            For local testing, run <span className="font-mono">npm run dev:stripe</span> with Stripe test keys in <span className="font-mono">.env.local</span>.
+            Add Stripe test keys to <span className="font-mono">.env.local</span> and restart <span className="font-mono">npm run dev</span>.
           </p>
         </div>
       )}
