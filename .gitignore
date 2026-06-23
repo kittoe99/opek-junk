@@ -38,4 +38,9 @@ env/
 
 # Scratch files
 scratch_push_copy.cjs
+scratch_mcp_keys/
+*.docx
+MCP_Server_API_Keys*
 
+
+.vercel

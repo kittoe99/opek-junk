@@ -76,23 +76,13 @@ export const TrackOrderPage: React.FC = () => {
     setSearched(true);
 
     try {
-      let query = supabase
-        .from('bookings')
-        .select('id, order_number, customer_info, location_info, booking_details, status, created_at')
-        .order('created_at', { ascending: false });
-
-      if (searchType === 'phone') {
-        const digits = value.replace(/\D/g, '');
-        query = query.like('customer_info->>phone', `%${digits}%`);
-      } else {
-        const normalized = value.toUpperCase().trim();
-        query = query.eq('order_number', normalized);
-      }
-
-      const { data, error: queryError } = await query.limit(10);
+      const { data, error: queryError } = await supabase.rpc('track_order', {
+        p_search_type: searchType,
+        p_search_value: value,
+      });
 
       if (queryError) throw queryError;
-      setResults(data || []);
+      setResults((data as BookingResult[]) || []);
     } catch (err: any) {
       console.error('Track order error:', err);
       setError('Unable to look up your order. Please check your input and try again.');
@@ -105,14 +95,12 @@ export const TrackOrderPage: React.FC = () => {
     setSelectedOrder(order);
     setHistoryLoading(true);
     try {
-      const { data, error: histError } = await supabase
-        .from('order_status_history')
-        .select('id, status, note, created_at')
-        .eq('booking_id', order.id)
-        .order('created_at', { ascending: true });
+      const { data, error: histError } = await supabase.rpc('get_order_status_history', {
+        p_booking_id: order.id,
+      });
 
       if (histError) throw histError;
-      setStatusHistory(data || []);
+      setStatusHistory((data as StatusHistoryItem[]) || []);
     } catch (err) {
       console.error('Failed to load status history:', err);
       setStatusHistory([]);

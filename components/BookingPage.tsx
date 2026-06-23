@@ -206,22 +206,16 @@ export const BookingPage: React.FC = () => {
           photo_url: uploadedUrl
         };
 
-        const { data, error: dbError } = await supabase
-          .from('Prebooking')
-          .insert([
-            {
-              customer_info: customerInfo,
-              booking_details: bookingDetails,
-              status: 'partially_submitted'
-            }
-          ])
-          .select('id')
-          .single();
+        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
+          p_customer_info: customerInfo,
+          p_booking_details: bookingDetails,
+          p_status: 'partially_submitted'
+        });
 
         if (dbError) {
           console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', dbError);
-        } else if (data?.id) {
-          partialId = data.id;
+        } else if (data) {
+          partialId = data as string;
         }
       } catch (err) {
         console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', err);
@@ -426,7 +420,7 @@ export const BookingPage: React.FC = () => {
 
       const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
-      const { data: insertedData, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('bookings')
         .insert([
           {
@@ -436,14 +430,12 @@ export const BookingPage: React.FC = () => {
             booking_details: bookingDetails,
             status: 'pending'
           }
-        ])
-        .select('order_number')
-        .single();
+        ]);
 
       if (insertError) throw insertError;
       
-      const finalOrderNumber = insertedData?.order_number || generatedOrderNumber;
-      if (insertedData?.order_number) setOrderNumber(insertedData.order_number);
+      const finalOrderNumber = generatedOrderNumber;
+      setOrderNumber(generatedOrderNumber);
 
       // Trigger booking confirmation email
       sendConfirmationEmail('booking', {

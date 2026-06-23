@@ -261,30 +261,22 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       };
 
       if (currentPartialId && !currentPartialId.startsWith('mock-')) {
-        await supabase
-          .from('Prebooking')
-          .update({
-            customer_info: customerInfo,
-            booking_details: bookingDetails,
-            status: 'partially_submitted'
-          })
-          .eq('id', currentPartialId);
+        await supabase.rpc('update_prebooking', {
+          p_id: currentPartialId,
+          p_customer_info: customerInfo,
+          p_booking_details: bookingDetails,
+          p_status: 'partially_submitted'
+        });
       } else {
-        const { data, error: dbError } = await supabase
-          .from('Prebooking')
-          .insert([
-            {
-              customer_info: customerInfo,
-              booking_details: bookingDetails,
-              status: 'partially_submitted'
-            }
-          ])
-          .select('id')
-          .single();
+        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
+          p_customer_info: customerInfo,
+          p_booking_details: bookingDetails,
+          p_status: 'partially_submitted'
+        });
 
-        if (!dbError && data?.id) {
-          currentPartialId = data.id;
-          setPartialId(data.id);
+        if (!dbError && data) {
+          currentPartialId = data as string;
+          setPartialId(data as string);
         }
       }
     } catch (err) {
@@ -351,7 +343,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           let uploadedUrl = localImage || '';
           if (uploadedUrl && uploadedUrl.startsWith('data:')) {
-            const fileName = `booking_${generatedOrderNumber}.jpg`;
+            const fileName = `booking_${generatedOrderNumber}_${Math.random().toString(36).substring(2, 8)}.jpg`;
             const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
             if (publicUrl) {
               uploadedUrl = publicUrl;
@@ -388,7 +380,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             terms_accepted_at: new Date().toISOString()
           };
 
-          const query = supabase
+          const res = await supabase
             .from('bookings')
             .insert([
               {
@@ -398,11 +390,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 booking_details: bookingDetails,
                 status: 'pending'
               }
-            ])
-            .select('order_number')
-            .single();
-  
-          const res = await query;
+            ]);
           resultData = res.data;
           dbError = res.error;
           
@@ -412,9 +400,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           if (!dbError && partialId && !partialId.startsWith('mock-')) {
             supabase
-              .from('Prebooking')
-              .update({ status: 'converted' })
-              .eq('id', partialId)
+              .rpc('update_prebooking', { p_id: partialId, p_status: 'converted' })
               .then(({ error: updateErr }) => {
                 if (updateErr) {
                   console.warn('Failed to mark prebooking as converted:', updateErr);
@@ -425,7 +411,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           console.warn('Supabase insert/update failed, falling back to mock submission:', err);
         }
   
-        const finalOrderNumber = resultData?.order_number || `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        const finalOrderNumber = generatedOrderNumber;
         
         // Trigger booking confirmation email
         sendConfirmationEmail('booking', {

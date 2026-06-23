@@ -1,17 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
-const rawUrl = process.env.VITE_SUPABASE_URL;
-const supabaseUrl = (rawUrl && rawUrl !== 'your_supabase_url_here')
-  ? rawUrl
-  : 'https://mjgwoukwyqwoectxfwqv.supabase.co';
+const rawUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
+const supabaseUrl = (rawUrl && rawUrl !== 'your_supabase_url_here') ? rawUrl : '';
 
-const rawAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
-const supabaseAnonKey = (rawAnonKey && rawAnonKey !== 'your_supabase_anon_key_here')
-  ? rawAnonKey
-  : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZ3dvdWt3eXF3b2VjdHhmd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3NjAzNjcsImV4cCI6MjA3MDMzNjM2N30.3ee-rHN_BYQKaZmLOTiyoVxU4fYLDnNnfToI8veH5F8';
+const rawAnonKey = process.env.VITE_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
+const supabaseAnonKey =
+  (rawAnonKey && rawAnonKey !== 'your_supabase_anon_key_here') ? rawAnonKey : '';
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase =
+  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+
+const isString = (v: unknown): v is string => typeof v === 'string';
+const trimmed = (v: unknown): string => (isString(v) ? v.trim() : '');
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default async function handler(
   req: VercelRequest,
@@ -22,7 +24,15 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (!supabase) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Server is not configured.'
+    });
+  }
+
   try {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body ?? {});
     const {
       name,
       email,
@@ -35,7 +45,7 @@ export default async function handler(
       serviceType,
       date,
       details
-    } = req.body;
+    } = body;
 
     // Validate required fields
     if (!name || !email || !phone || !address || !city || !state || !zipCode || !serviceType || !date) {
@@ -43,6 +53,22 @@ export default async function handler(
         status: 'error',
         message: 'Missing required fields. Please ensure name, email, phone, address, city, state, zipCode, serviceType, and date are provided.'
       });
+    }
+
+    // Validate formats and reasonable lengths to reject malformed/abusive input.
+    const emailValue = trimmed(email);
+    const phoneDigits = trimmed(phone).replace(/\D/g, '');
+    if (!EMAIL_RE.test(emailValue) || emailValue.length > 254) {
+      return res.status(400).json({ status: 'error', message: 'Invalid email address.' });
+    }
+    if (phoneDigits.length < 7 || phoneDigits.length > 15) {
+      return res.status(400).json({ status: 'error', message: 'Invalid phone number.' });
+    }
+    const fields: Record<string, unknown> = { name, address, unitNumber, city, state, zipCode, serviceType, date, details };
+    for (const [key, value] of Object.entries(fields)) {
+      if (isString(value) && value.length > 2000) {
+        return res.status(400).json({ status: 'error', message: `Field "${key}" is too long.` });
+      }
     }
 
     const normalizedServiceType = serviceType
@@ -80,7 +106,7 @@ export default async function handler(
     };
 
     // Insert into Supabase bookings table
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('bookings')
       .insert([
         {
@@ -90,19 +116,17 @@ export default async function handler(
           status: 'pending',
           order_number: orderNumber
         }
-      ])
-      .select('order_number')
-      .single();
+      ]);
 
     if (error) {
       console.error('Supabase error:', error);
       return res.status(500).json({
         status: 'error',
-        message: `Database error: ${error.message}`
+        message: 'Unable to create booking. Please try again later.'
       });
     }
 
-    const finalOrderNumber = data?.order_number || orderNumber;
+    const finalOrderNumber = orderNumber;
 
     // Trigger booking confirmation email using the Supabase Edge Function (matching client behavior)
     try {
@@ -141,7 +165,7 @@ export default async function handler(
     console.error('Webhook Error:', error);
     return res.status(500).json({
       status: 'error',
-      message: error.message || 'Internal Server Error'
+      message: 'Internal Server Error'
     });
   }
 }

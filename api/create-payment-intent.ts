@@ -15,6 +15,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  if (!/^sk_(test|live)_/.test(secretKey)) {
+    return res.status(500).json({
+      error:
+        'STRIPE_SECRET_KEY is invalid. It must be your Stripe secret key starting with sk_test_ or sk_live_, not the variable name or publishable key.',
+    });
+  }
+
   const stripe = new Stripe(secretKey);
 
   try {
@@ -42,7 +49,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (error) {
     console.error('Stripe PaymentIntent error:', error);
-    const message = error instanceof Error ? error.message : 'Failed to create payment intent';
-    return res.status(500).json({ error: message });
+    return res.status(500).json({ error: 'Failed to create payment intent. Please try again.' });
   }
 }

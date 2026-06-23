@@ -1,11 +1,50 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://opekjunkremoval.com',
+  'https://www.opekjunkremoval.com',
+]
+
+function getAllowedOrigins(): string[] {
+  const fromEnv = Deno.env.get('ALLOWED_ORIGINS')
+  if (fromEnv) {
+    return fromEnv.split(',').map((o) => o.trim()).filter(Boolean)
+  }
+  return DEFAULT_ALLOWED_ORIGINS
+}
+
+function buildCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get('origin') || ''
+  const allowed = getAllowedOrigins()
+  const allowOrigin = allowed.includes(origin) ? origin : allowed[0]
+  return {
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Vary': 'Origin',
+  }
+}
+
+// Escape user-controlled values before interpolating into HTML email bodies.
+function esc(value: unknown): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function sanitizeRecord(record: Record<string, any>): Record<string, any> {
+  const out: Record<string, any> = {}
+  for (const [key, value] of Object.entries(record || {})) {
+    out[key] = typeof value === 'string' ? esc(value) : value
+  }
+  return out
 }
 
 serve(async (req) => {
+  const corsHeaders = buildCorsHeaders(req)
+
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -13,20 +52,25 @@ serve(async (req) => {
 
   try {
     const payload = await req.json()
-    const { type, record } = payload
+    const { type } = payload
+    const rawRecord = payload.record
 
-    if (!type || !record) {
+    if (!type || !rawRecord) {
       return new Response(
         JSON.stringify({ error: 'Missing type or record in payload' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
+    // Sanitized copy used for HTML rendering; raw email kept only for routing.
+    const record = sanitizeRecord(rawRecord)
+
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
     const fromEmail = Deno.env.get('EMAIL_FROM') || 'Opek <onboarding@resend.dev>'
     
     let subject = ''
-    let toEmail = record.email || ''
+    let toEmail = (typeof rawRecord.email === 'string' ? rawRecord.email : '').trim()
+    const toEmailDisplay = esc(toEmail)
     let htmlContent = ''
 
     if (!toEmail) {
@@ -256,7 +300,7 @@ serve(async (req) => {
           const fallbackEmail = 'support@opekjunkremoval.com';
           const sandboxBanner = `
             <div style="background-color: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-family: sans-serif; font-size: 13px; color: #991b1b; line-height: 1.5;">
-              <strong>[Sandbox Mode Notification]</strong> This email was originally intended for <strong>${toEmail}</strong>, but was redirected to you because the domain is not yet verified on your Resend dashboard. To send directly to customers, please verify your domain at <a href="https://resend.com/domains" style="color: #991b1b; text-decoration: underline;">resend.com/domains</a>.
+              <strong>[Sandbox Mode Notification]</strong> This email was originally intended for <strong>${toEmailDisplay}</strong>, but was redirected to you because the domain is not yet verified on your Resend dashboard. To send directly to customers, please verify your domain at <a href="https://resend.com/domains" style="color: #991b1b; text-decoration: underline;">resend.com/domains</a>.
             </div>
           `;
           

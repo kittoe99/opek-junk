@@ -16,6 +16,15 @@ interface WebhookPayload {
   schema: string;
 }
 
+// Escape user-controlled values before interpolating into HTML email bodies.
+const esc = (value: unknown): string =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 // --- Clean email layout ---
 
 const emailLayout = (body: string) => `
@@ -52,13 +61,13 @@ const emailLayout = (body: string) => `
 `;
 
 const heading = (text: string) =>
-  `<h1 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111;line-height:1.3;">${text}</h1>`;
+  `<h1 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111;line-height:1.3;">${esc(text)}</h1>`;
 
 const paragraph = (text: string) =>
   `<p style="margin:0 0 14px;font-size:14px;color:#374151;line-height:1.6;">${text}</p>`;
 
 const detailRow = (label: string, value: string) =>
-  `<tr><td style="padding:6px 0;font-size:13px;color:#6b7280;vertical-align:top;width:120px;">${label}</td><td style="padding:6px 0;font-size:13px;color:#111;">${value || '\u2014'}</td></tr>`;
+  `<tr><td style="padding:6px 0;font-size:13px;color:#6b7280;vertical-align:top;width:120px;">${esc(label)}</td><td style="padding:6px 0;font-size:13px;color:#111;">${value ? esc(value) : '\u2014'}</td></tr>`;
 
 const detailsBlock = (rows: string) =>
   `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;padding:16px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;">${rows}</table>`;

@@ -23,12 +23,14 @@ logging.basicConfig(
 
 # Constants
 AGENT_ID = "agent_5101kgxcwtkgek18m0j13cq16t3y"
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://mjgwoukwyqwoectxfwqv.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY") or (
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1"
-    "qZ3dvdWt3eXF3b2VjdHhmd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3NjAzNjcsIm"
-    "V4cCI6MjA3MDMzNjM2N30.3ee-rHN_BYQKaZmLOTiyoVxU4fYLDnNnfToI8veH5F8"
-)
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+# This agent reads/writes the bookings tables directly and must use the service
+# role key (RLS blocks anon reads). Keys are loaded from the environment only.
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError(
+        "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in the environment."
+    )
 
 # Define Pydantic Schema for Structured Output
 class SyncExtraction(pydantic.BaseModel):

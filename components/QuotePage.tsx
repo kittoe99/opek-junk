@@ -635,22 +635,16 @@ export const QuotePage: React.FC = () => {
           photo_url: uploadedUrl
         };
 
-        const { data, error: dbError } = await supabase
-          .from('Prebooking')
-          .insert([
-            {
-              customer_info: customerInfo,
-              booking_details: bookingDetails,
-              status: 'partially_submitted'
-            }
-          ])
-          .select('id')
-          .single();
+        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
+          p_customer_info: customerInfo,
+          p_booking_details: bookingDetails,
+          p_status: 'partially_submitted'
+        });
 
         if (dbError) {
           console.warn('Supabase lead capture failed, proceeding in mock mode:', dbError);
-        } else if (data?.id) {
-          partialId = data.id;
+        } else if (data) {
+          partialId = data as string;
         }
       } catch (err) {
         console.warn('Supabase lead capture failed, proceeding in mock mode:', err);

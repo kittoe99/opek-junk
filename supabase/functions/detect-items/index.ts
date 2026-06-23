@@ -1,12 +1,28 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import OpenAI from "https://esm.sh/openai@4.28.0"
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://opekjunkremoval.com',
+  'https://www.opekjunkremoval.com',
+]
+
+function buildCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get('origin') || ''
+  const fromEnv = Deno.env.get('ALLOWED_ORIGINS')
+  const allowed = fromEnv
+    ? fromEnv.split(',').map((o) => o.trim()).filter(Boolean)
+    : DEFAULT_ALLOWED_ORIGINS
+  const allowOrigin = allowed.includes(origin) ? origin : allowed[0]
+  return {
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Vary': 'Origin',
+  }
 }
 
 serve(async (req) => {
+  const corsHeaders = buildCorsHeaders(req)
+
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })

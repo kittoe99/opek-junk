@@ -427,23 +427,21 @@ export const MattressBookingPage: React.FC = () => {
       const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
 
       try {
-        const { error } = await supabase
-          .from('Prebooking')
-          .insert([{
-            customer_info: {
-              name,
-              phone,
-              email: ''
-            },
-            booking_details: {
-              service_type: 'Mattress Disposal',
-              zip_code: zipCode || null,
-              details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
-              estimated_items: itemsList,
-              price: totalPrice
-            },
-            status: 'partially_submitted'
-          }]);
+        const { error } = await supabase.rpc('create_prebooking', {
+          p_customer_info: {
+            name,
+            phone,
+            email: ''
+          },
+          p_booking_details: {
+            service_type: 'Mattress Disposal',
+            zip_code: zipCode || null,
+            details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
+            estimated_items: itemsList,
+            price: totalPrice
+          },
+          p_status: 'partially_submitted'
+        });
 
         if (error) {
           console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', error);
