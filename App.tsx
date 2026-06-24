@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -6,9 +6,6 @@ import { TrustBadges } from './components/TrustBadges';
 import { Services } from './components/Services';
 import { ServiceArea } from './components/ServiceArea';
 import { Footer } from './components/Footer';
-import { QuotePage } from './components/QuotePage';
-import { ContactPage } from './components/ContactPage';
-import { BookingPage } from './components/BookingPage';
 import { QuickActionBar } from './components/QuickActionBar';
 import { WhatWeHaul } from './components/WhatWeHaul';
 import { FullServiceSection } from './components/FullServiceSection';
@@ -19,10 +16,6 @@ import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
-import { MattressBookingPage } from './components/services/MattressBookingPage';
-import { ProviderSignupPage } from './components/ProviderSignupPage';
-import { TrackOrderPage } from './components/TrackOrderPage';
-import { InHomeEstimatePage } from './components/InHomeEstimatePage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
@@ -30,6 +23,22 @@ import { SEO, seoConfig } from './components/SEO';
 import { CityPage } from './components/CityPage';
 import { PageLoader } from './components/PageLoader';
 import { getCityBySlug } from './lib/cityData';
+
+const QuotePage = React.lazy(() => import('./components/QuotePage').then((m) => ({ default: m.QuotePage })));
+const ContactPage = React.lazy(() => import('./components/ContactPage').then((m) => ({ default: m.ContactPage })));
+const BookingPage = React.lazy(() => import('./components/BookingPage').then((m) => ({ default: m.BookingPage })));
+const ProviderSignupPage = React.lazy(() => import('./components/ProviderSignupPage').then((m) => ({ default: m.ProviderSignupPage })));
+const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
+const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
+const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand border-t-transparent" />
+    </div>
+  );
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -218,27 +227,29 @@ function App() {
         <Navbar />
         
         <main className="pt-[80px] md:pt-[120px]">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/quote" element={<QuotePageWithSEO />} />
-          <Route path="/contact" element={<ContactPageWithSEO />} />
-          <Route path="/booking" element={<BookingPageWithSEO />} />
-          <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
-          <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
-          <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
-          <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
-          <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
-          <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
-          <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
-          <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
-          <Route path="/booking/mattress" element={<MattressBookingPage />} />
-          <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
-          <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
-          <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
-          <Route path="/privacy" element={<PrivacyPolicyPageWithSEO />} />
-          <Route path="/terms" element={<TermsOfServicePageWithSEO />} />
-          <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
-        </Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/quote" element={<QuotePageWithSEO />} />
+            <Route path="/contact" element={<ContactPageWithSEO />} />
+            <Route path="/booking" element={<BookingPageWithSEO />} />
+            <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
+            <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
+            <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
+            <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
+            <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
+            <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
+            <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
+            <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
+            <Route path="/booking/mattress" element={<MattressBookingPage />} />
+            <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
+            <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
+            <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
+            <Route path="/privacy" element={<PrivacyPolicyPageWithSEO />} />
+            <Route path="/terms" element={<TermsOfServicePageWithSEO />} />
+            <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
+          </Routes>
+        </Suspense>
         </main>
         
         <Footer />

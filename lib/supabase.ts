@@ -1,23 +1,42 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import {
+  isSupabaseConfigured,
+  supabaseAnonKey,
+  supabaseConfigError,
+  supabaseUrl,
+} from './supabaseConfig';
 
-const rawUrl = import.meta.env.VITE_SUPABASE_URL;
-const rawAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+let client: SupabaseClient | undefined;
 
-const supabaseUrl = (rawUrl && rawUrl !== 'your_supabase_url_here') ? rawUrl : '';
-const supabaseAnonKey =
-  (rawAnonKey && rawAnonKey !== 'your_supabase_anon_key_here') ? rawAnonKey : '';
+export { isSupabaseConfigured };
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.'
-  );
+export function getSupabase(): SupabaseClient {
+  if (!isSupabaseConfigured) {
+    throw new Error(supabaseConfigError);
+  }
+  if (!client) {
+    client = createClient(supabaseUrl, supabaseAnonKey);
+  }
+  return client;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const value = (getSupabase() as Record<string | symbol, unknown>)[prop];
+    return typeof value === 'function'
+      ? (value as (...args: unknown[]) => unknown).bind(getSupabase())
+      : value;
+  },
+});
 
 export async function sendConfirmationEmail(type: 'booking' | 'contact' | 'provider_signup', record: any) {
+  if (!isSupabaseConfigured) {
+    console.warn('Supabase is not configured; skipping confirmation email.');
+    return { success: false, error: new Error(supabaseConfigError) };
+  }
+
   try {
-    const { data, error } = await supabase.functions.invoke('send-email', {
+    const { data, error } = await getSupabase().functions.invoke('send-email', {
       body: { type, record },
     });
     if (error) {
@@ -32,22 +51,24 @@ export async function sendConfirmationEmail(type: 'booking' | 'contact' | 'provi
 }
 
 export async function uploadBookingPhoto(base64Image: string, fileName: string): Promise<string | null> {
+  if (!isSupabaseConfigured) {
+    console.warn('Supabase is not configured; skipping photo upload.');
+    return null;
+  }
+
   try {
     if (!base64Image || !base64Image.startsWith('data:')) {
-      // It's already a URL or empty, no need to upload
       return base64Image || null;
     }
 
-    // 1. Convert base64 to blob
     const response = await fetch(base64Image);
     const blob = await response.blob();
 
-    // 2. Upload to storage
-    const { data, error } = await supabase.storage
+    const { error } = await getSupabase().storage
       .from('booking-photos')
       .upload(fileName, blob, {
         contentType: blob.type || 'image/jpeg',
-        upsert: false
+        upsert: false,
       });
 
     if (error) {
@@ -55,8 +76,7 @@ export async function uploadBookingPhoto(base64Image: string, fileName: string):
       return null;
     }
 
-    // 3. Get the public URL
-    const { data: { publicUrl } } = supabase.storage
+    const { data: { publicUrl } } = getSupabase().storage
       .from('booking-photos')
       .getPublicUrl(fileName);
 
@@ -66,4 +86,3 @@ export async function uploadBookingPhoto(base64Image: string, fileName: string):
     return null;
   }
 }
-

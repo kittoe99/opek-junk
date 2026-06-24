@@ -1,30 +1,31 @@
 import { DetectedItem, PriceEstimate } from '../types';
+import {
+  isSupabaseConfigured,
+  supabaseAnonKey,
+  supabaseConfigError,
+  supabaseUrl,
+} from '../lib/supabaseConfig';
 
-const rawUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseUrl = (rawUrl && rawUrl !== 'your_supabase_url_here') ? rawUrl : '';
-
-const rawAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabaseAnonKey =
-  (rawAnonKey && rawAnonKey !== 'your_supabase_anon_key_here') ? rawAnonKey : '';
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.'
-  );
+function requireSupabaseConfig() {
+  if (!isSupabaseConfigured) {
+    throw new Error(supabaseConfigError);
+  }
 }
 
 export async function calculateStaticPrice(items: DetectedItem[]): Promise<PriceEstimate> {
+  requireSupabaseConfig();
+
   const response = await fetch(`${supabaseUrl}/functions/v1/calculate-price`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': supabaseAnonKey,
-      'Authorization': `Bearer ${supabaseAnonKey}`
+      apikey: supabaseAnonKey,
+      Authorization: `Bearer ${supabaseAnonKey}`,
     },
     body: JSON.stringify({
       type: 'junk_removal',
-      items: items.map(item => ({ name: item.name, quantity: item.quantity }))
-    })
+      items: items.map((item) => ({ name: item.name, quantity: item.quantity })),
+    }),
   });
 
   if (!response.ok) {
@@ -40,18 +41,20 @@ export interface DumpsterRentalOptions {
 }
 
 export async function calculateDumpsterRentalPrice(options: DumpsterRentalOptions): Promise<PriceEstimate> {
+  requireSupabaseConfig();
+
   const response = await fetch(`${supabaseUrl}/functions/v1/calculate-price`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': supabaseAnonKey,
-      'Authorization': `Bearer ${supabaseAnonKey}`
+      apikey: supabaseAnonKey,
+      Authorization: `Bearer ${supabaseAnonKey}`,
     },
     body: JSON.stringify({
       type: 'dumpster_rental',
       size: options.size,
-      duration: options.duration
-    })
+      duration: options.duration,
+    }),
   });
 
   if (!response.ok) {
@@ -62,18 +65,20 @@ export async function calculateDumpsterRentalPrice(options: DumpsterRentalOption
 }
 
 export async function calculateMovingLaborPrice(helpers: number, hours: number): Promise<PriceEstimate> {
+  requireSupabaseConfig();
+
   const response = await fetch(`${supabaseUrl}/functions/v1/calculate-price`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': supabaseAnonKey,
-      'Authorization': `Bearer ${supabaseAnonKey}`
+      apikey: supabaseAnonKey,
+      Authorization: `Bearer ${supabaseAnonKey}`,
     },
     body: JSON.stringify({
       type: 'moving_labor',
       helpers,
-      hours
-    })
+      hours,
+    }),
   });
 
   if (!response.ok) {
