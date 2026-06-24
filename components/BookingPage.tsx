@@ -10,6 +10,7 @@ import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
+import { EstimateMethodHero, EstimateMethodSelection } from './shared/EstimateMethodSelection';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -36,6 +37,7 @@ export const BookingPage: React.FC = () => {
   const addressDropdownRef = useRef<HTMLDivElement>(null);
   
   const [currentStep, setCurrentStep] = useState(0);
+  const [junkRemovalPhase, setJunkRemovalPhase] = useState<'method' | 'photo' | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
@@ -168,7 +170,10 @@ export const BookingPage: React.FC = () => {
         photoUrl: img || '',
         details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`
       }));
-      setCurrentStep(normalizedService === 'Junk Removal' ? 2 : 3); // skip ZIP, Service, and photo steps when coming from QuotePage
+      setCurrentStep(3);
+      if (normalizedService === 'Junk Removal') {
+        setJunkRemovalPhase('photo');
+      }
     }
   }, [estimateData]);
 
@@ -463,7 +468,7 @@ export const BookingPage: React.FC = () => {
   };
 
   const stepLabels = formData.serviceType === 'Junk Removal'
-    ? ['ZIP Check', 'Service', 'Booking']
+    ? ['ZIP Check', 'Service', 'Estimate', 'Booking']
     : [
         'ZIP Check', 
         'Service', 
@@ -510,6 +515,8 @@ export const BookingPage: React.FC = () => {
               </p>
             </>
           ) : null
+        ) : currentStep === 2 && formData.serviceType === 'Junk Removal' && junkRemovalPhase === 'method' ? (
+          <EstimateMethodHero />
         ) : (
           <>
             <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
@@ -642,13 +649,9 @@ export const BookingPage: React.FC = () => {
               <div className="grid grid-cols-1 gap-3">
                 <button
                   onClick={() => {
-                    navigate('/quote', { 
-                      state: { 
-                        zipResult: zipResult ? { city: zipResult.city, state: zipResult.state } : null, 
-                        zipValue, 
-                        serviceType: 'Junk Removal' 
-                      } 
-                    });
+                    setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
+                    setJunkRemovalPhase('method');
+                    setCurrentStep(2);
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
                 >
@@ -667,6 +670,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   onClick={() => {
                     setFormData(prev => ({ ...prev, serviceType: 'Moving Labor' }));
+                    setJunkRemovalPhase(null);
                     handleNextStep();
                   }}
                   className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
@@ -712,8 +716,39 @@ export const BookingPage: React.FC = () => {
             </div>
           )}
 
+          {/* ═══ Step 2: Junk Removal — estimate method ═══ */}
+          {currentStep === 2 && formData.serviceType === 'Junk Removal' && junkRemovalPhase === 'method' && (
+            <div className="space-y-4">
+              <EstimateMethodSelection
+                onPhotoEstimate={() => {
+                  setJunkRemovalPhase('photo');
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }}
+                onSelectItems={() =>
+                  navigate('/quote', {
+                    state: {
+                      zipResult: zipResult ? { city: zipResult.city, state: zipResult.state } : null,
+                      zipValue,
+                      serviceType: 'Junk Removal',
+                      quoteMethod: 'manual',
+                    },
+                  })
+                }
+              />
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={handlePrevStep}
+                  className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                >
+                  <ArrowLeft size={14} /> Back
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* ═══ Step 2: Photo Upload & Estimate (Junk Removal / Donation Pick Up) ═══ */}
-          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && formData.serviceType !== 'Moving Labor' && formData.serviceType !== 'Junk Removal' && (
+          {currentStep === 2 && formData.serviceType !== 'Dumpster Rental' && formData.serviceType !== 'Moving Labor' && (formData.serviceType !== 'Junk Removal' || junkRemovalPhase === 'photo') && (
             <div className="space-y-4">
               <div className="mb-2 flex items-start gap-3">
                 <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -763,7 +798,7 @@ export const BookingPage: React.FC = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate('/quote', { state: { zipResult, zipValue, serviceType: formData.serviceType } })}
+                    onClick={() => navigate('/quote', { state: { zipResult, zipValue, serviceType: formData.serviceType, quoteMethod: 'manual' } })}
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
@@ -785,6 +820,16 @@ export const BookingPage: React.FC = () => {
                   >
                     Skip — Continue without estimate <ArrowRight size={12} />
                   </button>
+
+                  {formData.serviceType === 'Junk Removal' && (
+                    <button
+                      type="button"
+                      onClick={() => setJunkRemovalPhase('method')}
+                      className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                    >
+                      <ArrowLeft size={14} /> Back
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -1419,7 +1464,7 @@ export const BookingPage: React.FC = () => {
                           setMovingStep('result');
                         } catch (err) {
                           console.error('Moving labor pricing error:', err);
-                          setMovingPricingError('Failed to calculate price. Please try again.');
+                          setMovingPricingError(err?.message || 'Failed to calculate price. Please try again.');
                         } finally {
                           setMovingPricingLoading(false);
                         }
@@ -1554,13 +1599,20 @@ export const BookingPage: React.FC = () => {
           )}
 
           {/* ═══ Step 3+: Contact + Address + Review (shared form) ═══ */}
-          {(currentStep >= 3 || (currentStep === 2 && formData.serviceType === 'Junk Removal')) && (
+          {(currentStep >= 3) && (
             <BookingDetailsForm
               estimate={estimate}
               image={image}
               serviceType={formData.serviceType}
               defaultZip={zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined}
-              onBack={() => setCurrentStep(formData.serviceType === 'Junk Removal' ? 1 : 2)}
+              onBack={() => {
+                if (formData.serviceType === 'Junk Removal') {
+                  setJunkRemovalPhase(estimate ? 'photo' : 'method');
+                  setCurrentStep(2);
+                } else {
+                  setCurrentStep(2);
+                }
+              }}
               backLabel="Back"
               prefilledName={contactName}
               prefilledPhone={contactPhone}

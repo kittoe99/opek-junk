@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, MapPinned, Loader2, Calendar, Clock, Receipt, Send } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Calendar, Clock, Receipt, Send } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
 import { ServiceArea } from './ServiceArea';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
-
-interface AddressSuggestion {
-  display: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-}
+import {
+  ServiceAddressField,
+  ServiceAddressValue,
+  formatServiceAddressLocation,
+  isServiceAddressValidated,
+} from './shared/ServiceAddressField';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +22,10 @@ export const InHomeEstimatePage: React.FC = () => {
     email: '',
     phone: '',
     address: '',
+    unitNumber: '',
+    city: '',
+    state: '',
+    zipCode: '',
     preferredDate: '',
     preferredTime: '',
     message: ''
@@ -31,73 +33,8 @@ export const InHomeEstimatePage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Address autocomplete state
-  const [addressQuery, setAddressQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [addressLoading, setAddressLoading] = useState(false);
-  const addressDropdownRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Close address suggestions on click outside
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (addressDropdownRef.current && !addressDropdownRef.current.contains(e.target as Node)) {
-        setShowSuggestions(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const fetchAddressSuggestions = useCallback(async (query: string) => {
-    if (query.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-    setAddressLoading(true);
-    try {
-      const res = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=en&lat=39.7392&lon=-104.9903&osm_tag=place:house&osm_tag=building`
-      );
-      const data = await res.json();
-      const results: AddressSuggestion[] = (data.features || [])
-        .filter((f: any) => f.properties?.street || f.properties?.name)
-        .map((f: any) => {
-          const p = f.properties;
-          const street = p.housenumber
-            ? `${p.housenumber} ${p.street || p.name || ''}`
-            : (p.street || p.name || '');
-          const city = p.city || p.town || p.village || p.county || '';
-          const state = p.state || '';
-          const zipCode = p.postcode || '';
-          const display = [street, city, state, zipCode].filter(Boolean).join(', ');
-          return { display, street: street.trim(), city, state, zipCode };
-        })
-        .filter((s: AddressSuggestion) => s.street);
-      setSuggestions(results);
-      setShowSuggestions(results.length > 0);
-    } catch {
-      setSuggestions([]);
-    } finally {
-      setAddressLoading(false);
-    }
-  }, []);
-
-  const handleAddressInput = (value: string) => {
-    setAddressQuery(value);
-    setFormData(prev => ({ ...prev, address: value }));
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchAddressSuggestions(value), 300);
-  };
-
-  const selectSuggestion = (suggestion: AddressSuggestion) => {
-    setAddressQuery(suggestion.display);
-    setFormData(prev => ({ ...prev, address: suggestion.display }));
-    setShowSuggestions(false);
-    setSuggestions([]);
-  };
+  const [addressValidated, setAddressValidated] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   const timeOptions = [
     'Morning (8am - 12pm)',
@@ -105,6 +42,17 @@ export const InHomeEstimatePage: React.FC = () => {
     'Evening (4pm - 7pm)',
     'Anytime - Flexible'
   ];
+
+  const handleAddressChange = (addressValue: ServiceAddressValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      address: addressValue.address,
+      unitNumber: addressValue.unitNumber,
+      city: addressValue.city,
+      state: addressValue.state,
+      zipCode: addressValue.zipCode,
+    }));
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -119,6 +67,11 @@ export const InHomeEstimatePage: React.FC = () => {
 
   const handleAppointmentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!addressValidated || !isServiceAddressValidated(formData)) {
+      setAddressError('Please select your address from the suggestions list.');
+      return;
+    }
+    setAddressError(null);
     setStep(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -144,7 +97,11 @@ export const InHomeEstimatePage: React.FC = () => {
             phone: formData.phone
           },
           location_info: {
-            address: formData.address
+            address: formData.address,
+            unit_number: formData.unitNumber || null,
+            city: formData.city,
+            state: formData.state,
+            zip_code: formData.zipCode,
           },
           estimate_details: {
             preferred_date: formData.preferredDate,
@@ -181,7 +138,7 @@ export const InHomeEstimatePage: React.FC = () => {
           { label: 'Name', value: formData.name },
           { label: 'Email', value: formData.email },
           { label: 'Phone', value: formData.phone },
-          { label: 'Address', value: formData.address },
+          { label: 'Address', value: `${formData.address}${formData.unitNumber ? `, ${formData.unitNumber}` : ''}, ${formatServiceAddressLocation(formData)}` },
           { label: 'Preferred date', value: formattedDate },
           { label: 'Preferred time', value: formData.preferredTime },
           ...(formData.message ? [{ label: 'Notes', value: formData.message }] : []),
@@ -258,41 +215,22 @@ export const InHomeEstimatePage: React.FC = () => {
               <p className="text-secondary-400 text-xs">Choose where and when providers should visit.</p>
             </div>
             <div className="space-y-4">
-              <div ref={addressDropdownRef} className="relative">
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-                  <MapPinned size={11} className="inline mr-1" />
-                  Address *
-                </label>
-                <div className="relative group">
-                  <input
-                    value={addressQuery || formData.address}
-                    onChange={(e) => handleAddressInput(e.target.value)}
-                    onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                    required
-                    placeholder="Start typing an address..."
-                    autoComplete="off"
-                    className={inputCls}
-                  />
-                </div>
-                {addressLoading && (
-                  <Loader2 size={14} className="absolute right-4 top-[40px] animate-spin text-secondary-300" />
-                )}
-                {showSuggestions && suggestions.length > 0 && (
-                  <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                    {suggestions.map((s, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => selectSuggestion(s)}
-                        className="w-full text-left px-4 py-3 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-50 last:border-b-0 flex items-start gap-2.5 text-secondary"
-                      >
-                        <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
-                        <span>{s.display}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ServiceAddressField
+                label="Service Address"
+                value={{
+                  address: formData.address,
+                  unitNumber: formData.unitNumber,
+                  city: formData.city,
+                  state: formData.state,
+                  zipCode: formData.zipCode,
+                }}
+                onChange={handleAddressChange}
+                validated={addressValidated}
+                onValidatedChange={setAddressValidated}
+                error={addressError}
+                onErrorChange={setAddressError}
+                inputClassName={inputCls}
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -328,7 +266,8 @@ export const InHomeEstimatePage: React.FC = () => {
                 <ArrowLeft size={14} /> Back
               </button>
               <button type="submit"
-                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+                disabled={!addressValidated}
+                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed">
                 Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>
@@ -365,7 +304,7 @@ export const InHomeEstimatePage: React.FC = () => {
                   <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Name</span><span className="font-black text-secondary text-right">{formData.name}</span></div>
                   <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Phone</span><span className="font-black text-secondary text-right">{formData.phone}</span></div>
                   <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Email</span><span className="font-black text-secondary text-right">{formData.email}</span></div>
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Address</span><span className="font-black text-secondary text-right max-w-[60%] truncate">{formData.address}</span></div>
+                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Address</span><span className="font-black text-secondary text-right max-w-[60%] truncate">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}, {formatServiceAddressLocation(formData)}</span></div>
                   <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Preferred Date</span><span className="font-black text-secondary text-right">{formData.preferredDate}</span></div>
                   <div className="flex justify-between gap-4"><span className="text-secondary-400 font-medium">Preferred Time</span><span className="font-black text-secondary text-right">{formData.preferredTime}</span></div>
                 </div>

@@ -24,6 +24,7 @@ interface BookingResult {
   booking_details: {
     service_type: string;
     preferred_date: string;
+    preferred_time?: string | null;
     details: string;
     estimated_items: string[] | null;
     estimated_volume: string | null;
@@ -50,6 +51,17 @@ const STATUS_MAP: Record<string, { label: string; color: string; bg: string; dot
   in_progress: { label: 'In Progress', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', dot: 'bg-orange-500' },
   completed: { label: 'Completed', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
   cancelled: { label: 'Cancelled', color: 'text-red-700', bg: 'bg-red-50 border-red-200', dot: 'bg-red-500' },
+};
+
+const formatPreferredDate = (dateStr: string) => {
+  try {
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch { return dateStr; }
+};
+
+const formatSchedule = (date?: string, time?: string | null) => {
+  if (!date) return 'Not specified';
+  return time ? `${formatPreferredDate(date)} · ${time}` : formatPreferredDate(date);
 };
 
 export const TrackOrderPage: React.FC = () => {
@@ -222,7 +234,7 @@ export const TrackOrderPage: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1">Preferred Date</p>
-                  <p className="text-sm font-bold text-secondary">{selectedOrder.booking_details?.preferred_date ? formatDate(selectedOrder.booking_details.preferred_date) : 'Not specified'}</p>
+                  <p className="text-sm font-bold text-secondary">{formatSchedule(selectedOrder.booking_details?.preferred_date, selectedOrder.booking_details?.preferred_time)}</p>
                 </div>
               </div>
               {selectedOrder.booking_details?.price !== undefined && selectedOrder.booking_details?.price !== null && (
@@ -360,7 +372,7 @@ export const TrackOrderPage: React.FC = () => {
                             </div>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary-500">
                               {order.booking_details?.service_type && <span className="capitalize">{order.booking_details.service_type.replace(/_/g, ' ')}</span>}
-                              {order.booking_details?.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatDate(order.booking_details.preferred_date)}</span>}
+                              {order.booking_details?.preferred_date && <span className="flex items-center gap-1"><Calendar size={11} />{formatSchedule(order.booking_details.preferred_date, order.booking_details.preferred_time)}</span>}
                               {order.location_info?.city && <span className="flex items-center gap-1"><MapPin size={11} />{order.location_info.city}, {order.location_info.state}</span>}
                             </div>
                             {order.booking_details?.price !== undefined && order.booking_details?.price !== null && (

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Calendar, Mail, Home, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Mail, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
 import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../QuotePage';
@@ -9,6 +9,13 @@ import { ContactIntakeForm } from '../shared/ContactIntakeForm';
 import { MattressDepositPayment, MATTRESS_DEPOSIT_AMOUNT } from '../shared/MattressDepositPayment';
 import { BookingDepositIntro } from '../shared/BookingDepositIntro';
 import { BookingSuccessView } from '../shared/BookingSuccessView';
+import { ScheduleDatePicker, TimeSlot, formatTimeSlotLabel } from '../shared/ScheduleDatePicker';
+import { resolveZipLocation } from '../../services/addressSearch';
+import {
+  ServiceAddressField,
+  ServiceAddressValue,
+  isServiceAddressValidated,
+} from '../shared/ServiceAddressField';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -25,14 +32,6 @@ interface BookingItem {
   quantity: number;
   icon: React.ComponentType<{ className?: string }>;
   basePriceEstimate: number;
-}
-
-interface AddressSuggestion {
-  display: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
 }
 
 const MattressIcon = ({ className }: { className?: string }) => (
@@ -84,12 +83,19 @@ export const MattressBookingPage: React.FC = () => {
   const location = useLocation();
   const incomingState = location.state as {
     preselectItems?: { name: string; quantity: number }[];
+    zipValue?: string;
+    zipResult?: { city: string; state: string; served?: boolean };
   } | null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>(1); // Step 7 deposit intro, step 8 payment, step 9 success
+  const initialZip = incomingState?.zipValue ?? '';
+  const hasVerifiedZip =
+    /^\d{5}$/.test(initialZip) && incomingState?.zipResult != null;
+
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>(hasVerifiedZip ? 2 : 1); // Step 7 deposit intro, step 8 payment, step 9 success
   
   // Step 1: Zip
-  const [zipCode, setZipCode] = useState('');
+  const [zipCode, setZipCode] = useState(initialZip);
+  const [zipResult, setZipResult] = useState(incomingState?.zipResult ?? null);
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
   
@@ -149,23 +155,21 @@ export const MattressBookingPage: React.FC = () => {
   const [expandedCategory, setExpandedCategory] = useState('Popular Items');
   const [showCatalogModal, setShowCatalogModal] = useState(false);
   const stepContentRef = useRef<HTMLDivElement>(null);
-  const addressDropdownRef = useRef<HTMLDivElement>(null);
-  const addressDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
-  const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
-  const [addressLoading, setAddressLoading] = useState(false);
+  const [addressValidated, setAddressValidated] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   // Reservation details shared across the final booking steps
   const [formData, setFormData] = useState({
     date: '',
+    timeSlot: '' as TimeSlot | '',
     name: '',
     email: '',
     phone: '',
     address: '',
     unitNumber: '',
-    city: '',
-    state: '',
-    zipCode: ''
+    city: incomingState?.zipResult?.city ?? '',
+    state: incomingState?.zipResult?.state ?? '',
+    zipCode: initialZip,
   });
   const [submitLoading, setSubmitLoading] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
@@ -179,10 +183,23 @@ export const MattressBookingPage: React.FC = () => {
     }
     setZipError(null);
     setZipLoading(true);
-    // Simulate ZIP check (all US ZIPs supported)
-    await new Promise(resolve => setTimeout(resolve, 800));
-    setZipLoading(false);
-    setStep(2);
+    try {
+      const location = await resolveZipLocation(zipCode);
+      if (!location) {
+        setZipError('ZIP not found. Please check and try again.');
+        return;
+      }
+      setZipResult({ city: location.city, state: location.state, served: true });
+      setFormData((prev) => ({
+        ...prev,
+        city: location.city,
+        state: location.state,
+        zipCode: location.zip,
+      }));
+      setStep(2);
+    } finally {
+      setZipLoading(false);
+    }
   };
 
   const updateItemQuantity = (id: string, delta: number) => {
@@ -261,22 +278,6 @@ export const MattressBookingPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (addressDropdownRef.current && !addressDropdownRef.current.contains(e.target as Node)) {
-        setShowAddressSuggestions(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      if (addressDebounceRef.current) {
-        clearTimeout(addressDebounceRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     const scrollTarget = stepContentRef.current;
     if (!scrollTarget) return;
 
@@ -289,66 +290,18 @@ export const MattressBookingPage: React.FC = () => {
     });
   }, [step]);
 
-  const fetchAddressSuggestions = useCallback(async (query: string) => {
-    if (query.trim().length < 3) {
-      setAddressSuggestions([]);
-      setShowAddressSuggestions(false);
-      return;
-    }
-
-    setAddressLoading(true);
-    try {
-      const biasedQuery = zipCode ? `${query} ${zipCode}` : query;
-      const res = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(biasedQuery)}&limit=5&lang=en&osm_tag=place:house&osm_tag=building`
-      );
-      const data = await res.json();
-      const results: AddressSuggestion[] = (data.features || [])
-        .filter((f: any) => f.properties?.street || f.properties?.name)
-        .map((f: any) => {
-          const p = f.properties;
-          const street = p.housenumber
-            ? `${p.housenumber} ${p.street || p.name || ''}`
-            : (p.street || p.name || '');
-          const city = p.city || p.town || p.village || p.county || '';
-          const state = p.state || '';
-          const suggestionZip = p.postcode || '';
-          const display = [street, city, state, suggestionZip].filter(Boolean).join(', ');
-          return { display, street: street.trim(), city, state, zipCode: suggestionZip };
-        })
-        .filter((s: AddressSuggestion) => s.street);
-
-      setAddressSuggestions(results);
-      setShowAddressSuggestions(results.length > 0);
-    } catch {
-      setAddressSuggestions([]);
-      setShowAddressSuggestions(false);
-    } finally {
-      setAddressLoading(false);
-    }
-  }, [zipCode]);
-
-  const handleAddressInput = (value: string) => {
-    setFormData(prev => ({ ...prev, address: value }));
-    if (addressDebounceRef.current) {
-      clearTimeout(addressDebounceRef.current);
-    }
-    addressDebounceRef.current = setTimeout(() => fetchAddressSuggestions(value), 300);
-  };
-
-  const selectAddressSuggestion = (suggestion: AddressSuggestion) => {
-    setFormData(prev => ({
+  const handleAddressChange = (addressValue: ServiceAddressValue) => {
+    setFormData((prev) => ({
       ...prev,
-      address: suggestion.street,
-      city: suggestion.city,
-      state: suggestion.state,
-      zipCode: suggestion.zipCode
+      address: addressValue.address,
+      unitNumber: addressValue.unitNumber,
+      city: addressValue.city,
+      state: addressValue.state,
+      zipCode: addressValue.zipCode,
     }));
-    if (suggestion.zipCode) {
-      setZipCode(suggestion.zipCode);
+    if (addressValue.zipCode) {
+      setZipCode(addressValue.zipCode);
     }
-    setShowAddressSuggestions(false);
-    setAddressSuggestions([]);
   };
 
   const calculateTotal = () => {
@@ -478,6 +431,7 @@ export const MattressBookingPage: React.FC = () => {
         items: selectedItems.filter(i => i.quantity > 0).map(i => ({ name: i.name, quantity: i.quantity })),
         details: `Mattress Disposal service. Items: ${itemsSummaryText}. Total Price: $${totalPrice}`,
         preferred_date: formData.date,
+        preferred_time: formatTimeSlotLabel(formData.timeSlot),
         price: totalPrice,
         deposit_amount: MATTRESS_DEPOSIT_AMOUNT,
         deposit_paid: true,
@@ -518,6 +472,7 @@ export const MattressBookingPage: React.FC = () => {
         state: formData.state || null,
         zip_code: formData.zipCode || zipCode,
         date: formData.date,
+        preferred_time: formatTimeSlotLabel(formData.timeSlot),
         service: `Mattress Disposal`,
         details: itemsSummaryText,
         price: totalPrice,
@@ -968,26 +923,18 @@ export const MattressBookingPage: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (!formData.date || !formData.timeSlot) return;
           setStep(6);
         }}
         className="space-y-4"
       >
-        <div>
-          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Preferred Date</label>
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand">
-              <Calendar className="w-5 h-5 text-secondary-400 group-focus-within:text-brand/70" />
-            </div>
-            <input
-              type="date"
-              required
-              min={new Date().toISOString().split('T')[0]}
-              value={formData.date}
-              onChange={e => setFormData({ ...formData, date: e.target.value })}
-              className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
-            />
-          </div>
-        </div>
+        <ScheduleDatePicker
+          date={formData.date}
+          timeSlot={formData.timeSlot}
+          minDate={new Date().toISOString().split('T')[0]}
+          onDateChange={(nextDate) => setFormData((prev) => ({ ...prev, date: nextDate }))}
+          onTimeSlotChange={(nextSlot) => setFormData((prev) => ({ ...prev, timeSlot: nextSlot }))}
+        />
 
         <div>
           <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Email</label>
@@ -1017,7 +964,8 @@ export const MattressBookingPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+            disabled={!formData.date || !formData.timeSlot}
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue to Address <ArrowRight size={14} />
           </button>
@@ -1037,7 +985,9 @@ export const MattressBookingPage: React.FC = () => {
         <div className="min-w-0 flex-1 pr-4">
           <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Schedule</p>
           <p className="font-bold text-secondary text-xs mt-0.5 truncate">
-            {formData.date ? new Date(formData.date).toLocaleDateString() : 'Date not selected'} - {formData.email}
+            {formData.date
+              ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}`
+              : 'Date not selected'} - {formData.email}
           </p>
         </div>
         <button 
@@ -1052,106 +1002,37 @@ export const MattressBookingPage: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (!addressValidated || !isServiceAddressValidated(formData)) {
+            setAddressError('Please select your address from the suggestions list.');
+            return;
+          }
+          setAddressError(null);
           setStep(7);
         }}
         className="space-y-4"
       >
-        <div ref={addressDropdownRef} className="relative">
-          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Pickup Address</label>
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Home className="w-5 h-5 text-secondary-400" />
-            </div>
-            <input
-              type="text"
-              required
-              autoComplete="street-address"
-              value={formData.address}
-              onChange={e => handleAddressInput(e.target.value)}
-              onFocus={() => addressSuggestions.length > 0 && setShowAddressSuggestions(true)}
-              placeholder="Start typing your pickup address..."
-              className="w-full pl-12 pr-10 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
-            />
-            {addressLoading && (
-              <Loader2 size={14} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-secondary-300" />
-            )}
-          </div>
-          {showAddressSuggestions && addressSuggestions.length > 0 && (
-            <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-52 overflow-y-auto">
-              {addressSuggestions.map((suggestion, index) => (
-                <button
-                  key={`${suggestion.display}-${index}`}
-                  type="button"
-                  onClick={() => selectAddressSuggestion(suggestion)}
-                  className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
-                >
-                  <MapPin size={14} className="text-brand mt-0.5 shrink-0" />
-                  <span>{suggestion.display}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">
-            Apartment / Unit / Suite <span className="text-secondary-300 normal-case tracking-normal">(optional)</span>
-          </label>
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Home className="w-5 h-5 text-secondary-400" />
-            </div>
-            <input
-              type="text"
-              autoComplete="address-line2"
-              value={formData.unitNumber}
-              onChange={e => setFormData({ ...formData, unitNumber: e.target.value })}
-              placeholder="Apt 4B, Suite 200, Gate code..."
-              className="w-full pl-12 pr-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">City</label>
-            <input
-              type="text"
-              autoComplete="address-level2"
-              value={formData.city}
-              onChange={e => setFormData({ ...formData, city: e.target.value })}
-              placeholder="City"
-              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">State</label>
-            <input
-              type="text"
-              autoComplete="address-level1"
-              value={formData.state}
-              onChange={e => setFormData({ ...formData, state: e.target.value })}
-              placeholder="State"
-              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">ZIP</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              autoComplete="postal-code"
-              value={formData.zipCode || zipCode}
-              onChange={e => {
-                const nextZip = e.target.value.replace(/\D/g, '').slice(0, 5);
-                setFormData({ ...formData, zipCode: nextZip });
-                setZipCode(nextZip);
-              }}
-              placeholder="ZIP"
-              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm focus:ring-4 focus:ring-brand/10 focus:border-brand transition-all duration-300"
-            />
-          </div>
-        </div>
+        <ServiceAddressField
+          label="Service Address"
+          value={{
+            address: formData.address,
+            unitNumber: formData.unitNumber,
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode || zipCode,
+          }}
+          onChange={handleAddressChange}
+          validated={addressValidated}
+          onValidatedChange={setAddressValidated}
+          error={addressError}
+          onErrorChange={setAddressError}
+          locationBias={{
+            zipCode: formData.zipCode || zipCode,
+            city: zipResult?.city || formData.city,
+            state: zipResult?.state || formData.state,
+          }}
+          placeholder="Start typing your pickup address..."
+          inputClassName="w-full px-4 py-3.5 bg-white border border-secondary-100 rounded-xl outline-none font-medium text-secondary text-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
+        />
 
         <div className="pt-2 flex gap-3">
           <button 
@@ -1163,7 +1044,8 @@ export const MattressBookingPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+            disabled={!addressValidated}
+            className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue <ArrowRight size={14} />
           </button>

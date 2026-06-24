@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { JunkIcon, MovingLaborIcon, DumpsterIcon, PhotoEstimateIcon, ManualEntryIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PopularItemsIcon, FurnitureIcon, BeddingIcon, AppliancesIcon, ElectronicsIcon, YardOutdoorIcon, ConstructionIcon, GarageStorageIcon, BaggedBoxedIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
+import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PopularItemsIcon, FurnitureIcon, BeddingIcon, AppliancesIcon, ElectronicsIcon, YardOutdoorIcon, ConstructionIcon, GarageStorageIcon, BaggedBoxedIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
+import { EstimateMethodHero, EstimateMethodSelection } from './shared/EstimateMethodSelection';
 import { detectItemsFromPhotos } from '../services/openaiService';
 import { ItemIconRenderer } from './icons/JunkItemIcons';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
@@ -200,6 +202,7 @@ export const QuotePage: React.FC = () => {
     zipValue?: string;
     serviceType?: string;
     preselectItems?: { name: string; quantity: number }[];
+    quoteMethod?: 'method' | 'manual' | 'ai';
   } | null;
 
   // Map incoming serviceType string to internal service type if present
@@ -223,8 +226,12 @@ export const QuotePage: React.FC = () => {
   const [selectedService, setSelectedService] = useState<'junk_removal' | 'moving_labor' | 'dumpster_rental' | 'donation_pickup' | null>(
     incomingState?.preselectItems ? 'junk_removal' : mappedServiceType
   );
-  const [selectedOption, setSelectedOption] = useState<'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(
-    incomingState?.preselectItems ? 'manual' : (mappedServiceType === 'junk_removal' ? null : (incomingState?.serviceType ? 'manual' : null))
+  const [selectedOption, setSelectedOption] = useState<'method' | 'ai' | 'manual' | 'moving_labor' | 'donation_pickup' | 'dumpster_rental' | null>(
+    incomingState?.preselectItems
+      ? 'manual'
+      : mappedServiceType === 'junk_removal'
+        ? 'method'
+        : mappedServiceType
   );
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -275,20 +282,61 @@ export const QuotePage: React.FC = () => {
     }
   }, [selectedOption]);
 
-  // Auto-advance for service selections
+  // Sync flow when navigating to /quote with router state (component may stay mounted)
   useEffect(() => {
-    if (selectedService === 'moving_labor') {
-      setSelectedOption('moving_labor');
-    } else if (selectedService === 'donation_pickup') {
-      setSelectedOption('donation_pickup');
-    } else if (selectedService === 'dumpster_rental') {
-      setSelectedOption('dumpster_rental');
-    } else if (selectedService === 'junk_removal') {
-      setSelectedOption(null);
-    } else if (selectedService === null) {
-      setSelectedOption(null);
+    const state = location.state as typeof incomingState;
+    if (!state) return;
+
+    if (state.zipResult && state.zipValue) {
+      setZipVerified(true);
+      setZipValue(state.zipValue);
+      setZipResult({
+        city: state.zipResult.city,
+        state: state.zipResult.state,
+        servedCity: { city: state.zipResult.city, state: state.zipResult.state },
+      });
     }
-  }, [selectedService]);
+
+    if (state.preselectItems?.length) {
+      setSelectedService('junk_removal');
+      setSelectedOption('manual');
+      setManualStep('select');
+      return;
+    }
+
+    if (state.quoteMethod === 'manual') {
+      setSelectedService('junk_removal');
+      setSelectedOption('manual');
+      setManualStep('select');
+      return;
+    }
+
+    if (state.quoteMethod === 'ai') {
+      setSelectedService('junk_removal');
+      setSelectedOption('ai');
+      setAiStep('tips');
+      return;
+    }
+
+    if (state.serviceType) {
+      const st = state.serviceType.toLowerCase();
+      const service =
+        st.includes('moving') ? 'moving_labor'
+          : st.includes('dumpster') ? 'dumpster_rental'
+            : st.includes('donation') ? 'donation_pickup'
+              : 'junk_removal';
+
+      setSelectedService(service);
+      if (service === 'junk_removal') {
+        setSelectedOption('method');
+        setAiStep('tips');
+        setManualStep('select');
+      } else {
+        setSelectedOption(service);
+      }
+    }
+  }, [location.key]);
+
   useEffect(() => {
     if (zipResult?.servedCity) {
       const t = setTimeout(() => setZipVerified(true), 2000);
@@ -364,10 +412,16 @@ export const QuotePage: React.FC = () => {
     }, 50);
   }, []);
 
-  // Auto-scroll to top when step changes
+  const prevSelectedOptionRef = useRef(selectedOption);
+
+  // Auto-scroll when moving between steps inside a flow (not when first entering from method picker)
   useEffect(() => {
+    const prev = prevSelectedOptionRef.current;
+    prevSelectedOptionRef.current = selectedOption;
+    if (!selectedOption) return;
+    if (prev === 'method' && (selectedOption === 'ai' || selectedOption === 'manual')) return;
     scrollToElement(contentTopRef.current, -120);
-  }, [aiStep, manualStep, selectedOption, movingStep, donationStep, dumpsterStep, scrollToElement]);
+  }, [aiStep, manualStep, movingStep, donationStep, dumpsterStep, scrollToElement, selectedOption]);
 
   // If all items get removed while on review, send user back to selection
   useEffect(() => {
@@ -1059,7 +1113,11 @@ export const QuotePage: React.FC = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl mx-auto">
             <button
-              onClick={() => setSelectedService('junk_removal')}
+              type="button"
+              onClick={() => {
+                setSelectedService('junk_removal');
+                setSelectedOption('method');
+              }}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
@@ -1074,7 +1132,11 @@ export const QuotePage: React.FC = () => {
               </div>
             </button>
             <button
-              onClick={() => setSelectedService('moving_labor')}
+              type="button"
+              onClick={() => {
+                setSelectedService('moving_labor');
+                setSelectedOption('moving_labor');
+              }}
               className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01] transition-all p-4 rounded-2xl text-left flex items-center gap-4 group"
             >
               <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
@@ -1349,7 +1411,7 @@ export const QuotePage: React.FC = () => {
                       setMovingStep('result');
                     } catch (err: any) {
                       console.error('Pricing error:', err);
-                      setError('Failed to calculate price. Please try again.');
+                      setError(err?.message || 'Failed to calculate price. Please try again.');
                     } finally {
                       setPricingLoading(false);
                     }
@@ -1789,7 +1851,7 @@ export const QuotePage: React.FC = () => {
                       setDumpsterStep('result');
                     } catch (err: any) {
                       console.error('Pricing error:', err);
-                      setError('Failed to calculate price. Please try again.');
+                      setError(err?.message || 'Failed to calculate price. Please try again.');
                     } finally {
                       setPricingLoading(false);
                     }
@@ -1831,52 +1893,28 @@ export const QuotePage: React.FC = () => {
   }
 
   // ── Method Selection screen ──
-  if (!selectedOption) {
+  if (selectedOption === 'method') {
     return (
       <div className="min-h-screen bg-white">
-        {/* Hero */}
         <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Junk <span className="text-brand">removal.</span></h1>
-          <p className="text-sm text-secondary-400">Snap a photo or pick items from the catalog — upfront estimate, no obligations.</p>
+          <EstimateMethodHero />
         </div>
 
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          {/* Method Selection */}
-          <div className="grid grid-cols-1 gap-3 mb-12 max-w-xl mx-auto">
-            <button
-              onClick={() => setSelectedOption('ai')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
-            >
-              <div className="w-12 h-12 bg-white border border-secondary-100 group-hover:border-brand rounded-xl flex items-center justify-center shrink-0 transition-colors relative">
-                <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Photo Estimate</h3>
-                <p className="text-secondary-400 text-xs md:text-sm mb-2">Snap a photo for instant AI pricing</p>
-                <span className="inline-block px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-brand text-white rounded-md border border-brand shadow-sm">Fastest</span>
-              </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedOption('manual')}
-              className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
-            >
-              <div className="w-12 h-12 bg-white border border-secondary-100 group-hover:border-brand rounded-xl flex items-center justify-center shrink-0 transition-colors relative">
-                <ManualEntryIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Select Your Items</h3>
-                <p className="text-secondary-400 text-xs md:text-sm">Pick items from the catalog for a quote</p>
-              </div>
-              <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-              </div>
-            </button>
-          </div>
-
-
+              <EstimateMethodSelection
+                onPhotoEstimate={() => {
+                  setAiStep('tips');
+                  setSelectedOption('ai');
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }}
+                onSelectItems={() => {
+                  flushSync(() => {
+                    setManualStep('select');
+                    setSelectedOption('manual');
+                  });
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }}
+              />
         </div>
       </div>
     );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf, BedDouble, Check, Sparkles, Loader2, Phone, MapPin } from 'lucide-react';
+import { ArrowRight, Leaf, BedDouble, Check, Sparkles, Loader2, Phone } from 'lucide-react';
 import { TrustBadges } from '../TrustBadges';
 import { ServiceArea } from '../ServiceArea';
 import { QuickActionBar } from '../QuickActionBar';
@@ -46,117 +46,6 @@ export const MattressDisposalPage: React.FC = () => {
   const [zipValue, setZipValue] = useState('');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
-  const [userCity, setUserCity] = useState<string>('');
-  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-
-  const US_STATES_MAP: Record<string, string> = {
-    'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA',
-    'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE', 'florida': 'FL', 'georgia': 'GA',
-    'hawaii': 'HI', 'idaho': 'ID', 'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA',
-    'kansas': 'KS', 'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD',
-    'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS', 'missouri': 'MO',
-    'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
-    'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH',
-    'oklahoma': 'OK', 'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
-    'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT', 'vermont': 'VT',
-    'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV', 'wisconsin': 'WI', 'wyoming': 'WY',
-    'district of columbia': 'DC'
-  };
-
-  const getUSStateAbbreviation = (stateName: string): string => {
-    const clean = stateName.toLowerCase().trim();
-    return US_STATES_MAP[clean] || stateName;
-  };
-
-  const fetchUserLocation = async () => {
-    setIsDetectingLocation(true);
-    try {
-      // 1. Try Browser Geolocation API first
-      if (!navigator.geolocation) {
-        throw new Error('Geolocation not supported by browser');
-      }
-
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: false,
-          timeout: 6000,
-          maximumAge: 600000 // Cache for 10 minutes
-        });
-      });
-
-      const { latitude, longitude } = position.coords;
-      const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-      if (!geoRes.ok) {
-        throw new Error('Reverse geocoding failed');
-      }
-
-      const geoData = await geoRes.json();
-      const address = geoData.address;
-      if (address) {
-        const city = address.city || address.town || address.village || address.hamlet || '';
-        const state = address.state || '';
-        const countryCode = address.country_code ? address.country_code.toUpperCase() : '';
-
-        if (city) {
-          const displayState = countryCode === 'US' ? getUSStateAbbreviation(state) : state;
-          const loc = countryCode === 'US'
-            ? `${city}, ${displayState}`
-            : `${city}, ${countryCode}`;
-
-          setUserCity(loc);
-          localStorage.setItem('user_city', loc);
-          setIsDetectingLocation(false);
-          return;
-        }
-      }
-      throw new Error('Could not parse city from geocoding data');
-    } catch (err: any) {
-      console.warn('Geolocation failed or denied, checking cache...', err.message);
-
-      // 2. Check localStorage
-      const storedCity = localStorage.getItem('user_city');
-      if (storedCity) {
-        setUserCity(storedCity);
-        setIsDetectingLocation(false);
-        return;
-      }
-
-      // 3. Fall back to IP Address Detection
-      try {
-        const res = await fetch('https://ipwho.is/');
-        const data = await res.json();
-        if (data.success && data.city) {
-          const loc = data.country_code === 'US'
-            ? `${data.city}, ${data.region_code}`
-            : `${data.city}, ${data.country_code}`;
-          setUserCity(loc);
-          localStorage.setItem('user_city', loc);
-          return;
-        }
-        throw new Error('ipwho.is failed');
-      } catch {
-        try {
-          const res2 = await fetch('https://ipapi.co/json/');
-          const data2 = await res2.json();
-          if (data2.city) {
-            const loc = data2.country_code === 'US'
-              ? `${data2.city}, ${data2.region_code}`
-              : `${data2.city}, ${data2.country_code}`;
-            setUserCity(loc);
-            localStorage.setItem('user_city', loc);
-            return;
-          }
-        } catch {}
-        setUserCity('United States');
-      } finally {
-        setIsDetectingLocation(false);
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    fetchUserLocation();
-  }, []);
 
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
@@ -176,13 +65,12 @@ export const MattressDisposalPage: React.FC = () => {
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
       
-      navigate('/quote', {
+      navigate('/booking/mattress', {
         state: {
           zipResult: { city, state, served: true },
           zipValue: zip,
-          serviceType: 'Junk Removal',
-          preselectItems: [{ name: 'Mattress', quantity: 1 }]
-        }
+          preselectItems: [{ name: 'Mattress', quantity: 1 }],
+        },
       });
     } catch {
       setZipError('Check failed. Try again.');
@@ -240,16 +128,9 @@ export const MattressDisposalPage: React.FC = () => {
                 <br />
                 <span className="text-brand">From $75</span>
               </h1>
-              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed mb-3 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
                 Same-day pickup from any room. Zero heavy lifting.
               </p>
-              
-              <div className="flex items-center gap-1.5 mb-6 animate-slide-up" style={{ animationDelay: '0.25s' }}>
-                <MapPin size={12} className="text-brand" />
-                <span className="text-[11px] font-bold uppercase tracking-wider text-white/90 underline decoration-dotted underline-offset-2">
-                  {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
-                </span>
-              </div>
 
             </div>
           </div>
@@ -274,7 +155,7 @@ export const MattressDisposalPage: React.FC = () => {
           <div className="px-4 py-8">
             <div className="max-w-md mx-auto space-y-3 animate-slide-up" style={{ animationDelay: '0.35s' }}>
               <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-2">Check your pricing instantly</p>
-              <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full">
+              <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-xl overflow-hidden p-1 w-full">
                 <input
                   type="text"
                   inputMode="numeric"
@@ -289,7 +170,7 @@ export const MattressDisposalPage: React.FC = () => {
                 <button
                   onClick={handleZipCheck}
                   disabled={zipValue.length !== 5 || zipLoading}
-                  className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                  className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
                 >
                   {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
                 </button>
@@ -335,7 +216,7 @@ export const MattressDisposalPage: React.FC = () => {
                 {/* ZIP Checker Form */}
                 <div className="animate-slide-up space-y-4" style={{ animationDelay: '0.3s' }}>
                   <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-2">Check your pricing instantly</p>
-                  <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full max-w-md">
+                  <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-xl overflow-hidden p-1 w-full max-w-md">
                     <input
                       type="text"
                       inputMode="numeric"
@@ -350,7 +231,7 @@ export const MattressDisposalPage: React.FC = () => {
                     <button
                       onClick={handleZipCheck}
                       disabled={zipValue.length !== 5 || zipLoading}
-                      className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                      className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
                     >
                       {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
                     </button>

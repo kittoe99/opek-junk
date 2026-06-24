@@ -26,10 +26,11 @@ export const FullServiceSection: React.FC = () => {
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
 
-      navigate('/quote', {
+      navigate('/booking/mattress', {
         state: {
           zipResult: { city, state, served: true },
           zipValue: zip,
+          preselectItems: [{ name: 'Mattress', quantity: 1 }],
         },
       });
     } catch {
@@ -63,7 +64,7 @@ export const FullServiceSection: React.FC = () => {
             <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-3">
               Check your pricing instantly
             </p>
-            <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-none overflow-hidden p-1 w-full">
+            <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-xl overflow-hidden p-1 w-full">
               <input
                 type="text"
                 inputMode="numeric"
@@ -81,7 +82,7 @@ export const FullServiceSection: React.FC = () => {
               <button
                 onClick={handleZipCheck}
                 disabled={zipValue.length !== 5 || zipLoading}
-                className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-none shrink-0 flex items-center gap-1.5"
+                className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
               >
                 {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
               </button>

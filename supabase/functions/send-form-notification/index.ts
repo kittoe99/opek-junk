@@ -25,6 +25,11 @@ const esc = (value: unknown): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
+const formatPreferredSchedule = (date?: string, time?: string): string => {
+  if (!date) return '';
+  return time ? `${date} (${time})` : date;
+};
+
 // --- Clean email layout ---
 
 const emailLayout = (body: string) => `
@@ -183,7 +188,7 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
         detailRow('Service', details.service_type) +
         detailRow('Address', fullAddress) +
         detailRow('Zip', location.zip_code) +
-        detailRow('Date', details.preferred_date) +
+        detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         detailRow('Est. price', priceVal) +
         detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
         detailRow('Volume', details.estimated_volume) +
@@ -299,7 +304,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
       detailsBlock(
         detailRow('Service', details.service_type) +
         detailRow('Address', fullAddress) +
-        detailRow('Date', details.preferred_date) +
+        detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         (priceVal ? detailRow('Est. price', priceVal) : '') +
         detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
         detailRow('Details', details.details)

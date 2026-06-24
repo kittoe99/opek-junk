@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
@@ -6,15 +6,13 @@ import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supa
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
 import { BookingDepositIntro } from './shared/BookingDepositIntro';
-
-
-interface AddressSuggestion {
-  display: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-}
+import { ScheduleDatePicker, TimeSlot, formatTimeSlotLabel } from './shared/ScheduleDatePicker';
+import {
+  ServiceAddressField,
+  ServiceAddressValue,
+  isServiceAddressValidated,
+} from './shared/ServiceAddressField';
+import { CollapsibleReviewPanel } from './shared/CollapsibleReviewPanel';
 
 interface BookingDetailsFormProps {
   estimate: QuoteEstimate | null;
@@ -107,14 +105,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     }
   }, [partialBookingId]);
 
-  const addressDropdownRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Address autocomplete state
-  const [addressQuery, setAddressQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [addressLoading, setAddressLoading] = useState(false);
+  const [addressValidated, setAddressValidated] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: prefilledName || '',
@@ -126,6 +118,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     state: defaultZip?.state || '',
     zipCode: defaultZip?.zipCode || '',
     date: '',
+    timeSlot: '' as TimeSlot | '',
     details: '',
   });
 
@@ -146,69 +139,15 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [step]);
 
-  // Close suggestions on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (addressDropdownRef.current && !addressDropdownRef.current.contains(e.target as Node)) {
-        setShowSuggestions(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const fetchAddressSuggestions = useCallback(async (query: string) => {
-    if (query.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-    setAddressLoading(true);
-    try {
-      const res = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=en&lat=39.7392&lon=-104.9903&osm_tag=place:house&osm_tag=building`
-      );
-      const data = await res.json();
-      const results: AddressSuggestion[] = (data.features || [])
-        .filter((f: any) => f.properties?.street || f.properties?.name)
-        .map((f: any) => {
-          const p = f.properties;
-          const street = p.housenumber
-            ? `${p.housenumber} ${p.street || p.name || ''}`
-            : (p.street || p.name || '');
-          const city = p.city || p.town || p.village || p.county || '';
-          const state = p.state || '';
-          const zipCode = p.postcode || '';
-          const display = [street, city, state, zipCode].filter(Boolean).join(', ');
-          return { display, street: street.trim(), city, state, zipCode };
-        })
-        .filter((s: AddressSuggestion) => s.street);
-      setSuggestions(results);
-      setShowSuggestions(results.length > 0);
-    } catch {
-      setSuggestions([]);
-    } finally {
-      setAddressLoading(false);
-    }
-  }, []);
-
-  const handleAddressInput = (value: string) => {
-    setAddressQuery(value);
-    setFormData(prev => ({ ...prev, address: value }));
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchAddressSuggestions(value), 300);
-  };
-
-  const selectSuggestion = (suggestion: AddressSuggestion) => {
-    setAddressQuery(suggestion.street);
-    setFormData(prev => ({
+  const handleAddressChange = (addressValue: ServiceAddressValue) => {
+    setFormData((prev) => ({
       ...prev,
-      address: suggestion.street,
-      city: suggestion.city,
-      state: suggestion.state,
-      zipCode: suggestion.zipCode
+      address: addressValue.address,
+      unitNumber: addressValue.unitNumber,
+      city: addressValue.city,
+      state: addressValue.state,
+      zipCode: addressValue.zipCode,
     }));
-    setShowSuggestions(false);
-    setSuggestions([]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -289,11 +228,21 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   const handleScheduleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.date || !formData.timeSlot) {
+      setError('Please select a date and time slot.');
+      return;
+    }
+    setError(null);
     setStep('address');
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!addressValidated || !isServiceAddressValidated(formData)) {
+      setAddressError('Please select your address from the suggestions list.');
+      return;
+    }
+    setAddressError(null);
     setStep('review');
   };
 
@@ -368,6 +317,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           const bookingDetails = {
             service_type: normalizedServiceType,
             preferred_date: formData.date,
+            preferred_time: formatTimeSlotLabel(formData.timeSlot),
             details: detailsText,
             estimated_items: estimate?.itemsDetected || [],
             estimated_volume: estimate?.estimatedVolume || '',
@@ -425,6 +375,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           zip_code: formData.zipCode,
           service_type: normalizedServiceType,
           preferred_date: formData.date,
+          preferred_time: formatTimeSlotLabel(formData.timeSlot),
           details: detailsText,
           price: estimate?.price || null,
           order_number: finalOrderNumber
@@ -569,28 +520,29 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-              <CalendarCheck size={11} className="inline mr-1" /> Preferred Date *
-            </label>
-            <div className="relative group">
-              <input
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                required
-                type="date"
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-              />
+          <ScheduleDatePicker
+            date={formData.date}
+            timeSlot={formData.timeSlot}
+            minDate={new Date().toISOString().split('T')[0]}
+            onDateChange={(nextDate) => setFormData((prev) => ({ ...prev, date: nextDate }))}
+            onTimeSlotChange={(nextSlot) => setFormData((prev) => ({ ...prev, timeSlot: nextSlot }))}
+          />
+
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-700 text-xs font-bold">{error}</p>
             </div>
-          </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
               <ArrowLeft size={14} /> Back
             </button>
-            <button type="submit" className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+            <button
+              type="submit"
+              disabled={!formData.date || !formData.timeSlot}
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Continue to Address <ArrowRight size={14} />
             </button>
           </div>
@@ -611,105 +563,40 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
           </div>
 
-          <div ref={addressDropdownRef} className="relative">
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-              <MapPinned size={11} className="inline mr-1" />
-              Service Address *
-            </label>
-            <div className="relative group">
-              <input
-                value={addressQuery}
-                onChange={(e) => handleAddressInput(e.target.value)}
-                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                required
-                placeholder="Start typing an address..."
-                autoComplete="street-address"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-              />
-            </div>
-            {addressLoading && (
-              <Loader2 size={14} className="absolute right-3 top-[38px] animate-spin text-secondary-300" />
-            )}
-            {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                {suggestions.map((s, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => selectSuggestion(s)}
-                    className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
-                  >
-                    <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
-                    <span>{s.display}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span></label>
-            <div className="relative group">
-              <input
-                name="unitNumber"
-                value={formData.unitNumber}
-                onChange={handleInputChange}
-                placeholder="e.g. Apt 4B, Suite 200"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="col-span-2 md:col-span-1">
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">City *</label>
-              <div className="relative group">
-                <input
-                  name="city"
-                  autoComplete="address-level2"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Dallas"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
-              <div className="relative group">
-                <input
-                  name="state"
-                  autoComplete="address-level1"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="TX"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Zip Code *</label>
-              <div className="relative group">
-                <input
-                  name="zipCode"
-                  autoComplete="postal-code"
-                  value={formData.zipCode}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="75201"
-                  className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
-                />
-              </div>
-            </div>
-          </div>
+          <ServiceAddressField
+            label="Service Address"
+            value={{
+              address: formData.address,
+              unitNumber: formData.unitNumber,
+              city: formData.city,
+              state: formData.state,
+              zipCode: formData.zipCode,
+            }}
+            onChange={handleAddressChange}
+            validated={addressValidated}
+            onValidatedChange={setAddressValidated}
+            error={addressError}
+            onErrorChange={setAddressError}
+            locationBias={
+              defaultZip
+                ? {
+                    zipCode: defaultZip.zipCode,
+                    city: defaultZip.city,
+                    state: defaultZip.state,
+                  }
+                : undefined
+            }
+          />
 
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
               <ArrowLeft size={14} /> Back
             </button>
-            <button type="submit" className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20">
+            <button
+              type="submit"
+              disabled={!addressValidated}
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Continue <ArrowRight size={14} />
             </button>
           </div>
@@ -742,7 +629,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date</label>
               <input
                 readOnly
-                value={formData.date}
+                value={
+                  formData.date
+                    ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}`
+                    : ''
+                }
                 className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary font-bold focus:outline-none transition-colors"
               />
             </div>
@@ -828,11 +719,22 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {/* Review Section */}
-          <div className="border border-secondary-100 bg-secondary-50/50 p-4 rounded-2xl shadow-sm">
-            <div className="flex items-center gap-2 mb-3">
-              <Receipt size={14} className="text-brand" strokeWidth={2.5} />
-              <h3 className="text-[10px] font-bold text-secondary uppercase tracking-wider">Review Your Booking</h3>
-            </div>
+          <CollapsibleReviewPanel
+            title="Review Your Booking"
+            summary={[
+              formData.name,
+              formData.date
+                ? new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })
+                : null,
+              estimate ? `$${estimate.price}` : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+            icon={<Receipt size={14} className="text-brand" strokeWidth={2.5} />}
+          >
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Name</span><span className="font-bold text-secondary text-right">{formData.name}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Email</span><span className="font-bold text-secondary text-right">{formData.email}</span></div>
@@ -840,12 +742,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Address</span><span className="font-bold text-secondary text-right max-w-[60%]">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">City / State / Zip</span><span className="font-bold text-secondary text-right">{[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Service</span><span className="font-bold text-secondary text-right">{serviceType}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Date</span><span className="font-bold text-secondary text-right">{formData.date || '—'}</span></div>
+              <div className="flex justify-between gap-4"><span className="text-secondary-400">Date</span><span className="font-bold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
               {estimate && (
                 <div className="flex justify-between gap-4 pt-1.5 mt-1.5 border-t border-secondary-100"><span className="text-secondary-400">Estimated Total</span><span className="font-black text-brand text-right">${estimate.price}</span></div>
               )}
             </div>
-          </div>
+          </CollapsibleReviewPanel>
 
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
@@ -869,10 +771,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               Continue <ArrowRight size={14} />
             </button>
           </div>
-
-          <p className="text-xs text-secondary-300 text-center mt-3">
-            Opek matches you with a provider who confirms within 15 minutes
-          </p>
         </form>
       )}
 

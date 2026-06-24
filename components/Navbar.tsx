@@ -162,22 +162,20 @@ export const Navbar: React.FC = () => {
         style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60 }}
       >
         {/* Top Bar - Desktop Only */}
-        {!isAdsLandingPage && (
-          <div className="hidden md:block bg-gray-50 py-1.5 px-6">
-            <div className="max-w-7xl mx-auto flex items-center justify-center">
-              <button
-                onClick={fetchUserLocation}
-                disabled={isDetectingLocation}
-                className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
-              >
-                <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
-                <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
-                  {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
-                </span>
-              </button>
-            </div>
+        <div className="hidden md:block bg-gray-50 py-1.5 px-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-center">
+            <button
+              onClick={fetchUserLocation}
+              disabled={isDetectingLocation}
+              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
+            >
+              <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
+                {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
+              </span>
+            </button>
           </div>
-        )}
+        </div>
 
       {/* Main Navbar */}
       <nav className="py-4 bg-white px-6">
@@ -196,24 +194,39 @@ export const Navbar: React.FC = () => {
           </div>
 
           {isAdsLandingPage ? (
-            <div className="flex items-center gap-3">
-              {/* Desktop click-to-call CTA */}
-              <a 
-                href="tel:8313187139" 
-                className="hidden md:flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95"
-              >
-                <Phone size={14} className="fill-white" />
-                <span>Call (831) 318-7139</span>
-              </a>
-              {/* Mobile click-to-call CTA */}
-              <a 
-                href="tel:8313187139" 
-                className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full shadow-md hover:bg-brand-600 transition-colors"
-                aria-label="Call Opek Junk Removal"
-              >
-                <Phone size={18} className="fill-white" />
-              </a>
-            </div>
+            <>
+              {/* Mobile Location - Centered (matches homepage) */}
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
+                <button
+                  onClick={fetchUserLocation}
+                  disabled={isDetectingLocation}
+                  className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
+                >
+                  <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
+                  <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
+                    {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
+                  </span>
+                </button>
+              </div>
+              <div className="flex items-center gap-3">
+                {/* Desktop click-to-call CTA */}
+                <a 
+                  href="tel:8313187139" 
+                  className="hidden md:flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95"
+                >
+                  <Phone size={14} className="fill-white" />
+                  <span>Call (831) 318-7139</span>
+                </a>
+                {/* Mobile click-to-call CTA */}
+                <a 
+                  href="tel:8313187139" 
+                  className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full shadow-md hover:bg-brand-600 transition-colors"
+                  aria-label="Call Opek Junk Removal"
+                >
+                  <Phone size={18} className="fill-white" />
+                </a>
+              </div>
+            </>
           ) : (
             <>
               {/* Mobile Location - Centered (Mobile Only) */}

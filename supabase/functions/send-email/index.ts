@@ -133,7 +133,7 @@ serve(async (req) => {
                 </tr>
                 <tr>
                   <td style="color: #6b7280; padding-bottom: 8px; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em;">Preferred Date</td>
-                  <td style="color: #111827; padding-bottom: 8px; font-weight: 700;">${record.preferred_date || 'TBD'}</td>
+                  <td style="color: #111827; padding-bottom: 8px; font-weight: 700;">${record.preferred_date ? `${record.preferred_date}${record.preferred_time ? ` (${record.preferred_time})` : ''}` : 'TBD'}</td>
                 </tr>
                 <tr>
                   <td style="color: #6b7280; padding-bottom: 8px; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em;">Location</td>
