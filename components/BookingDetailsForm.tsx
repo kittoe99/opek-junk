@@ -888,6 +888,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           appointmentDate={formData.date}
           estimatedTotal={estimate?.price || 0}
           customerEmail={formData.email}
+          customerName={formData.name}
+          customerPhone={formData.phone}
           serviceType={serviceType}
           isLoading={submitting}
           onBack={() => setStep('deposit')}

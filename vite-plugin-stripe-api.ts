@@ -44,7 +44,12 @@ export function stripeApiDevPlugin(stripeSecretKey?: string): Plugin {
         }
 
         try {
-          const body = (await readJsonBody(req)) as { email?: string; serviceType?: string };
+          const body = (await readJsonBody(req)) as {
+            email?: string;
+            name?: string;
+            phone?: string;
+            serviceType?: string;
+          };
           const result = await createBookingPaymentIntent(stripeSecretKey, body);
           res.statusCode = 200;
           res.end(JSON.stringify(result));

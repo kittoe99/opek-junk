@@ -1183,6 +1183,8 @@ export const MattressBookingPage: React.FC = () => {
       appointmentDate={formData.date}
       estimatedTotal={calculateTotal()}
       customerEmail={formData.email}
+      customerName={formData.name}
+      customerPhone={formData.phone}
       serviceType="Mattress Disposal"
       isLoading={submitLoading}
       onBack={() => setStep(7)}

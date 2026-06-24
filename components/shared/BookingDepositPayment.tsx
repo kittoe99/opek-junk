@@ -170,6 +170,8 @@ interface BookingDepositPaymentProps {
   appointmentDate: string;
   estimatedTotal: number;
   customerEmail?: string;
+  customerName?: string;
+  customerPhone?: string;
   serviceType?: string;
   isLoading?: boolean;
   onBack: () => void;
@@ -180,6 +182,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
   appointmentDate,
   estimatedTotal,
   customerEmail,
+  customerName,
+  customerPhone,
   serviceType,
   isLoading = false,
   onBack,
@@ -202,6 +206,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: customerEmail,
+            name: customerName,
+            phone: customerPhone,
             serviceType,
           }),
         });
@@ -251,7 +257,7 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
     return () => {
       cancelled = true;
     };
-  }, [customerEmail, serviceType]);
+  }, [customerEmail, customerName, customerPhone, serviceType]);
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">

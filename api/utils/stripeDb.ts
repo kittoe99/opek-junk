@@ -1,0 +1,169 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type Stripe from 'stripe';
+
+export interface StripeCustomerRow {
+  id: string;
+  stripe_customer_id: string;
+}
+
+export interface UpsertStripeCustomerInput {
+  stripeCustomerId: string;
+  email?: string | null;
+  name?: string | null;
+  phone?: string | null;
+  metadata?: Record<string, string>;
+}
+
+export async function upsertStripeCustomer(
+  supabase: SupabaseClient,
+  input: UpsertStripeCustomerInput
+): Promise<StripeCustomerRow> {
+  const row = {
+    stripe_customer_id: input.stripeCustomerId,
+    email: input.email ?? null,
+    name: input.name ?? null,
+    phone: input.phone ?? null,
+    metadata: input.metadata ?? {},
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data, error } = await supabase
+    .from('stripe_customers')
+    .upsert(row, { onConflict: 'stripe_customer_id' })
+    .select('id, stripe_customer_id')
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+export async function upsertPaymentFromIntent(
+  supabase: SupabaseClient,
+  paymentIntent: Stripe.PaymentIntent,
+  customerId?: string | null
+) {
+  const chargeId =
+    typeof paymentIntent.latest_charge === 'string'
+      ? paymentIntent.latest_charge
+      : paymentIntent.latest_charge?.id ?? null;
+
+  const customerEmail =
+    paymentIntent.receipt_email ??
+    (typeof paymentIntent.metadata?.customer_email === 'string'
+      ? paymentIntent.metadata.customer_email
+      : null);
+
+  const paymentRow = {
+    stripe_payment_intent_id: paymentIntent.id,
+    stripe_charge_id: chargeId,
+    amount_cents: paymentIntent.amount,
+    currency: paymentIntent.currency,
+    status: paymentIntent.status,
+    payment_type: paymentIntent.metadata?.type ?? 'booking_deposit',
+    service_type: paymentIntent.metadata?.service_type ?? null,
+    customer_email: customerEmail,
+    customer_id: customerId ?? null,
+    metadata: paymentIntent.metadata ?? {},
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = await supabase
+    .from('payments')
+    .upsert(paymentRow, { onConflict: 'stripe_payment_intent_id' });
+
+  if (error) {
+    throw error;
+  }
+
+  await linkPaymentToBooking(supabase, paymentIntent.id);
+}
+
+export async function linkPaymentToBooking(
+  supabase: SupabaseClient,
+  paymentIntentId: string
+) {
+  const { data: booking } = await supabase
+    .from('bookings')
+    .select('id')
+    .filter('booking_details->>stripe_payment_intent_id', 'eq', paymentIntentId)
+    .maybeSingle();
+
+  if (booking?.id) {
+    await supabase
+      .from('payments')
+      .update({ booking_id: booking.id, updated_at: new Date().toISOString() })
+      .eq('stripe_payment_intent_id', paymentIntentId)
+      .is('booking_id', null);
+  }
+}
+
+export function customerFieldsFromIntent(paymentIntent: Stripe.PaymentIntent) {
+  return {
+    email:
+      paymentIntent.receipt_email ??
+      (typeof paymentIntent.metadata?.customer_email === 'string'
+        ? paymentIntent.metadata.customer_email
+        : null),
+    name:
+      typeof paymentIntent.metadata?.customer_name === 'string'
+        ? paymentIntent.metadata.customer_name
+        : null,
+    phone:
+      typeof paymentIntent.metadata?.customer_phone === 'string'
+        ? paymentIntent.metadata.customer_phone
+        : null,
+  };
+}
+
+export async function resolveStripeCustomerForIntent(
+  stripe: Stripe,
+  supabase: SupabaseClient,
+  paymentIntent: Stripe.PaymentIntent
+): Promise<string | null> {
+  const stripeCustomerId =
+    typeof paymentIntent.customer === 'string'
+      ? paymentIntent.customer
+      : paymentIntent.customer?.id ?? null;
+
+  if (stripeCustomerId) {
+    const stripeCustomer = await stripe.customers.retrieve(stripeCustomerId);
+    if ('deleted' in stripeCustomer && stripeCustomer.deleted) {
+      return null;
+    }
+
+    const record = await upsertStripeCustomer(supabase, {
+      stripeCustomerId: stripeCustomer.id,
+      email: stripeCustomer.email,
+      name: stripeCustomer.name,
+      phone: stripeCustomer.phone,
+      metadata: (stripeCustomer.metadata ?? {}) as Record<string, string>,
+    });
+
+    return record.id;
+  }
+
+  const fields = customerFieldsFromIntent(paymentIntent);
+  if (!fields.email && !fields.name && !fields.phone) {
+    return null;
+  }
+
+  const created = await stripe.customers.create({
+    email: fields.email ?? undefined,
+    name: fields.name ?? undefined,
+    phone: fields.phone ?? undefined,
+    metadata: { source: 'opekjunkremoval.com', payment_intent_id: paymentIntent.id },
+  });
+
+  const record = await upsertStripeCustomer(supabase, {
+    stripeCustomerId: created.id,
+    email: created.email,
+    name: created.name,
+    phone: created.phone,
+    metadata: (created.metadata ?? {}) as Record<string, string>,
+  });
+
+  return record.id;
+}

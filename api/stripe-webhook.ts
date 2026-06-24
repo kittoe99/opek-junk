@@ -1,6 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
-import { getSupabaseAdmin, isSupabaseAdminConfigured } from '../lib/supabaseAdmin';
+import { getSupabaseAdmin, isSupabaseAdminConfigured } from './utils/supabaseAdmin';
+import {
+  resolveStripeCustomerForIntent,
+  upsertPaymentFromIntent,
+} from './utils/stripeDb';
 
 export const config = {
   api: {
@@ -44,55 +48,13 @@ async function markEventProcessed(
   }
 }
 
-async function upsertPaymentFromIntent(
+async function syncPaymentIntent(
+  stripe: Stripe,
   supabase: ReturnType<typeof getSupabaseAdmin>,
   paymentIntent: Stripe.PaymentIntent
 ) {
-  const chargeId =
-    typeof paymentIntent.latest_charge === 'string'
-      ? paymentIntent.latest_charge
-      : paymentIntent.latest_charge?.id ?? null;
-
-  const customerEmail =
-    paymentIntent.receipt_email ??
-    (typeof paymentIntent.metadata?.customer_email === 'string'
-      ? paymentIntent.metadata.customer_email
-      : null);
-
-  const paymentRow = {
-    stripe_payment_intent_id: paymentIntent.id,
-    stripe_charge_id: chargeId,
-    amount_cents: paymentIntent.amount,
-    currency: paymentIntent.currency,
-    status: paymentIntent.status,
-    payment_type: paymentIntent.metadata?.type ?? 'booking_deposit',
-    service_type: paymentIntent.metadata?.service_type ?? null,
-    customer_email: customerEmail,
-    metadata: paymentIntent.metadata ?? {},
-    updated_at: new Date().toISOString(),
-  };
-
-  const { error } = await supabase
-    .from('payments')
-    .upsert(paymentRow, { onConflict: 'stripe_payment_intent_id' });
-
-  if (error) {
-    throw error;
-  }
-
-  const { data: booking } = await supabase
-    .from('bookings')
-    .select('id')
-    .filter('booking_details->>stripe_payment_intent_id', 'eq', paymentIntent.id)
-    .maybeSingle();
-
-  if (booking?.id) {
-    await supabase
-      .from('payments')
-      .update({ booking_id: booking.id, updated_at: new Date().toISOString() })
-      .eq('stripe_payment_intent_id', paymentIntent.id)
-      .is('booking_id', null);
-  }
+  const customerId = await resolveStripeCustomerForIntent(stripe, supabase, paymentIntent);
+  await upsertPaymentFromIntent(supabase, paymentIntent, customerId);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -145,7 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case 'payment_intent.canceled':
       case 'payment_intent.processing':
       case 'payment_intent.requires_action':
-        await upsertPaymentFromIntent(supabase, event.data.object as Stripe.PaymentIntent);
+        await syncPaymentIntent(stripe, supabase, event.data.object as Stripe.PaymentIntent);
         break;
       default:
         break;
