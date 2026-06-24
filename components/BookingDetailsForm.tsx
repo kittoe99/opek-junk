@@ -481,7 +481,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     : 5;
 
   return (
-    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+    <div className={`max-w-md mx-auto space-y-6${step === 'payment' ? '' : ' animate-fade-in'}`}>
 
       {/* ─── Contact step ─── */}
       {step === 'contact' && (

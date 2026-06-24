@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import type { Stripe } from '@stripe/stripe-js';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Check, CreditCard, Loader2, Lock, AlertCircle } from 'lucide-react';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';
 import { isStripeConfigured, isStripeTestMode, stripePromise } from '../../lib/stripe';
+
+const STRIPE_APPEARANCE = {
+  theme: 'stripe' as const,
+  disableAnimations: true,
+  variables: {
+    colorPrimary: '#ff006e',
+    borderRadius: '12px',
+  },
+};
 
 interface DepositPaymentFormProps {
   appointmentDate: string;
@@ -25,6 +35,13 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [paymentReady, setPaymentReady] = useState(false);
+  const [paymentLoadError, setPaymentLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPaymentReady(false);
+    setPaymentLoadError(null);
+  }, []);
 
   const formattedDate = appointmentDate
     ? new Date(`${appointmentDate}T12:00:00`).toLocaleDateString(undefined, {
@@ -49,12 +66,26 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
       return;
     }
 
-    setProcessing(true);
+    if (!paymentReady || !elements.getElement('payment')) {
+      setError('Payment form is still loading. Please wait a moment and try again.');
+      return;
+    }
 
     try {
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setError(submitError.message || 'Please check your payment details and try again.');
+        return;
+      }
+
+      setProcessing(true);
+
       const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
+        confirmParams: {
+          return_url: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        },
       });
 
       if (confirmError) {
@@ -77,6 +108,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   };
 
   const busy = processing || isLoading;
+  const canPay = Boolean(stripe && elements && paymentReady && !paymentLoadError);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -88,11 +120,27 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
             Secured by Stripe
           </div>
         </div>
-        <PaymentElement
-          options={{
-            layout: 'tabs',
-          }}
-        />
+
+        <div className="min-h-[220px]">
+          {!paymentReady && !paymentLoadError && (
+            <div className="flex items-center justify-center gap-2 py-10 text-secondary-400 text-xs">
+              <Loader2 className="animate-spin w-4 h-4" />
+              Loading payment form...
+            </div>
+          )}
+          <PaymentElement
+            id="booking-deposit-payment-element"
+            onReady={() => setPaymentReady(true)}
+            onLoadError={(event) => {
+              setPaymentLoadError(event.error?.message || 'Unable to load payment form.');
+              setPaymentReady(false);
+            }}
+          />
+        </div>
+
+        {paymentLoadError && (
+          <p className="text-xs text-red-500 font-semibold text-center">{paymentLoadError}</p>
+        )}
       </div>
 
       <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
@@ -144,7 +192,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
         </button>
         <button
           type="submit"
-          disabled={busy || !termsAccepted || !stripe || !elements}
+          disabled={busy || !termsAccepted || !canPay}
           className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
         >
           {busy ? (
@@ -192,6 +240,35 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [initError, setInitError] = useState<string | null>(null);
   const [initializing, setInitializing] = useState(true);
+  const [stripeInstance, setStripeInstance] = useState<Stripe | null>(null);
+
+  const elementsOptions = useMemo(
+    () =>
+      clientSecret
+        ? {
+            clientSecret,
+            appearance: STRIPE_APPEARANCE,
+          }
+        : undefined,
+    [clientSecret]
+  );
+
+  useEffect(() => {
+    if (!stripePromise) {
+      return;
+    }
+
+    let cancelled = false;
+    stripePromise.then((stripe) => {
+      if (!cancelled && stripe) {
+        setStripeInstance(stripe);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -199,6 +276,7 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
     const createPaymentIntent = async () => {
       setInitializing(true);
       setInitError(null);
+      setClientSecret(null);
 
       try {
         const response = await fetch('/api/create-payment-intent', {
@@ -259,8 +337,10 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
     };
   }, [customerEmail, customerName, customerPhone, serviceType]);
 
+  const checkoutReady = Boolean(clientSecret && stripeInstance && elementsOptions && !initError);
+
   return (
-    <div className="max-w-md mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-md mx-auto space-y-6">
       <div className="text-center space-y-2 mb-6">
         <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-100 shadow-sm">
           <CreditCard className="w-6 h-6 text-[#635BFF]" />
@@ -311,20 +391,15 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
         </div>
       )}
 
-      {clientSecret && stripePromise && !initError && (
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance: {
-              theme: 'stripe',
-              variables: {
-                colorPrimary: '#ff006e',
-                borderRadius: '12px',
-              },
-            },
-          }}
-        >
+      {!initializing && !initError && clientSecret && !stripeInstance && (
+        <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
+          <Loader2 className="animate-spin w-4 h-4" />
+          Loading Stripe...
+        </div>
+      )}
+
+      {checkoutReady && (
+        <Elements key={clientSecret} stripe={stripeInstance} options={elementsOptions}>
           <DepositPaymentForm
             appointmentDate={appointmentDate}
             estimatedTotal={estimatedTotal}
