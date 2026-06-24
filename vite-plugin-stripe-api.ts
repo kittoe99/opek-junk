@@ -1,5 +1,6 @@
 import type { Plugin } from 'vite';
 import { createBookingPaymentIntent } from './lib/createPaymentIntent';
+import { proxyCalculatePrice } from './lib/calculatePriceProxy';
 
 function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {
   return new Promise((resolve, reject) => {
@@ -22,12 +23,29 @@ function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {
   });
 }
 
-export function stripeApiDevPlugin(stripeSecretKey?: string): Plugin {
+export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string, string> = {}): Plugin {
   return {
     name: 'stripe-api-dev',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const pathname = req.url?.split('?')[0];
+
+        if (pathname === '/api/calculate-price' && req.method === 'POST') {
+          res.setHeader('Content-Type', 'application/json');
+          try {
+            const body = await readJsonBody(req);
+            const { status, text } = await proxyCalculatePrice(body, env);
+            res.statusCode = status;
+            res.end(text);
+          } catch (error) {
+            console.error('Local calculate-price proxy error:', error);
+            const message = error instanceof Error ? error.message : 'Failed to calculate price';
+            res.statusCode = 500;
+            res.end(JSON.stringify({ error: message }));
+          }
+          return;
+        }
+
         if (pathname !== '/api/create-payment-intent' || req.method !== 'POST') {
           next();
           return;

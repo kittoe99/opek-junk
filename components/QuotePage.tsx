@@ -10,6 +10,7 @@ import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
+import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 
 // ── Item Catalog ──
 export interface CatalogItem {
@@ -945,52 +946,33 @@ export const QuotePage: React.FC = () => {
 
   // ── Submitted screen ──
   if (submitted) {
+    const serviceTypeLabel =
+      selectedService === 'junk_removal' ? 'Junk Removal'
+      : selectedService === 'donation_pickup' ? 'Donation Pick Up'
+      : selectedService === 'moving_labor' ? 'Moving Labor'
+      : selectedService === 'dumpster_rental' ? 'Dumpster Rental'
+      : 'Junk Removal';
+
+    const activeEstimate = estimate ?? priceEstimate ?? manualPriceEstimate ?? movingPriceEstimate ?? dumpsterPriceEstimate;
+
     return (
-      <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
-            {/* Animated success icon */}
-            <div className="relative mx-auto mb-6">
-              <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
-                <Receipt size={32} className="text-brand" strokeWidth={2} />
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
-                <Check size={16} className="text-white" strokeWidth={3} />
-              </div>
-            </div>
-
-            <div className="space-y-2 mb-6">
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
-              <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Your submission was successful.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => {
-                  const serviceTypeLabel =
-                    selectedService === 'junk_removal' ? 'Junk Removal'
-                    : selectedService === 'donation_pickup' ? 'Donation Pick Up'
-                    : selectedService === 'moving_labor' ? 'Moving Labor'
-                    : selectedService === 'dumpster_rental' ? 'Dumpster Rental'
-                    : 'Junk Removal';
-                  navigate('/booking', { state: { estimate, image: images.length > 0 ? images[0] : null, serviceType: serviceTypeLabel, prefilledName: contactName, prefilledPhone: contactPhone, partialBookingId } });
-                }}
-                className="flex-1 py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-brand transition-all duration-300 inline-flex items-center justify-center gap-2"
-              >
-                Book Now <ArrowRight size={14} />
-              </button>
-              <button
-                onClick={() => window.location.reload()}
-                className="flex-1 py-3.5 border border-secondary-100 text-secondary font-bold uppercase text-xs tracking-wider rounded-xl hover:border-brand hover:text-brand transition-all duration-300"
-              >
-                New Quote
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SubmissionSuccessView
+        title="Quote submitted"
+        description="We saved your estimate. Use the details below when you're ready to book."
+        summary={[
+          { label: 'Service', value: serviceTypeLabel },
+          ...(contactName ? [{ label: 'Name', value: contactName }] : []),
+          ...(contactPhone ? [{ label: 'Phone', value: contactPhone }] : []),
+          ...(zipValue ? [{ label: 'ZIP', value: zipValue }] : []),
+          ...(activeEstimate?.estimatedVolume ? [{ label: 'Volume', value: activeEstimate.estimatedVolume }] : []),
+          ...(activeEstimate?.price != null ? [{ label: 'Estimate', value: `$${activeEstimate.price}` }] : []),
+          ...(detectedItems.length
+            ? [{ label: 'Items', value: detectedItems.map(i => `${i.quantity}x ${i.name}`).join(', ') }]
+            : selectedItems.length
+              ? [{ label: 'Items', value: selectedItems.map(i => `${i.quantity}x ${i.name}`).join(', ') }]
+              : []),
+        ]}
+      />
     );
   }
 

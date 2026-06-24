@@ -97,6 +97,8 @@ export const TrackOrderPage: React.FC = () => {
     try {
       const { data, error: histError } = await supabase.rpc('get_order_status_history', {
         p_booking_id: order.id,
+        p_search_type: searchType,
+        p_search_value: searchValue.trim(),
       });
 
       if (histError) throw histError;

@@ -8,6 +8,7 @@ import { ItemIconRenderer } from '../icons/JunkItemIcons';
 import { ContactIntakeForm } from '../shared/ContactIntakeForm';
 import { MattressDepositPayment, MATTRESS_DEPOSIT_AMOUNT } from '../shared/MattressDepositPayment';
 import { BookingDepositIntro } from '../shared/BookingDepositIntro';
+import { BookingSuccessView } from '../shared/BookingSuccessView';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -1193,46 +1194,23 @@ export const MattressBookingPage: React.FC = () => {
   );
 
   const renderSuccess = () => (
-    <div className="max-w-md mx-auto text-center space-y-6 animate-fade-in py-12">
-      <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-100 shadow-sm">
-        <Check className="w-10 h-10 text-emerald-500" strokeWidth={3} />
-      </div>
-      <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">Booking Confirmed!</h2>
-      <p className="text-secondary-500 text-sm leading-relaxed">
-        Your mattress disposal is scheduled for <span className="font-bold text-secondary">{new Date(formData.date).toLocaleDateString()}</span>.<br/>
-        We've sent a confirmation email with details.
-      </p>
-      
-      <div className="bg-secondary-50/50 p-4 rounded-2xl border border-secondary-100 text-left space-y-2 max-w-sm mx-auto shadow-sm mb-6">
-        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Scheduled Items</p>
-        <p className="text-secondary font-bold text-xs leading-normal">
-          {selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`).join(', ')}
-        </p>
-        <div className="pt-2 border-t border-secondary-100 flex justify-between items-center">
-          <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Confirmed Price</span>
-          <span className="text-brand font-black text-sm">${calculateTotal()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Deposit Paid</span>
-          <span className="text-emerald-600 font-black text-sm">${MATTRESS_DEPOSIT_AMOUNT}</span>
-        </div>
-      </div>
-
-      {orderNumber && (
-        <div className="inline-block px-6 py-3.5 bg-secondary-50 rounded-2xl border border-secondary-100 font-mono font-black text-lg text-secondary shadow-sm">
-          {orderNumber}
-        </div>
-      )}
-
-      <div className="pt-8">
-        <button
-          onClick={() => navigate('/')}
-          className="px-8 py-3.5 bg-secondary hover:bg-secondary-600 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-        >
-          Return Home
-        </button>
-      </div>
-    </div>
+    <BookingSuccessView
+      orderNumber={orderNumber}
+      serviceType="Mattress Disposal"
+      name={formData.name}
+      phone={formData.phone}
+      email={formData.email}
+      address={formData.address}
+      unitNumber={formData.unitNumber}
+      city={formData.city}
+      state={formData.state}
+      zipCode={formData.zipCode || zipCode}
+      date={formData.date}
+      price={calculateTotal()}
+      itemsDetected={selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`)}
+      depositPaid={MATTRESS_DEPOSIT_AMOUNT}
+      fullScreen={false}
+    />
   );
 
   const catalogQuery = catalogSearch.trim().toLowerCase();

@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       },
       plugins: [
         react(),
-        stripeApiDevPlugin(env.STRIPE_SECRET_KEY),
+        stripeApiDevPlugin(env.STRIPE_SECRET_KEY, env),
       ],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY ?? ''),

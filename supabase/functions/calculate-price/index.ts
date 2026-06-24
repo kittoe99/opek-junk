@@ -4,7 +4,17 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.8"
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://opekjunkremoval.com',
   'https://www.opekjunkremoval.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
 ]
+
+function isAllowedOrigin(origin: string, allowed: string[]): boolean {
+  if (!origin) return false
+  if (allowed.includes(origin)) return true
+  // Vercel preview deployments
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return true
+  return false
+}
 
 function buildCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get('origin') || ''
@@ -12,7 +22,7 @@ function buildCorsHeaders(req: Request): Record<string, string> {
   const allowed = fromEnv
     ? fromEnv.split(',').map((o) => o.trim()).filter(Boolean)
     : DEFAULT_ALLOWED_ORIGINS
-  const allowOrigin = allowed.includes(origin) ? origin : allowed[0]
+  const allowOrigin = isAllowedOrigin(origin, allowed) ? origin : allowed[0]
   return {
     'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',

@@ -473,7 +473,7 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-brand/5 to-white flex items-center justify-center px-4 py-12 md:py-24 animate-fade-in">
+      <div className="min-h-screen bg-neutral-50 flex items-start justify-center px-4 py-16 md:py-24">
         <BookingSuccessView
           orderNumber={orderNumber}
           serviceType={formData.serviceType}
@@ -490,6 +490,7 @@ export const BookingPage: React.FC = () => {
           price={formData.price}
           itemsDetected={formData.estimatedItems}
           estimatedVolume={formData.estimatedVolume}
+          fullScreen={false}
         />
       </div>
     );

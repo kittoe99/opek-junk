@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Send, Check, Phone, Mail } from 'lucide-react';
+import { ArrowRight, Send, Phone, Mail } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../lib/supabase';
 
 import { PageHero } from './shared/PageHero';
+import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 
 export const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,21 +18,6 @@ export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState(5);
-
-  React.useEffect(() => {
-    if (!submitted) return;
-    const interval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          navigate('/');
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [submitted, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -79,42 +65,17 @@ export const ContactPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center px-4 py-12">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl shadow-xl shadow-secondary/5 border border-secondary-100 p-8 md:p-10 text-center">
-            {/* Animated success icon */}
-            <div className="relative mx-auto mb-6">
-              <div className="w-20 h-20 bg-gradient-to-br from-brand/20 to-brand/5 rounded-2xl flex items-center justify-center mx-auto">
-                <Mail size={32} className="text-brand" strokeWidth={2} />
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand rounded-full flex items-center justify-center">
-                <Check size={16} className="text-white" strokeWidth={3} />
-              </div>
-            </div>
-
-            <div className="space-y-2 mb-6">
-              <h2 className="text-2xl md:text-3xl font-black text-secondary">Submission Successful</h2>
-              <p className="text-secondary-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Your submission was successful.
-              </p>
-            </div>
-
-            {/* Redirect Notice countdown bar */}
-            <div className="pt-4 border-t border-secondary-100 flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2 text-xs text-secondary-400 font-semibold">
-                <span className="w-2 h-2 rounded-full bg-brand animate-ping" />
-                Redirecting to home page in <span className="text-brand font-black">{countdown}</span> seconds...
-              </div>
-              <div className="w-full h-1.5 bg-secondary-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-brand transition-all duration-1000 ease-linear"
-                  style={{ width: `${(countdown / 5) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SubmissionSuccessView
+        title="Message sent"
+        description="We received your message and will get back to you soon."
+        summary={[
+          { label: 'Name', value: formData.name },
+          { label: 'Email', value: formData.email },
+          { label: 'Phone', value: formData.phone },
+          { label: 'Subject', value: formData.subject },
+          { label: 'Message', value: formData.message },
+        ]}
+      />
     );
   }
 
