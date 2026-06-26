@@ -84,7 +84,7 @@ export async function createBookingPaymentIntent(
   const paymentIntent = await stripe.paymentIntents.create({
     amount: BOOKING_DEPOSIT_AMOUNT_CENTS,
     currency: 'usd',
-    automatic_payment_methods: { enabled: true },
+    payment_method_types: ['card'],
     ...(stripeCustomer ? { customer: stripeCustomer.id } : {}),
     metadata: {
       type: 'booking_deposit',

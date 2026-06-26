@@ -31,7 +31,6 @@ export const MovingLaborPage: React.FC = () => {
 
       <TrustBadges />
 
-      {/* Dynamic Grid instead of WhatWeHaul */}
       <section className="py-16 md:py-20 border-b border-secondary-100 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
@@ -70,7 +69,6 @@ export const MovingLaborPage: React.FC = () => {
         </div>
       </section>
 
-      {/* SEO Content */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">

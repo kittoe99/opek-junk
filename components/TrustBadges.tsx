@@ -6,8 +6,6 @@ export const TrustBadges: React.FC = () => {
     <section className="bg-white border-b border-secondary-100 py-6 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-          
-          {/* Trustpilot */}
           <div className="flex items-center gap-3 cursor-default">
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
@@ -24,7 +22,6 @@ export const TrustBadges: React.FC = () => {
 
           <div className="hidden md:block w-px h-8 bg-secondary-100" />
 
-          {/* Secure Payment */}
           <div className="flex items-center gap-3 cursor-default">
             <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
               <Lock size={18} className="text-[#635BFF]" />
@@ -37,7 +34,6 @@ export const TrustBadges: React.FC = () => {
 
           <div className="hidden md:block w-px h-8 bg-secondary-100" />
 
-          {/* Damage Protection */}
           <div className="flex items-center gap-3 cursor-default">
             <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
               <ShieldCheck size={18} className="text-emerald-500" />
@@ -47,7 +43,6 @@ export const TrustBadges: React.FC = () => {
               <span className="text-[10px] uppercase tracking-wider text-secondary-500 font-bold">Same Day Service</span>
             </div>
           </div>
-
         </div>
       </div>
     </section>

@@ -729,7 +729,7 @@ export const MattressBookingPage: React.FC = () => {
             disabled={calculateTotal() === 0}
             className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
           >
-            Reveal Price <ArrowRight size={14} />
+            Reveal <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -749,7 +749,7 @@ export const MattressBookingPage: React.FC = () => {
         onClick={() => setStep(2)} 
         className="w-full py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
       >
-        <ArrowLeft size={14} /> Back to Items
+        <ArrowLeft size={14} /> Back
       </button>
     </div>
   );
@@ -864,7 +864,7 @@ export const MattressBookingPage: React.FC = () => {
             className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <span className="text-sm font-black uppercase tracking-wider">
-              Continue to Booking
+              Continue
             </span>
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
           </button>
@@ -967,7 +967,7 @@ export const MattressBookingPage: React.FC = () => {
             disabled={!formData.date || !formData.timeSlot}
             className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue to Address <ArrowRight size={14} />
+            Continue <ArrowRight size={14} />
           </button>
         </div>
       </form>
@@ -1368,7 +1368,7 @@ export const MattressBookingPage: React.FC = () => {
                 onClick={() => setShowCatalogModal(false)}
                 className="px-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-secondary/10 hover:shadow-brand/20 cursor-pointer"
               >
-                Confirm & Close
+                Close
               </button>
             </div>
           </div>

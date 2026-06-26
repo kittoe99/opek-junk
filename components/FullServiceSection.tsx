@@ -47,9 +47,7 @@ export const FullServiceSection: React.FC = () => {
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-              <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">
-                Upfront Flat Rates
-              </span>
+              <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Upfront Flat Rates</span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
               Our flat rates cover everything.{' '}
@@ -61,9 +59,7 @@ export const FullServiceSection: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5 w-full lg:max-w-md lg:ml-auto">
-            <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-3">
-              Check your pricing instantly
-            </p>
+            <p className="text-sm font-bold text-secondary uppercase tracking-wider mb-3">Check your pricing instantly</p>
             <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-xl overflow-hidden p-1 w-full">
               <input
                 type="text"
@@ -87,9 +83,7 @@ export const FullServiceSection: React.FC = () => {
                 {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
               </button>
             </div>
-            {zipError && (
-              <p className="text-xs text-red-500 font-semibold mt-2">{zipError}</p>
-            )}
+            {zipError && <p className="text-xs text-red-500 font-semibold mt-2">{zipError}</p>}
           </div>
         </div>
       </div>

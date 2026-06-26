@@ -26,7 +26,7 @@ interface BookingDetailsFormProps {
   partialBookingId?: string | null;
 }
 
-type DetailStep = 'contact' | 'schedule' | 'address' | 'review' | 'deposit' | 'payment';
+type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'deposit' | 'payment';
 
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
@@ -155,6 +155,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const isJunkRemoval =
+    serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setContactSubmitting(true);
@@ -243,13 +246,25 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       return;
     }
     setAddressError(null);
+    setError(null);
+    setStep(isJunkRemoval ? 'photo' : 'review');
+  };
+
+  const handlePhotoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!localImage) {
+      setError('Please upload or capture a photo of the items to be hauled away.');
+      return;
+    }
+    setError(null);
     setStep('review');
   };
 
   const handleBackStep = () => {
     if (step === 'payment') setStep('deposit');
     else if (step === 'deposit') setStep('review');
-    else if (step === 'review') setStep('address');
+    else if (step === 'review') setStep(isJunkRemoval ? 'photo' : 'address');
+    else if (step === 'photo') setStep('address');
     else if (step === 'address') setStep('schedule');
     else if (step === 'schedule') setStep('contact');
     else if (onBack) onBack();
@@ -257,13 +272,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const isJunkRemoval = serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
-    if (isJunkRemoval && !localImage) {
-      setError('A photo of the items to be hauled away is required to complete your booking. This helps improve service accuracy.');
-      return;
-    }
-
     setError(null);
     setStep('deposit');
   };
@@ -284,12 +292,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           : 'Junk Removal')
         : 'Junk Removal';
 
-        let resultData = null;
-        let dbError = null;
-  
-        try {
-          const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      let resultData = null;
+      let dbError = null;
 
+      try {
           let uploadedUrl = localImage || '';
           if (uploadedUrl && uploadedUrl.startsWith('data:')) {
             const fileName = `booking_${generatedOrderNumber}_${Math.random().toString(36).substring(2, 8)}.jpg`;
@@ -422,14 +429,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   }
 
   // Step labels for indicator
-  const stepLabels = ['Contact', 'Schedule', 'Address', 'Review', 'Deposit', 'Payment'];
+  const stepLabels = isJunkRemoval
+    ? ['Contact', 'Schedule', 'Address', 'Photo', 'Review', 'Deposit', 'Payment']
+    : ['Contact', 'Schedule', 'Address', 'Review', 'Deposit', 'Payment'];
   const stepIndex =
     step === 'contact' ? 0
     : step === 'schedule' ? 1
     : step === 'address' ? 2
-    : step === 'review' ? 3
-    : step === 'deposit' ? 4
-    : 5;
+    : step === 'photo' ? 3
+    : step === 'review' ? (isJunkRemoval ? 4 : 3)
+    : step === 'deposit' ? (isJunkRemoval ? 5 : 4)
+    : isJunkRemoval ? 6 : 5;
 
   return (
     <div className={`max-w-md mx-auto space-y-6${step === 'payment' ? '' : ' animate-fade-in'}`}>
@@ -543,7 +553,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               disabled={!formData.date || !formData.timeSlot}
               className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Continue to Address <ArrowRight size={14} />
+              Continue <ArrowRight size={14} />
             </button>
           </div>
         </form>
@@ -603,6 +613,98 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         </form>
       )}
 
+      {/* ─── Photo step (junk removal only) ─── */}
+      {step === 'photo' && (
+        <form onSubmit={handlePhotoSubmit} className="space-y-4">
+          <div className="text-center space-y-2 mb-6">
+            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+              <Camera className="w-6 h-6 text-brand" strokeWidth={2.5} />
+            </div>
+            <div>
+              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Photo of Items</h2>
+              <p className="text-secondary-400 text-xs">
+                Upload a photo so we can assess the load and match the right crew.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">
+                Items photo *
+              </label>
+              <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-full border border-brand/10">
+                Required
+              </span>
+            </div>
+
+            {localImage ? (
+              <div className="relative border border-secondary-100 bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm group animate-fade-in">
+                <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-secondary-100 bg-secondary-50">
+                  <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-xs font-black text-secondary">Photo uploaded</p>
+                  <p className="text-[10px] text-secondary-400 mt-0.5">Used to verify volume and service details.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLocalImage(null)}
+                  className="bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 p-2 rounded-xl transition-colors shrink-0 flex items-center justify-center"
+                  aria-label="Remove photo"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ) : (
+              <div className="border border-dashed border-secondary-200 hover:border-brand/40 bg-secondary-50/20 p-5 rounded-2xl text-center space-y-4 transition-all duration-300">
+                <p className="text-xs text-secondary-500 font-medium">
+                  Take or upload a photo of everything you need hauled away.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto justify-center">
+                  <button
+                    type="button"
+                    onClick={() => cameraInputRef.current?.click()}
+                    className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
+                  >
+                    <Camera size={14} /> Take Photo
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
+                  >
+                    <Upload size={14} /> Upload Photo
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+          </div>
+
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-700 text-xs font-bold">{error}</p>
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4">
+            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
+              <ArrowLeft size={14} /> Back
+            </button>
+            <button
+              type="submit"
+              disabled={!localImage}
+              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Continue <ArrowRight size={14} />
+            </button>
+          </div>
+        </form>
+      )}
+
       {/* ─── Review step ─── */}
       {step === 'review' && (
         <form onSubmit={handleReviewSubmit} className="space-y-4">
@@ -638,71 +740,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
             </div>
           </div>
-
-          {/* Photo Upload Section for Junk Removal */}
-          {(serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal') && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">
-                  Photo of Items *
-                </label>
-                <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-full border border-brand/10 animate-pulse-slow">
-                  Required to Book
-                </span>
-              </div>
-
-              {localImage ? (
-                <div className="relative border border-secondary-100 bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm group animate-fade-in">
-                  <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-secondary-100 bg-secondary-50">
-                    <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="text-xs font-black text-secondary">Items Photo Uploaded</p>
-                    <p className="text-[10px] text-secondary-400 mt-0.5">This image will be used to verify volume and service details.</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setLocalImage(null)}
-                    className="bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 p-2 rounded-xl transition-colors shrink-0 flex items-center justify-center"
-                    aria-label="Remove photo"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ) : (
-                <div className="border border-dashed border-secondary-200 hover:border-brand/40 bg-secondary-50/20 p-5 rounded-2xl text-center space-y-4 transition-all duration-300">
-                  <div className="max-w-md mx-auto space-y-2">
-                    <p className="text-xs text-secondary-500 font-medium">
-                      Please upload or capture a photo of the items you need hauled away.
-                    </p>
-                    <p className="text-[10px] text-secondary-400 leading-normal">
-                      This is <strong className="text-secondary-600 font-black">required to book</strong> in order to improve service accuracy, assess the load size, and match you with the correct crew and vehicle.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto justify-center">
-                    <button
-                      type="button"
-                      onClick={() => cameraInputRef.current?.click()}
-                      className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
-                    >
-                      <Camera size={14} /> Take Photo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
-                    >
-                      <Upload size={14} /> Upload Photo
-                    </button>
-                  </div>
-                </div>
-              )}
-              
-              {/* Hidden file inputs */}
-              <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
-              <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-            </div>
-          )}
 
           <div>
             <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
@@ -743,6 +780,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <div className="flex justify-between gap-4"><span className="text-secondary-400">City / State / Zip</span><span className="font-bold text-secondary text-right">{[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Service</span><span className="font-bold text-secondary text-right">{serviceType}</span></div>
               <div className="flex justify-between gap-4"><span className="text-secondary-400">Date</span><span className="font-bold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
+              {isJunkRemoval && localImage && (
+                <div className="flex justify-between gap-4"><span className="text-secondary-400">Photo</span><span className="font-bold text-secondary text-right">Attached</span></div>
+              )}
               {estimate && (
                 <div className="flex justify-between gap-4 pt-1.5 mt-1.5 border-t border-secondary-100"><span className="text-secondary-400">Estimated Total</span><span className="font-black text-brand text-right">${estimate.price}</span></div>
               )}

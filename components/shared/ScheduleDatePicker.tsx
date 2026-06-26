@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, Sun, CloudSun, Moon, CalendarDays } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 
 export type TimeSlot = 'morning' | 'midday' | 'evening';
 
@@ -7,11 +7,10 @@ export const TIME_SLOT_OPTIONS: {
   id: TimeSlot;
   label: string;
   range: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
 }[] = [
-  { id: 'morning', label: 'Morning', range: '8am – 12pm', icon: Sun },
-  { id: 'midday', label: 'Mid-day', range: '12pm – 4pm', icon: CloudSun },
-  { id: 'evening', label: 'Evening', range: '4pm – 7pm', icon: Moon },
+  { id: 'morning', label: 'Morning', range: '8am – 12pm' },
+  { id: 'midday', label: 'Mid-day', range: '12pm – 4pm' },
+  { id: 'evening', label: 'Evening', range: '4pm – 7pm' },
 ];
 
 export function formatTimeSlotLabel(slot: TimeSlot | ''): string {
@@ -213,7 +212,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
           Preferred Time Slot *
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          {TIME_SLOT_OPTIONS.map(({ id, label, range, icon: Icon }) => {
+          {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
             const selected = timeSlot === id;
             return (
               <button
@@ -227,29 +226,15 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                     : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)]',
                 ].join(' ')}
               >
-                <div className="flex items-start gap-3">
-                  <div
-                    className={[
-                      'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors',
-                      selected
-                        ? 'bg-brand text-white'
-                        : 'bg-secondary-50 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand',
-                    ].join(' ')}
-                  >
-                    <Icon size={16} strokeWidth={2.5} />
-                  </div>
-                  <div className="min-w-0">
-                    <p
-                      className={[
-                        'text-sm font-black',
-                        selected ? 'text-brand' : 'text-secondary',
-                      ].join(' ')}
-                    >
-                      {label}
-                    </p>
-                    <p className="text-[11px] font-semibold text-secondary-400 mt-0.5">{range}</p>
-                  </div>
-                </div>
+                <p
+                  className={[
+                    'text-sm font-black',
+                    selected ? 'text-brand' : 'text-secondary',
+                  ].join(' ')}
+                >
+                  {label}
+                </p>
+                <p className="text-[11px] font-semibold text-secondary-400 mt-0.5">{range}</p>
                 {selected && (
                   <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-brand" />
                 )}

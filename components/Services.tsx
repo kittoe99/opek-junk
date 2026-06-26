@@ -1,66 +1,37 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-const JunkIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M4 8v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M2 8h20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 4v8M9 7l3-3 3 3" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const DumpsterIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M3 6h18l-1.5 11H4.5L3 6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M2 6h20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M8 6v11M12 6v11M16 6v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <circle cx="7" cy="19" r="1.5" className="stroke-brand" strokeWidth="1.5"/>
-    <circle cx="17" cy="19" r="1.5" className="stroke-brand" strokeWidth="1.5"/>
-  </svg>
-);
-
-const PropertyCleanoutIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M9 22V12h6v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M14 6l1.5-1.5M18 10l1.5-1.5M15 3.5v1.5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const MovingLaborIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M5 21h13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M8 21V5a2 2 0 0 1 2-2h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="16" cy="19" r="2" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M5 15h6v6H5z" className="stroke-brand" fill="currentColor" fillOpacity="0.1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M5 10h5v5H5z" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
+import {
+  JunkIcon,
+  DumpsterIcon,
+  PropertyCleanoutIcon,
+  MovingLaborIcon,
+} from './icons/ServiceIcons';
 
 const serviceItems = [
   {
-    title: "Junk Removal",
+    title: 'Junk Removal',
     icon: JunkIcon,
-    description: "Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.",
-    path: "/services/junk-removal"
+    description: 'Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.',
+    path: '/services/junk-removal',
   },
   {
-    title: "Dumpster Rental",
+    title: 'Dumpster Rental',
     icon: DumpsterIcon,
-    description: "Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.",
-    path: "/services/dumpster-rental"
+    description: 'Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.',
+    path: '/services/dumpster-rental',
   },
   {
-    title: "Property Cleanouts",
+    title: 'Property Cleanouts',
     icon: PropertyCleanoutIcon,
-    description: "Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.",
-    path: "/services/property-cleanout"
+    description: 'Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.',
+    path: '/services/property-cleanout',
   },
   {
-    title: "Moving Labor",
+    title: 'Moving Labor',
     icon: MovingLaborIcon,
-    description: "Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)",
-    path: "/services/moving-labor"
-  }
+    description: 'Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)',
+    path: '/services/moving-labor',
+  },
 ];
 
 export const Services: React.FC = () => {
@@ -70,55 +41,46 @@ export const Services: React.FC = () => {
     <section id="services" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Asymmetric Typography Panel */}
           <div className="lg:col-span-4 space-y-6">
             <div className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
               <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Services</span>
             </div>
-            
+
             <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Fast pickup.<br />
+              Fast pickup.
+              <br />
               <span className="text-brand">Fair pricing.</span>
             </h2>
-            
+
             <div className="w-12 h-0.5 bg-secondary-100" />
-            
+
             <p className="text-secondary-500 text-sm md:text-base leading-relaxed max-w-sm font-medium">
               Trusted professionals in your area. We offer transparent flat-rates, flexible schedules, and vetted local providers for home and office.
             </p>
           </div>
 
-          {/* Right Column: Clean Border-Separated Bento Grid */}
           <div className="lg:col-span-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-              {serviceItems.map((item) => {
-                return (
-                  <div 
-                    key={item.title} 
-                    onClick={() => navigate(item.path)}
-                    className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
-                  >
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-secondary-900 flex items-center justify-center shrink-0 transition-colors duration-300">
-                      <item.icon 
-                        className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
-                        {item.title}
-                      </h3>
-                      <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
+              {serviceItems.map((item) => (
+                <div
+                  key={item.title}
+                  onClick={() => navigate(item.path)}
+                  className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
+                >
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-secondary-900 flex items-center justify-center shrink-0 transition-colors duration-300">
+                    <item.icon className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" />
                   </div>
-                );
-              })}
+                  <div className="space-y-1">
+                    <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
+                      {item.title}
+                    </h3>
+                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-
         </div>
       </div>
     </section>

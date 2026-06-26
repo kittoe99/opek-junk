@@ -1,4 +1,5 @@
 import React from 'react';
+
 const FurnitureIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4M4 14c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4M4 14H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -64,55 +65,47 @@ export const WhatWeHaul: React.FC = () => {
     <section className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Asymmetric Typography Panel */}
           <div className="lg:col-span-4 space-y-6">
             <div className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
               <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Common Items</span>
             </div>
-            
+
             <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Almost<br />
+              Almost
+              <br />
               <span className="text-brand">anything goes.</span>
             </h2>
-            
+
             <div className="w-12 h-0.5 bg-secondary-100" />
-            
+
             <p className="text-secondary-500 text-sm md:text-base leading-relaxed max-w-sm font-medium">
               From a single heavy mattress to an entire estate cleanout, our vetted local crews handle all the lifting, sorting, and sweeping. If it fits in the truck and is non-hazardous, we haul it.
             </p>
           </div>
 
-          {/* Right Column: Clean Border-Separated Bento Grid */}
           <div className="lg:col-span-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
               {itemTypes.map((item) => (
-                <div 
-                  key={item.label} 
+                <div
+                  key={item.label}
                   className="group bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
                 >
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-secondary-900 flex items-center justify-center shrink-0 transition-colors duration-300">
-                    <item.icon 
-                      className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" 
-                    />
+                    <item.icon className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" />
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
                       {item.label}
                     </h3>
-                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">
-                      {item.desc}
-                    </p>
+                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </section>
   );
 };
-

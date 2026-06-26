@@ -818,7 +818,7 @@ export const BookingPage: React.FC = () => {
                     onClick={() => handleNextStep()}
                     className="w-full text-secondary-400 hover:text-brand transition-colors text-xs font-bold uppercase tracking-wider underline underline-offset-4 decoration-secondary-200 hover:decoration-brand py-2 inline-flex items-center justify-center gap-2"
                   >
-                    Skip — Continue without estimate <ArrowRight size={12} />
+                    Skip <ArrowRight size={12} />
                   </button>
 
                   {formData.serviceType === 'Junk Removal' && (
@@ -954,7 +954,7 @@ export const BookingPage: React.FC = () => {
                           onClick={() => handleNextStep()}
                           className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                         >
-                          Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                          Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                         </button>
                         <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
                       </div>
@@ -1114,7 +1114,7 @@ export const BookingPage: React.FC = () => {
                       onClick={() => setDumpsterStep('size')}
                       className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                     >
-                      <ArrowLeft size={14} /> Back to size
+                      <ArrowLeft size={14} /> Back
                     </button>
                   </div>
                 </div>
@@ -1204,13 +1204,13 @@ export const BookingPage: React.FC = () => {
                       onClick={() => handleNextStep()}
                       className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
                     >
-                      Continue to Booking <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </button>
                     <button
                       onClick={() => setDumpsterStep('duration')}
                       className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                     >
-                      <ArrowLeft size={14} /> Back to duration
+                      <ArrowLeft size={14} /> Back
                     </button>
                   </div>
                 )
@@ -1270,7 +1270,7 @@ export const BookingPage: React.FC = () => {
                       onClick={handlePrevStep}
                       className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                     >
-                      <ArrowLeft size={12} /> Back to services
+                      <ArrowLeft size={12} /> Back
                     </button>
                   </div>
 
@@ -1336,7 +1336,7 @@ export const BookingPage: React.FC = () => {
                       onClick={() => setMovingStep('service')}
                       className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                     >
-                      <ArrowLeft size={12} /> Back to service selection
+                      <ArrowLeft size={12} /> Back
                     </button>
                   </div>
 
@@ -1435,7 +1435,7 @@ export const BookingPage: React.FC = () => {
                       disabled={movingPricingLoading}
                       className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1 disabled:opacity-50"
                     >
-                      <ArrowLeft size={12} /> Back to type of move
+                      <ArrowLeft size={12} /> Back
                     </button>
                   </div>
 
@@ -1473,7 +1473,7 @@ export const BookingPage: React.FC = () => {
                       className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                      <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                      <span className="text-sm font-black uppercase tracking-wider">Get Estimate</span>
                       <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   </div>
@@ -1578,7 +1578,7 @@ export const BookingPage: React.FC = () => {
                           className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                         >
                           <span className="text-sm font-black uppercase tracking-wider">
-                            Continue to Booking
+                            Continue
                           </span>
                           <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                         </button>
@@ -1588,7 +1588,7 @@ export const BookingPage: React.FC = () => {
                         onClick={() => setMovingStep('crew')}
                         className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                       >
-                        <ArrowLeft size={14} /> Back to crew & time
+                        <ArrowLeft size={14} /> Back
                       </button>
                       <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
                     </div>
@@ -1682,7 +1682,7 @@ export const BookingPage: React.FC = () => {
               onClick={() => setShowInsuranceModal(false)}
               className="w-full mt-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-secondary/15 transition-all"
             >
-              Got it, thanks
+              Got it
             </button>
           </div>
         </div>

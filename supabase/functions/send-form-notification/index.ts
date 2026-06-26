@@ -176,6 +176,8 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
   ].filter(Boolean).join(', ');
 
   const priceVal = details.price ? `$${details.price}` : '';
+  const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
+  const photoUrl = typeof details.photo_url === 'string' ? details.photo_url.trim() : '';
 
   return {
     subject: `New booking: ${customer.name || ''}`,
@@ -190,8 +192,11 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
         detailRow('Zip', location.zip_code) +
         detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         detailRow('Est. price', priceVal) +
+        detailRow('Deposit', details.deposit_paid ? (depositVal || 'Paid') : '') +
+        detailRow('Payment ID', details.stripe_payment_intent_id) +
         detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
         detailRow('Volume', details.estimated_volume) +
+        detailRow('Photo', photoUrl) +
         detailRow('Details', details.details)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
@@ -295,6 +300,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
 
   const name = (customer.name || '').split(' ')[0] || 'there';
   const priceVal = details.price ? `$${details.price}` : '';
+  const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
 
   return {
     subject: `Booking confirmed, ${name}`,
@@ -306,6 +312,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
         detailRow('Address', fullAddress) +
         detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         (priceVal ? detailRow('Est. price', priceVal) : '') +
+        (details.deposit_paid ? detailRow('Deposit paid', depositVal || 'Yes') : '') +
         detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
         detailRow('Details', details.details)
       ) +

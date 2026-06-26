@@ -57,11 +57,8 @@ export const JunkRemovalPage: React.FC = () => {
 
       <TrustBadges />
 
-      {/* Dynamic Solutions Section */}
       <section className="py-16 md:py-20 border-b border-secondary-100 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Section Header */}
           <div className="mb-10 text-center">
             <div className="inline-flex items-center gap-2 mb-3">
               <span className="block w-8 h-px bg-brand" />
@@ -75,7 +72,6 @@ export const JunkRemovalPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Toggle pill */}
           <div className="max-w-md mx-auto p-1.5 bg-secondary-50 rounded-2xl flex border border-secondary-100 mb-12">
             <button
               onClick={() => setActiveTab('residential')}
@@ -101,7 +97,6 @@ export const JunkRemovalPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Active Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {(activeTab === 'residential' ? residentialItems : commercialCapabilities).map((item) => (
               <div 
@@ -125,7 +120,6 @@ export const JunkRemovalPage: React.FC = () => {
         </div>
       </section>
 
-      {/* SEO Content */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">

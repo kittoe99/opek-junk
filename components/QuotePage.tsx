@@ -753,6 +753,14 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className="space-y-6">
+        <div className="text-center space-y-2 mb-2">
+          <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
+            <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
+          </div>
+          <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Your Estimate</h2>
+          <p className="text-secondary-400 text-xs">Review your price breakdown, then continue to book.</p>
+        </div>
+
         {/* Elegant Premium Service Card with Shrunk Image */}
         <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
           <div className="w-24 h-20 md:w-32 md:h-24 shrink-0">
@@ -869,7 +877,7 @@ export const QuotePage: React.FC = () => {
               className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span className="text-sm font-black uppercase tracking-wider">
-                Continue to Booking
+                Continue
               </span>
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </button>
@@ -934,7 +942,7 @@ export const QuotePage: React.FC = () => {
                 onClick={() => setShowInsuranceModal(false)}
                 className="w-full mt-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-secondary/15 transition-all"
               >
-                Got it, thanks
+                Got it
               </button>
             </div>
           </div>
@@ -960,7 +968,7 @@ export const QuotePage: React.FC = () => {
             onClick={() => setShowBookingForm(false)}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            <ArrowLeft size={14} /> Back to estimate
+            <ArrowLeft size={14} /> Back
           </button>
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
             Book your <span className="text-brand">{selectedService === 'moving_labor' ? 'service' : 'pickup'}.</span>
@@ -984,7 +992,7 @@ export const QuotePage: React.FC = () => {
             serviceType={serviceTypeLabel}
             defaultZip={defaultZip}
             onBack={() => setShowBookingForm(false)}
-            backLabel="Back to estimate"
+            backLabel="Back"
             prefilledName={contactName}
             prefilledPhone={contactPhone}
             partialBookingId={partialBookingId}
@@ -1236,7 +1244,7 @@ export const QuotePage: React.FC = () => {
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
                   className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                 >
-                  <ArrowLeft size={12} /> Back to services
+                  <ArrowLeft size={12} /> Back
                 </button>
               </div>
 
@@ -1300,7 +1308,7 @@ export const QuotePage: React.FC = () => {
                   onClick={() => setMovingStep('service')}
                   className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
                 >
-                  <ArrowLeft size={12} /> Back to service selection
+                  <ArrowLeft size={12} /> Back
                 </button>
               </div>
 
@@ -1396,7 +1404,7 @@ export const QuotePage: React.FC = () => {
                   disabled={pricingLoading}
                   className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1 disabled:opacity-50"
                 >
-                  <ArrowLeft size={12} /> Back to type of move
+                  <ArrowLeft size={12} /> Back
                 </button>
               </div>
 
@@ -1420,7 +1428,7 @@ export const QuotePage: React.FC = () => {
                   className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                  <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                  <span className="text-sm font-black uppercase tracking-wider">Get Estimate</span>
                   <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
@@ -1443,7 +1451,7 @@ export const QuotePage: React.FC = () => {
                 [{ id: 'moving-labor', name: `${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`, quantity: 1 }],
                 movingPriceEstimate,
                 () => setMovingStep('crew'),
-                "Back to crew & time"
+                "Back"
               )}
             </div>
           )}
@@ -1481,7 +1489,7 @@ export const QuotePage: React.FC = () => {
             }}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            <ArrowLeft size={14} /> {donationStep === 'size' ? 'Back to details' : donationStep === 'result' ? 'Back to size & location' : 'Back to services'}
+            <ArrowLeft size={14} /> Back
           </button>
           {donationStep !== 'result' && (
             <>
@@ -1589,7 +1597,7 @@ export const QuotePage: React.FC = () => {
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
                   className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to services
+                  <ArrowLeft size={14} /> Back
                 </button>
               </div>
             </div>
@@ -1703,7 +1711,7 @@ export const QuotePage: React.FC = () => {
                   summary: `Eco-friendly donation pickup service. The provider will deliver items to ${donationCharity === 'No Preference' ? 'a local partner charity' : donationCharity}. ${donationReceipt ? 'A tax donation receipt will be emailed.' : 'No tax receipt requested.'}`
                 },
                 () => setDonationStep('size'),
-                "Back to size & location"
+                "Back"
               )}
             </div>
           )}
@@ -1730,7 +1738,7 @@ export const QuotePage: React.FC = () => {
             }}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            <ArrowLeft size={14} /> {dumpsterStep === 'duration' ? 'Back to size' : dumpsterStep === 'result' ? 'Back to duration' : 'Back to services'}
+            <ArrowLeft size={14} /> Back
           </button>
           {dumpsterStep !== 'result' && (
             <>
@@ -1799,7 +1807,7 @@ export const QuotePage: React.FC = () => {
                   onClick={() => { setSelectedService(null); setSelectedOption(null); }}
                   className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to services
+                  <ArrowLeft size={14} /> Back
                 </button>
               </div>
             </div>
@@ -1870,7 +1878,7 @@ export const QuotePage: React.FC = () => {
                   onClick={() => setDumpsterStep('size')}
                   className="w-full py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 hover:text-secondary-600 transition-colors inline-flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft size={14} /> Back to size
+                  <ArrowLeft size={14} /> Back
                 </button>
               </div>
             </div>
@@ -1883,7 +1891,7 @@ export const QuotePage: React.FC = () => {
                 [{ id: 'dumpster-rental', name: `${dumpsterSize} dumpster rental - ${dumpsterDuration} days`, quantity: 1 }],
                 dumpsterPriceEstimate,
                 () => setDumpsterStep('duration'),
-                "Back to duration"
+                "Back"
               )}
             </div>
           )}
@@ -1993,7 +2001,7 @@ export const QuotePage: React.FC = () => {
                     onClick={() => setAiStep('upload')}
                     className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-xl inline-flex items-center justify-center gap-2 mt-4"
                   >
-                    Got it — Continue <ArrowRight size={14} />
+                    Continue <ArrowRight size={14} />
                   </button>
                 </div>
               )}
@@ -2037,7 +2045,7 @@ export const QuotePage: React.FC = () => {
                         onClick={() => setAiStep('tips')}
                         className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
                       >
-                        <ArrowLeft size={14} /> Back to photo tips
+                        <ArrowLeft size={14} /> Back
                       </button>
                     </div>
                   ) : (
@@ -2181,7 +2189,7 @@ export const QuotePage: React.FC = () => {
                 detectedItems,
                 priceEstimate,
                 () => { setAiStep('items'); setPriceEstimate(null); },
-                'Edit items and re-estimate'
+                'Back'
               )}
             </div>
           )}
@@ -2551,7 +2559,7 @@ export const QuotePage: React.FC = () => {
                       className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                      <span className="text-sm font-black uppercase tracking-wider">Get My Estimate</span>
+                      <span className="text-sm font-black uppercase tracking-wider">Get Estimate</span>
                       <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   </div>
@@ -2573,7 +2581,7 @@ export const QuotePage: React.FC = () => {
                 selectedItems,
                 manualPriceEstimate,
                 () => { setManualStep('select'); setManualPriceEstimate(null); },
-                'Edit items and re-estimate'
+                'Back'
               )}
             </div>
           )}

@@ -1,31 +1,44 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { Stripe } from '@stripe/stripe-js';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Check, CreditCard, Loader2, Lock, AlertCircle } from 'lucide-react';
-import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { ArrowLeft, Check, Loader2 } from 'lucide-react';
+import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';
-import { isStripeConfigured, isStripeTestMode, stripePromise } from '../../lib/stripe';
+import { isStripeConfigured, stripePromise } from '../../lib/stripe';
 
 const STRIPE_APPEARANCE = {
   theme: 'stripe' as const,
-  disableAnimations: true,
   variables: {
     colorPrimary: '#ff006e',
     borderRadius: '12px',
   },
 };
 
+const CARD_ELEMENT_OPTIONS = {
+  hidePostalCode: false,
+  style: {
+    base: {
+      fontSize: '14px',
+      color: '#1f2937',
+      '::placeholder': {
+        color: '#9ca3af',
+      },
+    },
+    invalid: {
+      color: '#ef4444',
+    },
+  },
+} as const;
+
 interface DepositPaymentFormProps {
-  appointmentDate: string;
-  estimatedTotal: number;
+  clientSecret: string;
   isLoading?: boolean;
   onBack: () => void;
   onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
 }
 
 const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
-  appointmentDate,
-  estimatedTotal,
+  clientSecret,
   isLoading = false,
   onBack,
   onPaymentSuccess,
@@ -35,22 +48,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
-  const [paymentReady, setPaymentReady] = useState(false);
-  const [paymentLoadError, setPaymentLoadError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setPaymentReady(false);
-    setPaymentLoadError(null);
-  }, []);
-
-  const formattedDate = appointmentDate
-    ? new Date(`${appointmentDate}T12:00:00`).toLocaleDateString(undefined, {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
-    : 'your scheduled date';
+  const [cardReady, setCardReady] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,25 +64,18 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
       return;
     }
 
-    if (!paymentReady || !elements.getElement('payment')) {
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement || !cardReady) {
       setError('Payment form is still loading. Please wait a moment and try again.');
       return;
     }
 
     try {
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        setError(submitError.message || 'Please check your payment details and try again.');
-        return;
-      }
-
       setProcessing(true);
 
-      const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-        confirmParams: {
-          return_url: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+      const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
         },
       });
 
@@ -108,39 +99,31 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   };
 
   const busy = processing || isLoading;
-  const canPay = Boolean(stripe && elements && paymentReady && !paymentLoadError);
+  const canPay = Boolean(stripe && elements && cardReady);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="bg-white rounded-2xl border border-secondary-100 p-4 space-y-4 shadow-sm">
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] font-black text-secondary-400 uppercase tracking-wider">Payment details</p>
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-secondary-400 uppercase tracking-wider">
-            <Lock size={12} className="text-[#635BFF]" />
-            Secured by Stripe
+      <div className="rounded-xl border border-secondary-100 bg-white p-4">
+        {!cardReady && (
+          <div className="flex items-center justify-center gap-2 py-6 text-secondary-400 text-xs">
+            <Loader2 className="animate-spin w-4 h-4" />
+            Loading card form...
           </div>
-        </div>
-
-        <div className="min-h-[220px]">
-          {!paymentReady && !paymentLoadError && (
-            <div className="flex items-center justify-center gap-2 py-10 text-secondary-400 text-xs">
-              <Loader2 className="animate-spin w-4 h-4" />
-              Loading payment form...
-            </div>
-          )}
-          <PaymentElement
-            id="booking-deposit-payment-element"
-            onReady={() => setPaymentReady(true)}
-            onLoadError={(event) => {
-              setPaymentLoadError(event.error?.message || 'Unable to load payment form.');
-              setPaymentReady(false);
-            }}
-          />
-        </div>
-
-        {paymentLoadError && (
-          <p className="text-xs text-red-500 font-semibold text-center">{paymentLoadError}</p>
         )}
+        <CardElement
+          id="booking-deposit-card-element"
+          options={CARD_ELEMENT_OPTIONS}
+          onReady={() => setCardReady(true)}
+          onChange={(event) => {
+            if (event.error) {
+              setError(event.error.message || 'Please check your card details.');
+              return;
+            }
+            if (error) {
+              setError(null);
+            }
+          }}
+        />
       </div>
 
       <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
@@ -201,15 +184,10 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
               Processing...
             </>
           ) : (
-            <>Pay ${BOOKING_DEPOSIT_AMOUNT} Deposit</>
+            <>Pay ${BOOKING_DEPOSIT_AMOUNT}</>
           )}
         </button>
       </div>
-
-      <p className="text-[10px] text-secondary-400 text-center leading-relaxed">
-        Scheduled for {formattedDate}
-        {estimatedTotal > 0 ? ` · Estimated total $${estimatedTotal}` : ''}
-      </p>
     </form>
   );
 };
@@ -227,8 +205,6 @@ interface BookingDepositPaymentProps {
 }
 
 export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
-  appointmentDate,
-  estimatedTotal,
   customerEmail,
   customerName,
   customerPhone,
@@ -340,69 +316,38 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
   const checkoutReady = Boolean(clientSecret && stripeInstance && elementsOptions && !initError);
 
   return (
-    <div className="max-w-md mx-auto space-y-6">
-      <div className="text-center space-y-2 mb-6">
-        <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-100 shadow-sm">
-          <CreditCard className="w-6 h-6 text-[#635BFF]" />
+    <div className="max-w-md mx-auto space-y-4">
+      <div className="flex items-center justify-between gap-4 px-1">
+        <div>
+          <h2 className="text-sm font-black text-secondary uppercase tracking-wider">Card payment</h2>
+          <p className="text-xs text-secondary-400 mt-0.5">${BOOKING_DEPOSIT_AMOUNT} deposit due today</p>
         </div>
-        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Secure Deposit</h2>
-        <p className="text-secondary-400 text-xs">Pay a small deposit to confirm your reservation.</p>
-      </div>
-
-      {isStripeTestMode && (
-        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 text-center">
-          <p className="text-[11px] font-bold text-indigo-900 uppercase tracking-wider">Stripe test mode</p>
-          <p className="text-[11px] text-indigo-700 mt-1">
-            Use card <span className="font-mono font-bold">4242 4242 4242 4242</span>, any future expiry, any CVC.
-          </p>
-        </div>
-      )}
-
-      <div className="bg-white rounded-3xl p-5 border border-secondary-100 shadow-sm">
-        <div className="flex justify-between items-start gap-4">
-          <div>
-            <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Booking deposit</p>
-            <p className="text-xs text-secondary-500 mt-1">Due today to hold your appointment</p>
-          </div>
-          <p className="text-3xl font-black text-brand">${BOOKING_DEPOSIT_AMOUNT}</p>
-        </div>
-      </div>
-
-      <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4 flex items-start gap-3">
-        <AlertCircle size={18} className="text-amber-600 shrink-0 mt-0.5" />
-        <p className="text-[11px] text-amber-900 leading-relaxed">
-          <span className="font-black">Important:</span> You may be charged an additional deposit up to 24 hours before your scheduled appointment. Any remaining balance is due on the day of service.
-        </p>
       </div>
 
       {initializing && (
         <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
           <Loader2 className="animate-spin w-4 h-4" />
-          Preparing secure checkout...
+          Loading...
         </div>
       )}
 
       {initError && !initializing && (
-        <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-center space-y-2">
+        <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
           <p className="text-xs text-red-700 font-semibold">{initError}</p>
-          <p className="text-[10px] text-red-600">
-            Add Stripe test keys to <span className="font-mono">.env.local</span> and restart <span className="font-mono">npm run dev</span>.
-          </p>
         </div>
       )}
 
       {!initializing && !initError && clientSecret && !stripeInstance && (
         <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
           <Loader2 className="animate-spin w-4 h-4" />
-          Loading Stripe...
+          Loading...
         </div>
       )}
 
-      {checkoutReady && (
+      {checkoutReady && clientSecret && (
         <Elements key={clientSecret} stripe={stripeInstance} options={elementsOptions}>
           <DepositPaymentForm
-            appointmentDate={appointmentDate}
-            estimatedTotal={estimatedTotal}
+            clientSecret={clientSecret}
             isLoading={isLoading}
             onBack={onBack}
             onPaymentSuccess={onPaymentSuccess}
