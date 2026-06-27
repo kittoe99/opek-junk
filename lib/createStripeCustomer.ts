@@ -1,1 +1,1 @@
-export { ensureStripeCustomer, type StripeCustomerContact } from '../api/utils/stripeCustomer';
+export { ensureStripeCustomer, type StripeCustomerContact } from '../server/stripeCustomer.js';
