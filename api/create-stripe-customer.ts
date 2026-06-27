@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
-import { ensureStripeCustomer } from './utils/stripeCustomer';
+import { ensureStripeCustomer } from '../server/stripeCustomer.js';
 
 function getStripeSecretKey(): string | undefined {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
