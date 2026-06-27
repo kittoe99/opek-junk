@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type Stripe from 'stripe';
+import { findOrCreateStripeCustomer } from './stripeCustomer';
 
 export interface StripeCustomerRow {
   id: string;
@@ -169,10 +170,12 @@ export async function resolveStripeCustomerForIntent(
       : paymentIntent.customer?.id ?? null;
 
   if (stripeCustomerId) {
-    const stripeCustomer = await stripe.customers.retrieve(stripeCustomerId);
-    if ('deleted' in stripeCustomer && stripeCustomer.deleted) {
+    const retrieved = await stripe.customers.retrieve(stripeCustomerId);
+    if ('deleted' in retrieved && retrieved.deleted) {
       return null;
     }
+
+    const stripeCustomer = retrieved as Stripe.Customer;
 
     const record = await upsertStripeCustomer(supabase, {
       stripeCustomerId: stripeCustomer.id,
@@ -190,19 +193,18 @@ export async function resolveStripeCustomerForIntent(
     return null;
   }
 
-  const created = await stripe.customers.create({
+  const stripeCustomer = await findOrCreateStripeCustomer(stripe, {
     email: fields.email ?? undefined,
     name: fields.name ?? undefined,
     phone: fields.phone ?? undefined,
-    metadata: { source: 'opekjunkremoval.com', payment_intent_id: paymentIntent.id },
   });
 
   const record = await upsertStripeCustomer(supabase, {
-    stripeCustomerId: created.id,
-    email: created.email,
-    name: created.name,
-    phone: created.phone,
-    metadata: (created.metadata ?? {}) as Record<string, string>,
+    stripeCustomerId: stripeCustomer.id,
+    email: stripeCustomer.email ?? fields.email,
+    name: stripeCustomer.name ?? fields.name,
+    phone: stripeCustomer.phone ?? fields.phone,
+    metadata: (stripeCustomer.metadata ?? {}) as Record<string, string>,
   });
 
   return record.id;

@@ -61,6 +61,11 @@ export function hasStripeCustomerIdentity(contact: NormalizedStripeCustomerConta
   return Boolean(contact.email || contact.name || contact.stripePhone || contact.phone);
 }
 
+function customerIdempotencyKey(email: string): string {
+  const safe = email.toLowerCase().replace(/[^a-z0-9]/gi, '_').slice(0, 200);
+  return `customer_email_${safe}`;
+}
+
 export async function findOrCreateStripeCustomer(
   stripe: Stripe,
   contact: StripeCustomerContact
@@ -74,12 +79,35 @@ export async function findOrCreateStripeCustomer(
   if (normalized.email) {
     const existing = await stripe.customers.list({ email: normalized.email, limit: 1 });
     if (existing.data[0]) {
-      return existing.data[0];
+      const current = existing.data[0];
+      const updates: Stripe.CustomerUpdateParams = {};
+
+      if (normalized.name && normalized.name !== current.name) {
+        updates.name = normalized.name;
+      }
+      if (normalized.stripePhone && normalized.stripePhone !== current.phone) {
+        updates.phone = normalized.stripePhone;
+      }
+
+      if (Object.keys(updates).length > 0) {
+        return stripe.customers.update(current.id, updates);
+      }
+
+      return current;
     }
+
+    return stripe.customers.create(
+      {
+        email: normalized.email,
+        name: normalized.name,
+        phone: normalized.stripePhone,
+        metadata: { source: 'opekjunkremoval.com' },
+      },
+      { idempotencyKey: customerIdempotencyKey(normalized.email) }
+    );
   }
 
   return stripe.customers.create({
-    email: normalized.email,
     name: normalized.name,
     phone: normalized.stripePhone,
     metadata: { source: 'opekjunkremoval.com' },
