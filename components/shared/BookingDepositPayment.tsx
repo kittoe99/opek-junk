@@ -71,6 +71,24 @@ async function parseJsonResponse(response: Response) {
   }
 }
 
+async function syncDepositPaymentIntent(paymentIntentId: string) {
+  const response = await fetch(apiUrl('/api/sync-payment-intent'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentIntentId }),
+  });
+
+  const data = await parseJsonResponse(response);
+  if (!response.ok) {
+    throw new Error(
+      (typeof data.error === 'string' && data.error) ||
+        'Failed to save your card for future charges.'
+    );
+  }
+
+  return data;
+}
+
 async function createDepositPaymentIntent(input: {
   email: string;
   name?: string;
@@ -191,6 +209,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
       }
 
       if (paymentIntent?.status === 'succeeded') {
+        await syncDepositPaymentIntent(paymentIntent.id);
         await onPaymentSuccess(paymentIntent.id);
         return;
       }

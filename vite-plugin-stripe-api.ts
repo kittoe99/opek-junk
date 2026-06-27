@@ -2,6 +2,7 @@ import type { Plugin } from 'vite';
 import { createBookingPaymentIntent } from './lib/createPaymentIntent';
 import { ensureStripeCustomer } from './lib/createStripeCustomer';
 import { proxyCalculatePrice } from './lib/calculatePriceProxy';
+import { syncSucceededPaymentIntent } from './server/syncPaymentIntent';
 import Stripe from 'stripe';
 
 function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {
@@ -49,7 +50,9 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
         }
 
         const isStripePaymentRoute =
-          (pathname === '/api/create-payment-intent' || pathname === '/api/create-stripe-customer') &&
+          (pathname === '/api/create-payment-intent' ||
+            pathname === '/api/create-stripe-customer' ||
+            pathname === '/api/sync-payment-intent') &&
           req.method === 'POST';
 
         if (!isStripePaymentRoute) {
@@ -74,6 +77,7 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
             phone?: string;
             serviceType?: string;
             stripeCustomerId?: string;
+            paymentIntentId?: string;
           };
 
           if (pathname === '/api/create-stripe-customer') {
@@ -97,6 +101,22 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
               stripeCustomerId: result.stripeCustomerId,
               supabaseCustomerId: result.supabaseCustomerId,
             }));
+            return;
+          }
+
+          if (pathname === '/api/sync-payment-intent') {
+            const paymentIntentId =
+              typeof body.paymentIntentId === 'string' ? body.paymentIntentId.trim() : '';
+            if (!paymentIntentId.startsWith('pi_')) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: 'A valid paymentIntentId is required.' }));
+              return;
+            }
+
+            const stripe = new Stripe(stripeSecretKey);
+            const result = await syncSucceededPaymentIntent(stripe, paymentIntentId);
+            res.statusCode = 200;
+            res.end(JSON.stringify(result));
             return;
           }
 

@@ -90,7 +90,8 @@ export function customerFieldsFromIntent(paymentIntent: Stripe.PaymentIntent) {
 
 export async function saveCustomerPaymentMethod(
   stripe: Stripe,
-  paymentIntent: Stripe.PaymentIntent
+  paymentIntent: Stripe.PaymentIntent,
+  supabase?: SupabaseClient | null
 ): Promise<void> {
   if (paymentIntent.status !== 'succeeded') {
     return;
@@ -113,7 +114,9 @@ export async function saveCustomerPaymentMethod(
   const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
 
   if (!paymentMethod.customer) {
-    await stripe.paymentMethods.attach(paymentMethodId, { customer: stripeCustomerId });
+    await stripe.paymentMethods.attach(paymentMethodId, {
+      customer: stripeCustomerId,
+    });
   } else if (paymentMethod.customer !== stripeCustomerId) {
     console.warn(
       `Payment method ${paymentMethodId} belongs to ${paymentMethod.customer}, not ${stripeCustomerId}`
@@ -126,6 +129,23 @@ export async function saveCustomerPaymentMethod(
       default_payment_method: paymentMethodId,
     },
   });
+
+  if (supabase) {
+    const customer = await stripe.customers.retrieve(stripeCustomerId);
+    if (!('deleted' in customer && customer.deleted)) {
+      const stripeCustomer = customer as Stripe.Customer;
+      await upsertStripeCustomer(supabase, {
+        stripeCustomerId: stripeCustomer.id,
+        email: stripeCustomer.email ?? null,
+        name: stripeCustomer.name ?? null,
+        phone: stripeCustomer.phone ?? null,
+        metadata: {
+          ...(stripeCustomer.metadata ?? {}),
+          default_payment_method_id: paymentMethodId,
+        },
+      });
+    }
+  }
 }
 
 export async function resolveStripeCustomerForIntent(

@@ -58,7 +58,7 @@ async function syncPaymentIntent(
   await upsertPaymentFromIntent(supabase, paymentIntent, customerId);
 
   if (paymentIntent.status === 'succeeded') {
-    await saveCustomerPaymentMethod(stripe, paymentIntent);
+    await saveCustomerPaymentMethod(stripe, paymentIntent, supabase);
   }
 }
 
