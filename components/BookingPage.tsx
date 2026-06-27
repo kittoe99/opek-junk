@@ -6,6 +6,7 @@ import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate } from '../typ
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
+import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
@@ -130,6 +131,7 @@ export const BookingPage: React.FC = () => {
   const [contactPhone, setContactPhone] = useState('');
   const [contactLoading, setContactLoading] = useState(false);
   const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
+  const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
   const [savedEstimateItems, setSavedEstimateItems] = useState<DetectedItem[]>([]);
   const [savedPriceEstimate, setSavedPriceEstimate] = useState<PriceEstimate | null>(null);
   const [resumeEstimateFlow, setResumeEstimateFlow] = useState(false);
@@ -180,7 +182,7 @@ export const BookingPage: React.FC = () => {
     }
   }, [estimateData]);
 
-  const handleContactReveal = async (name: string, phone: string, est: QuoteEstimate) => {
+  const handleContactReveal = async (name: string, phone: string, consentAt: string, est: QuoteEstimate) => {
     setContactLoading(true);
     try {
       const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
@@ -197,11 +199,7 @@ export const BookingPage: React.FC = () => {
           }
         }
 
-        const customerInfo = {
-          name,
-          phone,
-          email: ''
-        };
+        const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
 
         const bookingDetails = {
           service_type: formData.serviceType,
@@ -232,12 +230,14 @@ export const BookingPage: React.FC = () => {
       setPartialBookingId(partialId);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setFormData(prev => ({ ...prev, name, phone }));
       setContactSubmitted(true);
     } catch (err) {
       console.error('Error in handleContactReveal in BookingPage:', err);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setFormData(prev => ({ ...prev, name, phone }));
       setContactSubmitted(true);
     } finally {
@@ -250,6 +250,7 @@ export const BookingPage: React.FC = () => {
     setImage(result.image);
     setContactName(result.contactName);
     setContactPhone(result.contactPhone);
+    setSmsMarketingConsentAt(result.smsMarketingConsentAt);
     setPartialBookingId(result.partialBookingId);
     setSavedEstimateItems(result.items);
     setSavedPriceEstimate(result.price);
@@ -740,6 +741,7 @@ export const BookingPage: React.FC = () => {
                 contactSubmitted: true,
                 contactName,
                 contactPhone,
+                smsMarketingConsentAt,
                 partialBookingId,
                 image,
               } : undefined}
@@ -847,8 +849,8 @@ export const BookingPage: React.FC = () => {
                         <ContactIntakeForm
                           serviceType={formData.serviceType}
                           isLoading={contactLoading}
-                          onReveal={async (name, phone) => {
-                            await handleContactReveal(name, phone, estimate);
+                          onReveal={async (name, phone, consentAt) => {
+                            await handleContactReveal(name, phone, consentAt, estimate);
                           }}
                         />
                       </div>
@@ -1103,8 +1105,8 @@ export const BookingPage: React.FC = () => {
                     <ContactIntakeForm
                       serviceType={formData.serviceType}
                       isLoading={contactLoading}
-                      onReveal={async (name, phone) => {
-                        await handleContactReveal(name, phone, estimate);
+                      onReveal={async (name, phone, consentAt) => {
+                        await handleContactReveal(name, phone, consentAt, estimate);
                       }}
                     />
                   </div>
@@ -1472,8 +1474,8 @@ export const BookingPage: React.FC = () => {
                     <ContactIntakeForm
                       serviceType={formData.serviceType}
                       isLoading={contactLoading}
-                      onReveal={async (name, phone) => {
-                        await handleContactReveal(name, phone, estimate);
+                      onReveal={async (name, phone, consentAt) => {
+                        await handleContactReveal(name, phone, consentAt, estimate);
                       }}
                     />
                   </div>
@@ -1605,6 +1607,7 @@ export const BookingPage: React.FC = () => {
               prefilledName={contactName}
               prefilledPhone={contactPhone}
               partialBookingId={partialBookingId}
+              smsMarketingConsentAt={smsMarketingConsentAt}
             />
             </>
           )}

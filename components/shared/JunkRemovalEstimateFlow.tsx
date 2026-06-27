@@ -20,6 +20,7 @@ import { DetectedItem, LoadingState, PriceEstimate, QuoteEstimate } from '../../
 import { detectItemsFromPhotos } from '../../services/openaiService';
 import { calculateStaticPrice } from '../../services/pricingService';
 import { supabase, uploadBookingPhoto } from '../../lib/supabase';
+import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { EstimateMethodSelection } from './EstimateMethodSelection';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './JunkItemCatalogSelector';
@@ -31,6 +32,7 @@ export interface JunkRemovalEstimateResult {
   price: PriceEstimate;
   contactName: string;
   contactPhone: string;
+  smsMarketingConsentAt: string | null;
   partialBookingId: string | null;
   image: string | null;
 }
@@ -46,6 +48,7 @@ interface JunkRemovalEstimateFlowProps {
     contactSubmitted: boolean;
     contactName: string;
     contactPhone: string;
+    smsMarketingConsentAt: string | null;
     partialBookingId: string | null;
     image: string | null;
   };
@@ -72,6 +75,9 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   const [contactSubmitted, setContactSubmitted] = useState(resumeState?.contactSubmitted ?? false);
   const [contactName, setContactName] = useState(resumeState?.contactName ?? '');
   const [contactPhone, setContactPhone] = useState(resumeState?.contactPhone ?? '');
+  const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(
+    resumeState?.smsMarketingConsentAt ?? null
+  );
   const [contactLoading, setContactLoading] = useState(false);
   const [partialBookingId, setPartialBookingId] = useState<string | null>(resumeState?.partialBookingId ?? null);
   const [showInsuranceModal, setShowInsuranceModal] = useState(false);
@@ -235,7 +241,13 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
     }
   };
 
-  const handleContactReveal = async (name: string, phone: string, items: DetectedItem[], price: PriceEstimate) => {
+  const handleContactReveal = async (
+    name: string,
+    phone: string,
+    consentAt: string,
+    items: DetectedItem[],
+    price: PriceEstimate
+  ) => {
     setContactLoading(true);
     try {
       const detailsText = `Items: ${items.map((i) => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Volume: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
@@ -248,7 +260,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           if (publicUrl) uploadedUrl = publicUrl;
         }
         const { data, error: dbError } = await supabase.rpc('create_prebooking', {
-          p_customer_info: { name, phone, email: '' },
+          p_customer_info: withSmsMarketingConsent({ name, phone, email: '' }, consentAt),
           p_booking_details: {
             service_type: 'Junk Removal',
             zip_code: zipValue || null,
@@ -268,11 +280,13 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
       setPartialBookingId(partialId);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setContactSubmitted(true);
     } catch (err) {
       console.error('Error in handleContactReveal:', err);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setContactSubmitted(true);
     } finally {
       setContactLoading(false);
@@ -286,8 +300,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           <ContactIntakeForm
             serviceType="Junk Removal"
             isLoading={contactLoading}
-            onReveal={async (name, phone) => {
-              await handleContactReveal(name, phone, items, price);
+            onReveal={async (name, phone, consentAt) => {
+              await handleContactReveal(name, phone, consentAt, items, price);
             }}
           />
         </div>
@@ -388,6 +402,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   price,
                   contactName,
                   contactPhone,
+                  smsMarketingConsentAt,
                   partialBookingId,
                   image: images[0] || null,
                 });

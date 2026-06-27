@@ -12,6 +12,7 @@ import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../typ
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase, uploadBookingPhoto } from '../lib/supabase';
+import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
@@ -70,6 +71,7 @@ export const QuotePage: React.FC = () => {
   const [contactPhone, setContactPhone] = useState('');
   const [contactLoading, setContactLoading] = useState(false);
   const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
+  const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
 
   // Moving Labor State
   const [movingServiceType, setMovingServiceType] = useState<'Loading Only' | 'Unloading Only' | 'Both'>('Both');
@@ -452,7 +454,13 @@ export const QuotePage: React.FC = () => {
 
   const totalSelectedCount = selectedItems.reduce((sum, i) => sum + i.quantity, 0);
 
-  const handleContactReveal = async (name: string, phone: string, items: DetectedItem[], price: PriceEstimate) => {
+  const handleContactReveal = async (
+    name: string,
+    phone: string,
+    consentAt: string,
+    items: DetectedItem[],
+    price: PriceEstimate
+  ) => {
     setContactLoading(true);
     try {
       const detailsText = `Items: ${items.map(i => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Volume: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
@@ -476,11 +484,7 @@ export const QuotePage: React.FC = () => {
           }
         }
 
-        const customerInfo = {
-          name,
-          phone,
-          email: ''
-        };
+        const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
 
         const bookingDetails = {
           service_type: serviceTypeLabel,
@@ -511,11 +515,13 @@ export const QuotePage: React.FC = () => {
       setPartialBookingId(partialId);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setContactSubmitted(true);
     } catch (err) {
       console.error('Error in handleContactReveal:', err);
       setContactName(name);
       setContactPhone(phone);
+      setSmsMarketingConsentAt(consentAt);
       setContactSubmitted(true);
     } finally {
       setContactLoading(false);
@@ -542,8 +548,8 @@ export const QuotePage: React.FC = () => {
           <ContactIntakeForm
             serviceType={serviceTypeLabel}
             isLoading={contactLoading}
-            onReveal={async (name, phone) => {
-              await handleContactReveal(name, phone, items, price);
+            onReveal={async (name, phone, consentAt) => {
+              await handleContactReveal(name, phone, consentAt, items, price);
             }}
           />
         </div>
@@ -793,6 +799,7 @@ export const QuotePage: React.FC = () => {
             prefilledName={contactName}
             prefilledPhone={contactPhone}
             partialBookingId={partialBookingId}
+            smsMarketingConsentAt={smsMarketingConsentAt}
           />
         </div>
 

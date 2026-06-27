@@ -350,7 +350,17 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           >
             Terms of Service
           </Link>{' '}
-          and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described.
+          and{' '}
+          <Link
+            to="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand font-bold hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Privacy Policy
+          </Link>{' '}
+          and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described. I consent to receive transactional and promotional communications by email, SMS, and phone.
         </span>
       </label>
 

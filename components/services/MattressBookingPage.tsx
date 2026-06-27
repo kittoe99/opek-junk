@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Mail, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
+import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../../lib/itemCatalog';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
@@ -173,6 +174,7 @@ export const MattressBookingPage: React.FC = () => {
   });
   const [submitLoading, setSubmitLoading] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
+  const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const handleZipSubmit = async (e: React.FormEvent) => {
@@ -374,7 +376,7 @@ export const MattressBookingPage: React.FC = () => {
     return subtotal > 0 ? Math.max(MINIMUM_JUNK_REMOVAL_PRICE, subtotal) : 0;
   };
 
-  const handleContactReveal = async (name: string, phone: string) => {
+  const handleContactReveal = async (name: string, phone: string, consentAt: string) => {
     setContactLoading(true);
     try {
       const totalPrice = calculateTotal();
@@ -382,11 +384,7 @@ export const MattressBookingPage: React.FC = () => {
 
       try {
         const { error } = await supabase.rpc('create_prebooking', {
-          p_customer_info: {
-            name,
-            phone,
-            email: ''
-          },
+          p_customer_info: withSmsMarketingConsent({ name, phone, email: '' }, consentAt),
           p_booking_details: {
             service_type: 'Mattress Disposal',
             zip_code: zipCode || null,
@@ -405,6 +403,7 @@ export const MattressBookingPage: React.FC = () => {
       }
 
       setFormData(prev => ({ ...prev, name, phone }));
+      setSmsMarketingConsentAt(consentAt);
       setStep(4);
     } finally {
       setContactLoading(false);
@@ -420,11 +419,14 @@ export const MattressBookingPage: React.FC = () => {
       const totalPrice = calculateTotal();
       const itemsSummaryText = itemsList.join(', ');
       
-      const customerInfo = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone
-      };
+      const customerInfo = withSmsMarketingConsent(
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        smsMarketingConsentAt
+      );
       
       const bookingDetails = {
         service_type: 'Mattress Disposal',

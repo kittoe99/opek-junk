@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare, ShieldCheck, AlertCircle, Mail, MessageSquare } from 'lucide-react';
 
 interface TermsSection {
   id: string;
@@ -22,7 +22,8 @@ export const TermsOfServicePage: React.FC = () => {
             These Terms of Service ("Terms") constitute a legally binding agreement between you ("Customer," "User," or "you") and <strong>Opek Junk Removal</strong> ("Opek," "we," "us," or "our").
           </p>
           <p className="mb-4">
-            By accessing, browsing, or using our website, platform, mobile applications, booking systems, or ordering services by phone, you acknowledge that you have read, understood, and agree to be bound by these Terms.
+            By accessing, browsing, or using our website, platform, mobile applications, booking systems, or ordering services by phone or text, you acknowledge that you have read, understood, and agree to be bound by these Terms and our{' '}
+            <a href="/privacy" className="text-brand font-semibold hover:underline">Privacy Policy</a>.
           </p>
           <p className="font-bold text-secondary">
             If you do not agree to these terms, please immediately cease using our platform and services.
@@ -31,8 +32,46 @@ export const TermsOfServicePage: React.FC = () => {
       ),
     },
     {
+      id: 'communications-marketing',
+      title: '2. Communications, SMS & Marketing',
+      icon: <MessageSquare size={18} className="text-brand shrink-0" />,
+      content: (
+        <>
+          <p className="mb-4">
+            By providing your phone number, email address, or other contact information through our website, booking flows, quote forms, contact page, phone calls, or AI voice assistant, you consent to receive communications from Opek and our authorized service providers at the contact information you provide.
+          </p>
+          <p className="mb-4">
+            These communications may be sent by <strong>automated or manual means</strong>, including SMS/MMS text messages, email, and phone calls (including prerecorded or artificial voice messages where permitted by law). Communications may include:
+          </p>
+          <ul className="list-disc pl-6 space-y-2 mb-4">
+            <li><strong>Transactional messages:</strong> Booking confirmations, quote follow-ups, provider dispatch updates, payment receipts, rescheduling notices, and customer support.</li>
+            <li><strong>Marketing messages:</strong> Promotional offers, discounts, seasonal campaigns, service reminders, and news about Opek services — where permitted and with opt-out rights as described below.</li>
+          </ul>
+          <div className="bg-brand-50 border border-brand-100 rounded-xl p-5 mb-4 space-y-2 text-sm">
+            <p className="font-bold text-secondary">SMS/Text Message Terms:</p>
+            <ul className="list-disc pl-5 space-y-1 text-secondary-700">
+              <li>Message frequency varies. Message and data rates may apply.</li>
+              <li>Consent to receive marketing texts is <strong>not required</strong> as a condition of purchasing any goods or services.</li>
+              <li>Reply <strong>STOP</strong> to opt out of promotional SMS. Reply <strong>HELP</strong> for help.</li>
+              <li>You may still receive transactional texts related to active bookings after opting out of marketing.</li>
+            </ul>
+          </div>
+          <p className="mb-4">
+            <strong>Email marketing:</strong> You may unsubscribe from promotional emails at any time using the link in any marketing email or by contacting Support@opekjunkremoval.com.
+          </p>
+          <p className="mb-4">
+            You represent that you are the owner or authorized user of any phone number or email address you provide, and that you have authority to consent to communications at that number or address.
+          </p>
+          <p>
+            For full details on how we collect, use, and protect your personal information, see our{' '}
+            <a href="/privacy" className="text-brand font-semibold hover:underline">Privacy Policy</a>.
+          </p>
+        </>
+      ),
+    },
+    {
       id: 'platform-description',
-      title: '2. The Opek Platform',
+      title: '3. The Opek Platform',
       icon: <Info size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -56,7 +95,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'booking-cancellations',
-      title: '3. Bookings & Cancellations',
+      title: '4. Bookings & Cancellations',
       icon: <Ban size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -88,7 +127,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'payment-pricing',
-      title: '4. Payments, Estimates & Refunds',
+      title: '5. Payments, Estimates & Refunds',
       icon: <CreditCard size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -114,7 +153,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'prohibited-warranties',
-      title: '5. Prohibited Items & Warranties',
+      title: '6. Prohibited Items & Warranties',
       icon: <AlertCircle size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -137,7 +176,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'platform-disintermediation',
-      title: '6. Off-Platform Transactions (Disintermediation)',
+      title: '7. Off-Platform Transactions (Disintermediation)',
       icon: <ShieldCheck size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -160,7 +199,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'conduct-damages',
-      title: '7. Work Environment & Damage Claims',
+      title: '8. Work Environment & Damage Claims',
       icon: <Hammer size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -184,7 +223,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'disclaimers',
-      title: '8. Disclaimers & Limits of Liability',
+      title: '9. Disclaimers & Limits of Liability',
       icon: <ShieldAlert size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -208,7 +247,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'disputes-law',
-      title: '9. Governing Law & Dispute Resolution',
+      title: '10. Governing Law & Dispute Resolution',
       icon: <AlertTriangle size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -229,7 +268,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'general-user-customer',
-      title: '10. Terms – General User & Customer',
+      title: '11. Terms – General User & Customer',
       icon: <CheckSquare size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -270,7 +309,7 @@ export const TermsOfServicePage: React.FC = () => {
     },
     {
       id: 'contact',
-      title: '11. Contact Info',
+      title: '12. Contact Info',
       icon: <PhoneCall size={18} className="text-brand shrink-0" />,
       content: (
         <>
@@ -333,7 +372,7 @@ export const TermsOfServicePage: React.FC = () => {
             Terms of <span className="text-brand">Service.</span>
           </h1>
           <p className="text-base sm:text-lg text-secondary-600 leading-relaxed">
-            Last Updated: June 11, 2026. Please read these Terms of Service carefully before booking dumpsters, junk removal, cleanouts, or moving services.
+            Last Updated: June 27, 2026. Please read these Terms of Service carefully before booking dumpsters, junk removal, cleanouts, or moving services.
           </p>
         </div>
 

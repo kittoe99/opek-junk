@@ -3,6 +3,7 @@ import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receip
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
+import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
 import { BookingDepositIntro } from './shared/BookingDepositIntro';
@@ -24,6 +25,7 @@ interface BookingDetailsFormProps {
   prefilledName?: string;
   prefilledPhone?: string;
   partialBookingId?: string | null;
+  smsMarketingConsentAt?: string | null;
 }
 
 type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'deposit' | 'payment';
@@ -38,6 +40,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   prefilledName,
   prefilledPhone,
   partialBookingId,
+  smsMarketingConsentAt,
 }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
@@ -185,11 +188,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         }
       }
 
-      const customerInfo = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone
-      };
+      const customerInfo = withSmsMarketingConsent(
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        smsMarketingConsentAt
+      );
 
       const bookingDetails = {
         service_type: normalizedServiceType,
@@ -307,11 +313,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             }
           }
 
-          const customerInfo = {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone
-          };
+          const customerInfo = withSmsMarketingConsent(
+            {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+            },
+            smsMarketingConsentAt
+          );
 
           const locationInfo = {
             address: formData.address,
