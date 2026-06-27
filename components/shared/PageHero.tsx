@@ -1,5 +1,4 @@
 import React from 'react';
-import { CheckCircle2, LucideIcon } from 'lucide-react';
 
 interface CtaProps {
   label: string;
@@ -9,16 +8,20 @@ interface CtaProps {
 
 interface PageHeroProps {
   eyebrow: string;
-  EyebrowIcon?: LucideIcon;
   title: React.ReactNode;
   subtitle: string;
   image: string;
   imageAlt: string;
-  imageCaption?: string;
   primaryCta?: CtaProps;
   secondaryCta?: CtaProps;
-  /** Render compact (no min-h-screen, smaller text) */
+  /** Optional content rendered below CTAs (e.g. ZIP checker) */
+  children?: React.ReactNode;
+  /** Shorter hero for utility pages */
   compact?: boolean;
+  /** @deprecated Accepted for compatibility; no longer rendered */
+  imageCaption?: string;
+  /** @deprecated Accepted for compatibility; no longer rendered */
+  EyebrowIcon?: React.ComponentType<{ size?: number; className?: string }>;
 }
 
 const ctaButton = (cta: CtaProps, isPrimary: boolean, fullWidth = false) => {
@@ -44,20 +47,18 @@ const ctaButton = (cta: CtaProps, isPrimary: boolean, fullWidth = false) => {
 
 export const PageHero: React.FC<PageHeroProps> = ({
   eyebrow,
-  EyebrowIcon,
   title,
   subtitle,
   image,
   imageAlt,
-  imageCaption,
   primaryCta,
   secondaryCta,
+  children,
   compact = false,
 }) => {
   const headingClass = compact
-    ? 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tight mb-4 leading-[1.05]'
-    : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-secondary tracking-tight mb-4 md:mb-6 leading-[1.05]';
-
+    ? 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-[1.05]'
+    : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight mb-4 md:mb-6 leading-[1.05]';
   const ctas = (fullWidth = false) => (
     <>
       {primaryCta && ctaButton(primaryCta, true, fullWidth)}
@@ -70,25 +71,28 @@ export const PageHero: React.FC<PageHeroProps> = ({
       {/* Mobile layout */}
       <div className="lg:hidden flex flex-col">
         <div
-          className="relative pt-12 pb-10 px-4"
+          className="relative pt-32 pb-10 px-4"
           style={{
             backgroundImage: `url(${image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div className="absolute inset-0 bg-black/65" />
+          <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 mb-4 animate-fade-in">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">
-                {eyebrow}
-              </span>
+            <div className="mb-3 animate-fade-in">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/90">{eyebrow}</span>
             </div>
-            <h1 className={`${headingClass} text-white animate-slide-up`} style={{ animationDelay: '0.1s' }}>
+            <h1
+              className={`${headingClass} text-white animate-slide-up`}
+              style={{ animationDelay: '0.1s' }}
+            >
               {title}
             </h1>
-            <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <p
+              className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up"
+              style={{ animationDelay: '0.2s' }}
+            >
               {subtitle}
             </p>
           </div>
@@ -99,47 +103,53 @@ export const PageHero: React.FC<PageHeroProps> = ({
             {ctas(true)}
           </div>
         )}
+
+        {children && (
+          <div className="px-4 py-8 animate-slide-up" style={{ animationDelay: '0.35s' }}>
+            {children}
+          </div>
+        )}
       </div>
 
       {/* Desktop layout */}
-      <div className={`hidden lg:flex ${compact ? 'py-20' : 'min-h-[80vh] py-24'} flex-col items-center justify-center`}>
+      <div className={`hidden lg:flex ${compact ? 'py-20' : 'min-h-screen pt-40 pb-32'} flex-col items-center justify-center`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-12 gap-16 items-center">
             <div className="col-span-7">
-              <div className="inline-flex items-center gap-2 mb-4 animate-fade-in">
-                <span className="block w-8 h-px bg-brand" />
-                <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">
-                  {eyebrow}
-                </span>
+              <div className="mb-4 animate-fade-in">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">{eyebrow}</span>
               </div>
-              <h1 className={`${headingClass} animate-slide-up`} style={{ animationDelay: '0.1s' }}>
+              <h1
+                className={`${headingClass} text-secondary animate-slide-up`}
+                style={{ animationDelay: '0.1s' }}
+              >
                 {title}
               </h1>
-              <p className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <p
+                className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up"
+                style={{ animationDelay: '0.2s' }}
+              >
                 {subtitle}
               </p>
               {(primaryCta || secondaryCta) && (
-                <div className="flex flex-row gap-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                <div className="flex flex-row gap-0 animate-slide-up mb-8" style={{ animationDelay: '0.3s' }}>
                   {ctas(false)}
+                </div>
+              )}
+              {children && (
+                <div className="animate-slide-up" style={{ animationDelay: '0.35s' }}>
+                  {children}
                 </div>
               )}
             </div>
 
             <div className="col-span-5 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <div className="relative aspect-[4/5] group">
+              <div className="relative aspect-square flex items-center justify-center group">
                 <img
                   src={image}
                   alt={imageAlt}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover rounded-2xl shadow-lg border border-secondary-100 group-hover:scale-105 transition-transform duration-700"
                 />
-                {imageCaption && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-6">
-                    <div className="flex items-center gap-3 text-white">
-                      <CheckCircle2 size={18} className="text-brand shrink-0" />
-                      <span className="text-sm font-bold">{imageCaption}</span>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>

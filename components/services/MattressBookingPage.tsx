@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Mail, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
 import { supabase, sendConfirmationEmail } from '../../lib/supabase';
 import { TrustBadges } from '../TrustBadges';
-import { ITEM_CATALOG } from '../QuotePage';
+import { ITEM_CATALOG } from '../../lib/itemCatalog';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 import { ContactIntakeForm } from '../shared/ContactIntakeForm';
 import { MattressDepositPayment, MATTRESS_DEPOSIT_AMOUNT } from '../shared/MattressDepositPayment';

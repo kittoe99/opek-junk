@@ -1,20 +1,69 @@
 import React from 'react';
-import { Home, KeyRound, Building, Heart, Sparkles, Recycle } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { PageHero } from '../shared/PageHero';
+import { BentoFeatureSection } from '../shared/BentoFeatureSection';
+import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
+import { CharityBanner } from '../CharityBanner';
+import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
+import { QuickActionBar } from '../QuickActionBar';
+
+const EstateIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M9 22V12h6v10" className="stroke-brand" strokeWidth="1.5"/>
+  </svg>
+);
+
+const KeyIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="8" cy="15" r="5" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M13 10l7-7M18 5l2 2" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+const BuildingIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M9 22v-4h6v4" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01" className="stroke-brand" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
+const HeartIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 8v4" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+const SparkleIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+    <circle cx="12" cy="12" r="2" className="stroke-brand" strokeWidth="1.5"/>
+  </svg>
+);
+
+const RecycleIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M7 19H4a2 2 0 0 1-2-2V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M17 5h3a2 2 0 0 1 2 2v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M12 22V12M12 12L8 8M12 12l4-4" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
 
 export const PropertyCleanoutPage: React.FC = () => {
-  const scenarios = [
-    { label: 'Estate Cleanouts', desc: 'Full-home clearing with donation coordination', icon: Home },
-    { label: 'Move-Outs & Rentals', desc: 'Tenant turnovers and end-of-lease clears', icon: KeyRound },
-    { label: 'Foreclosures', desc: 'Bank-owned and REO trash-outs to broom-swept', icon: Building },
-    { label: 'Hoarding Situations', desc: 'Compassionate, discreet, paced to your needs', icon: Heart },
-    { label: 'Pre-Sale Prep', desc: 'Get a property listing-ready in days, not weeks', icon: Sparkles },
-    { label: 'Donation Sorting', desc: 'On-site sorting with receipts where applicable', icon: Recycle },
-  ];
   const navigate = useNavigate();
+
+  const scenarios = [
+    { label: 'Estate Cleanouts', desc: 'Full-home clearing with donation coordination', icon: EstateIcon },
+    { label: 'Move-Outs & Rentals', desc: 'Tenant turnovers and end-of-lease clears', icon: KeyIcon },
+    { label: 'Foreclosures', desc: 'Bank-owned and REO trash-outs to broom-swept', icon: BuildingIcon },
+    { label: 'Hoarding Situations', desc: 'Compassionate, discreet, paced to your needs', icon: HeartIcon },
+    { label: 'Pre-Sale Prep', desc: 'Get a property listing-ready in days, not weeks', icon: SparkleIcon },
+    { label: 'Donation Sorting', desc: 'On-site sorting with receipts where applicable', icon: RecycleIcon },
+  ];
 
   return (
     <div className="bg-white min-h-screen">
@@ -22,71 +71,50 @@ export const PropertyCleanoutPage: React.FC = () => {
         eyebrow="Professional Service"
         title={<>Property<br />Cleanouts</>}
         subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — partner service providers handle the hard parts so you don't have to."
-        image="/process-step-1.svg"
+        image="/opek2.webp"
         imageAlt="Property cleanout team clearing a home"
-        imageCaption="Discreet • Vetted Providers • Broom-Swept Finish"
         primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
       />
 
       <TrustBadges />
+      <CharityBanner />
 
-      <section className="py-16 md:py-20 border-b border-secondary-100 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="block w-8 h-px bg-brand" />
-              <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">Cleanout Specialties</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-[1.05]">
-              Handled With Care
-            </h2>
-            <p className="text-secondary-500 text-sm mt-3 leading-relaxed max-w-md">
-              Every situation, handled with respect and total discretion.
-            </p>
-          </div>
+      <BentoFeatureSection
+        eyebrow="Cleanout Specialties"
+        title={
+          <>
+            Handled with
+            <br />
+            <span className="text-brand">care.</span>
+          </>
+        }
+        description="Every situation, handled with respect and total discretion."
+        items={scenarios}
+      />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {scenarios.map((item) => (
-              <div 
-                key={item.label} 
-                className="group relative p-5 md:p-8 bg-secondary-50/50 rounded-2xl border border-transparent hover:border-secondary-100 hover:bg-white hover:shadow-xl transition-all duration-300 flex items-start md:block gap-4 md:gap-0"
-              >
-                <div className="hidden md:block absolute top-0 left-6 w-8 h-1 bg-brand rounded-b-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="md:mb-6 shrink-0 mt-0.5 md:mt-0">
-                  <item.icon 
-                    className="w-7 h-7 md:w-14 md:h-14 text-secondary-300 group-hover:text-brand transition-colors duration-500" 
-                    strokeWidth={1.25} 
-                  />
-                </div>
-                <div>
-                  <h3 className="font-black text-secondary text-base md:text-lg mb-1 md:mb-2">{item.label}</h3>
-                  <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProcessEditorial />
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="prose prose-sm md:prose-base max-w-none text-secondary-500">
-            <h2 className="text-2xl font-bold text-secondary mb-4">Thorough & Compassionate Property Clearing Services</h2>
-            <p className="mb-4">
-              Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner providers approach every job with compassion and efficiency to leave the space completely broom-swept and ready for its next chapter.
-            </p>
-            <p className="mb-4">
-              Providers work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Vetted providers are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy <Link to="/services/junk-removal" className="text-brand hover:underline font-medium">junk removal</Link> to sorting valuable heirlooms from debris, partner providers work at your pace.
-            </p>
-            <p>
-              Property cleanout services are available nationwide, serving major areas from <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-medium">Dallas-Fort Worth</Link> to <Link to="/locations/phoenix" className="text-brand hover:underline font-medium">Phoenix</Link> and beyond. Upfront, flat-rate pricing is offered with no hidden fees. If you're a business managing multiple REO properties, a junk removal provider network can also coordinate centralized billing and multi-location support. Let partner providers handle the difficult work so you can move forward.
-            </p>
-          </div>
-        </div>
-      </section>
+      <EditorialContentSection title="Thorough & Compassionate Property Clearing Services">
+        <p>
+          Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner providers approach every job with compassion and efficiency.
+        </p>
+        <p>
+          Providers work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Vetted providers are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy{' '}
+          <Link to="/services/junk-removal" className="text-brand hover:underline font-semibold">junk removal</Link>{' '}
+          to sorting valuable heirlooms from debris, partner providers work at your pace.
+        </p>
+        <p>
+          Property cleanout services are available nationwide, serving major areas from{' '}
+          <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-semibold">Dallas-Fort Worth</Link>{' '}
+          to{' '}
+          <Link to="/locations/phoenix" className="text-brand hover:underline font-semibold">Phoenix</Link>{' '}
+          and beyond. Upfront, flat-rate pricing is offered with no hidden fees. If you're a business managing multiple REO properties, a junk removal provider network can also coordinate centralized billing and multi-location support.
+        </p>
+      </EditorialContentSection>
 
       <ServiceArea titleStart="Clear the property." titleAccent="With grace." />
+      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </div>
   );
 };

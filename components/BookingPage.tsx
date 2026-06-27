@@ -11,6 +11,8 @@ import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { EstimateMethodHero, EstimateMethodSelection } from './shared/EstimateMethodSelection';
+import { JunkItemCatalogSelector, CatalogSelectedItem } from './shared/JunkItemCatalogSelector';
+import { calculateStaticPrice } from '../services/pricingService';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -37,7 +39,7 @@ export const BookingPage: React.FC = () => {
   const addressDropdownRef = useRef<HTMLDivElement>(null);
   
   const [currentStep, setCurrentStep] = useState(0);
-  const [junkRemovalPhase, setJunkRemovalPhase] = useState<'method' | 'photo' | null>(null);
+  const [junkRemovalPhase, setJunkRemovalPhase] = useState<'method' | 'photo' | 'items' | 'items-result' | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
@@ -80,6 +82,8 @@ export const BookingPage: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
+  const [bookingSelectedItems, setBookingSelectedItems] = useState<CatalogSelectedItem[]>([]);
+  const [itemsPricingLoading, setItemsPricingLoading] = useState(false);
 
   // Dumpster Rental State
   const [dumpsterSize, setDumpsterSize] = useState<'10-yard' | '15-yard' | '20-yard' | '30-yard'>('20-yard');
@@ -239,6 +243,36 @@ export const BookingPage: React.FC = () => {
       setContactSubmitted(true);
     } finally {
       setContactLoading(false);
+    }
+  };
+
+  const handleBookingItemsContinue = async () => {
+    if (bookingSelectedItems.length === 0) return;
+    setItemsPricingLoading(true);
+    setError(null);
+    try {
+      const price = await calculateStaticPrice(bookingSelectedItems);
+      const quoteEst: QuoteEstimate = {
+        itemsDetected: bookingSelectedItems.map((i) => `${i.quantity}x ${i.name}`),
+        estimatedVolume: price.estimatedVolume,
+        price: price.price,
+        summary: price.summary,
+      };
+      setEstimate(quoteEst);
+      setFormData((prev) => ({
+        ...prev,
+        estimatedItems: quoteEst.itemsDetected,
+        estimatedVolume: quoteEst.estimatedVolume,
+        price: quoteEst.price,
+        details: `Items: ${quoteEst.itemsDetected.join(', ')}\nEstimated Volume: ${quoteEst.estimatedVolume}\nEstimated Price: $${quoteEst.price}`,
+      }));
+      setContactSubmitted(false);
+      setJunkRemovalPhase('items-result');
+    } catch (err) {
+      console.error('Items pricing error:', err);
+      setError('Failed to calculate price. Please try again.');
+    } finally {
+      setItemsPricingLoading(false);
     }
   };
 
@@ -515,7 +549,7 @@ export const BookingPage: React.FC = () => {
               </p>
             </>
           ) : null
-        ) : currentStep === 2 && formData.serviceType === 'Junk Removal' && junkRemovalPhase === 'method' ? (
+        ) : currentStep === 2 && formData.serviceType === 'Junk Removal' && (junkRemovalPhase === 'method' || junkRemovalPhase === 'items') ? (
           <EstimateMethodHero />
         ) : (
           <>
@@ -724,16 +758,10 @@ export const BookingPage: React.FC = () => {
                   setJunkRemovalPhase('photo');
                   window.scrollTo({ top: 0, behavior: 'auto' });
                 }}
-                onSelectItems={() =>
-                  navigate('/quote', {
-                    state: {
-                      zipResult: zipResult ? { city: zipResult.city, state: zipResult.state } : null,
-                      zipValue,
-                      serviceType: 'Junk Removal',
-                      quoteMethod: 'manual',
-                    },
-                  })
-                }
+                onSelectItems={() => {
+                  setJunkRemovalPhase('items');
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }}
               />
               <div className="pt-2">
                 <button
@@ -744,6 +772,106 @@ export const BookingPage: React.FC = () => {
                   <ArrowLeft size={14} /> Back
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* ═══ Step 2: Junk Removal — manual item selection ═══ */}
+          {currentStep === 2 && formData.serviceType === 'Junk Removal' && junkRemovalPhase === 'items' && !itemsPricingLoading && (
+            <div className="space-y-4">
+              <JunkItemCatalogSelector
+                selectedItems={bookingSelectedItems}
+                onSelectedItemsChange={setBookingSelectedItems}
+              />
+              <div className="pt-6 flex gap-3 max-w-2xl mx-auto">
+                <button
+                  type="button"
+                  onClick={() => setJunkRemovalPhase('method')}
+                  className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+                >
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBookingItemsContinue}
+                  disabled={bookingSelectedItems.length === 0}
+                  className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+                >
+                  Reveal <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 2 && junkRemovalPhase === 'items' && itemsPricingLoading && (
+            <div className="py-12 text-center">
+              <Loader2 size={40} className="animate-spin mx-auto mb-3 text-brand" />
+              <p className="text-secondary-400 text-sm">Calculating your estimate...</p>
+            </div>
+          )}
+
+          {/* ═══ Step 2: Junk Removal — item selection result ═══ */}
+          {currentStep === 2 && formData.serviceType === 'Junk Removal' && junkRemovalPhase === 'items-result' && estimate && (
+            <div className="space-y-4">
+              {!contactSubmitted ? (
+                <div className="max-w-md mx-auto">
+                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl mb-4">
+                    <div className="flex justify-between items-end mb-4">
+                      <div>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+                        <p className="text-3xl font-black text-brand">${estimate.price}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setJunkRemovalPhase('items')}
+                        className="text-brand text-xs font-black uppercase tracking-wider hover:underline"
+                      >
+                        Edit items
+                      </button>
+                    </div>
+                    <ul className="space-y-1">
+                      {estimate.itemsDetected.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <Check size={14} className="text-brand shrink-0 mt-0.5" strokeWidth={3} />
+                          <span className="text-secondary-600 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <ContactIntakeForm
+                    serviceType={formData.serviceType}
+                    isLoading={contactLoading}
+                    onReveal={async (name, phone) => {
+                      await handleContactReveal(name, phone, estimate);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
+                      <p className="text-3xl font-black text-brand">${estimate.price}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(3)}
+                    className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+                  >
+                    Continue to Schedule <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setJunkRemovalPhase('items');
+                  setContactSubmitted(false);
+                }}
+                className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
+              >
+                <ArrowLeft size={14} /> Back
+              </button>
             </div>
           )}
 
@@ -798,7 +926,10 @@ export const BookingPage: React.FC = () => {
 
                   <button
                     type="button"
-                    onClick={() => navigate('/quote', { state: { zipResult, zipValue, serviceType: formData.serviceType, quoteMethod: 'manual' } })}
+                    onClick={() => {
+                      setJunkRemovalPhase('items');
+                      window.scrollTo({ top: 0, behavior: 'auto' });
+                    }}
                     className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">

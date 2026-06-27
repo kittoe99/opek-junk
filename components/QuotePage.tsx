@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PopularItemsIcon, FurnitureIcon, BeddingIcon, AppliancesIcon, ElectronicsIcon, YardOutdoorIcon, ConstructionIcon, GarageStorageIcon, BaggedBoxedIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
+import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
+import { ITEM_CATALOG, type CatalogItem, type CatalogCategory } from '../lib/itemCatalog';
 import { EstimateMethodHero, EstimateMethodSelection } from './shared/EstimateMethodSelection';
 import { detectItemsFromPhotos } from '../services/openaiService';
 import { ItemIconRenderer } from './icons/JunkItemIcons';
@@ -13,183 +14,9 @@ import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
+import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
 
-// ── Item Catalog ──
-export interface CatalogItem {
-  name: string;
-  image: string;
-}
-export interface CatalogCategory {
-  label: string;
-  icon: React.ReactNode;
-  items: CatalogItem[];
-}
-
-export const ITEM_CATALOG: CatalogCategory[] = [
-  {
-    label: 'Popular Items',
-    icon: <PopularItemsIcon size={18} />,
-    items: [
-      { name: 'Sofa / Couch', image: '/items/sofa.svg' },
-      { name: 'Mattress', image: '/items/mattress.svg' },
-      { name: 'Box Spring', image: '/items/box-spring.svg' },
-      { name: 'Dresser', image: '/items/dresser.svg' },
-      { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
-      { name: 'Washer / Dryer', image: '/items/washer.svg' },
-      { name: 'TV', image: '/items/tv.svg' },
-      { name: 'Bags of Trash', image: '/items/trash-bags.svg' },
-      { name: 'Boxes of Junk', image: '/items/junk-boxes.svg' },
-      { name: 'Yard Debris / Brush', image: '/items/yard-debris.svg' },
-    ],
-  },
-  {
-    label: 'Furniture',
-    icon: <FurnitureIcon size={18} />,
-    items: [
-      { name: 'Sofa / Couch', image: '/items/sofa.svg' },
-      { name: 'Sectional Couch (2 piece)', image: '/items/sofa.svg' },
-      { name: 'Loveseat', image: '/items/loveseat.svg' },
-      { name: 'Chair', image: '/items/chair.svg' },
-      { name: 'Recliner', image: '/items/recliner.svg' },
-      { name: 'Ottoman', image: '/items/ottoman.svg' },
-      { name: 'Table', image: '/items/table.svg' },
-      { name: 'Dining Table', image: '/items/table.svg' },
-      { name: 'Coffee Table', image: '/items/table.svg' },
-      { name: 'TV Stand / Entertainment Center', image: '/items/tv-stand.svg' },
-      { name: 'Bookshelf', image: '/items/bookshelf.svg' },
-      { name: 'Desk', image: '/items/desk.svg' },
-      { name: 'Desk Chair / Office Chair', image: '/items/chair.svg' },
-      { name: 'Bar Stools', image: '/items/chair.svg' },
-      { name: 'Filing Cabinet', image: '/items/cabinet.svg' },
-      { name: 'Dresser', image: '/items/dresser.svg' },
-      { name: 'Nightstand', image: '/items/nightstand.svg' },
-      { name: 'Wardrobe / Armoire', image: '/items/wardrobe.svg' },
-      { name: 'China Cabinet', image: '/items/cabinet.svg' },
-      { name: 'Patio Furniture Set', image: '/items/patio-set.svg' },
-      { name: 'Patio Chair', image: '/items/chair.svg' },
-    ],
-  },
-  {
-    label: 'Mattresses & Bedding',
-    icon: <BeddingIcon size={18} />,
-    items: [
-      { name: 'Mattress', image: '/items/mattress.svg' },
-      { name: 'Box Spring', image: '/items/box-spring.svg' },
-      { name: 'Bed Frame', image: '/items/bed-frame.svg' },
-      { name: 'Futon', image: '/items/futon.svg' },
-      { name: 'Futon Mattress', image: '/items/mattress.svg' },
-      { name: 'Bunk Bed', image: '/items/bunk-bed.svg' },
-      { name: 'Crib', image: '/items/crib.svg' },
-    ],
-  },
-  {
-    label: 'Appliances',
-    icon: <AppliancesIcon size={18} />,
-    items: [
-      { name: 'Refrigerator / Freezer', image: '/items/fridge.svg' },
-      { name: 'Mini Fridge', image: '/items/fridge.svg' },
-      { name: 'Washer / Dryer', image: '/items/washer.svg' },
-      { name: 'Washing Machine', image: '/items/washer.svg' },
-      { name: 'Dryer', image: '/items/washer.svg' },
-      { name: 'Dishwasher', image: '/items/dishwasher.svg' },
-      { name: 'Oven / Stove', image: '/items/oven.svg' },
-      { name: 'Microwave', image: '/items/microwave.svg' },
-      { name: 'AC Unit', image: '/items/ac-unit.svg' },
-      { name: 'Water Heater', image: '/items/water-heater.svg' },
-      { name: 'Vacuum Cleaner', image: '/items/vacuum.svg' },
-      { name: 'Exercise Equipment', image: '/items/exercise.svg' },
-      { name: 'Treadmill', image: '/items/exercise.svg' },
-      { name: 'Dehumidifier', image: '/items/ac-unit.svg' },
-      { name: 'Water Dispenser / Cooler', image: '/items/water-heater.svg' },
-    ],
-  },
-  {
-    label: 'Electronics',
-    icon: <ElectronicsIcon size={18} />,
-    items: [
-      { name: 'TV', image: '/items/tv.svg' },
-      { name: 'Computer / Monitor', image: '/items/computer.svg' },
-      { name: 'Printer / Scanner', image: '/items/printer.svg' },
-      { name: 'Stereo / Speakers', image: '/items/speakers.svg' },
-      { name: 'Speakers (Large)', image: '/items/speakers.svg' },
-      { name: 'Gaming Console', image: '/items/gaming.svg' },
-      { name: 'Projector', image: '/items/computer.svg' },
-      { name: 'Electronics Box', image: '/items/electronics-box.svg' },
-    ],
-  },
-  {
-    label: 'Yard & Outdoor',
-    icon: <YardOutdoorIcon size={18} />,
-    items: [
-      { name: 'Lawn Mower', image: '/items/lawn-mower.svg' },
-      { name: 'Riding Mower', image: '/items/lawn-mower.svg' },
-      { name: 'Grill / BBQ', image: '/items/grill.svg' },
-      { name: 'Trampoline', image: '/items/trampoline.svg' },
-      { name: 'Swing Set / Playground', image: '/items/swing-set.svg' },
-      { name: 'Hot Tub / Spa', image: '/items/hot-tub.svg' },
-      { name: 'Shed', image: '/items/shed.svg' },
-      { name: 'Fencing', image: '/items/fencing.svg' },
-      { name: 'Yard Debris / Brush', image: '/items/yard-debris.svg' },
-      { name: 'Garden Tools', image: '/items/garden-tools.svg' },
-      { name: 'Wheelbarrow', image: '/items/garden-tools.svg' },
-      { name: 'Leaf Blower', image: '/items/garden-tools.svg' },
-      { name: 'Firewood Pile', image: '/items/firewood.svg' },
-    ],
-  },
-  {
-    label: 'Construction & Debris',
-    icon: <ConstructionIcon size={18} />,
-    items: [
-      { name: 'Drywall / Sheetrock', image: '/items/drywall.svg' },
-      { name: 'Lumber / Wood', image: '/items/lumber.svg' },
-      { name: 'Carpet / Padding', image: '/items/carpet.svg' },
-      { name: 'Tile / Flooring', image: '/items/tile.svg' },
-      { name: 'Concrete / Brick', image: '/items/concrete.svg' },
-      { name: 'Roofing Shingles', image: '/items/roofing.svg' },
-      { name: 'Windows / Doors', image: '/items/windows-doors.svg' },
-      { name: 'Cabinets / Countertop', image: '/items/cabinets.svg' },
-      { name: 'Plumbing Fixtures', image: '/items/plumbing.svg' },
-      { name: 'Paint Cans', image: '/items/paint-cans.svg' },
-      { name: 'Insulation', image: '/items/insulation.svg' },
-    ],
-  },
-  {
-    label: 'Garage & Storage',
-    icon: <GarageStorageIcon size={18} />,
-    items: [
-      { name: 'Tires', image: '/items/tires.svg' },
-      { name: 'Car Battery', image: '/items/car-battery.svg' },
-      { name: 'Bicycle', image: '/items/bicycle.svg' },
-      { name: 'Toolbox / Workbench', image: '/items/toolbox.svg' },
-      { name: 'Shelving Unit', image: '/items/shelving.svg' },
-      { name: 'Metal Shelving', image: '/items/shelving.svg' },
-      { name: 'Storage Bins / Boxes', image: '/items/storage-bins.svg' },
-      { name: 'Clothing / Bags', image: '/items/clothing.svg' },
-      { name: 'Luggage', image: '/items/luggage.svg' },
-      { name: 'Sports Equipment', image: '/items/sports.svg' },
-      { name: 'Kids Toys', image: '/items/kids-toys.svg' },
-      { name: 'Ladder', image: '/items/toolbox.svg' },
-    ],
-  },
-  {
-    label: 'Miscellaneous',
-    icon: <BaggedBoxedIcon size={18} />,
-    items: [
-      { name: 'Piano / Organ', image: '/items/piano.svg' },
-      { name: 'Pool / Game Table', image: '/items/game-table.svg' },
-      { name: 'Aquarium / Fish Tank', image: '/items/aquarium.svg' },
-      { name: 'Rug', image: '/items/rug.svg' },
-      { name: 'Mirror', image: '/items/mirror.svg' },
-      { name: 'Light Fixture', image: '/items/light-fixture.svg' },
-      { name: 'Bags of Trash', image: '/items/trash-bags.svg' },
-      { name: 'Boxes of Junk', image: '/items/junk-boxes.svg' },
-      { name: 'Safe (Medium/Large)', image: '/items/misc-item.svg' },
-      { name: 'Pet Crate / Kennel', image: '/items/misc-item.svg' },
-      { name: 'Stroller', image: '/items/misc-item.svg' },
-      { name: 'Miscellaneous Item', image: '/items/misc-item.svg' },
-    ],
-  },
-];
+export { ITEM_CATALOG, type CatalogItem, type CatalogCategory };
 
 // Nationwide coverage — any valid US ZIP is served.
 type ServedCity = { city: string; state: string };
@@ -391,12 +218,9 @@ export const QuotePage: React.FC = () => {
     }
     return [];
   });
-  const [catalogSearch, setCatalogSearch] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState<string | null>('Popular Items');
   const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>('select');
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
-  const [manualNewItemName, setManualNewItemName] = useState('');
 
   // Scroll refs
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -571,14 +395,7 @@ export const QuotePage: React.FC = () => {
     setNewItemName('');
   };
 
-  // ── Image lookup helper ──
-  const getItemImage = (itemName: string): string => {
-    for (const cat of ITEM_CATALOG) {
-      const found = cat.items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
-      if (found) return found.image;
-    }
-    return '/items/misc-item.svg';
-  };
+  const getItemImage = getCatalogItemImage;
 
   // ── Item Selection handlers ──
   const toggleCatalogItem = (itemName: string) => {
@@ -599,13 +416,6 @@ export const QuotePage: React.FC = () => {
 
   const removeSelectedItem = (id: string) => {
     setSelectedItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const addManualSelectedItem = () => {
-    const name = manualNewItemName.trim();
-    if (!name) return;
-    setSelectedItems(prev => [...prev, { id: `custom-${Date.now()}`, name, quantity: 1 }]);
-    setManualNewItemName('');
   };
 
   const handleGetManualPrice = async () => {
@@ -639,13 +449,6 @@ export const QuotePage: React.FC = () => {
   }, [zipVerified, incomingState, selectedItems, manualStep]);
 
   const isItemSelected = (itemName: string) => selectedItems.some(i => i.name === itemName);
-
-  const filteredCatalog = catalogSearch.trim()
-    ? ITEM_CATALOG.map(cat => ({
-        ...cat,
-        items: cat.items.filter(i => i.name.toLowerCase().includes(catalogSearch.toLowerCase())),
-      })).filter(cat => cat.items.length > 0)
-    : ITEM_CATALOG;
 
   const totalSelectedCount = selectedItems.reduce((sum, i) => sum + i.quantity, 0);
 
@@ -2200,228 +2003,10 @@ export const QuotePage: React.FC = () => {
 
               {/* Selection step */}
               {manualStep === 'select' && !manualPricingLoading && (
-                <div className="space-y-5">
-                  {/* Search bar - enhanced */}
-                  <div className="relative group">
-                    <input
-                      type="text"
-                      value={catalogSearch}
-                      onChange={(e) => setCatalogSearch(e.target.value)}
-                      placeholder="Search items..."
-                      className="w-full px-4 py-3 text-sm bg-white border border-secondary-100 rounded-2xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-3 focus:ring-brand/8 shadow-sm transition-all duration-200"
-                    />
-                    {catalogSearch && (
-                      <button
-                        onClick={() => setCatalogSearch('')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-secondary-200 hover:bg-secondary-300 flex items-center justify-center transition-colors"
-                      >
-                        <X size={10} className="text-secondary-600" strokeWidth={2.5} />
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Sidebar and Grid split layout */}
-                  <div className="flex flex-col sm:flex-row gap-0 md:gap-0">
-                    {/* Left Sidebar */}
-                    <div className="w-full sm:w-[190px] md:w-[220px] shrink-0 flex flex-row sm:flex-col gap-1 sm:gap-0.5 border-b sm:border-b-0 sm:border-r border-secondary-100 pb-3 sm:pb-0 pr-0 sm:pr-3 overflow-x-auto sm:overflow-y-visible scrollbar-none py-1 sm:py-0 sm:sticky sm:top-36 sm:self-start">
-                      {ITEM_CATALOG.map((category, idx) => {
-                        const isActive = expandedCategory === category.label && !catalogSearch.trim();
-                        const selectedCount = category.items.filter(i => isItemSelected(i.name)).length;
-                        return (
-                          <button
-                            key={category.label}
-                            onClick={() => {
-                              setExpandedCategory(category.label);
-                              setCatalogSearch('');
-                            }}
-                            className={`flex flex-row items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
-                              isActive
-                                ? 'bg-brand/10 text-brand'
-                                : 'hover:bg-white text-secondary-500 hover:text-secondary'
-                            }`}
-                          >
-                            <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                              isActive ? 'bg-brand/20 text-brand' : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
-                            }`}>
-                              <span className="scale-75">{category.icon}</span>
-                            </div>
-                            <div className="flex-1 min-w-0 text-left">
-                              <p className={`text-[10px] sm:text-[11px] leading-tight truncate whitespace-nowrap sm:whitespace-normal ${
-                                isActive ? 'font-black' : 'font-semibold'
-                              }`}>
-                                {category.label}
-                              </p>
-                            </div>
-                            {selectedCount > 0 && (
-                              <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full shrink-0 bg-brand text-white">
-                                {selectedCount}
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Right Items Grid */}
-                    <div className="flex-1 min-w-0 sm:pl-4 md:pl-5 pt-3 sm:pt-0">
-                      {catalogSearch.trim() ? (
-                        <div>
-                          <div className="flex items-center gap-2 mb-4">
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-secondary-400">
-                              Results
-                            </h3>
-                            <span className="px-2 py-0.5 rounded-full bg-secondary-100 text-secondary-500 text-[10px] font-bold">
-                              {filteredCatalog.reduce((sum, cat) => sum + cat.items.length, 0)}
-                            </span>
-                          </div>
-                          {filteredCatalog.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-12 text-center">
-                              <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center mb-3">
-                                <Search size={20} className="text-secondary-300" />
-                              </div>
-                              <p className="text-sm font-semibold text-secondary-400">No items found</p>
-                              <p className="text-xs text-secondary-300 mt-1">Try a different search term</p>
-                            </div>
-                          ) : (
-                            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
-                              {filteredCatalog.flatMap(cat => cat.items).map((item) => {
-                                const selected = isItemSelected(item.name);
-                                const selectedItem = selectedItems.find(i => i.name === item.name);
-                                return (
-                                  <button
-                                    key={item.name}
-                                    className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
-                                      selected
-                                        ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
-                                        : 'bg-white border-secondary-100 hover:border-secondary-100 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
-                                    }`}
-                                    onClick={() => toggleCatalogItem(item.name)}
-                                  >
-                                    {selected && (
-                                      <div className="absolute top-2 right-2 w-5 h-5 bg-brand text-white rounded-full flex items-center justify-center shadow-md animate-scale-in z-10">
-                                        <Check size={11} strokeWidth={3.5} />
-                                      </div>
-                                    )}
-                                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                                      selected ? 'bg-brand/10' : 'bg-white group-hover:bg-secondary-100'
-                                    }`}>
-                                      <ItemIconRenderer
-                                        imagePath={item.image}
-                                        className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
-                                      />
-                                    </div>
-                                    <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
-                                      selected ? 'text-brand' : 'text-secondary-700 group-hover:text-secondary'
-                                    }`}>{item.name}</span>
-                                    
-                                    {selected && selectedItem && (
-                                      <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-100 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
-                                          <Minus size={9} className="text-secondary-500" />
-                                        </button>
-                                        <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                        <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                          <Plus size={9} className="text-secondary-500" />
-                                        </button>
-                                      </div>
-                                    )}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div>
-                          {ITEM_CATALOG.filter(cat => cat.label === (expandedCategory || 'Popular Items')).map((category) => (
-                            <div key={category.label}>
-                              <div className="flex items-center gap-2 mb-4">
-                                <h3 className="text-[10px] font-black uppercase tracking-widest text-secondary-400">
-                                  {category.label}
-                                </h3>
-                                <span className="px-2 py-0.5 rounded-full bg-secondary-100 text-secondary-400 text-[10px] font-bold">
-                                  {category.items.length}
-                                </span>
-                              </div>
-                              <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
-                                {category.items.map((item) => {
-                                  const selected = isItemSelected(item.name);
-                                  const selectedItem = selectedItems.find(i => i.name === item.name);
-                                  return (
-                                    <button
-                                      key={item.name}
-                                      className={`group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
-                                        selected
-                                          ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
-                                          : 'bg-white border-secondary-100 hover:border-secondary-100 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
-                                      }`}
-                                      onClick={() => toggleCatalogItem(item.name)}
-                                    >
-                                      {selected && (
-                                        <div className="absolute top-2 right-2 w-5 h-5 bg-brand text-white rounded-full flex items-center justify-center shadow-md animate-scale-in z-10">
-                                          <Check size={11} strokeWidth={3.5} />
-                                        </div>
-                                      )}
-                                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                                        selected ? 'bg-brand/10' : 'bg-white group-hover:bg-secondary-100'
-                                      }`}>
-                                        <ItemIconRenderer
-                                          imagePath={item.image}
-                                          className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:scale-110"
-                                        />
-                                      </div>
-                                      <span className={`text-[10px] sm:text-[11px] font-bold leading-tight line-clamp-2 transition-colors px-0.5 ${
-                                        selected ? 'text-brand' : 'text-secondary-700 group-hover:text-secondary'
-                                      }`}>{item.name}</span>
-                                      
-                                      {selected && selectedItem && (
-                                        <div className="flex items-center gap-1.5 mt-2 bg-white border border-secondary-100 rounded-full px-2 py-0.5 shadow-sm hover:shadow-md transition-shadow duration-205" onClick={(e) => e.stopPropagation()}>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, -1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
-                                            <Minus size={9} className="text-secondary-500" />
-                                          </button>
-                                          <span className="w-5 text-center text-xs font-black text-secondary leading-none">{selectedItem.quantity}</span>
-                                          <button onClick={() => updateSelectedQuantity(selectedItem.id, 1)} className="w-4.5 h-4.5 rounded-full bg-white flex items-center justify-center hover:bg-brand/10 hover:text-brand transition-colors">
-                                            <Plus size={9} className="text-secondary-500" />
-                                          </button>
-                                        </div>
-                                      )}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Custom item entry */}
-                  <div className="border border-dashed border-secondary-100 rounded-2xl p-4">
-                    <p className="text-[10px] font-black text-secondary-400 uppercase tracking-widest mb-3">Don't see your item?</p>
-                    <div className="flex gap-2">
-                      <div className="relative group flex-1">
-                        <input
-                          type="text"
-                          value={manualNewItemName}
-                          onChange={(e) => setManualNewItemName(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && addManualSelectedItem()}
-                          placeholder="Type item name and press Enter"
-                          className="w-full px-4 py-2.5 text-sm bg-white border border-secondary-100 rounded-xl text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/8 transition-all"
-                        />
-                      </div>
-                      <button
-                        onClick={addManualSelectedItem}
-                        disabled={!manualNewItemName.trim()}
-                        className="px-4 bg-secondary text-white text-sm font-bold rounded-xl hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5"
-                      >
-                        <Plus size={14} />
-                        <span className="hidden sm:inline text-xs">Add</span>
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
+                <JunkItemCatalogSelector
+                  selectedItems={selectedItems}
+                  onSelectedItemsChange={setSelectedItems}
+                />
               )}
 
               {/* Sticky floating Review CTA — scrolls with page */}
