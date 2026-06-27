@@ -1,11 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
-import { getSupabaseAdmin, isSupabaseAdminConfigured } from './utils/supabaseAdmin';
+import { getSupabaseAdmin, isSupabaseAdminConfigured } from '../server/supabaseAdmin.js';
 import {
   resolveStripeCustomerForIntent,
   saveCustomerPaymentMethod,
   upsertPaymentFromIntent,
-} from './utils/stripeDb';
+} from '../server/stripeDb.js';
 
 export const config = {
   api: {
