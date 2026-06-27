@@ -1,69 +1,96 @@
 import Stripe from 'stripe';
+import { upsertStripeCustomer } from './stripeDb';
+import {
+  ensureStripeCustomer,
+  normalizeStripeCustomerContact,
+  type StripeCustomerContact,
+} from './stripeCustomer';
+import { getSupabaseAdmin, isSupabaseAdminConfigured } from './supabaseAdmin';
 
 export const BOOKING_DEPOSIT_AMOUNT_CENTS = 100;
 
-export interface CreatePaymentIntentOptions {
-  email?: string;
-  name?: string;
-  phone?: string;
+export interface CreatePaymentIntentOptions extends StripeCustomerContact {
   serviceType?: string;
+  stripeCustomerId?: string;
 }
 
-function normalizePhoneForStripe(phone?: string): string | undefined {
-  if (typeof phone !== 'string') {
-    return undefined;
-  }
-
-  const trimmed = phone.trim();
-  if (!trimmed) {
-    return undefined;
-  }
-
-  if (trimmed.startsWith('+')) {
-    const digits = trimmed.slice(1).replace(/\D/g, '');
-    return digits.length >= 10 ? `+${digits}` : undefined;
-  }
-
-  const digits = trimmed.replace(/\D/g, '');
-  if (digits.length === 10) {
-    return `+1${digits}`;
-  }
-
-  if (digits.length === 11 && digits.startsWith('1')) {
-    return `+${digits}`;
-  }
-
-  return undefined;
-}
-
-async function findOrCreateStripeCustomer(
+async function resolveStripeCustomer(
   stripe: Stripe,
-  options: Pick<CreatePaymentIntentOptions, 'email' | 'name' | 'phone'>
-) {
-  const email = typeof options.email === 'string' && options.email.includes('@')
-    ? options.email.trim()
-    : undefined;
-  const name = typeof options.name === 'string' ? options.name.trim() : undefined;
-  const phone = normalizePhoneForStripe(options.phone);
-  const rawPhone = typeof options.phone === 'string' ? options.phone.trim() : undefined;
-
-  if (!email && !name && !phone && !rawPhone) {
-    return null;
-  }
-
-  if (email) {
-    const existing = await stripe.customers.list({ email, limit: 1 });
-    if (existing.data[0]) {
-      return existing.data[0];
+  options: CreatePaymentIntentOptions
+): Promise<Stripe.Customer> {
+  if (options.stripeCustomerId) {
+    const retrieved = await stripe.customers.retrieve(options.stripeCustomerId);
+    if ('deleted' in retrieved && retrieved.deleted) {
+      throw new Error('Stripe customer not found. Please try again.');
     }
+
+    const existing = retrieved as Stripe.Customer;
+
+    if (isSupabaseAdminConfigured()) {
+      const supabase = getSupabaseAdmin();
+      await upsertStripeCustomer(supabase, {
+        stripeCustomerId: existing.id,
+        email: existing.email ?? null,
+        name: existing.name ?? null,
+        phone: existing.phone ?? null,
+        metadata: (existing.metadata ?? {}) as Record<string, string>,
+      });
+    }
+
+    return existing;
   }
 
-  return stripe.customers.create({
-    email,
-    name,
-    phone,
-    metadata: { source: 'opekjunkremoval.com' },
+  const normalized = normalizeStripeCustomerContact(options);
+  if (!normalized.email) {
+    throw new Error('A valid email is required before payment can be initialized.');
+  }
+
+  const { stripeCustomer } = await ensureStripeCustomer(stripe, options);
+  return stripeCustomer;
+}
+
+async function persistPaymentRecord(
+  paymentIntent: Stripe.PaymentIntent,
+  stripeCustomer: Stripe.Customer,
+  contact: ReturnType<typeof normalizeStripeCustomerContact>,
+  serviceType?: string
+) {
+  if (!isSupabaseAdminConfigured()) {
+    return;
+  }
+
+  const supabase = getSupabaseAdmin();
+  const customerRow = await upsertStripeCustomer(supabase, {
+    stripeCustomerId: stripeCustomer.id,
+    email: stripeCustomer.email ?? contact.email ?? null,
+    name: stripeCustomer.name ?? contact.name ?? null,
+    phone: stripeCustomer.phone ?? contact.phone ?? null,
+    metadata: (stripeCustomer.metadata ?? {}) as Record<string, string>,
   });
+
+  const { error: paymentError } = await supabase.from('payments').upsert(
+    {
+      stripe_payment_intent_id: paymentIntent.id,
+      stripe_charge_id:
+        typeof paymentIntent.latest_charge === 'string'
+          ? paymentIntent.latest_charge
+          : paymentIntent.latest_charge?.id ?? null,
+      amount_cents: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status,
+      payment_type: paymentIntent.metadata?.type ?? 'booking_deposit',
+      service_type: serviceType ?? paymentIntent.metadata?.service_type ?? null,
+      customer_email: contact.email ?? paymentIntent.receipt_email ?? null,
+      customer_id: customerRow.id,
+      metadata: paymentIntent.metadata ?? {},
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'stripe_payment_intent_id' }
+  );
+
+  if (paymentError) {
+    throw paymentError;
+  }
 }
 
 export async function createBookingPaymentIntent(
@@ -71,42 +98,44 @@ export async function createBookingPaymentIntent(
   options: CreatePaymentIntentOptions = {}
 ) {
   const stripe = new Stripe(secretKey);
-  const { email, name, phone, serviceType } = options;
+  const { serviceType } = options;
+  const contact = normalizeStripeCustomerContact(options);
 
-  const stripeCustomer = await findOrCreateStripeCustomer(stripe, { email, name, phone });
-
-  const normalizedEmail =
-    typeof email === 'string' && email.includes('@') ? email.trim() : undefined;
-  const normalizedName = typeof name === 'string' ? name.trim() : undefined;
-  const normalizedPhone = typeof phone === 'string' ? phone.trim() : undefined;
-  const stripePhone = normalizePhoneForStripe(phone);
+  const stripeCustomer = await resolveStripeCustomer(stripe, options);
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: BOOKING_DEPOSIT_AMOUNT_CENTS,
     currency: 'usd',
     payment_method_types: ['card'],
-    ...(stripeCustomer ? { customer: stripeCustomer.id } : {}),
+    customer: stripeCustomer.id,
+    setup_future_usage: 'off_session',
     metadata: {
       type: 'booking_deposit',
       service_type: typeof serviceType === 'string' ? serviceType : 'booking',
-      ...(normalizedEmail ? { customer_email: normalizedEmail } : {}),
-      ...(normalizedName ? { customer_name: normalizedName } : {}),
-      ...(normalizedPhone ? { customer_phone: normalizedPhone } : {}),
+      stripe_customer_id: stripeCustomer.id,
+      ...(contact.email ? { customer_email: contact.email } : {}),
+      ...(contact.name ? { customer_name: contact.name } : {}),
+      ...(contact.phone ? { customer_phone: contact.phone } : {}),
     },
-    ...(normalizedEmail ? { receipt_email: normalizedEmail } : {}),
+    ...(contact.email ? { receipt_email: contact.email } : {}),
   });
 
   if (!paymentIntent.client_secret) {
     throw new Error('Failed to initialize payment.');
   }
 
+  try {
+    await persistPaymentRecord(paymentIntent, stripeCustomer, contact, serviceType);
+  } catch (dbError) {
+    console.error('Failed to persist payment to Supabase:', dbError);
+  }
+
   return {
     clientSecret: paymentIntent.client_secret,
     paymentIntentId: paymentIntent.id,
-    paymentIntent,
-    stripeCustomerId: stripeCustomer?.id ?? null,
-    customerEmail: normalizedEmail ?? null,
-    customerName: normalizedName ?? null,
-    customerPhone: normalizedPhone ?? null,
+    stripeCustomerId: stripeCustomer.id,
+    customerEmail: contact.email ?? null,
+    customerName: contact.name ?? null,
+    customerPhone: contact.phone ?? null,
   };
 }
