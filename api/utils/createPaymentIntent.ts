@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { upsertStripeCustomer } from './stripeDb';
+import { upsertStripeCustomer } from './stripeCustomerStore';
 import {
   ensureStripeCustomer,
   normalizeStripeCustomerContact,

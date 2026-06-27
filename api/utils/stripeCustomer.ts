@@ -1,6 +1,6 @@
 import type Stripe from 'stripe';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { upsertStripeCustomer } from './stripeDb';
+import { upsertStripeCustomer } from './stripeCustomerStore';
 import { getSupabaseAdmin, isSupabaseAdminConfigured } from './supabaseAdmin';
 
 export interface StripeCustomerContact {
