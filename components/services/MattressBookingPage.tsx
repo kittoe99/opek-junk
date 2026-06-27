@@ -756,8 +756,6 @@ export const MattressBookingPage: React.FC = () => {
 
   const renderStep4 = () => {
     const total = calculateTotal();
-    const pickupFee = Math.round(total * 0.65);
-    const disposalFee = total - pickupFee;
     const visibleItems = selectedItems.filter(i => i.quantity > 0);
     const totalItems = visibleItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -799,11 +797,7 @@ export const MattressBookingPage: React.FC = () => {
           <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
             <div className="flex justify-between items-center text-sm">
               <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-              <span className="text-secondary-900 font-bold">${pickupFee}</span>
-            </div>
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
-              <span className="text-secondary-900 font-bold">${disposalFee}</span>
+              <span className="text-secondary-900 font-bold">${total}</span>
             </div>
           </div>
           <div className="flex justify-between items-end">

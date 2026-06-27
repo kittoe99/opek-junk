@@ -550,8 +550,6 @@ export const QuotePage: React.FC = () => {
       );
     }
 
-    const pickupFee = Math.round(price.price * 0.65);
-    const disposalFee = price.price - pickupFee;
     const isSpecialService = selectedOption === 'moving_labor' || selectedOption === 'donation_pickup';
 
     return (
@@ -607,11 +605,7 @@ export const QuotePage: React.FC = () => {
             <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
               <div className="flex justify-between items-center text-sm md:text-base">
                 <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-                <span className="text-secondary-900 font-bold">${pickupFee}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm md:text-base">
-                <span className="text-secondary-600 font-medium">Disposal & Landfill fee</span>
-                <span className="text-secondary-900 font-bold">${disposalFee}</span>
+                <span className="text-secondary-900 font-bold">${price.price}</span>
               </div>
             </div>
           )}

@@ -193,10 +193,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                 <Plus size={20} />
               </div>
               <div className="text-left">
-                <p className="text-xs font-black uppercase tracking-wider text-secondary">Add more items</p>
-                <p className="text-[10px] text-secondary-400 mt-0.5">
-                  Furniture, appliances, electronics, yard waste, and more
-                </p>
+                <p className="text-xs font-black uppercase tracking-wider text-secondary">Show more items</p>
               </div>
             </div>
             <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all shrink-0">
