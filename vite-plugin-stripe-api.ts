@@ -1,6 +1,8 @@
 import type { Plugin } from 'vite';
 import { createBookingPaymentIntent } from './lib/createPaymentIntent';
+import { ensureStripeCustomer } from './lib/createStripeCustomer';
 import { proxyCalculatePrice } from './lib/calculatePriceProxy';
+import Stripe from 'stripe';
 
 function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {
   return new Promise((resolve, reject) => {
@@ -46,7 +48,11 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
           return;
         }
 
-        if (pathname !== '/api/create-payment-intent' || req.method !== 'POST') {
+        const isStripePaymentRoute =
+          (pathname === '/api/create-payment-intent' || pathname === '/api/create-stripe-customer') &&
+          req.method === 'POST';
+
+        if (!isStripePaymentRoute) {
           next();
           return;
         }
@@ -67,13 +73,43 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
             name?: string;
             phone?: string;
             serviceType?: string;
+            stripeCustomerId?: string;
           };
+
+          if (pathname === '/api/create-stripe-customer') {
+            if (typeof body.email !== 'string' || !body.email.includes('@')) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({
+                error: 'A valid email is required to save your payment method for future charges.',
+              }));
+              return;
+            }
+
+            const stripe = new Stripe(stripeSecretKey);
+            const result = await ensureStripeCustomer(stripe, {
+              email: body.email,
+              name: body.name,
+              phone: body.phone,
+            });
+
+            res.statusCode = 200;
+            res.end(JSON.stringify({
+              stripeCustomerId: result.stripeCustomerId,
+              supabaseCustomerId: result.supabaseCustomerId,
+            }));
+            return;
+          }
+
           const result = await createBookingPaymentIntent(stripeSecretKey, body);
           res.statusCode = 200;
-          res.end(JSON.stringify(result));
+          res.end(JSON.stringify({
+            clientSecret: result.clientSecret,
+            paymentIntentId: result.paymentIntentId,
+            stripeCustomerId: result.stripeCustomerId,
+          }));
         } catch (error) {
-          console.error('Local Stripe PaymentIntent error:', error);
-          const message = error instanceof Error ? error.message : 'Failed to create payment intent';
+          console.error('Local Stripe API error:', error);
+          const message = error instanceof Error ? error.message : 'Stripe API request failed';
           res.statusCode = 500;
           res.end(JSON.stringify({ error: message }));
         }

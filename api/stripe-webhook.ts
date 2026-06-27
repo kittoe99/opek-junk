@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { getSupabaseAdmin, isSupabaseAdminConfigured } from './utils/supabaseAdmin';
 import {
   resolveStripeCustomerForIntent,
+  saveCustomerPaymentMethod,
   upsertPaymentFromIntent,
 } from './utils/stripeDb';
 
@@ -55,6 +56,10 @@ async function syncPaymentIntent(
 ) {
   const customerId = await resolveStripeCustomerForIntent(stripe, supabase, paymentIntent);
   await upsertPaymentFromIntent(supabase, paymentIntent, customerId);
+
+  if (paymentIntent.status === 'succeeded') {
+    await saveCustomerPaymentMethod(stripe, paymentIntent);
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

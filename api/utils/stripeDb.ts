@@ -118,6 +118,46 @@ export function customerFieldsFromIntent(paymentIntent: Stripe.PaymentIntent) {
   };
 }
 
+export async function saveCustomerPaymentMethod(
+  stripe: Stripe,
+  paymentIntent: Stripe.PaymentIntent
+): Promise<void> {
+  if (paymentIntent.status !== 'succeeded') {
+    return;
+  }
+
+  const stripeCustomerId =
+    typeof paymentIntent.customer === 'string'
+      ? paymentIntent.customer
+      : paymentIntent.customer?.id ?? null;
+
+  const paymentMethodId =
+    typeof paymentIntent.payment_method === 'string'
+      ? paymentIntent.payment_method
+      : paymentIntent.payment_method?.id ?? null;
+
+  if (!stripeCustomerId || !paymentMethodId) {
+    return;
+  }
+
+  const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
+
+  if (!paymentMethod.customer) {
+    await stripe.paymentMethods.attach(paymentMethodId, { customer: stripeCustomerId });
+  } else if (paymentMethod.customer !== stripeCustomerId) {
+    console.warn(
+      `Payment method ${paymentMethodId} belongs to ${paymentMethod.customer}, not ${stripeCustomerId}`
+    );
+    return;
+  }
+
+  await stripe.customers.update(stripeCustomerId, {
+    invoice_settings: {
+      default_payment_method: paymentMethodId,
+    },
+  });
+}
+
 export async function resolveStripeCustomerForIntent(
   stripe: Stripe,
   supabase: SupabaseClient,
@@ -136,9 +176,9 @@ export async function resolveStripeCustomerForIntent(
 
     const record = await upsertStripeCustomer(supabase, {
       stripeCustomerId: stripeCustomer.id,
-      email: stripeCustomer.email,
-      name: stripeCustomer.name,
-      phone: stripeCustomer.phone,
+      email: stripeCustomer.email ?? null,
+      name: stripeCustomer.name ?? null,
+      phone: stripeCustomer.phone ?? null,
       metadata: (stripeCustomer.metadata ?? {}) as Record<string, string>,
     });
 
