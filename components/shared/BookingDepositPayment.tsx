@@ -10,7 +10,7 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';
+import { BOOKING_DEPOSIT_AMOUNT, BOOKING_DEPOSIT_AMOUNT_CENTS } from '../../lib/deposit';
 import { isStripeConfigured, stripePromise } from '../../lib/stripe';
 
 const STRIPE_APPEARANCE = {
@@ -50,15 +50,68 @@ const CARD_FIELD_WRAPPER =
 const FIELD_LABEL =
   'block text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-1.5';
 
+async function parseJsonResponse(response: Response) {
+  const responseText = await response.text();
+  try {
+    return JSON.parse(responseText) as Record<string, unknown>;
+  } catch {
+    throw new Error(
+      responseText.trimStart().startsWith('<')
+        ? 'Payment API is unavailable. If testing locally, add Stripe keys to .env.local and restart npm run dev.'
+        : 'Payment server returned an invalid response. Please try again.'
+    );
+  }
+}
+
+async function createDepositPaymentIntent(input: {
+  email: string;
+  name?: string;
+  phone?: string;
+  serviceType?: string;
+}) {
+  const paymentResponse = await fetch('/api/create-payment-intent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: input.email,
+      name: input.name,
+      phone: input.phone,
+      serviceType: input.serviceType,
+    }),
+  });
+
+  const paymentData = await parseJsonResponse(paymentResponse);
+  if (!paymentResponse.ok) {
+    throw new Error(
+      (typeof paymentData.error === 'string' && paymentData.error) ||
+        'Failed to initialize payment.'
+    );
+  }
+
+  const clientSecret =
+    typeof paymentData.clientSecret === 'string' ? paymentData.clientSecret : null;
+  if (!clientSecret) {
+    throw new Error('Failed to initialize payment.');
+  }
+
+  return clientSecret;
+}
+
 interface DepositPaymentFormProps {
-  clientSecret: string;
+  customerEmail: string;
+  customerName?: string;
+  customerPhone?: string;
+  serviceType?: string;
   isLoading?: boolean;
   onBack: () => void;
   onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
 }
 
 const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
-  clientSecret,
+  customerEmail,
+  customerName,
+  customerPhone,
+  serviceType,
   isLoading = false,
   onBack,
   onPaymentSuccess,
@@ -104,10 +157,19 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
     try {
       setProcessing(true);
 
+      const clientSecret = await createDepositPaymentIntent({
+        email: customerEmail,
+        name: customerName,
+        phone: customerPhone,
+        serviceType,
+      });
+
       const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardNumberElement,
           billing_details: {
+            email: customerEmail,
+            name: customerName?.trim() || undefined,
             address: {
               postal_code: postalCode.trim() || undefined,
             },
@@ -337,31 +399,30 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
   onBack,
   onPaymentSuccess,
 }) => {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [initError, setInitError] = useState<string | null>(null);
-  const [initializing, setInitializing] = useState(true);
   const [stripeInstance, setStripeInstance] = useState<Stripe | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(true);
 
   const elementsOptions = useMemo(
-    () =>
-      clientSecret
-        ? {
-            clientSecret,
-            appearance: STRIPE_APPEARANCE,
-          }
-        : undefined,
-    [clientSecret]
+    () => ({
+      mode: 'payment' as const,
+      amount: BOOKING_DEPOSIT_AMOUNT_CENTS,
+      currency: 'usd',
+      appearance: STRIPE_APPEARANCE,
+    }),
+    []
   );
 
   useEffect(() => {
     if (!stripePromise) {
+      setStripeLoading(false);
       return;
     }
 
     let cancelled = false;
     stripePromise.then((stripe) => {
-      if (!cancelled && stripe) {
+      if (!cancelled) {
         setStripeInstance(stripe);
+        setStripeLoading(false);
       }
     });
 
@@ -370,112 +431,25 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
     };
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
+  if (!isStripeConfigured) {
+    return (
+      <div className="max-w-md mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
+        <p className="text-xs text-red-700 font-semibold">
+          Stripe publishable key is missing. Add VITE_STRIPE_PUBLISHABLE_KEY to your environment.
+        </p>
+      </div>
+    );
+  }
 
-    const parseJsonResponse = async (response: Response) => {
-      const responseText = await response.text();
-      try {
-        return JSON.parse(responseText) as Record<string, unknown>;
-      } catch {
-        throw new Error(
-          responseText.trimStart().startsWith('<')
-            ? 'Payment API is unavailable. If testing locally, add Stripe keys to .env.local and restart npm run dev.'
-            : 'Payment server returned an invalid response. Please try again.'
-        );
-      }
-    };
-
-    const initializeCheckout = async () => {
-      setInitializing(true);
-      setInitError(null);
-      setClientSecret(null);
-
-      if (!customerEmail?.includes('@')) {
-        setInitError('A valid email is required before payment. Go back and add your email.');
-        setInitializing(false);
-        return;
-      }
-
-      try {
-        const customerResponse = await fetch('/api/create-stripe-customer', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: customerEmail,
-            name: customerName,
-            phone: customerPhone,
-          }),
-        });
-
-        const customerData = await parseJsonResponse(customerResponse);
-        if (!customerResponse.ok) {
-          throw new Error(
-            (typeof customerData.error === 'string' && customerData.error) ||
-              'Failed to create Stripe customer.'
-          );
-        }
-
-        const stripeCustomerId =
-          typeof customerData.stripeCustomerId === 'string' ? customerData.stripeCustomerId : null;
-        if (!stripeCustomerId) {
-          throw new Error('Failed to create Stripe customer.');
-        }
-
-        const paymentResponse = await fetch('/api/create-payment-intent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: customerEmail,
-            name: customerName,
-            phone: customerPhone,
-            serviceType,
-            stripeCustomerId,
-          }),
-        });
-
-        const paymentData = await parseJsonResponse(paymentResponse);
-        if (!paymentResponse.ok) {
-          throw new Error(
-            (typeof paymentData.error === 'string' && paymentData.error) ||
-              'Failed to initialize payment.'
-          );
-        }
-
-        const secret =
-          typeof paymentData.clientSecret === 'string' ? paymentData.clientSecret : null;
-        if (!secret) {
-          throw new Error('Failed to initialize payment.');
-        }
-
-        if (!cancelled) {
-          setClientSecret(secret);
-        }
-      } catch (err: unknown) {
-        if (!cancelled) {
-          const message = err instanceof Error ? err.message : 'Failed to initialize payment.';
-          setInitError(message);
-        }
-      } finally {
-        if (!cancelled) {
-          setInitializing(false);
-        }
-      }
-    };
-
-    if (isStripeConfigured) {
-      initializeCheckout();
-    } else {
-      setInitError('Stripe publishable key is missing. Add VITE_STRIPE_PUBLISHABLE_KEY to your environment.');
-      setInitializing(false);
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, [customerEmail, customerName, customerPhone, serviceType]);
-
-  const checkoutReady = Boolean(clientSecret && stripeInstance && elementsOptions && !initError);
+  if (!customerEmail?.includes('@')) {
+    return (
+      <div className="max-w-md mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
+        <p className="text-xs text-red-700 font-semibold">
+          A valid email is required before payment. Go back and add your email.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto space-y-4">
@@ -486,30 +460,18 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
         </div>
       </div>
 
-      {initializing && (
+      {stripeLoading || !stripeInstance ? (
         <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
           <Loader2 className="animate-spin w-4 h-4" />
-          Preparing secure checkout...
+          Loading secure checkout...
         </div>
-      )}
-
-      {initError && !initializing && (
-        <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
-          <p className="text-xs text-red-700 font-semibold">{initError}</p>
-        </div>
-      )}
-
-      {!initializing && !initError && clientSecret && !stripeInstance && (
-        <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
-          <Loader2 className="animate-spin w-4 h-4" />
-          Loading...
-        </div>
-      )}
-
-      {checkoutReady && clientSecret && (
-        <Elements key={clientSecret} stripe={stripeInstance} options={elementsOptions}>
+      ) : (
+        <Elements stripe={stripeInstance} options={elementsOptions}>
           <DepositPaymentForm
-            clientSecret={clientSecret}
+            customerEmail={customerEmail}
+            customerName={customerName}
+            customerPhone={customerPhone}
+            serviceType={serviceType}
             isLoading={isLoading}
             onBack={onBack}
             onPaymentSuccess={onPaymentSuccess}
