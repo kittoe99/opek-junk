@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createBookingPaymentIntent } from './utils/createPaymentIntent';
+import { createBookingPaymentIntent } from '../server/createPaymentIntent.js';
 
 function getStripeSecretKey(): string | undefined {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
