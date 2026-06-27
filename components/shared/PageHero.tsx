@@ -27,7 +27,7 @@ interface PageHeroProps {
 const ctaButton = (cta: CtaProps, isPrimary: boolean, fullWidth = false) => {
   const base = `${
     fullWidth ? 'flex-1 px-4' : 'px-8'
-  } py-4 text-sm font-bold uppercase tracking-wider transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center`;
+  } py-4 text-sm font-bold uppercase tracking-wider transition-all duration-300 hero-cta shadow-md hover:shadow-xl text-center`;
   const colors = isPrimary
     ? 'bg-secondary text-white hover:bg-secondary-600'
     : 'bg-brand text-white hover:bg-brand-600';
@@ -67,7 +67,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   );
 
   return (
-    <section className="relative bg-white overflow-hidden">
+    <section className="hero-section relative bg-white overflow-hidden">
       {/* Mobile layout */}
       <div className="lg:hidden flex flex-col">
         <div

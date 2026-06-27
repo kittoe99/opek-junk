@@ -7,7 +7,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
-    <section className="relative bg-white overflow-hidden">
+    <section className="hero-section relative bg-white overflow-hidden">
 
       {/* Mobile layout */}
       <div className="lg:hidden flex flex-col">

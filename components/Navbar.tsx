@@ -425,13 +425,13 @@ export const Navbar: React.FC = () => {
                   setIsMenuOpen(false);
                   navigate('/quote');
                 }}
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl"
               >
                 Get Quote
               </button>
               <a
                 href="tel:8313187139"
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center"
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl text-center"
               >
                 Call Now
               </a>

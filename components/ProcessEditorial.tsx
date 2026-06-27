@@ -103,7 +103,7 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
           <div className="mt-16 md:mt-24 text-center">
             <button
               onClick={cta.onClick}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               <span>{cta.label}</span>
               <ArrowRight size={14} strokeWidth={2.5} />

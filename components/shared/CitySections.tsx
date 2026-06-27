@@ -121,13 +121,13 @@ export const CityLocalSection: React.FC<CityLocalSectionProps> = ({
           <div className="flex flex-row gap-0">
             <button
               onClick={onGetQuote}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               Get a Free Quote <ArrowRight size={14} />
             </button>
             <button
               onClick={onBookOnline}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               Book Online <ArrowRight size={14} />
             </button>
