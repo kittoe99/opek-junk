@@ -26,11 +26,10 @@ export const FullServiceSection: React.FC = () => {
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
 
-      navigate('/booking/mattress', {
+      navigate('/quote', {
         state: {
           zipResult: { city, state, served: true },
           zipValue: zip,
-          preselectItems: [{ name: 'Mattress', quantity: 1 }],
         },
       });
     } catch {

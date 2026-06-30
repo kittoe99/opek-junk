@@ -24,7 +24,10 @@ export function withSmsMarketingConsent(
   };
 
   if (!consentAt) {
-    return base;
+    return {
+      ...base,
+      sms_marketing_consent: false,
+    };
   }
 
   return {

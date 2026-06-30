@@ -375,7 +375,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           if (!dbError && partialId && !partialId.startsWith('mock-')) {
             supabase
-              .rpc('update_prebooking', { p_id: partialId, p_status: 'converted' })
+              .rpc('update_prebooking', {
+                p_id: partialId,
+                p_customer_info: customerInfo,
+                p_status: 'converted',
+              })
               .then(({ error: updateErr }) => {
                 if (updateErr) {
                   console.warn('Failed to mark prebooking as converted:', updateErr);

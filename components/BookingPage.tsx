@@ -427,11 +427,14 @@ export const BookingPage: React.FC = () => {
     setError(null);
 
     try {
-      const customerInfo = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone
-      };
+      const customerInfo = withSmsMarketingConsent(
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        smsMarketingConsentAt
+      );
 
       const locationInfo = {
         address: formData.address,

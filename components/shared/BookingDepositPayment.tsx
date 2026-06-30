@@ -162,6 +162,10 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
 
   const cardReady = elementsReady.number && elementsReady.expiry && elementsReady.cvc;
 
+  useEffect(() => {
+    setSmsMarketingConsent(Boolean(smsMarketingConsentAt));
+  }, [smsMarketingConsentAt]);
+
   const handleSmsMarketingConsentChange = (checked: boolean) => {
     setSmsMarketingConsent(checked);
     onSmsMarketingConsentChange?.(checked ? new Date().toISOString() : null);

@@ -175,6 +175,7 @@ export const MattressBookingPage: React.FC = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
   const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
+  const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const handleZipSubmit = async (e: React.FormEvent) => {
@@ -383,7 +384,7 @@ export const MattressBookingPage: React.FC = () => {
       const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
 
       try {
-        const { error } = await supabase.rpc('create_prebooking', {
+        const { data, error } = await supabase.rpc('create_prebooking', {
           p_customer_info: withSmsMarketingConsent({ name, phone, email: '' }, consentAt),
           p_booking_details: {
             service_type: 'Mattress Disposal',
@@ -397,6 +398,8 @@ export const MattressBookingPage: React.FC = () => {
 
         if (error) {
           console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', error);
+        } else if (data) {
+          setPartialBookingId(data as string);
         }
       } catch (err) {
         console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', err);
@@ -461,6 +464,20 @@ export const MattressBookingPage: React.FC = () => {
 
       if (error) {
         console.warn('Supabase booking error:', error);
+      }
+
+      if (!error && partialBookingId && !partialBookingId.startsWith('mock-')) {
+        supabase
+          .rpc('update_prebooking', {
+            p_id: partialBookingId,
+            p_customer_info: customerInfo,
+            p_status: 'converted',
+          })
+          .then(({ error: updateErr }) => {
+            if (updateErr) {
+              console.warn('Failed to mark mattress prebooking as converted:', updateErr);
+            }
+          });
       }
 
       // Send email
@@ -1066,6 +1083,8 @@ export const MattressBookingPage: React.FC = () => {
       customerPhone={formData.phone}
       serviceType="Mattress Disposal"
       isLoading={submitLoading}
+      smsMarketingConsentAt={smsMarketingConsentAt}
+      onSmsMarketingConsentChange={setSmsMarketingConsentAt}
       onBack={() => setStep(7)}
       onPaymentSuccess={handleFinalSubmit}
     />
