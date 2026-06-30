@@ -376,7 +376,7 @@ export const MattressBookingPage: React.FC = () => {
     return subtotal > 0 ? Math.max(MINIMUM_JUNK_REMOVAL_PRICE, subtotal) : 0;
   };
 
-  const handleContactReveal = async (name: string, phone: string, consentAt: string) => {
+  const handleContactReveal = async (name: string, phone: string, consentAt: string | null) => {
     setContactLoading(true);
     try {
       const totalPrice = calculateTotal();

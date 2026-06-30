@@ -457,7 +457,7 @@ export const QuotePage: React.FC = () => {
   const handleContactReveal = async (
     name: string,
     phone: string,
-    consentAt: string,
+    consentAt: string | null,
     items: DetectedItem[],
     price: PriceEstimate
   ) => {

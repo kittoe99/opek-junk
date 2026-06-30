@@ -3,7 +3,7 @@ import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receip
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
-import { withSmsMarketingConsent } from '../lib/customerConsent';
+import { withSmsMarketingConsent, SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
 import { BookingDepositIntro } from './shared/BookingDepositIntro';
@@ -45,6 +45,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
   const [submitting, setSubmitting] = useState(false);
+  const [localSmsMarketingConsentAt, setLocalSmsMarketingConsentAt] = useState<string | null>(
+    smsMarketingConsentAt ?? null
+  );
   const [localImage, setLocalImage] = useState<string | null>(image);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -107,6 +110,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       setPartialId(partialBookingId);
     }
   }, [partialBookingId]);
+
+  useEffect(() => {
+    if (smsMarketingConsentAt) {
+      setLocalSmsMarketingConsentAt(smsMarketingConsentAt);
+    }
+  }, [smsMarketingConsentAt]);
 
   const [addressValidated, setAddressValidated] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
@@ -194,7 +203,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           email: formData.email,
           phone: formData.phone,
         },
-        smsMarketingConsentAt
+        localSmsMarketingConsentAt
       );
 
       const bookingDetails = {
@@ -319,7 +328,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               email: formData.email,
               phone: formData.phone,
             },
-            smsMarketingConsentAt
+            localSmsMarketingConsentAt
           );
 
           const locationInfo = {
@@ -511,7 +520,34 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
               />
             </div>
+            <p className="mt-1.5 text-[10px] text-secondary-400 leading-relaxed px-0.5">
+              {SMS_TRANSACTIONAL_NOTICE}
+            </p>
           </div>
+
+          <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+            <div className="relative shrink-0 mt-0.5">
+              <input
+                type="checkbox"
+                checked={Boolean(localSmsMarketingConsentAt)}
+                onChange={(e) => {
+                  setLocalSmsMarketingConsentAt(e.target.checked ? new Date().toISOString() : null);
+                }}
+                disabled={contactSubmitting}
+                className="sr-only"
+              />
+              <div
+                className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                  localSmsMarketingConsentAt ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+                }`}
+              >
+                {localSmsMarketingConsentAt && <Check size={12} className="text-white" strokeWidth={3.5} />}
+              </div>
+            </div>
+            <span className="text-[10px] text-secondary-500 leading-relaxed">
+              {SMS_MARKETING_CONSENT_TEXT}
+            </span>
+          </label>
 
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -839,6 +875,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           customerPhone={formData.phone}
           serviceType={serviceType}
           isLoading={submitting}
+          smsMarketingConsentAt={localSmsMarketingConsentAt}
+          onSmsMarketingConsentChange={setLocalSmsMarketingConsentAt}
           onBack={() => setStep('deposit')}
           onPaymentSuccess={handleSubmit}
         />

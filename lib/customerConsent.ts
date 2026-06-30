@@ -1,5 +1,8 @@
 export const SMS_MARKETING_CONSENT_TEXT =
-  'By checking this box, you agree that Opek Junk Removal may contact and send you offers via SMS or Phone. You can opt out at any time.';
+  'Optional: I agree to receive promotional text messages from Opek Junk Removal. Message frequency varies. Msg & data rates may apply. Reply STOP to unsubscribe, HELP for help.';
+
+export const SMS_TRANSACTIONAL_NOTICE =
+  'We will use your phone number to contact you about this quote or booking.';
 
 export interface CustomerInfoPayload {
   name: string;

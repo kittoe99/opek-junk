@@ -182,7 +182,7 @@ export const BookingPage: React.FC = () => {
     }
   }, [estimateData]);
 
-  const handleContactReveal = async (name: string, phone: string, consentAt: string, est: QuoteEstimate) => {
+  const handleContactReveal = async (name: string, phone: string, consentAt: string | null, est: QuoteEstimate) => {
     setContactLoading(true);
     try {
       const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;

@@ -244,7 +244,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   const handleContactReveal = async (
     name: string,
     phone: string,
-    consentAt: string,
+    consentAt: string | null,
     items: DetectedItem[],
     price: PriceEstimate
   ) => {

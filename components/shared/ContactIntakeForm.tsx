@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ArrowRight, Loader2, Check } from 'lucide-react';
-import { SMS_MARKETING_CONSENT_TEXT } from '../../lib/customerConsent';
+import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../../lib/customerConsent';
 
 
 interface ContactIntakeFormProps {
   serviceType: string;
-  onReveal: (name: string, phone: string, smsMarketingConsentAt: string) => Promise<void>;
+  onReveal: (name: string, phone: string, smsMarketingConsentAt: string | null) => Promise<void>;
   isLoading?: boolean;
 }
 
@@ -16,7 +16,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [consentAccepted, setConsentAccepted] = useState(false);
+  const [smsMarketingConsent, setSmsMarketingConsent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 disabled:opacity-55";
 
@@ -37,15 +37,10 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
       return;
     }
 
-    if (!consentAccepted) {
-      setError('Please agree to be contacted before continuing.');
-      return;
-    }
-
     try {
-      // Format phone as (XXX) XXX-XXXX for database consistency
       const formattedPhone = `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(3, 6)}-${digitsOnly.slice(6, 10)}`;
-      await onReveal(trimmedName, formattedPhone, new Date().toISOString());
+      const consentAt = smsMarketingConsent ? new Date().toISOString() : null;
+      await onReveal(trimmedName, formattedPhone, consentAt);
     } catch (err: any) {
       setError(err?.message || 'Failed to submit. Please try again.');
     }
@@ -121,6 +116,9 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 className={inputCls}
               />
             </div>
+            <p className="mt-1.5 text-[10px] text-secondary-400 leading-relaxed px-0.5">
+              {SMS_TRANSACTIONAL_NOTICE}
+            </p>
           </div>
         </div>
 
@@ -128,20 +126,17 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
           <div className="relative shrink-0 mt-0.5">
             <input
               type="checkbox"
-              checked={consentAccepted}
-              onChange={(e) => {
-                setConsentAccepted(e.target.checked);
-                if (e.target.checked) setError(null);
-              }}
+              checked={smsMarketingConsent}
+              onChange={(e) => setSmsMarketingConsent(e.target.checked)}
               disabled={isLoading}
               className="sr-only"
             />
             <div
               className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                consentAccepted ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+                smsMarketingConsent ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
               }`}
             >
-              {consentAccepted && <Check size={12} className="text-white" strokeWidth={3.5} />}
+              {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
             </div>
           </div>
           <span className="text-[10px] text-secondary-500 leading-relaxed">
@@ -159,7 +154,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
         <div className="pt-2">
           <button
             type="submit"
-            disabled={isLoading || !name.trim() || phone.length < 10 || !consentAccepted}
+            disabled={isLoading || !name.trim() || phone.length < 10}
             className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-widest rounded-xl hover:bg-brand active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(53,80,112,0.1)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.2)] disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed"
           >
             {isLoading ? (

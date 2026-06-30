@@ -11,6 +11,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { BOOKING_DEPOSIT_AMOUNT, BOOKING_DEPOSIT_AMOUNT_CENTS } from '../../lib/deposit';
+import { SMS_MARKETING_CONSENT_TEXT } from '../../lib/customerConsent';
 import { apiUrl } from '../../lib/apiBase';
 import { isStripeConfigured, stripePromise } from '../../lib/stripe';
 
@@ -129,6 +130,8 @@ interface DepositPaymentFormProps {
   customerPhone?: string;
   serviceType?: string;
   isLoading?: boolean;
+  smsMarketingConsentAt?: string | null;
+  onSmsMarketingConsentChange?: (consentAt: string | null) => void;
   onBack: () => void;
   onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
 }
@@ -139,12 +142,15 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   customerPhone,
   serviceType,
   isLoading = false,
+  smsMarketingConsentAt = null,
+  onSmsMarketingConsentChange,
   onBack,
   onPaymentSuccess,
 }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [smsMarketingConsent, setSmsMarketingConsent] = useState(Boolean(smsMarketingConsentAt));
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [postalCode, setPostalCode] = useState('');
@@ -155,6 +161,11 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
   });
 
   const cardReady = elementsReady.number && elementsReady.expiry && elementsReady.cvc;
+
+  const handleSmsMarketingConsentChange = (checked: boolean) => {
+    setSmsMarketingConsent(checked);
+    onSmsMarketingConsentChange?.(checked ? new Date().toISOString() : null);
+  };
 
   const markElementReady = (key: 'number' | 'expiry' | 'cvc') => {
     setElementsReady((prev) => ({ ...prev, [key]: true }));
@@ -379,7 +390,28 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           >
             Privacy Policy
           </Link>{' '}
-          and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described. I consent to receive transactional and promotional communications by email, SMS, and phone.
+          and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described.
+        </span>
+      </label>
+
+      <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+        <div className="relative shrink-0 mt-0.5">
+          <input
+            type="checkbox"
+            checked={smsMarketingConsent}
+            onChange={(e) => handleSmsMarketingConsentChange(e.target.checked)}
+            className="sr-only"
+          />
+          <div
+            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+              smsMarketingConsent ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+            }`}
+          >
+            {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
+          </div>
+        </div>
+        <span className="text-xs text-secondary-600 leading-relaxed">
+          {SMS_MARKETING_CONSENT_TEXT}
         </span>
       </label>
 
@@ -423,6 +455,8 @@ interface BookingDepositPaymentProps {
   customerPhone?: string;
   serviceType?: string;
   isLoading?: boolean;
+  smsMarketingConsentAt?: string | null;
+  onSmsMarketingConsentChange?: (consentAt: string | null) => void;
   onBack: () => void;
   onPaymentSuccess: (paymentIntentId: string) => Promise<void>;
 }
@@ -433,6 +467,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
   customerPhone,
   serviceType,
   isLoading = false,
+  smsMarketingConsentAt,
+  onSmsMarketingConsentChange,
   onBack,
   onPaymentSuccess,
 }) => {
@@ -510,6 +546,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
             customerPhone={customerPhone}
             serviceType={serviceType}
             isLoading={isLoading}
+            smsMarketingConsentAt={smsMarketingConsentAt}
+            onSmsMarketingConsentChange={onSmsMarketingConsentChange}
             onBack={onBack}
             onPaymentSuccess={onPaymentSuccess}
           />
