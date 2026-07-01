@@ -308,8 +308,8 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             </div>
 
             <div className="flex-1 min-h-0 flex flex-col sm:flex-row overflow-hidden bg-secondary-50/20">
-              <div className="w-full sm:w-[210px] md:w-[230px] shrink-0 flex flex-row sm:flex-col gap-1 border-b sm:border-b-0 sm:border-r border-secondary-100 p-3 sm:p-4 overflow-x-auto sm:overflow-y-auto bg-white">
-                {ITEM_CATALOG.map((category) => {
+              <div className="w-full sm:w-[210px] md:w-[230px] shrink-0 flex flex-row sm:flex-col border-b sm:border-b-0 sm:border-r border-secondary-100 p-3 sm:p-4 overflow-x-auto sm:overflow-y-auto bg-white">
+                {ITEM_CATALOG.map((category, idx) => {
                   const isActive = expandedCategory === category.label && !catalogSearch.trim();
                   const selectedCount = selectedItems.filter((i) => {
                     const inCat = category.items.some(
@@ -319,41 +319,46 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                   }).length;
 
                   return (
-                    <button
-                      key={category.label}
-                      type="button"
-                      onClick={() => {
-                        setExpandedCategory(category.label);
-                        setCatalogSearch('');
-                      }}
-                      className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
-                        isActive
-                          ? 'bg-brand/10 text-brand'
-                          : 'hover:bg-secondary-50 text-secondary-500 hover:text-secondary'
-                      }`}
-                    >
-                      <div
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                          isActive
-                            ? 'bg-brand/20 text-brand'
-                            : 'bg-secondary-100 text-secondary-400 group-hover:bg-brand/10 group-hover:text-brand'
-                        }`}
-                      >
-                        <span className="scale-75">{category.icon}</span>
-                      </div>
-                      <p
-                        className={`text-[10px] sm:text-[11px] leading-tight truncate ${
-                          isActive ? 'font-black' : 'font-semibold'
-                        }`}
-                      >
-                        {category.label}
-                      </p>
-                      {selectedCount > 0 && (
-                        <span className="text-[9px] font-black px-1.5 py-0.5 bg-brand text-white rounded-full ml-auto shrink-0">
-                          {selectedCount}
-                        </span>
+                    <React.Fragment key={category.label}>
+                      {idx > 0 && (
+                        <div
+                          className="shrink-0 w-px h-7 bg-secondary-100 mx-1 sm:mx-0 sm:my-1 sm:w-full sm:h-px self-center"
+                          aria-hidden
+                        />
                       )}
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExpandedCategory(category.label);
+                          setCatalogSearch('');
+                        }}
+                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group shrink-0 w-auto sm:w-full ${
+                          isActive
+                            ? 'bg-brand/10 text-brand'
+                            : 'text-secondary-500 hover:text-brand'
+                        }`}
+                      >
+                        <div
+                          className={`w-7 h-7 flex items-center justify-center shrink-0 transition-colors ${
+                            isActive ? 'text-brand' : 'text-secondary-400 group-hover:text-brand'
+                          }`}
+                        >
+                          <span className="scale-75">{category.icon}</span>
+                        </div>
+                        <p
+                          className={`text-[10px] sm:text-[11px] leading-tight truncate ${
+                            isActive ? 'font-black' : 'font-semibold'
+                          }`}
+                        >
+                          {category.label}
+                        </p>
+                        {selectedCount > 0 && (
+                          <span className="text-[9px] font-black px-1.5 py-0.5 bg-brand text-white rounded-full ml-auto shrink-0">
+                            {selectedCount}
+                          </span>
+                        )}
+                      </button>
+                    </React.Fragment>
                   );
                 })}
               </div>

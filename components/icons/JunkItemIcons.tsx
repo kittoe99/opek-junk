@@ -72,6 +72,12 @@ export const ChairIcon = ({ className, size = 24 }: { className?: string, size?:
   </svg>
 );
 
+export const ReclinerIcon = ({ className, size = 24 }: { className?: string, size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="6" y="38" width="22" height="8" rx="2" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M28 38h16v8H28z" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M44 38V26l12-10" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M44 26h14v18H44" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M28 30V20a2 2 0 0 1 2-2h4" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 46v6M32 46v6M48 46v6" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M6 42h22" className="stroke-brand" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 export const ClothingIcon = ({ className, size = 24 }: { className?: string, size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M22 8l-14 14 8 6 6-6v34h20V22l6 6 8-6L42 8" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 8c0 6 4 10 10 10s10-4 10-10" className="stroke-brand" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -496,6 +502,7 @@ export const JunkIconMap: Record<string, React.FC<{className?: string, size?: nu
   'piano': PianoIcon,
   'plumbing': PlumbingIcon,
   'printer': PrinterIcon,
+  'recliner': ReclinerIcon,
   'roofing': RoofingIcon,
   'rug': RugIcon,
   'shed': ShedIcon,

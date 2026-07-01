@@ -177,7 +177,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setContactSubmitting(true);
     try {
       const detailsText = estimate
-        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
+        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
         : formData.details;
 
       const normalizedServiceType = serviceType
@@ -299,7 +299,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
     try {
       const detailsText = estimate
-        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Volume: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
+        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
         : formData.details;
 
       const normalizedServiceType = serviceType

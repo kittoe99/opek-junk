@@ -72,7 +72,7 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
     ...(itemsDetected?.length
       ? [{ label: 'Items', value: itemsDetected.join(', ') }]
       : []),
-    ...(estimatedVolume ? [{ label: 'Volume', value: estimatedVolume }] : []),
+    ...(estimatedVolume ? [{ label: 'Items', value: estimatedVolume }] : []),
     ...(price != null ? [{ label: 'Price', value: `$${price}` }] : []),
     ...(depositPaid != null ? [{ label: 'Deposit paid', value: `$${depositPaid}` }] : []),
     ...(details ? [{ label: 'Notes', value: details }] : []),

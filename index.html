@@ -256,7 +256,18 @@
       
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: 80px; /* Offset for sticky navbar */
+        scroll-padding-top: var(--site-header-height, 124px);
+      }
+
+      :root {
+        /* Fallback until Navbar measures the live fixed header (nav + announcement bar). */
+        --site-header-height: 124px;
+      }
+
+      @media (min-width: 768px) {
+        :root {
+          --site-header-height: 154px;
+        }
       }
 
       /* Custom scrollbar */

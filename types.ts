@@ -11,10 +11,23 @@ export interface DetectedItem {
   quantity: number;
 }
 
+export interface PriceEstimateLine {
+  name: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+}
+
 export interface PriceEstimate {
   estimatedVolume: string;
   price: number;
   summary: string;
+  itemSubtotal?: number;
+  orderMinimum?: number;
+  /** Pre-discount total after any order minimum is applied. */
+  subtotal?: number;
+  onlineBookingDiscount?: number;
+  lines?: PriceEstimateLine[];
 }
 
 export interface QuoteEstimate {
@@ -22,6 +35,8 @@ export interface QuoteEstimate {
   estimatedVolume: string;
   price: number;
   summary: string;
+  subtotal?: number;
+  onlineBookingDiscount?: number;
 }
 
 export enum LoadingState {

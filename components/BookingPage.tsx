@@ -13,6 +13,12 @@ import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { EstimateMethodHero } from './shared/EstimateMethodSelection';
 import { JunkRemovalEstimateFlow, type EstimateMode, type JunkRemovalEstimateResult } from './shared/JunkRemovalEstimateFlow';
+import {
+  FLOW_PAGE_SHELL,
+  FLOW_PAGE_HERO,
+  FLOW_PAGE_CONTENT,
+  flowPageMaxWidth,
+} from '../lib/flowPageLayout';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -176,7 +182,7 @@ export const BookingPage: React.FC = () => {
         price: est.price,
         estimateSummary: est.summary,
         photoUrl: img || '',
-        details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`
+        details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`
       }));
       setCurrentStep(3);
     }
@@ -185,7 +191,7 @@ export const BookingPage: React.FC = () => {
   const handleContactReveal = async (name: string, phone: string, consentAt: string | null, est: QuoteEstimate) => {
     setContactLoading(true);
     try {
-      const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Volume: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
+      const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
@@ -265,7 +271,7 @@ export const BookingPage: React.FC = () => {
       price: result.estimate.price,
       estimateSummary: result.estimate.summary,
       photoUrl: result.image || '',
-      details: `Items: ${result.estimate.itemsDetected.join(', ')}\nEstimated Volume: ${result.estimate.estimatedVolume}\nEstimated Price: $${result.estimate.price}`,
+      details: `Items: ${result.estimate.itemsDetected.join(', ')}\nEstimated Items: ${result.estimate.estimatedVolume}\nEstimated Price: $${result.estimate.price}`,
     }));
     setCurrentStep(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -396,7 +402,7 @@ export const BookingPage: React.FC = () => {
         price: result.price,
         estimateSummary: result.summary,
         photoUrl: image,
-        details: `Items: ${result.itemsDetected.join(', ')}\nEstimated Volume: ${result.estimatedVolume}\nEstimated Price: $${result.price}`
+        details: `Items: ${result.itemsDetected.join(', ')}\nEstimated Items: ${result.estimatedVolume}\nEstimated Price: $${result.price}`
       }));
       setLoadingState(LoadingState.SUCCESS);
     } catch {
@@ -519,10 +525,13 @@ export const BookingPage: React.FC = () => {
 
   const isJunkEstimateStep = currentStep === 2 && formData.serviceType === 'Junk Removal';
   const junkUsesWideLayout = isJunkEstimateStep && junkEstimateMode === 'manual' && junkManualStep === 'select';
+  const junkFlowActive = isJunkEstimateStep && junkEstimateMode !== 'method';
+  const showPageHero = !junkFlowActive;
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className={`pt-32 pb-10 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${junkUsesWideLayout ? 'max-w-5xl' : 'max-w-2xl'}`}>
+    <div className={FLOW_PAGE_SHELL}>
+      {showPageHero && (
+      <div className={`${FLOW_PAGE_HERO} transition-all duration-300 ${flowPageMaxWidth(junkUsesWideLayout)}`}>
         {currentStep === 0 ? (
           <>
             <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
@@ -568,8 +577,9 @@ export const BookingPage: React.FC = () => {
           </>
         )}
       </div>
+      )}
 
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${junkUsesWideLayout ? 'max-w-5xl' : 'max-w-2xl'}`}>
+      <div className={`${FLOW_PAGE_CONTENT} transition-all duration-300 ${flowPageMaxWidth(junkUsesWideLayout)} ${junkFlowActive ? 'pt-4 md:pt-6' : ''}`}>
         {/* Form */}
         <div>
 

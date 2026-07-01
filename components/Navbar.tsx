@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, Heart, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { JunkIcon, DumpsterIcon, PropertyCleanoutIcon, MovingLaborIcon } from './icons/ServiceIcons';
@@ -12,6 +12,7 @@ export const Navbar: React.FC = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [userCity, setUserCity] = useState<string>('');
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   const US_STATES_MAP: Record<string, string> = {
     'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA',
@@ -122,6 +123,29 @@ export const Navbar: React.FC = () => {
     fetchUserLocation();
   }, []);
 
+  // Keep main content offset in sync with the full fixed header (nav + announcement bar).
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const syncHeaderHeight = () => {
+      document.documentElement.style.setProperty(
+        '--site-header-height',
+        `${header.offsetHeight}px`
+      );
+    };
+
+    syncHeaderHeight();
+    const observer = new ResizeObserver(syncHeaderHeight);
+    observer.observe(header);
+    window.addEventListener('resize', syncHeaderHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', syncHeaderHeight);
+    };
+  }, [isAdsLandingPage]);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
@@ -158,6 +182,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header
+        ref={headerRef}
         className="shadow-md"
         style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60 }}
       >

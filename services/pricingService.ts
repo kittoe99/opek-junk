@@ -3,6 +3,7 @@ import { isSupabaseConfigured } from '../lib/supabaseConfig';
 import { getSupabase } from '../lib/supabase';
 import { calculatePriceLocally } from './localPricing';
 import type { DumpsterRentalOptions } from './localPricing';
+import { calculateJunkRemovalPrice } from './junkRemovalPriceService';
 
 export type { DumpsterRentalOptions } from './localPricing';
 
@@ -85,10 +86,7 @@ async function postCalculatePrice(body: Record<string, unknown>): Promise<PriceE
 }
 
 export async function calculateStaticPrice(items: DetectedItem[]): Promise<PriceEstimate> {
-  return postCalculatePrice({
-    type: 'junk_removal',
-    items: items.map((item) => ({ name: item.name, quantity: item.quantity })),
-  });
+  return calculateJunkRemovalPrice(items);
 }
 
 export async function calculateDumpsterRentalPrice(options: DumpsterRentalOptions): Promise<PriceEstimate> {

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -16,6 +16,15 @@ import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
+import { JunkRemovalPriceBreakdown } from './shared/JunkRemovalPriceBreakdown';
+import {
+  FLOW_PAGE_SHELL,
+  FLOW_PAGE_HERO,
+  FLOW_PAGE_CONTENT,
+  FLOW_STEP_ANCHOR,
+  flowPageMaxWidth,
+  scrollToFlowStep,
+} from '../lib/flowPageLayout';
 
 export { ITEM_CATALOG, type CatalogItem, type CatalogCategory };
 
@@ -229,15 +238,6 @@ export const QuotePage: React.FC = () => {
   const selectedItemsRef = useRef<HTMLDivElement>(null);
   const contentTopRef = useRef<HTMLDivElement>(null);
 
-  // ── Smooth scroll helper ──
-  const scrollToElement = useCallback((el: HTMLElement | null, offset = -100) => {
-    if (!el) return;
-    setTimeout(() => {
-      const top = el.getBoundingClientRect().top + window.scrollY + offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }, 50);
-  }, []);
-
   const prevSelectedOptionRef = useRef(selectedOption);
 
   // Auto-scroll when moving between steps inside a flow (not when first entering from method picker)
@@ -246,8 +246,8 @@ export const QuotePage: React.FC = () => {
     prevSelectedOptionRef.current = selectedOption;
     if (!selectedOption) return;
     if (prev === 'method' && (selectedOption === 'ai' || selectedOption === 'manual')) return;
-    scrollToElement(contentTopRef.current, -120);
-  }, [aiStep, manualStep, movingStep, donationStep, dumpsterStep, scrollToElement, selectedOption]);
+    scrollToFlowStep(contentTopRef.current);
+  }, [aiStep, manualStep, movingStep, donationStep, dumpsterStep, selectedOption]);
 
   // If all items get removed while on review, send user back to selection
   useEffect(() => {
@@ -370,6 +370,8 @@ export const QuotePage: React.FC = () => {
         estimatedVolume: price.estimatedVolume,
         price: price.price,
         summary: price.summary,
+        subtotal: price.subtotal,
+        onlineBookingDiscount: price.onlineBookingDiscount,
       });
       setAiStep('result');
     } catch (err: any) {
@@ -433,6 +435,8 @@ export const QuotePage: React.FC = () => {
         estimatedVolume: price.estimatedVolume,
         price: price.price,
         summary: price.summary,
+        subtotal: price.subtotal,
+        onlineBookingDiscount: price.onlineBookingDiscount,
       });
       setManualStep('result');
     } catch (err: any) {
@@ -463,7 +467,7 @@ export const QuotePage: React.FC = () => {
   ) => {
     setContactLoading(true);
     try {
-      const detailsText = `Items: ${items.map(i => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Volume: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
+      const detailsText = `Items: ${items.map(i => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Items: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
       
       const serviceTypeLabel = 
         selectedService === 'junk_removal' ? 'Junk Removal' :
@@ -494,7 +498,10 @@ export const QuotePage: React.FC = () => {
           estimated_volume: price.estimatedVolume,
           price: price.price,
           estimate_summary: price.summary,
-          photo_url: uploadedUrl
+          photo_url: uploadedUrl,
+          ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
+            ? { online_booking_discount: price.onlineBookingDiscount }
+            : {}),
         };
 
         const { data, error: dbError } = await supabase.rpc('create_prebooking', {
@@ -606,15 +613,10 @@ export const QuotePage: React.FC = () => {
         </div>
 
         {/* Price header breakdown */}
+        {!isSpecialService ? (
+          <JunkRemovalPriceBreakdown price={price} />
+        ) : (
         <div className="bg-white rounded-3xl p-5 md:p-6 border border-secondary-100">
-          {!isSpecialService && (
-            <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
-              <div className="flex justify-between items-center text-sm md:text-base">
-                <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-                <span className="text-secondary-900 font-bold">${price.price}</span>
-              </div>
-            </div>
-          )}
           <div className="flex justify-between items-end">
             <div>
               <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
@@ -623,6 +625,7 @@ export const QuotePage: React.FC = () => {
             <p className="text-3xl md:text-4xl font-black text-brand">${price.price}</p>
           </div>
         </div>
+        )}
 
         {/* Safe Protect Sticker */}
         <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
@@ -647,6 +650,7 @@ export const QuotePage: React.FC = () => {
         </div>
 
         {/* Items list - minimal */}
+        {!price.lines?.length && (
         <div>
           <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
             {items.reduce((sum, i) => sum + i.quantity, 0)} items
@@ -660,6 +664,7 @@ export const QuotePage: React.FC = () => {
             ))}
           </div>
         </div>
+        )}
 
         {/* Summary */}
         <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
@@ -674,6 +679,8 @@ export const QuotePage: React.FC = () => {
                   estimatedVolume: price.estimatedVolume,
                   price: price.price,
                   summary: price.summary,
+                  subtotal: price.subtotal,
+                  onlineBookingDiscount: price.onlineBookingDiscount,
                 });
                 setShowBookingForm(true);
               }}
@@ -765,8 +772,8 @@ export const QuotePage: React.FC = () => {
     const defaultZip = zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined;
 
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-8 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <button
             onClick={() => setShowBookingForm(false)}
             className="mb-6 text-sm font-bold text-secondary-400 hover:text-brand transition-colors inline-flex items-center gap-1"
@@ -831,7 +838,7 @@ export const QuotePage: React.FC = () => {
           ...(contactName ? [{ label: 'Name', value: contactName }] : []),
           ...(contactPhone ? [{ label: 'Phone', value: contactPhone }] : []),
           ...(zipValue ? [{ label: 'ZIP', value: zipValue }] : []),
-          ...(activeEstimate?.estimatedVolume ? [{ label: 'Volume', value: activeEstimate.estimatedVolume }] : []),
+          ...(activeEstimate?.estimatedVolume ? [{ label: 'Items', value: activeEstimate.estimatedVolume }] : []),
           ...(activeEstimate?.price != null ? [{ label: 'Estimate', value: `$${activeEstimate.price}` }] : []),
           ...(detectedItems.length
             ? [{ label: 'Items', value: detectedItems.map(i => `${i.quantity}x ${i.name}`).join(', ') }]
@@ -846,8 +853,8 @@ export const QuotePage: React.FC = () => {
   // ── ZIP check screen ──
   if (!zipVerified) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Get a <span className="text-brand">free quote.</span></h1>
           <p className="text-sm text-secondary-400">Nationwide coverage in all 50 states — start by confirming your ZIP.</p>
         </div>
@@ -916,9 +923,9 @@ export const QuotePage: React.FC = () => {
   // ── Service Selection screen ──
   if (!selectedService) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className={FLOW_PAGE_SHELL}>
         {/* Hero */}
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">What do you <span className="text-brand">need?</span></h1>
           <p className="text-sm text-secondary-400">Select a service below to continue.</p>
         </div>
@@ -990,13 +997,13 @@ export const QuotePage: React.FC = () => {
   // ── Dedicated Moving Labor Quote Form ──
   if (selectedOption === 'moving_labor') {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           {movingStep !== 'result' && (
-            <>
+            <div className={FLOW_STEP_ANCHOR}>
               <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">Book <span className="text-brand">moving labor.</span></h1>
               <p className="text-sm text-secondary-400">Professional heavy-lifting assistance. 2-hour minimum applies.</p>
-            </>
+            </div>
           )}
         </div>
 
@@ -1279,8 +1286,8 @@ export const QuotePage: React.FC = () => {
     const donationTotal = basePrice + locationAdj;
 
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <button
             onClick={() => {
               if (donationStep === 'size') {
@@ -1528,8 +1535,8 @@ export const QuotePage: React.FC = () => {
   // ── Dedicated Dumpster Rental Quote Form ──
   if (selectedOption === 'dumpster_rental') {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <button
             onClick={() => {
               if (dumpsterStep === 'duration') {
@@ -1708,8 +1715,8 @@ export const QuotePage: React.FC = () => {
   // ── Method Selection screen ──
   if (selectedOption === 'method') {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="pt-32 pb-10 md:pt-40 md:pb-12 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={FLOW_PAGE_SHELL}>
+        <div className={`${FLOW_PAGE_HERO} max-w-2xl`}>
           <EstimateMethodHero />
         </div>
 
@@ -1735,30 +1742,38 @@ export const QuotePage: React.FC = () => {
 
   // ── Main flow ──
   return (
-    <div className="min-h-screen bg-white">
-      <div className={`pt-32 pb-10 md:pt-40 md:pb-12 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-5xl' : 'max-w-2xl'}`}>
+    <div className={FLOW_PAGE_SHELL}>
+      <div className={`${FLOW_PAGE_HERO} transition-all duration-300 ${flowPageMaxWidth(selectedOption === 'manual' && manualStep === 'select')}`}>
 
-        {((selectedOption === 'ai' && aiStep !== 'result') || (selectedOption === 'manual' && manualStep !== 'result')) && (
-          <div ref={contentTopRef} className="mb-6">
+        {(selectedOption === 'ai' || selectedOption === 'manual') && (
+          <div ref={contentTopRef} className={`${FLOW_STEP_ANCHOR} mb-6`}>
             <h2 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
               {selectedOption === 'ai'
-                ? <><span className="text-brand">AI photo</span> estimate.</>  
+                ? aiStep === 'result'
+                  ? <>Your <span className="text-brand">estimate.</span></>
+                  : <><span className="text-brand">AI photo</span> estimate.</>
                 : manualStep === 'review'
-                  ? <>Review your <span className="text-brand">list.</span></>  
-                  : <>Pick your <span className="text-brand">items.</span></>}
+                  ? <>Review your <span className="text-brand">list.</span></>
+                  : manualStep === 'result'
+                    ? <>Your <span className="text-brand">estimate.</span></>
+                    : <>Pick your <span className="text-brand">items.</span></>}
             </h2>
             <p className="text-sm text-secondary-400">
               {selectedOption === 'ai'
-                ? 'Upload a photo and we\'ll estimate the cost automatically.'
+                ? aiStep === 'result'
+                  ? 'Review your price breakdown, then continue to book.'
+                  : 'Upload a photo and we\'ll estimate the cost automatically.'
                 : manualStep === 'review'
                   ? 'Confirm your items to calculate the estimate.'
-                  : 'Browse categories and pick what you need.'}
+                  : manualStep === 'result'
+                    ? 'Review your price breakdown, then continue to book.'
+                    : 'Browse categories and pick what you need.'}
             </p>
           </div>
         )}
       </div>
 
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pb-8 transition-all duration-300 ${selectedOption === 'manual' && manualStep === 'select' ? 'max-w-5xl' : 'max-w-2xl'}`}>
+      <div className={`${FLOW_PAGE_CONTENT} transition-all duration-300 ${flowPageMaxWidth(selectedOption === 'manual' && manualStep === 'select')}`}>
 
           {/* ===== AI PHOTO CONTENT ===== */}
           {selectedOption === 'ai' && (

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import {
   ArrowRight,
@@ -24,6 +24,8 @@ import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { EstimateMethodSelection } from './EstimateMethodSelection';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './JunkItemCatalogSelector';
+import { JunkRemovalPriceBreakdown } from './JunkRemovalPriceBreakdown';
+import { FLOW_STEP_ANCHOR, scrollToFlowStep } from '../../lib/flowPageLayout';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 
 export interface JunkRemovalEstimateResult {
@@ -91,14 +93,6 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   const totalSelectedCount = selectedItems.reduce((sum, i) => sum + i.quantity, 0);
   const isItemSelected = (itemName: string) => selectedItems.some((i) => i.name === itemName);
 
-  const scrollToElement = useCallback((el: HTMLElement | null, offset = -100) => {
-    if (!el) return;
-    setTimeout(() => {
-      const top = el.getBoundingClientRect().top + window.scrollY + offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }, 50);
-  }, []);
-
   useEffect(() => {
     onModeChange?.(mode, manualStep);
   }, [mode, manualStep, onModeChange]);
@@ -108,8 +102,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
     const prev = prevModeRef.current;
     prevModeRef.current = mode;
     if (prev === 'method' && (mode === 'ai' || mode === 'manual')) return;
-    scrollToElement(contentTopRef.current, -120);
-  }, [aiStep, manualStep, mode, scrollToElement]);
+    scrollToFlowStep(contentTopRef.current);
+  }, [aiStep, manualStep, mode]);
 
   useEffect(() => {
     if (manualStep === 'review' && selectedItems.length === 0) {
@@ -250,7 +244,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   ) => {
     setContactLoading(true);
     try {
-      const detailsText = `Items: ${items.map((i) => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Volume: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
+      const detailsText = `Items: ${items.map((i) => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Items: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
       let partialId = `mock-lead-${Date.now()}`;
       try {
         let uploadedUrl = images[0] || '';
@@ -270,6 +264,9 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
             price: price.price,
             estimate_summary: price.summary,
             photo_url: uploadedUrl,
+            ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
+              ? { online_booking_discount: price.onlineBookingDiscount }
+              : {}),
           },
           p_status: 'partially_submitted',
         });
@@ -336,21 +333,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-5 md:p-6 border border-secondary-100">
-          <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
-            <div className="flex justify-between items-center text-sm md:text-base">
-              <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-              <span className="text-secondary-900 font-bold">${price.price}</span>
-            </div>
-          </div>
-          <div className="flex justify-between items-end">
-            <div>
-              <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
-              <p className="text-xs text-secondary-500 mt-1">{price.estimatedVolume}</p>
-            </div>
-            <p className="text-3xl md:text-4xl font-black text-brand">${price.price}</p>
-          </div>
-        </div>
+        <JunkRemovalPriceBreakdown price={price} />
 
         <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
@@ -370,6 +353,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           </div>
         </div>
 
+        {!price.lines?.length && (
         <div>
           <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
             {items.reduce((sum, i) => sum + i.quantity, 0)} items
@@ -383,6 +367,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
             ))}
           </div>
         </div>
+        )}
 
         <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
 
@@ -397,6 +382,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                     estimatedVolume: price.estimatedVolume,
                     price: price.price,
                     summary: price.summary,
+                    subtotal: price.subtotal,
+                    onlineBookingDiscount: price.onlineBookingDiscount,
                   },
                   items,
                   price,
@@ -483,7 +470,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
   return (
     <div>
-      <div ref={contentTopRef} className="mb-6">
+      <div ref={contentTopRef} className={`${FLOW_STEP_ANCHOR} mb-6`}>
         <h2 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
           {mode === 'ai' ? (
             <><span className="text-brand">AI photo</span> estimate.</>

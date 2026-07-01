@@ -226,7 +226,7 @@ function App() {
         <ScrollToTop />
         <Navbar />
         
-        <main className="pt-[80px] md:pt-[120px]">
+        <main className="pt-[var(--site-header-height)]">
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
