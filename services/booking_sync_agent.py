@@ -623,28 +623,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             except Exception as e:
                 logging.error(f"Failed to insert booking: {e}")
 
-            if sync_success:
-                # Send email
-                logging.info(f"Triggering email Edge Function for booking {order_number}...")
-                email_payload = {
-                    "type": "booking",
-                    "record": {
-                        "name": name,
-                        "email": email,
-                        "phone": phone,
-                        "address": address,
-                        "unit_number": extracted_data.get("unitNumber") or None,
-                        "city": city,
-                        "state": state,
-                        "zip_code": zip_code,
-                        "service_type": norm_service_type,
-                        "preferred_date": date,
-                        "details": details_field,
-                        "price": 0,
-                        "order_number": order_number
-                    }
-                }
-                await trigger_email_function(email_payload, supabase_headers)
+            # Confirmation + admin emails are sent automatically by the
+            # send_notification_on_insert trigger on public.bookings.
 
         elif submission_type == "contact":
             subject = extracted_data.get("contactSubject") or "General Enquiry"
@@ -679,19 +659,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             except Exception as e:
                 logging.error(f"Failed to insert contact: {e}")
 
-            if sync_success:
-                # Send email
-                logging.info(f"Triggering email Edge Function for contact enquiry...")
-                email_payload = {
-                    "type": "contact",
-                    "record": {
-                        "name": name,
-                        "email": email,
-                        "phone": phone,
-                        "message": message_field
-                    }
-                }
-                await trigger_email_function(email_payload, supabase_headers)
+            # Confirmation + admin emails are sent automatically by the
+            # send_notification_on_insert trigger on public.contacts.
 
         elif submission_type == "provider_signup":
             service_area = extracted_data.get("providerServiceArea") or "N/A"
@@ -735,20 +704,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             except Exception as e:
                 logging.error(f"Failed to insert provider: {e}")
 
-            if sync_success:
-                # Send email
-                logging.info(f"Triggering email Edge Function for provider signup...")
-                email_payload = {
-                    "type": "provider_signup",
-                    "record": {
-                        "name": name,
-                        "email": email,
-                        "phone": phone,
-                        "service_area": service_area,
-                        "vehicle_type": vehicle_type
-                    }
-                }
-                await trigger_email_function(email_payload, supabase_headers)
+            # Confirmation + admin emails are sent automatically by the
+            # send_notification_on_insert trigger on public.provider_signups.
 
         # Update tracking state if sync was successful or if we hit max retries
         if sync_success:

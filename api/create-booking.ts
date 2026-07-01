@@ -128,31 +128,8 @@ export default async function handler(
 
     const finalOrderNumber = orderNumber;
 
-    // Trigger booking confirmation email using the Supabase Edge Function (matching client behavior)
-    try {
-      await supabase.functions.invoke('send-email', {
-        body: {
-          type: 'booking',
-          record: {
-            name,
-            email: email || '',
-            phone,
-            address,
-            unit_number: unitNumber || null,
-            city,
-            state,
-            zip_code: zipCode,
-            service_type: normalizedServiceType,
-            preferred_date: date,
-            details: details || '',
-            price: 0,
-            order_number: finalOrderNumber
-          }
-        }
-      });
-    } catch (emailErr) {
-      console.warn('Failed to send booking confirmation email:', emailErr);
-    }
+    // Confirmation + admin emails are sent automatically by the
+    // send_notification_on_insert trigger on public.bookings.
 
     // Return success JSON for the ElevenLabs Agent to read back to the user
     return res.status(200).json({

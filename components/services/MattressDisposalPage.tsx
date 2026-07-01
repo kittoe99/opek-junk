@@ -9,6 +9,7 @@ import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
 import { QuickActionBar } from '../QuickActionBar';
 import { ZipCheckModal } from '../ZipCheckModal';
+import { trackMattressConversion } from '../../lib/googleAds';
 
 const MattressIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -111,6 +112,8 @@ export const MattressDisposalPage: React.FC = () => {
       const city = data.places?.[0]?.['place name'] ?? '';
       const state = data.places?.[0]?.['state abbreviation'] ?? '';
 
+      trackMattressConversion('mattress_zip_check');
+
       navigate('/booking/mattress', {
         state: {
           zipResult: { city, state, served: true },
@@ -123,6 +126,11 @@ export const MattressDisposalPage: React.FC = () => {
     } finally {
       setZipLoading(false);
     }
+  };
+
+  const goToBooking = () => {
+    trackMattressConversion('mattress_view_pricing');
+    navigate('/booking/mattress');
   };
 
   const mattressItems = [
@@ -174,8 +182,8 @@ export const MattressDisposalPage: React.FC = () => {
         subtitle="Same-day pickup from any room. Zero heavy lifting."
         image="/mattress-pickup.webp"
         imageAlt="Opek mattress removal service in action"
-        primaryCta={{ label: 'View Pricing', onClick: () => navigate('/booking/mattress') }}
-        secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking/mattress') }}
+        primaryCta={{ label: 'View Pricing', onClick: goToBooking }}
+        secondaryCta={{ label: 'Book Online', onClick: goToBooking }}
       >
         <ZipChecker
           zipValue={zipValue}
@@ -244,7 +252,7 @@ export const MattressDisposalPage: React.FC = () => {
         titleAccent="Same-day booking available."
       />
 
-      <QuickActionBar onBookOnline={() => navigate('/booking/mattress')} />
+      <QuickActionBar onBookOnline={goToBooking} />
 
       <ZipCheckModal
         isOpen={isZipModalOpen}

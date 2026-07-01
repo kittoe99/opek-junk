@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!;
 const NOTIFY_EMAIL = 'support@opekjunkremoval.com';
-const FROM_EMAIL = 'Opek Junk Removal <notifications@opekjunkremoval.com>';
+const FROM_EMAIL = Deno.env.get('EMAIL_FROM') || 'Opek Junk Removal <notifications@opekjunkremoval.com>';
 const SITE_URL = 'https://opekjunkremoval.com';
 const LOGO_BLACK = `${SITE_URL}/logo1.png`;
 const LOGO_WHITE = `${SITE_URL}/opek-logo-plain.png`;
@@ -162,6 +162,22 @@ function adminProvider(r: Record<string, any>): { subject: string; html: string 
   };
 }
 
+function formatItemList(details: Record<string, any>): string {
+  if (Array.isArray(details.estimated_items) && details.estimated_items.length > 0) {
+    return details.estimated_items.join(', ');
+  }
+  if (Array.isArray(details.items) && details.items.length > 0) {
+    return details.items
+      .map((item: { name?: string; quantity?: number }) => {
+        const qty = item.quantity && item.quantity > 1 ? `${item.quantity}x ` : '';
+        return `${qty}${item.name || ''}`.trim();
+      })
+      .filter(Boolean)
+      .join(', ');
+  }
+  return '';
+}
+
 function adminBooking(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const location = r.location_info || {};
@@ -178,12 +194,14 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
   const priceVal = details.price ? `$${details.price}` : '';
   const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
   const photoUrl = typeof details.photo_url === 'string' ? details.photo_url.trim() : '';
+  const items = formatItemList(details);
 
   return {
-    subject: `New booking: ${customer.name || ''}`,
+    subject: `New booking: ${customer.name || ''}${r.order_number ? ` (${r.order_number})` : ''}`,
     html: emailLayout(
       heading('New booking received') +
       detailsBlock(
+        detailRow('Order #', r.order_number) +
         detailRow('Name', customer.name) +
         detailRow('Email', customer.email) +
         detailRow('Phone', customer.phone) +
@@ -194,9 +212,38 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
         detailRow('Est. price', priceVal) +
         detailRow('Deposit', details.deposit_paid ? (depositVal || 'Paid') : '') +
         detailRow('Payment ID', details.stripe_payment_intent_id) +
-        detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
+        detailRow('Items', items) +
         detailRow('Volume', details.estimated_volume) +
         detailRow('Photo', photoUrl) +
+        detailRow('Details', details.details)
+      ) +
+      paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
+    ),
+  };
+}
+
+function adminPrebooking(r: Record<string, any>): { subject: string; html: string } {
+  const customer = r.customer_info || {};
+  const details = r.booking_details || {};
+  const priceVal = details.price ? `$${details.price}` : '';
+  const items = formatItemList(details);
+
+  return {
+    subject: `New lead: ${customer.name || 'Unknown'}${details.service_type ? ` — ${details.service_type}` : ''}`,
+    html: emailLayout(
+      heading('New prebooking / lead') +
+      detailsBlock(
+        detailRow('Status', r.status) +
+        detailRow('Name', customer.name) +
+        detailRow('Email', customer.email) +
+        detailRow('Phone', customer.phone) +
+        detailRow('Service', details.service_type) +
+        detailRow('Zip', details.zip_code) +
+        detailRow('Est. price', priceVal) +
+        detailRow('Items', items) +
+        detailRow('Volume', details.estimated_volume) +
+        detailRow('Photo', typeof details.photo_url === 'string' ? details.photo_url.trim() : '') +
+        detailRow('Summary', details.estimate_summary) +
         detailRow('Details', details.details)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
@@ -313,7 +360,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
         detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         (priceVal ? detailRow('Est. price', priceVal) : '') +
         (details.deposit_paid ? detailRow('Deposit paid', depositVal || 'Yes') : '') +
-        detailRow('Items', Array.isArray(details.estimated_items) ? details.estimated_items.join(', ') : '') +
+        detailRow('Items', formatItemList(details)) +
         detailRow('Details', details.details)
       ) +
       paragraph('<strong>What to expect:</strong>') +
@@ -323,6 +370,30 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
         'Junk is removed and recycled responsibly',
       ]) +
       paragraph('Need to reschedule? Call us anytime.') +
+      ctaLink(`Call ${PHONE}`, PHONE_LINK) +
+      signoff
+    ),
+  };
+}
+
+function userPrebooking(r: Record<string, any>): { subject: string; html: string } {
+  const customer = r.customer_info || {};
+  const details = r.booking_details || {};
+  const name = (customer.name || '').split(' ')[0] || 'there';
+  const priceVal = details.price ? `$${details.price}` : '';
+
+  return {
+    subject: `We received your request, ${name}`,
+    html: emailLayout(
+      heading(`Hi ${name}, we got your info`) +
+      paragraph('Thanks for starting your request with Opek. A local provider will follow up shortly to confirm pricing and next steps.') +
+      detailsBlock(
+        detailRow('Service', details.service_type) +
+        detailRow('Zip', details.zip_code) +
+        (priceVal ? detailRow('Est. price', priceVal) : '') +
+        detailRow('Items', formatItemList(details)) +
+        detailRow('Details', details.details)
+      ) +
       ctaLink(`Call ${PHONE}`, PHONE_LINK) +
       signoff
     ),
@@ -376,6 +447,10 @@ Deno.serve(async (req: Request) => {
         admin = adminBooking(record);
         user = userBooking(record);
         break;
+      case 'Prebooking':
+        admin = adminPrebooking(record);
+        user = userPrebooking(record);
+        break;
       default:
         return new Response(JSON.stringify({ error: `Unknown table: ${table}` }), {
           status: 400,
@@ -383,11 +458,16 @@ Deno.serve(async (req: Request) => {
         });
     }
 
-    const recipientEmail = record.customer_info?.email;
+    const recipientEmail = record.customer_info?.email?.trim();
+    const shouldEmailUser =
+      recipientEmail &&
+      recipientEmail.toLowerCase() !== NOTIFY_EMAIL.toLowerCase();
 
     const results = await Promise.allSettled([
       sendEmail(NOTIFY_EMAIL, admin.subject, admin.html),
-      recipientEmail ? sendEmail(recipientEmail, user.subject, user.html) : Promise.resolve({ skipped: true }),
+      shouldEmailUser
+        ? sendEmail(recipientEmail, user.subject, user.html)
+        : Promise.resolve({ skipped: true, reason: 'No customer email or same as company inbox' }),
     ]);
 
     return new Response(JSON.stringify({

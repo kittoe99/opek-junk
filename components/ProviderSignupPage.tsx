@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, ClipboardList, Truck, Calendar, ShieldCheck, DollarSign, Smartphone } from 'lucide-react';
 import { PageHero } from './shared/PageHero';
-import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 
@@ -103,14 +103,8 @@ export const ProviderSignupPage: React.FC = () => {
 
       if (insertError) throw insertError;
 
-      sendConfirmationEmail('provider_signup', {
-        name: providerName,
-        email: formData.email,
-        phone: formData.phone,
-        service_area: formData.serviceArea,
-        vehicle_type: formData.vehicleType
-      }).catch(err => console.warn('Failed to send provider signup confirmation email:', err));
-
+      // Confirmation + admin emails are sent automatically by the
+      // send_notification_on_insert trigger on public.provider_signups.
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting provider signup:', err);

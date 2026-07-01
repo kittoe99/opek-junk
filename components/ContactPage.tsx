@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Send, Phone, Mail } from 'lucide-react';
-import { supabase, sendConfirmationEmail } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 import { PageHero } from './shared/PageHero';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
@@ -46,14 +46,8 @@ export const ContactPage: React.FC = () => {
 
       if (insertError) throw insertError;
 
-      // Trigger confirmation email
-      sendConfirmationEmail('contact', {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        message: messageText
-      }).catch(err => console.warn('Failed to send contact confirmation email:', err));
-
+      // Confirmation + admin emails are sent automatically by the
+      // send_notification_on_insert trigger on public.contacts.
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting contact form:', err);

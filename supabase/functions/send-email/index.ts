@@ -66,7 +66,7 @@ serve(async (req) => {
     const record = sanitizeRecord(rawRecord)
 
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
-    const fromEmail = Deno.env.get('EMAIL_FROM') || 'Opek <onboarding@resend.dev>'
+    const fromEmail = Deno.env.get('EMAIL_FROM') || 'Opek Junk Removal <notifications@opekjunkremoval.com>'
     
     let subject = ''
     let toEmail = (typeof rawRecord.email === 'string' ? rawRecord.email : '').trim()

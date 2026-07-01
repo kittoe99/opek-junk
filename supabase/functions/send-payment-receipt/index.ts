@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const NOTIFY_EMAIL = "support@opekjunkremoval.com";
 const FROM_EMAIL = Deno.env.get("EMAIL_FROM") || "Opek Junk Removal <notifications@opekjunkremoval.com>";
 const SITE_URL = "https://www.opekjunkremoval.com";
 const LOGO_BLACK = `${SITE_URL}/logo1.png`;
@@ -135,7 +136,39 @@ function buildReceiptEmail(input: {
   };
 }
 
-async function sendEmail(to: string, subject: string, html: string) {
+function buildAdminReceiptEmail(input: {
+  name: string;
+  email: string;
+  payment: PaymentRecord;
+  orderNumber?: string | null;
+  serviceType?: string | null;
+}): { subject: string; html: string } {
+  const amount = formatAmount(input.payment.amount_cents, input.payment.currency || "usd");
+  const label = paymentLabel(input.payment.payment_type);
+  const service = input.serviceType || input.payment.service_type || "Junk Removal";
+  const paidAt = formatDate(input.payment.updated_at || input.payment.created_at);
+  const reference = input.payment.stripe_payment_intent_id;
+
+  return {
+    subject: `Payment received: ${amount} — ${input.name || "Customer"}`,
+    html: emailLayout(
+      heading("Payment received") +
+        paragraph(`A customer payment was processed successfully.`) +
+        detailsBlock(
+          detailRow("Customer", input.name) +
+            detailRow("Email", input.email) +
+            detailRow("Amount paid", amount) +
+            detailRow("Payment type", label) +
+            detailRow("Service", service) +
+            (input.orderNumber ? detailRow("Order number", input.orderNumber) : "") +
+            detailRow("Date", paidAt) +
+            detailRow("Reference", reference)
+        )
+    ),
+  };
+}
+
+async function sendEmail(to: string | string[], subject: string, html: string) {
   if (!RESEND_API_KEY) {
     console.log("--- MOCK PAYMENT RECEIPT ---");
     console.log(`To: ${to}`);
@@ -149,7 +182,7 @@ async function sendEmail(to: string, subject: string, html: string) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
-    body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
+    body: JSON.stringify({ from: FROM_EMAIL, to: Array.isArray(to) ? to : [to], subject, html }),
   });
 
   const data = await res.json();
@@ -235,7 +268,25 @@ Deno.serve(async (req: Request) => {
       serviceType,
     });
 
-    const sendResult = await sendEmail(customerEmail, subject, html);
+    const adminReceipt = buildAdminReceiptEmail({
+      name: customerName,
+      email: customerEmail,
+      payment,
+      orderNumber,
+      serviceType,
+    });
+
+    const sendResults = await Promise.allSettled([
+      sendEmail(customerEmail, subject, html),
+      customerEmail.toLowerCase() !== NOTIFY_EMAIL.toLowerCase()
+        ? sendEmail(NOTIFY_EMAIL, adminReceipt.subject, adminReceipt.html)
+        : Promise.resolve({ skipped: true, reason: "Customer email is company inbox" }),
+    ]);
+
+    const sendResult = {
+      customer: sendResults[0].status === "fulfilled" ? sendResults[0].value : { error: String((sendResults[0] as PromiseRejectedResult).reason) },
+      admin: sendResults[1].status === "fulfilled" ? sendResults[1].value : { error: String((sendResults[1] as PromiseRejectedResult).reason) },
+    };
 
     const { error: updateError } = await supabase
       .from("payments")

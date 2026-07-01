@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Loader2, MapPin, BedDouble, Mail, Layers, Package, Minus, Plus, X, ShieldCheck } from 'lucide-react';
-import { supabase, sendConfirmationEmail } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { TrustBadges } from '../TrustBadges';
 import { ITEM_CATALOG } from '../../lib/itemCatalog';
@@ -17,6 +17,7 @@ import {
   ServiceAddressValue,
   isServiceAddressValidated,
 } from '../shared/ServiceAddressField';
+import { trackMattressConversion } from '../../lib/googleAds';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -177,6 +178,13 @@ export const MattressBookingPage: React.FC = () => {
   const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
   const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const bookingStartTrackedRef = useRef(false);
+
+  useEffect(() => {
+    if (bookingStartTrackedRef.current) return;
+    bookingStartTrackedRef.current = true;
+    trackMattressConversion('mattress_booking_start');
+  }, []);
 
   const handleZipSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -199,6 +207,7 @@ export const MattressBookingPage: React.FC = () => {
         state: location.state,
         zipCode: location.zip,
       }));
+      trackMattressConversion('mattress_zip_check');
       setStep(2);
     } finally {
       setZipLoading(false);
@@ -407,6 +416,7 @@ export const MattressBookingPage: React.FC = () => {
 
       setFormData(prev => ({ ...prev, name, phone }));
       setSmsMarketingConsentAt(consentAt);
+      trackMattressConversion('mattress_lead');
       setStep(4);
     } finally {
       setContactLoading(false);
@@ -480,25 +490,14 @@ export const MattressBookingPage: React.FC = () => {
           });
       }
 
-      // Send email
-      await sendConfirmationEmail('booking', {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        unit_number: formData.unitNumber || null,
-        city: formData.city || null,
-        state: formData.state || null,
-        zip_code: formData.zipCode || zipCode,
-        date: formData.date,
-        preferred_time: formatTimeSlotLabel(formData.timeSlot),
-        service: `Mattress Disposal`,
-        details: itemsSummaryText,
-        price: totalPrice,
-        orderNumber: generatedOrderNumber
-      });
-
+      // Confirmation + admin emails are sent automatically by the
+      // send_notification_on_insert trigger on public.bookings. The
+      // deposit payment receipt is sent separately by the payments trigger.
       setOrderNumber(generatedOrderNumber);
+      trackMattressConversion('mattress_purchase', {
+        value: MATTRESS_DEPOSIT_AMOUNT,
+        currency: 'USD',
+      });
       setStep(9);
     } catch (err) {
       console.error('Error submitting booking:', err);

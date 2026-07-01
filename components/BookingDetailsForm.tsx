@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
-import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
+import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { withSmsMarketingConsent, SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
@@ -391,25 +391,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         }
   
         const finalOrderNumber = generatedOrderNumber;
-        
-        // Trigger booking confirmation email
-        sendConfirmationEmail('booking', {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          unit_number: formData.unitNumber || null,
-          city: formData.city,
-          state: formData.state,
-          zip_code: formData.zipCode,
-          service_type: normalizedServiceType,
-          preferred_date: formData.date,
-          preferred_time: formatTimeSlotLabel(formData.timeSlot),
-          details: detailsText,
-          price: estimate?.price || null,
-          order_number: finalOrderNumber
-        }).catch(err => console.warn('Failed to send booking confirmation email:', err));
 
+        // Confirmation + admin emails are sent automatically by the
+        // send_notification_on_insert trigger on public.bookings. The
+        // deposit payment receipt is sent separately by the payments trigger.
         setOrderNumber(finalOrderNumber);
         setSubmitted(true);
       } catch (err: any) {

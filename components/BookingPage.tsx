@@ -5,7 +5,7 @@ import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, Lo
 import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
-import { supabase, sendConfirmationEmail, uploadBookingPhoto } from '../lib/supabase';
+import { supabase, uploadBookingPhoto } from '../lib/supabase';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -471,26 +471,10 @@ export const BookingPage: React.FC = () => {
 
       if (insertError) throw insertError;
       
-      const finalOrderNumber = generatedOrderNumber;
       setOrderNumber(generatedOrderNumber);
 
-      // Trigger booking confirmation email
-      sendConfirmationEmail('booking', {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        unit_number: formData.unitNumber || null,
-        city: formData.city,
-        state: formData.state,
-        zip_code: formData.zipCode,
-        service_type: formData.serviceType,
-        preferred_date: formData.date,
-        details: formData.details,
-        price: formData.price || null,
-        order_number: finalOrderNumber
-      }).catch(err => console.warn('Failed to send booking confirmation email:', err));
-
+      // Confirmation + admin emails are sent automatically by the
+      // send_notification_on_insert trigger on public.bookings.
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting booking:', err);
