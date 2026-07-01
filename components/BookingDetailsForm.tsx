@@ -852,6 +852,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         <BookingDepositIntro
           onBack={() => setStep('review')}
           onContinue={() => setStep('payment')}
+          serviceType={serviceType}
+          source="booking"
         />
       )}
 

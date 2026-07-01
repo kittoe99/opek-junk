@@ -1145,6 +1145,8 @@ export const MattressBookingPage: React.FC = () => {
     <BookingDepositIntro
       onBack={() => setStep(6)}
       onContinue={() => setStep(8)}
+      serviceType="Mattress Disposal"
+      source="mattress"
     />
   );
 

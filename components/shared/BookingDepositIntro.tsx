@@ -1,16 +1,86 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import { BOOKING_DEPOSIT_AMOUNT } from '../../lib/deposit';
+import { isSupabaseConfigured, supabase } from '../../lib/supabase';
 
 interface BookingDepositIntroProps {
   onBack: () => void;
   onContinue: () => void;
+  serviceType?: string;
+  source?: string;
 }
 
 export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
   onBack,
   onContinue,
+  serviceType,
+  source,
 }) => {
+  const viewIdRef = useRef<string | null>(null);
+  const viewPromiseRef = useRef<Promise<string | null> | null>(null);
+  const outcomeRef = useRef<'viewed' | 'continued' | 'exited'>('viewed');
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+
+    let cancelled = false;
+    const promise = Promise.resolve(
+      supabase.rpc('track_deposit_view', {
+        p_service_type: serviceType ?? null,
+        p_source: source ?? null,
+        p_deposit_amount: BOOKING_DEPOSIT_AMOUNT,
+      })
+    )
+      .then(({ data, error }: { data: unknown; error: unknown }) => {
+        if (error) {
+          console.warn('Failed to record deposit screen view:', error);
+          return null;
+        }
+        const id = (data as string) ?? null;
+        if (!cancelled) viewIdRef.current = id;
+        return id;
+      })
+      .catch((err) => {
+        console.warn('Failed to record deposit screen view:', err);
+        return null;
+      });
+    viewPromiseRef.current = promise;
+
+    const recordExit = () => {
+      if (outcomeRef.current !== 'viewed') return;
+      outcomeRef.current = 'exited';
+      const id = viewIdRef.current;
+      if (!id) return;
+      Promise.resolve(
+        supabase.rpc('track_deposit_outcome', { p_id: id, p_outcome: 'exited' })
+      ).catch(() => {});
+    };
+
+    window.addEventListener('beforeunload', recordExit);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('beforeunload', recordExit);
+      recordExit();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleContinue = () => {
+    outcomeRef.current = 'continued';
+    if (isSupabaseConfigured) {
+      const send = (id: string | null) => {
+        if (!id) return;
+        Promise.resolve(
+          supabase.rpc('track_deposit_outcome', { p_id: id, p_outcome: 'continued' })
+        ).catch(() => {});
+      };
+      if (viewIdRef.current) send(viewIdRef.current);
+      else if (viewPromiseRef.current) viewPromiseRef.current.then(send).catch(() => {});
+    }
+    onContinue();
+  };
+
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       <div className="text-center space-y-2 mb-6">
@@ -38,7 +108,7 @@ export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
         </button>
         <button
           type="button"
-          onClick={onContinue}
+          onClick={handleContinue}
           className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
         >
           Continue <ArrowRight size={14} />
