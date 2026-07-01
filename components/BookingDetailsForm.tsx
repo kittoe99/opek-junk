@@ -26,6 +26,7 @@ interface BookingDetailsFormProps {
   prefilledPhone?: string;
   partialBookingId?: string | null;
   smsMarketingConsentAt?: string | null;
+  depositSource?: string;
 }
 
 type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'deposit' | 'payment';
@@ -41,6 +42,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   prefilledPhone,
   partialBookingId,
   smsMarketingConsentAt,
+  depositSource = 'booking',
 }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
@@ -853,7 +855,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           onBack={() => setStep('review')}
           onContinue={() => setStep('payment')}
           serviceType={serviceType}
-          source="booking"
+          source={depositSource}
         />
       )}
 

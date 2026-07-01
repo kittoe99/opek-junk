@@ -800,6 +800,7 @@ export const QuotePage: React.FC = () => {
             prefilledPhone={contactPhone}
             partialBookingId={partialBookingId}
             smsMarketingConsentAt={smsMarketingConsentAt}
+            depositSource="quote"
           />
         </div>
 
