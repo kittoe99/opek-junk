@@ -128,9 +128,9 @@ export const MattressDisposalPage: React.FC = () => {
     }
   };
 
-  const goToBooking = () => {
+  const goToBooking = (preselectItems?: { name: string; quantity: number }[]) => {
     trackMattressConversion('mattress_view_pricing');
-    navigate('/booking/mattress');
+    navigate('/booking/mattress', preselectItems ? { state: { preselectItems } } : undefined);
   };
 
   const mattressItems = [
@@ -138,33 +138,29 @@ export const MattressDisposalPage: React.FC = () => {
       label: 'Mattresses (From $75)',
       desc: 'Standard innerspring, memory foam, latex, hybrid, pillow-top, futons, and crib mattresses of any size.',
       icon: MattressIcon,
-      onClick: () => navigate('/quote', { state: { preselectItems: [{ name: 'Mattress', quantity: 1 }] } }),
+      onClick: () => goToBooking([{ name: 'Mattress', quantity: 1 }]),
     },
     {
       label: 'Box Springs (From $65)',
       desc: 'Traditional wood box springs, metal foundations, split box springs, or low-profile bases from any floor.',
       icon: BoxSpringIcon,
-      onClick: () => navigate('/quote', { state: { preselectItems: [{ name: 'Box Spring', quantity: 1 }] } }),
+      onClick: () => goToBooking([{ name: 'Box Spring', quantity: 1 }]),
     },
     {
       label: 'Bed Frames (From $70)',
       desc: 'Steel bed frames, wooden headboards, footboards, adjustables, platform beds, bunk beds, and daybeds.',
       icon: BedFrameIcon,
-      onClick: () => navigate('/quote', { state: { preselectItems: [{ name: 'Bed Frame', quantity: 1 }] } }),
+      onClick: () => goToBooking([{ name: 'Bed Frame', quantity: 1 }]),
     },
     {
       label: 'Complete Sets (Save 15%)',
       desc: 'Bundle your mattress, box spring, and frame removal into a single flat-rate package for maximum savings.',
       icon: CompleteSetIcon,
-      onClick: () => navigate('/quote', {
-        state: {
-          preselectItems: [
-            { name: 'Mattress', quantity: 1 },
-            { name: 'Box Spring', quantity: 1 },
-            { name: 'Bed Frame', quantity: 1 },
-          ],
-        },
-      }),
+      onClick: () => goToBooking([
+        { name: 'Mattress', quantity: 1 },
+        { name: 'Box Spring', quantity: 1 },
+        { name: 'Bed Frame', quantity: 1 },
+      ]),
     },
   ];
 
@@ -182,8 +178,8 @@ export const MattressDisposalPage: React.FC = () => {
         subtitle="Same-day pickup from any room. Zero heavy lifting."
         image="/mattress-pickup.webp"
         imageAlt="Opek mattress removal service in action"
-        primaryCta={{ label: 'View Pricing', onClick: goToBooking }}
-        secondaryCta={{ label: 'Book Online', onClick: goToBooking }}
+        primaryCta={{ label: 'View Pricing', onClick: () => goToBooking() }}
+        secondaryCta={{ label: 'Book Online', onClick: () => goToBooking() }}
       >
         <ZipChecker
           zipValue={zipValue}
@@ -252,7 +248,7 @@ export const MattressDisposalPage: React.FC = () => {
         titleAccent="Same-day booking available."
       />
 
-      <QuickActionBar onBookOnline={goToBooking} />
+      <QuickActionBar onBookOnline={() => goToBooking()} />
 
       <ZipCheckModal
         isOpen={isZipModalOpen}

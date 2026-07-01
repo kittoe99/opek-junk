@@ -18,6 +18,12 @@ import {
   isServiceAddressValidated,
 } from '../shared/ServiceAddressField';
 import { trackMattressConversion } from '../../lib/googleAds';
+import {
+  formatOnlineBookingDiscountLabel,
+  getDiscountedTotal,
+  getMattressCoreItemCount,
+  getOnlineBookingDiscount,
+} from '../../lib/mattressBookingPricing';
 
 type MattressType = 'Mattress Only' | 'Mattress + Box Spring' | 'Full Set';
 
@@ -25,7 +31,7 @@ const MINIMUM_JUNK_REMOVAL_PRICE = 169;
 const MATTRESS_PRICE = 105;
 const BOX_SPRING_PRICE = 66;
 const BED_FRAME_PRICE = 72;
-const MATTRESS_TWO_ITEM_BUNDLE_PRICE = 189;
+const MATTRESS_TWO_ITEM_BUNDLE_PRICE = 209;
 const MATTRESS_FULL_SET_PRICE = 269;
 
 interface BookingItem {
@@ -316,7 +322,7 @@ export const MattressBookingPage: React.FC = () => {
     }
   };
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     let m = 0;
     let b = 0;
     let f = 0;
@@ -386,10 +392,22 @@ export const MattressBookingPage: React.FC = () => {
     return subtotal > 0 ? Math.max(MINIMUM_JUNK_REMOVAL_PRICE, subtotal) : 0;
   };
 
+  const getPricingBreakdown = () => {
+    const subtotal = calculateSubtotal();
+    const itemCount = getMattressCoreItemCount(selectedItems.filter((item) => item.quantity > 0));
+    const discount = getOnlineBookingDiscount(itemCount);
+    const total = getDiscountedTotal(subtotal, itemCount);
+
+    return { subtotal, discount, total, itemCount };
+  };
+
+  const calculateTotal = () => getPricingBreakdown().total;
+
   const handleContactReveal = async (name: string, phone: string, consentAt: string | null) => {
     setContactLoading(true);
     try {
       const totalPrice = calculateTotal();
+      const { discount } = getPricingBreakdown();
       const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
 
       try {
@@ -400,7 +418,8 @@ export const MattressBookingPage: React.FC = () => {
             zip_code: zipCode || null,
             details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
             estimated_items: itemsList,
-            price: totalPrice
+            price: totalPrice,
+            online_booking_discount: discount > 0 ? discount : null,
           },
           p_status: 'partially_submitted'
         });
@@ -430,6 +449,7 @@ export const MattressBookingPage: React.FC = () => {
       const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
       const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
       const totalPrice = calculateTotal();
+      const { discount } = getPricingBreakdown();
       const itemsSummaryText = itemsList.join(', ');
       
       const customerInfo = withSmsMarketingConsent(
@@ -448,6 +468,7 @@ export const MattressBookingPage: React.FC = () => {
         preferred_date: formData.date,
         preferred_time: formatTimeSlotLabel(formData.timeSlot),
         price: totalPrice,
+        online_booking_discount: discount > 0 ? discount : null,
         deposit_amount: MATTRESS_DEPOSIT_AMOUNT,
         deposit_paid: true,
         stripe_payment_intent_id: paymentIntentId,
@@ -773,7 +794,7 @@ export const MattressBookingPage: React.FC = () => {
   );
 
   const renderStep4 = () => {
-    const total = calculateTotal();
+    const { subtotal, discount, total, itemCount } = getPricingBreakdown();
     const visibleItems = selectedItems.filter(i => i.quantity > 0);
     const totalItems = visibleItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -815,13 +836,20 @@ export const MattressBookingPage: React.FC = () => {
           <div className="space-y-3 mb-5 pb-5 border-b border-secondary-100">
             <div className="flex justify-between items-center text-sm">
               <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-              <span className="text-secondary-900 font-bold">${total}</span>
+              <span className={`font-bold ${discount > 0 ? 'text-secondary-400 line-through' : 'text-secondary-900'}`}>
+                ${subtotal}
+              </span>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-emerald-700 font-medium">{formatOnlineBookingDiscountLabel(itemCount)}</span>
+                <span className="text-emerald-700 font-bold">-${discount}</span>
+              </div>
+            )}
           </div>
           <div className="flex justify-between items-end">
             <div>
               <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
-              <p className="text-xs text-secondary-500 mt-1">Minimum order is ${MINIMUM_JUNK_REMOVAL_PRICE}</p>
             </div>
             <p className="text-3xl font-black text-brand">${total}</p>
           </div>
@@ -1123,7 +1151,7 @@ export const MattressBookingPage: React.FC = () => {
           Book mattress <span className="text-brand">removal.</span>
         </h1>
         <p className="text-sm text-secondary-400">
-          A few quick steps to check availability, select options, reveal your price, and complete booking. A matched local provider confirms within 15 minutes.
+          A few quick steps to check availability, select options, reveal your price, and complete booking.
         </p>
       </div>
 

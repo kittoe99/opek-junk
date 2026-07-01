@@ -353,7 +353,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
     subject: `Booking confirmed, ${name}`,
     html: emailLayout(
       heading(`Hi ${name}, your pickup is scheduled`) +
-      paragraph('Your junk removal booking is confirmed. A matched provider will contact you within 15 minutes to finalize the details.') +
+      paragraph('Your junk removal booking is confirmed.') +
       detailsBlock(
         detailRow('Service', details.service_type) +
         detailRow('Address', fullAddress) +
