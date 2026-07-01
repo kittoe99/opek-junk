@@ -403,6 +403,31 @@ export const MattressBookingPage: React.FC = () => {
 
   const calculateTotal = () => getPricingBreakdown().total;
 
+  const buildPrebookingCustomerInfo = (
+    name: string,
+    phone: string,
+    email = formData.email,
+    consentAt: string | null = smsMarketingConsentAt
+  ) => withSmsMarketingConsent({ name, phone, email: email || '' }, consentAt);
+
+  const persistPartialPrebookingCustomer = async (
+    name: string,
+    phone: string,
+    consentAt: string | null,
+    email = formData.email
+  ) => {
+    if (!partialBookingId || partialBookingId.startsWith('mock-')) return;
+
+    const { error } = await supabase.rpc('update_prebooking', {
+      p_id: partialBookingId,
+      p_customer_info: buildPrebookingCustomerInfo(name, phone, email, consentAt),
+    });
+
+    if (error) {
+      console.warn('Failed to update mattress prebooking customer info:', error);
+    }
+  };
+
   const handleContactReveal = async (name: string, phone: string, consentAt: string | null) => {
     setContactLoading(true);
     try {
@@ -411,23 +436,39 @@ export const MattressBookingPage: React.FC = () => {
       const itemsList = selectedItems.filter(i => i.quantity > 0).map(i => `${i.quantity}x ${i.name}`);
 
       try {
-        const { data, error } = await supabase.rpc('create_prebooking', {
-          p_customer_info: withSmsMarketingConsent({ name, phone, email: '' }, consentAt),
-          p_booking_details: {
-            service_type: 'Mattress Disposal',
-            zip_code: zipCode || null,
-            details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
-            estimated_items: itemsList,
-            price: totalPrice,
-            online_booking_discount: discount > 0 ? discount : null,
-          },
-          p_status: 'partially_submitted'
-        });
+        const customerInfo = buildPrebookingCustomerInfo(name, phone, '', consentAt);
+        const bookingDetails = {
+          service_type: 'Mattress Disposal',
+          zip_code: zipCode || null,
+          details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${totalPrice}`,
+          estimated_items: itemsList,
+          price: totalPrice,
+          online_booking_discount: discount > 0 ? discount : null,
+        };
 
-        if (error) {
-          console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', error);
-        } else if (data) {
-          setPartialBookingId(data as string);
+        if (partialBookingId && !partialBookingId.startsWith('mock-')) {
+          const { error } = await supabase.rpc('update_prebooking', {
+            p_id: partialBookingId,
+            p_customer_info: customerInfo,
+            p_booking_details: bookingDetails,
+            p_status: 'partially_submitted',
+          });
+
+          if (error) {
+            console.warn('Supabase mattress lead update failed, proceeding to price reveal:', error);
+          }
+        } else {
+          const { data, error } = await supabase.rpc('create_prebooking', {
+            p_customer_info: customerInfo,
+            p_booking_details: bookingDetails,
+            p_status: 'partially_submitted',
+          });
+
+          if (error) {
+            console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', error);
+          } else if (data) {
+            setPartialBookingId(data as string);
+          }
         }
       } catch (err) {
         console.warn('Supabase mattress lead capture failed, proceeding to price reveal:', err);
@@ -452,12 +493,10 @@ export const MattressBookingPage: React.FC = () => {
       const { discount } = getPricingBreakdown();
       const itemsSummaryText = itemsList.join(', ');
       
-      const customerInfo = withSmsMarketingConsent(
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-        },
+      const customerInfo = buildPrebookingCustomerInfo(
+        formData.name,
+        formData.phone,
+        formData.email,
         smsMarketingConsentAt
       );
       
@@ -961,9 +1000,17 @@ export const MattressBookingPage: React.FC = () => {
       </div>
 
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (!formData.date || !formData.timeSlot) return;
+          if (!formData.date || !formData.timeSlot || !formData.email) return;
+
+          await persistPartialPrebookingCustomer(
+            formData.name,
+            formData.phone,
+            smsMarketingConsentAt,
+            formData.email
+          );
+
           setStep(6);
         }}
         className="space-y-4"
@@ -1004,7 +1051,7 @@ export const MattressBookingPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            disabled={!formData.date || !formData.timeSlot}
+            disabled={!formData.date || !formData.timeSlot || !formData.email}
             className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue <ArrowRight size={14} />

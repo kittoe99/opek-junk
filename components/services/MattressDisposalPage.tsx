@@ -135,26 +135,26 @@ export const MattressDisposalPage: React.FC = () => {
 
   const mattressItems = [
     {
-      label: 'Mattresses (From $75)',
+      label: 'Mattresses',
       desc: 'Standard innerspring, memory foam, latex, hybrid, pillow-top, futons, and crib mattresses of any size.',
       icon: MattressIcon,
       onClick: () => goToBooking([{ name: 'Mattress', quantity: 1 }]),
     },
     {
-      label: 'Box Springs (From $65)',
+      label: 'Box Springs',
       desc: 'Traditional wood box springs, metal foundations, split box springs, or low-profile bases from any floor.',
       icon: BoxSpringIcon,
       onClick: () => goToBooking([{ name: 'Box Spring', quantity: 1 }]),
     },
     {
-      label: 'Bed Frames (From $70)',
+      label: 'Bed Frames',
       desc: 'Steel bed frames, wooden headboards, footboards, adjustables, platform beds, bunk beds, and daybeds.',
       icon: BedFrameIcon,
       onClick: () => goToBooking([{ name: 'Bed Frame', quantity: 1 }]),
     },
     {
-      label: 'Complete Sets (Save 15%)',
-      desc: 'Bundle your mattress, box spring, and frame removal into a single flat-rate package for maximum savings.',
+      label: 'Complete Sets',
+      desc: 'Bundle your mattress, box spring, and frame removal into a single flat-rate package.',
       icon: CompleteSetIcon,
       onClick: () => goToBooking([
         { name: 'Mattress', quantity: 1 },
