@@ -22,6 +22,28 @@ export interface CatalogCategory {
   items: CatalogItem[];
 }
 
+export const POPULAR_ITEMS_CATEGORY_LABEL = 'Popular Items';
+
+export function getPopularItemRank(name: string, popularItems: CatalogItem[]): number {
+  const index = popularItems.findIndex((item) => item.name.toLowerCase() === name.toLowerCase());
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+}
+
+export function sortCatalogItemsByPopularity<T extends { name: string }>(
+  items: T[],
+  popularItems: CatalogItem[]
+): T[] {
+  return [...items].sort(
+    (a, b) => getPopularItemRank(a.name, popularItems) - getPopularItemRank(b.name, popularItems)
+  );
+}
+
+export function getSortedItemCatalog(catalog: CatalogCategory[]): CatalogCategory[] {
+  const popular = catalog.find((c) => c.label === POPULAR_ITEMS_CATEGORY_LABEL);
+  const rest = catalog.filter((c) => c.label !== POPULAR_ITEMS_CATEGORY_LABEL);
+  return popular ? [popular, ...rest] : catalog;
+}
+
 export const ITEM_CATALOG: CatalogCategory[] = [
   {
     label: 'Popular Items',
@@ -187,3 +209,6 @@ export const ITEM_CATALOG: CatalogCategory[] = [
     ],
   },
 ];
+
+export const POPULAR_ITEMS =
+  ITEM_CATALOG.find((c) => c.label === POPULAR_ITEMS_CATEGORY_LABEL)?.items ?? [];

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Check, Plus, Minus, X, Package, ArrowRight } from 'lucide-react';
-import { ITEM_CATALOG } from '../../lib/itemCatalog';
+import {
+  ITEM_CATALOG,
+  POPULAR_ITEMS,
+  POPULAR_ITEMS_CATEGORY_LABEL,
+} from '../../lib/itemCatalog';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 
 export interface CatalogSelectedItem {
@@ -16,8 +20,6 @@ export function getCatalogItemImage(itemName: string): string {
   }
   return '/items/misc-item.svg';
 }
-
-const PRIMARY_ITEMS = ITEM_CATALOG.find((c) => c.label === 'Popular Items')?.items.slice(0, 6) ?? [];
 
 interface JunkItemCatalogSelectorProps {
   selectedItems: CatalogSelectedItem[];
@@ -40,7 +42,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
 }) => {
   const [showCatalogModal, setShowCatalogModal] = useState(false);
   const [catalogSearch, setCatalogSearch] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState('Popular Items');
+  const [expandedCategory, setExpandedCategory] = useState(POPULAR_ITEMS_CATEGORY_LABEL);
   const [customItemInput, setCustomItemInput] = useState('');
 
   const hasSelectedItems = selectedItems.some((i) => i.quantity > 0);
@@ -101,7 +103,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
       <button
         key={item.name}
         type="button"
-        className={`group relative flex flex-col items-center justify-between p-3 sm:p-4 md:p-5 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
+        className={`group relative flex flex-col items-center justify-between p-2 sm:p-2.5 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
           compact ? 'min-h-[132px] sm:min-h-[150px]' : 'min-h-[132px] sm:min-h-[172px]'
         } ${
           selected
@@ -116,19 +118,16 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
           </div>
         )}
 
-        <div className="flex flex-col items-center flex-1 w-full justify-center">
-          <div
-            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-2 sm:mb-3 transition-all duration-300 ${
-              selected ? 'bg-brand/10 text-brand' : 'bg-secondary-50 text-secondary-400 group-hover:bg-secondary-100 group-hover:text-secondary-500'
-            }`}
-          >
-            <ItemIconRenderer
-              imagePath={item.image}
-              className="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110"
-            />
-          </div>
+        <div className="flex flex-col items-center flex-1 w-full justify-center min-h-0">
+          <ItemIconRenderer
+            imagePath={item.image}
+            size={compact ? 56 : 64}
+            className={`${
+              compact ? 'sm:w-16 sm:h-16' : 'sm:w-[4.5rem] sm:h-[4.5rem]'
+            } w-14 h-14 transition-transform duration-300 group-hover:scale-110 shrink-0`}
+          />
           <span
-            className={`text-[10px] sm:text-xs md:text-sm font-black leading-tight transition-colors px-0.5 line-clamp-2 ${
+            className={`text-[10px] sm:text-xs md:text-sm font-black leading-tight transition-colors px-0.5 line-clamp-2 mt-1 sm:mt-1.5 ${
               selected ? 'text-brand' : 'text-secondary-800 group-hover:text-secondary'
             }`}
           >
@@ -136,7 +135,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
           </span>
         </div>
 
-        <div className="mt-2 flex flex-col items-center shrink-0 w-full" onClick={(e) => e.stopPropagation()}>
+        <div className="mt-1 flex flex-col items-center shrink-0 w-full" onClick={(e) => e.stopPropagation()}>
           {selected && selectedItem ? (
             <div className="flex items-center gap-1 sm:gap-1.5 bg-white border border-secondary-100 rounded-full px-1.5 py-0.5 sm:px-2 sm:py-0.5 shadow-sm">
               <button
@@ -179,7 +178,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
         </div>
 
         <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          {PRIMARY_ITEMS.map((item) => renderItemCard(item, true))}
+          {POPULAR_ITEMS.slice(0, 6).map((item) => renderItemCard(item, true))}
         </div>
 
         <div className="mt-2">
