@@ -19,7 +19,8 @@ import {
 import { DetectedItem, LoadingState, PriceEstimate, QuoteEstimate } from '../../types';
 import { detectItemsFromPhotos } from '../../services/openaiService';
 import { calculateStaticPrice } from '../../services/pricingService';
-import { supabase, uploadBookingPhoto } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
+import { persistBookingPhotos, withBookingPhotos } from '../../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { EstimateMethodSelection } from './EstimateMethodSelection';
@@ -37,6 +38,7 @@ export interface JunkRemovalEstimateResult {
   smsMarketingConsentAt: string | null;
   partialBookingId: string | null;
   image: string | null;
+  images: string[];
 }
 
 interface JunkRemovalEstimateFlowProps {
@@ -247,27 +249,27 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
       const detailsText = `Items: ${items.map((i) => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Items: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
       let partialId = `mock-lead-${Date.now()}`;
       try {
-        let uploadedUrl = images[0] || '';
-        if (uploadedUrl.startsWith('data:')) {
-          const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
-          const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
-          if (publicUrl) uploadedUrl = publicUrl;
+        const photos = await persistBookingPhotos(images, `lead_${Date.now()}`);
+        if (photos.photo_urls.length > 0) {
+          setImages(photos.photo_urls);
         }
         const { data, error: dbError } = await supabase.rpc('create_prebooking', {
           p_customer_info: withSmsMarketingConsent({ name, phone, email: '' }, consentAt),
-          p_booking_details: {
-            service_type: 'Junk Removal',
-            zip_code: zipValue || null,
-            details: detailsText,
-            estimated_items: items.map((i) => `${i.quantity}x ${i.name}`),
-            estimated_volume: price.estimatedVolume,
-            price: price.price,
-            estimate_summary: price.summary,
-            photo_url: uploadedUrl,
-            ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
-              ? { online_booking_discount: price.onlineBookingDiscount }
-              : {}),
-          },
+          p_booking_details: withBookingPhotos(
+            {
+              service_type: 'Junk Removal',
+              zip_code: zipValue || null,
+              details: detailsText,
+              estimated_items: items.map((i) => `${i.quantity}x ${i.name}`),
+              estimated_volume: price.estimatedVolume,
+              price: price.price,
+              estimate_summary: price.summary,
+              ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
+                ? { online_booking_discount: price.onlineBookingDiscount }
+                : {}),
+            },
+            photos
+          ),
           p_status: 'partially_submitted',
         });
         if (!dbError && data) partialId = data as string;
@@ -392,6 +394,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   smsMarketingConsentAt,
                   partialBookingId,
                   image: images[0] || null,
+                  images,
                 });
               }}
               className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"

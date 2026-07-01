@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
-import { supabase, uploadBookingPhoto } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent, SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
@@ -18,6 +19,7 @@ import { CollapsibleReviewPanel } from './shared/CollapsibleReviewPanel';
 interface BookingDetailsFormProps {
   estimate: QuoteEstimate | null;
   image: string | null;
+  images?: string[];
   serviceType: string;
   defaultZip?: { city: string; state: string; zipCode: string };
   onBack?: () => void;
@@ -34,6 +36,7 @@ type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'dep
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
   image,
+  images,
   serviceType,
   defaultZip,
   onBack,
@@ -51,8 +54,16 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     smsMarketingConsentAt ?? null
   );
   const [localImage, setLocalImage] = useState<string | null>(image);
+  const estimateImages = images?.length ? images : image ? [image] : [];
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const getPhotosForPersistence = () => {
+    if (localImage) {
+      return [localImage, ...estimateImages.filter((img) => img !== localImage)];
+    }
+    return estimateImages;
+  };
 
   useEffect(() => {
     setLocalImage(image);
@@ -189,14 +200,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
       let currentPartialId = partialId;
 
-      let uploadedUrl = localImage || '';
-      if (uploadedUrl && uploadedUrl.startsWith('data:')) {
-        const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
-        const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
-        if (publicUrl) {
-          uploadedUrl = publicUrl;
-          setLocalImage(publicUrl);
-        }
+      const photos = await persistBookingPhotos(
+        getPhotosForPersistence(),
+        `lead_${Date.now()}`
+      );
+      if (photos.photo_url && photos.photo_url !== localImage) {
+        setLocalImage(photos.photo_url);
       }
 
       const customerInfo = withSmsMarketingConsent(
@@ -208,16 +217,18 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         localSmsMarketingConsentAt
       );
 
-      const bookingDetails = {
-        service_type: normalizedServiceType,
-        zip_code: defaultZip?.zipCode || formData.zipCode || null,
-        details: detailsText,
-        estimated_items: estimate?.itemsDetected || [],
-        estimated_volume: estimate?.estimatedVolume || '',
-        price: estimate?.price || 0,
-        estimate_summary: estimate?.summary || '',
-        photo_url: uploadedUrl
-      };
+      const bookingDetails = withBookingPhotos(
+        {
+          service_type: normalizedServiceType,
+          zip_code: defaultZip?.zipCode || formData.zipCode || null,
+          details: detailsText,
+          estimated_items: estimate?.itemsDetected || [],
+          estimated_volume: estimate?.estimatedVolume || '',
+          price: estimate?.price || 0,
+          estimate_summary: estimate?.summary || '',
+        },
+        photos
+      );
 
       if (currentPartialId && !currentPartialId.startsWith('mock-')) {
         await supabase.rpc('update_prebooking', {
@@ -267,13 +278,57 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setStep(isJunkRemoval ? 'photo' : 'review');
   };
 
-  const handlePhotoSubmit = (e: React.FormEvent) => {
+  const handlePhotoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!localImage) {
       setError('Please upload or capture a photo of the items to be hauled away.');
       return;
     }
     setError(null);
+
+    try {
+      const photos = await persistBookingPhotos(
+        getPhotosForPersistence(),
+        `prebooking_${partialId || Date.now()}`
+      );
+      if (photos.photo_url) {
+        setLocalImage(photos.photo_url);
+      }
+
+      if (partialId && !partialId.startsWith('mock-')) {
+        const detailsText = estimate
+          ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
+          : formData.details;
+
+        const normalizedServiceType = serviceType
+          ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+            : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+            : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+            : 'Junk Removal')
+          : 'Junk Removal';
+
+        await supabase.rpc('update_prebooking', {
+          p_id: partialId,
+          p_booking_details: withBookingPhotos(
+            {
+              service_type: normalizedServiceType,
+              zip_code: defaultZip?.zipCode || formData.zipCode || null,
+              details: detailsText,
+              estimated_items: estimate?.itemsDetected || [],
+              estimated_volume: estimate?.estimatedVolume || '',
+              price: estimate?.price || 0,
+              estimate_summary: estimate?.summary || '',
+            },
+            photos
+          ),
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to persist booking photo on photo step:', err);
+      setError('We could not save your photo. Please try uploading again.');
+      return;
+    }
+
     setStep('review');
   };
 
@@ -314,14 +369,16 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       let dbError = null;
 
       try {
-          let uploadedUrl = localImage || '';
-          if (uploadedUrl && uploadedUrl.startsWith('data:')) {
-            const fileName = `booking_${generatedOrderNumber}_${Math.random().toString(36).substring(2, 8)}.jpg`;
-            const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
-            if (publicUrl) {
-              uploadedUrl = publicUrl;
-              setLocalImage(publicUrl);
-            }
+          const photos = await persistBookingPhotos(
+            getPhotosForPersistence(),
+            `booking_${generatedOrderNumber}`
+          );
+          if (photos.photo_url) {
+            setLocalImage(photos.photo_url);
+          }
+
+          if (isJunkRemoval && !photos.photo_url) {
+            throw new Error('A photo of your items is required to complete booking.');
           }
 
           const customerInfo = withSmsMarketingConsent(
@@ -341,21 +398,23 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             zip_code: formData.zipCode
           };
 
-          const bookingDetails = {
-            service_type: normalizedServiceType,
-            preferred_date: formData.date,
-            preferred_time: formatTimeSlotLabel(formData.timeSlot),
-            details: detailsText,
-            estimated_items: estimate?.itemsDetected || [],
-            estimated_volume: estimate?.estimatedVolume || '',
-            price: estimate?.price || 0,
-            estimate_summary: estimate?.summary || '',
-            photo_url: uploadedUrl,
-            deposit_amount: BOOKING_DEPOSIT_AMOUNT,
-            deposit_paid: true,
-            stripe_payment_intent_id: paymentIntentId,
-            terms_accepted_at: new Date().toISOString()
-          };
+          const bookingDetails = withBookingPhotos(
+            {
+              service_type: normalizedServiceType,
+              preferred_date: formData.date,
+              preferred_time: formatTimeSlotLabel(formData.timeSlot),
+              details: detailsText,
+              estimated_items: estimate?.itemsDetected || [],
+              estimated_volume: estimate?.estimatedVolume || '',
+              price: estimate?.price || 0,
+              estimate_summary: estimate?.summary || '',
+              deposit_amount: BOOKING_DEPOSIT_AMOUNT,
+              deposit_paid: true,
+              stripe_payment_intent_id: paymentIntentId,
+              terms_accepted_at: new Date().toISOString(),
+            },
+            photos
+          );
 
           const res = await supabase
             .from('bookings')
@@ -380,6 +439,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               .rpc('update_prebooking', {
                 p_id: partialId,
                 p_customer_info: customerInfo,
+                p_booking_details: bookingDetails,
                 p_status: 'converted',
               })
               .then(({ error: updateErr }) => {

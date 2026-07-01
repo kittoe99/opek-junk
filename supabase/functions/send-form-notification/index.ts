@@ -178,6 +178,22 @@ function formatItemList(details: Record<string, any>): string {
   return '';
 }
 
+function formatPhotoField(details: Record<string, unknown>): string {
+  const photoUrl = typeof details.photo_url === 'string' ? details.photo_url.trim() : '';
+  const extraPhotoUrls = Array.isArray(details.photo_urls)
+    ? details.photo_urls.filter((url): url is string => typeof url === 'string' && url.trim() !== '')
+    : [];
+  const allPhotoUrls = photoUrl
+    ? [photoUrl, ...extraPhotoUrls.filter((url) => url !== photoUrl)]
+    : extraPhotoUrls;
+
+  if (allPhotoUrls.length > 1) {
+    return allPhotoUrls.map((url, index) => `Photo ${index + 1}: ${url}`).join('\n');
+  }
+
+  return allPhotoUrls[0] || '';
+}
+
 function adminBooking(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const location = r.location_info || {};
@@ -193,7 +209,7 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
 
   const priceVal = details.price ? `$${details.price}` : '';
   const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
-  const photoUrl = typeof details.photo_url === 'string' ? details.photo_url.trim() : '';
+  const photoDisplay = formatPhotoField(details);
   const items = formatItemList(details);
 
   return {
@@ -214,7 +230,7 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
         detailRow('Payment ID', details.stripe_payment_intent_id) +
         detailRow('Items', items) +
         detailRow('Volume', details.estimated_volume) +
-        detailRow('Photo', photoUrl) +
+        detailRow('Photo', photoDisplay) +
         detailRow('Details', details.details)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
@@ -242,7 +258,7 @@ function adminPrebooking(r: Record<string, any>): { subject: string; html: strin
         detailRow('Est. price', priceVal) +
         detailRow('Items', items) +
         detailRow('Volume', details.estimated_volume) +
-        detailRow('Photo', typeof details.photo_url === 'string' ? details.photo_url.trim() : '') +
+        detailRow('Photo', formatPhotoField(details)) +
         detailRow('Summary', details.estimate_summary) +
         detailRow('Details', details.details)
       ) +

@@ -5,7 +5,8 @@ import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, Lo
 import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
-import { supabase, uploadBookingPhoto } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
@@ -88,6 +89,7 @@ export const BookingPage: React.FC = () => {
     }
   };
   const [image, setImage] = useState<string | null>(null);
+  const [estimateImages, setEstimateImages] = useState<string[]>([]);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
 
@@ -195,28 +197,29 @@ export const BookingPage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
-        let uploadedUrl = image || '';
-        if (uploadedUrl && uploadedUrl.startsWith('data:')) {
-          const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
-          const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
-          if (publicUrl) {
-            uploadedUrl = publicUrl;
-            setImage(publicUrl);
-          }
+        const photos = await persistBookingPhotos(
+          estimateImages.length > 0 ? estimateImages : image ? [image] : [],
+          `lead_${Date.now()}`
+        );
+        if (photos.photo_urls.length > 0) {
+          setEstimateImages(photos.photo_urls);
+          setImage(photos.photo_url);
         }
 
         const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
 
-        const bookingDetails = {
-          service_type: formData.serviceType,
-          zip_code: zipValue || null,
-          details: detailsText,
-          estimated_items: est.itemsDetected,
-          estimated_volume: est.estimatedVolume,
-          price: est.price,
-          estimate_summary: est.summary,
-          photo_url: uploadedUrl
-        };
+        const bookingDetails = withBookingPhotos(
+          {
+            service_type: formData.serviceType,
+            zip_code: zipValue || null,
+            details: detailsText,
+            estimated_items: est.itemsDetected,
+            estimated_volume: est.estimatedVolume,
+            price: est.price,
+            estimate_summary: est.summary,
+          },
+          photos
+        );
 
         const { data, error: dbError } = await supabase.rpc('create_prebooking', {
           p_customer_info: customerInfo,
@@ -254,6 +257,7 @@ export const BookingPage: React.FC = () => {
   const handleEstimateComplete = (result: JunkRemovalEstimateResult) => {
     setEstimate(result.estimate);
     setImage(result.image);
+    setEstimateImages(result.images.length > 0 ? result.images : result.image ? [result.image] : []);
     setContactName(result.contactName);
     setContactPhone(result.contactPhone);
     setSmsMarketingConsentAt(result.smsMarketingConsentAt);
@@ -433,6 +437,12 @@ export const BookingPage: React.FC = () => {
     setError(null);
 
     try {
+      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const photos = await persistBookingPhotos(
+        formData.photoUrl ? [formData.photoUrl] : estimateImages.length > 0 ? estimateImages : image ? [image] : [],
+        `booking_${generatedOrderNumber}`
+      );
+
       const customerInfo = withSmsMarketingConsent(
         {
           name: formData.name,
@@ -450,18 +460,18 @@ export const BookingPage: React.FC = () => {
         zip_code: formData.zipCode
       };
 
-      const bookingDetails = {
-        service_type: formData.serviceType,
-        preferred_date: formData.date,
-        details: formData.details,
-        estimated_items: formData.estimatedItems,
-        estimated_volume: formData.estimatedVolume,
-        price: formData.price,
-        estimate_summary: formData.estimateSummary,
-        photo_url: formData.photoUrl
-      };
-
-      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const bookingDetails = withBookingPhotos(
+        {
+          service_type: formData.serviceType,
+          preferred_date: formData.date,
+          details: formData.details,
+          estimated_items: formData.estimatedItems,
+          estimated_volume: formData.estimatedVolume,
+          price: formData.price,
+          estimate_summary: formData.estimateSummary,
+        },
+        photos
+      );
 
       const { error: insertError } = await supabase
         .from('bookings')
@@ -1588,6 +1598,7 @@ export const BookingPage: React.FC = () => {
               <BookingDetailsForm
               estimate={estimate}
               image={image}
+              images={estimateImages}
               serviceType={formData.serviceType}
               defaultZip={zipResult ? { city: zipResult.city, state: zipResult.state, zipCode: zipValue } : undefined}
               onBack={() => {

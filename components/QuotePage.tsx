@@ -11,7 +11,8 @@ import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptio
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
 import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
-import { supabase, uploadBookingPhoto } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
@@ -478,31 +479,28 @@ export const QuotePage: React.FC = () => {
 
       let partialId = `mock-lead-${Date.now()}`;
       try {
-        let uploadedUrl = images[0] || '';
-        if (uploadedUrl && uploadedUrl.startsWith('data:')) {
-          const fileName = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.jpg`;
-          const publicUrl = await uploadBookingPhoto(uploadedUrl, fileName);
-          if (publicUrl) {
-            uploadedUrl = publicUrl;
-            setImages(prev => [publicUrl, ...prev.slice(1)]);
-          }
+        const photos = await persistBookingPhotos(images, `lead_${Date.now()}`);
+        if (photos.photo_urls.length > 0) {
+          setImages(photos.photo_urls);
         }
 
         const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
 
-        const bookingDetails = {
-          service_type: serviceTypeLabel,
-          zip_code: zipValue || null,
-          details: detailsText,
-          estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
-          estimated_volume: price.estimatedVolume,
-          price: price.price,
-          estimate_summary: price.summary,
-          photo_url: uploadedUrl,
-          ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
-            ? { online_booking_discount: price.onlineBookingDiscount }
-            : {}),
-        };
+        const bookingDetails = withBookingPhotos(
+          {
+            service_type: serviceTypeLabel,
+            zip_code: zipValue || null,
+            details: detailsText,
+            estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
+            estimated_volume: price.estimatedVolume,
+            price: price.price,
+            estimate_summary: price.summary,
+            ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
+              ? { online_booking_discount: price.onlineBookingDiscount }
+              : {}),
+          },
+          photos
+        );
 
         const { data, error: dbError } = await supabase.rpc('create_prebooking', {
           p_customer_info: customerInfo,
@@ -799,6 +797,7 @@ export const QuotePage: React.FC = () => {
           <BookingDetailsForm
             estimate={estimate}
             image={images.length > 0 ? images[0] : null}
+            images={images}
             serviceType={serviceTypeLabel}
             defaultZip={defaultZip}
             onBack={() => setShowBookingForm(false)}

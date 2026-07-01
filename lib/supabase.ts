@@ -72,8 +72,8 @@ export async function uploadBookingPhoto(base64Image: string, fileName: string):
       });
 
     if (error) {
-      console.warn('Error uploading photo to Supabase storage:', error);
-      return null;
+      console.warn('Error uploading photo to Supabase storage, storing inline in booking record:', error);
+      return base64Image;
     }
 
     const { data: { publicUrl } } = getSupabase().storage
@@ -83,6 +83,6 @@ export async function uploadBookingPhoto(base64Image: string, fileName: string):
     return publicUrl;
   } catch (err) {
     console.warn('Failed to upload booking photo, falling back to base64 database storage:', err);
-    return null;
+    return base64Image;
   }
 }
