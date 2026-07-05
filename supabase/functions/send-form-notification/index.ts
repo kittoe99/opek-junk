@@ -16,7 +16,6 @@ interface WebhookPayload {
   schema: string;
 }
 
-// Escape user-controlled values before interpolating into HTML email bodies.
 const esc = (value: unknown): string =>
   String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -30,8 +29,6 @@ const formatPreferredSchedule = (date?: string, time?: string): string => {
   return time ? `${date} (${time})` : date;
 };
 
-// --- Clean email layout ---
-
 const emailLayout = (body: string) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -40,15 +37,12 @@ const emailLayout = (body: string) => `
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;">
     <tr><td align="center" style="padding:32px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:8px;overflow:hidden;">
-        <!-- Header with logo -->
         <tr><td style="padding:28px 32px 20px;border-bottom:1px solid #f0f0f0;">
           <img src="${LOGO_BLACK}" alt="Opek Junk Removal" width="120" style="display:block;height:auto;" />
         </td></tr>
-        <!-- Body -->
         <tr><td style="padding:28px 32px;">
           ${body}
         </td></tr>
-        <!-- Footer -->
         <tr><td style="background:#111;padding:24px 32px;border-radius:0 0 8px 8px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr><td>
@@ -95,8 +89,6 @@ const formatDate = (d: string | null) => {
   catch { return d; }
 };
 
-// --- ADMIN emails ---
-
 function adminContact(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const contact = r.contact_info || {};
@@ -142,7 +134,11 @@ function adminQuote(r: Record<string, any>): { subject: string; html: string } {
 function adminProvider(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const provider = r.provider_info || {};
-  const a = provider.availability || {};
+  const vehicle = provider.vehicle || {};
+  const areas = Array.isArray(provider.service_areas)
+    ? provider.service_areas.map((a: { metroArea?: string; state?: string }) => `${a.metroArea || ''}, ${a.state || ''}`.replace(/^, /, '').replace(/, $/, '')).join('; ')
+    : '';
+  const availabilityLabel = provider.availability === 'many_jobs' ? 'As many as possible' : provider.availability === 'few_jobs' ? 'A few jobs a week' : '';
   return {
     subject: `Provider application: ${customer.name || ''}`,
     html: emailLayout(
@@ -151,11 +147,12 @@ function adminProvider(r: Record<string, any>): { subject: string; html: string 
         detailRow('Name', customer.name) +
         detailRow('Email', customer.email) +
         detailRow('Phone', customer.phone) +
-        detailRow('Service area', provider.service_area) +
-        detailRow('Vehicle', provider.vehicle_type) +
-        detailRow('Business', a.businessName) +
-        detailRow('Schedule', Array.isArray(a.schedule) ? a.schedule.join(', ') : '') +
-        detailRow('Notes', a.additionalInfo)
+        detailRow('Business', provider.business_name) +
+        detailRow('Service areas', areas) +
+        detailRow('Vehicle type', vehicle.type) +
+        detailRow('Vehicle', `${vehicle.year || ''} ${vehicle.make || ''} ${vehicle.model || ''}`.trim()) +
+        detailRow('Availability', availabilityLabel) +
+        detailRow('Notes', provider.additional_info)
       ) +
       paragraph(`Submitted ${formatDate(r.created_at) || 'just now'}.`)
     ),
@@ -245,7 +242,7 @@ function adminPrebooking(r: Record<string, any>): { subject: string; html: strin
   const items = formatItemList(details);
 
   return {
-    subject: `New lead: ${customer.name || 'Unknown'}${details.service_type ? ` — ${details.service_type}` : ''}`,
+    subject: `New lead: ${customer.name || 'Unknown'}${details.service_type ? ` \u2014 ${details.service_type}` : ''}`,
     html: emailLayout(
       heading('New prebooking / lead') +
       detailsBlock(
@@ -266,8 +263,6 @@ function adminPrebooking(r: Record<string, any>): { subject: string; html: strin
     ),
   };
 }
-
-// --- USER confirmation emails ---
 
 function userContact(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
@@ -325,15 +320,19 @@ function userQuote(r: Record<string, any>): { subject: string; html: string } {
 function userProvider(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const provider = r.provider_info || {};
+  const vehicle = provider.vehicle || {};
   const name = (customer.name || '').split(' ')[0] || 'there';
+  const areas = Array.isArray(provider.service_areas)
+    ? provider.service_areas.map((a: { metroArea?: string; state?: string }) => `${a.metroArea || ''}, ${a.state || ''}`.replace(/^, /, '').replace(/, $/, '')).join('; ')
+    : '';
   return {
     subject: `Application received, ${name}`,
     html: emailLayout(
       heading(`Welcome, ${name}`) +
       paragraph('Thank you for applying to the Opek provider network. We\u2019re reviewing your application and will follow up within 1\u20132 business days.') +
       detailsBlock(
-        detailRow('Service area', provider.service_area) +
-        detailRow('Vehicle', provider.vehicle_type)
+        detailRow('Service areas', areas) +
+        detailRow('Vehicle', `${vehicle.year || ''} ${vehicle.make || ''} ${vehicle.model || ''} (${vehicle.type || ''})`.trim().replace(/\(\)$/, '').trim())
       ) +
       paragraph('<strong>What happens next:</strong>') +
       steps([
@@ -416,8 +415,6 @@ function userPrebooking(r: Record<string, any>): { subject: string; html: string
   };
 }
 
-// --- Send helper ---
-
 async function sendEmail(to: string, subject: string, html: string) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -434,8 +431,6 @@ async function sendEmail(to: string, subject: string, html: string) {
   }
   return data;
 }
-
-// --- Main handler ---
 
 Deno.serve(async (req: Request) => {
   try {

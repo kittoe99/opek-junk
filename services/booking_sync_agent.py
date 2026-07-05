@@ -134,7 +134,7 @@ def check_already_synced(conv_id: str, supabase_headers: dict) -> bool:
     # 3. Check provider_signups table
     try:
         check_url = f"{SUPABASE_URL}/rest/v1/provider_signups"
-        params = {"provider_info->availability->>convId": f"eq.{conv_id}"}
+        params = {"provider_info->>conv_id": f"eq.{conv_id}"}
         resp = requests.get(check_url, headers=supabase_headers, params=params, timeout=10)
         resp.raise_for_status()
         if resp.json():
@@ -669,6 +669,8 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
             business_name = extracted_data.get("providerBusinessName") or ""
             info = extracted_data.get("providerAdditionalInfo") or ""
 
+            schedule_str = ', '.join(schedule) if isinstance(schedule, list) else str(schedule)
+
             insert_payload = {
                 "customer_info": {
                     "name": name,
@@ -676,14 +678,19 @@ async def sync_bookings_pass(elevenlabs_key: str, openai_key: str):
                     "phone": phone
                 },
                 "provider_info": {
-                    "service_area": service_area,
-                    "vehicle_type": vehicle_type,
-                    "availability": {
-                      "schedule": schedule,
-                      "businessName": business_name,
-                      "additionalInfo": info,
-                      "convId": conv_id
-                    }
+                    "business_name": business_name,
+                    "service_areas": [{"state": "", "metroArea": service_area}],
+                    "vehicle": {
+                        "type": vehicle_type,
+                        "year": "",
+                        "make": "",
+                        "model": "",
+                        "images": [],
+                        "insurance": []
+                    },
+                    "availability": schedule_str,
+                    "additional_info": info,
+                    "conv_id": conv_id
                 },
                 "status": "pending"
             }
