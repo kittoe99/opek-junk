@@ -5,10 +5,9 @@ import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
+import { Testimonials } from '../Testimonials';
 import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
-import { QuickActionBar } from '../QuickActionBar';
-
 const TruckLoadIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M1 3h15v13H1zM16 8h4l3 4v4h-7V8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
@@ -77,7 +76,6 @@ export const MovingLaborPage: React.FC = () => {
       />
 
       <TrustBadges />
-      <CharityBanner />
 
       <BentoFeatureSection
         eyebrow="Labor Services"
@@ -92,9 +90,14 @@ export const MovingLaborPage: React.FC = () => {
         items={laborServices}
       />
 
-      <ProcessEditorial />
+      <ProcessEditorial
+        variant="numbered"
+        eyebrow="How it works"
+        title="Moving labor in three steps"
+        subtitle="Book by the hour, get matched with strong crews, and leave the heavy lifting to them."
+      />
 
-      <EditorialContentSection title="Heavy Lifting & Professional Moving Labor Services">
+      <EditorialContentSection title="Heavy lifting & professional moving labor">
         <p>
           Sometimes you don't need a full-service moving company or junk removal truck—you just need a few strong pairs of hands. Vetted moving labor services provide experienced, background-checked independent providers by the hour. Whether you need help loading a rented U-Haul, unloading a PODS container, or simply rearranging heavy furniture within your home, partner providers provide the physical support you need.
         </p>
@@ -111,8 +114,9 @@ export const MovingLaborPage: React.FC = () => {
         </p>
       </EditorialContentSection>
 
+      <Testimonials />
+      <CharityBanner />
       <ServiceArea titleStart="Hire the muscle." titleAccent="Skip the moving company." />
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </div>
   );
 };

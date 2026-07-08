@@ -5,10 +5,9 @@ import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
+import { Testimonials } from '../Testimonials';
 import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
-import { QuickActionBar } from '../QuickActionBar';
-
 const EstateIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z" stroke="currentColor" strokeWidth="1.5"/>
@@ -78,7 +77,6 @@ export const PropertyCleanoutPage: React.FC = () => {
       />
 
       <TrustBadges />
-      <CharityBanner />
 
       <BentoFeatureSection
         eyebrow="Cleanout Specialties"
@@ -93,9 +91,14 @@ export const PropertyCleanoutPage: React.FC = () => {
         items={scenarios}
       />
 
-      <ProcessEditorial />
+      <ProcessEditorial
+        variant="numbered"
+        eyebrow="How it works"
+        title="Property cleanouts in three steps"
+        subtitle="Compassionate crews, upfront pricing, and thorough clearing from start to finish."
+      />
 
-      <EditorialContentSection title="Thorough & Compassionate Property Clearing Services">
+      <EditorialContentSection title="Thorough & compassionate property clearing">
         <p>
           Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner providers approach every job with compassion and efficiency.
         </p>
@@ -113,8 +116,9 @@ export const PropertyCleanoutPage: React.FC = () => {
         </p>
       </EditorialContentSection>
 
+      <Testimonials />
+      <CharityBanner />
       <ServiceArea titleStart="Clear the property." titleAccent="With grace." />
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </div>
   );
 };

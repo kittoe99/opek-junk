@@ -5,10 +5,9 @@ import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
+import { Testimonials } from '../Testimonials';
 import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
-import { QuickActionBar } from '../QuickActionBar';
-
 const ContainerIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/>
@@ -93,7 +92,6 @@ export const DumpsterRentalPage: React.FC = () => {
       />
 
       <TrustBadges />
-      <CharityBanner />
 
       <BentoFeatureSection
         eyebrow="Sizing Guide"
@@ -121,9 +119,14 @@ export const DumpsterRentalPage: React.FC = () => {
         items={benefits}
       />
 
-      <ProcessEditorial />
+      <ProcessEditorial
+        variant="numbered"
+        eyebrow="How it works"
+        title="Rent a dumpster in three steps"
+        subtitle="Choose your size, get an upfront rate, and schedule delivery on your timeline."
+      />
 
-      <EditorialContentSection title="Roll-Off Dumpster Rentals for Residential & Commercial Cleanups">
+      <EditorialContentSection title="Roll-off dumpster rentals for residential & commercial cleanups">
         <p>
           When dealing with home renovations, construction debris, landscape cleanups, or whole-house decluttering, a roll-off dumpster rental is often the most cost-effective and convenient waste disposal solution. The platform simplifies the rental process with upfront flat-rate pricing, protective placement techniques, and on-schedule drop-offs and pickups.
         </p>
@@ -139,8 +142,9 @@ export const DumpsterRentalPage: React.FC = () => {
         </p>
       </EditorialContentSection>
 
+      <Testimonials />
+      <CharityBanner />
       <ServiceArea titleStart="Clear your site." titleAccent="Rent a roll-off dumpster." />
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </div>
   );
 };

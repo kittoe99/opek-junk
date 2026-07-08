@@ -5,9 +5,9 @@ import { PageHero } from '../shared/PageHero';
 import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
+import { Testimonials } from '../Testimonials';
 import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
-import { QuickActionBar } from '../QuickActionBar';
 import { ZipCheckModal } from '../ZipCheckModal';
 import { trackMattressConversion } from '../../lib/googleAds';
 
@@ -62,8 +62,8 @@ const ZipChecker = ({
   onCheck: () => void;
 }) => (
   <div className="max-w-md space-y-3">
-    <p className="text-sm font-bold text-secondary uppercase tracking-wider">Check your pricing instantly</p>
-    <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-md rounded-xl overflow-hidden p-1 w-full">
+    <p className="text-sm font-semibold text-secondary mb-3">Check your pricing instantly</p>
+    <div className="relative flex items-center bg-white border border-secondary-200 hover:border-brand/40 focus-within:border-brand shadow-sm rounded-xl overflow-hidden p-1 w-full">
       <input
         type="text"
         inputMode="numeric"
@@ -78,7 +78,7 @@ const ZipChecker = ({
       <button
         onClick={onCheck}
         disabled={zipValue.length !== 5 || zipLoading}
-        className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
+        className="px-5 py-3 bg-secondary hover:bg-secondary-600 text-white font-semibold text-sm transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
       >
         {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
       </button>
@@ -192,7 +192,6 @@ export const MattressDisposalPage: React.FC = () => {
       </PageHero>
 
       <TrustBadges />
-      <CharityBanner />
 
       <BentoFeatureSection
         eyebrow="Items Handled"
@@ -208,47 +207,44 @@ export const MattressDisposalPage: React.FC = () => {
       />
 
       <ProcessEditorial
-        eyebrow="Disposal Process"
-        title={
-          <>
-            Mattress disposal
-            <br className="hidden md:block" /> in <span className="text-brand">three moves.</span>
-          </>
-        }
+        variant="numbered"
+        eyebrow="How it works"
+        title="Mattress disposal in three steps"
         subtitle="Upfront pricing, in-home pickup, and responsible recycling."
         steps={[
           {
-            image: '/process-step-2.svg',
+            number: '1',
+            title: 'Get an upfront price',
+            description: 'Get an instant, flat-rate mattress disposal quote online.',
+            image: '/process-step-1.svg',
             alt: 'Instant mattress disposal quote',
-            titleStart: 'quotes.',
-            titleAccent: 'simplified.',
-            desc: 'Get an instant, flat-rate mattress disposal quote online.',
           },
           {
+            number: '2',
+            title: 'Zero lifting required',
+            description: 'Vetted crews retrieve your mattress from any room or floor. No curb dragging.',
             image: '/process-step-3.svg',
             alt: 'In-home mattress removal service',
-            titleStart: 'Zero',
-            titleAccent: 'lifting.',
-            desc: 'Vetted crews retrieve your mattress from any room or floor. No curb dragging.',
           },
           {
-            image: '/eco-disposal-step.png',
+            number: '3',
+            title: 'Eco-friendly disposal',
+            description: 'Up to 80% of mattress components are recycled, keeping them out of landfills.',
+            image: '/process-step-2.svg',
             alt: 'Eco-friendly mattress recycling',
-            titleStart: 'Eco',
-            titleAccent: 'disposal.',
-            desc: 'Up to 80% of mattress components are recycled, keeping them out of landfills.',
           },
         ]}
-        cta={{ label: 'Check Rates & Book', onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+        cta={{ label: 'Check rates & book', onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }}
       />
+
+      <Testimonials />
+      <CharityBanner />
 
       <ServiceArea
         onGetQuote={() => setIsZipModalOpen(true)}
         titleStart="Clear your space."
         titleAccent="Same-day booking available."
       />
-
-      <QuickActionBar onBookOnline={() => goToBooking()} />
 
       <ZipCheckModal
         isOpen={isZipModalOpen}

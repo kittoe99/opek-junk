@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import {
-  ArrowRight,
-  ArrowLeft,
   Camera,
   Upload,
   Loader2,
@@ -10,8 +8,6 @@ import {
   Plus,
   Minus,
   Trash2,
-  ScanSearch,
-  Receipt,
   X,
   ShieldCheck,
   CheckCircle2,
@@ -23,7 +19,10 @@ import { supabase } from '../../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
 import { ContactIntakeForm } from './ContactIntakeForm';
-import { EstimateMethodSelection } from './EstimateMethodSelection';
+import { EstimateMethodSelection, EstimateMethodHero } from './EstimateMethodSelection';
+import { FlowSelectionCard } from './flow/FlowSelectionCard';
+import { FlowStepTitle } from './flow/FlowStepTitle';
+import { FlowStickyNav } from './flow/FlowStickyNav';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './JunkItemCatalogSelector';
 import { JunkRemovalPriceBreakdown } from './JunkRemovalPriceBreakdown';
 import { FLOW_STEP_ANCHOR, scrollToFlowStep } from '../../lib/flowPageLayout';
@@ -46,6 +45,9 @@ interface JunkRemovalEstimateFlowProps {
   onContinue: (result: JunkRemovalEstimateResult) => void;
   onBack: () => void;
   onModeChange?: (mode: EstimateMode, manualStep: 'select' | 'review' | 'result') => void;
+  continueLabel?: string;
+  preselectItems?: { name: string; quantity: number }[];
+  initialMode?: EstimateMode;
   resumeState?: {
     selectedItems: DetectedItem[];
     manualPriceEstimate: PriceEstimate;
@@ -65,13 +67,28 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   onContinue,
   onBack,
   onModeChange,
+  continueLabel = 'Continue',
+  preselectItems,
+  initialMode,
   resumeState,
 }) => {
-  const [mode, setMode] = useState<EstimateMode>(resumeState ? 'manual' : 'method');
+  const hasPreselect = Boolean(preselectItems?.length);
+  const [mode, setMode] = useState<EstimateMode>(
+    resumeState ? 'manual' : initialMode ?? (hasPreselect ? 'manual' : 'method')
+  );
   const [aiStep, setAiStep] = useState<'tips' | 'upload'>('tips');
-  const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>(resumeState ? 'result' : 'select');
+  const [manualStep, setManualStep] = useState<'select' | 'review' | 'result'>(
+    resumeState ? 'result' : hasPreselect ? 'review' : 'select'
+  );
   const [images, setImages] = useState<string[]>(resumeState?.image ? [resumeState.image] : []);
-  const [selectedItems, setSelectedItems] = useState<DetectedItem[]>(resumeState?.selectedItems ?? []);
+  const [selectedItems, setSelectedItems] = useState<DetectedItem[]>(
+    resumeState?.selectedItems ??
+      (preselectItems?.map((item, idx) => ({
+        id: `pre-${idx}-${Date.now()}`,
+        name: item.name,
+        quantity: item.quantity,
+      })) ?? [])
+  );
   const [manualPriceEstimate, setManualPriceEstimate] = useState<PriceEstimate | null>(resumeState?.manualPriceEstimate ?? null);
   const [manualPricingLoading, setManualPricingLoading] = useState(false);
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
@@ -309,46 +326,38 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="text-center space-y-2 mb-2">
-          <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-            <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
-          </div>
-          <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Your Estimate</h2>
-          <p className="text-secondary-400 text-xs">Review your price breakdown, then continue to book.</p>
-        </div>
-
-        <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="w-24 h-20 md:w-32 md:h-24 shrink-0">
+        <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
+          <div className="w-20 h-16 md:w-24 md:h-20 shrink-0">
             <img src="/process-step-1.svg" alt="Service breakdown" className="w-full h-full object-contain" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-              <span className="px-2 py-0.5 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-wider rounded-full border border-brand/20">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
                 Instant Estimate
               </span>
-              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-wider rounded-full border border-emerald-100">
+              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                 Guaranteed
               </span>
             </div>
-            <h3 className="text-sm md:text-base font-black text-secondary">Junk Removal</h3>
-            <p className="text-secondary-400 text-xs mt-1 leading-normal">{price.estimatedVolume}</p>
+            <h3 className="text-sm md:text-base font-semibold text-secondary">Junk Removal</h3>
+            <p className="text-secondary-500 text-xs mt-0.5 leading-normal">{price.estimatedVolume}</p>
           </div>
         </div>
 
         <JunkRemovalPriceBreakdown price={price} />
 
-        <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+        <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} strokeWidth={2.5} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-              <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
+              <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
             </div>
-            <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+            <p className="text-xs text-emerald-700 mt-1 leading-normal">
               All bookings are covered by platform damage protection.{' '}
-              <button type="button" onClick={() => setShowInsuranceModal(true)} className="text-emerald-900 font-bold hover:underline">
+              <button type="button" onClick={() => setShowInsuranceModal(true)} className="text-emerald-900 font-medium hover:underline">
                 Learn more
               </button>
             </p>
@@ -357,7 +366,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
         {!price.lines?.length && (
         <div>
-          <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">
+          <p className="text-xs font-medium text-secondary-400 mb-2">
             {items.reduce((sum, i) => sum + i.quantity, 0)} items
           </p>
           <div className="space-y-1">
@@ -371,47 +380,35 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
         </div>
         )}
 
-        <p className="text-xs text-secondary-500 leading-relaxed">{price.summary}</p>
+        <p className="text-sm text-secondary-500 leading-relaxed">{price.summary}</p>
 
-        <div className="space-y-3 pt-2">
-          <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-            <button
-              type="button"
-              onClick={() => {
-                onContinue({
-                  estimate: {
-                    itemsDetected: items.map((i) => `${i.quantity}x ${i.name}`),
-                    estimatedVolume: price.estimatedVolume,
-                    price: price.price,
-                    summary: price.summary,
-                    subtotal: price.subtotal,
-                    onlineBookingDiscount: price.onlineBookingDiscount,
-                  },
-                  items,
-                  price,
-                  contactName,
-                  contactPhone,
-                  smsMarketingConsentAt,
-                  partialBookingId,
-                  image: images[0] || null,
-                  images,
-                });
-              }}
-              className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span className="text-sm font-black uppercase tracking-wider">Continue</span>
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={onEditBack}
-            className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-          >
-            <ArrowLeft size={14} /> {backLabel}
-          </button>
-          <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
-        </div>
+        <FlowStickyNav
+          showBack
+          onBack={onEditBack}
+          backLabel={backLabel}
+          onContinue={() => {
+            onContinue({
+              estimate: {
+                itemsDetected: items.map((i) => `${i.quantity}x ${i.name}`),
+                estimatedVolume: price.estimatedVolume,
+                price: price.price,
+                summary: price.summary,
+                subtotal: price.subtotal,
+                onlineBookingDiscount: price.onlineBookingDiscount,
+              },
+              items,
+              price,
+              contactName,
+              contactPhone,
+              smsMarketingConsentAt,
+              partialBookingId,
+              image: images[0] || null,
+              images,
+            });
+          }}
+          continueLabel={continueLabel}
+        />
+        <p className="text-xs text-secondary-400 text-center pb-4">* Final price confirmed on-site</p>
 
         {showInsuranceModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
@@ -445,7 +442,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
   if (mode === 'method') {
     return (
-      <div className="space-y-4">
+      <>
+        <EstimateMethodHero />
         <EstimateMethodSelection
           onPhotoEstimate={() => {
             setAiStep('tips');
@@ -460,72 +458,59 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
             window.scrollTo({ top: 0, behavior: 'auto' });
           }}
         />
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-        >
-          <ArrowLeft size={14} /> Back
-        </button>
-      </div>
+        <FlowStickyNav showBack onBack={onBack} showContinue={false} />
+      </>
     );
   }
 
   return (
     <div>
-      <div ref={contentTopRef} className={`${FLOW_STEP_ANCHOR} mb-6`}>
-        <h2 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-          {mode === 'ai' ? (
-            <><span className="text-brand">AI photo</span> estimate.</>
-          ) : manualStep === 'review' ? (
-            <>Review your <span className="text-brand">list.</span></>
-          ) : manualStep === 'result' ? (
-            <>Your <span className="text-brand">estimate.</span></>
-          ) : (
-            <>Pick your <span className="text-brand">items.</span></>
-          )}
-        </h2>
-        <p className="text-sm text-secondary-400">
-          {mode === 'ai'
-            ? "Upload a photo and we'll estimate the cost automatically."
-            : manualStep === 'review'
-              ? 'Confirm your items to calculate the estimate.'
-              : manualStep === 'result'
-                ? 'Review your price breakdown, then continue to book.'
-                : 'Browse categories and pick what you need.'}
-        </p>
+      <div ref={contentTopRef} className={FLOW_STEP_ANCHOR}>
+        <FlowStepTitle
+          title={
+            mode === 'ai'
+              ? 'AI photo estimate'
+              : manualStep === 'review'
+                ? 'Review your list'
+                : manualStep === 'result'
+                  ? 'Your estimate'
+                  : 'Pick your items'
+          }
+          subtitle={
+            mode === 'ai'
+              ? "Upload a photo and we'll estimate the cost automatically."
+              : manualStep === 'review'
+                ? 'Confirm your items to calculate the estimate.'
+                : manualStep === 'result'
+                  ? 'Review your price breakdown, then continue.'
+                  : 'Browse categories and pick what you need.'
+          }
+        />
       </div>
 
       {mode === 'ai' && (
         <div>
           {aiStep === 'tips' && (
-            <div className="space-y-6">
-              <div className="text-center mb-2">
-                <p className="text-[10px] font-black text-brand uppercase tracking-wider mb-2">Photo Tips</p>
-                <h3 className="text-lg md:text-xl font-black text-secondary">Take clear photos for best results</h3>
-              </div>
-              <div className="space-y-5">
-                {[
-                  { title: 'Good lighting', desc: 'Take photos in daylight or well-lit areas. Avoid dark shadows.' },
-                  { title: 'All items visible', desc: 'Make sure everything you want removed is in the frame.' },
-                  { title: 'Items only', desc: 'Photos of just the junk items work best. Avoid people or pets.' },
-                  { title: 'Multiple angles', desc: 'For large piles, you can upload several photos of different sections.' },
-                ].map((tip) => (
-                  <div key={tip.title} className="flex gap-4">
-                    <Check size={16} className="text-brand shrink-0 mt-0.5" strokeWidth={3} />
-                    <div>
-                      <h4 className="text-sm font-bold text-secondary mb-0.5">{tip.title}</h4>
-                      <p className="text-xs text-secondary-400 leading-relaxed">{tip.desc}</p>
-                    </div>
+            <div className="space-y-5">
+              {[
+                { title: 'Good lighting', desc: 'Take photos in daylight or well-lit areas. Avoid dark shadows.' },
+                { title: 'All items visible', desc: 'Make sure everything you want removed is in the frame.' },
+                { title: 'Items only', desc: 'Photos of just the junk items work best. Avoid people or pets.' },
+                { title: 'Multiple angles', desc: 'For large piles, you can upload several photos of different sections.' },
+              ].map((tip) => (
+                <div key={tip.title} className="flex gap-3 bg-white border border-secondary-200 rounded-xl p-4">
+                  <Check size={16} className="text-secondary shrink-0 mt-0.5" strokeWidth={2.5} />
+                  <div>
+                    <h4 className="text-sm font-semibold text-secondary mb-0.5">{tip.title}</h4>
+                    <p className="text-sm text-secondary-500 leading-relaxed">{tip.desc}</p>
                   </div>
-                ))}
-              </div>
-              <button type="button" onClick={() => setAiStep('upload')} className="w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand transition-colors rounded-xl inline-flex items-center justify-center gap-2 mt-4">
-                Continue <ArrowRight size={14} />
-              </button>
-              <button type="button" onClick={() => setMode('method')} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
-                <ArrowLeft size={14} /> Back
-              </button>
+                </div>
+              ))}
+              <FlowStickyNav
+                showBack
+                onBack={() => setMode('method')}
+                onContinue={() => setAiStep('upload')}
+              />
             </div>
           )}
 
@@ -536,34 +521,28 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
               {images.length === 0 ? (
                 <div className="space-y-3">
-                  <button type="button" onClick={() => cameraInputRef.current?.click()} className="w-full md:border border-secondary-100 hover:border-brand transition-all p-6 bg-white rounded-2xl text-left flex items-center gap-4 group">
-                    <Camera size={24} className="text-brand shrink-0" />
-                    <div className="flex-1">
-                      <h3 className="text-base font-black text-secondary mb-0.5">Take Photo</h3>
-                      <p className="text-secondary-400 text-sm">Use your camera to capture the junk</p>
-                    </div>
-                    <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
-                  </button>
-                  <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full md:border border-secondary-100 hover:border-brand transition-all p-6 bg-white rounded-2xl text-left flex items-center gap-4 group">
-                    <Upload size={24} className="text-secondary shrink-0" />
-                    <div className="flex-1">
-                      <h3 className="text-base font-black text-secondary mb-0.5">Upload Photo</h3>
-                      <p className="text-secondary-400 text-sm">Choose an existing photo from your device</p>
-                    </div>
-                    <ArrowRight size={18} className="text-secondary-300 group-hover:text-brand group-hover:translate-x-1 transition-all" />
-                  </button>
-                  <button type="button" onClick={() => setAiStep('tips')} className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1">
-                    <ArrowLeft size={14} /> Back
-                  </button>
+                  <FlowSelectionCard
+                    title="Take photo"
+                    description="Use your camera to capture the junk"
+                    icon={<Camera className="w-full h-full" />}
+                    onClick={() => cameraInputRef.current?.click()}
+                  />
+                  <FlowSelectionCard
+                    title="Upload photo"
+                    description="Choose an existing photo from your device"
+                    icon={<Upload className="w-full h-full" />}
+                    onClick={() => fileInputRef.current?.click()}
+                  />
+                  <FlowStickyNav showBack onBack={() => setAiStep('tips')} showContinue={false} />
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {images.map((imgSrc, index) => (
-                      <div key={index} className="relative aspect-[4/3] border border-secondary-100 bg-white overflow-hidden rounded-xl">
+                      <div key={index} className="relative aspect-[4/3] border border-secondary-200 bg-white overflow-hidden rounded-xl">
                         <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                         {loadingState !== LoadingState.ANALYZING && (
-                          <button type="button" onClick={() => removeUploadedImage(index)} className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors text-xs font-bold border border-white/20 rounded-full shadow" aria-label="Remove photo">
+                          <button type="button" onClick={() => removeUploadedImage(index)} className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">
                             <X size={12} />
                           </button>
                         )}
@@ -571,31 +550,34 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                     ))}
                   </div>
                   {loadingState !== LoadingState.ANALYZING && (
-                    <div className="flex gap-2.5">
-                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flex-1 py-3 border border-secondary-100 hover:border-brand hover:text-brand bg-white text-secondary text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors rounded-xl">
-                        <Camera size={14} /> Take another
+                    <div className="flex gap-2">
+                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flex-1 py-3 border border-secondary-200 bg-white text-secondary text-sm font-medium rounded-full hover:bg-secondary-50 transition-colors">
+                        Take another
                       </button>
-                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 border border-secondary-100 hover:border-brand hover:text-brand bg-white text-secondary text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors rounded-xl">
-                        <Upload size={14} /> Add more
+                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 border border-secondary-200 bg-white text-secondary text-sm font-medium rounded-full hover:bg-secondary-50 transition-colors">
+                        Add more
                       </button>
                     </div>
                   )}
                   {loadingState === LoadingState.IDLE && (
-                    <button type="button" onClick={handleAnalyze} className="group w-full py-3.5 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-brand hover:shadow-lg transition-all duration-300 rounded-xl inline-flex items-center justify-center gap-2">
-                      <ScanSearch size={14} /> Analyze {images.length === 1 ? 'Photo' : `${images.length} Photos`}
-                    </button>
+                    <FlowStickyNav
+                      showBack
+                      onBack={() => setAiStep('tips')}
+                      onContinue={handleAnalyze}
+                      continueLabel={images.length === 1 ? 'Analyze photo' : `Analyze ${images.length} photos`}
+                    />
                   )}
                   {loadingState === LoadingState.ANALYZING && (
                     <div className="py-12 text-center">
                       <Loader2 size={40} className="animate-spin mx-auto mb-3 text-brand" />
-                      <p className="text-secondary-400 text-sm">Identifying items in your {images.length === 1 ? 'photo' : 'photos'}...</p>
+                      <p className="text-secondary-500 text-sm">Identifying items in your {images.length === 1 ? 'photo' : 'photos'}...</p>
                     </div>
                   )}
                   {loadingState === LoadingState.ERROR && (
                     <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-center">
-                      <p className="text-red-700 text-sm font-bold mb-1">Failed to analyze photo{images.length > 1 ? 's' : ''}</p>
+                      <p className="text-red-700 text-sm font-medium mb-1">Failed to analyze photo{images.length > 1 ? 's' : ''}</p>
                       {error && <p className="text-red-600 text-xs mb-2">{error}</p>}
-                      <button type="button" onClick={handleAnalyze} className="text-sm font-bold text-secondary underline hover:text-brand transition-colors">Try again</button>
+                      <button type="button" onClick={handleAnalyze} className="text-sm font-medium text-secondary underline hover:text-brand transition-colors">Try again</button>
                     </div>
                   )}
                 </div>
@@ -608,104 +590,60 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
       {mode === 'manual' && (
         <div>
           {manualStep === 'select' && !manualPricingLoading && (
-            <JunkItemCatalogSelector selectedItems={selectedItems} onSelectedItemsChange={setSelectedItems} />
+            <JunkItemCatalogSelector selectedItems={selectedItems} onSelectedItemsChange={setSelectedItems} hideHeader />
           )}
 
-          {manualStep === 'select' && selectedItems.length > 0 && (
-            <div ref={selectedItemsRef} className="sticky bottom-4 z-30 mt-6 mx-auto max-w-2xl px-2">
-              <button type="button" onClick={() => setManualStep('review')} className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                <span className="flex items-center gap-2.5 min-w-0">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-brand group-hover:bg-white text-white group-hover:text-brand text-xs font-black transition-colors shrink-0">
-                    {totalSelectedCount}
-                  </span>
-                  <span className="text-sm font-black uppercase tracking-wider truncate">
-                    Review {totalSelectedCount === 1 ? 'item' : 'items'}
-                  </span>
-                </span>
-                <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider whitespace-nowrap">
-                  Continue
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </button>
-            </div>
+          {manualStep === 'select' && (
+            <FlowStickyNav
+              showBack
+              onBack={() => setMode('method')}
+              showContinue={selectedItems.length > 0}
+              onContinue={() => setManualStep('review')}
+              continueLabel={totalSelectedCount > 0 ? `Review ${totalSelectedCount} item${totalSelectedCount === 1 ? '' : 's'}` : 'Continue'}
+              continueDisabled={selectedItems.length === 0}
+            />
           )}
 
           {manualStep === 'review' && !manualPricingLoading && (
-            <div className="space-y-6">
-              <div className="border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden bg-white">
+            <div className="space-y-4">
+              <div className="border border-secondary-200 rounded-xl divide-y divide-secondary-100 overflow-hidden bg-white">
                 {selectedItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 p-3 md:p-4 hover:bg-white transition-colors">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white flex items-center justify-center shrink-0">
-                      <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-8 h-8 md:w-9 md:h-9" />
+                  <div key={item.id} className="flex items-center gap-3 p-3 md:p-4">
+                    <div className="w-12 h-12 rounded-lg bg-secondary-50 flex items-center justify-center shrink-0">
+                      <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-8 h-8" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-secondary truncate">{item.name}</p>
-                      <p className="text-[11px] text-secondary-400">Qty: {item.quantity}</p>
+                      <p className="text-sm font-medium text-secondary truncate">{item.name}</p>
+                      <p className="text-xs text-secondary-400">Qty: {item.quantity}</p>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-full border border-secondary-100 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-full border border-secondary-200 bg-white flex items-center justify-center hover:border-secondary text-secondary-500 transition-colors">
                         <Minus size={14} />
                       </button>
-                      <span className="w-6 text-center text-sm font-black text-secondary">{item.quantity}</span>
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-full border border-secondary-100 bg-white flex items-center justify-center hover:border-brand hover:text-brand text-secondary-500 transition-colors">
+                      <span className="w-6 text-center text-sm font-semibold text-secondary">{item.quantity}</span>
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-full border border-secondary-200 bg-white flex items-center justify-center hover:border-secondary text-secondary-500 transition-colors">
                         <Plus size={14} />
                       </button>
                     </div>
-                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 transition-colors shrink-0" aria-label={`Remove ${item.name}`}>
+                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 transition-colors shrink-0" aria-label={`Remove ${item.name}`}>
                       <Trash2 size={14} />
                     </button>
                   </div>
                 ))}
               </div>
 
-              <div className="border border-secondary-100 shadow-sm rounded-2xl bg-white p-4 md:p-5 space-y-3">
-                <p className="text-xs font-black uppercase tracking-wider text-secondary">Suggested Add-ons</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
-                    { name: 'Box Spring', desc: 'Dispose of the matching box spring' },
-                    { name: 'Bed Frame', desc: 'Dispose of the metal or wooden bed frame' },
-                  ].map((upsell) => {
-                    const isAdded = isItemSelected(upsell.name);
-                    return (
-                      <div key={upsell.name} className="bg-white border border-secondary-100 p-3 flex items-center justify-between gap-3 shadow-sm hover:shadow transition-shadow rounded-xl">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0">
-                            <ItemIconRenderer imagePath={getItemImage(upsell.name)} className="w-6 h-6 object-contain" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-secondary leading-tight">{upsell.name}</p>
-                            <p className="text-[10px] text-secondary-400">{upsell.desc}</p>
-                          </div>
-                        </div>
-                        <button type="button" onClick={() => toggleCatalogItem(upsell.name)} className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg border transition-all duration-200 ${isAdded ? 'bg-emerald-500 border-emerald-500 text-white hover:bg-emerald-600 font-bold' : 'bg-brand border-brand text-white hover:bg-brand-600 font-bold'}`}>
-                          {isAdded ? 'Added ✓' : '+ Add'}
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-                <button type="button" onClick={() => setManualStep('select')} className="w-full flex items-center justify-center gap-2 py-3 bg-white border border-dashed border-secondary-100 text-secondary-600 hover:border-brand hover:text-brand font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm">
-                  <Plus size={14} />
-                  <span>Add more items</span>
-                </button>
-              </div>
+              <button type="button" onClick={() => setManualStep('select')} className="w-full py-3 text-sm font-medium text-secondary border border-dashed border-secondary-200 rounded-xl hover:border-secondary-300 transition-colors">
+                + Add more items
+              </button>
 
-              <div className="flex items-center justify-between text-xs">
-                <button type="button" onClick={() => setManualStep('select')} className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1">
-                  <ArrowLeft size={12} /> Add more items
-                </button>
-                <button type="button" onClick={() => { setSelectedItems([]); setManualStep('select'); }} className="font-bold text-red-400 hover:text-red-600 transition-colors">
-                  Clear all
-                </button>
-              </div>
-
-              <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-                <button type="button" onClick={handleGetManualPrice} disabled={selectedItems.length === 0} className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100">
-                  <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                  <span className="text-sm font-black uppercase tracking-wider">Get Estimate</span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
+              <FlowStickyNav
+                showBack
+                onBack={() => setManualStep('select')}
+                onContinue={handleGetManualPrice}
+                continueLabel="Get estimate"
+                continueDisabled={selectedItems.length === 0}
+                continueLoading={manualPricingLoading}
+              />
             </div>
           )}
 

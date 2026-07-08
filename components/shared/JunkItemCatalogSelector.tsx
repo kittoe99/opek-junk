@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Check, Plus, Minus, X, Package, ArrowRight } from 'lucide-react';
+import { Check, Plus, Minus, X, Package } from 'lucide-react';
 import {
   ITEM_CATALOG,
   POPULAR_ITEMS,
   POPULAR_ITEMS_CATEGORY_LABEL,
 } from '../../lib/itemCatalog';
+import { FlowSelectionCard } from './flow/FlowSelectionCard';
+import { FlowStepTitle } from './flow/FlowStepTitle';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 
 export interface CatalogSelectedItem {
@@ -29,6 +31,7 @@ interface JunkItemCatalogSelectorProps {
   emptyIcon?: React.ComponentType<{ className?: string }>;
   emptyMessage?: string;
   catalogModalTitle?: string;
+  hideHeader?: boolean;
 }
 
 export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = ({
@@ -39,6 +42,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
   emptyIcon: EmptyIcon = Package,
   emptyMessage = 'Please select items above or browse the full catalog.',
   catalogModalTitle = 'Junk Removal Catalog',
+  hideHeader = false,
 }) => {
   const [showCatalogModal, setShowCatalogModal] = useState(false);
   const [catalogSearch, setCatalogSearch] = useState('');
@@ -103,12 +107,12 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
       <button
         key={item.name}
         type="button"
-        className={`group relative flex flex-col items-center justify-between p-2 sm:p-2.5 rounded-2xl border transition-all duration-300 text-center cursor-pointer ${
-          compact ? 'min-h-[132px] sm:min-h-[150px]' : 'min-h-[132px] sm:min-h-[172px]'
+        className={`group relative flex flex-col items-center justify-between p-2 sm:p-3 rounded-xl border transition-all duration-200 text-center cursor-pointer ${
+          compact ? 'min-h-[120px] sm:min-h-[140px]' : 'min-h-[132px] sm:min-h-[160px]'
         } ${
           selected
-            ? 'bg-brand/[0.03] border-brand ring-2 ring-brand/10 shadow-lg shadow-brand/5 scale-[1.02]'
-            : 'bg-white border-secondary-100 hover:border-secondary-100 hover:shadow-lg hover:shadow-secondary-100/50 hover:-translate-y-1 active:translate-y-0 active:shadow-sm'
+            ? 'bg-white border-brand ring-2 ring-brand/15 shadow-sm'
+            : 'bg-white border-secondary-200 hover:border-secondary-300 hover:shadow-sm'
         }`}
         onClick={() => toggleItem(item.name)}
       >
@@ -127,8 +131,8 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             } w-14 h-14 transition-transform duration-300 group-hover:scale-110 shrink-0`}
           />
           <span
-            className={`text-[10px] sm:text-xs md:text-sm font-black leading-tight transition-colors px-0.5 line-clamp-2 mt-1 sm:mt-1.5 ${
-              selected ? 'text-brand' : 'text-secondary-800 group-hover:text-secondary'
+            className={`text-[10px] sm:text-xs font-medium leading-tight transition-colors px-0.5 line-clamp-2 mt-1 sm:mt-1.5 ${
+              selected ? 'text-secondary' : 'text-secondary-600 group-hover:text-secondary'
             }`}
           >
             {item.name}
@@ -159,7 +163,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
           ) : (
             <div
               onClick={() => toggleItem(item.name)}
-              className="px-2 py-0.5 sm:px-3 sm:py-1 text-[8px] sm:text-[9px] font-black uppercase tracking-wider rounded-lg border border-secondary-100 text-secondary-400 group-hover:border-brand group-hover:text-brand group-hover:bg-brand/5 transition-all cursor-pointer"
+              className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-medium rounded-md border border-secondary-200 text-secondary-500 group-hover:border-secondary-300 group-hover:text-secondary transition-all cursor-pointer"
             >
               + Select
             </div>
@@ -171,41 +175,27 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
 
   return (
     <>
-      <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
-        <div className="text-center space-y-2 mb-6">
-          <h2 className="text-lg font-black text-secondary uppercase tracking-wider">{title}</h2>
-          <p className="text-secondary-400 text-xs">{subtitle}</p>
-        </div>
+      <div className="space-y-5">
+        {!hideHeader && (
+          <FlowStepTitle title={title} subtitle={subtitle} />
+        )}
 
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {POPULAR_ITEMS.slice(0, 6).map((item) => renderItemCard(item, true))}
         </div>
 
-        <div className="mt-2">
-          <button
-            type="button"
-            onClick={() => setShowCatalogModal(true)}
-            className="w-full flex items-center justify-between p-4 bg-white border border-dashed border-secondary-200 hover:border-brand hover:bg-brand/[0.01] rounded-2xl transition-all group shadow-sm cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary-50 text-secondary-500 group-hover:bg-brand/10 group-hover:text-brand flex items-center justify-center transition-colors">
-                <Plus size={20} />
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-black uppercase tracking-wider text-secondary">Show more items</p>
-              </div>
-            </div>
-            <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all shrink-0">
-              <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-            </div>
-          </button>
-        </div>
+        <FlowSelectionCard
+          title="Browse full catalog"
+          description="Search hundreds of items by category"
+          icon={<Plus className="w-full h-full" />}
+          onClick={() => setShowCatalogModal(true)}
+        />
 
         {hasSelectedItems && (
-          <div className="border border-secondary-100 rounded-2xl divide-y divide-secondary-100 overflow-hidden bg-white animate-fade-in">
-            <div className="bg-secondary-50/50 px-4 py-2.5 border-b border-secondary-100">
-              <p className="text-[10px] font-black uppercase tracking-wider text-secondary-400">
-                Selected Items ({totalSelectedCount})
+          <div className="border border-secondary-200 rounded-xl divide-y divide-secondary-100 overflow-hidden bg-white">
+            <div className="bg-secondary-50 px-4 py-2.5 border-b border-secondary-100">
+              <p className="text-xs font-medium text-secondary-500">
+                Selected ({totalSelectedCount})
               </p>
             </div>
             {selectedItems

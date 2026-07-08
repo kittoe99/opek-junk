@@ -15,6 +15,10 @@ import {
   isServiceAddressValidated,
 } from './shared/ServiceAddressField';
 import { CollapsibleReviewPanel } from './shared/CollapsibleReviewPanel';
+import { FLOW_INPUT, FLOW_LABEL } from '../lib/flowPageLayout';
+import { FlowStepTitle } from './shared/flow/FlowStepTitle';
+import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
+import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 
 interface BookingDetailsFormProps {
   estimate: QuoteEstimate | null;
@@ -511,22 +515,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     : isJunkRemoval ? 6 : 5;
 
   return (
-    <div className={`max-w-md mx-auto space-y-6${step === 'payment' ? '' : ' animate-fade-in'}`}>
+    <div className={`max-w-lg mx-auto space-y-6 pb-28${step === 'payment' ? '' : ' animate-fade-in'}`}>
 
       {/* ─── Contact step ─── */}
       {step === 'contact' && (
-        <form onSubmit={handleContactSubmit} className="space-y-4">
-          <div className="text-center space-y-2 mb-6">
-            <div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Your Contact Details</h2>
-              <p className="text-secondary-400 text-xs">How should you be reached to confirm?</p>
-            </div>
-          </div>
+        <>
+        <form id="booking-contact-form" onSubmit={handleContactSubmit} className="space-y-4">
+          <FlowStepTitle title="Your contact details" subtitle="How should we reach you to confirm?" />
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Full Name *</label>
-            <div className="relative group">
-              <input
+            <label className={FLOW_LABEL}>Full name *</label>
+            <input
                 name="name"
                 autoComplete="name"
                 value={formData.name}
@@ -534,15 +533,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 required
                 disabled={contactSubmitting}
                 placeholder="John Smith"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className={FLOW_INPUT}
               />
-            </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-            <div className="relative group">
-              <input
+            <label className={FLOW_LABEL}>Email *</label>
+            <input
                 name="email"
                 autoComplete="email"
                 value={formData.email}
@@ -551,15 +548,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="email"
                 placeholder="john@example.com"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className={FLOW_INPUT}
               />
-            </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-            <div className="relative group">
-              <input
+            <label className={FLOW_LABEL}>Phone *</label>
+            <input
                 name="phone"
                 autoComplete="tel"
                 value={formData.phone}
@@ -568,15 +563,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 disabled={contactSubmitting}
                 type="tel"
                 placeholder="(555) 123-4567"
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors disabled:opacity-55"
+                className={FLOW_INPUT}
               />
-            </div>
-            <p className="mt-1.5 text-[10px] text-secondary-400 leading-relaxed px-0.5">
+            <p className="mt-1.5 text-xs text-secondary-400 leading-relaxed">
               {SMS_TRANSACTIONAL_NOTICE}
             </p>
           </div>
 
-          <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+          <label className="flex items-start gap-3 p-4 bg-white border border-secondary-200 rounded-xl cursor-pointer hover:border-secondary-300 transition-colors">
             <div className="relative shrink-0 mt-0.5">
               <input
                 type="checkbox"
@@ -595,36 +589,33 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 {localSmsMarketingConsentAt && <Check size={12} className="text-white" strokeWidth={3.5} />}
               </div>
             </div>
-            <span className="text-[10px] text-secondary-500 leading-relaxed">
+            <span className="text-xs text-secondary-500 leading-relaxed">
               {SMS_MARKETING_CONSENT_TEXT}
             </span>
           </label>
 
-          <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-              <ArrowLeft size={14} /> {onBack ? backLabel : 'Back'}
-            </button>
-            <button type="submit" disabled={contactSubmitting} className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20">
-              {contactSubmitting ? 'Saving...' : <>Continue <ArrowRight size={14} /></>}
-            </button>
-          </div>
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-700 text-xs font-bold">{error}</p>
+            </div>
+          )}
         </form>
+        <FlowStickyNav
+          onBack={handleBackStep}
+          backLabel={onBack ? backLabel : 'Back'}
+          continueType="submit"
+          continueForm="booking-contact-form"
+          continueDisabled={contactSubmitting}
+          continueLoading={contactSubmitting}
+        />
+        </>
       )}
 
       {/* ─── Schedule step ─── */}
       {step === 'schedule' && (
-        <form onSubmit={handleScheduleSubmit} className="space-y-4">
-          <div className="text-center space-y-2 mb-6">
-            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-              <CalendarCheck className="w-6 h-6 text-brand" strokeWidth={2.5} />
-            </div>
-            <div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Schedule Pickup</h2>
-              <p className="text-secondary-400 text-xs">
-                Choose your preferred service date before adding the address.
-              </p>
-            </div>
-          </div>
+        <>
+        <form id="booking-schedule-form" onSubmit={handleScheduleSubmit} className="space-y-4">
+          <FlowStepTitle title="Pick a date & time" subtitle="When works best for your service?" />
 
           <ScheduleDatePicker
             date={formData.date}
@@ -639,35 +630,24 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <p className="text-red-700 text-xs font-bold">{error}</p>
             </div>
           )}
-
-          <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
-              <ArrowLeft size={14} /> Back
-            </button>
-            <button
-              type="submit"
-              disabled={!formData.date || !formData.timeSlot}
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Continue <ArrowRight size={14} />
-            </button>
-          </div>
         </form>
+        <FlowStickyNav
+          onBack={handleBackStep}
+          continueType="submit"
+          continueForm="booking-schedule-form"
+          continueDisabled={!formData.date || !formData.timeSlot}
+        />
+        </>
       )}
 
       {/* ─── Address step ─── */}
       {step === 'address' && (
-        <form onSubmit={handleAddressSubmit} className="space-y-4">
-          <div className="text-center space-y-2 mb-6">
-            <div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">
-                {serviceType === 'Moving Labor' ? 'Service Address' : 'Pickup Address'}
-              </h2>
-              <p className="text-secondary-400 text-xs">
-                {serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the service provider come to collect?'}
-              </p>
-            </div>
-          </div>
+        <>
+        <form id="booking-address-form" onSubmit={handleAddressSubmit} className="space-y-4">
+          <FlowStepTitle
+            title={serviceType === 'Moving Labor' ? 'Service address' : 'Pickup address'}
+            subtitle={serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the provider come to collect?'}
+          />
 
           <ServiceAddressField
             label="Service Address"
@@ -694,85 +674,58 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             }
           />
 
-          <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
-              <ArrowLeft size={14} /> Back
-            </button>
-            <button
-              type="submit"
-              disabled={!addressValidated}
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Continue <ArrowRight size={14} />
-            </button>
-          </div>
         </form>
+        <FlowStickyNav
+          onBack={handleBackStep}
+          continueType="submit"
+          continueForm="booking-address-form"
+          continueDisabled={!addressValidated}
+        />
+        </>
       )}
 
       {/* ─── Photo step (junk removal only) ─── */}
       {step === 'photo' && (
-        <form onSubmit={handlePhotoSubmit} className="space-y-4">
-          <div className="text-center space-y-2 mb-6">
-            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-              <Camera className="w-6 h-6 text-brand" strokeWidth={2.5} />
-            </div>
-            <div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Photo of Items</h2>
-              <p className="text-secondary-400 text-xs">
-                Upload a photo so we can assess the load and match the right crew.
-              </p>
-            </div>
-          </div>
+        <>
+        <form id="booking-photo-form" onSubmit={handlePhotoSubmit} className="space-y-4">
+          <FlowStepTitle
+            title="Photo of items"
+            subtitle="Upload a photo so we can assess the load and match the right crew."
+          />
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">
-                Items photo *
-              </label>
-              <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-full border border-brand/10">
-                Required
-              </span>
-            </div>
-
             {localImage ? (
-              <div className="relative border border-secondary-100 bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm group animate-fade-in">
+              <div className="relative border border-secondary-200 bg-white p-3 rounded-xl flex items-center gap-4">
                 <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-secondary-100 bg-secondary-50">
                   <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
                 </div>
-                <div className="flex-1 min-w-0 text-left">
-                  <p className="text-xs font-black text-secondary">Photo uploaded</p>
-                  <p className="text-[10px] text-secondary-400 mt-0.5">Used to verify volume and service details.</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-secondary">Photo uploaded</p>
+                  <p className="text-xs text-secondary-500 mt-0.5">Used to verify volume and service details.</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setLocalImage(null)}
-                  className="bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 p-2 rounded-xl transition-colors shrink-0 flex items-center justify-center"
+                  className="bg-red-50 hover:bg-red-100 text-red-500 p-2 rounded-lg transition-colors shrink-0"
                   aria-label="Remove photo"
                 >
                   <Trash2 size={16} />
                 </button>
               </div>
             ) : (
-              <div className="border border-dashed border-secondary-200 hover:border-brand/40 bg-secondary-50/20 p-5 rounded-2xl text-center space-y-4 transition-all duration-300">
-                <p className="text-xs text-secondary-500 font-medium">
-                  Take or upload a photo of everything you need hauled away.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto justify-center">
-                  <button
-                    type="button"
-                    onClick={() => cameraInputRef.current?.click()}
-                    className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    <Camera size={14} /> Take Photo
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex-1 py-2.5 px-4 bg-white border border-secondary-100 hover:border-brand hover:text-brand text-secondary text-xs font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    <Upload size={14} /> Upload Photo
-                  </button>
-                </div>
+              <div className="space-y-3">
+                <FlowSelectionCard
+                  title="Take photo"
+                  description="Use your camera to capture the items"
+                  icon={<Camera className="w-full h-full" />}
+                  onClick={() => cameraInputRef.current?.click()}
+                />
+                <FlowSelectionCard
+                  title="Upload photo"
+                  description="Choose an existing photo from your device"
+                  icon={<Upload className="w-full h-full" />}
+                  onClick={() => fileInputRef.current?.click()}
+                />
               </div>
             )}
 
@@ -786,45 +739,33 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
           )}
 
-          <div className="flex gap-3 pt-4">
-            <button type="button" onClick={handleBackStep} className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2">
-              <ArrowLeft size={14} /> Back
-            </button>
-            <button
-              type="submit"
-              disabled={!localImage}
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Continue <ArrowRight size={14} />
-            </button>
-          </div>
         </form>
+        <FlowStickyNav
+          onBack={handleBackStep}
+          continueType="submit"
+          continueForm="booking-photo-form"
+          continueDisabled={!localImage}
+        />
+        </>
       )}
 
       {/* ─── Review step ─── */}
       {step === 'review' && (
-        <form onSubmit={handleReviewSubmit} className="space-y-4">
-          <div className="text-center space-y-2 mb-6">
-            <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-              <ClipboardList className="w-6 h-6 text-brand" strokeWidth={2.5} />
-            </div>
-            <div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Details & Review</h2>
-              <p className="text-secondary-400 text-xs">Review your booking before confirming</p>
-            </div>
-          </div>
+        <>
+        <form id="booking-review-form" onSubmit={handleReviewSubmit} className="space-y-4">
+          <FlowStepTitle title="Review your booking" subtitle="Confirm details before your deposit." />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Service Type</label>
+              <label className={FLOW_LABEL}>Service type</label>
               <input
                 readOnly
                 value={serviceType}
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary font-bold focus:outline-none transition-colors"
+                className={`${FLOW_INPUT} bg-secondary-50`}
               />
             </div>
             <div>
-              <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5"><CalendarCheck size={11} className="inline mr-1" /> Preferred Date</label>
+              <label className={FLOW_LABEL}>Preferred date</label>
               <input
                 readOnly
                 value={
@@ -832,7 +773,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                     ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}`
                     : ''
                 }
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary font-bold focus:outline-none transition-colors"
+                className={`${FLOW_INPUT} bg-secondary-50`}
               />
             </div>
           </div>
@@ -891,23 +832,9 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
           )}
 
-          <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={handleBackStep}
-              disabled={submitting}
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ArrowLeft size={14} /> Back
-            </button>
-            <button
-              type="submit"
-              className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20"
-            >
-              Continue <ArrowRight size={14} />
-            </button>
-          </div>
         </form>
+        <FlowStickyNav onBack={handleBackStep} continueType="submit" continueForm="booking-review-form" />
+        </>
       )}
 
       {step === 'deposit' && (

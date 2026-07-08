@@ -8,18 +8,22 @@ import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLab
 import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
-import { TrustBadges } from './TrustBadges';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
-import { EstimateMethodHero } from './shared/EstimateMethodSelection';
 import { JunkRemovalEstimateFlow, type EstimateMode, type JunkRemovalEstimateResult } from './shared/JunkRemovalEstimateFlow';
+import { MovingLaborEstimateFlow } from './shared/MovingLaborEstimateFlow';
 import {
   FLOW_PAGE_SHELL,
-  FLOW_PAGE_HERO,
   FLOW_PAGE_CONTENT,
   flowPageMaxWidth,
 } from '../lib/flowPageLayout';
+import { FlowProgressBar } from './shared/flow/FlowProgressBar';
+import { FlowZipCheck } from './shared/flow/FlowZipCheck';
+import { ServiceTypePicker, type ServicePickerId } from './shared/flow/ServiceTypePicker';
+import { FlowStepTitle } from './shared/flow/FlowStepTitle';
+import { FlowStickyNav } from './shared/flow/FlowStickyNav';
+import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -536,200 +540,56 @@ export const BookingPage: React.FC = () => {
   const isJunkEstimateStep = currentStep === 2 && formData.serviceType === 'Junk Removal';
   const junkUsesWideLayout = isJunkEstimateStep && junkEstimateMode === 'manual' && junkManualStep === 'select';
   const junkFlowActive = isJunkEstimateStep && junkEstimateMode !== 'method';
-  const showPageHero = !junkFlowActive;
+  const flowProgress =
+    currentStep >= 3 ? 1
+    : currentStep === 2 ? 0.75
+    : currentStep === 1 ? 0.5
+    : 0.25;
+
+  const handleServicePick = (id: ServicePickerId) => {
+    if (id === 'junk_removal') {
+      setFormData((prev) => ({ ...prev, serviceType: 'Junk Removal' }));
+      setJunkEstimateMode('method');
+      setJunkManualStep('select');
+      setJunkFlowKey((k) => k + 1);
+      setCurrentStep(2);
+    } else if (id === 'moving_labor') {
+      setFormData((prev) => ({ ...prev, serviceType: 'Moving Labor' }));
+      setCurrentStep(2);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className={FLOW_PAGE_SHELL}>
-      {showPageHero && (
-      <div className={`${FLOW_PAGE_HERO} transition-all duration-300 ${flowPageMaxWidth(junkUsesWideLayout)}`}>
-        {currentStep === 0 ? (
-          <>
-            <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-              Book your <span className="text-brand">pickup.</span>
-            </h1>
-            <p className="text-sm text-secondary-400">Nationwide coverage in all 50 states — start by confirming your ZIP.</p>
-          </>
-        ) : currentStep === 1 ? (
-          <>
-            <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-              What do you <span className="text-brand">need?</span>
-            </h1>
-            <p className="text-sm text-secondary-400">Select a service below to continue.</p>
-          </>
-        ) : currentStep === 2 && formData.serviceType === 'Moving Labor' ? (
-          movingStep !== 'result' ? (
-            <>
-              <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-                Book <span className="text-brand">moving labor.</span>
-              </h1>
-              <p className="text-sm text-secondary-400">
-                Professional heavy-lifting assistance. 2-hour minimum applies.
-              </p>
-            </>
-          ) : null
-        ) : currentStep >= 3 ? (
-          <>
-            <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-              Book your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
-            </h1>
-            <p className="text-sm text-secondary-400">Contact, schedule, address, review, and deposit. A matched provider confirms within 15 minutes.</p>
-          </>
-        ) : isJunkEstimateStep && junkEstimateMode === 'method' ? (
-          <EstimateMethodHero />
-        ) : isJunkEstimateStep ? null : (
-          <>
-            <h1 className="text-xl md:text-2xl font-black text-secondary tracking-tight mb-1">
-              Schedule your <span className="text-brand">{formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}.</span>
-            </h1>
-            <p className="text-sm text-secondary-400">
-              Contact, schedule, address, review, and deposit. A matched provider confirms within 15 minutes.
-            </p>
-          </>
-        )}
-      </div>
-      )}
+      <FlowProgressBar progress={flowProgress} />
 
       <div className={`${FLOW_PAGE_CONTENT} transition-all duration-300 ${flowPageMaxWidth(junkUsesWideLayout)} ${junkFlowActive ? 'pt-4 md:pt-6' : ''}`}>
         {/* Form */}
         <div>
 
-          {/* ═══ Step 0: ZIP Check ═══ */}
           {currentStep === 0 && (
-            <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-              <div className="text-center space-y-2 mb-8">
-                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-                  <MapPin className="w-6 h-6 text-brand" />
-                </div>
-                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Confirm Your ZIP Code</h2>
-                <p className="text-secondary-400 text-xs">Nationwide service in all 50 states.</p>
-              </div>
-
-              <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 mb-4 p-1 rounded-xl w-full">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={5}
-                  value={zipValue}
-                  onChange={(e) => { setZipValue(e.target.value.replace(/\D/g, '')); setZipError(null); setZipResult(null); }}
-                  onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
-                  placeholder="Enter ZIP code"
-                  className="flex-1 px-4 py-2.5 text-base bg-transparent border-none text-secondary placeholder:text-secondary-300 focus:outline-none font-mono tracking-wider"
-                  style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
-                />
-                <button
-                  onClick={handleZipCheck}
-                  disabled={zipValue.length !== 5 || zipLoading}
-                  className="px-5 py-3 bg-secondary text-white font-bold text-sm uppercase tracking-wider hover:bg-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 shrink-0 rounded-lg"
-                >
-                  {zipLoading ? <Loader2 size={16} className="animate-spin" /> : <><Search size={16} /> Check</>}
-                </button>
-              </div>
-
-              {zipError && (
-                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
-                  <p className="text-red-700 text-sm">{zipError}</p>
-                </div>
-              )}
-
-              {zipResult?.served && (
-                <div className="flex items-center gap-2 pt-1">
-                  <Check size={14} className="text-brand shrink-0" strokeWidth={3} />
-                  <span className="text-sm font-bold text-secondary">{zipResult.city}, {zipResult.state}</span>
-                  <span className="text-xs text-secondary-400 ml-auto">Continuing...</span>
-                </div>
-              )}
-
-              <p className="text-[10px] text-secondary-300 text-center pt-2">
-                Nationwide coverage · Available in all 50 states
-              </p>
-            </div>
+            <FlowZipCheck
+              title="Book your pickup"
+              subtitle="Nationwide coverage in all 50 states — start with your ZIP code."
+              zipValue={zipValue}
+              onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
+              onCheck={handleZipCheck}
+              loading={zipLoading}
+              error={zipError}
+              result={zipResult?.served ? { city: zipResult.city, state: zipResult.state } : null}
+            />
           )}
 
+          {currentStep === 1 && (
+            <ServiceTypePicker
+              onSelect={handleServicePick}
+              onBack={handlePrevStep}
+              quoteLinkLabel="Just need a quote? Get a free estimate →"
+            />
+          )}
 
           {/* NOTE: pre-fill from QuotePage skips to step 3 with estimate banner above BookingDetailsForm */}
-
-          {/* ═══ Step 1: Service Selection ═══ */}
-          {currentStep === 1 && (
-            <div className="space-y-4">
-              <div className="mb-2 flex items-start gap-3">
-                <ClipboardList size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
-                <div>
-                  <h2 className="text-base font-black text-secondary">Select Service</h2>
-                  <p className="text-secondary-400 text-xs">What kind of help do you need?</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3">
-                <button
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, serviceType: 'Junk Removal' }));
-                    setJunkEstimateMode('method');
-                    setJunkManualStep('select');
-                    setJunkFlowKey((k) => k + 1);
-                    setCurrentStep(2);
-                  }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Junk Removal' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
-                >
-                  <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
-                    <JunkIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Junk Removal' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Junk Removal</h3>
-                    <p className="text-secondary-400 text-xs md:text-sm">Service providers haul away your unwanted items</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, serviceType: 'Moving Labor' }));
-                    handleNextStep();
-                  }}
-                  className={`w-full bg-white border ${formData.serviceType === 'Moving Labor' ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]' : 'border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 hover:scale-[1.01]'} transition-all p-4 rounded-2xl text-left flex items-center gap-4 group`}
-                >
-                  <div className="w-14 h-14 shrink-0 text-secondary-400 group-hover:text-secondary-900 transition-colors ml-1">
-                    <MovingLaborIcon className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`text-sm md:text-base font-black mb-0.5 transition-colors ${formData.serviceType === 'Moving Labor' ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>Moving Labor</h3>
-                    <p className="text-secondary-400 text-xs md:text-sm">Hourly labor for heavy lifting</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                    <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
-                  </div>
-                </button>
-
-                <button
-                  disabled
-                  type="button"
-                  className="w-full bg-white border border-secondary-100 p-4 rounded-2xl text-left flex items-center gap-4 cursor-not-allowed opacity-60"
-                >
-                  <div className="w-14 h-14 shrink-0 text-secondary-400 grayscale opacity-60 ml-1">
-                    <DumpsterIcon className="w-full h-full" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <h3 className="text-sm md:text-base font-black text-secondary-500">Dumpster Rental</h3>
-                      <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-secondary-100 text-secondary-500 rounded-full">Coming Soon</span>
-                    </div>
-                    <p className="text-secondary-400 text-xs md:text-sm">Roll-off container delivered to your site</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-secondary-100 flex items-center justify-center bg-white text-secondary-300">
-                    <ArrowRight size={14} />
-                  </div>
-                </button>
-              </div>
-              
-              <div className="pt-4 flex">
-                <button type="button" onClick={handlePrevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2">
-                  <ArrowLeft size={14} /> Back
-                </button>
-              </div>
-            </div>
-          )}
 
           {/* ═══ Step 2: Junk Removal — estimate flow (matches Quote page) ═══ */}
           {currentStep === 2 && formData.serviceType === 'Junk Removal' && (
@@ -758,30 +618,27 @@ export const BookingPage: React.FC = () => {
           {/* ═══ Step 2: Photo Upload & Estimate (Donation Pick Up only) ═══ */}
           {currentStep === 2 && formData.serviceType === 'Donation Pick Up' && (
             <div className="space-y-4">
-              <div className="mb-2 flex items-start gap-3">
-                <ScanSearch size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
-                <div>
-                  <h2 className="text-base font-black text-secondary">Photo Estimate</h2>
-                  <p className="text-secondary-400 text-xs">Snap a photo for instant volume + price detection</p>
-                </div>
-              </div>
+              <FlowStepTitle
+                title="Photo estimate"
+                subtitle="Snap a photo for instant volume and price detection."
+              />
 
               {!image ? (
                 <div className="space-y-3">
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+                    className="w-full bg-white border border-secondary-200 hover:border-secondary-300 hover:shadow-sm transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                      <Camera size={22} className="text-secondary group-hover:text-brand transition-colors" />
+                    <div className="w-12 h-12 bg-secondary-50 rounded-xl flex items-center justify-center shrink-0">
+                      <Camera size={22} className="text-secondary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Take Photo</h3>
-                      <p className="text-secondary-400 text-xs md:text-sm">Use your camera to capture the junk</p>
+                      <h3 className="text-base font-semibold text-secondary mb-0.5">Take photo</h3>
+                      <p className="text-secondary-500 text-sm">Use your camera to capture the items</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-secondary-200 group-hover:border-secondary group-hover:bg-secondary flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-secondary-400 group-hover:text-white transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
                   </button>
@@ -789,17 +646,17 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-100 hover:border-brand hover:shadow-md hover:shadow-brand/5 transition-all p-5 rounded-2xl text-left flex items-center gap-4 group"
+                    className="w-full bg-white border border-secondary-200 hover:border-secondary-300 hover:shadow-sm transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white group-hover:bg-brand/10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                      <PhotoEstimateIcon size={24} className="text-secondary group-hover:text-brand transition-colors" />
+                    <div className="w-12 h-12 bg-secondary-50 rounded-xl flex items-center justify-center shrink-0">
+                      <PhotoEstimateIcon size={24} className="text-secondary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm md:text-base font-black text-secondary mb-0.5 group-hover:text-brand transition-colors">Upload Photo</h3>
-                      <p className="text-secondary-400 text-xs md:text-sm">Choose an existing photo from your device</p>
+                      <h3 className="text-base font-semibold text-secondary mb-0.5">Upload photo</h3>
+                      <p className="text-secondary-500 text-sm">Choose an existing photo from your device</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-secondary-100 group-hover:border-brand group-hover:bg-brand flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-secondary-300 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-secondary-200 group-hover:border-secondary group-hover:bg-secondary flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-secondary-400 group-hover:text-white transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                   </button>
@@ -807,27 +664,21 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleNextStep()}
-                    className="w-full text-secondary-400 hover:text-brand transition-colors text-xs font-bold uppercase tracking-wider underline underline-offset-4 decoration-secondary-200 hover:decoration-brand py-2 inline-flex items-center justify-center gap-2"
+                    className="w-full text-secondary-500 hover:text-secondary transition-colors text-sm font-medium py-2 inline-flex items-center justify-center gap-1.5"
                   >
-                    Skip <ArrowRight size={12} />
+                    Skip <ArrowRight size={13} />
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={handlePrevStep}
-                    className="w-full py-4 text-xs font-bold uppercase tracking-wider border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                  >
-                    <ArrowLeft size={14} /> Back
-                  </button>
+                  <FlowStickyNav showBack onBack={handlePrevStep} showContinue={false} />
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="overflow-hidden">
+                  <div className="relative overflow-hidden rounded-xl border border-secondary-200">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
                       <button
                         onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
-                        className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-bold shadow-lg hover:text-brand transition-colors rounded-lg inline-flex items-center gap-1"
+                        className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-semibold shadow-lg hover:text-secondary-600 transition-colors rounded-lg inline-flex items-center gap-1"
                       >
                         <X size={12} /> Change
                       </button>
@@ -835,18 +686,19 @@ export const BookingPage: React.FC = () => {
                   </div>
 
                   {loadingState === LoadingState.IDLE && (
-                    <button
-                      onClick={handleAnalyze}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                    >
-                      <ScanSearch size={14} className="transition-transform duration-300 group-hover:scale-110" /> Analyze Photo
-                    </button>
+                    <FlowStickyNav
+                      showBack
+                      onBack={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
+                      backLabel="Change"
+                      onContinue={handleAnalyze}
+                      continueLabel="Analyze photo"
+                    />
                   )}
 
                   {loadingState === LoadingState.ANALYZING && (
                     <div className="py-8 text-center">
-                      <Loader2 size={36} className="animate-spin mx-auto mb-3 text-brand" />
-                      <p className="text-secondary-400 text-sm">Analyzing your photo...</p>
+                      <Loader2 size={36} className="animate-spin mx-auto mb-3 text-secondary" />
+                      <p className="text-secondary-500 text-sm">Analyzing your photo...</p>
                     </div>
                   )}
 
@@ -862,71 +714,59 @@ export const BookingPage: React.FC = () => {
                         />
                       </div>
                     ) : (
-                      <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                        {/* Elegant Shrunk Image Service Card */}
-                        <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
+                      <div className="space-y-6">
+                        <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
+
+                        <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
                           <div className="w-20 h-16 shrink-0">
-                            <img 
-                              src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'} 
-                              alt="Service" 
-                              className="w-full h-full object-contain" 
+                            <img
+                              src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'}
+                              alt="Service"
+                              className="w-full h-full object-contain"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Instant Estimate
                               </span>
-                              <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Guaranteed
                               </span>
                             </div>
-                            <h4 className="text-xs font-black text-secondary mt-1">{formData.serviceType}</h4>
-                            <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                            <h3 className="text-sm font-semibold text-secondary">{formData.serviceType}</h3>
+                            <p className="text-secondary-500 text-xs mt-0.5">{estimate.estimatedVolume}</p>
                           </div>
+                          <p className="text-2xl font-semibold text-secondary shrink-0">${estimate.price}</p>
                         </div>
-                        <div className="mb-4">
-                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Items Detected</div>
+
+                        <div>
+                          <p className="text-xs font-medium text-secondary-400 mb-2">Items detected</p>
                           <ul className="space-y-1.5">
                             {estimate.itemsDetected.map((item, index) => (
                               <li key={index} className="flex items-start gap-2">
-                                <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                                <Check size={14} className="text-secondary mt-0.5 shrink-0" strokeWidth={2.5} />
                                 <span className="text-secondary-600 text-sm">{item}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
-                        <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
-                          <div className="space-y-2 mb-3 pb-3 border-b border-secondary-100">
-                            <div className="flex justify-between items-center text-sm">
-                              <span className="text-secondary-600 font-medium">Pick up & Admin fee</span>
-                              <span className="text-secondary-900 font-bold">${estimate.price}</span>
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-end">
-                            <div>
-                              <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                              <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
-                            </div>
-                            <div className="text-2xl font-black text-brand">${estimate.price}</div>
-                          </div>
-                        </div>
-                        {/* Safe Protect Sticker */}
-                        <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
-                          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+
+                        <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                             <ShieldCheck size={18} strokeWidth={2.5} />
                           </div>
-                          <div className="flex-1 min-w-0 text-left">
-                            <div className="flex items-center gap-2">
-                              <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                              <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
+                              <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                             </div>
-                            <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                            <p className="text-xs text-emerald-700 mt-1 leading-normal">
                               All bookings are covered by platform damage protection.{' '}
-                              <button 
+                              <button
                                 type="button"
-                                onClick={() => setShowInsuranceModal(true)} 
-                                className="text-emerald-900 font-bold hover:underline"
+                                onClick={() => setShowInsuranceModal(true)}
+                                className="text-emerald-900 font-medium hover:underline"
                               >
                                 Learn more
                               </button>
@@ -934,26 +774,28 @@ export const BookingPage: React.FC = () => {
                           </div>
                         </div>
 
-                        <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                        <button
-                          onClick={() => handleNextStep()}
-                          className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                        >
-                          Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                        </button>
-                        <p className="text-[10px] text-secondary-300 text-center mt-3">* Final price confirmed on-site</p>
+                        <p className="text-sm text-secondary-500 leading-relaxed">{estimate.summary}</p>
+
+                        <FlowStickyNav
+                          showBack
+                          onBack={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
+                          backLabel="Back"
+                          onContinue={() => handleNextStep()}
+                          continueLabel="Continue to book"
+                        />
+                        <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
                       </div>
                     )
                   )}
 
                   {loadingState === LoadingState.ERROR && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                      <p className="text-red-700 text-sm font-bold mb-3">Failed to analyze photo</p>
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+                      <p className="text-red-700 text-sm font-semibold mb-3">Failed to analyze photo</p>
                       <button
                         onClick={handleAnalyze}
-                        className="px-5 py-2 bg-secondary text-white font-bold uppercase text-xs hover:bg-brand transition-colors rounded-lg"
+                        className="px-5 py-2.5 bg-secondary text-white font-semibold text-sm hover:bg-secondary-600 transition-colors rounded-full"
                       >
-                        Try Again
+                        Try again
                       </button>
                     </div>
                   )}
@@ -965,144 +807,97 @@ export const BookingPage: React.FC = () => {
           {/* ═══ Step 2: Dumpster Rental Flow ═══ */}
           {currentStep === 2 && formData.serviceType === 'Dumpster Rental' && (
             <div className="space-y-4">
-              <div className="mb-2 flex items-start gap-3">
-                <Container size={18} className="text-brand shrink-0 mt-0.5" strokeWidth={2.5} />
-                <div>
-                  <h2 className="text-base font-black text-secondary">Dumpster Rental Options</h2>
-                  <p className="text-secondary-400 text-xs">Select size and rental duration</p>
-                </div>
-              </div>
-
               {/* SIZE SELECTION */}
               {dumpsterStep === 'size' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Select Dumpster Size</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {[
-                        { label: '10-Yard', desc: 'Small projects, garage cleanouts', price: '$350' },
-                        { label: '15-Yard', desc: 'Medium renovations, yard debris', price: '$400' },
-                        { label: '20-Yard', desc: 'Large cleanouts, roofing', price: '$450' },
-                        { label: '30-Yard', desc: 'Construction, major demolition', price: '$550' }
-                      ].map((size) => {
-                        const isSelected = dumpsterSize === `${size.label.toLowerCase()}` as any;
-                        return (
-                          <button
-                            key={size.label}
-                            onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left ${
-                              isSelected 
-                                ? 'border-brand bg-white' 
-                                : 'border-secondary-100 bg-white hover:border-secondary-300'
-                            }`}
-                          >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
-                              isSelected ? 'border-brand bg-brand' : 'border-secondary-300'
-                            }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                            </div>
-                            <Container size={16} className={`shrink-0 mt-0.5 transition-colors ${isSelected ? 'text-brand' : 'text-secondary-400'}`} />
-                            <div>
-                              <span className="block text-sm font-semibold text-secondary transition-colors">
-                                {size.label}
-                              </span>
-                              <span className="block text-[11px] mt-0.5 font-normal text-secondary-400 leading-normal">
-                                {size.desc}
-                              </span>
-                              <span className="block text-xs mt-1.5 font-semibold text-brand">
-                                {size.price} / 7 days
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
+                <>
+                  <FlowStepTitle
+                    title="Dumpster rental options"
+                    subtitle="Roll-off container delivered to your site. Pick a size to start."
+                  />
+                  <div className="space-y-3">
+                    {[
+                      { label: '10-Yard', desc: 'Small projects, garage cleanouts', price: '$350' },
+                      { label: '15-Yard', desc: 'Medium renovations, yard debris', price: '$400' },
+                      { label: '20-Yard', desc: 'Large cleanouts, roofing', price: '$450' },
+                      { label: '30-Yard', desc: 'Construction, major demolition', price: '$550' },
+                    ].map((size) => (
+                      <FlowSelectionCard
+                        key={size.label}
+                        title={size.label}
+                        description={size.desc}
+                        fromPrice={`${size.price} / 7 days`}
+                        selected={dumpsterSize === `${size.label.toLowerCase()}` as any}
+                        onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
+                      />
+                    ))}
                   </div>
 
-                  <div className="pt-4">
-                    <button
-                      onClick={() => setDumpsterStep('duration')}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                    >
-                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </button>
-                  </div>
-                </div>
+                  <FlowStickyNav
+                    showBack
+                    onBack={handlePrevStep}
+                    onContinue={() => setDumpsterStep('duration')}
+                  />
+                </>
               )}
 
               {/* DURATION SELECTION */}
               {dumpsterStep === 'duration' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-black text-secondary-400 uppercase tracking-wider mb-3">Rental Duration</label>
-                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-2xl">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-secondary">
-                          <CalendarCheck size={18} />
-                        </div>
-                        <div>
-                          <div className="text-sm font-black text-secondary">Rental Period</div>
-                          <div className="text-[10px] text-secondary-400 font-bold">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 bg-white border border-secondary-100 rounded-xl p-1.5 w-max">
-                        <button
-                          onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
-                          disabled={dumpsterDuration <= 1}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm disabled:opacity-50 disabled:hover:border-transparent disabled:hover:text-secondary flex items-center justify-center transition-all"
-                        >
-                          <ArrowLeft size={16} />
-                        </button>
-                        <span className="w-8 text-center text-lg font-black text-brand">{dumpsterDuration}</span>
-                        <button
-                          onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                          className="w-10 h-10 rounded-lg bg-white text-secondary hover:text-brand hover:border-brand border border-transparent shadow-sm flex items-center justify-center transition-all"
-                        >
-                          <ArrowRight size={16} />
-                        </button>
-                      </div>
+                <>
+                  <FlowStepTitle
+                    title="Rental duration"
+                    subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
+                  />
+                  <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-secondary">Rental period</p>
+                      <p className="text-xs text-secondary-500 mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                     </div>
-                    <p className="text-[10px] text-secondary-400 mt-2">
-                      Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% discount.
-                    </p>
+                    <div className="flex items-center gap-2 border border-secondary-200 rounded-full px-2 py-1">
+                      <button
+                        onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
+                        disabled={dumpsterDuration <= 1}
+                        className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary disabled:opacity-30 flex items-center justify-center"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="w-8 text-center text-sm font-semibold text-secondary">{dumpsterDuration}</span>
+                      <button
+                        onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
+                        className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary flex items-center justify-center"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="pt-4">
-                    <button
-                      onClick={async () => {
-                        try {
-                          const dumpsterPrice = await calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
-                          setEstimate({
-                            itemsDetected: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
-                            estimatedVolume: dumpsterPrice.estimatedVolume,
-                            price: dumpsterPrice.price,
-                            summary: dumpsterPrice.summary
-                          });
-                          setFormData(prev => ({
-                            ...prev,
-                            estimatedItems: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
-                            estimatedVolume: dumpsterPrice.estimatedVolume,
-                            price: dumpsterPrice.price,
-                            estimateSummary: dumpsterPrice.summary,
-                            details: `${dumpsterSize} dumpster rental for ${dumpsterDuration} days. ${dumpsterPrice.summary}`
-                          }));
-                          setDumpsterStep('result');
-                        } catch (err) {
-                          console.error('Failed to get dumpster price:', err);
-                        }
-                      }}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                    >
-                      Get Estimate <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </button>
-                    <button
-                      onClick={() => setDumpsterStep('size')}
-                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                    >
-                      <ArrowLeft size={14} /> Back
-                    </button>
-                  </div>
-                </div>
+                  <FlowStickyNav
+                    showBack
+                    onBack={() => setDumpsterStep('size')}
+                    continueLabel="Get estimate"
+                    onContinue={async () => {
+                      try {
+                        const dumpsterPrice = await calculateDumpsterRentalPrice({ size: dumpsterSize, duration: dumpsterDuration });
+                        setEstimate({
+                          itemsDetected: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                          estimatedVolume: dumpsterPrice.estimatedVolume,
+                          price: dumpsterPrice.price,
+                          summary: dumpsterPrice.summary
+                        });
+                        setFormData(prev => ({
+                          ...prev,
+                          estimatedItems: [`${dumpsterSize} dumpster rental - ${dumpsterDuration} days`],
+                          estimatedVolume: dumpsterPrice.estimatedVolume,
+                          price: dumpsterPrice.price,
+                          estimateSummary: dumpsterPrice.summary,
+                          details: `${dumpsterSize} dumpster rental for ${dumpsterDuration} days. ${dumpsterPrice.summary}`
+                        }));
+                        setDumpsterStep('result');
+                      } catch (err) {
+                        console.error('Failed to get dumpster price:', err);
+                      }
+                    }}
+                  />
+                </>
               )}
 
               {/* ESTIMATE RESULT */}
@@ -1118,85 +913,71 @@ export const BookingPage: React.FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="border border-brand/20 bg-brand/5 p-5 rounded-xl">
-                    {/* Elegant Shrunk Image Service Card */}
-                    <div className="bg-white border border-secondary-100 rounded-xl p-3 flex items-center gap-3.5 mb-4 shadow-sm">
-                      <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 border border-secondary-100 relative">
-                        <img 
-                          src="/dumpster-rental.svg" 
-                          alt="Dumpster Rental" 
-                          className="w-full h-full object-cover" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                  <div className="space-y-6">
+                    <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
+
+                    <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
+                      <div className="w-20 h-16 shrink-0">
+                        <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[8px] font-black uppercase tracking-wider rounded border border-brand/20">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Instant Estimate
                           </span>
-                          <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black uppercase tracking-wider rounded border border-emerald-100">
+                          <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Guaranteed
                           </span>
                         </div>
-                        <h4 className="text-xs font-black text-secondary mt-1">Dumpster Rental</h4>
-                        <p className="text-secondary-400 text-[10px] mt-0.5 leading-normal">{estimate.estimatedVolume}</p>
+                        <h3 className="text-sm font-semibold text-secondary">Dumpster Rental</h3>
+                        <p className="text-secondary-500 text-xs mt-0.5">{estimate.estimatedVolume}</p>
                       </div>
+                      <p className="text-2xl font-semibold text-secondary shrink-0">${estimate.price}</p>
                     </div>
-                    <div className="mb-4">
-                      <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2">Rental Details</div>
+
+                    <div>
+                      <p className="text-xs font-medium text-secondary-400 mb-2">Rental details</p>
                       <ul className="space-y-1.5">
                         {estimate.itemsDetected.map((item, index) => (
                           <li key={index} className="flex items-start gap-2">
-                            <Check size={14} className="text-brand mt-0.5 shrink-0" strokeWidth={3} />
+                            <Check size={14} className="text-secondary mt-0.5 shrink-0" strokeWidth={2.5} />
                             <span className="text-secondary-600 text-sm">{item}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                    <div className="bg-white rounded-xl p-4 border border-brand/10 mb-4">
-                      <div className="flex justify-between items-end">
-                        <div>
-                          <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</div>
-                          <div className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</div>
-                        </div>
-                        <div className="text-2xl font-black text-brand">${estimate.price}</div>
-                      </div>
-                    </div>
-                    {/* Safe Protect Sticker */}
-                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
+
+                    <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                         <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
-                      <div className="flex-1 min-w-0 text-left">
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                          <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
+                          <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                         </div>
-                        <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                        <p className="text-xs text-emerald-700 mt-1 leading-normal">
                           All bookings are covered by platform damage protection.{' '}
-                          <button 
+                          <button
                             type="button"
-                            onClick={() => setShowInsuranceModal(true)} 
-                            className="text-emerald-900 font-bold hover:underline"
+                            onClick={() => setShowInsuranceModal(true)}
+                            className="text-emerald-900 font-medium hover:underline"
                           >
                             Learn more
                           </button>
                         </p>
                       </div>
                     </div>
-                    <p className="text-secondary-600 text-xs leading-relaxed mt-4 mb-4">{estimate.summary}</p>
-                    <button
-                      onClick={() => handleNextStep()}
-                      className="group w-full py-3.5 text-xs font-bold uppercase tracking-wider bg-secondary hover:bg-brand hover:shadow-lg text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2"
-                    >
-                      Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </button>
-                    <button
-                      onClick={() => setDumpsterStep('duration')}
-                      className="w-full py-2 mt-4 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                    >
-                      <ArrowLeft size={14} /> Back
-                    </button>
+
+                    <p className="text-sm text-secondary-500 leading-relaxed">{estimate.summary}</p>
+
+                    <FlowStickyNav
+                      showBack
+                      onBack={() => setDumpsterStep('duration')}
+                      onContinue={() => handleNextStep()}
+                      continueLabel="Continue to book"
+                    />
+                    <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
                   </div>
                 )
               )}
@@ -1205,394 +986,53 @@ export const BookingPage: React.FC = () => {
 
           {/* ═══ Step 2: Moving Labor Flow ═══ */}
           {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
-            <div className="space-y-8 pb-24">
-
-              {/* STEP 1: SERVICE SELECTION */}
-              {movingStep === 'service' && (
-                <div className="space-y-8 animate-in fade-in duration-300">
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Service Selection</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                      {[
-                        { label: 'Loading Only', desc: 'Pack a rental truck, container, or storage unit' },
-                        { label: 'Unloading Only', desc: 'Unpack into your new home, office, or storage' },
-                        { label: 'Both', desc: 'Help with both loading and unloading' }
-                      ].map((service) => {
-                        const isSelected = movingServiceType === service.label;
-                        return (
-                          <button
-                            key={service.label}
-                            type="button"
-                            onClick={() => setMovingServiceType(service.label as typeof movingServiceType)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected
-                                ? 'border-brand bg-white ring-1 ring-brand/10'
-                                : 'border-secondary-100 bg-white hover:border-brand/40'
-                            }`}
-                          >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                              isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
-                            }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
-                                {service.label}
-                              </span>
-                              <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
-                                {service.desc}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs pt-2">
-                    <button
-                      type="button"
-                      onClick={handlePrevStep}
-                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
-                    >
-                      <ArrowLeft size={12} /> Back
-                    </button>
-                  </div>
-
-                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-                    <button
-                      type="button"
-                      onClick={() => setMovingStep('type')}
-                      className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      <span className="text-sm font-black uppercase tracking-wider">Continue</span>
-                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 2: TYPE OF MOVE */}
-              {movingStep === 'type' && (
-                <div className="space-y-8 animate-in fade-in duration-300">
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Type of Move</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {[
-                        { label: 'Storage Unit', desc: 'PODS, U-Pack, or local storage facility' },
-                        { label: 'Box Truck', desc: 'Rental trucks like U-Haul, Penske, or Ryder' },
-                        { label: 'Inside Home', desc: 'Rearranging furniture staging or room-to-room loading' },
-                        { label: 'Other', desc: 'Custom labor requests and heavy lifting' }
-                      ].map((type) => {
-                        const isSelected = movingType === type.label;
-                        return (
-                          <button
-                            key={type.label}
-                            type="button"
-                            onClick={() => setMovingType(type.label as typeof movingType)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected
-                                ? 'border-brand bg-white ring-1 ring-brand/10'
-                                : 'border-secondary-100 bg-white hover:border-brand/40'
-                            }`}
-                          >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                              isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
-                            }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
-                                {type.label}
-                              </span>
-                              <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
-                                {type.desc}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setMovingStep('service')}
-                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1"
-                    >
-                      <ArrowLeft size={12} /> Back
-                    </button>
-                  </div>
-
-                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-                    <button
-                      type="button"
-                      onClick={() => setMovingStep('crew')}
-                      className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      <span className="text-sm font-black uppercase tracking-wider">Continue</span>
-                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 3: CREW & TIME */}
-              {movingStep === 'crew' && (
-                <div className="space-y-8 animate-in fade-in duration-300">
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Number of Helpers</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {[
-                        { helpers: 2, desc: 'Apartment moves, loading containers, and light lifting' },
-                        { helpers: 3, desc: 'House moves, large trucks, and heavy items' }
-                      ].map((option) => {
-                        const isSelected = movingHelpers === option.helpers;
-                        return (
-                          <button
-                            key={option.helpers}
-                            type="button"
-                            onClick={() => setMovingHelpers(option.helpers as 2 | 3)}
-                            className={`group p-4 border rounded-xl flex items-start gap-3 transition-all duration-200 w-full text-left bg-white ${
-                              isSelected
-                                ? 'border-brand bg-white ring-1 ring-brand/10'
-                                : 'border-secondary-100 bg-white hover:border-brand/40'
-                            }`}
-                          >
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                              isSelected ? 'border-brand bg-brand border-brand' : 'border-secondary-200 group-hover:border-secondary-400'
-                            }`}>
-                              {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <span className={`block text-sm font-bold transition-colors ${isSelected ? 'text-brand' : 'text-secondary'}`}>
-                                {option.helpers} Helpers
-                              </span>
-                              <span className="block text-[11px] text-secondary-400 mt-1 leading-normal">
-                                {option.desc}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-secondary-400 uppercase tracking-wider mb-2.5">Estimated Hours (2 hr min)</label>
-                    <div className="flex items-center justify-between p-4 bg-white border border-secondary-100 rounded-xl gap-4 transition-all duration-200 hover:border-secondary-300">
-                      <div>
-                        <div className="text-sm font-bold text-secondary">Time Needed</div>
-                        <div className="text-xs text-secondary-400 mt-0.5">{movingHours} hours selected</div>
-                      </div>
-                      <div className="flex items-center gap-1 border border-secondary-100 rounded-lg p-1 bg-white">
-                        <button
-                          type="button"
-                          onClick={() => setMovingHours(h => Math.max(2, h - 1))}
-                          disabled={movingHours <= 2}
-                          className="w-8 h-8 rounded bg-transparent hover:bg-secondary-50 text-secondary disabled:opacity-30 flex items-center justify-center transition-colors"
-                        >
-                          <Minus size={14} strokeWidth={2.5} />
-                        </button>
-                        <span className="w-10 text-center text-sm font-bold text-secondary">{movingHours}</span>
-                        <button
-                          type="button"
-                          onClick={() => setMovingHours(h => Math.min(12, h + 1))}
-                          className="w-8 h-8 rounded bg-transparent hover:bg-secondary-50 text-secondary flex items-center justify-center transition-colors"
-                        >
-                          <Plus size={14} strokeWidth={2.5} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {movingPricingError && (
-                    <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl text-center">
-                      {movingPricingError}
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between text-xs pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setMovingStep('type')}
-                      disabled={movingPricingLoading}
-                      className="font-bold text-secondary-500 hover:text-brand transition-colors inline-flex items-center gap-1 disabled:opacity-50"
-                    >
-                      <ArrowLeft size={12} /> Back
-                    </button>
-                  </div>
-
-                  <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        setMovingPricingLoading(true);
-                        setMovingPricingError(null);
-                        try {
-                          const result = await calculateMovingLaborPrice(movingHelpers, movingHours);
-                          setEstimate({
-                            itemsDetected: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
-                            estimatedVolume: result.estimatedVolume,
-                            price: result.price,
-                            summary: result.summary
-                          });
-                          setFormData(prev => ({
-                            ...prev,
-                            estimatedItems: [`${movingServiceType} (${movingType}) - ${movingHelpers} Helpers, ${movingHours} hrs`],
-                            estimatedVolume: result.estimatedVolume,
-                            price: result.price,
-                            estimateSummary: result.summary,
-                            details: `${movingServiceType} service for ${movingType} with ${movingHelpers} helpers for ${movingHours} hours.`
-                          }));
-                          setMovingStep('result');
-                        } catch (err) {
-                          console.error('Moving labor pricing error:', err);
-                          setMovingPricingError(err?.message || 'Failed to calculate price. Please try again.');
-                        } finally {
-                          setMovingPricingLoading(false);
-                        }
-                      }}
-                      disabled={movingPricingLoading}
-                      className="group w-full flex items-center justify-center gap-2 px-5 py-4 bg-brand hover:bg-brand-600 text-white rounded-xl shadow-2xl shadow-brand/40 hover:shadow-brand/60 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
-                    >
-                      <ScanSearch size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                      <span className="text-sm font-black uppercase tracking-wider">Get Estimate</span>
-                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {movingPricingLoading && movingStep === 'crew' && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-                  <div className="text-center">
-                    <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
-                    <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: ESTIMATE RESULT */}
-              {movingStep === 'result' && estimate && (
-                !contactSubmitted ? (
-                  <div className="max-w-md mx-auto">
-                    <ContactIntakeForm
-                      serviceType={formData.serviceType}
-                      isLoading={contactLoading}
-                      onReveal={async (name, phone, consentAt) => {
-                        await handleContactReveal(name, phone, consentAt, estimate);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="bg-white border border-secondary-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="w-24 h-20 md:w-32 md:h-24 shrink-0">
-                        <img
-                          src="/process-step-2.svg"
-                          alt="Moving Labor"
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                          <span className="px-2 py-0.5 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-wider rounded-full border border-brand/20">
-                            Instant Estimate
-                          </span>
-                          <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-wider rounded-full border border-emerald-100">
-                            Guaranteed
-                          </span>
-                        </div>
-                        <h3 className="text-sm md:text-base font-black text-secondary">Moving Labor</h3>
-                        <p className="text-secondary-400 text-xs mt-1 leading-normal">{estimate.estimatedVolume}</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-3xl p-5 md:p-6 border border-secondary-100">
-                      <div className="flex justify-between items-end">
-                        <div>
-                          <p className="text-[10px] md:text-xs font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
-                          <p className="text-xs text-secondary-500 mt-1">{estimate.estimatedVolume}</p>
-                        </div>
-                        <p className="text-3xl md:text-4xl font-black text-brand">${estimate.price}</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-emerald-50 border border-emerald-100/80 rounded-2xl p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/10">
-                        <ShieldCheck size={18} strokeWidth={2.5} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs font-black text-emerald-950">Safe Protect™ Included</p>
-                          <span className="bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Covered</span>
-                        </div>
-                        <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
-                          All bookings are covered by platform damage protection.{' '}
-                          <button
-                            type="button"
-                            onClick={() => setShowInsuranceModal(true)}
-                            className="text-emerald-900 font-bold hover:underline"
-                          >
-                            Learn more
-                          </button>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-wider mb-3">1 item</p>
-                      <div className="space-y-1">
-                        {estimate.itemsDetected.map((item, index) => (
-                          <div key={index} className="flex items-center justify-between text-sm">
-                            <span className="text-secondary-600">{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-secondary-500 leading-relaxed">{estimate.summary}</p>
-
-                    <div className="space-y-3 pt-2">
-                      <div className="sticky bottom-4 z-30 mt-4 mx-auto max-w-2xl px-2">
-                        <button
-                          type="button"
-                          onClick={() => handleNextStep()}
-                          className="group w-full flex items-center justify-between gap-3 px-5 py-3.5 bg-secondary hover:bg-brand text-white rounded-full shadow-2xl shadow-secondary/30 hover:shadow-brand/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                        >
-                          <span className="text-sm font-black uppercase tracking-wider">
-                            Continue
-                          </span>
-                          <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                        </button>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setMovingStep('crew')}
-                        className="w-full py-2 text-xs font-bold uppercase tracking-wider text-secondary-400 hover:text-brand transition-colors inline-flex items-center justify-center gap-1"
-                      >
-                        <ArrowLeft size={14} /> Back
-                      </button>
-                      <p className="text-[10px] text-secondary-300 text-center">* Final price confirmed on-site</p>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
+            <MovingLaborEstimateFlow
+              onBack={handlePrevStep}
+              onContactReveal={async (name, phone, consentAt, est) => {
+                await handleContactReveal(name, phone, consentAt, est);
+              }}
+              onComplete={(result) => {
+                setEstimate(result.estimate);
+                setContactName(result.contactName);
+                setContactPhone(result.contactPhone);
+                setSmsMarketingConsentAt(result.smsMarketingConsentAt);
+                setContactSubmitted(true);
+                setFormData((prev) => ({
+                  ...prev,
+                  name: result.contactName,
+                  phone: result.contactPhone,
+                  estimatedItems: result.estimate.itemsDetected,
+                  estimatedVolume: result.estimate.estimatedVolume,
+                  price: result.estimate.price,
+                  estimateSummary: result.estimate.summary,
+                  details: result.estimate.summary,
+                }));
+                setCurrentStep(3);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              continueLabel="Continue to book"
+              initialContact={
+                contactName && contactPhone
+                  ? { name: contactName, phone: contactPhone, consentAt: smsMarketingConsentAt }
+                  : undefined
+              }
+            />
           )}
 
           {/* ═══ Step 3+: Contact + Address + Review (shared form) ═══ */}
           {(currentStep >= 3) && (
             <>
+              <FlowStepTitle
+                title={`Book your ${formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}`}
+                subtitle="Contact, schedule, address, review, and deposit."
+              />
               {estimate && (
-                <div className="bg-secondary-50/50 rounded-3xl p-5 md:p-6 border border-secondary-100 mb-8 flex items-end justify-between shadow-sm">
+                <div className="bg-white border border-secondary-200 rounded-xl p-4 mb-6 flex items-end justify-between">
                   <div>
-                    <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-wider">Estimated Total</p>
-                    <p className="text-xs text-secondary-500 mt-0.5">{estimate.estimatedVolume}</p>
+                    <p className="text-xs font-medium text-secondary-500">Estimated total</p>
+                    <p className="text-sm text-secondary-600 mt-0.5">{estimate.estimatedVolume}</p>
                   </div>
-                  <p className="text-2xl font-black text-brand">${estimate.price}</p>
+                  <p className="text-2xl font-semibold text-secondary">${estimate.price}</p>
                 </div>
               )}
               <BookingDetailsForm
@@ -1621,9 +1061,6 @@ export const BookingPage: React.FC = () => {
           )}
 
         </div>
-      </div>
-      <div>
-        <TrustBadges />
       </div>
 
       {/* Insurance Modal */}

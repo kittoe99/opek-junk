@@ -10,7 +10,6 @@ import { TrustBadges } from './TrustBadges';
 import { CharityBanner } from './CharityBanner';
 import { WhatWeHaul } from './WhatWeHaul';
 import { ProcessEditorial } from './ProcessEditorial';
-import { QuickActionBar } from './QuickActionBar';
 import {
   JunkIcon,
   DumpsterIcon,
@@ -229,7 +228,6 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         schemaMarkup={faqSchema}
       />
 
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </>
   );
 };

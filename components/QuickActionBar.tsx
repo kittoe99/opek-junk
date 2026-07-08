@@ -10,7 +10,6 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
 
   useEffect(() => {
     const handleScroll = () => {
-      // Apply visibility logic to mobile and tablet screens (< 1024px)
       if (window.innerWidth >= 1024) {
         setIsVisible(true);
         return;
@@ -20,7 +19,6 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
       if (!footer) return;
 
       const footerRect = footer.getBoundingClientRect();
-      // Hide the bar if the footer starts entering the viewport
       if (footerRect.top < window.innerHeight) {
         setIsVisible(false);
       } else {
@@ -30,8 +28,6 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
-    
-    // Initial check
     handleScroll();
 
     return () => {
@@ -41,36 +37,35 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
   }, []);
 
   return (
-    <div 
+    <div
       className={`quick-action-bar fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-40 transition-all duration-300 ease-in-out ${
-        isVisible 
-          ? 'opacity-100 translate-y-0 pointer-events-auto' 
+        isVisible
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-10 pointer-events-none'
       }`}
     >
-      <div className="bg-secondary-700 text-white rounded-full shadow-2xl px-4 py-3 md:px-6 md:py-4 flex items-center justify-between md:justify-center gap-3 md:gap-4 border border-white/10 max-w-2xl mx-auto">
-        {/* Phone Number */}
-        <a 
+      <div className="max-w-md md:max-w-lg mx-auto bg-white/95 backdrop-blur-xl border border-secondary-100/80 rounded-full shadow-[0_8px_32px_rgba(53,80,112,0.14)] px-2 py-2 flex items-center gap-1">
+        <a
           href="tel:8313187139"
-          className="flex items-center gap-2 px-3 py-2 md:px-4 hover:bg-white/10 rounded-full transition-colors flex-1 md:flex-initial justify-center"
+          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-3 py-2.5 md:px-4 text-secondary hover:text-brand rounded-full hover:bg-secondary-50 transition-colors"
         >
-          <Phone size={18} className="flex-shrink-0 text-brand" />
-          <span className="font-bold text-xs md:text-sm whitespace-nowrap">(831) 318-7139</span>
+          <span className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
+            <Phone size={15} className="text-secondary" />
+          </span>
+          <span className="font-semibold text-xs md:text-sm whitespace-nowrap">(831) 318-7139</span>
         </a>
 
-        {/* Divider */}
-        <div className="w-px h-6 bg-white/20 hidden md:block" />
+        <div className="w-px h-7 bg-secondary-100 shrink-0" />
 
-        {/* Book Online Button */}
         <button
+          type="button"
           onClick={onBookOnline}
-          className="flex items-center gap-2 px-4 py-2 md:px-6 bg-brand text-white rounded-full font-bold text-xs md:text-sm hover:bg-brand-600 transition-colors flex-1 md:flex-initial justify-center shadow-lg"
+          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-4 py-2.5 md:px-5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors"
         >
-          <Calendar size={18} className="flex-shrink-0 text-white" />
-          <span className="whitespace-nowrap">Book Online</span>
+          <Calendar size={15} className="shrink-0" />
+          <span className="whitespace-nowrap text-xs md:text-sm">Book Online</span>
         </button>
       </div>
     </div>
   );
 };
-

@@ -4,11 +4,10 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TrustBadges } from './components/TrustBadges';
 import { Services } from './components/Services';
+import { Testimonials } from './components/Testimonials';
 import { ServiceArea } from './components/ServiceArea';
 import { Footer } from './components/Footer';
 import { QuickActionBar } from './components/QuickActionBar';
-import { WhatWeHaul } from './components/WhatWeHaul';
-import { FullServiceSection } from './components/FullServiceSection';
 import { CharityBanner } from './components/CharityBanner';
 import { ProcessEditorial } from './components/ProcessEditorial';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
@@ -32,12 +31,44 @@ const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').th
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
 const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
 
+const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking'];
+const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking'];
+
 function RouteFallback() {
   return (
     <div className="flex min-h-[40vh] items-center justify-center">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand border-t-transparent" />
     </div>
   );
+}
+
+function GlobalQuickActionBar() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  if (QUICK_ACTION_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
+
+  const onBookOnline = () => {
+    if (pathname === '/services/mattress-disposal') {
+      navigate('/booking/mattress');
+      return;
+    }
+    navigate('/booking');
+  };
+
+  return <QuickActionBar onBookOnline={onBookOnline} />;
+}
+
+function GlobalFooter() {
+  const { pathname } = useLocation();
+
+  if (FOOTER_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
+
+  return <Footer />;
 }
 
 function ScrollToTop() {
@@ -76,14 +107,16 @@ function HomePage() {
       />
       <TrustBadges />
       <Services />
+      <ProcessEditorial
+        variant="numbered"
+        title="How it works"
+        cta={{ label: 'Book now', onClick: () => navigate('/booking') }}
+      />
+      <Testimonials />
       <CharityBanner />
-      <ProcessEditorial />
-      <WhatWeHaul />
-      <FullServiceSection />
       <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
-      
-      <ZipCheckModal 
+
+      <ZipCheckModal
         isOpen={isZipModalOpen}
         onClose={() => setIsZipModalOpen(false)}
         onGetQuote={() => navigate('/quote')}
@@ -251,8 +284,9 @@ function App() {
           </Routes>
         </Suspense>
         </main>
-        
-        <Footer />
+
+        <GlobalQuickActionBar />
+        <GlobalFooter />
       </div>
     </Router>
   );

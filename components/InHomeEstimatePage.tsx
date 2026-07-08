@@ -5,7 +5,6 @@ import { supabase } from '../lib/supabase';
 
 import { PageHero } from './shared/PageHero';
 import { TrustBadges } from './TrustBadges';
-import { ServiceArea } from './ServiceArea';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import {
   ServiceAddressField,
@@ -339,9 +338,6 @@ export const InHomeEstimatePage: React.FC = () => {
         <TrustBadges />
       </div>
 
-      <div className="mt-16">
-        <ServiceArea titleStart="Providers come to you." titleAccent="Free estimate." />
-      </div>
     </div>
   );
 };

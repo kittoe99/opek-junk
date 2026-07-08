@@ -42,4 +42,9 @@ scratch_mcp_keys/
 *.docx
 MCP_Server_API_Keys*
 
+# Deploy scratch artifacts
+.deploy-*.json
+.deploy-*.txt
+.mcp-deploy-*.json
+
 .vercel

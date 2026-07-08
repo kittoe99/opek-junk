@@ -1,5 +1,6 @@
 import React from 'react';
 import { Check } from 'lucide-react';
+import { UTILITY_FORM_CARD, UTILITY_PAGE_CONTENT, UTILITY_PAGE_SHELL } from '../../lib/flowPageLayout';
 
 export interface SummaryRow {
   label: string;
@@ -22,34 +23,36 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
   fullScreen = true,
 }) => {
   const content = (
-    <div className="w-full max-w-lg bg-white border border-neutral-200 rounded-lg p-6 md:p-8">
+    <div className={`${UTILITY_FORM_CARD} max-w-lg w-full`}>
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center shrink-0">
-          <Check size={20} className="text-neutral-600" strokeWidth={2} />
+        <div className="w-11 h-11 bg-secondary text-white rounded-2xl flex items-center justify-center shrink-0">
+          <Check size={20} strokeWidth={2.5} />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-neutral-900">{title}</h2>
-          <p className="text-sm text-neutral-500 mt-1">{description}</p>
+          <h2 className="font-serif text-2xl font-semibold text-secondary">{title}</h2>
+          <p className="text-sm text-secondary-500 mt-1 leading-relaxed">{description}</p>
         </div>
       </div>
 
       {orderNumber && (
-        <div className="mb-5 pb-5 border-b border-neutral-100">
-          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Order number</p>
-          <p className="text-base font-mono font-medium text-neutral-900">{orderNumber}</p>
+        <div className="mb-5 pb-5 border-b border-secondary-100/80">
+          <p className="text-xs font-semibold text-secondary-400 uppercase tracking-wider mb-1">Order number</p>
+          <p className="text-base font-mono font-semibold text-secondary">{orderNumber}</p>
         </div>
       )}
 
       {summary.length > 0 && (
         <dl className="space-y-3">
-          {summary.map(({ label, value }) => (
+          {summary.map(({ label, value }) =>
             value ? (
               <div key={label} className="flex flex-col sm:flex-row sm:gap-4">
-                <dt className="text-xs font-medium text-neutral-400 uppercase tracking-wide sm:w-32 shrink-0">{label}</dt>
-                <dd className="text-sm text-neutral-800 break-words">{value}</dd>
+                <dt className="text-xs font-semibold text-secondary-400 uppercase tracking-wider sm:w-32 shrink-0">
+                  {label}
+                </dt>
+                <dd className="text-sm text-secondary break-words">{value}</dd>
               </div>
-            ) : null
-          ))}
+            ) : null,
+          )}
         </dl>
       )}
     </div>
@@ -57,8 +60,8 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
 
   if (fullScreen) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-start justify-center px-4 py-16 md:py-24">
-        {content}
+      <div className={`${UTILITY_PAGE_SHELL} flex items-start justify-center`}>
+        <div className={UTILITY_PAGE_CONTENT}>{content}</div>
       </div>
     );
   }

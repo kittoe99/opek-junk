@@ -1,4 +1,5 @@
 import React from 'react';
+import { Star } from 'lucide-react';
 
 interface HeroProps {
   onGetQuote: () => void;
@@ -6,6 +7,18 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
+  const ratingBadge = (light?: boolean) => (
+    <div className="inline-flex items-center gap-2 mb-4 animate-fade-in">
+      <div className="flex gap-0.5">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} size={14} className="text-[#00B67A] fill-[#00B67A]" />
+        ))}
+      </div>
+      <span className={`text-sm font-semibold ${light ? 'text-white' : 'text-secondary'}`}>4.8</span>
+      <span className={`text-sm ${light ? 'text-white/80' : 'text-secondary-400'}`}>average rating</span>
+    </div>
+  );
+
   return (
     <section className="hero-section relative bg-white overflow-hidden">
 
@@ -25,7 +38,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
 
           <div className="relative z-10">
             <div className="mb-3 animate-fade-in">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/90">Nationwide Service</span>
+              {ratingBadge(true)}
             </div>
             <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
               Junk gone.
@@ -39,7 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         </div>
 
         {/* Buttons sit flush below the image background */}
-        <div className="flex flex-row animate-slide-up" style={{animationDelay: '0.3s'}}>
+        <div className="hero-mobile-cta flex flex-row animate-slide-up" style={{animationDelay: '0.3s'}}>
           <button
             onClick={onGetQuote}
             className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
@@ -55,48 +68,45 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         </div>
       </div>
 
-      {/* Desktop layout */}
-      <div className="hidden lg:flex min-h-screen flex-col items-center justify-center pt-40 pb-32">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-12 gap-16 items-center">
+      {/* Desktop layout — full-bleed image with floating card */}
+      <div className="hidden lg:block relative min-h-[min(620px,calc(100vh-var(--site-header-height)))]">
+        <img
+          src="/opek2.webp"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
 
-            {/* Left Column */}
-            <div className="col-span-7">
-              <div className="mb-4 animate-fade-in">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">Nationwide Service</span>
-              </div>
-              <h1 className="text-6xl lg:text-7xl font-black text-secondary tracking-tight mb-6 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
-                Junk gone.
-                <br/>
-                Today.
+        <div className="relative z-10 flex items-center min-h-[min(620px,calc(100vh-var(--site-header-height)))] px-6 xl:px-12 py-16">
+          <div className="max-w-7xl mx-auto w-full">
+            <div
+              className="hero-desktop-card bg-white rounded-[2rem] shadow-[0_8px_40px_rgba(53,80,112,0.12)] p-10 xl:p-14 max-w-[34rem] animate-slide-up"
+              style={{ animationDelay: '0.1s' }}
+            >
+              {ratingBadge()}
+              <h1 className="font-serif text-[2.75rem] xl:text-5xl font-semibold text-secondary tracking-tight mb-5 leading-[1.1]">
+                Here for the
+                <br />
+                heavy lifting.
               </h1>
-              <p className="text-lg text-secondary mb-8 max-w-lg leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
-                Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
+              <p className="text-base xl:text-lg text-secondary-400 mb-8 leading-relaxed">
+                Nationwide platform for on-demand junk removal, hauling, and cleanouts. Get instant quotes and same-day service from trusted local providers.
               </p>
-              <div className="flex flex-row gap-0 animate-slide-up" style={{animationDelay: '0.3s'}}>
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={onGetQuote}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
+                  className="px-7 py-3.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 transition-colors duration-200 rounded-xl shadow-sm"
                 >
-                  View Pricing
+                  Get a quote
                 </button>
-                <button
-                  onClick={onBookOnline}
-                  className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-                >
-                  Book Online
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column - Image */}
-            <div className="col-span-5 animate-fade-in" style={{animationDelay: '0.4s'}}>
-              <div className="relative aspect-square flex items-center justify-center group">
-                <img
-                  src="/opek2.webp"
-                  alt="Opek professional junk removal service in action"
-                  className="w-full h-full object-cover rounded-2xl shadow-lg border border-secondary-100 group-hover:scale-105 transition-transform duration-700"
-                />
+                {onBookOnline && (
+                  <button
+                    onClick={onBookOnline}
+                    className="px-7 py-3.5 text-sm font-semibold text-secondary border border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50 transition-colors duration-200 rounded-xl"
+                  >
+                    Book online
+                  </button>
+                )}
               </div>
             </div>
           </div>

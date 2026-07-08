@@ -1,7 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, MapPin, Layers, MessageSquare, CalendarCheck, Locate, Phone, ArrowRight, Home, Building2, KeyRound, CheckSquare, Heart, HeartHandshake, BicepsFlexed, Trash2, Container } from 'lucide-react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import {
+  ChevronDown,
+  MapPin,
+  MessageSquare,
+  CalendarCheck,
+  Locate,
+  Phone,
+  ArrowRight,
+  CheckSquare,
+  Heart,
+  X,
+  Menu,
+} from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { JunkIcon, DumpsterIcon, PropertyCleanoutIcon, MovingLaborIcon } from './icons/ServiceIcons';
+
+const US_STATES_MAP: Record<string, string> = {
+  alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA',
+  colorado: 'CO', connecticut: 'CT', delaware: 'DE', florida: 'FL', georgia: 'GA',
+  hawaii: 'HI', idaho: 'ID', illinois: 'IL', indiana: 'IN', iowa: 'IA',
+  kansas: 'KS', kentucky: 'KY', louisiana: 'LA', maine: 'ME', maryland: 'MD',
+  massachusetts: 'MA', michigan: 'MI', minnesota: 'MN', mississippi: 'MS', missouri: 'MO',
+  montana: 'MT', nebraska: 'NE', nevada: 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
+  'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', ohio: 'OH',
+  oklahoma: 'OK', oregon: 'OR', pennsylvania: 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
+  'south dakota': 'SD', tennessee: 'TN', texas: 'TX', utah: 'UT', vermont: 'VT',
+  virginia: 'VA', washington: 'WA', 'west virginia': 'WV', wisconsin: 'WI', wyoming: 'WY',
+  'district of columbia': 'DC',
+};
+
+const serviceItems = [
+  { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: JunkIcon },
+  { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
+  { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
+  { name: 'Moving Labor', desc: 'Hourly labor for loading and lifting', path: '/services/moving-labor', icon: MovingLaborIcon },
+];
+
+const navLinks = [
+  { name: 'Services', path: '/#services', hasMega: true },
+  { name: 'Contact', path: '/contact' },
+  { name: 'Book online', path: '/booking' },
+  { name: 'Track order', path: '/track-order' },
+];
+
+function getUSStateAbbreviation(stateName: string): string {
+  return US_STATES_MAP[stateName.toLowerCase().trim()] || stateName;
+}
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -10,50 +54,28 @@ export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [userCity, setUserCity] = useState<string>('');
+  const [userCity, setUserCity] = useState('');
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-
-  const US_STATES_MAP: Record<string, string> = {
-    'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA',
-    'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE', 'florida': 'FL', 'georgia': 'GA',
-    'hawaii': 'HI', 'idaho': 'ID', 'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA',
-    'kansas': 'KS', 'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD',
-    'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS', 'missouri': 'MO',
-    'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
-    'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH',
-    'oklahoma': 'OK', 'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
-    'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT', 'vermont': 'VT',
-    'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV', 'wisconsin': 'WI', 'wyoming': 'WY',
-    'district of columbia': 'DC'
-  };
-
-  const getUSStateAbbreviation = (stateName: string): string => {
-    const clean = stateName.toLowerCase().trim();
-    return US_STATES_MAP[clean] || stateName;
-  };
 
   const fetchUserLocation = async () => {
     setIsDetectingLocation(true);
     try {
-      // 1. Try Browser Geolocation API first
-      if (!navigator.geolocation) {
-        throw new Error('Geolocation not supported by browser');
-      }
+      if (!navigator.geolocation) throw new Error('Geolocation not supported');
 
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
           enableHighAccuracy: false,
           timeout: 6000,
-          maximumAge: 600000 // Cache for 10 minutes
+          maximumAge: 600000,
         });
       });
 
       const { latitude, longitude } = position.coords;
-      const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-      if (!geoRes.ok) {
-        throw new Error('Reverse geocoding failed');
-      }
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+      );
+      if (!geoRes.ok) throw new Error('Reverse geocoding failed');
 
       const geoData = await geoRes.json();
       const address = geoData.address;
@@ -64,21 +86,15 @@ export const Navbar: React.FC = () => {
 
         if (city) {
           const displayState = countryCode === 'US' ? getUSStateAbbreviation(state) : state;
-          const loc = countryCode === 'US'
-            ? `${city}, ${displayState}`
-            : `${city}, ${countryCode}`;
-
+          const loc = countryCode === 'US' ? `${city}, ${displayState}` : `${city}, ${countryCode}`;
           setUserCity(loc);
           localStorage.setItem('user_city', loc);
           setIsDetectingLocation(false);
           return;
         }
       }
-      throw new Error('Could not parse city from geocoding data');
-    } catch (err: any) {
-      console.warn('Geolocation failed or denied, checking cache...', err.message);
-
-      // 2. Check localStorage
+      throw new Error('Could not parse city');
+    } catch {
       const storedCity = localStorage.getItem('user_city');
       if (storedCity) {
         setUserCity(storedCity);
@@ -86,33 +102,34 @@ export const Navbar: React.FC = () => {
         return;
       }
 
-      // 3. Fall back to IP Address Detection
       try {
         const res = await fetch('https://ipwho.is/');
         const data = await res.json();
         if (data.success && data.city) {
-          const loc = data.country_code === 'US'
-            ? `${data.city}, ${data.region_code}`
-            : `${data.city}, ${data.country_code}`;
+          const loc =
+            data.country_code === 'US'
+              ? `${data.city}, ${data.region_code}`
+              : `${data.city}, ${data.country_code}`;
           setUserCity(loc);
           localStorage.setItem('user_city', loc);
           return;
         }
-        throw new Error('ipwho.is failed');
       } catch {
         try {
           const res2 = await fetch('https://ipapi.co/json/');
           const data2 = await res2.json();
           if (data2.city) {
-            const loc = data2.country_code === 'US'
-              ? `${data2.city}, ${data2.region_code}`
-              : `${data2.city}, ${data2.country_code}`;
+            const loc =
+              data2.country_code === 'US'
+                ? `${data2.city}, ${data2.region_code}`
+                : `${data2.city}, ${data2.country_code}`;
             setUserCity(loc);
             localStorage.setItem('user_city', loc);
             return;
           }
-        } catch {}
-        setUserCity('United States');
+        } catch {
+          setUserCity('United States');
+        }
       } finally {
         setIsDetectingLocation(false);
       }
@@ -123,16 +140,12 @@ export const Navbar: React.FC = () => {
     fetchUserLocation();
   }, []);
 
-  // Keep main content offset in sync with the full fixed header (nav + announcement bar).
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
 
     const syncHeaderHeight = () => {
-      document.documentElement.style.setProperty(
-        '--site-header-height',
-        `${header.offsetHeight}px`
-      );
+      document.documentElement.style.setProperty('--site-header-height', `${header.offsetHeight}px`);
     };
 
     syncHeaderHeight();
@@ -146,381 +159,127 @@ export const Navbar: React.FC = () => {
     };
   }, [isAdsLandingPage]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
   }, [isMenuOpen]);
-
-  const navLinks = [
-    { name: 'Services', path: '/#services', hasMega: true, icon: <Layers size={16} /> },
-    { name: 'Contact', path: '/contact', icon: <MessageSquare size={16} /> },
-    { name: 'Book Online', path: '/booking', icon: <CalendarCheck size={16} /> },
-    { name: 'Track Order', path: '/track-order', icon: <Locate size={16} /> },
-  ];
-
-  const serviceItems = [
-    { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: JunkIcon },
-    { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
-    { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
-    { name: 'Moving Labor', desc: 'Hourly labor for loading and heavy lifting', path: '/services/moving-labor', icon: MovingLaborIcon },
-  ];
 
   const handleLinkClick = (path: string) => {
     setIsMenuOpen(false);
+    setShowServicesMega(false);
     navigate(path);
   };
 
-  const handleLogoClick = () => {
-    setIsMenuOpen(false);
-    navigate('/');
-  };
+  const locationLabel = isDetectingLocation ? 'Detecting location...' : userCity || 'Set your location';
+
+  const LocationButton = ({ className = '' }: { className?: string }) => (
+    <button
+      type="button"
+      onClick={fetchUserLocation}
+      disabled={isDetectingLocation}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-secondary-100 bg-white px-3 py-1.5 text-xs font-medium text-secondary hover:border-secondary-300 hover:text-brand transition-colors disabled:opacity-50 ${className}`}
+    >
+      <MapPin size={13} className="text-brand shrink-0" />
+      <span className="truncate max-w-[140px] sm:max-w-none">{locationLabel}</span>
+    </button>
+  );
 
   return (
     <>
       <header
         ref={headerRef}
-        className="shadow-md"
-        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60 }}
+        className="fixed top-0 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md border-b border-secondary-100/80"
       >
-        {/* Top Bar - Desktop Only */}
-        <div className="hidden md:block bg-gray-50 py-1.5 px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-center">
-            <button
-              onClick={fetchUserLocation}
-              disabled={isDetectingLocation}
-              className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50"
-            >
-              <MapPin size={12} className="text-brand group-hover:text-brand-600 transition-colors" />
-              <span className="text-[11px] font-bold uppercase tracking-wider underline decoration-dotted underline-offset-2">
-                {isDetectingLocation ? 'Detecting location...' : userCity || 'Detecting location...'}
-              </span>
-            </button>
+        {!isAdsLandingPage && (
+          <div className="hidden md:block border-b border-secondary-100/60 bg-secondary-50/40">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center">
+              <LocationButton />
+            </div>
           </div>
-        </div>
+        )}
 
-      {/* Main Navbar */}
-      <nav className="py-4 bg-white px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
-          {/* Left Section - Logo */}
-          <div 
-            className="flex items-center gap-3 cursor-pointer group z-[70]" 
-            onClick={handleLogoClick}
-          >
-            <img
-              src="/logo1.png"
-              alt="Opek Junk Removal"
-              className="h-12 w-auto object-contain md:h-14"
-            />
-          </div>
+        <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-3.5 flex items-center justify-between gap-4">
+          <button type="button" onClick={() => handleLinkClick('/')} className="shrink-0 z-[70]">
+            <img src="/logo1.png" alt="Opek Junk Removal" className="h-9 md:h-10 w-auto object-contain" />
+          </button>
 
           {isAdsLandingPage ? (
-            <>
-              {/* Mobile Location - Centered (matches homepage) */}
-              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
-                <button
-                  onClick={fetchUserLocation}
-                  disabled={isDetectingLocation}
-                  className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
-                >
-                  <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
-                  <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
-                    {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
-                  </span>
-                </button>
+            <div className="flex items-center gap-2 ml-auto">
+              <div className="md:hidden">
+                <LocationButton />
               </div>
-              <div className="flex items-center gap-3">
-                {/* Desktop click-to-call CTA */}
-                <a 
-                  href="tel:8313187139" 
-                  className="hidden md:flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-widest rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95"
-                >
-                  <Phone size={14} className="fill-white" />
-                  <span>Call (831) 318-7139</span>
-                </a>
-                {/* Mobile click-to-call CTA */}
-                <a 
-                  href="tel:8313187139" 
-                  className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full shadow-md hover:bg-brand-600 transition-colors"
-                  aria-label="Call Opek Junk Removal"
-                >
-                  <Phone size={18} className="fill-white" />
-                </a>
-              </div>
-            </>
+              <a
+                href="tel:8313187139"
+                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+              >
+                <Phone size={15} />
+                (831) 318-7139
+              </a>
+              <a
+                href="tel:8313187139"
+                className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full"
+                aria-label="Call Opek Junk Removal"
+              >
+                <Phone size={17} />
+              </a>
+            </div>
           ) : (
             <>
-              {/* Mobile Location - Centered (Mobile Only) */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
-                <button
-                  onClick={fetchUserLocation}
-                  disabled={isDetectingLocation}
-                  className="flex items-center gap-1.5 text-brand hover:text-brand-600 transition-colors cursor-pointer group disabled:opacity-50 whitespace-nowrap"
-                >
-                  <MapPin size={14} className="text-brand group-hover:text-brand-600 transition-colors" />
-                  <span className="text-xs font-bold uppercase tracking-wider underline decoration-dotted underline-offset-4">
-                    {isDetectingLocation ? 'Detecting...' : userCity || 'Detecting...'}
-                  </span>
-                </button>
+                <LocationButton />
               </div>
 
-              {/* Right Section - Desktop Navigation */}
-              <div className="hidden md:flex items-center space-x-8">
-                
+              <div className="hidden md:flex items-center gap-1 lg:gap-2 ml-auto">
                 {navLinks.map((link) => (
                   <div key={link.name} className="relative">
                     {link.hasMega ? (
-                      <div 
+                      <div
                         onMouseEnter={() => setShowServicesMega(true)}
                         onMouseLeave={() => setShowServicesMega(false)}
                       >
-                        <button 
+                        <button
+                          type="button"
                           onClick={() => handleLinkClick(link.path)}
-                          className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600 flex items-center gap-1"
+                          className="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-secondary hover:text-brand rounded-lg transition-colors"
                         >
                           {link.name}
-                          <ChevronDown size={14} className={`transition-transform duration-300 ${showServicesMega ? 'rotate-180' : ''}`} />
-                          <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-secondary-400"></span>
+                          <ChevronDown
+                            size={15}
+                            className={`transition-transform duration-200 ${showServicesMega ? 'rotate-180' : ''}`}
+                          />
                         </button>
-                        
-                        {/* Mega Menu */}
-                        <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[340px] transition-all duration-300 ${showServicesMega ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-3 pointer-events-none'}`}>
-                          <div className="bg-white shadow-2xl border border-secondary-100 rounded-2xl overflow-hidden">
-                            <div className="p-4 space-y-1">
-                              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3 px-2">Services</p>
-                              {serviceItems.map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                  <button
-                                    key={item.name}
-                                    onClick={() => { setShowServicesMega(false); handleLinkClick(item.path); }}
-                                    className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
-                                  >
-                                    <div className="w-8 h-8 rounded-lg bg-secondary-100 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                      <Icon size={15} className="text-secondary-500 group-hover:text-brand transition-colors" />
-                                    </div>
-                                    <div>
-                                      <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors">{item.name}</div>
-                                      <div className="text-xs text-secondary-400">{item.desc}</div>
-                                    </div>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <button 
-                        onClick={() => handleLinkClick(link.path)}
-                        className="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 bg-transparent border-none cursor-pointer relative group text-secondary hover:text-secondary-600"
-                      >
-                        {link.name}
-                        <span className="absolute -bottom-2 left-0 w-0 h-1 transition-all duration-300 group-hover:w-full bg-brand"></span>
-                      </button>
-                    )}
-                  </div>
-                ))}
-                
-                <button 
-                  onClick={() => navigate('/quote')}
-                  className="group px-8 py-3.5 font-black text-xs uppercase tracking-widest transition-all duration-300 transform active:scale-95 bg-brand text-white hover:bg-brand-600 hover:shadow-xl rounded-lg shadow-md inline-flex items-center gap-2"
-                >
-                  Get A Quote
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                </button>
-              </div>
 
-              {/* Mobile Menu Toggle */}
-              <button 
-                className="md:hidden relative z-[50] p-2 focus:outline-none group"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                aria-expanded={isMenuOpen}
-              >
-                <svg
-                  width="28"
-                  height="20"
-                  viewBox="0 0 28 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  {/* Top bar — rotates to form top of X */}
-                  <rect
-                    x="0" y="1" width="28" height="2.5" rx="1.25"
-                    fill="#355070"
-                    style={{
-                      transformOrigin: '14px 2.25px',
-                      transform: isMenuOpen ? 'translateY(7.75px) rotate(45deg)' : 'none',
-                      transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
-                    }}
-                  />
-                  {/* Middle bar — brand pink, fades out on open */}
-                  <rect
-                    x="4" y="9" width="20" height="2.5" rx="1.25"
-                    fill="#FF006E"
-                    style={{
-                      transformOrigin: '14px 10.25px',
-                      opacity: isMenuOpen ? 0 : 1,
-                      transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
-                      transition: 'opacity 0.2s ease, transform 0.25s cubic-bezier(0.4,0,0.2,1)',
-                    }}
-                  />
-                  {/* Bottom bar — rotates to form bottom of X */}
-                  <rect
-                    x="0" y="17" width="28" height="2.5" rx="1.25"
-                    fill="#355070"
-                    style={{
-                      transformOrigin: '14px 18.25px',
-                      transform: isMenuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none',
-                      transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
-                    }}
-                  />
-                </svg>
-              </button>
-            </>
-          )}
-        </div>
-      </nav>
-
-      {/* Announcement Bar - In-Home Estimates */}
-      {!isAdsLandingPage && (
-        <div className="bg-secondary px-3 py-2">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
-            <span className="min-w-0 text-white text-[11px] md:text-xs font-black uppercase tracking-wide sm:tracking-wider leading-tight">
-              <span className="hidden sm:inline">Free In-Home Estimates — Providers visit your property</span>
-              <span className="sm:hidden">Free In-Home Estimates</span>
-            </span>
-            <button
-              onClick={() => navigate('/in-home-estimate')}
-              className="group flex-shrink-0 rounded bg-brand px-3 py-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wide text-white hover:bg-brand-600 hover:shadow-lg transition-all duration-300 whitespace-nowrap inline-flex items-center gap-1"
-            >
-              Schedule
-              <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-            </button>
-          </div>
-        </div>
-      )}
-      </header>
-
-      {/* Mobile Sidebar Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-[55] transition-opacity duration-300 md:hidden ${
-          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        }`}
-        onClick={() => setIsMenuOpen(false)}
-      />
-
-      {/* Mobile Sidebar Menu */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-[320px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-100">
-            <img
-              src="/logo1.png"
-              alt="Opek Junk Removal"
-              className="h-10 w-auto object-contain"
-            />
-            <button 
-              onClick={() => setIsMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center text-secondary hover:text-brand transition-colors"
-              aria-label="Close menu"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="2" y1="2" x2="18" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square"/>
-                <line x1="18" y1="2" x2="2" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square"/>
-              </svg>
-            </button>
-          </div>
-
-          {/* Quick Actions - Prominent CTAs */}
-          <div className="bg-secondary-50 border-b border-secondary-100">
-            <div className="flex flex-row gap-0">
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  navigate('/quote');
-                }}
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-              >
-                Get Quote
-              </button>
-              <a
-                href="tel:8313187139"
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl text-center"
-              >
-                Call Now
-              </a>
-            </div>
-          </div>
-
-          {/* Location Badge */}
-          {userCity && (
-            <div className="px-5 py-3 border-b border-secondary-100">
-              <button
-                onClick={fetchUserLocation}
-                disabled={isDetectingLocation}
-                className="flex items-center gap-2 text-secondary hover:text-brand transition-colors disabled:opacity-50 w-full"
-              >
-                <MapPin size={16} className="text-brand" />
-                <span className="text-sm font-bold">
-                  {isDetectingLocation ? 'Detecting location...' : userCity}
-                </span>
-              </button>
-            </div>
-          )}
-
-          {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto px-5 py-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-3">Menu</p>
-            <div className="flex flex-col gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-2xl overflow-hidden shadow-sm">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path.split('#')[0]));
-                return (
-                  <div key={link.name} className="bg-white group">
-                    {link.hasMega ? (
-                      <div className="flex flex-col">
-                        <button
-                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                          className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold text-secondary"
+                        <div
+                          className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[360px] transition-all duration-200 ${
+                            showServicesMega
+                              ? 'opacity-100 visible translate-y-0'
+                              : 'opacity-0 invisible -translate-y-2 pointer-events-none'
+                          }`}
                         >
-                          <span className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-secondary-50 flex items-center justify-center shrink-0 text-brand animate-pulse">
-                              {link.icon}
-                            </div>
-                            <span>{link.name}</span>
-                          </span>
-                          <ChevronDown size={18} className={`text-secondary-400 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
-                        </button>
-                        
-                        {/* Services Submenu */}
-                        <div className={`overflow-hidden transition-all duration-300 ease-out ${mobileServicesOpen ? 'max-h-[400px] border-t border-secondary-100/60 bg-secondary-50/10' : 'max-h-0'}`}>
-                          <div className="divide-y divide-secondary-100/60 flex flex-col">
+                          <div className="bg-white shadow-[0_8px_40px_rgba(53,80,112,0.12)] border border-secondary-100/80 rounded-2xl overflow-hidden p-2">
+                            <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-secondary-400">
+                              Our services
+                            </p>
                             {serviceItems.map((item) => {
                               const Icon = item.icon;
                               return (
                                 <button
                                   key={item.name}
-                                  onClick={() => { setMobileServicesOpen(false); setIsMenuOpen(false); navigate(item.path); }}
-                                  className="w-full text-left px-6 py-3.5 hover:bg-secondary-50/40 transition-colors group flex items-center gap-3"
+                                  type="button"
+                                  onClick={() => {
+                                    setShowServicesMega(false);
+                                    handleLinkClick(item.path);
+                                  }}
+                                  className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
                                 >
-                                  <div className="w-8 h-8 rounded-lg bg-white border border-secondary-100/50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                    <Icon size={14} className="text-secondary-500 group-hover:text-brand transition-colors" />
+                                  <div className="w-10 h-10 rounded-xl bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
+                                    <Icon className="w-5 h-5 text-secondary group-hover:text-brand transition-colors" />
                                   </div>
-                                  <div className="flex-1">
-                                    <div className="font-black text-sm text-secondary group-hover:text-brand transition-colors leading-tight">{item.name}</div>
-                                    <div className="text-[10px] text-secondary-400 leading-tight mt-0.5">{item.desc}</div>
+                                  <div>
+                                    <div className="font-semibold text-sm text-secondary group-hover:text-brand transition-colors">
+                                      {item.name}
+                                    </div>
+                                    <div className="text-xs text-secondary-400">{item.desc}</div>
                                   </div>
-                                  <ArrowRight size={12} className="text-secondary-300 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0.5 shrink-0" />
                                 </button>
                               );
                             })}
@@ -529,74 +288,197 @@ export const Navbar: React.FC = () => {
                       </div>
                     ) : (
                       <button
+                        type="button"
                         onClick={() => handleLinkClick(link.path)}
-                        className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold ${
-                          isActive ? 'text-brand' : 'text-secondary hover:text-brand'
-                        }`}
+                        className="px-3 py-2 text-sm font-medium text-secondary hover:text-brand rounded-lg transition-colors"
                       >
-                        <div className={`w-8 h-8 rounded-lg bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors ${
-                          isActive ? 'bg-brand/10 text-brand' : 'text-brand'
-                        }`}>
-                          {link.icon}
-                        </div>
-                        <span className="flex-1 text-left">{link.name}</span>
-                        <ArrowRight size={14} className="text-secondary-300 group-hover:text-brand transition-transform group-hover:translate-x-0.5" />
+                        {link.name}
                       </button>
                     )}
                   </div>
-                );
-              })}
+                ))}
 
-              {/* In-Home Estimate Link */}
-              <div className="bg-white group border-t border-secondary-100/60">
                 <button
-                  onClick={() => handleLinkClick('/in-home-estimate')}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-secondary-50/20 transition-all duration-300 text-sm font-bold text-secondary hover:text-brand"
+                  type="button"
+                  onClick={() => navigate('/quote')}
+                  className="ml-2 px-5 py-2.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors inline-flex items-center gap-1.5"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 text-brand transition-colors">
-                    <CheckSquare size={16} />
-                  </div>
-                  <span className="flex-1 text-left">In-Home Estimate</span>
-                  <ArrowRight size={14} className="text-secondary-300 group-hover:text-brand transition-transform group-hover:translate-x-0.5" />
+                  Get a quote
+                  <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
 
-            {/* Promo block - Charity Banner Optimized Version */}
-            <div className="mt-4 pt-4 border-t border-secondary-100">
-              <div className="bg-secondary rounded-2xl overflow-hidden border border-white/5 shadow-xl bg-gradient-to-b from-secondary-900 to-secondary flex flex-col">
-                <div className="h-24 w-full overflow-hidden shrink-0 relative bg-secondary-950">
-                  <img
-                    src="/charity-childrens-heart-clean.png"
-                    alt="Children's health charity impact"
-                    className="w-full h-full object-cover object-center opacity-85"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent pointer-events-none" />
-                </div>
-                <div className="p-4 flex flex-col flex-1">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <Heart size={12} className="text-brand fill-brand animate-pulse" />
-                    <span className="text-[10px] font-black text-brand uppercase tracking-[0.2em]">Community Impact</span>
-                  </div>
-                  <h3 className="text-xs font-black uppercase tracking-wider text-white leading-snug mb-1">
-                    Five percent. <span className="text-brand">For children's health.</span>
-                  </h3>
-                  <p className="text-[10px] text-white/60 mb-3.5 leading-relaxed">
-                    We donate 5% of all sales directly to children's hospitals.
-                  </p>
-                  <button
-                    onClick={() => handleLinkClick('/quote')}
-                    className="group w-full py-3 bg-brand text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-brand/90 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand/10 hover:shadow-brand/20 hover:scale-[1.01]"
-                  >
-                    <span>Book With Purpose</span>
-                    <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </nav>
+              <button
+                type="button"
+                className="md:hidden relative z-[70] w-10 h-10 flex items-center justify-center rounded-xl border border-secondary-100 text-secondary hover:border-secondary-300 transition-colors"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </>
+          )}
+        </nav>
 
+        {!isAdsLandingPage && (
+          <div className="border-t border-secondary-100/60 bg-[#f3f3f3]">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center gap-3 text-center">
+              <span className="text-secondary text-xs md:text-sm font-medium">
+                <span className="hidden sm:inline">Free in-home estimates — providers visit your property</span>
+                <span className="sm:hidden">Free in-home estimates</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => navigate('/in-home-estimate')}
+                className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors"
+              >
+                Schedule
+                <ArrowRight size={12} />
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <div
+        className={`fixed inset-0 bg-secondary/40 backdrop-blur-sm z-[55] transition-opacity duration-300 md:hidden ${
+          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        }`}
+        onClick={() => setIsMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      <div
+        className={`fixed top-0 right-0 h-full w-full max-w-[360px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden flex flex-col ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-100">
+          <img src="/logo1.png" alt="Opek Junk Removal" className="h-9 w-auto object-contain" />
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen(false)}
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-secondary-100 text-secondary hover:border-secondary-300 transition-colors"
+            aria-label="Close menu"
+          >
+            <X size={18} />
+          </button>
         </div>
+
+        <div className="px-5 py-4 border-b border-secondary-100 space-y-3">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => handleLinkClick('/quote')}
+              className="flex-1 py-3 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-xl transition-colors"
+            >
+              Get a quote
+            </button>
+            <button
+              type="button"
+              onClick={() => handleLinkClick('/booking')}
+              className="flex-1 py-3 text-sm font-semibold border border-secondary-200 text-secondary hover:bg-secondary-50 rounded-xl transition-colors"
+            >
+              Book online
+            </button>
+          </div>
+          <LocationButton className="w-full justify-center" />
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-5 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-secondary-400 mb-3">Menu</p>
+          <div className="space-y-1">
+            {navLinks.map((link) =>
+              link.hasMega ? (
+                <div key={link.name} className="rounded-xl border border-secondary-100 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+                  >
+                    {link.name}
+                    <ChevronDown
+                      size={16}
+                      className={`text-secondary-400 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      mobileServicesOpen ? 'max-h-96 border-t border-secondary-100' : 'max-h-0'
+                    }`}
+                  >
+                    {serviceItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.name}
+                          type="button"
+                          onClick={() => {
+                            setMobileServicesOpen(false);
+                            handleLinkClick(item.path);
+                          }}
+                          className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-secondary-50 transition-colors border-t border-secondary-100 first:border-t-0"
+                        >
+                          <div className="w-9 h-9 rounded-lg bg-secondary-50 flex items-center justify-center shrink-0">
+                            <Icon className="w-4 h-4 text-secondary" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-sm font-medium text-secondary">{item.name}</div>
+                            <div className="text-xs text-secondary-400 truncate">{item.desc}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <button
+                  key={link.name}
+                  type="button"
+                  onClick={() => handleLinkClick(link.path)}
+                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+                >
+                  {link.name}
+                  <ArrowRight size={14} className="text-secondary-300" />
+                </button>
+              ),
+            )}
+
+            <button
+              type="button"
+              onClick={() => handleLinkClick('/in-home-estimate')}
+              className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+            >
+              In-home estimate
+              <ArrowRight size={14} className="text-secondary-300" />
+            </button>
+
+            <a
+              href="tel:8313187139"
+              className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+            >
+              Call (831) 318-7139
+              <Phone size={14} className="text-brand" />
+            </a>
+          </div>
+
+          <div className="mt-5 p-4 rounded-2xl bg-[#f3f3f3] border border-secondary-100/80">
+            <div className="flex items-center gap-1.5 mb-2">
+              <Heart size={12} className="text-brand fill-brand" />
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-brand">Community impact</span>
+            </div>
+            <p className="text-sm font-semibold text-secondary mb-1">5% of sales to children&apos;s hospitals</p>
+            <p className="text-xs text-secondary-500 mb-3">Book with purpose and support families in need.</p>
+            <button
+              type="button"
+              onClick={() => handleLinkClick('/quote')}
+              className="w-full py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+            >
+              Book with purpose
+            </button>
+          </div>
+        </nav>
       </div>
     </>
   );

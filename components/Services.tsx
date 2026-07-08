@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import {
   JunkIcon,
   DumpsterIcon,
@@ -11,77 +12,106 @@ const serviceItems = [
   {
     title: 'Junk Removal',
     icon: JunkIcon,
-    description: 'Furniture, appliances, office decommissioning, and household clutter. Full-service residential and commercial junk hauling.',
+    description: 'Furniture, appliances, and household clutter hauled away. Full-service residential and commercial.',
     path: '/services/junk-removal',
   },
   {
     title: 'Dumpster Rental',
     icon: DumpsterIcon,
-    description: 'Roll-off container rentals delivered to your site. Choose from multiple sizes with upfront, flat-rate pricing.',
+    description: 'Roll-off containers delivered to your site. Multiple sizes with upfront, flat-rate pricing.',
     path: '/services/dumpster-rental',
   },
   {
     title: 'Property Cleanouts',
     icon: PropertyCleanoutIcon,
-    description: 'Estate clearing, move-outs, hoarding situations, and full property cleanouts. Professional, thorough, and discreet.',
+    description: 'Estate clearing, move-outs, and full property cleanouts. Professional and discreet.',
     path: '/services/property-cleanout',
   },
   {
     title: 'Moving Labor',
     icon: MovingLaborIcon,
-    description: 'Hire strong, experienced crews by the hour to load, unload, or move items within your home. (Labor only)',
+    description: 'Hire experienced crews by the hour to load, unload, or move items within your home.',
     path: '/services/moving-labor',
   },
+];
+
+const quickServices = [
+  { label: 'Single item pickup', path: '/quote' },
+  { label: 'Garage cleanout', path: '/services/junk-removal' },
+  { label: 'Estate clearing', path: '/services/property-cleanout' },
+  { label: 'Mattress disposal', path: '/services/mattress-disposal' },
+  { label: 'Office decommission', path: '/services/junk-removal' },
+  { label: 'Donation run', path: '/quote' },
+  { label: 'Storage unit cleanout', path: '/services/property-cleanout' },
+  { label: 'Yard debris', path: '/services/junk-removal' },
 ];
 
 export const Services: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="services" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
+    <section
+      id="services"
+      className="py-16 md:py-24 lg:py-28 overflow-hidden border-b border-secondary-100/40"
+      style={{
+        background: 'linear-gradient(135deg, #eef8f3 0%, #f7f9fc 45%, #f3f0f8 100%)',
+      }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <div className="lg:col-span-4 space-y-6">
-            <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-              <span className="text-[10px] font-black text-brand uppercase tracking-[0.3em]">Services</span>
-            </div>
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-secondary tracking-tight mb-3">
+            Book same-day help
+          </h2>
+          <p className="text-secondary-400 text-sm md:text-base max-w-xl mx-auto">
+            Customizable hauling and cleanouts at up-front prices.
+          </p>
+        </div>
 
-            <h2 className="text-4xl md:text-5xl font-black text-secondary leading-[1.05] tracking-tight">
-              Fast pickup.
-              <br />
-              <span className="text-brand">Fair pricing.</span>
-            </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
+          {serviceItems.map((item) => (
+            <button
+              key={item.title}
+              type="button"
+              onClick={() => navigate(item.path)}
+              className="group text-left bg-white rounded-2xl p-6 md:p-7 shadow-sm border border-white/80 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-secondary-50 text-secondary-500 group-hover:bg-brand/10 group-hover:text-brand flex items-center justify-center mb-5 transition-colors duration-300">
+                <item.icon className="w-6 h-6" />
+              </div>
+              <h3 className="font-semibold text-secondary text-base md:text-lg mb-2 group-hover:text-brand transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-secondary-400 text-sm leading-relaxed">{item.description}</p>
+            </button>
+          ))}
+        </div>
 
-            <div className="w-12 h-0.5 bg-secondary-100" />
-
-            <p className="text-secondary-500 text-sm md:text-base leading-relaxed max-w-sm font-medium">
-              Trusted professionals in your area. We offer transparent flat-rates, flexible schedules, and vetted local providers for home and office.
-            </p>
-          </div>
-
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-secondary-100/60 border border-secondary-100/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-              {serviceItems.map((item) => (
-                <div
-                  key={item.title}
-                  onClick={() => navigate(item.path)}
-                  className="group cursor-pointer bg-white p-6 md:p-8 hover:bg-secondary-50/20 transition-all duration-300 flex items-start gap-5"
-                >
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-secondary-50 group-hover:bg-brand/10 text-secondary-400 group-hover:text-secondary-900 flex items-center justify-center shrink-0 transition-colors duration-300">
-                    <item.icon className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500 group-hover:scale-105" />
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="font-black text-secondary text-base md:text-lg transition-colors group-hover:text-brand duration-300">
-                      {item.title}
-                    </h3>
-                    <p className="text-secondary-500 text-[13px] md:text-sm leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div className="mb-8">
+          <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
+            {quickServices.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => navigate(item.path)}
+                className="shrink-0 px-4 py-2.5 rounded-full bg-white/90 border border-secondary-100 text-secondary text-sm font-medium hover:border-secondary-300 hover:bg-white transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
         </div>
+
+        <p className="text-center text-sm text-secondary-400">
+          Need mattress disposal or in-home estimates?{' '}
+          <button
+            type="button"
+            onClick={() => navigate('/services/mattress-disposal')}
+            className="text-secondary font-semibold hover:text-brand inline-flex items-center gap-1 transition-colors"
+          >
+            See specialty services
+            <ArrowRight size={14} />
+          </button>
+        </p>
       </div>
     </section>
   );

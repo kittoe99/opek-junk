@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { ArrowRight, Loader2, Check } from 'lucide-react';
+import { Loader2, Check } from 'lucide-react';
 import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../../lib/customerConsent';
-
+import { FLOW_INPUT, FLOW_LABEL } from '../../lib/flowPageLayout';
+import { FlowStepTitle } from './flow/FlowStepTitle';
+import { FlowStickyNav } from './flow/FlowStickyNav';
 
 interface ContactIntakeFormProps {
   serviceType: string;
@@ -18,7 +20,6 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
   const [phone, setPhone] = useState('');
   const [smsMarketingConsent, setSmsMarketingConsent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 disabled:opacity-55";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,66 +64,52 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
   };
 
   return (
-    <div className="w-full transition-all duration-300">
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <>
+      <form id="contact-intake-form" onSubmit={handleSubmit} className="space-y-5">
         <input type="hidden" name="serviceType" value={serviceType} />
 
-        <div className="text-center space-y-2 mb-6">
-          <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
-            Estimate Ready
-          </span>
-          <h3 className="text-2xl font-black text-secondary tracking-tight">
-            Reveal Your <span className="text-brand">Price.</span>
-          </h3>
-          <p className="text-secondary-400 text-xs leading-relaxed max-w-sm mx-auto font-medium">
-            You're one step away! Enter your details to instantly reveal your custom pricing estimate.
-          </p>
-        </div>
+        <FlowStepTitle
+          title="Reveal your price"
+          subtitle="Enter your details to see your custom estimate."
+        />
 
         <div className="space-y-4">
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-              Full Name *
-            </label>
-            <div className="relative group">
-              <input
-                type="text"
-                name="name"
-                autoComplete="name"
-                required
-                disabled={isLoading}
-                value={name}
-                onChange={(e) => { setName(e.target.value); setError(null); }}
-                placeholder="John Smith"
-                className={inputCls}
-              />
-            </div>
+            <label className={FLOW_LABEL}>Full name *</label>
+            <input
+              type="text"
+              name="name"
+              autoComplete="name"
+              required
+              disabled={isLoading}
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setError(null);
+              }}
+              placeholder="John Smith"
+              className={FLOW_INPUT}
+            />
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-              Phone Number *
-            </label>
-            <div className="relative group">
-              <input
-                type="tel"
-                name="phone"
-                autoComplete="tel"
-                required
-                disabled={isLoading}
-                value={formatDisplayPhone(phone)}
-                onChange={handlePhoneChange}
-                placeholder="(555) 000-0000"
-                className={inputCls}
-              />
-            </div>
-            <p className="mt-1.5 text-[10px] text-secondary-400 leading-relaxed px-0.5">
-              {SMS_TRANSACTIONAL_NOTICE}
-            </p>
+            <label className={FLOW_LABEL}>Phone number *</label>
+            <input
+              type="tel"
+              name="phone"
+              autoComplete="tel"
+              required
+              disabled={isLoading}
+              value={formatDisplayPhone(phone)}
+              onChange={handlePhoneChange}
+              placeholder="(555) 000-0000"
+              className={FLOW_INPUT}
+            />
+            <p className="mt-1.5 text-xs text-secondary-400 leading-relaxed">{SMS_TRANSACTIONAL_NOTICE}</p>
           </div>
         </div>
 
-        <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+        <label className="flex items-start gap-3 p-4 bg-white border border-secondary-200 rounded-xl cursor-pointer hover:border-secondary-300 transition-colors">
           <div className="relative shrink-0 mt-0.5">
             <input
               type="checkbox"
@@ -133,41 +120,26 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
             />
             <div
               className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                smsMarketingConsent ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+                smsMarketingConsent ? 'bg-secondary border-secondary' : 'bg-white border-secondary-300'
               }`}
             >
               {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
             </div>
           </div>
-          <span className="text-[10px] text-secondary-500 leading-relaxed">
-            {SMS_MARKETING_CONSENT_TEXT}
-          </span>
+          <span className="text-xs text-secondary-500 leading-relaxed">{SMS_MARKETING_CONSENT_TEXT}</span>
         </label>
 
-        {error && (
-          <p className="text-red-500 text-xs font-bold flex items-center gap-1.5 px-1 animate-pulse-slow">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500" />
-            {error}
-          </p>
-        )}
-
-        <div className="pt-2">
-          <button
-            type="submit"
-            disabled={isLoading || !name.trim() || phone.length < 10}
-            className="group w-full py-4 bg-secondary text-white font-bold uppercase text-xs tracking-widest rounded-xl hover:bg-brand active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(53,80,112,0.1)] hover:shadow-[0_6px_20px_rgba(255,0,110,0.2)] disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : (
-              <>
-                <span>Reveal Estimate</span>
-                <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-              </>
-            )}
-          </button>
-        </div>
+        {error && <p className="text-red-600 text-sm">{error}</p>}
       </form>
-    </div>
+
+      <FlowStickyNav
+        showBack={false}
+        continueType="submit"
+        continueForm="contact-intake-form"
+        continueLabel="Reveal estimate"
+        continueDisabled={isLoading || !name.trim() || phone.length < 10}
+        continueLoading={isLoading}
+      />
+    </>
   );
 };

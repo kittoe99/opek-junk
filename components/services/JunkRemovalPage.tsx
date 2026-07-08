@@ -6,10 +6,9 @@ import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
+import { Testimonials } from '../Testimonials';
 import { ProcessEditorial } from '../ProcessEditorial';
 import { ServiceArea } from '../ServiceArea';
-import { QuickActionBar } from '../QuickActionBar';
-
 const FurnitureIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4M4 14c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4M4 14H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -140,7 +139,6 @@ export const JunkRemovalPage: React.FC = () => {
       />
 
       <TrustBadges />
-      <CharityBanner />
 
       <BentoFeatureSection
         eyebrow="Solutions"
@@ -161,9 +159,14 @@ export const JunkRemovalPage: React.FC = () => {
         onTabChange={(id) => setActiveTab(id as 'residential' | 'commercial')}
       />
 
-      <ProcessEditorial />
+      <ProcessEditorial
+        variant="numbered"
+        eyebrow="How it works"
+        title="Three simple steps to a clutter-free space"
+        subtitle="Get an upfront price, matched providers, and same-day pickup in most areas."
+      />
 
-      <EditorialContentSection title="Comprehensive Junk Removal for Homes & Businesses">
+      <EditorialContentSection title="Comprehensive junk removal for homes & businesses">
         <p>
           When it comes to clearing out unwanted items, finding a reliable, full-service junk removal provider is crucial. Whether you are decluttering your home, preparing for a move, decommissioning an office, or clearing out warehouse inventory, partner service providers ensure a stress-free experience. Vetted providers handle all heavy lifting, sorting, and eco-friendly disposal.
         </p>
@@ -179,8 +182,9 @@ export const JunkRemovalPage: React.FC = () => {
         </p>
       </EditorialContentSection>
 
+      <Testimonials />
+      <CharityBanner />
       <ServiceArea titleStart="Schedule a pickup." titleAccent="Providers handle the rest." />
-      <QuickActionBar onBookOnline={() => navigate('/booking')} />
     </div>
   );
 };

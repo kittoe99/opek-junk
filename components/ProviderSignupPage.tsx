@@ -2,6 +2,13 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, Upload, Camera, X, ShieldCheck, MapPin, AlertCircle, Loader2, Car, Plus, Trash2 } from 'lucide-react';
 import { PageHero } from './shared/PageHero';
+import {
+  UTILITY_FORM_CARD,
+  UTILITY_LABEL,
+  UTILITY_PAGE_CONTENT,
+  UTILITY_PRIMARY_BUTTON,
+  UTILITY_SECONDARY_BUTTON,
+} from '../lib/flowPageLayout';
 import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
@@ -348,37 +355,37 @@ export const ProviderSignupPage: React.FC = () => {
         compact
       />
 
-      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
-        <div>
+      <div className={UTILITY_PAGE_CONTENT}>
+        <div className={`${UTILITY_FORM_CARD} max-w-xl mx-auto animate-fade-in`}>
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
               <div className="text-center space-y-2 mb-6">
-                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">About You</h2>
+                <h2 className="font-serif text-xl font-semibold text-secondary">About You</h2>
                 <p className="text-secondary-400 text-xs">Start with your contact and business details.</p>
               </div>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">First Name *</label>
+                    <label className={UTILITY_LABEL}>First Name *</label>
                     <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={inputCls} />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Last Name *</label>
+                    <label className={UTILITY_LABEL}>Last Name *</label>
                     <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={inputCls} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email Address *</label>
+                    <label className={UTILITY_LABEL}>Email Address *</label>
                     <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={inputCls} />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone Number *</label>
+                    <label className={UTILITY_LABEL}>Phone Number *</label>
                     <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={inputCls} />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Business Name *</label>
+                  <label className={UTILITY_LABEL}>Business Name *</label>
                     <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} required placeholder="e.g. John's Hauling LLC" className={inputCls} />
                 </div>
               </div>
@@ -386,7 +393,7 @@ export const ProviderSignupPage: React.FC = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className={UTILITY_PRIMARY_BUTTON}
                 >
                   Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
@@ -400,7 +407,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
                   <MapPin className="w-6 h-6 text-brand" strokeWidth={2.5} />
                 </div>
-                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Service Areas</h2>
+                <h2 className="font-serif text-xl font-semibold text-secondary">Service Areas</h2>
                 <p className="text-secondary-400 text-xs">Select the metropolitan areas where you provide service.</p>
               </div>
 
@@ -416,7 +423,7 @@ export const ProviderSignupPage: React.FC = () => {
                     </button>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-8">
                       <div>
-                        <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">State *</label>
+                        <label className={UTILITY_LABEL}>State *</label>
                         <select
                           value={area.state}
                           onChange={(e) => updateServiceArea(index, 'state', e.target.value)}
@@ -430,7 +437,7 @@ export const ProviderSignupPage: React.FC = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Metro Area *</label>
+                        <label className={UTILITY_LABEL}>Metro Area *</label>
                         <select
                           value={area.metroArea}
                           onChange={(e) => updateServiceArea(index, 'metroArea', e.target.value)}
@@ -461,14 +468,14 @@ export const ProviderSignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
+                  className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
                 <button
                   type="submit"
                   disabled={formData.serviceAreas.length === 0}
-                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className={`${UTILITY_PRIMARY_BUTTON} flex-1`}
                 >
                   Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
@@ -482,13 +489,13 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
                   <Car className="w-6 h-6 text-brand" strokeWidth={2.5} />
                 </div>
-                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Vehicle & Documents</h2>
+                <h2 className="font-serif text-xl font-semibold text-secondary">Vehicle & Documents</h2>
                 <p className="text-secondary-400 text-xs">Tell us about your equipment and upload supporting documents.</p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Vehicle Type *</label>
+                  <label className={UTILITY_LABEL}>Vehicle Type *</label>
                   <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={selectCls}>
                     <option value="">Select vehicle type</option>
                     {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
@@ -497,21 +504,21 @@ export const ProviderSignupPage: React.FC = () => {
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Year *</label>
+                    <label className={UTILITY_LABEL}>Year *</label>
                     <input type="text" name="vehicleYear" value={formData.vehicleYear} onChange={handleInputChange} required maxLength={4} placeholder="2024" className={inputCls} />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Make *</label>
+                    <label className={UTILITY_LABEL}>Make *</label>
                     <input type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInputChange} required placeholder="Ford" className={inputCls} />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Model *</label>
+                    <label className={UTILITY_LABEL}>Model *</label>
                     <input type="text" name="vehicleModel" value={formData.vehicleModel} onChange={handleInputChange} required placeholder="F-150" className={inputCls} />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Vehicle Photos *</label>
+                  <label className={UTILITY_LABEL}>Vehicle Photos *</label>
                   <input type="file" ref={vehicleInputRef} className="hidden" accept="image/*" multiple onChange={(e) => handleImageUpload(e, 'vehicle')} />
 
                   {vehicleImages.length > 0 && (
@@ -545,7 +552,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="pt-2">
                   <div className="flex items-center gap-2 mb-3">
                     <ShieldCheck size={14} className="text-brand" strokeWidth={2.5} />
-                    <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">Insurance / COI *</label>
+                    <label className={UTILITY_LABEL}>Insurance / COI *</label>
                   </div>
                   <input type="file" ref={insuranceInputRef} className="hidden" accept="image/*,.pdf" multiple onChange={(e) => handleImageUpload(e, 'insurance')} />
 
@@ -582,14 +589,14 @@ export const ProviderSignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
+                  className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
                 <button
                   type="submit"
                   disabled={!formData.vehicleType}
-                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className={`${UTILITY_PRIMARY_BUTTON} flex-1`}
                 >
                   Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
@@ -600,13 +607,13 @@ export const ProviderSignupPage: React.FC = () => {
           {step === 4 && (
             <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
               <div className="text-center space-y-2 mb-6">
-                <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Availability</h2>
+                <h2 className="font-serif text-xl font-semibold text-secondary">Availability</h2>
                 <p className="text-secondary-400 text-xs">How many jobs are you looking to take on?</p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-3">Preferred Volume *</label>
+                  <label className={`${UTILITY_LABEL} mb-3`}>Preferred Volume *</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {[
                       { value: 'few_jobs' as const, label: 'A Few Jobs a Week', desc: 'Supplemental income, part-time flexibility' },
@@ -630,7 +637,7 @@ export const ProviderSignupPage: React.FC = () => {
                             }`}>
                               {isSelected && <Check size={10} className="text-white" strokeWidth={3} />}
                             </div>
-                            <span className={`text-sm font-black transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            <span className={`text-sm font-semibold transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
                               {option.label}
                             </span>
                           </div>
@@ -642,7 +649,7 @@ export const ProviderSignupPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details *</label>
+                  <label className={UTILITY_LABEL}>Additional Details *</label>
                   <textarea
                     name="additionalInfo"
                     value={formData.additionalInfo}
@@ -666,14 +673,14 @@ export const ProviderSignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors"
+                  className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}
                 >
                   <ArrowLeft size={14} /> Back
                 </button>
                 <button
                   type="submit"
                   disabled={submitting || !formData.availability}
-                  className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className={`${UTILITY_PRIMARY_BUTTON} flex-1`}
                 >
                   {submitting ? 'Submitting...' : <><Check size={14} strokeWidth={3} /> Submit Application</>}
                 </button>

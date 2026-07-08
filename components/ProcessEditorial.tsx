@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-interface ProcessStep {
+interface EditorialStep {
   image: string;
   alt: string;
   titleStart: string;
@@ -9,15 +9,24 @@ interface ProcessStep {
   desc: string;
 }
 
+interface NumberedStep {
+  number: string;
+  title: string;
+  description: string;
+  image: string;
+  alt: string;
+}
+
 interface ProcessEditorialProps {
+  variant?: 'editorial' | 'numbered';
   eyebrow?: string;
   title?: React.ReactNode;
   subtitle?: string;
-  steps?: ProcessStep[];
+  steps?: EditorialStep[] | NumberedStep[];
   cta?: { label: string; onClick: () => void };
 }
 
-const defaultSteps: ProcessStep[] = [
+const defaultEditorialSteps: EditorialStep[] = [
   {
     image: '/process-step-1.svg',
     alt: 'Instant junk removal quote',
@@ -41,7 +50,36 @@ const defaultSteps: ProcessStep[] = [
   },
 ];
 
+const defaultNumberedSteps: NumberedStep[] = [
+  {
+    number: '1',
+    title: 'Choose a service',
+    description: 'Tell us when, where, and what you need hauled — from a single item to a full property cleanout.',
+    image: '/process-step-1.svg',
+    alt: 'Choose a junk removal service',
+  },
+  {
+    number: '2',
+    title: 'Get an upfront price',
+    description: 'Skip the surprises and hidden fees. Feel confident knowing exactly what you\'re paying.',
+    image: '/process-step-2.svg',
+    alt: 'Get an upfront junk removal price',
+  },
+  {
+    number: '3',
+    title: 'Sit back & relax',
+    description: 'Your matched provider handles the lifting, loading, and hauling. Same-day service in most areas.',
+    image: '/process-step-3.svg',
+    alt: 'Provider handles junk removal hauling',
+  },
+];
+
+function isEditorialStep(step: EditorialStep | NumberedStep): step is EditorialStep {
+  return 'image' in step;
+}
+
 export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
+  variant,
   eyebrow = 'The Process',
   title = (
     <>
@@ -50,9 +88,67 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
     </>
   ),
   subtitle = 'No quote forms. No phone tag. Just photos, a fixed price, and a matched provider.',
-  steps = defaultSteps,
+  steps,
   cta,
 }) => {
+  const resolvedVariant =
+    variant ?? (steps?.length && isEditorialStep(steps[0]) ? 'editorial' : steps ? 'numbered' : 'editorial');
+
+  if (resolvedVariant === 'numbered') {
+    const numberedSteps = (steps as NumberedStep[] | undefined) ?? defaultNumberedSteps;
+
+    return (
+      <section id="process" className="py-16 md:py-24 lg:py-28 bg-white overflow-hidden border-b border-secondary-100/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold text-secondary text-center tracking-tight mb-14 md:mb-16">
+            {title ?? 'How it works'}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-12">
+            {numberedSteps.map((step) => (
+              <div key={step.number} className="flex flex-col max-w-sm mx-auto md:max-w-none md:mx-0">
+                <div
+                  className="relative w-36 h-36 md:w-40 md:h-40 mx-auto mb-6 rounded-full border-2 border-secondary/90 flex items-center justify-center overflow-hidden"
+                  style={{
+                    background:
+                      'radial-gradient(circle at 35% 30%, #ffffff 0%, #f0f4f2 45%, #e8eeeb 100%)',
+                    boxShadow: 'inset 0 0 24px rgba(53, 80, 112, 0.06)',
+                  }}
+                >
+                  <img
+                    src={step.image}
+                    alt={step.alt}
+                    className="w-[72%] h-[72%] object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <h3 className="text-base md:text-lg font-bold text-secondary mb-3 text-left">
+                  {step.number}. {step.title}
+                </h3>
+                <p className="text-secondary-500 text-sm leading-relaxed text-left">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {cta && (
+            <div className="mt-14 md:mt-16 text-center">
+              <button
+                onClick={cta.onClick}
+                className="px-10 py-3.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 transition-colors duration-200 rounded-full shadow-sm"
+              >
+                {cta.label}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  const editorialSteps = (steps as EditorialStep[] | undefined) ?? defaultEditorialSteps;
+
   return (
     <section id="process" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,7 +168,7 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
         </div>
 
         <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-6 lg:gap-10">
-          {steps.map((step, index) => (
+          {editorialSteps.map((step, index) => (
             <div
               key={step.titleStart}
               className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-2xl ${
@@ -103,7 +199,7 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
           <div className="mt-16 md:mt-24 text-center">
             <button
               onClick={cta.onClick}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-lg shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl shadow-md hover:shadow-xl inline-flex items-center gap-2"
             >
               <span>{cta.label}</span>
               <ArrowRight size={14} strokeWidth={2.5} />
