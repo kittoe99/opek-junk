@@ -32,6 +32,16 @@ export const FLOW_BACK_BUTTON =
 export const FLOW_CONTINUE_BUTTON =
   'inline-flex items-center justify-center gap-2 flex-[2] py-3.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
 
+/** Marketing hero CTAs — match site secondary / brand palette */
+export const HERO_PRIMARY_CTA =
+  'bg-secondary text-white hover:bg-secondary-600 transition-colors duration-200';
+
+export const HERO_ACCENT_CTA =
+  'bg-brand text-white hover:bg-brand-600 transition-colors duration-200';
+
+export const HERO_OUTLINE_CTA =
+  'border border-secondary-200 text-secondary bg-white hover:border-secondary-300 hover:bg-secondary-50 transition-colors duration-200';
+
 /** Utility / legal / contact pages */
 export const UTILITY_PAGE_SHELL = 'min-h-screen bg-white';
 

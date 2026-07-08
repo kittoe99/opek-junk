@@ -1,118 +1,164 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { CalendarClock, PiggyBank, ShieldCheck, Star } from 'lucide-react';
+import { HERO_PRIMARY_CTA } from '../lib/flowPageLayout';
 
 interface HeroProps {
   onGetQuote: () => void;
   onBookOnline?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
-  const ratingBadge = (light?: boolean) => (
-    <div className="inline-flex items-center gap-2 mb-4 animate-fade-in">
-      <div className="flex gap-0.5">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} size={14} className="text-[#00B67A] fill-[#00B67A]" />
-        ))}
-      </div>
-      <span className={`text-sm font-semibold ${light ? 'text-white' : 'text-secondary'}`}>4.8</span>
-      <span className={`text-sm ${light ? 'text-white/80' : 'text-secondary-400'}`}>average rating</span>
-    </div>
+const HERO_FEATURES = [
+  {
+    icon: CalendarClock,
+    iconColor: 'text-indigo-500',
+    title: 'Easy',
+    description: 'You set the time, and your provider will be there.',
+  },
+  {
+    icon: PiggyBank,
+    iconColor: 'text-pink-500',
+    title: 'Affordable',
+    description: 'Get a guaranteed, up-front price before you book.',
+  },
+  {
+    icon: ShieldCheck,
+    iconColor: 'text-emerald-600',
+    title: 'Safe',
+    description: 'Rest easy with vetted providers & free damage protection.',
+  },
+] as const;
+
+function RatingBadge({ centered }: { centered?: boolean }) {
+  return (
+    <p className={`text-sm font-medium text-[#5c6bc0] mb-4 ${centered ? 'text-center' : ''}`}>
+      4.8{' '}
+      <Star size={14} className="inline -mt-0.5 text-[#5c6bc0] fill-[#5c6bc0]" strokeWidth={0} />{' '}
+      average rating
+    </p>
   );
+}
+
+function FeatureList({ layout }: { layout: 'mobile' | 'desktop' }) {
+  if (layout === 'mobile') {
+    return (
+      <div className="border-t border-secondary-100/80 pt-8 mt-2 space-y-8">
+        {HERO_FEATURES.map((feature) => {
+          const Icon = feature.icon;
+          return (
+            <div key={feature.title} className="text-center px-2">
+              <Icon size={36} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
+              <h3 className="text-base font-bold text-secondary mb-1.5">{feature.title}</h3>
+              <p className="text-sm text-secondary-500 leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
-    <section className="hero-section relative bg-white overflow-hidden">
-
-      {/* Mobile layout */}
-      <div className="lg:hidden flex flex-col">
-        {/* Content area: background image + dark overlay, ends right at buttons */}
-        <div
-          className="relative pt-32 pb-10 px-4"
-          style={{
-            backgroundImage: 'url(/opek2.webp)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          } as React.CSSProperties}
-        >
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/50" />
-
-          <div className="relative z-10">
-            <div className="mb-3 animate-fade-in">
-              {ratingBadge(true)}
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-[1.05] animate-slide-up" style={{animationDelay: '0.1s'}}>
-              Junk gone.
-              <br/>
-              Today.
-            </h1>
-            <p className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
-              Professional junk removal services nationwide. Get instant quotes and same-day service from trusted local providers.
-            </p>
+    <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-secondary-100/80 pb-10 xl:pb-12">
+      {HERO_FEATURES.map((feature) => {
+        const Icon = feature.icon;
+        return (
+          <div key={feature.title} className="text-center">
+            <Icon size={32} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
+            <h3 className="text-[15px] font-bold text-secondary mb-1">{feature.title}</h3>
+            <p className="text-sm text-secondary-500 leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
           </div>
-        </div>
+        );
+      })}
+    </div>
+  );
+}
 
-        {/* Buttons sit flush below the image background */}
-        <div className="hero-mobile-cta flex flex-row animate-slide-up" style={{animationDelay: '0.3s'}}>
-          <button
-            onClick={onGetQuote}
-            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-secondary text-white hover:bg-secondary-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-          >
-            View Pricing
-          </button>
-          <button
-            onClick={onBookOnline}
-            className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-          >
-            Book Online
-          </button>
+export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
+  return (
+    <section className="hero-section relative bg-white overflow-hidden">
+      {/* Mobile — centered copy, CTA, image, then features */}
+      <div className="lg:hidden">
+        <div className="px-5 pt-[calc(var(--site-header-height)+1.25rem)] pb-6 text-center max-w-lg mx-auto">
+          <RatingBadge centered />
+
+          <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
+            Junk removal,
+            <br />
+            made easy.
+          </h1>
+
+          <p className="text-[15px] sm:text-base text-secondary-500 leading-relaxed mb-6 max-w-[20rem] mx-auto">
+            From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
+          </p>
+
+          <div className="flex flex-col items-center gap-3 w-full mb-2">
+            <button
+              type="button"
+              onClick={onGetQuote}
+              className={`block w-full max-w-[16rem] py-3.5 text-[15px] font-semibold !rounded-full ${HERO_PRIMARY_CTA}`}
+            >
+              View Pricing
+            </button>
+
+            {onBookOnline && (
+              <button
+                type="button"
+                onClick={onBookOnline}
+                className="block w-full max-w-[16rem] py-1 text-sm font-medium text-secondary hover:text-brand transition-colors"
+              >
+                Or book online
+              </button>
+            )}
+          </div>
+
+          <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-100 aspect-[4/3] sm:aspect-[16/11]">
+            <img
+              src="/opek2.webp"
+              alt="Professional junk removal crew hauling furniture"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+
+          <FeatureList layout="mobile" />
         </div>
       </div>
 
-      {/* Desktop layout — full-bleed image with floating card */}
-      <div className="hidden lg:block relative min-h-[min(620px,calc(100vh-var(--site-header-height)))]">
-        <img
-          src="/opek2.webp"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-
-        <div className="relative z-10 flex items-center min-h-[min(620px,calc(100vh-var(--site-header-height)))] px-6 xl:px-12 py-16">
-          <div className="max-w-7xl mx-auto w-full">
-            <div
-              className="hero-desktop-card bg-white rounded-[2rem] shadow-[0_8px_40px_rgba(53,80,112,0.12)] p-10 xl:p-14 max-w-[34rem] animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
-            >
-              {ratingBadge()}
-              <h1 className="font-serif text-[2.75rem] xl:text-5xl font-semibold text-secondary tracking-tight mb-5 leading-[1.1]">
-                Here for the
+      {/* Desktop — TaskRabbit-style split hero */}
+      <div className="hidden lg:block">
+        <div className="max-w-[72rem] mx-auto px-8 xl:px-10 pt-8 xl:pt-10 pb-0">
+          <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
+            <div className="max-w-[28rem] animate-slide-up" style={{ animationDelay: '0.05s' }}>
+              <RatingBadge />
+              <h1 className="font-serif text-[2.625rem] xl:text-[3.125rem] font-semibold text-secondary tracking-tight mb-4 leading-[1.1]">
+                Junk removal,
                 <br />
-                heavy lifting.
+                made easy.
               </h1>
-              <p className="text-base xl:text-lg text-secondary-400 mb-8 leading-relaxed">
-                Nationwide platform for on-demand junk removal, hauling, and cleanouts. Get instant quotes and same-day service from trusted local providers.
+              <p className="text-lg text-[#6b7c78] mb-7 leading-relaxed">
+                From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
               </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={onGetQuote}
-                  className="px-7 py-3.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 transition-colors duration-200 rounded-xl shadow-sm"
-                >
-                  Get a quote
-                </button>
-                {onBookOnline && (
-                  <button
-                    onClick={onBookOnline}
-                    className="px-7 py-3.5 text-sm font-semibold text-secondary border border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50 transition-colors duration-200 rounded-xl"
-                  >
-                    Book online
-                  </button>
-                )}
+              <button
+                type="button"
+                onClick={onGetQuote}
+                className={`!rounded-full px-7 py-3 text-[15px] font-semibold ${HERO_PRIMARY_CTA}`}
+              >
+                Get a quote
+              </button>
+            </div>
+
+            <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
+              <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-100">
+                <img
+                  src="/opek2.webp"
+                  alt="Professional junk removal crew hauling furniture"
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
             </div>
           </div>
+
+          <FeatureList layout="desktop" />
         </div>
       </div>
-
     </section>
   );
 };

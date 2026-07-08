@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { TrustBadges } from './components/TrustBadges';
 import { Services } from './components/Services';
 import { Testimonials } from './components/Testimonials';
 import { ServiceArea } from './components/ServiceArea';
@@ -105,7 +104,6 @@ function HomePage() {
         onGetQuote={() => navigate('/quote')} 
         onBookOnline={() => navigate('/booking')}
       />
-      <TrustBadges />
       <Services />
       <ProcessEditorial
         variant="numbered"

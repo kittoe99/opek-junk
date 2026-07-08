@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { HERO_ACCENT_CTA, HERO_OUTLINE_CTA, HERO_PRIMARY_CTA } from '../../lib/flowPageLayout';
 
 interface CtaProps {
   label: string;
@@ -24,10 +25,12 @@ interface PageHeroProps {
   EyebrowIcon?: React.ComponentType<{ size?: number; className?: string }>;
 }
 
-function HeroCta({ cta, primary, className }: { cta: CtaProps; primary: boolean; className: string }) {
+function HeroCta({ cta, primary, accent, className }: { cta: CtaProps; primary: boolean; accent?: boolean; className: string }) {
   const colors = primary
-    ? 'bg-secondary text-white hover:bg-secondary-600'
-    : 'border border-secondary-200 text-secondary hover:border-secondary-300 hover:bg-secondary-50';
+    ? HERO_PRIMARY_CTA
+    : accent
+      ? HERO_ACCENT_CTA
+      : HERO_OUTLINE_CTA;
 
   if (cta.href) {
     return (
@@ -127,7 +130,8 @@ export const PageHero: React.FC<PageHeroProps> = ({
               <HeroCta
                 cta={secondaryCta}
                 primary={false}
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-none shadow-md hover:shadow-xl border-0"
+                accent
+                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider transition-all duration-300 rounded-none shadow-md hover:shadow-xl border-0"
               />
             )}
           </div>

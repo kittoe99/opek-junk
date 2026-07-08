@@ -1,6 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import {
+  ArrowRight,
+  BedDouble,
+  Building2,
+  Heart,
+  Package,
+  TreePine,
+  Warehouse,
+  Home,
+  Boxes,
+} from 'lucide-react';
 import {
   JunkIcon,
   DumpsterIcon,
@@ -8,43 +18,72 @@ import {
   MovingLaborIcon,
 } from './icons/ServiceIcons';
 
-const serviceItems = [
+type ServiceEntry = {
+  title: string;
+  path: string;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  description?: string;
+};
+
+const allServices: ServiceEntry[] = [
   {
     title: 'Junk Removal',
     icon: JunkIcon,
-    description: 'Furniture, appliances, and household clutter hauled away. Full-service residential and commercial.',
+    description:
+      'Furniture, appliances, and household clutter hauled away. Full-service residential and commercial.',
     path: '/services/junk-removal',
   },
   {
     title: 'Dumpster Rental',
     icon: DumpsterIcon,
-    description: 'Roll-off containers delivered to your site. Multiple sizes with upfront, flat-rate pricing.',
+    description:
+      'Roll-off containers delivered to your site. Multiple sizes with upfront, flat-rate pricing.',
     path: '/services/dumpster-rental',
   },
   {
     title: 'Property Cleanouts',
     icon: PropertyCleanoutIcon,
-    description: 'Estate clearing, move-outs, and full property cleanouts. Professional and discreet.',
+    description:
+      'Estate clearing, move-outs, and full property cleanouts. Professional and discreet.',
     path: '/services/property-cleanout',
   },
   {
     title: 'Moving Labor',
     icon: MovingLaborIcon,
-    description: 'Hire experienced crews by the hour to load, unload, or move items within your home.',
+    description:
+      'Hire experienced crews by the hour to load, unload, or move items within your home.',
     path: '/services/moving-labor',
   },
+  { title: 'Single item pickup', path: '/quote', icon: Package },
+  { title: 'Garage cleanout', path: '/services/junk-removal', icon: Warehouse },
+  { title: 'Estate clearing', path: '/services/property-cleanout', icon: Home },
+  { title: 'Mattress disposal', path: '/services/mattress-disposal', icon: BedDouble },
+  { title: 'Office decommission', path: '/services/junk-removal', icon: Building2 },
+  { title: 'Donation run', path: '/quote', icon: Heart },
+  { title: 'Storage unit cleanout', path: '/services/property-cleanout', icon: Boxes },
+  { title: 'Yard debris', path: '/services/junk-removal', icon: TreePine },
 ];
 
-const quickServices = [
-  { label: 'Single item pickup', path: '/quote' },
-  { label: 'Garage cleanout', path: '/services/junk-removal' },
-  { label: 'Estate clearing', path: '/services/property-cleanout' },
-  { label: 'Mattress disposal', path: '/services/mattress-disposal' },
-  { label: 'Office decommission', path: '/services/junk-removal' },
-  { label: 'Donation run', path: '/quote' },
-  { label: 'Storage unit cleanout', path: '/services/property-cleanout' },
-  { label: 'Yard debris', path: '/services/junk-removal' },
-];
+const primaryServices = allServices.filter((s) => s.description);
+
+function GridCard({ item, onClick }: { item: ServiceEntry; onClick: () => void }) {
+  const Icon = item.icon;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={item.description}
+      className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-white px-5 py-[1.125rem] md:px-6 md:py-5 text-left shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.07),0_8px_24px_rgba(53,80,112,0.08)] transition-shadow duration-200 min-h-[4.25rem]"
+    >
+      <span className="font-bold text-[15px] md:text-base text-secondary leading-snug pr-2 group-hover:text-brand transition-colors">
+        {item.title}
+      </span>
+      <span className="text-[#5b7fd4] shrink-0 [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]">
+        <Icon className="w-9 h-9 md:w-10 md:h-10" size={40} />
+      </span>
+    </button>
+  );
+}
 
 export const Services: React.FC = () => {
   const navigate = useNavigate();
@@ -52,66 +91,50 @@ export const Services: React.FC = () => {
   return (
     <section
       id="services"
-      className="py-16 md:py-24 lg:py-28 overflow-hidden border-b border-secondary-100/40"
+      className="py-14 md:py-16 lg:py-20"
       style={{
-        background: 'linear-gradient(135deg, #eef8f3 0%, #f7f9fc 45%, #f3f0f8 100%)',
+        background: 'linear-gradient(160deg, #dff3ea 0%, #eef3f9 42%, #e8e4f2 100%)',
       }}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-secondary tracking-tight mb-3">
+      <div className="max-w-[52rem] mx-auto px-5 sm:px-6 lg:px-8">
+        <header className="text-center mb-9 md:mb-11">
+          <p className="text-sm font-medium text-secondary-500 mb-2 tracking-wide">
             Book same-day help
-          </h2>
-          <p className="text-secondary-400 text-sm md:text-base max-w-xl mx-auto">
-            Customizable hauling and cleanouts at up-front prices.
           </p>
-        </div>
+          <h2 className="text-[1.625rem] sm:text-[1.75rem] md:text-[2rem] font-bold text-secondary tracking-tight leading-tight">
+            Customizable hauling and cleanouts at up-front prices.
+          </h2>
+        </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
-          {serviceItems.map((item) => (
-            <button
-              key={item.title}
-              type="button"
-              onClick={() => navigate(item.path)}
-              className="group text-left bg-white rounded-2xl p-6 md:p-7 shadow-sm border border-white/80 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-xl bg-secondary-50 text-secondary-500 group-hover:bg-brand/10 group-hover:text-brand flex items-center justify-center mb-5 transition-colors duration-300">
-                <item.icon className="w-6 h-6" />
-              </div>
-              <h3 className="font-semibold text-secondary text-base md:text-lg mb-2 group-hover:text-brand transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-secondary-400 text-sm leading-relaxed">{item.description}</p>
-            </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4">
+          {allServices.map((item) => (
+            <GridCard key={item.title} item={item} onClick={() => navigate(item.path)} />
           ))}
         </div>
 
-        <div className="mb-8">
-          <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
-            {quickServices.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => navigate(item.path)}
-                className="shrink-0 px-4 py-2.5 rounded-full bg-white/90 border border-secondary-100 text-secondary text-sm font-medium hover:border-secondary-300 hover:bg-white transition-colors"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+        {/* Primary service descriptions — below grid, not inside cards */}
+        <div className="mt-8 md:mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+          {primaryServices.map((item) => (
+            <div key={item.title} className="text-left">
+              <p className="text-sm font-semibold text-secondary mb-0.5">{item.title}</p>
+              <p className="text-sm text-secondary-500 leading-relaxed">{item.description}</p>
+            </div>
+          ))}
         </div>
 
-        <p className="text-center text-sm text-secondary-400">
-          Need mattress disposal or in-home estimates?{' '}
+        <footer className="mt-10 md:mt-12 text-center">
+          <p className="text-sm text-secondary-500 mb-1">
+            Need mattress disposal or in-home estimates?
+          </p>
           <button
             type="button"
             onClick={() => navigate('/services/mattress-disposal')}
-            className="text-secondary font-semibold hover:text-brand inline-flex items-center gap-1 transition-colors"
+            className="text-sm font-semibold text-secondary hover:text-brand inline-flex items-center gap-0.5 transition-colors"
           >
             See specialty services
-            <ArrowRight size={14} />
+            <ArrowRight size={14} strokeWidth={2.5} className="mt-px" />
           </button>
-        </p>
+        </footer>
       </div>
     </section>
   );

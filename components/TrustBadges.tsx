@@ -1,9 +1,13 @@
 import React from 'react';
 import { Lock, ShieldCheck, Star } from 'lucide-react';
 
-export const TrustBadges: React.FC = () => {
+interface TrustBadgesProps {
+  className?: string;
+}
+
+export const TrustBadges: React.FC<TrustBadgesProps> = ({ className = '' }) => {
   return (
-    <section className="bg-white border-b border-secondary-100 py-6 md:py-8">
+    <section className={`bg-white border-b border-secondary-100 py-6 md:py-8 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
           <div className="flex items-center gap-3 cursor-default">
