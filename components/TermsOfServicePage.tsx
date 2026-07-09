@@ -18,7 +18,7 @@ export const TermsOfServicePage: React.FC = () => {
       content: (
         <>
           <p className="mb-4">
-            These Terms of Service ("Terms") constitute a legally binding agreement between you ("Customer," "User," or "you") and <strong>Opek Junk Removal</strong> ("Opek," "we," "us," or "our").
+            These Terms of Service ("Terms") constitute a legally binding agreement between you ("Customer," "User," or "you") and <strong>Opek Junk Removal LLC</strong>, doing business as Opek Junk Removal ("Opek," "we," "us," or "our").
           </p>
           <p className="mb-4">
             By accessing, browsing, or using our website, platform, mobile applications, booking systems, or ordering services by phone or text, you acknowledge that you have read, understood, and agree to be bound by these Terms and our{' '}

@@ -21,9 +21,8 @@ interface ServiceTypePickerProps {
 
 const MOVING_LABOR_FROM = 298; // 2 helpers × 2 hr minimum @ $149/hr
 
-// Match the homepage service grid icon treatment (single-tone blue)
-const HERO_ICON_CLASS =
-  'w-full h-full text-[#5b7fd4] [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]';
+// Single site color for all icons
+const HERO_ICON_CLASS = 'w-full h-full text-secondary [&_.stroke-brand]:stroke-current';
 
 export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
   title = 'What do you need help with?',

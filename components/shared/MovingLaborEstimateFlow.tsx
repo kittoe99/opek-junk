@@ -18,8 +18,7 @@ import {
   ThreeHelpersIcon,
 } from '../icons/ServiceIcons';
 
-const MOVING_ICON_CLASS =
-  'w-full h-full text-[#5b7fd4] [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]';
+const MOVING_ICON_CLASS = 'w-full h-full text-secondary [&_.stroke-brand]:stroke-current';
 
 export interface MovingLaborEstimateResult {
   estimate: QuoteEstimate;
