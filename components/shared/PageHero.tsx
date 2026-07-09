@@ -1,6 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import { HERO_ACCENT_CTA, HERO_OUTLINE_CTA, HERO_PRIMARY_CTA } from '../../lib/flowPageLayout';
+import { HERO_PRIMARY_CTA } from '../../lib/flowPageLayout';
 
 interface CtaProps {
   label: string;
@@ -25,23 +25,50 @@ interface PageHeroProps {
   EyebrowIcon?: React.ComponentType<{ size?: number; className?: string }>;
 }
 
-function HeroCta({ cta, primary, accent, className }: { cta: CtaProps; primary: boolean; accent?: boolean; className: string }) {
-  const colors = primary
-    ? HERO_PRIMARY_CTA
-    : accent
-      ? HERO_ACCENT_CTA
-      : HERO_OUTLINE_CTA;
+function RatingBadge({ centered }: { centered?: boolean }) {
+  return (
+    <p className={`text-sm font-medium text-[#5c6bc0] mb-4 ${centered ? 'text-center' : ''}`}>
+      4.8{' '}
+      <Star size={14} className="inline -mt-0.5 text-[#5c6bc0] fill-[#5c6bc0]" strokeWidth={0} />{' '}
+      average rating
+    </p>
+  );
+}
 
+function Eyebrow({ label, centered }: { label: string; centered?: boolean }) {
+  return (
+    <p className={`text-[11px] font-semibold uppercase tracking-wider text-brand mb-3 ${centered ? 'text-center' : ''}`}>
+      {label}
+    </p>
+  );
+}
+
+function PrimaryCta({ cta, className }: { cta: CtaProps; className: string }) {
+  const cls = `${className} ${HERO_PRIMARY_CTA}`;
   if (cta.href) {
     return (
-      <a href={cta.href} className={className + ' ' + colors}>
+      <a href={cta.href} className={cls}>
         {cta.label}
       </a>
     );
   }
-
   return (
-    <button type="button" onClick={cta.onClick} className={className + ' ' + colors}>
+    <button type="button" onClick={cta.onClick} className={cls}>
+      {cta.label}
+    </button>
+  );
+}
+
+function SecondaryCta({ cta, className }: { cta: CtaProps; className: string }) {
+  if (cta.href) {
+    return (
+      <a href={cta.href} className={className}>
+        {cta.label}
+      </a>
+    );
+  }
+  return (
+    <button type="button" onClick={cta.onClick} className={className}>
       {cta.label}
     </button>
   );
@@ -56,127 +83,82 @@ export const PageHero: React.FC<PageHeroProps> = ({
   primaryCta,
   secondaryCta,
   children,
-  compact = false,
   showRating = true,
 }) => {
-  const ratingBadge = (light?: boolean) =>
-    showRating ? (
-      <div className="inline-flex items-center gap-2 mb-4 animate-fade-in">
-        <div className="flex gap-0.5">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} size={14} className="text-[#00B67A] fill-[#00B67A]" />
-          ))}
-        </div>
-        <span className={`text-sm font-semibold ${light ? 'text-white' : 'text-secondary'}`}>4.8</span>
-        <span className={`text-sm ${light ? 'text-white/80' : 'text-secondary-400'}`}>average rating</span>
-      </div>
-    ) : eyebrow ? (
-      <p className={`text-[11px] font-semibold uppercase tracking-wider mb-4 ${light ? 'text-white/90' : 'text-brand'}`}>
-        {eyebrow}
-      </p>
-    ) : null;
-
-  const desktopMinH = compact
-    ? 'min-h-[min(520px,calc(100vh-var(--site-header-height)))]'
-    : 'min-h-[min(620px,calc(100vh-var(--site-header-height)))]';
-
-  const mobileTitleClass = compact
-    ? 'text-3xl sm:text-4xl font-serif font-semibold'
-    : 'text-4xl sm:text-5xl font-serif font-semibold';
-
-  const desktopTitleClass = compact
-    ? 'font-serif text-[2.25rem] xl:text-4xl font-semibold'
-    : 'font-serif text-[2.75rem] xl:text-5xl font-semibold';
+  const mobileSecondaryCls =
+    'shrink-0 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap';
+  const desktopSecondaryCls =
+    'inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap';
 
   return (
     <section className="hero-section relative bg-white overflow-hidden">
-      <div className="lg:hidden flex flex-col">
-        <div
-          className="relative pt-32 pb-10 px-4"
-          style={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="relative z-10">
-            {ratingBadge(true)}
-            <h1
-              className={`${mobileTitleClass} text-white tracking-tight mb-4 leading-[1.1] animate-slide-up`}
-              style={{ animationDelay: '0.1s' }}
-            >
-              {title}
-            </h1>
-            <p
-              className="text-sm sm:text-base text-white/90 max-w-lg leading-relaxed animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
-            >
-              {subtitle}
-            </p>
+      {/* Mobile — centered copy, CTA, image */}
+      <div className="lg:hidden">
+        <div className="px-5 pt-2.5 pb-6 text-center max-w-lg mx-auto">
+          {showRating ? <RatingBadge centered /> : eyebrow ? <Eyebrow label={eyebrow} centered /> : null}
+
+          <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
+            {title}
+          </h1>
+
+          <p className="text-[15px] sm:text-base text-secondary-500 leading-relaxed mb-6 max-w-[20rem] mx-auto">
+            {subtitle}
+          </p>
+
+          {(primaryCta || secondaryCta) && (
+            <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 w-full mb-2">
+              {primaryCta && (
+                <PrimaryCta
+                  cta={primaryCta}
+                  className="shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap"
+                />
+              )}
+              {secondaryCta && <SecondaryCta cta={secondaryCta} className={mobileSecondaryCls} />}
+            </div>
+          )}
+
+          <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-100 aspect-[4/3] sm:aspect-[16/11]">
+            <img src={image} alt={imageAlt} className="w-full h-full object-cover object-center" />
           </div>
+
+          {children && (
+            <div className="mt-7 flex justify-center text-left">{children}</div>
+          )}
         </div>
-
-        {(primaryCta || secondaryCta) && (
-          <div className="hero-mobile-cta flex flex-row animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            {primaryCta && (
-              <HeroCta
-                cta={primaryCta}
-                primary
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider transition-all duration-300 rounded-none shadow-md hover:shadow-xl"
-              />
-            )}
-            {secondaryCta && (
-              <HeroCta
-                cta={secondaryCta}
-                primary={false}
-                accent
-                className="flex-1 px-4 py-4 text-sm font-bold uppercase tracking-wider transition-all duration-300 rounded-none shadow-md hover:shadow-xl border-0"
-              />
-            )}
-          </div>
-        )}
-
-        {children && (
-          <div className="px-4 py-8 animate-slide-up bg-white" style={{ animationDelay: '0.35s' }}>
-            {children}
-          </div>
-        )}
       </div>
 
-      <div className={`hidden lg:block relative ${desktopMinH}`}>
-        <img src={image} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover object-center" />
+      {/* Desktop — split hero matching homepage */}
+      <div className="hidden lg:block">
+        <div className="max-w-[72rem] mx-auto px-8 xl:px-10 pt-8 xl:pt-10 pb-10 xl:pb-12">
+          <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
+            <div className="max-w-[28rem] animate-slide-up" style={{ animationDelay: '0.05s' }}>
+              {showRating ? <RatingBadge /> : eyebrow ? <Eyebrow label={eyebrow} /> : null}
 
-        <div className={`relative z-10 flex items-center ${desktopMinH} px-6 xl:px-12 py-16`}>
-          <div className="max-w-7xl mx-auto w-full">
-            <div
-              className="hero-desktop-card bg-white rounded-[2rem] shadow-[0_8px_40px_rgba(53,80,112,0.12)] p-10 xl:p-14 max-w-[34rem] animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
-            >
-              {ratingBadge()}
-              <h1 className={`${desktopTitleClass} text-secondary tracking-tight mb-5 leading-[1.1]`}>{title}</h1>
-              <p className="text-base xl:text-lg text-secondary-400 mb-8 leading-relaxed">{subtitle}</p>
+              <h1 className="font-serif text-[2.625rem] xl:text-[3.125rem] font-semibold text-secondary tracking-tight mb-4 leading-[1.1]">
+                {title}
+              </h1>
+
+              <p className="text-lg text-[#6b7c78] mb-7 leading-relaxed">{subtitle}</p>
 
               {(primaryCta || secondaryCta) && (
-                <div className="flex flex-wrap items-center gap-3 mb-8">
+                <div className="flex flex-wrap items-center gap-3">
                   {primaryCta && (
-                    <HeroCta
+                    <PrimaryCta
                       cta={primaryCta}
-                      primary
-                      className="px-7 py-3.5 text-sm font-semibold transition-colors duration-200 rounded-xl shadow-sm"
+                      className="!rounded-full px-7 py-3 text-[15px] font-semibold"
                     />
                   )}
-                  {secondaryCta && (
-                    <HeroCta
-                      cta={secondaryCta}
-                      primary={false}
-                      className="px-7 py-3.5 text-sm font-semibold transition-colors duration-200 rounded-xl"
-                    />
-                  )}
+                  {secondaryCta && <SecondaryCta cta={secondaryCta} className={desktopSecondaryCls} />}
                 </div>
               )}
 
-              {children}
+              {children && <div className="mt-7">{children}</div>}
+            </div>
+
+            <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
+              <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-100">
+                <img src={image} alt={imageAlt} className="w-full h-full object-cover object-center" />
+              </div>
             </div>
           </div>
         </div>
