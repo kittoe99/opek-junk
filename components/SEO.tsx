@@ -17,9 +17,10 @@ interface SEOProps {
   cityName?: string;
   stateAbbr?: string;
   schema?: any;
+  noindex?: boolean;
 }
 
-export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema }) => {
+export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema, noindex }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -35,6 +36,17 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
     if (keywords) {
       let metaKeywords = document.querySelector('meta[name="keywords"]');
       if (metaKeywords) metaKeywords.setAttribute('content', keywords);
+    }
+
+    const robotsContent = noindex ? 'noindex, nofollow' : 'index, follow';
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (metaRobots) {
+      metaRobots.setAttribute('content', robotsContent);
+    } else {
+      metaRobots = document.createElement('meta');
+      metaRobots.setAttribute('name', 'robots');
+      metaRobots.setAttribute('content', robotsContent);
+      document.head.appendChild(metaRobots);
     }
 
     if (title) {
@@ -130,7 +142,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, keywords, ogImage,
       script.textContent = JSON.stringify(schema);
       document.head.appendChild(script);
     }
-  }, [title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema, location.pathname]);
+  }, [title, description, keywords, ogImage, breadcrumbs, geoLat, geoLon, cityName, stateAbbr, schema, noindex, location.pathname]);
 
   return null;
 };

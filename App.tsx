@@ -26,6 +26,7 @@ const QuotePage = React.lazy(() => import('./components/QuotePage').then((m) => 
 const ContactPage = React.lazy(() => import('./components/ContactPage').then((m) => ({ default: m.ContactPage })));
 const BookingPage = React.lazy(() => import('./components/BookingPage').then((m) => ({ default: m.BookingPage })));
 const ProviderSignupPage = React.lazy(() => import('./components/ProviderSignupPage').then((m) => ({ default: m.ProviderSignupPage })));
+const SignUpPage = React.lazy(() => import('./components/SignUpPage').then((m) => ({ default: m.SignUpPage })));
 const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
 const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
@@ -206,6 +207,19 @@ function ProviderSignupPageWithSEO() {
   );
 }
 
+function SignUpPageWithSEO() {
+  return (
+    <>
+      <SEO
+        title="Contractor Sign Up | Opek Junk Removal"
+        description="Create your independent contractor account to continue your Opek provider application."
+        noindex
+      />
+      <SignUpPage />
+    </>
+  );
+}
+
 function TrackOrderPageWithSEO() {
   return (
     <>
@@ -274,6 +288,7 @@ function App() {
             <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />
             <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
+            <Route path="/sign-up" element={<SignUpPageWithSEO />} />
             <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
             <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
             <Route path="/privacy" element={<PrivacyPolicyPageWithSEO />} />
