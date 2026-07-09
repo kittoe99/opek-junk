@@ -77,7 +77,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
     <section className="hero-section relative bg-white overflow-hidden">
       {/* Mobile — centered copy, CTA, image, then features */}
       <div className="lg:hidden">
-        <div className="px-5 pt-[calc(var(--site-header-height)+1.25rem)] pb-6 text-center max-w-lg mx-auto">
+        <div className="px-5 pt-2.5 pb-6 text-center max-w-lg mx-auto">
           <RatingBadge centered />
 
           <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
@@ -90,11 +90,11 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
             From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
           </p>
 
-          <div className="flex flex-col items-center gap-3 w-full mb-2">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 w-full mb-2">
             <button
               type="button"
               onClick={onGetQuote}
-              className={`block w-full max-w-[16rem] py-3.5 text-[15px] font-semibold !rounded-full ${HERO_PRIMARY_CTA}`}
+              className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_PRIMARY_CTA}`}
             >
               View Pricing
             </button>
@@ -103,7 +103,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               <button
                 type="button"
                 onClick={onBookOnline}
-                className="block w-full max-w-[16rem] py-1 text-sm font-medium text-secondary hover:text-brand transition-colors"
+                className="shrink-0 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap"
               >
                 Or book online
               </button>

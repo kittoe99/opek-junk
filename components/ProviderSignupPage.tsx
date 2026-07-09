@@ -1,17 +1,57 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Check, Upload, Camera, X, ShieldCheck, MapPin, AlertCircle, Loader2, Car, Plus, Trash2 } from 'lucide-react';
-import { PageHero } from './shared/PageHero';
 import {
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  Upload,
+  Camera,
+  X,
+  ShieldCheck,
+  MapPin,
+  AlertCircle,
+  Loader2,
+  Plus,
+  Trash2,
+  CalendarClock,
+  Truck,
+  Phone,
+} from 'lucide-react';
+import {
+  HERO_PRIMARY_CTA,
   UTILITY_FORM_CARD,
+  UTILITY_INPUT,
   UTILITY_LABEL,
-  UTILITY_PAGE_CONTENT,
   UTILITY_PRIMARY_BUTTON,
   UTILITY_SECONDARY_BUTTON,
 } from '../lib/flowPageLayout';
 import { supabase } from '../lib/supabase';
 import { TrustBadges } from './TrustBadges';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
+import { FlowProgressBar } from './shared/flow/FlowProgressBar';
+import { FlowStepTitle } from './shared/flow/FlowStepTitle';
+
+const SIGNUP_STEPS = ['About you', 'Service areas', 'Vehicle & docs', 'Availability'] as const;
+
+const PROVIDER_HERO_FEATURES = [
+  {
+    icon: MapPin,
+    iconColor: 'text-indigo-500',
+    title: 'Local demand',
+    description: 'Jobs routed to the metros you choose to serve.',
+  },
+  {
+    icon: CalendarClock,
+    iconColor: 'text-pink-500',
+    title: 'Your hours',
+    description: 'Pick part-time volume or fill your route.',
+  },
+  {
+    icon: ShieldCheck,
+    iconColor: 'text-emerald-600',
+    title: 'Vetted network',
+    description: 'Onboard with clear standards and dispatch support.',
+  },
+] as const;
 
 const usStates = [
   { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
@@ -102,8 +142,8 @@ const vehicleTypes = [
 ];
 
 export const ProviderSignupPage: React.FC = () => {
-  const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const formSectionRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -316,8 +356,11 @@ export const ProviderSignupPage: React.FC = () => {
     }
   };
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300";
-  const selectCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_16px_center] bg-no-repeat";
+  const selectCls = `${UTILITY_INPUT} appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_16px_center] bg-no-repeat`;
+
+  const scrollToForm = () => {
+    formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   if (submitted) {
     const providerName = `${formData.firstName} ${formData.lastName}`.trim();
@@ -342,51 +385,169 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <PageHero
-        eyebrow="Provider Network"
-        title={<>Grow your <span className="text-brand">hauling business.</span></>}
-        subtitle="Already booked jobs, weekly payouts, and a dispatch app designed for independent contractors."
-        image="/process-step-2.svg"
-        imageAlt="Independent contractor dispatching jobs"
-        imageCaption="Vetted contractors • Weekly payouts • Dispatch app"
-        primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
-        secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
-        compact
-      />
+    <div className="min-h-screen bg-white">
+      <section className="relative bg-white overflow-hidden border-b border-secondary-100/60">
+        <div className="lg:hidden">
+          <div className="px-5 pt-2.5 pb-8 text-center max-w-lg mx-auto">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
 
-      <div className={UTILITY_PAGE_CONTENT}>
-        <div className={`${UTILITY_FORM_CARD} max-w-xl mx-auto animate-fade-in`}>
+            <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
+              Hauling work,
+              <br />
+              on your terms.
+            </h1>
+
+            <p className="text-[15px] sm:text-base text-secondary-500 leading-relaxed mb-6 max-w-[20rem] mx-auto">
+              Apply to join independent contractors receiving junk removal jobs through Opek&apos;s dispatch network.
+            </p>
+
+            <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 w-full mb-2">
+              <button
+                type="button"
+                onClick={scrollToForm}
+                className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_PRIMARY_CTA}`}
+              >
+                Start application
+              </button>
+              <a
+                href="tel:8313187139"
+                className="shrink-0 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap inline-flex items-center gap-1"
+              >
+                <Phone size={14} />
+                Questions? Call us
+              </a>
+            </div>
+
+            <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-50 aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center p-6">
+              <img
+                src="/process-step-2.svg"
+                alt="Independent hauling contractor on a job"
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div className="border-t border-secondary-100/80 pt-8 mt-2 space-y-8">
+              {PROVIDER_HERO_FEATURES.map((feature) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={feature.title} className="text-center px-2">
+                    <Icon size={36} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
+                    <h2 className="text-base font-bold text-secondary mb-1.5">{feature.title}</h2>
+                    <p className="text-sm text-secondary-500 leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden lg:block">
+          <div className="max-w-[72rem] mx-auto px-8 xl:px-10 pt-8 xl:pt-10 pb-0">
+            <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
+              <div className="max-w-[28rem]">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
+                <h1 className="font-serif text-[2.625rem] xl:text-[3.125rem] font-semibold text-secondary tracking-tight mb-4 leading-[1.1]">
+                  Hauling work,
+                  <br />
+                  on your terms.
+                </h1>
+                <p className="text-lg text-[#6b7c78] mb-7 leading-relaxed">
+                  Apply to join vetted contractors receiving local junk removal jobs, dispatch tools, and weekly payouts.
+                </p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={scrollToForm}
+                    className={`!rounded-full px-7 py-3 text-[15px] font-semibold inline-flex items-center gap-2 ${HERO_PRIMARY_CTA}`}
+                  >
+                    Start application
+                    <ArrowRight size={16} />
+                  </button>
+                  <a
+                    href="tel:8313187139"
+                    className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors"
+                  >
+                    <Phone size={15} />
+                    (831) 318-7139
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-50 flex items-center justify-center p-8 xl:p-10">
+                  <img
+                    src="/process-step-2.svg"
+                    alt="Independent hauling contractor on a job"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-secondary-100/80 pb-10 xl:pb-12">
+              {PROVIDER_HERO_FEATURES.map((feature) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={feature.title} className="text-center">
+                    <Icon size={32} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
+                    <h2 className="text-[15px] font-bold text-secondary mb-1">{feature.title}</h2>
+                    <p className="text-sm text-secondary-500 leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div
+        ref={formSectionRef}
+        className="scroll-mt-[var(--site-header-height)] bg-[#f5f6f7] border-t border-secondary-100/60"
+      >
+        <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+          <div className="mb-3 flex items-center justify-between gap-3 px-1">
+            <p className="text-xs font-semibold text-secondary-500">
+              Step {step} of {SIGNUP_STEPS.length}
+              <span className="text-secondary-300 font-normal"> · {SIGNUP_STEPS[step - 1]}</span>
+            </p>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-secondary-400">
+              <Truck size={13} className="text-brand" />
+              Provider application
+            </div>
+          </div>
+          <FlowProgressBar progress={step / SIGNUP_STEPS.length} />
+
+          <div className={`${UTILITY_FORM_CARD} mt-4 animate-fade-in`}>
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <div className="text-center space-y-2 mb-6">
-                <h2 className="font-serif text-xl font-semibold text-secondary">About You</h2>
-                <p className="text-secondary-400 text-xs">Start with your contact and business details.</p>
-              </div>
+              <FlowStepTitle
+                title="About you"
+                subtitle="Start with your contact and business details."
+              />
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>First Name *</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={inputCls} />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Last Name *</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={inputCls} />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={UTILITY_INPUT} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>Email Address *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={inputCls} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Phone Number *</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={inputCls} />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={UTILITY_INPUT} />
                   </div>
                 </div>
                 <div>
                   <label className={UTILITY_LABEL}>Business Name *</label>
-                    <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} required placeholder="e.g. John's Hauling LLC" className={inputCls} />
+                    <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} required placeholder="e.g. John's Hauling LLC" className={UTILITY_INPUT} />
                 </div>
               </div>
 
@@ -403,13 +564,10 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 2 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <div className="text-center space-y-2 mb-6">
-                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-                  <MapPin className="w-6 h-6 text-brand" strokeWidth={2.5} />
-                </div>
-                <h2 className="font-serif text-xl font-semibold text-secondary">Service Areas</h2>
-                <p className="text-secondary-400 text-xs">Select the metropolitan areas where you provide service.</p>
-              </div>
+              <FlowStepTitle
+                title="Service areas"
+                subtitle="Select the metropolitan areas where you provide service."
+              />
 
               <div className="space-y-4">
                 {formData.serviceAreas.map((area, index) => (
@@ -485,13 +643,10 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 3 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <div className="text-center space-y-2 mb-6">
-                <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-                  <Car className="w-6 h-6 text-brand" strokeWidth={2.5} />
-                </div>
-                <h2 className="font-serif text-xl font-semibold text-secondary">Vehicle & Documents</h2>
-                <p className="text-secondary-400 text-xs">Tell us about your equipment and upload supporting documents.</p>
-              </div>
+              <FlowStepTitle
+                title="Vehicle & documents"
+                subtitle="Tell us about your equipment and upload supporting documents."
+              />
 
               <div className="space-y-4">
                 <div>
@@ -505,15 +660,15 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className={UTILITY_LABEL}>Year *</label>
-                    <input type="text" name="vehicleYear" value={formData.vehicleYear} onChange={handleInputChange} required maxLength={4} placeholder="2024" className={inputCls} />
+                    <input type="text" name="vehicleYear" value={formData.vehicleYear} onChange={handleInputChange} required maxLength={4} placeholder="2024" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Make *</label>
-                    <input type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInputChange} required placeholder="Ford" className={inputCls} />
+                    <input type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInputChange} required placeholder="Ford" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Model *</label>
-                    <input type="text" name="vehicleModel" value={formData.vehicleModel} onChange={handleInputChange} required placeholder="F-150" className={inputCls} />
+                    <input type="text" name="vehicleModel" value={formData.vehicleModel} onChange={handleInputChange} required placeholder="F-150" className={UTILITY_INPUT} />
                   </div>
                 </div>
 
@@ -606,10 +761,10 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 4 && (
             <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
-              <div className="text-center space-y-2 mb-6">
-                <h2 className="font-serif text-xl font-semibold text-secondary">Availability</h2>
-                <p className="text-secondary-400 text-xs">How many jobs are you looking to take on?</p>
-              </div>
+              <FlowStepTitle
+                title="Availability"
+                subtitle="How many jobs are you looking to take on?"
+              />
 
               <div className="space-y-4">
                 <div>
@@ -657,7 +812,7 @@ export const ProviderSignupPage: React.FC = () => {
                     required
                     rows={3}
                     placeholder="Share details about your experience, equipment, license status, or team size..."
-                    className={`${inputCls} resize-none`}
+                    className={`${UTILITY_INPUT} resize-none`}
                   />
                 </div>
               </div>
@@ -688,12 +843,11 @@ export const ProviderSignupPage: React.FC = () => {
               <p className="text-[10px] text-secondary-300 text-center">By submitting, you agree to the contractor terms and network guidelines.</p>
             </form>
           )}
+          </div>
         </div>
       </div>
 
-      <div className="mt-16">
-        <TrustBadges />
-      </div>
+      <TrustBadges />
     </div>
   );
 };

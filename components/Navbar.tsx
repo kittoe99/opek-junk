@@ -2,13 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   ChevronDown,
   MapPin,
-  MessageSquare,
-  CalendarCheck,
-  Locate,
   Phone,
   ArrowRight,
   CheckSquare,
-  Heart,
   X,
   Menu,
 } from 'lucide-react';
@@ -53,7 +49,7 @@ export const Navbar: React.FC = () => {
   const isAdsLandingPage = location.pathname === '/services/mattress-disposal';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
   const [userCity, setUserCity] = useState('');
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -163,25 +159,40 @@ export const Navbar: React.FC = () => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    if (!isMenuOpen) setMobileAccordion(null);
+  }, [isMenuOpen]);
+
   const handleLinkClick = (path: string) => {
     setIsMenuOpen(false);
     setShowServicesMega(false);
+    setMobileAccordion(null);
     navigate(path);
   };
 
-  const locationLabel = isDetectingLocation ? 'Detecting location...' : userCity || 'Set your location';
+  const toggleMobileAccordion = (id: string) => {
+    setMobileAccordion((prev) => (prev === id ? null : id));
+  };
+
+  const locationLabel = isDetectingLocation ? 'Detecting…' : userCity || 'Set location';
 
   const LocationButton = ({ className = '' }: { className?: string }) => (
     <button
       type="button"
       onClick={fetchUserLocation}
       disabled={isDetectingLocation}
-      className={`inline-flex items-center gap-1.5 rounded-full border border-secondary-100 bg-white px-3 py-1.5 text-xs font-medium text-secondary hover:border-secondary-300 hover:text-brand transition-colors disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center gap-1.5 text-xs font-medium text-secondary-600 hover:text-brand transition-colors disabled:opacity-50 ${className}`}
     >
-      <MapPin size={13} className="text-brand shrink-0" />
-      <span className="truncate max-w-[140px] sm:max-w-none">{locationLabel}</span>
+      <MapPin size={14} className="text-brand shrink-0" strokeWidth={2.25} />
+      <span className="truncate max-w-[8.5rem] sm:max-w-[10rem] md:max-w-none">{locationLabel}</span>
     </button>
   );
+
+  const mobileAccordionBtn =
+    'w-full flex items-center justify-between px-5 py-4 bg-secondary-600 hover:bg-secondary-500 text-white font-bold text-[15px] transition-colors';
+
+  const mobileSubLink =
+    'w-full flex items-center gap-3 px-5 py-3.5 text-left text-sm font-medium text-white/90 hover:bg-white/5 transition-colors border-t border-white/10';
 
   return (
     <>
@@ -224,8 +235,10 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <>
-              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75]">
-                <LocationButton />
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-[75] pointer-events-none">
+                <div className="pointer-events-auto">
+                  <LocationButton />
+                </div>
               </div>
 
               <div className="hidden md:flex items-center gap-1 lg:gap-2 ml-auto">
@@ -310,7 +323,11 @@ export const Navbar: React.FC = () => {
 
               <button
                 type="button"
-                className="md:hidden relative z-[70] w-10 h-10 flex items-center justify-center rounded-xl border border-secondary-100 text-secondary hover:border-secondary-300 transition-colors"
+                className={`md:hidden relative z-[70] w-10 h-10 flex items-center justify-center rounded-full border transition-colors ${
+                  isMenuOpen
+                    ? 'bg-secondary border-secondary text-white'
+                    : 'border-secondary-100 text-secondary hover:border-secondary-300 hover:bg-secondary-50'
+                }`}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMenuOpen}
@@ -342,143 +359,178 @@ export const Navbar: React.FC = () => {
       </header>
 
       <div
-        className={`fixed inset-0 bg-secondary/40 backdrop-blur-sm z-[55] transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-[65] md:hidden flex flex-col bg-secondary-700 transition-opacity duration-300 ${
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
-        onClick={() => setIsMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      <div
-        className={`fixed top-0 right-0 h-full w-full max-w-[360px] bg-white z-[65] shadow-2xl transition-transform duration-300 ease-out md:hidden flex flex-col ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation"
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-100">
-          <img src="/logo1.png" alt="Opek Junk Removal" className="h-9 w-auto object-contain" />
+        <div className="shrink-0 flex items-center justify-between gap-3 px-4 py-3.5 border-b border-white/10">
           <button
             type="button"
-            onClick={() => setIsMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl border border-secondary-100 text-secondary hover:border-secondary-300 transition-colors"
-            aria-label="Close menu"
+            onClick={() => handleLinkClick('/')}
+            className="shrink-0 rounded-lg bg-white px-2.5 py-1.5 hover:bg-white/90 transition-colors"
           >
-            <X size={18} />
+            <img src="/logo1.png" alt="Opek Junk Removal" className="h-7 w-auto object-contain" />
           </button>
-        </div>
 
-        <div className="px-5 py-4 border-b border-secondary-100 space-y-3">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => handleLinkClick('/quote')}
-              className="flex-1 py-3 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-xl transition-colors"
-            >
-              Get a quote
-            </button>
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => handleLinkClick('/booking')}
-              className="flex-1 py-3 text-sm font-semibold border border-secondary-200 text-secondary hover:bg-secondary-50 rounded-xl transition-colors"
+              className="px-5 py-2.5 text-sm font-bold bg-brand text-white hover:bg-brand-600 rounded-lg transition-colors"
             >
-              Book online
+              Book
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Close menu"
+            >
+              <Menu size={22} />
             </button>
           </div>
-          <LocationButton className="w-full justify-center" />
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-5 py-4">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-secondary-400 mb-3">Menu</p>
-          <div className="space-y-1">
-            {navLinks.map((link) =>
-              link.hasMega ? (
-                <div key={link.name} className="rounded-xl border border-secondary-100 overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                    className="w-full flex items-center justify-between px-4 py-3.5 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
-                  >
-                    {link.name}
-                    <ChevronDown
-                      size={16}
-                      className={`text-secondary-400 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      mobileServicesOpen ? 'max-h-96 border-t border-secondary-100' : 'max-h-0'
-                    }`}
-                  >
-                    {serviceItems.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <button
-                          key={item.name}
-                          type="button"
-                          onClick={() => {
-                            setMobileServicesOpen(false);
-                            handleLinkClick(item.path);
-                          }}
-                          className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-secondary-50 transition-colors border-t border-secondary-100 first:border-t-0"
-                        >
-                          <div className="w-9 h-9 rounded-lg bg-secondary-50 flex items-center justify-center shrink-0">
-                            <Icon className="w-4 h-4 text-secondary" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-sm font-medium text-secondary">{item.name}</div>
-                            <div className="text-xs text-secondary-400 truncate">{item.desc}</div>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <button
-                  key={link.name}
-                  type="button"
-                  onClick={() => handleLinkClick(link.path)}
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
-                >
-                  {link.name}
-                  <ArrowRight size={14} className="text-secondary-300" />
-                </button>
-              ),
-            )}
-
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5">
+          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
             <button
               type="button"
-              onClick={() => handleLinkClick('/in-home-estimate')}
-              className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+              onClick={() => toggleMobileAccordion('services')}
+              className={mobileAccordionBtn}
+              aria-expanded={mobileAccordion === 'services'}
             >
-              In-home estimate
-              <ArrowRight size={14} className="text-secondary-300" />
+              Services
+              <ChevronDown
+                size={18}
+                className={`text-white/80 transition-transform duration-200 ${mobileAccordion === 'services' ? 'rotate-180' : ''}`}
+              />
             </button>
-
-            <a
-              href="tel:8313187139"
-              className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-secondary-100 text-sm font-semibold text-secondary hover:bg-secondary-50 transition-colors"
+            <div
+              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+                mobileAccordion === 'services' ? 'max-h-[24rem]' : 'max-h-0'
+              }`}
             >
-              Call (831) 318-7139
-              <Phone size={14} className="text-brand" />
-            </a>
+              {serviceItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => handleLinkClick(item.path)}
+                    className={mobileSubLink}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-white" />
+                    </div>
+                    <span>{item.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="mt-5 p-4 rounded-2xl bg-[#f3f3f3] border border-secondary-100/80">
-            <div className="flex items-center gap-1.5 mb-2">
-              <Heart size={12} className="text-brand fill-brand" />
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-brand">Community impact</span>
-            </div>
-            <p className="text-sm font-semibold text-secondary mb-1">5% of sales to children&apos;s hospitals</p>
-            <p className="text-xs text-secondary-500 mb-3">Book with purpose and support families in need.</p>
+          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
             <button
               type="button"
-              onClick={() => handleLinkClick('/quote')}
-              className="w-full py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+              onClick={() => toggleMobileAccordion('booking')}
+              className={mobileAccordionBtn}
+              aria-expanded={mobileAccordion === 'booking'}
             >
-              Book with purpose
+              Book &amp; pricing
+              <ChevronDown
+                size={18}
+                className={`text-white/80 transition-transform duration-200 ${mobileAccordion === 'booking' ? 'rotate-180' : ''}`}
+              />
             </button>
+            <div
+              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+                mobileAccordion === 'booking' ? 'max-h-48' : 'max-h-0'
+              }`}
+            >
+              <button type="button" onClick={() => handleLinkClick('/quote')} className={mobileSubLink}>
+                Get a quote
+              </button>
+              <button type="button" onClick={() => handleLinkClick('/booking')} className={mobileSubLink}>
+                Book online
+              </button>
+              <button type="button" onClick={() => handleLinkClick('/in-home-estimate')} className={mobileSubLink}>
+                In-home estimate
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+            <button
+              type="button"
+              onClick={() => toggleMobileAccordion('support')}
+              className={mobileAccordionBtn}
+              aria-expanded={mobileAccordion === 'support'}
+            >
+              Support
+              <ChevronDown
+                size={18}
+                className={`text-white/80 transition-transform duration-200 ${mobileAccordion === 'support' ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+                mobileAccordion === 'support' ? 'max-h-40' : 'max-h-0'
+              }`}
+            >
+              <button type="button" onClick={() => handleLinkClick('/contact')} className={mobileSubLink}>
+                Contact
+              </button>
+              <button type="button" onClick={() => handleLinkClick('/track-order')} className={mobileSubLink}>
+                Track order
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+            <button
+              type="button"
+              onClick={() => toggleMobileAccordion('providers')}
+              className={mobileAccordionBtn}
+              aria-expanded={mobileAccordion === 'providers'}
+            >
+              Providers
+              <ChevronDown
+                size={18}
+                className={`text-white/80 transition-transform duration-200 ${mobileAccordion === 'providers' ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+                mobileAccordion === 'providers' ? 'max-h-24' : 'max-h-0'
+              }`}
+            >
+              <button type="button" onClick={() => handleLinkClick('/provider-signup')} className={mobileSubLink}>
+                Join the network
+              </button>
+            </div>
           </div>
         </nav>
+
+        <div className="shrink-0 grid grid-cols-2 border-t border-white/10 bg-secondary-800/50">
+          <a
+            href="tel:8313187139"
+            className="flex items-center justify-center gap-2 px-3 py-4 text-sm font-semibold text-white hover:bg-white/5 transition-colors border-r border-white/10"
+          >
+            <Phone size={16} className="text-brand shrink-0" />
+            <span className="truncate">(831) 318-7139</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => handleLinkClick('/track-order')}
+            className="flex items-center justify-center gap-2 px-3 py-4 text-sm font-semibold text-white hover:bg-white/5 transition-colors"
+          >
+            <CheckSquare size={16} className="text-brand shrink-0" />
+            Track order
+          </button>
+        </div>
       </div>
     </>
   );
