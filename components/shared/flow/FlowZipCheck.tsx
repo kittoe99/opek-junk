@@ -34,7 +34,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
 
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-secondary mb-1.5">ZIP code</label>
+        <label className="block text-sm font-medium text-secondary mb-1.5 text-center">ZIP code</label>
         <input
           type="text"
           inputMode="numeric"

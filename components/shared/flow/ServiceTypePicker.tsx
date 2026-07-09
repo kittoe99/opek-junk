@@ -21,6 +21,10 @@ interface ServiceTypePickerProps {
 
 const MOVING_LABOR_FROM = 298; // 2 helpers × 2 hr minimum @ $149/hr
 
+// Match the homepage service grid icon treatment (single-tone blue)
+const HERO_ICON_CLASS =
+  'w-full h-full text-[#5b7fd4] [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]';
+
 export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
   title = 'What do you need help with?',
   subtitle = 'Choose a service to get started.',
@@ -38,7 +42,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         title="Junk Removal"
         description="Haul away furniture, debris, and unwanted clutter"
         fromPrice={`From $${JUNK_REMOVAL_MIN_PRICE}`}
-        icon={<JunkIcon className="w-full h-full" />}
+        icon={<JunkIcon className={HERO_ICON_CLASS} />}
         selected={selectedId === 'junk_removal'}
         onClick={() => onSelect('junk_removal')}
       />
@@ -46,7 +50,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         title="Moving Labor"
         description="Hourly help for loading, unloading, and heavy lifting"
         fromPrice={`From $${MOVING_LABOR_FROM}`}
-        icon={<MovingLaborIcon className="w-full h-full" />}
+        icon={<MovingLaborIcon className={HERO_ICON_CLASS} />}
         selected={selectedId === 'moving_labor'}
         onClick={() => onSelect('moving_labor')}
       />
@@ -54,7 +58,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         title="Dumpster Rental"
         description="Roll-off container delivered to your site"
         fromPrice="From $350"
-        icon={<DumpsterIcon className="w-full h-full" />}
+        icon={<DumpsterIcon className={HERO_ICON_CLASS} />}
         disabled
         badge="Coming Soon"
       />

@@ -6,6 +6,20 @@ import { ContactIntakeForm } from './ContactIntakeForm';
 import { FlowSelectionCard } from './flow/FlowSelectionCard';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
+import {
+  LoadingIcon,
+  UnloadingIcon,
+  LoadingUnloadingIcon,
+  StorageUnitIcon,
+  BoxTruckIcon,
+  InsideHomeIcon,
+  OtherMoveIcon,
+  TwoHelpersIcon,
+  ThreeHelpersIcon,
+} from '../icons/ServiceIcons';
+
+const MOVING_ICON_CLASS =
+  'w-full h-full text-[#5b7fd4] [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]';
 
 export interface MovingLaborEstimateResult {
   estimate: QuoteEstimate;
@@ -95,14 +109,15 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <FlowStepTitle title="What type of help?" subtitle="Choose loading, unloading, or both. 2-hour minimum applies." />
         <div className="space-y-3">
           {[
-            { label: 'Loading Only' as const, desc: 'Pack a rental truck, container, or storage unit' },
-            { label: 'Unloading Only' as const, desc: 'Unpack into your new home, office, or storage' },
-            { label: 'Both' as const, desc: 'Help with both loading and unloading' },
+            { label: 'Loading Only' as const, desc: 'Pack a rental truck, container, or storage unit', Icon: LoadingIcon },
+            { label: 'Unloading Only' as const, desc: 'Unpack into your new home, office, or storage', Icon: UnloadingIcon },
+            { label: 'Both' as const, desc: 'Help with both loading and unloading', Icon: LoadingUnloadingIcon },
           ].map((service) => (
             <FlowSelectionCard
               key={service.label}
               title={service.label}
               description={service.desc}
+              icon={<service.Icon className={MOVING_ICON_CLASS} />}
               selected={movingServiceType === service.label}
               onClick={() => setMovingServiceType(service.label)}
             />
@@ -119,15 +134,16 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <FlowStepTitle title="Where is the move?" subtitle="Tell us what kind of location you're working with." />
         <div className="space-y-3">
           {[
-            { label: 'Storage Unit' as const, desc: 'PODS, U-Pack, or local storage facility' },
-            { label: 'Box Truck' as const, desc: 'Rental trucks like U-Haul, Penske, or Ryder' },
-            { label: 'Inside Home' as const, desc: 'Rearranging furniture or room-to-room loading' },
-            { label: 'Other' as const, desc: 'Custom labor requests and heavy lifting' },
+            { label: 'Storage Unit' as const, desc: 'PODS, U-Pack, or local storage facility', Icon: StorageUnitIcon },
+            { label: 'Box Truck' as const, desc: 'Rental trucks like U-Haul, Penske, or Ryder', Icon: BoxTruckIcon },
+            { label: 'Inside Home' as const, desc: 'Rearranging furniture or room-to-room loading', Icon: InsideHomeIcon },
+            { label: 'Other' as const, desc: 'Custom labor requests and heavy lifting', Icon: OtherMoveIcon },
           ].map((type) => (
             <FlowSelectionCard
               key={type.label}
               title={type.label}
               description={type.desc}
+              icon={<type.Icon className={MOVING_ICON_CLASS} />}
               selected={movingType === type.label}
               onClick={() => setMovingType(type.label)}
             />
@@ -144,13 +160,14 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <FlowStepTitle title="Crew size & duration" subtitle="2-hour minimum. Adjust helpers and estimated hours." />
         <div className="space-y-3 mb-6">
           {[
-            { helpers: 2 as const, desc: 'Apartment moves, loading containers, and light lifting' },
-            { helpers: 3 as const, desc: 'House moves, large trucks, and heavy items' },
+            { helpers: 2 as const, desc: 'Apartment moves, loading containers, and light lifting', Icon: TwoHelpersIcon },
+            { helpers: 3 as const, desc: 'House moves, large trucks, and heavy items', Icon: ThreeHelpersIcon },
           ].map((option) => (
             <FlowSelectionCard
               key={option.helpers}
               title={`${option.helpers} helpers`}
               description={option.desc}
+              icon={<option.Icon className={MOVING_ICON_CLASS} />}
               selected={movingHelpers === option.helpers}
               onClick={() => setMovingHelpers(option.helpers)}
             />

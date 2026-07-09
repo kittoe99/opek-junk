@@ -41,11 +41,11 @@ export const Testimonials: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 sm:overflow-visible sm:snap-none">
           {testimonials.map((item) => (
             <figure
               key={item.author}
-              className="bg-white rounded-2xl border border-secondary-100/80 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="snap-center shrink-0 w-[85%] sm:w-auto bg-white rounded-2xl border border-secondary-100/80 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
