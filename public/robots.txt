@@ -7,6 +7,7 @@ Allow: /
 # Disallow admin or sensitive areas (if any)
 Disallow: /api/
 Disallow: /.env
+Disallow: /sign-up
 
 # Sitemap location
 Sitemap: https://opekjunkremoval.com/sitemap.xml
