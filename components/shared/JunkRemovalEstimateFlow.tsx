@@ -326,43 +326,38 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
-          <div className="w-20 h-16 md:w-24 md:h-20 shrink-0">
-            <img src="/process-step-1.svg" alt="Service breakdown" className="w-full h-full object-contain" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
-                Instant Estimate
-              </span>
-              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
-                Guaranteed
-              </span>
+        <div className="bg-white rounded-xl border border-secondary-100 p-4">
+          <div className="flex items-center justify-between mb-3 pb-3 border-b border-secondary-100">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full">
+                  Instant Estimate
+                </span>
+                <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold rounded-full">
+                  Guaranteed
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-secondary mt-1">Junk Removal</h3>
+              <p className="text-secondary-400 text-xs mt-0.5">{price.estimatedVolume}</p>
             </div>
-            <h3 className="text-sm md:text-base font-semibold text-secondary">Junk Removal</h3>
-            <p className="text-secondary-500 text-xs mt-0.5 leading-normal">{price.estimatedVolume}</p>
+            <p className="text-xl font-bold text-secondary">${price.price}</p>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <ShieldCheck size={15} className="text-emerald-600 shrink-0 mt-0.5" />
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-semibold text-emerald-800">Safe Protect™ Included</p>
+                <span className="bg-emerald-500 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">Covered</span>
+              </div>
+              <p className="text-xs text-emerald-600 mt-0.5">
+                All bookings are covered by platform damage protection.{' '}
+                <button type="button" onClick={() => setShowInsuranceModal(true)} className="font-medium hover:underline">Learn more</button>
+              </p>
+            </div>
           </div>
         </div>
 
         <JunkRemovalPriceBreakdown price={price} />
-
-        <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
-            <ShieldCheck size={18} strokeWidth={2.5} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
-              <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
-            </div>
-            <p className="text-xs text-emerald-700 mt-1 leading-normal">
-              All bookings are covered by platform damage protection.{' '}
-              <button type="button" onClick={() => setShowInsuranceModal(true)} className="text-emerald-900 font-medium hover:underline">
-                Learn more
-              </button>
-            </p>
-          </div>
-        </div>
 
         {!price.lines?.length && (
         <div>

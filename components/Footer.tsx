@@ -132,7 +132,7 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <Link to="/services/moving-labor" className="text-secondary-500 hover:text-secondary text-sm transition-colors">
-                    Moving Labor
+                    Local Moving
                   </Link>
                 </li>
                 <li>

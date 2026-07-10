@@ -46,8 +46,8 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         onClick={() => onSelect('junk_removal')}
       />
       <FlowSelectionCard
-        title="Moving Labor"
-        description="Hourly help for loading, unloading, and heavy lifting"
+        title="Local Moving"
+        description="Truck and crew for apartment & small home moves"
         fromPrice={`From $${MOVING_LABOR_FROM}`}
         icon={<MovingLaborIcon className={HERO_ICON_CLASS} />}
         selected={selectedId === 'moving_labor'}

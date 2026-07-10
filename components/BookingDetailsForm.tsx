@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, Receipt, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuoteEstimate } from '../types';
 import { supabase } from '../lib/supabase';
@@ -14,7 +14,6 @@ import {
   ServiceAddressValue,
   isServiceAddressValidated,
 } from './shared/ServiceAddressField';
-import { CollapsibleReviewPanel } from './shared/CollapsibleReviewPanel';
 import { FLOW_INPUT, FLOW_LABEL } from '../lib/flowPageLayout';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
@@ -134,8 +133,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     }
   }, [smsMarketingConsentAt]);
 
+  const isMovingLabor =
+    serviceType.toLowerCase().includes('moving') || serviceType === 'Moving Labor';
+
   const [addressValidated, setAddressValidated] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const [addressBValidated, setAddressBValidated] = useState(false);
+  const [addressBError, setAddressBError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: prefilledName || '',
@@ -146,6 +150,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     city: defaultZip?.city || '',
     state: defaultZip?.state || '',
     zipCode: defaultZip?.zipCode || '',
+    addressB: '',
+    unitNumberB: '',
+    cityB: defaultZip?.city || '',
+    stateB: defaultZip?.state || '',
+    zipCodeB: defaultZip?.zipCode || '',
     date: '',
     timeSlot: '' as TimeSlot | '',
     details: '',
@@ -176,6 +185,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       city: addressValue.city,
       state: addressValue.state,
       zipCode: addressValue.zipCode,
+    }));
+  };
+
+  const handleAddressBChange = (addressValue: ServiceAddressValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      addressB: addressValue.address,
+      unitNumberB: addressValue.unitNumber,
+      cityB: addressValue.city,
+      stateB: addressValue.state,
+      zipCodeB: addressValue.zipCode,
     }));
   };
 
@@ -277,7 +297,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       setAddressError('Please select your address from the suggestions list.');
       return;
     }
+    if (isMovingLabor && (!addressBValidated || !isServiceAddressValidated({ address: formData.addressB, unitNumber: formData.unitNumberB, city: formData.cityB, state: formData.stateB, zipCode: formData.zipCodeB }))) {
+      setAddressBError('Please select the drop-off address from the suggestions list.');
+      return;
+    }
     setAddressError(null);
+    setAddressBError(null);
     setError(null);
     setStep(isJunkRemoval ? 'photo' : 'review');
   };
@@ -399,7 +424,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             unit_number: formData.unitNumber || null,
             city: formData.city,
             state: formData.state,
-            zip_code: formData.zipCode
+            zip_code: formData.zipCode,
+            ...(isMovingLabor ? {
+              address_b: formData.addressB,
+              unit_number_b: formData.unitNumberB || null,
+              city_b: formData.cityB,
+              state_b: formData.stateB,
+              zip_code_b: formData.zipCodeB,
+            } : {}),
           };
 
           const bookingDetails = withBookingPhotos(
@@ -643,12 +675,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {/* ─── Address step ─── */}
       {step === 'address' && (
         <>
-        <form id="booking-address-form" onSubmit={handleAddressSubmit} className="space-y-4">
-          <FlowStepTitle
-            title={serviceType === 'Moving Labor' ? 'Service address' : 'Pickup address'}
-            subtitle={serviceType === 'Moving Labor' ? 'Where is the work location?' : 'Where should the provider come to collect?'}
-          />
+        <form id="booking-address-form" onSubmit={handleAddressSubmit}>
+          <div className="text-center mb-6">
+            <h1 className="text-xl md:text-2xl font-semibold text-secondary tracking-tight leading-snug">
+              {isMovingLabor ? 'Pickup & drop-off' : 'Pickup address'}
+            </h1>
+            <p className="text-sm text-secondary-500 mt-2 leading-relaxed">
+              {isMovingLabor ? 'Where should the provider start and end?' : 'Where should the provider come to collect?'}
+            </p>
+          </div>
 
+          <p className="text-xs font-semibold text-secondary-500 mb-2">{isMovingLabor ? 'Pickup location' : 'Address'}</p>
           <ServiceAddressField
             label="Service Address"
             value={{
@@ -674,12 +711,41 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             }
           />
 
+          {isMovingLabor && (
+            <div className="mt-4">
+              <p className="text-xs font-semibold text-secondary-500 mb-2">Drop-off location</p>
+              <ServiceAddressField
+                label="Drop-off Address"
+                value={{
+                  address: formData.addressB,
+                  unitNumber: formData.unitNumberB,
+                  city: formData.cityB,
+                  state: formData.stateB,
+                  zipCode: formData.zipCodeB,
+                }}
+                onChange={handleAddressBChange}
+                validated={addressBValidated}
+                onValidatedChange={setAddressBValidated}
+                error={addressBError}
+                onErrorChange={setAddressBError}
+                locationBias={
+                  defaultZip
+                    ? {
+                        zipCode: defaultZip.zipCode,
+                        city: defaultZip.city,
+                        state: defaultZip.state,
+                      }
+                    : undefined
+                }
+              />
+            </div>
+          )}
         </form>
         <FlowStickyNav
           onBack={handleBackStep}
           continueType="submit"
           continueForm="booking-address-form"
-          continueDisabled={!addressValidated}
+          continueDisabled={isMovingLabor ? !(addressValidated && addressBValidated) : !addressValidated}
         />
         </>
       )}
@@ -793,38 +859,26 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {/* Review Section */}
-          <CollapsibleReviewPanel
-            title="Review Your Booking"
-            summary={[
-              formData.name,
-              formData.date
-                ? new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                  })
-                : null,
-              estimate ? `$${estimate.price}` : null,
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-            icon={<Receipt size={14} className="text-brand" strokeWidth={2.5} />}
-          >
-            <div className="space-y-1.5 text-xs">
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Name</span><span className="font-bold text-secondary text-right">{formData.name}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Email</span><span className="font-bold text-secondary text-right">{formData.email}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Phone</span><span className="font-bold text-secondary text-right">{formData.phone}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Address</span><span className="font-bold text-secondary text-right max-w-[60%]">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">City / State / Zip</span><span className="font-bold text-secondary text-right">{[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Service</span><span className="font-bold text-secondary text-right">{serviceType}</span></div>
-              <div className="flex justify-between gap-4"><span className="text-secondary-400">Date</span><span className="font-bold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
-              {isJunkRemoval && localImage && (
-                <div className="flex justify-between gap-4"><span className="text-secondary-400">Photo</span><span className="font-bold text-secondary text-right">Attached</span></div>
+          <div className="bg-white rounded-xl border border-secondary-100 p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-secondary-100 pb-3">
+              <p className="text-xs font-semibold text-secondary-500">Summary</p>
+              {estimate && <p className="text-lg font-bold text-secondary">${estimate.price}</p>}
+            </div>
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between"><span className="text-secondary-400">Name</span><span className="font-semibold text-secondary text-right">{formData.name}</span></div>
+              <div className="flex justify-between"><span className="text-secondary-400">Email</span><span className="font-semibold text-secondary text-right">{formData.email}</span></div>
+              <div className="flex justify-between"><span className="text-secondary-400">Phone</span><span className="font-semibold text-secondary text-right">{formData.phone}</span></div>
+              <div className="flex justify-between"><span className="text-secondary-400">Pickup</span><span className="font-semibold text-secondary text-right max-w-[60%] text-right">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}{formData.city ? `, ${[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}` : ''}</span></div>
+              {isMovingLabor && formData.addressB && (
+                <div className="flex justify-between"><span className="text-secondary-400">Drop-off</span><span className="font-semibold text-secondary text-right max-w-[60%] text-right">{formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}{formData.cityB ? `, ${[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}` : ''}</span></div>
               )}
-              {estimate && (
-                <div className="flex justify-between gap-4 pt-1.5 mt-1.5 border-t border-secondary-100"><span className="text-secondary-400">Estimated Total</span><span className="font-black text-brand text-right">${estimate.price}</span></div>
+              <div className="flex justify-between"><span className="text-secondary-400">Service</span><span className="font-semibold text-secondary text-right">{serviceType}</span></div>
+              <div className="flex justify-between"><span className="text-secondary-400">Date</span><span className="font-semibold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
+              {isJunkRemoval && localImage && (
+                <div className="flex justify-between"><span className="text-secondary-400">Photo</span><span className="font-semibold text-secondary text-right">Attached</span></div>
               )}
             </div>
-          </CollapsibleReviewPanel>
+          </div>
 
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl">

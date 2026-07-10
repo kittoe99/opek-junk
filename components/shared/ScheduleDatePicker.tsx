@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export type TimeSlot = 'morning' | 'midday' | 'evening';
 
@@ -119,99 +119,71 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
     return slotLabel ? `${formatted} · ${slotLabel}` : formatted;
   }, [selectedDate, timeSlot]);
 
+  const selectedStr = selectedDate
+    ? selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+    : '';
+
   return (
-    <div className="space-y-4">
-      <div className="rounded-2xl border border-secondary-100 bg-white shadow-[0_2px_16px_rgba(0,0,0,0.04)] overflow-hidden">
-        <div className="px-4 py-3.5 bg-gradient-to-r from-secondary-50/80 to-white border-b border-secondary-100 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-brand/10 border border-brand/15 flex items-center justify-center shrink-0">
-              <CalendarDays size={16} className="text-brand" strokeWidth={2.5} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em]">
-                Preferred Date
-              </p>
-              <p className="text-sm font-bold text-secondary truncate">{selectedSummary}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              type="button"
-              onClick={() => setViewMonth((m) => addMonths(m, -1))}
-              disabled={!canGoPrev}
-              className="w-8 h-8 rounded-lg border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
-              aria-label="Previous month"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMonth((m) => addMonths(m, 1))}
-              className="w-8 h-8 rounded-lg border border-secondary-100 text-secondary hover:border-brand/40 hover:text-brand transition-colors flex items-center justify-center"
-              aria-label="Next month"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-bold text-secondary">{selectedStr || 'Select a date'}</p>
+          {timeSlot && <p className="text-xs text-secondary-400 mt-0.5">{formatTimeSlotLabel(timeSlot)}</p>}
         </div>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setViewMonth((m) => addMonths(m, -1))}
+            disabled={!canGoPrev}
+            className="w-7 h-7 rounded-lg text-secondary hover:bg-secondary-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            aria-label="Previous month"
+          >
+            <ChevronLeft size={15} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMonth((m) => addMonths(m, 1))}
+            className="w-7 h-7 rounded-lg text-secondary hover:bg-secondary-100 transition-colors flex items-center justify-center"
+            aria-label="Next month"
+          >
+            <ChevronRight size={15} />
+          </button>
+        </div>
+      </div>
 
-        <div className="p-4">
-          <div className="flex items-center justify-center mb-4">
-            <p className="text-sm font-black text-secondary tracking-wide">{monthLabel}</p>
-          </div>
-
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-              <div
-                key={day}
-                className="text-[10px] font-black uppercase tracking-wider text-secondary-300 text-center py-1"
+      <div className="bg-white rounded-xl border border-secondary-100 p-3">
+        <p className="text-xs font-semibold text-secondary-500 text-center mb-3">{monthLabel}</p>
+        <div className="grid grid-cols-7 gap-px mb-1">
+          {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+            <div key={day} className="text-[10px] font-semibold text-secondary-300 text-center py-1">{day}</div>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-px">
+          {calendarDays.map(({ date: cellDate, key }) => {
+            if (!cellDate) return <div key={key} className="aspect-square" aria-hidden="true" />;
+            const disabled = startOfDay(cellDate) < minSelectable;
+            const isSelected = selectedDate ? isSameDay(cellDate, selectedDate) : false;
+            const isToday = isSameDay(cellDate, today);
+            return (
+              <button
+                key={key}
+                type="button"
+                disabled={disabled}
+                onClick={() => onDateChange(toISODate(cellDate))}
+                className={`aspect-square rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${
+                  disabled ? 'text-secondary-200 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-secondary hover:bg-brand/10'
+                } ${!disabled && !isSelected && isToday ? 'ring-1 ring-brand/40 ring-inset' : ''}`}
               >
-                {day}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-7 gap-1">
-            {calendarDays.map(({ date: cellDate, key }) => {
-              if (!cellDate) {
-                return <div key={key} className="aspect-square" aria-hidden="true" />;
-              }
-
-              const disabled = startOfDay(cellDate) < minSelectable;
-              const isSelected = selectedDate ? isSameDay(cellDate, selectedDate) : false;
-              const isToday = isSameDay(cellDate, today);
-
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => onDateChange(toISODate(cellDate))}
-                  className={[
-                    'aspect-square rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center relative',
-                    disabled
-                      ? 'text-secondary-200 cursor-not-allowed'
-                      : isSelected
-                        ? 'bg-brand text-white shadow-lg shadow-brand/25 scale-[1.02]'
-                        : 'text-secondary hover:bg-brand/8 hover:text-brand',
-                    !disabled && !isSelected && isToday
-                      ? 'ring-2 ring-brand/30 ring-inset'
-                      : '',
-                  ].join(' ')}
-                >
-                  {cellDate.getDate()}
-                </button>
-              );
-            })}
-          </div>
+                {cellDate.getDate()}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       <div>
-        <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-2">
-          Preferred Time Slot *
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <p className="text-xs font-semibold text-secondary-500 mb-2">Time slot</p>
+        <div className="flex gap-2">
           {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
             const selected = timeSlot === id;
             return (
@@ -219,25 +191,12 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 key={id}
                 type="button"
                 onClick={() => onTimeSlotChange(id)}
-                className={[
-                  'group relative rounded-xl border p-3.5 text-left transition-all duration-300',
-                  selected
-                    ? 'border-brand bg-brand/5 shadow-[0_4px_20px_rgba(255,0,110,0.12)]'
-                    : 'border-secondary-100 bg-white hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)]',
-                ].join(' ')}
+                className={`flex-1 rounded-lg border py-2.5 text-center text-xs font-semibold transition-all ${
+                  selected ? 'border-brand bg-brand/5 text-brand' : 'border-secondary-100 text-secondary hover:border-brand/40'
+                }`}
               >
-                <p
-                  className={[
-                    'text-sm font-black',
-                    selected ? 'text-brand' : 'text-secondary',
-                  ].join(' ')}
-                >
-                  {label}
-                </p>
-                <p className="text-[11px] font-semibold text-secondary-400 mt-0.5">{range}</p>
-                {selected && (
-                  <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-brand" />
-                )}
+                {label}
+                <span className="block text-[10px] font-normal text-secondary-400 mt-0.5">{range}</span>
               </button>
             );
           })}

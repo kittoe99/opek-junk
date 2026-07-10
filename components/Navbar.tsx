@@ -29,7 +29,8 @@ const serviceItems = [
   { name: 'Junk Removal', desc: 'Residential & commercial clearing', path: '/services/junk-removal', icon: JunkIcon },
   { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
   { name: 'Property Cleanouts', desc: 'Estate clearing and move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
-  { name: 'Moving Labor', desc: 'Hourly labor for loading and lifting', path: '/services/moving-labor', icon: MovingLaborIcon },
+  { name: 'Local Moving', desc: 'Truck and crew for apartment & small home moves', path: '/services/moving-labor', icon: MovingLaborIcon },
+  { name: 'Small Local Moves', desc: 'Local moving and transport', path: '/services/small-local-moves', icon: MovingLaborIcon },
 ];
 
 const navLinks = [

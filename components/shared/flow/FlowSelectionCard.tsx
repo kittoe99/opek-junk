@@ -43,7 +43,7 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
         )}
       </div>
       {fromPrice && !disabled && (
-        <span className="text-sm font-medium text-secondary-400 shrink-0">{fromPrice}</span>
+        <span className="text-sm font-medium text-pink-500 shrink-0">{fromPrice}</span>
       )}
     </div>
     <div className="flex items-end justify-between gap-4">

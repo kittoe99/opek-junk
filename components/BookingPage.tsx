@@ -1026,15 +1026,6 @@ export const BookingPage: React.FC = () => {
                 title={`Book your ${formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}`}
                 subtitle="Contact, schedule, address, review, and deposit."
               />
-              {estimate && (
-                <div className="bg-white border border-secondary-200 rounded-xl p-4 mb-6 flex items-end justify-between">
-                  <div>
-                    <p className="text-xs font-medium text-secondary-500">Estimated total</p>
-                    <p className="text-sm text-secondary-600 mt-0.5">{estimate.estimatedVolume}</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-secondary">${estimate.price}</p>
-                </div>
-              )}
               <BookingDetailsForm
               estimate={estimate}
               image={image}

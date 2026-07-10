@@ -13,6 +13,7 @@ import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
 import { MovingLaborPage } from './components/services/MovingLaborPage';
+import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
 import { ZipCheckModal } from './components/ZipCheckModal';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
@@ -285,6 +286,7 @@ function App() {
             <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
             <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
             <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
+            <Route path="/services/small-local-moves" element={<SmallLocalMovesPage />} />
             <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />
             <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />

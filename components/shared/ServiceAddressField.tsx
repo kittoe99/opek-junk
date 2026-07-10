@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { CheckCircle2, Loader2, MapPinned } from 'lucide-react';
+import { Loader2, MapPinned } from 'lucide-react';
 import {
   AddressLocationBias,
   AddressSuggestion,
@@ -25,7 +25,7 @@ export const EMPTY_SERVICE_ADDRESS: ServiceAddressValue = {
 };
 
 const INPUT_CLASS =
-  'w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300';
+  'w-full pl-9 pr-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all';
 
 export function isServiceAddressValidated(value: ServiceAddressValue): boolean {
   return Boolean(value.address.trim() && value.city.trim() && value.state.trim());
@@ -142,93 +142,48 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
     setSuggestions([]);
   };
 
-  const locationSummary = formatServiceAddressLocation(value);
-
   return (
-    <div className="space-y-4">
-      <div ref={containerRef} className="relative">
-        <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-          <MapPinned size={11} className="inline mr-1" />
-          {label} *
-        </label>
-        {resolvedBias.zipCode && (
-          <p className="mb-2 text-[11px] font-semibold text-secondary-400">
-            US addresses near ZIP {resolvedBias.zipCode}
-            {resolvedBias.city && resolvedBias.state
-              ? ` (${resolvedBias.city}, ${resolvedBias.state})`
-              : ''}
-          </p>
-        )}
-        {!resolvedBias.zipCode && (
-          <p className="mb-2 text-[11px] font-semibold text-secondary-400">
-            US addresses only
-          </p>
-        )}
-        <div className="relative group">
-          <input
-            value={addressQuery}
-            onChange={(e) => handleAddressInput(e.target.value)}
-            onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-            placeholder={placeholder}
-            autoComplete="off"
-            className={inputClassName}
-          />
-          {loading && (
-            <Loader2 size={14} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-secondary-300" />
-          )}
-        </div>
-        {!validated && addressQuery.length >= 3 && !loading && suggestions.length === 0 && (
-          <p className="mt-2 text-[11px] font-semibold text-secondary-400">
-            Keep typing, then choose your address from the suggestions.
-          </p>
-        )}
-        {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-            {suggestions.map((suggestion, index) => (
-              <button
-                key={`${suggestion.display}-${index}`}
-                type="button"
-                onClick={() => selectSuggestion(suggestion)}
-                className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-50 transition-colors border-b border-secondary-100 last:border-b-0 flex items-start gap-2 text-secondary"
-              >
-                <MapPinned size={14} className="text-brand mt-0.5 shrink-0" />
-                <span>{suggestion.display}</span>
-              </button>
-            ))}
-          </div>
+    <div ref={containerRef} className="relative">
+      <div className="relative">
+        <input
+          value={addressQuery}
+          onChange={(e) => handleAddressInput(e.target.value)}
+          onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+          placeholder={placeholder}
+          autoComplete="off"
+          className={inputClassName}
+        />
+        <MapPinned size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-300 pointer-events-none" />
+        {loading && (
+          <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-secondary-300" />
         )}
       </div>
-
-      {validated && locationSummary && (
-        <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-brand/15 bg-brand/5 animate-fade-in">
-          <CheckCircle2 size={16} className="text-brand mt-0.5 shrink-0" strokeWidth={2.5} />
-          <div className="min-w-0">
-            <p className="text-[10px] font-black text-secondary-400 uppercase tracking-[0.15em]">Confirmed location</p>
-            <p className="text-sm font-bold text-secondary mt-0.5">{value.address}</p>
-            <p className="text-xs font-semibold text-secondary-500 mt-0.5">{locationSummary}</p>
-          </div>
+      {showSuggestions && suggestions.length > 0 && (
+        <div className="absolute z-50 w-full mt-1 bg-white border border-secondary-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+          {suggestions.map((suggestion, index) => (
+            <button
+              key={`${suggestion.display}-${index}`}
+              type="button"
+              onClick={() => selectSuggestion(suggestion)}
+              className="w-full text-left px-3 py-2.5 text-sm hover:bg-secondary-100 transition-colors flex items-start gap-2 text-secondary border-b border-secondary-100 last:border-b-0"
+            >
+              <MapPinned size={14} className="text-secondary-400 mt-0.5 shrink-0" />
+              <span>{suggestion.display}</span>
+            </button>
+          ))}
         </div>
       )}
-
       {validated && showUnitField && (
-        <div className="animate-fade-in">
-          <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-            Apt / Unit / Suite <span className="text-secondary-300 font-normal normal-case">(optional)</span>
-          </label>
-          <input
-            value={value.unitNumber}
-            onChange={(e) => onChange({ ...value, unitNumber: e.target.value })}
-            placeholder="e.g. Apt 4B, Suite 200"
-            autoComplete="address-line2"
-            className={inputClassName}
-          />
-        </div>
+        <input
+          value={value.unitNumber}
+          onChange={(e) => onChange({ ...value, unitNumber: e.target.value })}
+          placeholder="Apt / Unit / Suite (optional)"
+          autoComplete="address-line2"
+          className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl mt-2 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all"
+        />
       )}
-
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-          <p className="text-red-700 text-xs font-bold">{error}</p>
-        </div>
+        <p className="mt-2 text-xs font-semibold text-red-500">{error}</p>
       )}
     </div>
   );

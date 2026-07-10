@@ -479,7 +479,7 @@ export const QuotePage: React.FC = () => {
       const serviceTypeLabel = 
         selectedService === 'junk_removal' ? 'Junk Removal' :
         selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-        selectedService === 'moving_labor' ? 'Moving Labor' :
+        selectedService === 'moving_labor' ? 'Local Moving' :
         selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
         'Junk Removal';
 
@@ -550,7 +550,7 @@ export const QuotePage: React.FC = () => {
       const serviceTypeLabel = 
         selectedService === 'junk_removal' ? 'Junk Removal' :
         selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-        selectedService === 'moving_labor' ? 'Moving Labor' :
+        selectedService === 'moving_labor' ? 'Local Moving' :
         selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
         'Junk Removal';
 
@@ -591,7 +591,7 @@ export const QuotePage: React.FC = () => {
             <h3 className="text-sm font-semibold text-secondary">
               {selectedService === 'junk_removal' ? 'Junk Removal' :
                selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-               selectedService === 'moving_labor' ? 'Moving Labor' :
+               selectedService === 'moving_labor' ? 'Local Moving' :
                selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
                'Junk Removal'}
             </h3>
@@ -643,14 +643,6 @@ export const QuotePage: React.FC = () => {
       <div className={FLOW_PAGE_SHELL}>
         <FlowProgressBar progress={0.95} />
         <div className={FLOW_PAGE_CONTENT}>
-          <div className="bg-white border border-secondary-200 rounded-xl p-4 mb-6 flex items-end justify-between">
-            <div>
-              <p className="text-xs font-medium text-secondary-500">Estimated total</p>
-              <p className="text-sm text-secondary-600 mt-0.5">{estimate.estimatedVolume}</p>
-            </div>
-            <p className="text-2xl font-semibold text-secondary">${estimate.price}</p>
-          </div>
-
           <BookingDetailsForm
             estimate={estimate}
             image={images.length > 0 ? images[0] : null}
@@ -810,7 +802,7 @@ export const QuotePage: React.FC = () => {
                 name,
                 phone,
                 consentAt,
-                [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Moving Labor', quantity: 1 }],
+                [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Local Moving', quantity: 1 }],
                 price
               );
             }}

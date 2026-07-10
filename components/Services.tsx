@@ -4,12 +4,10 @@ import {
   ArrowRight,
   BedDouble,
   Building2,
-  Heart,
   Package,
-  TreePine,
   Warehouse,
   Home,
-  Boxes,
+  Truck,
 } from 'lucide-react';
 import {
   JunkIcon,
@@ -48,10 +46,10 @@ const allServices: ServiceEntry[] = [
     path: '/services/property-cleanout',
   },
   {
-    title: 'Moving Labor',
+    title: 'Local Moving',
     icon: MovingLaborIcon,
     description:
-      'Hire experienced crews by the hour to load, unload, or move items within your home.',
+      'Truck and crew for apartment & small home moves. Hourly rates.',
     path: '/services/moving-labor',
   },
   { title: 'Single item pickup', path: '/quote', icon: Package },
@@ -59,9 +57,8 @@ const allServices: ServiceEntry[] = [
   { title: 'Estate clearing', path: '/services/property-cleanout', icon: Home },
   { title: 'Mattress disposal', path: '/services/mattress-disposal', icon: BedDouble },
   { title: 'Office decommission', path: '/services/junk-removal', icon: Building2 },
-  { title: 'Donation run', path: '/quote', icon: Heart },
-  { title: 'Storage unit cleanout', path: '/services/property-cleanout', icon: Boxes },
-  { title: 'Yard debris', path: '/services/junk-removal', icon: TreePine },
+  { title: 'Small Local Moves', path: '/services/small-local-moves', icon: Truck },
+
 ];
 
 const primaryServices = allServices.filter((s) => s.description);
