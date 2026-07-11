@@ -75,7 +75,7 @@ function GridCard({ item, onClick }: { item: ServiceEntry; onClick: () => void }
       <span className="font-bold text-[15px] md:text-base text-secondary leading-snug pr-2 group-hover:text-brand transition-colors">
         {item.title}
       </span>
-      <span className="text-[#5b7fd4] shrink-0 [&_svg]:stroke-[#5b7fd4] [&_.stroke-brand]:stroke-[#5b7fd4]">
+      <span className="text-secondary shrink-0 [&_.stroke-brand]:stroke-current">
         <Icon className="w-9 h-9 md:w-10 md:h-10" size={40} />
       </span>
     </button>
