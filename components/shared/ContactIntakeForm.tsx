@@ -9,12 +9,14 @@ interface ContactIntakeFormProps {
   serviceType: string;
   onReveal: (name: string, phone: string, smsMarketingConsentAt: string | null) => Promise<void>;
   isLoading?: boolean;
+  onBack?: () => void;
 }
 
 export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
   serviceType,
   onReveal,
   isLoading = false,
+  onBack,
 }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -133,7 +135,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
       </form>
 
       <FlowStickyNav
-        showBack={false}
+        showBack={Boolean(onBack)}
+        onBack={onBack}
         continueType="submit"
         continueForm="contact-intake-form"
         continueLabel="Reveal estimate"

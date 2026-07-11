@@ -9,11 +9,12 @@ import { MovingLaborEstimateFlow } from './shared/MovingLaborEstimateFlow';
 import { detectItemsFromPhotos } from '../services/openaiService';
 import { ItemIconRenderer } from './icons/JunkItemIcons';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
-import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState } from '../types';
+import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState, MovingLaborOptions } from '../types';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
+import { toStoredMovingOptions } from '../lib/bookingPayloads';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
@@ -218,6 +219,7 @@ export const QuotePage: React.FC = () => {
   const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
   const [dumpsterPriceEstimate, setDumpsterPriceEstimate] = useState<PriceEstimate | null>(null);
   const [movingPriceEstimate, setMovingPriceEstimate] = useState<PriceEstimate | null>(null);
+  const [movingOptions, setMovingOptions] = useState<MovingLaborOptions | null>(null);
   const [aiStep, setAiStep] = useState<'tips' | 'upload' | 'items' | 'result'>('tips');
   const [newItemName, setNewItemName] = useState('');
   const [pricingLoading, setPricingLoading] = useState(false);
@@ -470,7 +472,8 @@ export const QuotePage: React.FC = () => {
     phone: string,
     consentAt: string | null,
     items: DetectedItem[],
-    price: PriceEstimate
+    price: PriceEstimate,
+    movingOpts?: MovingLaborOptions | null
   ) => {
     setContactLoading(true);
     try {
@@ -479,7 +482,7 @@ export const QuotePage: React.FC = () => {
       const serviceTypeLabel = 
         selectedService === 'junk_removal' ? 'Junk Removal' :
         selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-        selectedService === 'moving_labor' ? 'Local Moving' :
+        selectedService === 'moving_labor' ? 'Moving Labor' :
         selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
         'Junk Removal';
 
@@ -501,9 +504,11 @@ export const QuotePage: React.FC = () => {
             estimated_volume: price.estimatedVolume,
             price: price.price,
             estimate_summary: price.summary,
+            subtotal: price.subtotal ?? price.price,
             ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
               ? { online_booking_discount: price.onlineBookingDiscount }
               : {}),
+            ...(movingOpts ? { moving_options: toStoredMovingOptions(movingOpts) } : {}),
           },
           photos
         );
@@ -656,6 +661,7 @@ export const QuotePage: React.FC = () => {
             partialBookingId={partialBookingId}
             smsMarketingConsentAt={smsMarketingConsentAt}
             depositSource="quote"
+            movingOptions={movingOptions}
           />
         </div>
       </div>
@@ -797,18 +803,21 @@ export const QuotePage: React.FC = () => {
               setSelectedService(null);
               setSelectedOption(null);
             }}
-            onContactReveal={async (name, phone, consentAt, est, price) => {
+            onContactReveal={async (name, phone, consentAt, est, price, opts) => {
+              setMovingOptions(opts);
               await handleContactReveal(
                 name,
                 phone,
                 consentAt,
                 [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Local Moving', quantity: 1 }],
-                price
+                price,
+                opts
               );
             }}
             onComplete={(result) => {
               setEstimate(result.estimate);
               setMovingPriceEstimate(result.price);
+              setMovingOptions(result.movingOptions);
               setContactName(result.contactName);
               setContactPhone(result.contactPhone);
               setSmsMarketingConsentAt(result.smsMarketingConsentAt);

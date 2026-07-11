@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { QuoteEstimate } from '../types';
+import { MovingAccessType, MovingLaborOptions, QuoteEstimate } from '../types';
 import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent, SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
+import {
+  buildLocationInfoPayload,
+  toStoredMovingOptions,
+} from '../lib/bookingPayloads';
 import { BookingSuccessView } from './shared/BookingSuccessView';
 import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
 import { BookingDepositIntro } from './shared/BookingDepositIntro';
@@ -19,6 +23,19 @@ import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 
+const MOVING_ACCESS_CHOICES: { id: MovingAccessType; label: string }[] = [
+  { id: 'ground', label: 'Ground floor / street level' },
+  { id: 'elevator', label: 'Elevator available' },
+  { id: 'stairs', label: 'Stairs required' },
+];
+
+const MOVING_SCOPE_LABELS: Record<MovingLaborOptions['serviceScope'], string> = {
+  both: 'Load & unload',
+  loading: 'Loading only',
+  unloading: 'Unloading only',
+  rearrange: 'In-home rearrange',
+};
+
 interface BookingDetailsFormProps {
   estimate: QuoteEstimate | null;
   image: string | null;
@@ -32,6 +49,7 @@ interface BookingDetailsFormProps {
   partialBookingId?: string | null;
   smsMarketingConsentAt?: string | null;
   depositSource?: string;
+  movingOptions?: MovingLaborOptions | null;
 }
 
 type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'deposit' | 'payment';
@@ -49,6 +67,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   partialBookingId,
   smsMarketingConsentAt,
   depositSource = 'booking',
+  movingOptions = null,
 }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
@@ -136,6 +155,15 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const isMovingLabor =
     serviceType.toLowerCase().includes('moving') || serviceType === 'Moving Labor';
 
+  const movingScope = movingOptions?.serviceScope ?? 'both';
+  const needsPickupAddress =
+    !isMovingLabor || movingScope === 'both' || movingScope === 'loading' || movingScope === 'rearrange';
+  const needsDropoffAddress =
+    isMovingLabor && (movingScope === 'both' || movingScope === 'unloading');
+  // Unloading-only uses the primary address fields as the unload destination.
+  const unloadingUsesPrimaryAddress = isMovingLabor && movingScope === 'unloading';
+  const showDualMovingAddresses = isMovingLabor && movingScope === 'both';
+
   const [addressValidated, setAddressValidated] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
   const [addressBValidated, setAddressBValidated] = useState(false);
@@ -155,6 +183,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     cityB: defaultZip?.city || '',
     stateB: defaultZip?.state || '',
     zipCodeB: defaultZip?.zipCode || '',
+    pickupAccess: null as MovingAccessType | null,
+    pickupFlights: null as number | null,
+    dropoffAccess: null as MovingAccessType | null,
+    dropoffFlights: null as number | null,
     date: '',
     timeSlot: '' as TimeSlot | '',
     details: '',
@@ -207,6 +239,47 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   const isJunkRemoval =
     serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
 
+  const buildMovingOptionsPayload = () => {
+    if (!isMovingLabor || !movingOptions) return undefined;
+    if (!formData.pickupAccess) {
+      return toStoredMovingOptions(movingOptions);
+    }
+    const dropAccess = unloadingUsesPrimaryAddress
+      ? formData.pickupAccess
+      : showDualMovingAddresses
+        ? formData.dropoffAccess
+        : null;
+    return toStoredMovingOptions(movingOptions, {
+      pickupAccess: formData.pickupAccess,
+      pickupFlights: formData.pickupFlights,
+      dropoffAccess: dropAccess,
+      dropoffFlights: unloadingUsesPrimaryAddress
+        ? formData.pickupFlights
+        : formData.dropoffFlights,
+    });
+  };
+
+  const formatAccessLabel = (access: MovingAccessType | null, flights: number | null) => {
+    if (!access) return '—';
+    if (access === 'stairs') {
+      const n = flights ?? 1;
+      return `Stairs (${n === 4 ? '4+' : n} flight${n === 1 ? '' : 's'})`;
+    }
+    if (access === 'elevator') return 'Elevator';
+    return 'Ground floor';
+  };
+
+  const accessSelectionComplete = (() => {
+    if (!isMovingLabor) return true;
+    if (!formData.pickupAccess) return false;
+    if (formData.pickupAccess === 'stairs' && formData.pickupFlights === null) return false;
+    if (showDualMovingAddresses) {
+      if (!formData.dropoffAccess) return false;
+      if (formData.dropoffAccess === 'stairs' && formData.dropoffFlights === null) return false;
+    }
+    return true;
+  })();
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setContactSubmitting(true);
@@ -250,6 +323,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           estimated_volume: estimate?.estimatedVolume || '',
           price: estimate?.price || 0,
           estimate_summary: estimate?.summary || '',
+          ...(isMovingLabor ? { moving_options: buildMovingOptionsPayload() } : {}),
         },
         photos
       );
@@ -293,14 +367,32 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!addressValidated || !isServiceAddressValidated(formData)) {
-      setAddressError('Please select your address from the suggestions list.');
+
+    if (needsPickupAddress || unloadingUsesPrimaryAddress) {
+      if (!addressValidated || !isServiceAddressValidated(formData)) {
+        setAddressError('Please select your address from the suggestions list.');
+        return;
+      }
+    }
+
+    if (showDualMovingAddresses || (needsDropoffAddress && !unloadingUsesPrimaryAddress)) {
+      if (!addressBValidated || !isServiceAddressValidated({
+        address: formData.addressB,
+        unitNumber: formData.unitNumberB,
+        city: formData.cityB,
+        state: formData.stateB,
+        zipCode: formData.zipCodeB,
+      })) {
+        setAddressBError('Please select the drop-off address from the suggestions list.');
+        return;
+      }
+    }
+
+    if (isMovingLabor && !accessSelectionComplete) {
+      setError('Please select access details for each location.');
       return;
     }
-    if (isMovingLabor && (!addressBValidated || !isServiceAddressValidated({ address: formData.addressB, unitNumber: formData.unitNumberB, city: formData.cityB, state: formData.stateB, zipCode: formData.zipCodeB }))) {
-      setAddressBError('Please select the drop-off address from the suggestions list.');
-      return;
-    }
+
     setAddressError(null);
     setAddressBError(null);
     setError(null);
@@ -347,6 +439,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               estimated_volume: estimate?.estimatedVolume || '',
               price: estimate?.price || 0,
               estimate_summary: estimate?.summary || '',
+              ...(isMovingLabor ? { moving_options: buildMovingOptionsPayload() } : {}),
             },
             photos
           ),
@@ -419,20 +512,28 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             localSmsMarketingConsentAt
           );
 
-          const locationInfo = {
-            address: formData.address,
-            unit_number: formData.unitNumber || null,
-            city: formData.city,
-            state: formData.state,
-            zip_code: formData.zipCode,
-            ...(isMovingLabor ? {
-              address_b: formData.addressB,
-              unit_number_b: formData.unitNumberB || null,
-              city_b: formData.cityB,
-              state_b: formData.stateB,
-              zip_code_b: formData.zipCodeB,
-            } : {}),
-          };
+          const locationInfo = buildLocationInfoPayload(
+            {
+              address: formData.address,
+              unitNumber: formData.unitNumber,
+              city: formData.city,
+              state: formData.state,
+              zipCode: formData.zipCode,
+              pickupAccess: formData.pickupAccess,
+              pickupFlights: formData.pickupFlights,
+              addressB: formData.addressB,
+              unitNumberB: formData.unitNumberB,
+              cityB: formData.cityB,
+              stateB: formData.stateB,
+              zipCodeB: formData.zipCodeB,
+              dropoffAccess: formData.dropoffAccess,
+              dropoffFlights: formData.dropoffFlights,
+              includeDropoff: showDualMovingAddresses,
+            },
+            { isMoving: isMovingLabor }
+          );
+
+          const movingOptionsPayload = buildMovingOptionsPayload();
 
           const bookingDetails = withBookingPhotos(
             {
@@ -444,10 +545,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               estimated_volume: estimate?.estimatedVolume || '',
               price: estimate?.price || 0,
               estimate_summary: estimate?.summary || '',
+              subtotal: estimate?.subtotal ?? estimate?.price ?? 0,
+              online_booking_discount: estimate?.onlineBookingDiscount ?? null,
               deposit_amount: BOOKING_DEPOSIT_AMOUNT,
               deposit_paid: true,
               stripe_payment_intent_id: paymentIntentId,
               terms_accepted_at: new Date().toISOString(),
+              ...(movingOptionsPayload ? { moving_options: movingOptionsPayload } : {}),
             },
             photos
           );
@@ -515,7 +619,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     return (
       <BookingSuccessView
         orderNumber={orderNumber}
-        serviceType={normalizedServiceType}
+        serviceType={isMovingLabor ? 'Local Moving' : normalizedServiceType}
         name={formData.name}
         phone={formData.phone}
         email={formData.email}
@@ -524,6 +628,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         city={formData.city}
         state={formData.state}
         zipCode={formData.zipCode}
+        addressB={showDualMovingAddresses ? formData.addressB : undefined}
+        unitNumberB={showDualMovingAddresses ? formData.unitNumberB : undefined}
+        cityB={showDualMovingAddresses ? formData.cityB : undefined}
+        stateB={showDualMovingAddresses ? formData.stateB : undefined}
+        zipCodeB={showDualMovingAddresses ? formData.zipCodeB : undefined}
         date={formData.date}
         details={formData.details}
         price={estimate?.price}
@@ -678,40 +787,133 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         <form id="booking-address-form" onSubmit={handleAddressSubmit}>
           <div className="text-center mb-6">
             <h1 className="text-xl md:text-2xl font-semibold text-secondary tracking-tight leading-snug">
-              {isMovingLabor ? 'Pickup & drop-off' : 'Pickup address'}
+              {isMovingLabor
+                ? movingScope === 'rearrange'
+                  ? 'Service address'
+                  : movingScope === 'loading'
+                    ? 'Pickup address'
+                    : movingScope === 'unloading'
+                      ? 'Unload address'
+                      : 'Pickup & drop-off'
+                : 'Pickup address'}
             </h1>
             <p className="text-sm text-secondary-500 mt-2 leading-relaxed">
-              {isMovingLabor ? 'Where should the provider start and end?' : 'Where should the provider come to collect?'}
+              {isMovingLabor
+                ? movingScope === 'rearrange'
+                  ? 'Where should the crew meet you?'
+                  : movingScope === 'loading'
+                    ? 'Where should the crew load from?'
+                    : movingScope === 'unloading'
+                      ? 'Where should the crew unload?'
+                      : 'Where should the provider start and end?'
+                : 'Where should the provider come to collect?'}
             </p>
           </div>
 
-          <p className="text-xs font-semibold text-secondary-500 mb-2">{isMovingLabor ? 'Pickup location' : 'Address'}</p>
-          <ServiceAddressField
-            label="Service Address"
-            value={{
-              address: formData.address,
-              unitNumber: formData.unitNumber,
-              city: formData.city,
-              state: formData.state,
-              zipCode: formData.zipCode,
-            }}
-            onChange={handleAddressChange}
-            validated={addressValidated}
-            onValidatedChange={setAddressValidated}
-            error={addressError}
-            onErrorChange={setAddressError}
-            locationBias={
-              defaultZip
-                ? {
-                    zipCode: defaultZip.zipCode,
-                    city: defaultZip.city,
-                    state: defaultZip.state,
-                  }
-                : undefined
-            }
-          />
+          {(needsPickupAddress || unloadingUsesPrimaryAddress) && (
+            <>
+              <p className="text-xs font-semibold text-secondary-500 mb-2">
+                {unloadingUsesPrimaryAddress
+                  ? 'Unload location'
+                  : movingScope === 'rearrange'
+                    ? 'Address'
+                    : isMovingLabor
+                      ? 'Pickup location'
+                      : 'Address'}
+              </p>
+              <ServiceAddressField
+                label="Service Address"
+                value={{
+                  address: formData.address,
+                  unitNumber: formData.unitNumber,
+                  city: formData.city,
+                  state: formData.state,
+                  zipCode: formData.zipCode,
+                }}
+                onChange={handleAddressChange}
+                validated={addressValidated}
+                onValidatedChange={setAddressValidated}
+                error={addressError}
+                onErrorChange={setAddressError}
+                locationBias={
+                  defaultZip
+                    ? {
+                        zipCode: defaultZip.zipCode,
+                        city: defaultZip.city,
+                        state: defaultZip.state,
+                      }
+                    : undefined
+                }
+              />
 
-          {isMovingLabor && (
+              {isMovingLabor && (
+                <div className="mt-3 mb-4 rounded-xl border border-secondary-100 bg-white p-4">
+                  <p className="text-xs font-semibold text-secondary-500 mb-2">
+                    {unloadingUsesPrimaryAddress ? 'Access at unload' : 'Access at this location'}
+                  </p>
+                  <div className="space-y-2">
+                    {MOVING_ACCESS_CHOICES.map((choice) => {
+                      const selected = formData.pickupAccess === choice.id;
+                      return (
+                        <button
+                          key={choice.id}
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              pickupAccess: choice.id,
+                              pickupFlights: choice.id === 'stairs' ? prev.pickupFlights : null,
+                            }))
+                          }
+                          className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition-all flex items-center gap-2.5 ${
+                            selected
+                              ? 'border-brand bg-brand/5 font-semibold text-brand'
+                              : 'border-secondary-100 text-secondary hover:border-brand/40'
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
+                              selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                            }`}
+                          >
+                            {selected && <Check size={12} className="text-white" strokeWidth={3} />}
+                          </div>
+                          {choice.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {formData.pickupAccess === 'stairs' && (
+                    <div className="mt-3">
+                      <p className="text-[11px] font-semibold text-secondary-400 mb-2">Flights of stairs</p>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4].map((n) => {
+                          const selected = formData.pickupFlights === n;
+                          return (
+                            <button
+                              key={n}
+                              type="button"
+                              onClick={() => setFormData((prev) => ({ ...prev, pickupFlights: n }))}
+                              className={`flex-1 rounded-lg border py-2 text-sm font-semibold inline-flex items-center justify-center gap-1 ${
+                                selected
+                                  ? 'border-brand bg-brand/5 text-brand'
+                                  : 'border-secondary-100 text-secondary'
+                              }`}
+                            >
+                              {selected && <Check size={14} strokeWidth={3} />}
+                              {n === 4 ? '4+' : n}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+
+          {showDualMovingAddresses && (
             <div className="mt-4">
               <p className="text-xs font-semibold text-secondary-500 mb-2">Drop-off location</p>
               <ServiceAddressField
@@ -738,14 +940,84 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                     : undefined
                 }
               />
+
+              <div className="mt-3 rounded-xl border border-secondary-100 bg-white p-4">
+                <p className="text-xs font-semibold text-secondary-500 mb-2">Access at drop-off</p>
+                <div className="space-y-2">
+                  {MOVING_ACCESS_CHOICES.map((choice) => {
+                    const selected = formData.dropoffAccess === choice.id;
+                    return (
+                      <button
+                        key={choice.id}
+                        type="button"
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            dropoffAccess: choice.id,
+                            dropoffFlights: choice.id === 'stairs' ? prev.dropoffFlights : null,
+                          }))
+                        }
+                        className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition-all flex items-center gap-2.5 ${
+                          selected
+                            ? 'border-brand bg-brand/5 font-semibold text-brand'
+                            : 'border-secondary-100 text-secondary hover:border-brand/40'
+                        }`}
+                      >
+                        <div
+                          className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
+                            selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                          }`}
+                        >
+                          {selected && <Check size={12} className="text-white" strokeWidth={3} />}
+                        </div>
+                        {choice.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                {formData.dropoffAccess === 'stairs' && (
+                  <div className="mt-3">
+                    <p className="text-[11px] font-semibold text-secondary-400 mb-2">Flights of stairs</p>
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4].map((n) => {
+                        const selected = formData.dropoffFlights === n;
+                        return (
+                          <button
+                            key={n}
+                            type="button"
+                            onClick={() => setFormData((prev) => ({ ...prev, dropoffFlights: n }))}
+                            className={`flex-1 rounded-lg border py-2 text-sm font-semibold inline-flex items-center justify-center gap-1 ${
+                              selected
+                                ? 'border-brand bg-brand/5 text-brand'
+                                : 'border-secondary-100 text-secondary'
+                            }`}
+                          >
+                            {selected && <Check size={14} strokeWidth={3} />}
+                            {n === 4 ? '4+' : n}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </form>
+        {error && step === 'address' && (
+          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
+            <p className="text-red-700 text-xs font-bold">{error}</p>
+          </div>
+        )}
         <FlowStickyNav
           onBack={handleBackStep}
           continueType="submit"
           continueForm="booking-address-form"
-          continueDisabled={isMovingLabor ? !(addressValidated && addressBValidated) : !addressValidated}
+          continueDisabled={
+            (showDualMovingAddresses
+              ? !(addressValidated && addressBValidated)
+              : !addressValidated) || !accessSelectionComplete
+          }
         />
         </>
       )}
@@ -852,7 +1124,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 value={formData.details}
                 onChange={handleInputChange}
                 rows={3}
-                placeholder={serviceType === 'Moving Labor' ? "Tell the service provider about the items needing relocation, access instructions, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
+                placeholder={isMovingLabor ? "Tell the crew about fragile items, parking, gate codes, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
                 className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
               />
             </div>
@@ -868,11 +1140,68 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <div className="flex justify-between"><span className="text-secondary-400">Name</span><span className="font-semibold text-secondary text-right">{formData.name}</span></div>
               <div className="flex justify-between"><span className="text-secondary-400">Email</span><span className="font-semibold text-secondary text-right">{formData.email}</span></div>
               <div className="flex justify-between"><span className="text-secondary-400">Phone</span><span className="font-semibold text-secondary text-right">{formData.phone}</span></div>
-              <div className="flex justify-between"><span className="text-secondary-400">Pickup</span><span className="font-semibold text-secondary text-right max-w-[60%] text-right">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}{formData.city ? `, ${[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}` : ''}</span></div>
-              {isMovingLabor && formData.addressB && (
-                <div className="flex justify-between"><span className="text-secondary-400">Drop-off</span><span className="font-semibold text-secondary text-right max-w-[60%] text-right">{formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}{formData.cityB ? `, ${[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}` : ''}</span></div>
+              <div className="flex justify-between gap-4">
+                <span className="text-secondary-400 shrink-0">
+                  {unloadingUsesPrimaryAddress ? 'Unload' : isMovingLabor && movingScope === 'rearrange' ? 'Address' : 'Pickup'}
+                </span>
+                <span className="font-semibold text-secondary text-right max-w-[60%]">
+                  {formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}{formData.city ? `, ${[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}` : ''}
+                </span>
+              </div>
+              {isMovingLabor && (
+                <div className="flex justify-between">
+                  <span className="text-secondary-400">
+                    {unloadingUsesPrimaryAddress ? 'Unload access' : 'Pickup access'}
+                  </span>
+                  <span className="font-semibold text-secondary text-right">
+                    {formatAccessLabel(formData.pickupAccess, formData.pickupFlights)}
+                  </span>
+                </div>
               )}
-              <div className="flex justify-between"><span className="text-secondary-400">Service</span><span className="font-semibold text-secondary text-right">{serviceType}</span></div>
+              {showDualMovingAddresses && formData.addressB && (
+                <>
+                  <div className="flex justify-between gap-4">
+                    <span className="text-secondary-400 shrink-0">Drop-off</span>
+                    <span className="font-semibold text-secondary text-right max-w-[60%]">
+                      {formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}{formData.cityB ? `, ${[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}` : ''}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-secondary-400">Drop-off access</span>
+                    <span className="font-semibold text-secondary text-right">
+                      {formatAccessLabel(formData.dropoffAccess, formData.dropoffFlights)}
+                    </span>
+                  </div>
+                </>
+              )}
+              <div className="flex justify-between"><span className="text-secondary-400">Service</span><span className="font-semibold text-secondary text-right">{isMovingLabor ? 'Local Moving' : serviceType}</span></div>
+              {movingOptions && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-secondary-400">Job type</span>
+                    <span className="font-semibold text-secondary text-right">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-secondary-400">Move size</span>
+                    <span className="font-semibold text-secondary text-right">
+                      {movingOptions.homeSize === 'studio' ? 'Studio' : movingOptions.homeSize === '1bed' ? '1-Bedroom' : movingOptions.homeSize === '2bed' ? '2-Bedroom' : '3+ Bedrooms'}
+                      {movingOptions.needsTruck ? ' · +Truck' : ''}
+                    </span>
+                  </div>
+                  {(movingOptions.heavyItems.length > 0 || movingOptions.needsPackingHelp || movingOptions.needsDisassembly) && (
+                    <div className="flex justify-between gap-4">
+                      <span className="text-secondary-400 shrink-0">Extras</span>
+                      <span className="font-semibold text-secondary text-right max-w-[60%]">
+                        {[
+                          movingOptions.heavyItems.length ? `${movingOptions.heavyItems.length} heavy item(s)` : null,
+                          movingOptions.needsPackingHelp ? 'Packing help' : null,
+                          movingOptions.needsDisassembly ? 'Disassembly' : null,
+                        ].filter(Boolean).join(' · ')}
+                      </span>
+                    </div>
+                  )}
+                </>
+              )}
               <div className="flex justify-between"><span className="text-secondary-400">Date</span><span className="font-semibold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
               {isJunkRemoval && localImage && (
                 <div className="flex justify-between"><span className="text-secondary-400">Photo</span><span className="font-semibold text-secondary text-right">Attached</span></div>

@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, ThreeHelpersIcon, PhotoEstimateIcon, InputZipIcon } from './icons/ServiceIcons';
-import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate } from '../types';
+import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate, MovingLaborOptions } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
+import { toStoredMovingOptions } from '../lib/bookingPayloads';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
@@ -147,6 +148,7 @@ export const BookingPage: React.FC = () => {
   const [savedEstimateItems, setSavedEstimateItems] = useState<DetectedItem[]>([]);
   const [savedPriceEstimate, setSavedPriceEstimate] = useState<PriceEstimate | null>(null);
   const [resumeEstimateFlow, setResumeEstimateFlow] = useState(false);
+  const [movingOptions, setMovingOptions] = useState<MovingLaborOptions | null>(null);
 
   useEffect(() => {
     if (formData.serviceType !== 'Moving Labor') {
@@ -194,7 +196,13 @@ export const BookingPage: React.FC = () => {
     }
   }, [estimateData]);
 
-  const handleContactReveal = async (name: string, phone: string, consentAt: string | null, est: QuoteEstimate) => {
+  const handleContactReveal = async (
+    name: string,
+    phone: string,
+    consentAt: string | null,
+    est: QuoteEstimate,
+    movingOpts?: MovingLaborOptions | null
+  ) => {
     setContactLoading(true);
     try {
       const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
@@ -221,6 +229,9 @@ export const BookingPage: React.FC = () => {
             estimated_volume: est.estimatedVolume,
             price: est.price,
             estimate_summary: est.summary,
+            subtotal: est.subtotal ?? est.price,
+            online_booking_discount: est.onlineBookingDiscount ?? null,
+            ...(movingOpts ? { moving_options: toStoredMovingOptions(movingOpts) } : {}),
           },
           photos
         );
@@ -988,11 +999,13 @@ export const BookingPage: React.FC = () => {
           {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
             <MovingLaborEstimateFlow
               onBack={handlePrevStep}
-              onContactReveal={async (name, phone, consentAt, est) => {
-                await handleContactReveal(name, phone, consentAt, est);
+              onContactReveal={async (name, phone, consentAt, est, _price, opts) => {
+                setMovingOptions(opts);
+                await handleContactReveal(name, phone, consentAt, est, opts);
               }}
               onComplete={(result) => {
                 setEstimate(result.estimate);
+                setMovingOptions(result.movingOptions);
                 setContactName(result.contactName);
                 setContactPhone(result.contactPhone);
                 setSmsMarketingConsentAt(result.smsMarketingConsentAt);
@@ -1047,6 +1060,7 @@ export const BookingPage: React.FC = () => {
               prefilledPhone={contactPhone}
               partialBookingId={partialBookingId}
               smsMarketingConsentAt={smsMarketingConsentAt}
+              movingOptions={movingOptions}
             />
             </>
           )}

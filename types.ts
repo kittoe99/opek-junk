@@ -39,6 +39,24 @@ export interface QuoteEstimate {
   onlineBookingDiscount?: number;
 }
 
+/** Structured options collected during Local Moving / Moving Labor estimate. */
+export type MovingServiceScope = 'both' | 'loading' | 'unloading' | 'rearrange';
+export type MovingHomeSize = 'studio' | '1bed' | '2bed' | '3plus';
+export type MovingAccessType = 'ground' | 'elevator' | 'stairs';
+
+export interface MovingLaborOptions {
+  serviceScope: MovingServiceScope;
+  needsTruck: boolean;
+  homeSize: MovingHomeSize;
+  accessType: MovingAccessType;
+  flightsOfStairs: number;
+  heavyItems: string[];
+  needsPackingHelp: boolean;
+  needsDisassembly: boolean;
+  helpers: number;
+  hours: number;
+}
+
 export enum LoadingState {
   IDLE = 'IDLE',
   ANALYZING = 'ANALYZING',

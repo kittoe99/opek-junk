@@ -12,6 +12,11 @@ interface BookingSuccessViewProps {
   city: string;
   state: string;
   zipCode: string;
+  addressB?: string;
+  unitNumberB?: string | null;
+  cityB?: string;
+  stateB?: string;
+  zipCodeB?: string;
   date: string;
   details?: string;
   price?: number | null;
@@ -32,6 +37,11 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
   city,
   state,
   zipCode,
+  addressB,
+  unitNumberB,
+  cityB,
+  stateB,
+  zipCodeB,
   date,
   details,
   price,
@@ -62,12 +72,23 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
     .filter(Boolean)
     .join(', ');
 
+  const fullAddressB = addressB
+    ? [
+        addressB,
+        unitNumberB ? `Unit ${unitNumberB}` : null,
+        [cityB, stateB, zipCodeB].filter(Boolean).join(', '),
+      ]
+        .filter(Boolean)
+        .join(', ')
+    : null;
+
   const summary: SummaryRow[] = [
     { label: 'Service', value: serviceType },
     { label: 'Name', value: name },
     { label: 'Phone', value: phone },
     { label: 'Email', value: email },
-    { label: 'Address', value: fullAddress },
+    { label: addressB ? 'Pickup' : 'Address', value: fullAddress },
+    ...(fullAddressB ? [{ label: 'Drop-off', value: fullAddressB }] : []),
     { label: 'Date', value: formattedDate },
     ...(itemsDetected?.length
       ? [{ label: 'Items', value: itemsDetected.join(', ') }]

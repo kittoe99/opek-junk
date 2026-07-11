@@ -191,23 +191,85 @@ function formatPhotoField(details: Record<string, unknown>): string {
   return allPhotoUrls[0] || '';
 }
 
+function formatMovingOptionsField(details: Record<string, any>): string {
+  const opts = details.moving_options;
+  if (!opts || typeof opts !== 'object') return '';
+  const scopeMap: Record<string, string> = {
+    both: 'Load & unload',
+    loading: 'Loading only',
+    unloading: 'Unloading only',
+    rearrange: 'In-home rearrange',
+  };
+  const sizeMap: Record<string, string> = {
+    studio: 'Studio',
+    '1bed': '1-Bedroom',
+    '2bed': '2-Bedroom',
+    '3plus': '3+ Bedrooms',
+  };
+  const accessMap: Record<string, string> = {
+    ground: 'Ground floor',
+    elevator: 'Elevator',
+    stairs: 'Stairs',
+  };
+  const parts = [
+    scopeMap[opts.service_scope] || opts.service_scope,
+    opts.needs_truck ? 'Truck included' : 'Customer truck',
+    sizeMap[opts.home_size] || opts.home_size,
+    opts.helpers != null ? `${opts.helpers} helpers` : '',
+    opts.hours != null ? `~${opts.hours} hrs` : '',
+    accessMap[opts.access_type] || opts.access_type,
+  ];
+  if (Array.isArray(opts.heavy_items) && opts.heavy_items.length) {
+    parts.push(`${opts.heavy_items.length} heavy item(s)`);
+  }
+  if (opts.needs_packing_help) parts.push('Packing help');
+  if (opts.needs_disassembly) parts.push('Disassembly');
+  return parts.filter(Boolean).join(' · ');
+}
+
+function formatLocationBlock(location: Record<string, any>): string {
+  const pickup = [
+    location.address,
+    location.unit_number,
+    location.city,
+    location.state,
+    location.zip_code,
+  ].filter(Boolean).join(', ');
+
+  const dropoff = [
+    location.address_b,
+    location.unit_number_b,
+    location.city_b,
+    location.state_b,
+    location.zip_code_b,
+  ].filter(Boolean).join(', ');
+
+  let rows = detailRow(dropoff ? 'Pickup' : 'Address', pickup);
+  if (location.access) {
+    const flights = location.flights_of_stairs ? ` (${location.flights_of_stairs} flights)` : '';
+    rows += detailRow('Pickup access', `${location.access}${flights}`);
+  }
+  if (dropoff) {
+    rows += detailRow('Drop-off', dropoff);
+    if (location.access_b) {
+      const flights = location.flights_of_stairs_b ? ` (${location.flights_of_stairs_b} flights)` : '';
+      rows += detailRow('Drop-off access', `${location.access_b}${flights}`);
+    }
+  }
+  return rows;
+}
+
 function adminBooking(r: Record<string, any>): { subject: string; html: string } {
   const customer = r.customer_info || {};
   const location = r.location_info || {};
   const details = r.booking_details || {};
   
-  const fullAddress = [
-    location.address,
-    location.unit_number,
-    location.city,
-    location.state,
-    location.zip_code
-  ].filter(Boolean).join(', ');
-
   const priceVal = details.price ? `$${details.price}` : '';
   const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
   const photoDisplay = formatPhotoField(details);
   const items = formatItemList(details);
+  const movingSummary = formatMovingOptionsField(details);
+  const discountVal = details.online_booking_discount ? `$${details.online_booking_discount}` : '';
 
   return {
     subject: `New booking: ${customer.name || ''}${r.order_number ? ` (${r.order_number})` : ''}`,
@@ -219,13 +281,14 @@ function adminBooking(r: Record<string, any>): { subject: string; html: string }
         detailRow('Email', customer.email) +
         detailRow('Phone', customer.phone) +
         detailRow('Service', details.service_type) +
-        detailRow('Address', fullAddress) +
-        detailRow('Zip', location.zip_code) +
+        formatLocationBlock(location) +
         detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         detailRow('Est. price', priceVal) +
+        detailRow('Online discount', discountVal) +
         detailRow('Deposit', details.deposit_paid ? (depositVal || 'Paid') : '') +
         detailRow('Payment ID', details.stripe_payment_intent_id) +
         detailRow('Items', items) +
+        detailRow('Moving options', movingSummary) +
         detailRow('Volume', details.estimated_volume) +
         detailRow('Photo', photoDisplay) +
         detailRow('Details', details.details)
@@ -240,6 +303,7 @@ function adminPrebooking(r: Record<string, any>): { subject: string; html: strin
   const details = r.booking_details || {};
   const priceVal = details.price ? `$${details.price}` : '';
   const items = formatItemList(details);
+  const movingSummary = formatMovingOptionsField(details);
 
   return {
     subject: `New lead: ${customer.name || 'Unknown'}${details.service_type ? ` \u2014 ${details.service_type}` : ''}`,
@@ -254,6 +318,7 @@ function adminPrebooking(r: Record<string, any>): { subject: string; html: strin
         detailRow('Zip', details.zip_code) +
         detailRow('Est. price', priceVal) +
         detailRow('Items', items) +
+        detailRow('Moving options', movingSummary) +
         detailRow('Volume', details.estimated_volume) +
         detailRow('Photo', formatPhotoField(details)) +
         detailRow('Summary', details.estimate_summary) +
@@ -352,37 +417,43 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
   const location = r.location_info || {};
   const details = r.booking_details || {};
 
-  const fullAddress = [
-    location.address,
-    location.unit_number,
-    location.city,
-    location.state,
-    location.zip_code
-  ].filter(Boolean).join(', ');
-
   const name = (customer.name || '').split(' ')[0] || 'there';
   const priceVal = details.price ? `$${details.price}` : '';
   const depositVal = details.deposit_amount ? `$${details.deposit_amount}` : '';
+  const serviceLabel = details.service_type || 'service';
+  const isMoving = String(serviceLabel).toLowerCase().includes('moving');
+  const isMattress = String(serviceLabel).toLowerCase().includes('mattress');
 
   return {
     subject: `Booking confirmed, ${name}`,
     html: emailLayout(
       heading(`Hi ${name}, your pickup is scheduled`) +
-      paragraph('Your junk removal booking is confirmed.') +
+      paragraph(
+        isMattress
+          ? 'Your mattress disposal booking is confirmed.'
+          : isMoving
+            ? 'Your local moving booking is confirmed.'
+            : 'Your junk removal booking is confirmed.'
+      ) +
       detailsBlock(
         detailRow('Service', details.service_type) +
-        detailRow('Address', fullAddress) +
+        formatLocationBlock(location) +
         detailRow('Date', formatPreferredSchedule(details.preferred_date, details.preferred_time)) +
         (priceVal ? detailRow('Est. price', priceVal) : '') +
         (details.deposit_paid ? detailRow('Deposit paid', depositVal || 'Yes') : '') +
         detailRow('Items', formatItemList(details)) +
+        detailRow('Moving options', formatMovingOptionsField(details)) +
         detailRow('Details', details.details)
       ) +
       paragraph('<strong>What to expect:</strong>') +
       steps([
-        'Provider details will be sent after been matched.',
+        'Provider details will be sent after you have been matched.',
         'They arrive on time at your scheduled date',
-        'Junk is removed and recycled responsibly',
+        isMoving
+          ? 'Crew completes your move as booked'
+          : isMattress
+            ? 'Mattress is removed and recycled responsibly'
+            : 'Junk is removed and recycled responsibly',
       ]) +
       paragraph('Need to reschedule? Call us anytime.') +
       ctaLink(`Call ${PHONE}`, PHONE_LINK) +
