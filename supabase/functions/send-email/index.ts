@@ -252,20 +252,22 @@ serve(async (req) => {
         </div>
       `
     } else if (type === 'driver_approved') {
+      const siteUrl = (Deno.env.get('SITE_URL') || 'https://opekjunkremoval.com').replace(/\/+$/, '')
       const signupEmail = encodeURIComponent(String(rawRecord.email || ''))
       const signupName = encodeURIComponent(String(rawRecord.name || ''))
-      const signupUrl = `https://opekjunkremoval.com/sign-up?email=${signupEmail}&name=${signupName}`
-      subject = `You're Approved — Create Your Opek Contractor Account`
+      const signupPhone = encodeURIComponent(String(rawRecord.phone || ''))
+      const signupUrl = `${siteUrl}/sign-up?email=${signupEmail}&name=${signupName}&phone=${signupPhone}`
+      subject = `You're Approved — Set Your Opek Contractor Password`
 
       htmlContent = `
         <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; font-family: sans-serif; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
           ${headerHtml}
           <div style="padding: 32px 24px; color: #1f2937;">
             <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; margin-bottom: 8px; color: #111827;">
-              Welcome to the Opek network!
+              You're approved!
             </h2>
             <p style="font-size: 14px; line-height: 1.5; color: #4b5563; margin-top: 0; margin-bottom: 24px;">
-              Hi ${record.name || 'Contractor'}, your application has been approved. Create your contractor login with the email below to start receiving job offers in the driver app.
+              Hi ${record.name || 'Contractor'}, your contractor application has been approved. Click the button below to set your password and start receiving jobs.
             </p>
 
             <div style="background-color: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; padding: 20px; margin-bottom: 24px;">
@@ -274,17 +276,23 @@ serve(async (req) => {
                   <td style="color: #6b7280; padding-bottom: 8px; font-weight: 700; width: 40%;">Approved email</td>
                   <td style="color: #111827; padding-bottom: 8px; font-weight: 600;">${record.email || ''}</td>
                 </tr>
+                ${record.phone ? `
+                <tr>
+                  <td style="color: #6b7280; padding-bottom: 8px; font-weight: 700;">Phone</td>
+                  <td style="color: #111827; padding-bottom: 8px; font-weight: 600;">${record.phone}</td>
+                </tr>
+                ` : ''}
               </table>
             </div>
 
             <div style="text-align: center; margin-top: 8px; margin-bottom: 24px;">
               <a href="${signupUrl}" style="background-color: #355070; color: #ffffff; padding: 14px 28px; font-size: 13px; font-weight: 700; text-decoration: none; border-radius: 999px; display: inline-block;">
-                Create your account
+                Set your password
               </a>
             </div>
 
             <p style="font-size: 12px; line-height: 1.5; color: #6b7280; margin: 0;">
-              This link is only for approved contractors. You must use <strong>${record.email || 'your approved email'}</strong> when creating your password.
+              This link brings you to a page where you'll create a password. You must use <strong>${record.email || 'your approved email'}</strong> — it's the only email that will work.
             </p>
           </div>
           ${footerHtml}
