@@ -19,12 +19,7 @@ import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
 import { JunkRemovalPriceBreakdown } from './shared/JunkRemovalPriceBreakdown';
-import {
-  FLOW_PAGE_SHELL,
-  FLOW_PAGE_CONTENT,
-  flowPageMaxWidth,
-  scrollToFlowStep,
-} from '../lib/flowPageLayout';
+import { FLOW_PAGE_SHELL, FLOW_PAGE_CONTENT, flowPageMaxWidth, scrollToFlowStep } from '../lib/flowPageLayout';
 import { FlowProgressBar } from './shared/flow/FlowProgressBar';
 import { FlowZipCheck } from './shared/flow/FlowZipCheck';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
