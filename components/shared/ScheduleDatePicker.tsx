@@ -181,7 +181,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div>
+      <div className="rounded-xl border border-secondary-100 bg-white p-3 shadow-sm">
         <p className="text-xs font-semibold text-secondary-500 mb-2">Time slot</p>
         <div className="flex gap-2">
           {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
@@ -192,11 +192,11 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 type="button"
                 onClick={() => onTimeSlotChange(id)}
                 className={`flex-1 rounded-lg border py-2.5 text-center text-xs font-semibold transition-all ${
-                  selected ? 'border-brand bg-brand/5 text-brand' : 'border-secondary-100 text-secondary hover:border-brand/40'
+                  selected ? 'border-secondary bg-secondary text-white shadow-sm' : 'border-secondary-100 bg-[#faf9f7] text-secondary hover:border-secondary-300 hover:bg-secondary-50'
                 }`}
               >
                 {label}
-                <span className="block text-[10px] font-normal text-secondary-400 mt-0.5">{range}</span>
+                <span className={`block text-[10px] font-normal mt-0.5 ${selected ? 'text-white/70' : 'text-secondary-400'}`}>{range}</span>
               </button>
             );
           })}

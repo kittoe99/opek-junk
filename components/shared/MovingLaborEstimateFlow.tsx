@@ -62,7 +62,7 @@ interface MovingLaborEstimateFlowProps {
   initialContact?: { name: string; phone: string; consentAt: string | null };
 }
 
-type FlowStep = 'scope' | 'truck' | 'size' | 'access' | 'extras' | 'result';
+type FlowStep = 'scope' | 'truck' | 'size' | 'crew' | 'access' | 'extras' | 'result';
 
 const SERVICE_SCOPES: {
   id: MovingServiceScope;
@@ -100,13 +100,25 @@ const HOME_SIZES: {
   id: MovingHomeSize;
   label: string;
   desc: string;
-  helpers: 2 | 3;
   hours: number;
 }[] = [
-  { id: 'studio', label: 'Studio / Efficiency', desc: 'Fits in a small truck — minimal furniture', helpers: 2, hours: 2 },
-  { id: '1bed', label: '1-Bedroom', desc: 'Apartment or small home — sofa, bed, boxes', helpers: 2, hours: 3 },
-  { id: '2bed', label: '2-Bedroom', desc: 'Medium home — multiple rooms of furniture', helpers: 3, hours: 4 },
-  { id: '3plus', label: '3+ Bedrooms', desc: 'Large home or full house move', helpers: 3, hours: 6 },
+  { id: 'studio', label: 'Studio / Efficiency', desc: 'Fits in a small truck — minimal furniture', hours: 2 },
+  { id: '1bed', label: '1-Bedroom', desc: 'Apartment or small home — sofa, bed, boxes', hours: 3 },
+  { id: '2bed', label: '2-Bedroom', desc: 'Medium home — multiple rooms of furniture', hours: 4 },
+  { id: '3plus', label: '3+ Bedrooms', desc: 'Large home or full house move', hours: 6 },
+];
+
+const CREW_OPTIONS = [
+  {
+    helpers: 1 as const,
+    label: '1 helper — I will help',
+    desc: '$79/hour · Best when you can assist with lifting',
+  },
+  {
+    helpers: 2 as const,
+    label: '2 helpers',
+    desc: '$119/hour · A complete crew handles the lifting',
+  },
 ];
 
 const ACCESS_OPTIONS: {
@@ -206,7 +218,7 @@ export function computeMovingLaborHours(options: Omit<MovingLaborOptions, 'helpe
   if (options.needsPackingHelp) hours += 1;
   if (options.needsDisassembly) hours += 1;
 
-  return { helpers: size.helpers, hours };
+  return { helpers: options.helpers ?? 2, hours };
 }
 
 export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = ({
@@ -218,6 +230,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
 }) => {
   const [serviceScope, setServiceScope] = useState<MovingServiceScope | null>(null);
   const [homeSize, setHomeSize] = useState<MovingHomeSize | null>(null);
+  const [helpers, setHelpers] = useState<1 | 2 | null>(null);
   const [needsTruck, setNeedsTruck] = useState<boolean | null>(null);
   const [accessType, setAccessType] = useState<MovingAccessType | null>(null);
   const [flightsOfStairs, setFlightsOfStairs] = useState<number | null>(null);
@@ -238,11 +251,11 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   const selectedSize = homeSize ? HOME_SIZES.find((s) => s.id === homeSize)! : null;
 
   const draftOptions: MovingLaborOptions | null =
-    serviceScope && homeSize && accessType && (serviceScope === 'rearrange' || needsTruck !== null) &&
+    serviceScope && homeSize && helpers && accessType && (serviceScope === 'rearrange' || needsTruck !== null) &&
     (accessType !== 'stairs' || flightsOfStairs !== null)
       ? (() => {
           const resolvedFlights = accessType === 'stairs' ? (flightsOfStairs ?? 1) : 0;
-          const { helpers, hours } = computeMovingLaborHours({
+          const { helpers: resolvedHelpers, hours } = computeMovingLaborHours({
             serviceScope,
             needsTruck: serviceScope === 'rearrange' ? false : Boolean(needsTruck),
             homeSize,
@@ -251,6 +264,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             heavyItems,
             needsPackingHelp,
             needsDisassembly,
+            helpers,
           });
           return {
             serviceScope,
@@ -261,13 +275,13 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             heavyItems,
             needsPackingHelp,
             needsDisassembly,
-            helpers,
+            helpers: resolvedHelpers,
             hours,
           };
         })()
       : null;
 
-  const totalHelpers = draftOptions?.helpers ?? selectedSize?.helpers ?? 2;
+  const totalHelpers = draftOptions?.helpers ?? helpers ?? 2;
   const totalHours = draftOptions?.hours ?? selectedSize?.hours ?? 2;
   const serviceLabel = draftOptions ? buildMovingServiceLabel(draftOptions) : 'Local Moving';
 
@@ -285,7 +299,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     setPricingLoading(true);
     setPricingError(null);
     try {
-      const price = await calculateMovingLaborPrice(draftOptions.helpers, draftOptions.hours);
+      const price = await calculateMovingLaborPrice(draftOptions.helpers, draftOptions.hours, draftOptions.needsTruck);
       const label = buildMovingServiceLabel(draftOptions);
       setPriceEstimate(price);
       setEstimate(buildEstimate(price, label));
@@ -367,7 +381,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <div className="space-y-3">
           <FlowSelectionCard
             title="Yes, bring a truck"
-            description="We'll bring a truck and crew — everything included"
+            description="Add a moving truck for a one-time $99 fee"
             icon={<Truck className="w-full h-full text-secondary" />}
             selected={needsTruck === true}
             onClick={() => setNeedsTruck(true)}
@@ -399,7 +413,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             <FlowSelectionCard
               key={size.id}
               title={size.label}
-              description={`${size.desc} · ${size.helpers} helpers, ~${size.hours} hrs`}
+              description={`${size.desc} · ~${size.hours} hrs`}
               icon={
                 size.id === 'studio' ? (
                   <Home className={HERO_ICON_CLASS} />
@@ -415,8 +429,33 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <FlowStickyNav
           showBack
           onBack={() => setStep(serviceScope === 'rearrange' ? 'scope' : 'truck')}
-          onContinue={() => setStep('access')}
+          onContinue={() => setStep('crew')}
           continueDisabled={!homeSize}
+        />
+      </>
+    );
+  }
+
+  if (step === 'crew') {
+    return (
+      <>
+        <FlowStepTitle title="How many helpers?" subtitle="Moving labor is billed hourly. Choose the level of help you need." />
+        <div className="space-y-3">
+          {CREW_OPTIONS.map((option) => (
+            <FlowSelectionCard
+              key={option.helpers}
+              title={option.label}
+              description={option.desc}
+              selected={helpers === option.helpers}
+              onClick={() => setHelpers(option.helpers)}
+            />
+          ))}
+        </div>
+        <FlowStickyNav
+          showBack
+          onBack={() => setStep('size')}
+          onContinue={() => setStep('access')}
+          continueDisabled={!helpers}
         />
       </>
     );
@@ -487,7 +526,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
 
         <FlowStickyNav
           showBack
-          onBack={() => setStep('size')}
+          onBack={() => setStep('crew')}
           continueLabel="Continue"
           onContinue={() => setStep('extras')}
           continueDisabled={!accessReady}
@@ -583,7 +622,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
 
         <p className="text-xs text-secondary-400 text-center mb-4">
-          {totalHelpers} helpers · ~{totalHours} hours estimated
+          {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ~{totalHours} hours estimated
         </p>
         {pricingError && (
           <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-xl">
@@ -632,7 +671,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
               <h3 className="text-sm font-bold text-secondary">Local Moving</h3>
               {draftOptions.needsTruck && (
                 <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full flex items-center gap-1">
-                  <Truck size={10} /> +Truck
+                  <Truck size={10} /> $99 truck
                 </span>
               )}
               <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full">
@@ -640,7 +679,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
               </span>
             </div>
             <p className="text-xs text-secondary-400 mt-0.5">
-              {HOME_SIZE_LABELS[draftOptions.homeSize]} · {totalHelpers} helpers · ~{totalHours} hrs ·{' '}
+              {HOME_SIZE_LABELS[draftOptions.homeSize]} · {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ~{totalHours} hrs ·{' '}
               {ACCESS_LABELS[draftOptions.accessType]}
               {draftOptions.heavyItems.length ? ` · ${draftOptions.heavyItems.length} heavy` : ''}
               {draftOptions.needsPackingHelp ? ' · packing' : ''}

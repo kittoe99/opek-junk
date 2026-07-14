@@ -1,7 +1,7 @@
 import { DetectedItem, PriceEstimate } from '../types';
 import { isSupabaseConfigured } from '../lib/supabaseConfig';
 import { getSupabase } from '../lib/supabase';
-import { calculatePriceLocally } from './localPricing';
+import { calculateMovingLaborLocally, calculatePriceLocally } from './localPricing';
 import type { DumpsterRentalOptions } from './localPricing';
 import { calculateJunkRemovalPrice } from './junkRemovalPriceService';
 
@@ -97,10 +97,6 @@ export async function calculateDumpsterRentalPrice(options: DumpsterRentalOption
   });
 }
 
-export async function calculateMovingLaborPrice(helpers: number, hours: number): Promise<PriceEstimate> {
-  return postCalculatePrice({
-    type: 'moving_labor',
-    helpers,
-    hours,
-  });
+export async function calculateMovingLaborPrice(helpers: number, hours: number, needsTruck = false): Promise<PriceEstimate> {
+  return calculateMovingLaborLocally(helpers, hours, needsTruck);
 }

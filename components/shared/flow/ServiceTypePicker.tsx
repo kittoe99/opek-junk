@@ -19,7 +19,7 @@ interface ServiceTypePickerProps {
   quoteLinkLabel?: string;
 }
 
-const MOVING_LABOR_FROM = 298; // 2 helpers × 2 hr minimum @ $149/hr
+const MOVING_LABOR_FROM = 79;
 
 // Single site color for all icons
 const HERO_ICON_CLASS = 'w-full h-full text-secondary [&_.stroke-brand]:stroke-current';
@@ -48,7 +48,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
       <FlowSelectionCard
         title="Local Moving"
         description="Truck and crew for apartment & small home moves"
-        fromPrice={`From $${MOVING_LABOR_FROM}`}
+        fromPrice={`From $${MOVING_LABOR_FROM}/hour`}
         icon={<MovingLaborIcon className={HERO_ICON_CLASS} />}
         selected={selectedId === 'moving_labor'}
         onClick={() => onSelect('moving_labor')}

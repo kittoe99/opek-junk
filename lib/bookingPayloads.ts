@@ -129,7 +129,7 @@ export function formatMovingOptionsSummary(options: StoredMovingOptions | null |
     scopeLabels[options.service_scope],
     options.needs_truck ? 'Truck included' : 'Customer truck',
     sizeLabels[options.home_size],
-    `${options.helpers} helpers`,
+    `${options.helpers} helper${options.helpers === 1 ? '' : 's'}`,
     `~${options.hours} hrs`,
     accessLabels[options.access_type],
   ];

@@ -7,8 +7,9 @@ export interface DumpsterRentalOptions {
 }
 
 const MOVING_LABOR_RULES = {
-  price_per_hour_2_helpers: 149,
-  price_per_hour_3_helpers: 189,
+  price_per_hour_1_helper: 79,
+  price_per_hour_2_helpers: 119,
+  truck_fee: 99,
 };
 
 const DUMPSTER_RULES = {
@@ -24,17 +25,19 @@ const DUMPSTER_RULES = {
   discount_percent: 10,
 };
 
-export function calculateMovingLaborLocally(helpers: number, hours: number): PriceEstimate {
-  const pricePerHour =
-    helpers >= 3
-      ? MOVING_LABOR_RULES.price_per_hour_3_helpers
-      : MOVING_LABOR_RULES.price_per_hour_2_helpers;
-  const finalPrice = Math.round(pricePerHour * hours);
+export function calculateMovingLaborLocally(helpers: number, hours: number, needsTruck = false): PriceEstimate {
+  const resolvedHelpers = helpers === 1 ? 1 : 2;
+  const pricePerHour = resolvedHelpers === 1
+    ? MOVING_LABOR_RULES.price_per_hour_1_helper
+    : MOVING_LABOR_RULES.price_per_hour_2_helpers;
+  const truckFee = needsTruck ? MOVING_LABOR_RULES.truck_fee : 0;
+  const finalPrice = Math.round(pricePerHour * hours + truckFee);
+  const truckSummary = needsTruck ? ` Includes a one-time $${truckFee} truck fee.` : '';
 
   return {
-    estimatedVolume: `${helpers} Helpers for ${hours} hours`,
+    estimatedVolume: `${resolvedHelpers} helper${resolvedHelpers === 1 ? '' : 's'} for ${hours} hours`,
     price: finalPrice,
-    summary: `Moving Labor: ${helpers} helpers for ${hours} hours at $${pricePerHour}/hour.`,
+    summary: `Moving Labor: ${resolvedHelpers} helper${resolvedHelpers === 1 ? '' : 's'} for ${hours} hours at $${pricePerHour}/hour.${truckSummary}`,
   };
 }
 
@@ -81,7 +84,8 @@ export function calculatePriceLocally(body: Record<string, unknown>): PriceEstim
   if (type === 'moving_labor') {
     return calculateMovingLaborLocally(
       Number(body.helpers) || 2,
-      Number(body.hours) || 2
+      Number(body.hours) || 2,
+      Boolean(body.needsTruck)
     );
   }
 
@@ -103,5 +107,5 @@ export function calculatePriceLocally(body: Record<string, unknown>): PriceEstim
     );
   }
 
-  throw new Error('Invalid calculation type');
+  throw new Error(`Unknown calculation type: ${type}`);
 }
