@@ -26,3 +26,10 @@ import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { ServiceTypePicker, type ServicePickerId } from './shared/flow/ServiceTypePicker';
+
+type ServedCity = { city: string; state: string };
+
+export const QuotePage: React.FC = () => {
+  const [submitted, setSubmitted] = useState(false);
+  return submitted ? <div>Success</div> : <div className="flex items-center justify-center min-h-screen"><p className="text-secondary">Quote page loading...</p></div>;
+};
