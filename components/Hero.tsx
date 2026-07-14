@@ -10,19 +10,19 @@ interface HeroProps {
 const HERO_FEATURES = [
   {
     icon: CalendarClock,
-    iconColor: 'text-indigo-500',
+    iconColor: 'text-brand',
     title: 'Easy',
     description: 'You set the time, and your provider will be there.',
   },
   {
     icon: PiggyBank,
-    iconColor: 'text-pink-500',
+    iconColor: 'text-brand',
     title: 'Affordable',
     description: 'Get a guaranteed, up-front price before you book.',
   },
   {
     icon: ShieldCheck,
-    iconColor: 'text-emerald-600',
+    iconColor: 'text-brand',
     title: 'Safe',
     description: 'Rest easy with vetted providers & free damage protection.',
   },
@@ -30,9 +30,9 @@ const HERO_FEATURES = [
 
 function RatingBadge({ centered }: { centered?: boolean }) {
   return (
-    <p className={`text-sm font-medium text-[#5c6bc0] mb-4 ${centered ? 'text-center' : ''}`}>
+    <p className={`text-sm font-medium text-secondary-500 mb-4 ${centered ? 'text-center' : ''}`}>
       4.8{' '}
-      <Star size={14} className="inline -mt-0.5 text-[#5c6bc0] fill-[#5c6bc0]" strokeWidth={0} />{' '}
+      <Star size={14} className="inline -mt-0.5 text-brand fill-brand" strokeWidth={0} />{' '}
       average rating
     </p>
   );
@@ -74,7 +74,7 @@ function FeatureList({ layout }: { layout: 'mobile' | 'desktop' }) {
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
-    <section className="hero-section relative bg-white overflow-hidden">
+    <section className="hero-section relative bg-[#faf9f7] overflow-hidden">
       {/* Mobile — centered copy, CTA, image, then features */}
       <div className="lg:hidden">
         <div className="px-5 pt-2.5 pb-6 text-center max-w-lg mx-auto">
@@ -110,7 +110,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
             )}
           </div>
 
-          <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-100 aspect-[4/3] sm:aspect-[16/11]">
+          <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-100 aspect-[4/3] sm:aspect-[16/11] border border-secondary-100 shadow-sm">
             <img
               src="/opek2.webp"
               alt="Professional junk removal crew hauling furniture"
@@ -146,7 +146,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
             </div>
 
             <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
-              <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-100">
+              <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-100 border border-secondary-100 shadow-[0_12px_35px_rgba(53,80,112,0.1)]">
                 <img
                   src="/opek2.webp"
                   alt="Professional junk removal crew hauling furniture"

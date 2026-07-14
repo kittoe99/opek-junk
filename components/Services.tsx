@@ -70,7 +70,7 @@ function GridCard({ item, onClick }: { item: ServiceEntry; onClick: () => void }
       type="button"
       onClick={onClick}
       title={item.description}
-      className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-white px-5 py-[1.125rem] md:px-6 md:py-5 text-left shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.07),0_8px_24px_rgba(53,80,112,0.08)] transition-shadow duration-200 min-h-[4.25rem]"
+      className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-secondary-100/80 bg-white px-5 py-[1.125rem] md:px-6 md:py-5 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:border-secondary-200 hover:shadow-[0_4px_16px_rgba(53,80,112,0.08)] transition-all duration-200 min-h-[4.25rem]"
     >
       <span className="font-bold text-[15px] md:text-base text-secondary leading-snug pr-2 group-hover:text-brand transition-colors">
         {item.title}
@@ -90,7 +90,7 @@ export const Services: React.FC = () => {
       id="services"
       className="py-14 md:py-16 lg:py-20"
       style={{
-        background: 'linear-gradient(160deg, #dff3ea 0%, #eef3f9 42%, #e8e4f2 100%)',
+        background: 'linear-gradient(160deg, #f4f7f5 0%, #f1f4f7 52%, #f5f2f6 100%)',
       }}
     >
       <div className="max-w-[52rem] mx-auto px-5 sm:px-6 lg:px-8">
@@ -98,7 +98,7 @@ export const Services: React.FC = () => {
           <p className="text-sm font-medium text-secondary-500 mb-2 tracking-wide">
             Book same-day help
           </p>
-          <h2 className="text-[1.625rem] sm:text-[1.75rem] md:text-[2rem] font-bold text-secondary tracking-tight leading-tight">
+          <h2 className="font-serif text-[1.625rem] sm:text-[1.75rem] md:text-[2rem] font-semibold text-secondary tracking-tight leading-tight">
             Customizable hauling and cleanouts at up-front prices.
           </h2>
         </header>

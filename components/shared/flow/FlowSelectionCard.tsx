@@ -27,12 +27,12 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
     onClick={onClick}
     disabled={disabled}
     aria-pressed={selected}
-    className={`w-full bg-white border rounded-xl p-4 text-left transition-all ${
+    className={`w-full bg-white border rounded-xl p-4 text-left shadow-[0_1px_3px_rgba(53,80,112,0.04)] transition-all ${
       disabled
         ? 'border-secondary-100 opacity-60 cursor-not-allowed'
         : selected
-          ? 'border-brand ring-2 ring-brand/15 shadow-sm'
-          : 'border-secondary-200 hover:border-secondary-300 hover:shadow-sm'
+          ? 'border-brand ring-2 ring-brand/10 shadow-sm'
+          : 'border-secondary-100 hover:border-secondary-200 hover:shadow-sm'
     }`}
   >
     <div className="flex items-start justify-between gap-3 mb-2">
@@ -53,7 +53,7 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
         )}
       </div>
       {fromPrice && !disabled && (
-        <span className="text-sm font-medium text-pink-500 shrink-0">{fromPrice}</span>
+        <span className="text-sm font-medium text-brand shrink-0">{fromPrice}</span>
       )}
     </div>
     <div className="flex items-end justify-between gap-4 pl-[1.875rem]">

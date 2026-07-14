@@ -1,6 +1,6 @@
 /** Shared layout tokens for /quote and /booking multi-step flows. */
 
-export const FLOW_PAGE_SHELL = 'min-h-[calc(100vh-var(--site-header-height))] bg-[#f5f6f7]';
+export const FLOW_PAGE_SHELL = 'min-h-[calc(100vh-var(--site-header-height))] bg-[#faf9f7]';
 
 export const FLOW_PAGE_COLUMN = 'max-w-lg mx-auto w-full px-4 sm:px-6';
 
@@ -22,7 +22,7 @@ export function scrollToFlowStep(el: HTMLElement | null): void {
 }
 
 export const FLOW_INPUT =
-  'w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg text-sm text-secondary placeholder:text-secondary-400 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-colors disabled:opacity-55';
+  'w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl text-sm text-secondary placeholder:text-secondary-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/10 focus:border-brand transition-all disabled:opacity-55';
 
 export const FLOW_LABEL = 'block text-sm font-medium text-secondary mb-1.5';
 

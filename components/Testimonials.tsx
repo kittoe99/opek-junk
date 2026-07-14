@@ -49,7 +49,7 @@ export const Testimonials: React.FC = () => {
             >
               <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} className="text-[#00B67A] fill-[#00B67A]" />
+                  <Star key={i} size={14} className="text-brand fill-brand" />
                 ))}
               </div>
               <blockquote className="text-secondary text-sm leading-relaxed mb-4">

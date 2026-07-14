@@ -55,8 +55,8 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
       )}
 
       {result && (
-        <div className="flex items-center gap-2 p-3 bg-white border border-secondary-200 rounded-lg">
-          <Check size={16} className="text-secondary shrink-0" strokeWidth={2.5} />
+        <div className="flex items-center gap-2 p-3 bg-white border border-brand/20 rounded-xl shadow-sm">
+          <Check size={16} className="text-brand shrink-0" strokeWidth={2.5} />
           <span className="text-sm font-medium text-secondary">
             {result.city}, {result.state}
           </span>

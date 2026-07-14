@@ -29,14 +29,14 @@ export const FlowStickyNav: React.FC<FlowStickyNavProps> = ({
   className = '',
 }) => (
   <div
-    className={`fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-secondary-100 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] ${className}`}
+    className={`fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-secondary-100 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(53,80,112,0.05)] ${className}`}
   >
     <div className="max-w-lg mx-auto flex gap-3">
       {showBack && onBack && (
         <button
           type="button"
           onClick={onBack}
-          className={`${showContinue ? 'flex-1' : 'w-full'} py-3.5 text-sm font-semibold border border-secondary text-secondary bg-white hover:bg-secondary-50 rounded-full transition-colors`}
+          className={`${showContinue ? 'flex-1' : 'w-full'} py-3.5 text-sm font-semibold border border-secondary-200 text-secondary bg-white hover:border-secondary-300 hover:bg-secondary-50 rounded-full transition-colors`}
         >
           {backLabel}
         </button>
