@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import {
   HERO_PRIMARY_CTA,
-  UTILITY_FORM_CARD,
   UTILITY_INPUT,
   UTILITY_LABEL,
   UTILITY_PRIMARY_BUTTON,
@@ -502,7 +501,7 @@ export const ProviderSignupPage: React.FC = () => {
 
       <div
         ref={formSectionRef}
-        className="scroll-mt-[var(--site-header-height)] bg-[#f5f6f7] border-t border-secondary-100/60"
+        className="scroll-mt-[var(--site-header-height)] bg-white border-t border-secondary-100/40"
       >
         <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           <div className="mb-3 flex items-center justify-between gap-3 px-1">
@@ -517,7 +516,7 @@ export const ProviderSignupPage: React.FC = () => {
           </div>
           <FlowProgressBar progress={step / SIGNUP_STEPS.length} />
 
-          <div className={`${UTILITY_FORM_CARD} mt-4 animate-fade-in`}>
+          <div className="bg-white rounded-3xl border border-secondary-100 p-6 md:p-10 shadow-[0_2px_12px_rgba(53,80,112,0.06)] mt-4 animate-fade-in">
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
               <FlowStepTitle
@@ -571,7 +570,7 @@ export const ProviderSignupPage: React.FC = () => {
 
               <div className="space-y-4">
                 {formData.serviceAreas.map((area, index) => (
-                  <div key={index} className="p-4 bg-white border border-secondary-100 rounded-2xl space-y-3 relative shadow-sm">
+                  <div key={index} className="p-4 bg-white border border-secondary-100 rounded-2xl space-y-3 relative shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
                     <button
                       type="button"
                       onClick={() => removeServiceArea(index)}
