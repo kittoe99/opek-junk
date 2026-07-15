@@ -1,6 +1,6 @@
 /** Shared layout tokens for /quote and /booking multi-step flows. */
 
-export const FLOW_PAGE_SHELL = 'min-h-[calc(100vh-var(--site-header-height))] bg-[#faf9f7]';
+export const FLOW_PAGE_SHELL = 'min-h-[calc(100vh-var(--site-header-height))] bg-white';
 
 export const FLOW_PAGE_COLUMN = 'max-w-lg mx-auto w-full px-4 sm:px-6';
 
