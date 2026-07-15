@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -15,7 +15,6 @@ import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage
 import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
-import { ZipCheckModal } from './components/ZipCheckModal';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SEO, seoConfig } from './components/SEO';
@@ -85,7 +84,6 @@ function ScrollToTop() {
 function HomePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isZipModalOpen, setIsZipModalOpen] = useState(false);
 
   useEffect(() => {
     const hash = location.hash.replace('#', '');
@@ -114,13 +112,7 @@ function HomePage() {
       />
       <Testimonials />
       <CharityBanner />
-      <ServiceArea onGetQuote={() => setIsZipModalOpen(true)} />
-
-      <ZipCheckModal
-        isOpen={isZipModalOpen}
-        onClose={() => setIsZipModalOpen(false)}
-        onGetQuote={() => navigate('/quote')}
-      />
+      <ServiceArea onGetQuote={() => navigate('/quote')} />
     </>
   );
 }
