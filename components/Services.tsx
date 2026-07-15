@@ -33,7 +33,10 @@ const serviceGroups: ServiceGroup[] = [
     icon: DumpsterIcon,
     description: 'Roll-off containers delivered to your site. Upfront, flat-rate pricing.',
     path: '/services/dumpster-rental',
-    subs: [],
+    subs: [
+      { label: 'Construction debris', path: '/services/dumpster-rental' },
+      { label: 'Yard waste', path: '/services/dumpster-rental' },
+    ],
   },
   {
     title: 'Property Cleanouts',
@@ -52,6 +55,7 @@ const serviceGroups: ServiceGroup[] = [
     path: '/services/moving-labor',
     subs: [
       { label: 'Small local moves', path: '/services/small-local-moves' },
+      { label: 'Loading & unloading', path: '/services/moving-labor' },
     ],
   },
 ];
