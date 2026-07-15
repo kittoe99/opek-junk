@@ -73,20 +73,26 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
   );
 
   const getStateFill = (stateId: string) => {
-    if (hoveredStateId === stateId) return '#9ab392';
+    if (hoveredStateId === stateId) return '#7a9b6d';
     if (activeCity && stateId.toLowerCase() === activeCity.state.toLowerCase()) {
-      return '#a3b59b';
+      return '#8baa7e';
     }
-    return '#b8c9b0';
+    return '#a3b59b';
   };
 
   return (
     <div className="relative w-full">
+      <div className="flex items-center justify-center gap-1.5 mb-2">
+        <svg viewBox="0 0 24 24" width={12} height={12} aria-hidden="true" className="text-brand shrink-0">
+          <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
+        <span className="text-[10px] font-medium text-secondary-500 tracking-wide">Popular cities</span>
+      </div>
       <svg
         viewBox={MAP_VIEWBOX}
         className="w-full h-auto touch-manipulation"
         role="img"
-        aria-label="Interactive map of United States service coverage. Hover or select a city pin to learn more."
+        aria-label="Interactive map of United States service coverage. Popular cities shown. Hover or select to learn more."
       >
         <title>United States service coverage map</title>
 
@@ -167,10 +173,10 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
       )}
 
       <p className="mt-3 text-center text-xs text-secondary-400 md:hidden">
-        Tap a pin to explore service in that metro
+        Tap a pin to explore a popular city
       </p>
       <p className="mt-3 text-center text-xs text-secondary-400 hidden md:block">
-        Hover or click a pin to explore service in that metro
+        Hover or click a pin to explore popular cities
       </p>
     </div>
   );
