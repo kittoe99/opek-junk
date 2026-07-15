@@ -21,8 +21,8 @@ const featuredChips = [
 
 export const ServiceArea: React.FC<ServiceAreaProps> = ({
   onGetQuote,
-  titleStart = 'Junk removal in 50 cities',
-  titleAccent = 'and counting.',
+  titleStart = 'Junk removal available nationwide',
+  titleAccent = '',
 }) => {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<CoverageCity | null>(null);
