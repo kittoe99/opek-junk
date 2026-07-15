@@ -74,7 +74,7 @@ function FeatureList({ layout }: { layout: 'mobile' | 'desktop' }) {
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
-    <section className="hero-section relative bg-[#faf9f7] overflow-hidden">
+    <section className="hero-section relative bg-white overflow-hidden border-b border-secondary-100/40">
       {/* Mobile — centered copy, CTA, image, then features */}
       <div className="lg:hidden">
         <div className="px-5 pt-2.5 pb-6 text-center max-w-lg mx-auto">
@@ -133,7 +133,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
                 <br />
                 made easy.
               </h1>
-              <p className="text-lg text-[#6b7c78] mb-7 leading-relaxed">
+              <p className="text-lg text-secondary-500 mb-7 leading-relaxed">
                 From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
               </p>
               <button
