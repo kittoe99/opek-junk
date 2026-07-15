@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { PageHero } from '../shared/PageHero';
-import { BentoFeatureSection } from '../shared/BentoFeatureSection';
 import { EditorialContentSection } from '../shared/EditorialContentSection';
 import { TrustBadges } from '../TrustBadges';
 import { CharityBanner } from '../CharityBanner';
@@ -15,57 +14,6 @@ import {
   MATTRESS_ONLINE_DISCOUNT,
   MATTRESS_STANDARD_RATES,
 } from '../../lib/mattressBookingPricing';
-
-const MattressIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <rect x="3" y="8" width="18" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M3 12h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="2 4"/>
-    <circle cx="8" cy="12" r="1" className="stroke-brand" strokeWidth="1.5"/>
-    <circle cx="16" cy="12" r="1" className="stroke-brand" strokeWidth="1.5"/>
-  </svg>
-);
-
-const BoxSpringIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <rect x="3" y="10" width="18" height="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 10v8M12 10v8M18 10v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M3 14h18" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const BedFrameIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M4 4v16M20 10v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 14h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 8h5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 11h5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const CompleteSetIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M4 8h16v4H4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 12h16v4H4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 16v4M20 16v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M9 10l2 2 4-4" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const RecycleIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M7 19H4.5a1.5 1.5 0 0 1-1.3-2.25L7 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M17 19h2.5a1.5 1.5 0 0 0 1.3-2.25L17 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M9 5l3-2 3 2" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 3v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
-);
-
-const SameDayIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M12 7v5l3 2" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
-);
 
 export const MattressDisposalPage: React.FC = () => {
   const navigate = useNavigate();
@@ -113,49 +61,6 @@ export const MattressDisposalPage: React.FC = () => {
     }
   };
 
-  const mattressItems = [
-    {
-      label: 'Mattresses',
-      desc: 'Twin to CA King — foam, hybrid, pillow-top, futon, and crib',
-      icon: MattressIcon,
-      onClick: () => goToBooking([{ name: 'Mattress', quantity: 1 }]),
-    },
-    {
-      label: 'Box springs',
-      desc: 'Wood, metal, split, and low-profile foundations',
-      icon: BoxSpringIcon,
-      onClick: () => goToBooking([{ name: 'Box Spring', quantity: 1 }]),
-    },
-    {
-      label: 'Bed frames',
-      desc: 'Platform, adjustable, bunk, headboard, and rails',
-      icon: BedFrameIcon,
-      onClick: () => goToBooking([{ name: 'Bed Frame', quantity: 1 }]),
-    },
-    {
-      label: 'Complete sets',
-      desc: 'Mattress + box spring + frame in one flat-rate pickup',
-      icon: CompleteSetIcon,
-      onClick: () =>
-        goToBooking([
-          { name: 'Mattress', quantity: 1 },
-          { name: 'Box Spring', quantity: 1 },
-          { name: 'Bed Frame', quantity: 1 },
-        ]),
-    },
-    {
-      label: 'Eco disposal',
-      desc: 'Up to 80% of materials recycled — keep mattresses out of landfills',
-      icon: RecycleIcon,
-    },
-    {
-      label: 'Same-day pickup',
-      desc: 'From any room or floor — no curb dragging required',
-      icon: SameDayIcon,
-      onClick: () => goToBooking(),
-    },
-  ];
-
   return (
     <div className="bg-white min-h-screen">
       <PageHero
@@ -177,19 +82,6 @@ export const MattressDisposalPage: React.FC = () => {
       />
 
       <TrustBadges />
-
-      <BentoFeatureSection
-        eyebrow="What we haul"
-        title={
-          <>
-            Bedroom junk,
-            <br />
-            <span className="text-brand">gone fast.</span>
-          </>
-        }
-        description="Flat rates for mattresses and bedroom furniture. Add dressers, nightstands, or other junk in the same booking."
-        items={mattressItems}
-      />
 
       <section id="mattress-pricing" className="bg-[#f5f6f7] py-16 md:py-20 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
