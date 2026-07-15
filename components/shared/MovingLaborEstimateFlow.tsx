@@ -35,7 +35,7 @@ import { FlowSelectionCard } from './flow/FlowSelectionCard';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 
-const HERO_ICON_CLASS = 'w-full h-full text-secondary [&_.stroke-brand]:stroke-current';
+const MOVING_ICON_CLASS = 'w-5 h-5 text-secondary [&_.stroke-brand]:stroke-current';
 
 export interface MovingLaborEstimateResult {
   estimate: QuoteEstimate;
@@ -112,12 +112,12 @@ const CREW_OPTIONS = [
   {
     helpers: 1 as const,
     label: '1 helper — I will help',
-    desc: '$79/hour · Best when you can assist with lifting',
+    desc: 'Best when you can assist with lifting',
   },
   {
     helpers: 2 as const,
     label: '2 helpers',
-    desc: '$119/hour · A complete crew handles the lifting',
+    desc: 'A complete crew handles the lifting',
   },
 ];
 
@@ -357,7 +357,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 key={scope.id}
                 title={scope.label}
                 description={scope.desc}
-                icon={<Icon className="w-full h-full text-secondary" />}
+                icon={<Icon className={MOVING_ICON_CLASS} />}
                 selected={serviceScope === scope.id}
                 onClick={() => setServiceScope(scope.id)}
               />
@@ -381,15 +381,15 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <div className="space-y-3">
           <FlowSelectionCard
             title="Yes, bring a truck"
-            description="Add a moving truck for a one-time $99 fee"
-            icon={<Truck className="w-full h-full text-secondary" />}
+            description="Add a moving truck"
+            icon={<Truck className={MOVING_ICON_CLASS} />}
             selected={needsTruck === true}
             onClick={() => setNeedsTruck(true)}
           />
           <FlowSelectionCard
             title="No, I have a truck"
             description="Just need a crew to help load and unload"
-            icon={<Home className="w-full h-full text-secondary" />}
+            icon={<Home className={MOVING_ICON_CLASS} />}
             selected={needsTruck === false}
             onClick={() => setNeedsTruck(false)}
           />
@@ -416,9 +416,9 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
               description={`${size.desc} · ~${size.hours} hrs`}
               icon={
                 size.id === 'studio' ? (
-                  <Home className={HERO_ICON_CLASS} />
+                  <Home className={MOVING_ICON_CLASS} />
                 ) : (
-                  <Building2 className={HERO_ICON_CLASS} />
+                  <Building2 className={MOVING_ICON_CLASS} />
                 )
               }
               selected={homeSize === size.id}
@@ -487,7 +487,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                     ? `${option.desc} · +~${option.hourAddon} hr`
                     : option.desc
                 }
-                icon={<Icon className="w-full h-full text-secondary" />}
+                icon={<Icon className={MOVING_ICON_CLASS} />}
                 selected={accessType === option.id}
                 onClick={() => {
                   setAccessType(option.id);
@@ -661,33 +661,56 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     );
   }
 
+  const hourlyRate = draftOptions.helpers === 1 ? 79 : 119;
+
   return (
     <>
-      <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
-      <div className="bg-white rounded-xl border border-secondary-100 p-4 mb-4">
-        <div className="flex items-center justify-between mb-3 pb-3 border-b border-secondary-100">
-          <div>
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <h3 className="text-sm font-bold text-secondary">Local Moving</h3>
-              {draftOptions.needsTruck && (
-                <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full flex items-center gap-1">
-                  <Truck size={10} /> $99 truck
-                </span>
-              )}
-              <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full">
-                {SCOPE_LABELS[draftOptions.serviceScope]}
-              </span>
-            </div>
-            <p className="text-xs text-secondary-400 mt-0.5">
-              {HOME_SIZE_LABELS[draftOptions.homeSize]} · {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ~{totalHours} hrs ·{' '}
-              {ACCESS_LABELS[draftOptions.accessType]}
-              {draftOptions.heavyItems.length ? ` · ${draftOptions.heavyItems.length} heavy` : ''}
-              {draftOptions.needsPackingHelp ? ' · packing' : ''}
-              {draftOptions.needsDisassembly ? ' · assembly' : ''}
-            </p>
-          </div>
-          <p className="text-xl font-bold text-secondary">${priceEstimate.price}</p>
+      <FlowStepTitle title="Your estimate" subtitle="Review your rate, then continue to book." />
+      <div className="bg-white rounded-xl border border-secondary-100 p-4 mb-4 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
+        <div className="flex items-center gap-2 mb-3">
+          <h3 className="text-sm font-bold text-secondary">Local Moving</h3>
+          <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full">
+            {SCOPE_LABELS[draftOptions.serviceScope]}
+          </span>
         </div>
+
+        <div className="flex items-baseline gap-2 whitespace-nowrap mb-3">
+          <span className="text-3xl font-bold text-secondary">${hourlyRate}</span>
+          <span className="text-sm text-secondary-400">/hour</span>
+          <span className="text-xs text-secondary-400">· {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}</span>
+          {draftOptions.needsTruck && (
+            <>
+              <span className="text-xs text-secondary-400">· +$99 truck</span>
+            </>
+          )}
+        </div>
+
+        <div className="border-t border-secondary-100 pt-3 mb-3">
+          <p className="text-xs text-secondary-400 leading-relaxed">
+            <span>Size <span className="font-medium text-secondary">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
+            <span className="select-none mx-1.5 text-secondary-300">·</span>
+            <span>Access <span className="font-medium text-secondary">{ACCESS_LABELS[draftOptions.accessType]}</span></span>
+            {draftOptions.heavyItems.length > 0 && (
+              <>
+                <span className="select-none mx-1.5 text-secondary-300">·</span>
+                <span>Heavy items <span className="font-medium text-secondary">{draftOptions.heavyItems.length}</span></span>
+              </>
+            )}
+            {draftOptions.needsPackingHelp && (
+              <>
+                <span className="select-none mx-1.5 text-secondary-300">·</span>
+                <span>Packing help</span>
+              </>
+            )}
+            {draftOptions.needsDisassembly && (
+              <>
+                <span className="select-none mx-1.5 text-secondary-300">·</span>
+                <span>Disassembly</span>
+              </>
+            )}
+          </p>
+        </div>
+
         <div className="flex items-start gap-2.5">
           <ShieldCheck size={15} className="text-emerald-600 shrink-0 mt-0.5" />
           <p className="text-xs text-emerald-700 leading-normal">
@@ -695,8 +718,6 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           </p>
         </div>
       </div>
-
-      <p className="text-xs text-secondary-400 mb-4">{priceEstimate.summary}</p>
 
       <FlowStickyNav
         showBack
