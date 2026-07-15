@@ -1,14 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ArrowRight,
-  BedDouble,
-  Building2,
-  Package,
-  Warehouse,
-  Home,
-  Truck,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import {
   JunkIcon,
   DumpsterIcon,
@@ -16,69 +8,93 @@ import {
   MovingLaborIcon,
 } from './icons/ServiceIcons';
 
-type ServiceEntry = {
+type ServiceGroup = {
   title: string;
   path: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
-  description?: string;
+  description: string;
+  subs: { label: string; path: string }[];
 };
 
-const allServices: ServiceEntry[] = [
+const serviceGroups: ServiceGroup[] = [
   {
     title: 'Junk Removal',
     icon: JunkIcon,
-    description:
-      'Furniture, appliances, and household clutter hauled away. Full-service residential and commercial.',
+    description: 'Furniture, appliances, and household clutter hauled away.',
     path: '/services/junk-removal',
+    subs: [
+      { label: 'Single item pickup', path: '/quote' },
+      { label: 'Mattress disposal', path: '/services/mattress-disposal' },
+      { label: 'Office decommission', path: '/services/junk-removal' },
+    ],
   },
   {
     title: 'Dumpster Rental',
     icon: DumpsterIcon,
-    description:
-      'Roll-off containers delivered to your site. Multiple sizes with upfront, flat-rate pricing.',
+    description: 'Roll-off containers delivered to your site. Upfront, flat-rate pricing.',
     path: '/services/dumpster-rental',
+    subs: [],
   },
   {
     title: 'Property Cleanouts',
     icon: PropertyCleanoutIcon,
-    description:
-      'Estate clearing, move-outs, and full property cleanouts. Professional and discreet.',
+    description: 'Estate clearing, move-outs, and full property cleanouts.',
     path: '/services/property-cleanout',
+    subs: [
+      { label: 'Garage cleanout', path: '/services/junk-removal' },
+      { label: 'Estate clearing', path: '/services/property-cleanout' },
+    ],
   },
   {
     title: 'Local Moving',
     icon: MovingLaborIcon,
-    description:
-      'Truck and crew for apartment & small home moves. Hourly rates.',
+    description: 'Truck and crew for apartment & small home moves. Hourly rates.',
     path: '/services/moving-labor',
+    subs: [
+      { label: 'Small local moves', path: '/services/small-local-moves' },
+    ],
   },
-  { title: 'Single item pickup', path: '/quote', icon: Package },
-  { title: 'Garage cleanout', path: '/services/junk-removal', icon: Warehouse },
-  { title: 'Estate clearing', path: '/services/property-cleanout', icon: Home },
-  { title: 'Mattress disposal', path: '/services/mattress-disposal', icon: BedDouble },
-  { title: 'Office decommission', path: '/services/junk-removal', icon: Building2 },
-  { title: 'Small Local Moves', path: '/services/small-local-moves', icon: Truck },
-
 ];
 
-const primaryServices = allServices.filter((s) => s.description);
-
-function GridCard({ item, onClick }: { item: ServiceEntry; onClick: () => void }) {
-  const Icon = item.icon;
+function CategoryCard({ group, onNavigate }: { group: ServiceGroup; onNavigate: (path: string) => void }) {
+  const Icon = group.icon;
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      title={item.description}
-      className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-secondary-100/80 bg-white px-5 py-[1.125rem] md:px-6 md:py-5 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:border-secondary-200 hover:shadow-[0_4px_16px_rgba(53,80,112,0.08)] transition-all duration-200 min-h-[4.25rem]"
-    >
-      <span className="font-bold text-[15px] md:text-base text-secondary leading-snug pr-2 group-hover:text-brand transition-colors">
-        {item.title}
-      </span>
-      <span className="text-secondary shrink-0 [&_.stroke-brand]:stroke-current">
-        <Icon className="w-9 h-9 md:w-10 md:h-10" size={40} />
-      </span>
-    </button>
+    <div className="group rounded-2xl border border-secondary-100/80 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:border-secondary-200 hover:shadow-[0_4px_16px_rgba(53,80,112,0.08)] transition-all duration-200 overflow-hidden">
+      <button
+        type="button"
+        onClick={() => onNavigate(group.path)}
+        className="w-full flex items-center justify-between gap-3 px-5 py-4 md:px-6 md:py-5 text-left"
+      >
+        <div className="min-w-0">
+          <h3 className="font-bold text-[15px] md:text-base text-secondary leading-snug group-hover:text-brand transition-colors">
+            {group.title}
+          </h3>
+          <p className="text-xs text-secondary-500 mt-0.5 leading-relaxed line-clamp-2">
+            {group.description}
+          </p>
+        </div>
+        <span className="text-secondary shrink-0 [&_.stroke-brand]:stroke-current">
+          <Icon className="w-9 h-9 md:w-10 md:h-10" size={40} />
+        </span>
+      </button>
+      {group.subs.length > 0 && (
+        <div className="px-5 pb-3.5 md:px-6 md:pb-4 flex flex-wrap gap-1.5">
+          {group.subs.map((sub) => (
+            <button
+              key={sub.label}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate(sub.path);
+              }}
+              className="text-[11px] font-medium text-secondary-500 bg-secondary-50 hover:bg-secondary-100 px-2.5 py-1 rounded-full transition-colors"
+            >
+              {sub.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -88,10 +104,7 @@ export const Services: React.FC = () => {
   return (
     <section
       id="services"
-      className="py-14 md:py-16 lg:py-20"
-      style={{
-        background: 'linear-gradient(160deg, #f4f7f5 0%, #f1f4f7 52%, #f5f2f6 100%)',
-      }}
+      className="py-14 md:py-16 lg:py-20 bg-white border-b border-secondary-100/40"
     >
       <div className="max-w-[52rem] mx-auto px-5 sm:px-6 lg:px-8">
         <header className="text-center mb-9 md:mb-11">
@@ -103,19 +116,13 @@ export const Services: React.FC = () => {
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4">
-          {allServices.map((item) => (
-            <GridCard key={item.title} item={item} onClick={() => navigate(item.path)} />
-          ))}
-        </div>
-
-        {/* Primary service descriptions — below grid, not inside cards */}
-        <div className="mt-8 md:mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-          {primaryServices.map((item) => (
-            <div key={item.title} className="text-left">
-              <p className="text-sm font-semibold text-secondary mb-0.5">{item.title}</p>
-              <p className="text-sm text-secondary-500 leading-relaxed">{item.description}</p>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 md:gap-4">
+          {serviceGroups.map((group) => (
+            <CategoryCard
+              key={group.title}
+              group={group}
+              onNavigate={(path) => navigate(path)}
+            />
           ))}
         </div>
 
