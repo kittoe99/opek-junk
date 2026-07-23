@@ -89,12 +89,12 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
           <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] items-center gap-8 md:gap-6 lg:gap-10">
             <div className="relative z-10 max-w-xl md:max-w-none">
               <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3 sm:mb-4 animate-fade-in-up">
-                Nationwide Junk Removal — All 50 States
+                Junk Removal Near You
               </p>
 
               <h1 className="font-sans font-extrabold text-[2.35rem] sm:text-[3.2rem] md:text-[3.5rem] lg:text-[3.85rem] leading-[1.06] tracking-tight text-white mb-4 sm:mb-5 animate-fade-in-up delay-100">
                 Fast Junk Disposal
-                <br className="hidden sm:block" /> Nationwide
+                <br className="hidden sm:block" /> In Your Area
               </h1>
 
               <div className="flex flex-wrap items-center gap-2.5 mb-4 sm:mb-5 animate-fade-in-up delay-150">
@@ -112,7 +112,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
               </div>
 
               <p className="text-[14px] sm:text-base md:text-lg leading-relaxed text-[var(--text-muted)] mb-6 sm:mb-7 max-w-md animate-fade-in-up delay-200">
-                Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options nationwide.
+                Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options in your area.
               </p>
 
               <div className="mb-5 sm:mb-6 animate-fade-in-up delay-250">
