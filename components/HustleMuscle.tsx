@@ -8,8 +8,8 @@ export const HustleMuscle: React.FC = () => {
   return (
     <section className="relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[480px]">
-        {/* Cutout visual */}
-        <div className="relative lg:col-span-5 flex items-end justify-center px-6 pt-10 sm:pt-12 lg:pt-8 lg:pb-0 overflow-hidden min-h-[300px] sm:min-h-[360px]">
+        {/* Cutout visual — below copy on mobile; left on desktop */}
+        <div className="relative order-2 lg:order-1 lg:col-span-5 flex items-end justify-center px-6 pt-4 sm:pt-6 lg:pt-8 pb-0 overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[360px]">
           <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
           <img
             src="/opek-hustle-muscle.png?v=2"
@@ -25,8 +25,8 @@ export const HustleMuscle: React.FC = () => {
           />
         </div>
 
-        {/* Copy */}
-        <div className="relative lg:col-span-7 flex items-center px-5 sm:px-8 lg:px-12 xl:px-16 py-12 sm:py-14 md:py-16">
+        {/* Copy — first on mobile */}
+        <div className="relative order-1 lg:order-2 lg:col-span-7 flex items-center px-5 sm:px-8 lg:px-12 xl:px-16 pt-12 sm:pt-14 md:pt-16 pb-6 sm:pb-8 lg:py-16">
           <div className="max-w-xl w-full">
             <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">
               Hustle + Muscle

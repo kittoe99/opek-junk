@@ -12,6 +12,7 @@ import { LocalServiceAreas } from '../LocalServiceAreas';
 import { ServiceArea } from '../ServiceArea';
 import { Testimonials } from '../Testimonials';
 import { ZipFinder } from '../ZipFinder';
+import { ServiceFeatureGrid } from '../shared/ServiceFeatureGrid';
 
 const SITE_PHONE = '8313187139';
 const SITE_PHONE_DISPLAY = '(831) 318-7139';
@@ -134,7 +135,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
                   onClick={() => goToBooking()}
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 sm:px-9 py-3.5 sm:py-4 text-[14px] sm:text-[15px] font-bold text-white transition-all hover:bg-brand-600 shadow-[0_0_28px_-6px_rgba(255,0,110,0.7)] hover:shadow-[0_0_38px_-4px_rgba(255,0,110,0.85)] border-2 border-white/10"
                 >
-                  Schedule Pickup
+                  View Pricing
                   <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
 
@@ -210,7 +211,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
 
       <section className="relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[480px]">
-          <div className="relative lg:col-span-5 flex items-end justify-center px-6 pt-10 sm:pt-12 lg:pt-8 lg:pb-0 overflow-hidden min-h-[300px] sm:min-h-[360px]">
+          <div className="relative order-2 lg:order-1 lg:col-span-5 flex items-end justify-center px-6 pt-4 sm:pt-6 lg:pt-8 pb-0 overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[360px]">
             <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
             <img
               src="/opek-hustle-muscle.png?v=2"
@@ -224,7 +225,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
               aria-hidden
             />
           </div>
-          <div className="relative lg:col-span-7 flex items-center px-5 sm:px-8 lg:px-12 xl:px-16 py-12 sm:py-14 md:py-16">
+          <div className="relative order-1 lg:order-2 lg:col-span-7 flex items-center px-5 sm:px-8 lg:px-12 xl:px-16 pt-12 sm:pt-14 md:pt-16 pb-6 sm:pb-8 lg:py-16">
             <div className="max-w-xl w-full">
               <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">Hustle + Muscle</p>
               <h2 className="font-sans font-extrabold text-[1.75rem] sm:text-[2.25rem] md:text-[2.5rem] text-[var(--text)] tracking-tight leading-[1.1] mb-4 sm:mb-5">
@@ -268,27 +269,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16 md:py-20 lg:py-24 bg-[var(--bg)] border-t border-[var(--border)] overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-2/3 bg-gradient-to-r from-transparent via-brand/40 to-transparent" aria-hidden />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4 sm:gap-6 mb-10 sm:mb-12 md:mb-14">
-            <h2 className="font-sans font-extrabold text-[1.7rem] sm:text-[2.2rem] md:text-[2.4rem] text-[var(--text)] tracking-tight leading-none shrink-0">
-              The Opek Approach
-            </h2>
-            <span className="hidden sm:block h-px flex-1 bg-gradient-to-r from-brand/50 via-white/15 to-transparent" aria-hidden />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-9 sm:gap-y-10 md:gap-y-12">
-            {approaches.map((item) => (
-              <div key={item.title}>
-                <h3 className="font-sans font-bold text-[1.05rem] sm:text-[1.15rem] text-[var(--text)] tracking-tight mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-[13px] sm:text-sm text-[var(--text-muted)] leading-relaxed">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServiceFeatureGrid items={approaches} />
 
       <LocalServiceAreas />
 
