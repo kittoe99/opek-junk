@@ -502,10 +502,10 @@ export const MattressBookingPage: React.FC = () => {
                 return (
                   <div
                     key={option.id}
-                    className={`group relative flex flex-col rounded-2xl border bg-white transition-all ${
+                    className={`group relative flex flex-col rounded-2xl border bg-[var(--surface)] transition-all ${
                       selected
                         ? 'border-brand shadow-[0_0_0_1px_rgba(255,0,110,0.12)]'
-                        : 'border-secondary-100 hover:border-secondary-200'
+                        : 'border-[var(--border)] hover:border-white/15'
                     }`}
                   >
                     <button
@@ -516,32 +516,32 @@ export const MattressBookingPage: React.FC = () => {
                     >
                       <div
                         className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center ${
-                          selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                          selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
                         }`}
                       >
                         {selected && <Check size={12} className="text-white" strokeWidth={3} />}
                       </div>
                       <div
                         className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-2 ${
-                          selected ? 'bg-brand/[0.06] text-brand' : 'bg-secondary-50 text-secondary-400'
+                          selected ? 'bg-brand/[0.06] text-brand' : 'bg-white/[0.04] text-[var(--text-muted)]'
                         }`}
                       >
                         <Icon className="w-8 h-8" />
                       </div>
-                      <span className={`text-[11px] sm:text-xs font-semibold ${selected ? 'text-secondary' : 'text-secondary-600'}`}>
+                      <span className={`text-[11px] sm:text-xs font-semibold ${selected ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'}`}>
                         {option.name}
                       </span>
-                      <span className="hidden sm:block text-[10px] text-secondary-400 mt-0.5 leading-snug">
+                      <span className="hidden sm:block text-[10px] text-[var(--text-muted)] mt-0.5 leading-snug">
                         {option.desc}
                       </span>
                     </button>
                     {selected && (
                       <div className="px-3 pb-3 flex justify-center">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-secondary-100 bg-secondary-50/80 px-1.5 py-1">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white/[0.04] px-1.5 py-1">
                           <button
                             type="button"
                             onClick={() => setCoreQuantity(option.id, quantity - 1)}
-                            className="w-6 h-6 rounded-full bg-white border border-secondary-100 flex items-center justify-center text-secondary-500"
+                            className="w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
                           >
                             <Minus size={12} strokeWidth={2.5} />
                           </button>
@@ -551,7 +551,7 @@ export const MattressBookingPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setCoreQuantity(option.id, quantity + 1)}
-                            className="w-6 h-6 rounded-full bg-white border border-secondary-100 flex items-center justify-center text-secondary-500"
+                            className="w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
                           >
                             <Plus size={12} strokeWidth={2.5} />
                           </button>
@@ -567,21 +567,21 @@ export const MattressBookingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowExtrasCatalog(true)}
-                className="w-full flex items-center gap-3 rounded-2xl border border-secondary-100 bg-white px-4 py-3.5 text-left hover:border-secondary-200 mb-5"
+                className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-white/15 mb-5"
               >
-                <div className="w-10 h-10 rounded-xl bg-secondary-50 text-secondary-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] text-[var(--text-muted)] flex items-center justify-center">
                   <Package size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-secondary">Add other junk?</p>
-                  <p className="text-xs text-secondary-400 mt-0.5">
+                  <p className="text-sm font-semibold text-[var(--text)]">Add other junk?</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">
                     Dressers, nightstands, bags, and more
                   </p>
                 </div>
                 <span className="text-xs font-semibold text-brand">Browse</span>
               </button>
             ) : (
-              <div className="mb-5 rounded-2xl border border-secondary-100 bg-white p-4">
+              <div className="mb-5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
                 <JunkItemCatalogSelector
                   selectedItems={extrasForCatalog}
                   onSelectedItemsChange={syncExtrasFromCatalog}
@@ -594,17 +594,17 @@ export const MattressBookingPage: React.FC = () => {
             )}
 
             {activeItems.length > 0 && (
-              <div className="rounded-2xl border border-secondary-100 bg-white mb-4 overflow-hidden">
-                <div className="px-4 py-2.5 border-b border-secondary-100">
-                  <p className="text-xs font-semibold text-secondary-500">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] mb-4 overflow-hidden">
+                <div className="px-4 py-2.5 border-b border-[var(--border)]">
+                  <p className="text-xs font-semibold text-[var(--text-muted)]">
                     Selected · {activeItems.reduce((s, i) => s + i.quantity, 0)}
                   </p>
                 </div>
                 <ul className="divide-y divide-secondary-50">
                   {activeItems.map((item) => (
                     <li key={item.id} className="flex justify-between px-4 py-2.5 text-sm">
-                      <span className="font-medium text-secondary">{item.name}</span>
-                      <span className="text-secondary-500 tabular-nums">×{item.quantity}</span>
+                      <span className="font-medium text-[var(--text)]">{item.name}</span>
+                      <span className="text-[var(--text-muted)] tabular-nums">×{item.quantity}</span>
                     </li>
                   ))}
                 </ul>
@@ -636,20 +636,20 @@ export const MattressBookingPage: React.FC = () => {
               title="Your estimate"
               subtitle="Review your flat rate, then continue to schedule."
             />
-            <div className="bg-white rounded-2xl border border-secondary-100 p-4 mb-4">
-              <div className="flex items-start justify-between gap-3 mb-4 pb-4 border-b border-secondary-100">
+            <div className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-4 mb-4">
+              <div className="flex items-start justify-between gap-3 mb-4 pb-4 border-b border-[var(--border)]">
                 <div>
-                  <h3 className="text-sm font-bold text-secondary">Mattress Disposal</h3>
-                  <p className="text-xs text-secondary-400 mt-1">
+                  <h3 className="text-sm font-bold text-[var(--text)]">Mattress Disposal</h3>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
                     {activeItems.map((i) => `${i.quantity}× ${i.name}`).join(' · ')}
                   </p>
                 </div>
-                <p className="text-xl font-bold text-secondary">${pricing.total}</p>
+                <p className="text-xl font-bold text-[var(--text)]">${pricing.total}</p>
               </div>
               <div className="space-y-2 text-xs mb-4">
                 <div className="flex justify-between">
-                  <span className="text-secondary-400">Subtotal</span>
-                  <span className="font-semibold text-secondary">${pricing.subtotal}</span>
+                  <span className="text-[var(--text-muted)]">Subtotal</span>
+                  <span className="font-semibold text-[var(--text)]">${pricing.subtotal}</span>
                 </div>
                 {pricing.discount > 0 && (
                   <div className="flex justify-between">
@@ -659,14 +659,14 @@ export const MattressBookingPage: React.FC = () => {
                     <span className="font-semibold text-brand">−${pricing.discount}</span>
                   </div>
                 )}
-                <div className="flex justify-between pt-2 border-t border-secondary-50">
-                  <span className="font-semibold text-secondary">Total</span>
-                  <span className="font-bold text-secondary">${pricing.total}</span>
+                <div className="flex justify-between pt-2 border-t border-white/[0.06]">
+                  <span className="font-semibold text-[var(--text)]">Total</span>
+                  <span className="font-bold text-[var(--text)]">${pricing.total}</span>
                 </div>
               </div>
               <div className="flex items-start gap-2.5">
-                <ShieldCheck size={15} className="text-emerald-600 shrink-0 mt-0.5" />
-                <p className="text-xs text-emerald-700 leading-normal">
+                <ShieldCheck size={15} className="text-emerald-300 shrink-0 mt-0.5" />
+                <p className="text-xs text-emerald-300 leading-normal">
                   Safe Protect™ damage coverage included. {MATTRESS_ONLINE_DISCOUNT_SUMMARY}
                 </p>
               </div>
@@ -677,7 +677,7 @@ export const MattressBookingPage: React.FC = () => {
               continueLabel="Continue to book"
               onContinue={() => goTo(5)}
             />
-            <p className="text-xs text-secondary-400 text-center mt-2">* Final price confirmed on-site</p>
+            <p className="text-xs text-[var(--text-muted)] text-center mt-2">* Final price confirmed on-site</p>
           </>
         )}
 
@@ -715,8 +715,8 @@ export const MattressBookingPage: React.FC = () => {
                 />
               </div>
               {formError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-700 text-xs font-bold">{formError}</p>
+                <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+                  <p className="text-brand text-xs font-bold">{formError}</p>
                 </div>
               )}
             </form>

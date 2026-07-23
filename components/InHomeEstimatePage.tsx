@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Calendar, Clock, Receipt, Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-
-import { PageHero } from './shared/PageHero';
-import { TrustBadges } from './TrustBadges';
+import { ServicePageHero } from './shared/ServicePageHero';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import {
   ServiceAddressField,
@@ -12,6 +10,13 @@ import {
   formatServiceAddressLocation,
   isServiceAddressValidated,
 } from './shared/ServiceAddressField';
+import {
+  UTILITY_FORM_CARD,
+  UTILITY_INPUT,
+  UTILITY_LABEL,
+  UTILITY_PRIMARY_BUTTON,
+  UTILITY_SECONDARY_BUTTON,
+} from '../lib/flowPageLayout';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ export const InHomeEstimatePage: React.FC = () => {
     zipCode: '',
     preferredDate: '',
     preferredTime: '',
-    message: ''
+    message: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -39,7 +44,7 @@ export const InHomeEstimatePage: React.FC = () => {
     'Morning (8am - 12pm)',
     'Afternoon (12pm - 4pm)',
     'Evening (4pm - 7pm)',
-    'Anytime - Flexible'
+    'Anytime - Flexible',
   ];
 
   const handleAddressChange = (addressValue: ServiceAddressValue) => {
@@ -53,9 +58,11 @@ export const InHomeEstimatePage: React.FC = () => {
     }));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleContactSubmit = (e: React.FormEvent) => {
@@ -87,13 +94,12 @@ export const InHomeEstimatePage: React.FC = () => {
     setError(null);
 
     try {
-      const { error: insertError } = await supabase
-        .from('in_home_estimates')
-        .insert([{
+      const { error: insertError } = await supabase.from('in_home_estimates').insert([
+        {
           customer_info: {
             name: formData.name,
             email: formData.email,
-            phone: formData.phone
+            phone: formData.phone,
           },
           location_info: {
             address: formData.address,
@@ -105,12 +111,12 @@ export const InHomeEstimatePage: React.FC = () => {
           estimate_details: {
             preferred_date: formData.preferredDate,
             preferred_time: formData.preferredTime,
-            message: formData.message
-          }
-        }]);
+            message: formData.message,
+          },
+        },
+      ]);
 
       if (insertError) throw insertError;
-
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting in-home estimate form:', err);
@@ -137,7 +143,10 @@ export const InHomeEstimatePage: React.FC = () => {
           { label: 'Name', value: formData.name },
           { label: 'Email', value: formData.email },
           { label: 'Phone', value: formData.phone },
-          { label: 'Address', value: `${formData.address}${formData.unitNumber ? `, ${formData.unitNumber}` : ''}, ${formatServiceAddressLocation(formData)}` },
+          {
+            label: 'Address',
+            value: `${formData.address}${formData.unitNumber ? `, ${formData.unitNumber}` : ''}, ${formatServiceAddressLocation(formData)}`,
+          },
           { label: 'Preferred date', value: formattedDate },
           { label: 'Preferred time', value: formData.preferredTime },
           ...(formData.message ? [{ label: 'Notes', value: formData.message }] : []),
@@ -146,198 +155,246 @@ export const InHomeEstimatePage: React.FC = () => {
     );
   }
 
-  const inputCls = "w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300";
-
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <PageHero
+    <div className="home-dark min-h-screen pb-24">
+      <ServicePageHero
         eyebrow="Free In-Home Estimate"
-        title={<>Providers come <span className="text-brand">to you.</span></>}
+        title={
+          <>
+            Providers come
+            <br />
+            to you
+          </>
+        }
         subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
-        image="/process-step-1.svg"
-        imageAlt="Vetted provider visiting property"
-        imageCaption="On-site service • No obligation • Free estimate"
+        image="/opek-hustle-muscle.png?v=1"
+        imageAlt="Provider ready for an in-home estimate"
+        chip="No Obligation"
         primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
-        compact
       />
 
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
-        {/* Step 1: Contact Details */}
-        {step === 1 && (
-          <form onSubmit={handleContactSubmit} className="space-y-6">
-            <div className="text-center space-y-2 mb-6">
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Contact Details</h2>
-              <p className="text-secondary-400 text-xs">Tell us how to confirm your free estimate.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Name *</label>
-                  <div className="relative group">
-                    <input type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required placeholder="John Smith"
-                      className={inputCls} />
+        <div className={UTILITY_FORM_CARD}>
+          {step === 1 && (
+            <form onSubmit={handleContactSubmit} className="space-y-6">
+              <div className="text-center space-y-2 mb-2">
+                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Contact Details</h2>
+                <p className="text-[var(--text-muted)] text-xs">Tell us how to confirm your free estimate.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={UTILITY_LABEL}>Name *</label>
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="John Smith"
+                      className={UTILITY_INPUT}
+                    />
+                  </div>
+                  <div>
+                    <label className={UTILITY_LABEL}>Phone *</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="(831) 318-7139"
+                      className={UTILITY_INPUT}
+                    />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Phone *</label>
-                  <div className="relative group">
-                    <input type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139"
-                      className={inputCls} />
-                  </div>
+                  <label className={UTILITY_LABEL}>Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="you@email.com"
+                    className={UTILITY_INPUT}
+                  />
                 </div>
               </div>
-
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Email *</label>
-                <div className="relative group">
-                  <input type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required placeholder="you@email.com"
-                    className={inputCls} />
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4">
-              <button type="submit"
-                className="group w-full py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20">
-                Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+              <button type="submit" className={UTILITY_PRIMARY_BUTTON}>
+                Continue <ArrowRight size={14} />
               </button>
-            </div>
-          </form>
-        )}
+            </form>
+          )}
 
-        {/* Step 2: Appointment Details */}
-        {step === 2 && (
-          <form onSubmit={handleAppointmentSubmit} className="space-y-6">
-            <div className="text-center space-y-2 mb-6">
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Appointment Details</h2>
-              <p className="text-secondary-400 text-xs">Choose where and when providers should visit.</p>
-            </div>
-            <div className="space-y-4">
-              <ServiceAddressField
-                label="Service Address"
-                value={{
-                  address: formData.address,
-                  unitNumber: formData.unitNumber,
-                  city: formData.city,
-                  state: formData.state,
-                  zipCode: formData.zipCode,
-                }}
-                onChange={handleAddressChange}
-                validated={addressValidated}
-                onValidatedChange={setAddressValidated}
-                error={addressError}
-                onErrorChange={setAddressError}
-                inputClassName={inputCls}
-              />
+          {step === 2 && (
+            <form onSubmit={handleAppointmentSubmit} className="space-y-6">
+              <div className="text-center space-y-2 mb-2">
+                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Appointment Details</h2>
+                <p className="text-[var(--text-muted)] text-xs">Choose where and when providers should visit.</p>
+              </div>
+              <div className="space-y-4">
+                <ServiceAddressField
+                  label="Service Address"
+                  value={{
+                    address: formData.address,
+                    unitNumber: formData.unitNumber,
+                    city: formData.city,
+                    state: formData.state,
+                    zipCode: formData.zipCode,
+                  }}
+                  onChange={handleAddressChange}
+                  validated={addressValidated}
+                  onValidatedChange={setAddressValidated}
+                  error={addressError}
+                  onErrorChange={setAddressError}
+                  inputClassName={UTILITY_INPUT}
+                />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-                    <Calendar size={10} className="inline mr-1" />
-                    Preferred Date *
-                  </label>
-                  <div className="relative group">
-                    <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleInputChange} required
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={UTILITY_LABEL}>
+                      <Calendar size={10} className="inline mr-1" />
+                      Preferred Date *
+                    </label>
+                    <input
+                      type="date"
+                      name="preferredDate"
+                      value={formData.preferredDate}
+                      onChange={handleInputChange}
+                      required
                       min={new Date().toISOString().split('T')[0]}
-                      className={inputCls} />
+                      className={UTILITY_INPUT}
+                    />
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">
-                    <Clock size={10} className="inline mr-1" />
-                    Preferred Time *
-                  </label>
-                  <div className="relative group">
-                    <select name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} required
-                      className={inputCls}>
+                  <div>
+                    <label className={UTILITY_LABEL}>
+                      <Clock size={10} className="inline mr-1" />
+                      Preferred Time *
+                    </label>
+                    <select
+                      name="preferredTime"
+                      value={formData.preferredTime}
+                      onChange={handleInputChange}
+                      required
+                      className={UTILITY_INPUT}
+                    >
                       <option value="">Select a time preference</option>
-                      {timeOptions.map(option => <option key={option} value={option}>{option}</option>)}
+                      {timeOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <button type="button" onClick={handleBackStep}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors">
-                <ArrowLeft size={14} /> Back
-              </button>
-              <button type="submit"
-                disabled={!addressValidated}
-                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed">
-                Continue <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Step 3: Message & Review */}
-        {step === 3 && (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="text-center space-y-2 mb-6">
-              <div className="w-12 h-12 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-100 shadow-sm">
-                <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
+              <div className="flex gap-3">
+                <button type="button" onClick={handleBackStep} className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}>
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={!addressValidated}
+                  className={`${UTILITY_PRIMARY_BUTTON} flex-1`}
+                >
+                  Continue <ArrowRight size={14} />
+                </button>
               </div>
-              <h2 className="text-lg font-black text-secondary uppercase tracking-wider">Review Request</h2>
-              <p className="text-secondary-400 text-xs">Add final notes and confirm your request.</p>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
-                <div className="relative group">
-                  <textarea name="message" value={formData.message} onChange={handleInputChange} rows={3}
-                    placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
-                    className={`${inputCls} resize-none`} />
+            </form>
+          )}
+
+          {step === 3 && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="text-center space-y-2 mb-2">
+                <div className="w-12 h-12 bg-brand/15 rounded-full flex items-center justify-center mx-auto mb-3 border border-brand/30">
+                  <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
                 </div>
+                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Review Request</h2>
+                <p className="text-[var(--text-muted)] text-xs">Add final notes and confirm your request.</p>
               </div>
 
-              {/* Review Section */}
-              <div className="border border-secondary-100 bg-secondary-50/50 p-5 rounded-2xl shadow-sm">
+              <div>
+                <label className={UTILITY_LABEL}>Additional Details</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={3}
+                  placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
+                  className={`${UTILITY_INPUT} resize-none`}
+                />
+              </div>
+
+              <div className="border border-[var(--border)] bg-white/[0.02] p-5 rounded-2xl">
                 <div className="flex items-center gap-2.5 mb-4">
                   <Receipt size={15} className="text-brand" strokeWidth={2.5} />
-                  <h3 className="text-[10px] font-black text-secondary uppercase tracking-[0.15em]">Review Request</h3>
+                  <h3 className="text-[10px] font-bold text-[var(--text)] uppercase tracking-[0.15em]">
+                    Review Request
+                  </h3>
                 </div>
                 <div className="space-y-2.5 text-xs">
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Name</span><span className="font-black text-secondary text-right">{formData.name}</span></div>
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Phone</span><span className="font-black text-secondary text-right">{formData.phone}</span></div>
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Email</span><span className="font-black text-secondary text-right">{formData.email}</span></div>
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Address</span><span className="font-black text-secondary text-right max-w-[60%] truncate">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}, {formatServiceAddressLocation(formData)}</span></div>
-                  <div className="flex justify-between gap-4 border-b border-secondary-100/50 pb-2"><span className="text-secondary-400 font-medium">Preferred Date</span><span className="font-black text-secondary text-right">{formData.preferredDate}</span></div>
-                  <div className="flex justify-between gap-4"><span className="text-secondary-400 font-medium">Preferred Time</span><span className="font-black text-secondary text-right">{formData.preferredTime}</span></div>
+                  {[
+                    ['Name', formData.name],
+                    ['Phone', formData.phone],
+                    ['Email', formData.email],
+                    [
+                      'Address',
+                      `${formData.address}${formData.unitNumber ? `, ${formData.unitNumber}` : ''}, ${formatServiceAddressLocation(formData)}`,
+                    ],
+                    ['Preferred Date', formData.preferredDate],
+                    ['Preferred Time', formData.preferredTime],
+                  ].map(([label, value]) => (
+                    <div
+                      key={label}
+                      className="flex justify-between gap-4 border-b border-white/[0.06] last:border-0 pb-2 last:pb-0"
+                    >
+                      <span className="text-[var(--text-muted)] font-medium">{label}</span>
+                      <span className="font-semibold text-[var(--text)] text-right max-w-[60%] truncate">
+                        {value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-red-700 text-xs font-bold">{error}</p>
+              {error && (
+                <div className="p-4 bg-brand/10 border border-brand/30 rounded-xl">
+                  <p className="text-brand text-xs font-bold">{error}</p>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={handleBackStep}
+                  disabled={submitting}
+                  className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}
+                >
+                  <ArrowLeft size={14} /> Back
+                </button>
+                <button type="submit" disabled={submitting} className={`${UTILITY_PRIMARY_BUTTON} flex-1`}>
+                  {submitting ? (
+                    'Sending...'
+                  ) : (
+                    <>
+                      <Send size={14} /> Request Free Estimate
+                    </>
+                  )}
+                </button>
               </div>
-            )}
 
-            <div className="flex gap-3 pt-4">
-              <button type="button" onClick={handleBackStep} disabled={submitting}
-                className="flex items-center justify-center gap-2 px-6 py-4 border border-secondary-100 text-secondary text-xs font-black uppercase tracking-widest rounded-xl hover:border-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                <ArrowLeft size={14} /> Back
-              </button>
-              <button type="submit" disabled={submitting}
-                className="group flex-1 py-4 bg-secondary text-white font-black text-xs uppercase tracking-widest hover:bg-brand transition-all duration-300 flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-secondary/10 hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed">
-                {submitting ? 'Sending...' : <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" /> Request Free Estimate</>}
-              </button>
-            </div>
-
-            <p className="text-[10px] text-secondary-400 text-center font-medium">
-              No obligation. The appointment will be confirmed within 24 hours.
-            </p>
-          </form>
-        )}
+              <p className="text-[10px] text-[var(--text-muted)] text-center font-medium">
+                No obligation. The appointment will be confirmed within 24 hours.
+              </p>
+            </form>
+          )}
+        </div>
       </div>
-
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <TrustBadges />
-      </div>
-
     </div>
   );
 };

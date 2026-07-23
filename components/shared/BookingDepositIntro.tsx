@@ -84,17 +84,17 @@ export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       <div className="text-center space-y-2 mb-6">
-        <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-100 shadow-sm">
-          <ShieldCheck className="w-6 h-6 text-emerald-600" />
+        <div className="w-12 h-12 bg-emerald-400/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-100 shadow-none">
+          <ShieldCheck className="w-6 h-6 text-emerald-300" />
         </div>
-        <h2 className="text-lg font-black text-secondary uppercase tracking-wider font-display">Refundable Deposit</h2>
-        <p className="text-secondary-400 text-xs">One last step before you confirm your booking.</p>
+        <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-wider font-display">Refundable Deposit</h2>
+        <p className="text-[var(--text-muted)] text-xs">One last step before you confirm your booking.</p>
       </div>
 
-      <div className="bg-white rounded-3xl p-6 border border-secondary-100 shadow-sm text-center space-y-4">
+      <div className="bg-[var(--surface)] rounded-3xl p-6 border border-[var(--border)] shadow-none text-center space-y-4">
         <p className="text-4xl font-black text-brand">${BOOKING_DEPOSIT_AMOUNT}</p>
-        <p className="text-sm text-secondary-600 leading-relaxed">
-          A <span className="font-bold text-secondary">${BOOKING_DEPOSIT_AMOUNT} deposit</span> is required to confirm your booking. It is fully refundable and will be applied toward your remaining balance.
+        <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+          A <span className="font-bold text-[var(--text)]">${BOOKING_DEPOSIT_AMOUNT} deposit</span> is required to confirm your booking. It is fully refundable and will be applied toward your remaining balance.
         </p>
       </div>
 
@@ -102,14 +102,14 @@ export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
         <button
           type="button"
           onClick={onBack}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-[var(--border)] text-[var(--text)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
         >
           <ArrowLeft size={14} /> Back
         </button>
         <button
           type="button"
           onClick={handleContinue}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_24px_-8px_rgba(255,0,110,0.35)] hover:shadow-[0_0_28px_-6px_rgba(255,0,110,0.5)] active:scale-[0.99] cursor-pointer"
         >
           Continue <ArrowRight size={14} />
         </button>

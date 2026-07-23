@@ -27,27 +27,33 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
     onClick={onClick}
     disabled={disabled}
     aria-pressed={selected}
-    className={`w-full bg-white border rounded-xl p-4 text-left shadow-[0_2px_8px_rgba(53,80,112,0.06)] transition-all ${
+    className={`w-full bg-[var(--surface)] border rounded-xl p-4 text-left transition-all ${
       disabled
-        ? 'border-secondary-100 opacity-60 cursor-not-allowed'
+        ? 'border-[var(--border)] opacity-55 cursor-not-allowed'
         : selected
-          ? 'border-brand ring-2 ring-brand/10 shadow-[0_4px_16px_rgba(255,0,110,0.08)]'
-          : 'border-secondary-100 hover:border-secondary-200 hover:shadow-[0_4px_14px_rgba(53,80,112,0.08)]'
+          ? 'border-brand ring-2 ring-brand/20 shadow-[0_0_28px_-8px_rgba(255,0,110,0.45)]'
+          : 'border-[var(--border)] hover:border-brand/40 hover:bg-white/[0.03]'
     }`}
   >
     <div className="flex items-start justify-between gap-3 mb-2">
       <div className="flex items-center gap-2.5 min-w-0">
         <div
           className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
-            selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+            selected ? 'border-brand bg-brand' : 'border-white/20 bg-transparent'
           }`}
           aria-hidden
         >
           {selected && <Check size={12} className="text-white" strokeWidth={3} />}
         </div>
-        <h3 className={`text-base font-semibold ${disabled ? 'text-secondary-400' : 'text-secondary'}`}>{title}</h3>
+        <h3
+          className={`text-base font-semibold ${
+            disabled ? 'text-[var(--text-muted)]' : 'text-[var(--text)]'
+          }`}
+        >
+          {title}
+        </h3>
         {badge && (
-          <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-secondary-100 text-secondary-500 rounded-full shrink-0">
+          <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-white/[0.06] text-[var(--text-muted)] rounded-full shrink-0 border border-white/10">
             {badge}
           </span>
         )}
@@ -57,10 +63,14 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
       )}
     </div>
     <div className="flex items-end justify-between gap-4 pl-[1.875rem]">
-      <p className={`text-sm leading-relaxed flex-1 ${disabled ? 'text-secondary-400' : 'text-secondary-500'}`}>
+      <p
+        className={`text-sm leading-relaxed flex-1 ${
+          disabled ? 'text-neutral-500' : 'text-[var(--text-muted)]'
+        }`}
+      >
         {description}
       </p>
-      {icon && <div className="w-12 h-12 shrink-0 text-secondary-300">{icon}</div>}
+      {icon && <div className="w-12 h-12 shrink-0 text-[var(--text-muted)]">{icon}</div>}
     </div>
   </button>
 );

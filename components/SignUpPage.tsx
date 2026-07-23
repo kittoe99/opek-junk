@@ -189,7 +189,7 @@ export const SignUpPage: React.FC = () => {
   if (checkingSession) {
     return (
       <div className={`${UTILITY_PAGE_SHELL} flex items-center justify-center`}>
-        <Loader2 className="h-8 w-8 animate-spin text-secondary" />
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--text)]" />
       </div>
     );
   }
@@ -209,14 +209,14 @@ export const SignUpPage: React.FC = () => {
                 <Mail size={20} strokeWidth={2.5} />
               </div>
               <div>
-                <h2 className="font-serif text-2xl font-semibold text-secondary">Confirm your email</h2>
-                <p className="text-sm text-secondary-500 mt-1 leading-relaxed">
-                  Click the link we sent to <span className="font-medium text-secondary">{formData.email}</span>.
+                <h2 className="font-sans text-2xl font-semibold text-[var(--text)]">Confirm your email</h2>
+                <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed">
+                  Click the link we sent to <span className="font-medium text-[var(--text)]">{formData.email}</span>.
                   After confirming, return to this page to finish setting up your account.
                 </p>
               </div>
             </div>
-            <p className="text-xs text-secondary-400 leading-relaxed">
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               Did not receive it? Check spam or contact{' '}
               <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline">
                 Support@opekjunkremoval.com
@@ -243,22 +243,22 @@ export const SignUpPage: React.FC = () => {
               <div className="w-11 h-11 bg-secondary text-white rounded-2xl flex items-center justify-center shrink-0">
                 <ShieldCheck size={20} strokeWidth={2.5} />
               </div>
-              <p className="text-sm text-secondary-500 leading-relaxed">
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                 You can now accept job offers in your approved service areas. Use the same email below when signing in.
               </p>
             </div>
             <dl className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:gap-4">
-                <dt className="text-xs font-semibold text-secondary-400 uppercase tracking-wider sm:w-32 shrink-0">
+                <dt className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider sm:w-32 shrink-0">
                   Name
                 </dt>
-                <dd className="text-sm text-secondary break-words">{formData.fullName}</dd>
+                <dd className="text-sm text-[var(--text)] break-words">{formData.fullName}</dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-4">
-                <dt className="text-xs font-semibold text-secondary-400 uppercase tracking-wider sm:w-32 shrink-0">
+                <dt className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider sm:w-32 shrink-0">
                   Email
                 </dt>
-                <dd className="text-sm text-secondary break-words">{formData.email}</dd>
+                <dd className="text-sm text-[var(--text)] break-words">{formData.email}</dd>
               </div>
             </dl>
           </div>
@@ -298,10 +298,10 @@ export const SignUpPage: React.FC = () => {
                 readOnly={emailLocked}
                 required
                 placeholder="you@example.com"
-                className={`${UTILITY_INPUT}${emailLocked ? ' bg-secondary-50 text-secondary-600' : ''}`}
+                className={`${UTILITY_INPUT}${emailLocked ? ' bg-white/[0.04] text-[var(--text-muted)]' : ''}`}
               />
               {checkingEligibility && (
-                <p className="mt-1.5 text-xs text-secondary-400">Checking approval status…</p>
+                <p className="mt-1.5 text-xs text-[var(--text-muted)]">Checking approval status…</p>
               )}
               {isEligible && (
                 <p className="mt-1.5 text-xs text-emerald-700">Approved — you can create your account with this email.</p>
@@ -404,7 +404,7 @@ export const SignUpPage: React.FC = () => {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-secondary-400 leading-relaxed">
+          <p className="mt-6 text-center text-xs text-[var(--text-muted)] leading-relaxed">
             Haven&apos;t applied yet?{' '}
             <Link to="/provider-signup" className="text-brand hover:underline">
               Submit a provider application

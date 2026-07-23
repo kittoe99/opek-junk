@@ -107,11 +107,11 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
               placeholder="(555) 000-0000"
               className={FLOW_INPUT}
             />
-            <p className="mt-1.5 text-xs text-secondary-400 leading-relaxed">{SMS_TRANSACTIONAL_NOTICE}</p>
+            <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">{SMS_TRANSACTIONAL_NOTICE}</p>
           </div>
         </div>
 
-        <label className="flex items-start gap-3 p-4 bg-white border border-secondary-200 rounded-xl cursor-pointer hover:border-secondary-300 transition-colors">
+        <label className="flex items-start gap-3 p-4 bg-[var(--surface)] border border-white/15 rounded-xl cursor-pointer hover:border-white/25 transition-colors">
           <div className="relative shrink-0 mt-0.5">
             <input
               type="checkbox"
@@ -122,16 +122,16 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
             />
             <div
               className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                smsMarketingConsent ? 'bg-secondary border-secondary' : 'bg-white border-secondary-300'
+                smsMarketingConsent ? 'bg-brand border-white/20' : 'bg-[var(--surface)] border-white/20'
               }`}
             >
               {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
             </div>
           </div>
-          <span className="text-xs text-secondary-500 leading-relaxed">{SMS_MARKETING_CONSENT_TEXT}</span>
+          <span className="text-xs text-[var(--text-muted)] leading-relaxed">{SMS_MARKETING_CONSENT_TEXT}</span>
         </label>
 
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {error && <p className="text-brand text-sm">{error}</p>}
       </form>
 
       <FlowStickyNav

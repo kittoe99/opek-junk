@@ -17,36 +17,36 @@ import {
   Phone,
 } from 'lucide-react';
 import {
-  HERO_PRIMARY_CTA,
   UTILITY_INPUT,
   UTILITY_LABEL,
   UTILITY_PRIMARY_BUTTON,
   UTILITY_SECONDARY_BUTTON,
 } from '../lib/flowPageLayout';
 import { supabase } from '../lib/supabase';
-import { TrustBadges } from './TrustBadges';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { FlowProgressBar } from './shared/flow/FlowProgressBar';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
+
+const HERO_CTA = UTILITY_PRIMARY_BUTTON.replace('w-full ', '');
 
 const SIGNUP_STEPS = ['About you', 'Service areas', 'Vehicle & docs', 'Availability'] as const;
 
 const PROVIDER_HERO_FEATURES = [
   {
     icon: MapPin,
-    iconColor: 'text-indigo-500',
+    iconColor: 'text-brand',
     title: 'Local demand',
     description: 'Jobs routed to the metros you choose to serve.',
   },
   {
     icon: CalendarClock,
-    iconColor: 'text-pink-500',
+    iconColor: 'text-brand',
     title: 'Your hours',
     description: 'Pick part-time volume or fill your route.',
   },
   {
     icon: ShieldCheck,
-    iconColor: 'text-emerald-600',
+    iconColor: 'text-brand',
     title: 'Vetted network',
     description: 'Onboard with clear standards and dispatch support.',
   },
@@ -384,19 +384,19 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="relative bg-white overflow-hidden border-b border-secondary-100/60">
+    <div className="home-dark min-h-screen bg-[var(--bg)]">
+      <section className="relative bg-[var(--surface)] overflow-hidden border-b border-[var(--border)]">
         <div className="lg:hidden">
           <div className="px-5 pt-2.5 pb-8 text-center max-w-lg mx-auto">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
 
-            <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
+            <h1 className="font-sans text-[2rem] sm:text-[2.25rem] font-semibold text-[var(--text)] tracking-tight leading-[1.12] mb-4">
               Hauling work,
               <br />
               on your terms.
             </h1>
 
-            <p className="text-[15px] sm:text-base text-secondary-500 leading-relaxed mb-6 max-w-[20rem] mx-auto">
+            <p className="text-[15px] sm:text-base text-[var(--text-muted)] leading-relaxed mb-6 max-w-[20rem] mx-auto">
               Apply to join independent contractors receiving junk removal jobs through Opek&apos;s dispatch network.
             </p>
 
@@ -404,35 +404,35 @@ export const ProviderSignupPage: React.FC = () => {
               <button
                 type="button"
                 onClick={scrollToForm}
-                className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_PRIMARY_CTA}`}
+                className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_CTA}`}
               >
                 Start application
               </button>
               <a
                 href="tel:8313187139"
-                className="shrink-0 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap inline-flex items-center gap-1"
+                className="shrink-0 py-3 text-sm font-medium text-[var(--text)] hover:text-brand transition-colors whitespace-nowrap inline-flex items-center gap-1"
               >
                 <Phone size={14} />
                 Questions? Call us
               </a>
             </div>
 
-            <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-50 aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center p-6">
+            <div className="mt-7 rounded-2xl overflow-hidden bg-white/[0.04] aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center p-6">
               <img
-                src="/process-step-2.svg"
+                src="/opek-junk-haul-away.png?v=1"
                 alt="Independent hauling contractor on a job"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
               />
             </div>
 
-            <div className="border-t border-secondary-100/80 pt-8 mt-2 space-y-8">
+            <div className="border-t border-[var(--border)] pt-8 mt-2 space-y-8">
               {PROVIDER_HERO_FEATURES.map((feature) => {
                 const Icon = feature.icon;
                 return (
                   <div key={feature.title} className="text-center px-2">
                     <Icon size={36} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-                    <h2 className="text-base font-bold text-secondary mb-1.5">{feature.title}</h2>
-                    <p className="text-sm text-secondary-500 leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
+                    <h2 className="text-base font-bold text-[var(--text)] mb-1.5">{feature.title}</h2>
+                    <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
                   </div>
                 );
               })}
@@ -445,7 +445,7 @@ export const ProviderSignupPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
               <div className="max-w-[28rem]">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
-                <h1 className="font-serif text-[2.625rem] xl:text-[3.125rem] font-semibold text-secondary tracking-tight mb-4 leading-[1.1]">
+                <h1 className="font-sans text-[2.625rem] xl:text-[3.125rem] font-semibold text-[var(--text)] tracking-tight mb-4 leading-[1.1]">
                   Hauling work,
                   <br />
                   on your terms.
@@ -457,14 +457,14 @@ export const ProviderSignupPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={scrollToForm}
-                    className={`!rounded-full px-7 py-3 text-[15px] font-semibold inline-flex items-center gap-2 ${HERO_PRIMARY_CTA}`}
+                    className={`!rounded-full px-7 py-3 text-[15px] font-semibold inline-flex items-center gap-2 ${HERO_CTA}`}
                   >
                     Start application
                     <ArrowRight size={16} />
                   </button>
                   <a
                     href="tel:8313187139"
-                    className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors"
+                    className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-[var(--text)] hover:text-brand transition-colors"
                   >
                     <Phone size={15} />
                     (831) 318-7139
@@ -473,24 +473,24 @@ export const ProviderSignupPage: React.FC = () => {
               </div>
 
               <div>
-                <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-50 flex items-center justify-center p-8 xl:p-10">
+                <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-white/[0.04] flex items-center justify-center p-8 xl:p-10">
                   <img
-                    src="/process-step-2.svg"
+                    src="/opek-junk-haul-away.png?v=1"
                     alt="Independent hauling contractor on a job"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-secondary-100/80 pb-10 xl:pb-12">
+            <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-[var(--border)] pb-10 xl:pb-12">
               {PROVIDER_HERO_FEATURES.map((feature) => {
                 const Icon = feature.icon;
                 return (
                   <div key={feature.title} className="text-center">
                     <Icon size={32} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-                    <h2 className="text-[15px] font-bold text-secondary mb-1">{feature.title}</h2>
-                    <p className="text-sm text-secondary-500 leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
+                    <h2 className="text-[15px] font-bold text-[var(--text)] mb-1">{feature.title}</h2>
+                    <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
                   </div>
                 );
               })}
@@ -501,22 +501,22 @@ export const ProviderSignupPage: React.FC = () => {
 
       <div
         ref={formSectionRef}
-        className="scroll-mt-[var(--site-header-height)] bg-white border-t border-secondary-100/40"
+        className="scroll-mt-[var(--site-header-height)] bg-[var(--bg)] border-t border-[var(--border)]"
       >
         <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           <div className="mb-3 flex items-center justify-between gap-3 px-1">
-            <p className="text-xs font-semibold text-secondary-500">
+            <p className="text-xs font-semibold text-[var(--text-muted)]">
               Step {step} of {SIGNUP_STEPS.length}
-              <span className="text-secondary-300 font-normal"> · {SIGNUP_STEPS[step - 1]}</span>
+              <span className="text-neutral-500 font-normal"> · {SIGNUP_STEPS[step - 1]}</span>
             </p>
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-secondary-400">
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
               <Truck size={13} className="text-brand" />
               Provider application
             </div>
           </div>
           <FlowProgressBar progress={step / SIGNUP_STEPS.length} />
 
-          <div className="bg-white rounded-3xl border border-secondary-100 p-6 md:p-10 shadow-[0_2px_12px_rgba(53,80,112,0.06)] mt-4 animate-fade-in">
+          <div className="bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 md:p-10 shadow-[0_2px_12px_rgba(53,80,112,0.06)] mt-4 animate-fade-in">
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
               <FlowStepTitle
@@ -570,11 +570,11 @@ export const ProviderSignupPage: React.FC = () => {
 
               <div className="space-y-4">
                 {formData.serviceAreas.map((area, index) => (
-                  <div key={index} className="p-4 bg-white border border-secondary-100 rounded-2xl space-y-3 relative shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
+                  <div key={index} className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl space-y-3 relative shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
                     <button
                       type="button"
                       onClick={() => removeServiceArea(index)}
-                      className="absolute top-3 right-3 w-6 h-6 rounded-full bg-secondary-50 hover:bg-red-50 text-secondary-400 hover:text-red-500 flex items-center justify-center transition-colors"
+                      className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/[0.04] hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 flex items-center justify-center transition-colors"
                     >
                       <Trash2 size={12} />
                     </button>
@@ -615,7 +615,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={addServiceArea}
-                  className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-secondary-400 hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
                 >
                   <Plus size={14} /> Add Service Area
                 </button>
@@ -678,7 +678,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {vehicleImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {vehicleImages.map((img, i) => (
-                        <div key={i} className="relative aspect-[4/3] border border-secondary-100 bg-white overflow-hidden rounded-xl">
+                        <div key={i} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Vehicle ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
@@ -696,7 +696,7 @@ export const ProviderSignupPage: React.FC = () => {
                     type="button"
                     onClick={() => vehicleInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-secondary-400 hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
                     {uploading ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
                     {vehicleImages.length > 0 ? 'Add More Vehicle Photos' : 'Upload Vehicle Photos'}
@@ -713,7 +713,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {insuranceImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {insuranceImages.map((img, i) => (
-                        <div key={i} className="relative aspect-[4/3] border border-secondary-100 bg-white overflow-hidden rounded-xl">
+                        <div key={i} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Insurance doc ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
@@ -731,7 +731,7 @@ export const ProviderSignupPage: React.FC = () => {
                     type="button"
                     onClick={() => insuranceInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-secondary-400 hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
                     {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                     {insuranceImages.length > 0 ? 'Add More Documents' : 'Upload Insurance / COI'}
@@ -779,10 +779,10 @@ export const ProviderSignupPage: React.FC = () => {
                           key={option.value}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, availability: option.value }))}
-                          className={`group p-4 border rounded-xl flex flex-col gap-1.5 transition-all duration-200 w-full text-left bg-white ${
+                          className={`group p-4 border rounded-xl flex flex-col gap-1.5 transition-all duration-200 w-full text-left bg-[var(--surface)] ${
                             isSelected
                               ? 'border-brand shadow-md shadow-brand/5 scale-[1.01]'
-                              : 'border-secondary-100 hover:border-brand/40 hover:shadow-md hover:shadow-brand/5'
+                              : 'border-[var(--border)] hover:border-brand/40 hover:shadow-md hover:shadow-brand/5'
                           }`}
                         >
                           <div className="flex items-center gap-2">
@@ -791,11 +791,11 @@ export const ProviderSignupPage: React.FC = () => {
                             }`}>
                               {isSelected && <Check size={10} className="text-white" strokeWidth={3} />}
                             </div>
-                            <span className={`text-sm font-semibold transition-colors ${isSelected ? 'text-brand' : 'text-secondary group-hover:text-brand'}`}>
+                            <span className={`text-sm font-semibold transition-colors ${isSelected ? 'text-brand' : 'text-[var(--text)] group-hover:text-brand'}`}>
                               {option.label}
                             </span>
                           </div>
-                          <span className="text-[11px] text-secondary-400 pl-6">{option.desc}</span>
+                          <span className="text-[11px] text-[var(--text-muted)] pl-6">{option.desc}</span>
                         </button>
                       );
                     })}
@@ -839,14 +839,12 @@ export const ProviderSignupPage: React.FC = () => {
                   {submitting ? 'Submitting...' : <><Check size={14} strokeWidth={3} /> Submit Application</>}
                 </button>
               </div>
-              <p className="text-[10px] text-secondary-300 text-center">By submitting, you agree to the contractor terms and network guidelines.</p>
+              <p className="text-[10px] text-neutral-500 text-center">By submitting, you agree to the contractor terms and network guidelines.</p>
             </form>
           )}
           </div>
         </div>
       </div>
-
-      <TrustBadges />
     </div>
   );
 };

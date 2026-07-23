@@ -47,10 +47,10 @@ const STRIPE_ELEMENT_STYLE = {
 } as const;
 
 const CARD_FIELD_WRAPPER =
-  'px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 focus-within:ring-4 focus-within:ring-brand/10 focus-within:border-brand focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300';
+  'px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 focus-within:ring-4 focus-within:ring-brand/10 focus-within:border-brand focus-within:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300';
 
 const FIELD_LABEL =
-  'block text-[10px] font-black uppercase tracking-widest text-secondary-400 mb-1.5';
+  'block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1.5';
 
 async function parseJsonResponse(response: Response) {
   const responseText = await response.text();
@@ -243,25 +243,25 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-2xl border border-secondary-100 bg-secondary-50/30 p-4 space-y-4">
+      <div className="rounded-2xl border border-[var(--border)] bg-white/[0.04]/30 p-4 space-y-4">
         <div className="flex items-center justify-between gap-3 pb-1">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-white border border-secondary-100 flex items-center justify-center shadow-sm">
-              <CreditCard size={16} className="text-secondary-500" />
+            <div className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shadow-none">
+              <CreditCard size={16} className="text-[var(--text-muted)]" />
             </div>
             <div>
-              <p className="text-xs font-bold text-secondary">Payment details</p>
-              <p className="text-[10px] text-secondary-400">Enter your card information below</p>
+              <p className="text-xs font-bold text-[var(--text)]">Payment details</p>
+              <p className="text-[10px] text-[var(--text-muted)]">Enter your card information below</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-secondary-400">
+          <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
             <Lock size={12} />
             Secure
           </div>
         </div>
 
         {!cardReady && (
-          <div className="flex items-center justify-center gap-2 py-4 text-secondary-400 text-xs">
+          <div className="flex items-center justify-center gap-2 py-4 text-[var(--text-muted)] text-xs">
             <Loader2 className="animate-spin w-4 h-4" />
             Loading card form...
           </div>
@@ -348,13 +348,13 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
               onChange={(e) => setPostalCode(e.target.value)}
               placeholder="12345"
               autoComplete="postal-code"
-              className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300"
             />
           </div>
         </div>
       </div>
 
-      <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+      <label className="flex items-start gap-3 p-4 bg-white/[0.03] border border-[var(--border)] rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
         <div className="relative shrink-0 mt-0.5">
           <input
             type="checkbox"
@@ -367,13 +367,13 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           />
           <div
             className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-              termsAccepted ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+              termsAccepted ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-white/20'
             }`}
           >
             {termsAccepted && <Check size={12} className="text-white" strokeWidth={3.5} />}
           </div>
         </div>
-        <span className="text-xs text-secondary-600 leading-relaxed">
+        <span className="text-xs text-[var(--text-muted)] leading-relaxed">
           I agree to the{' '}
           <Link
             to="/terms"
@@ -398,7 +398,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
         </span>
       </label>
 
-      <label className="flex items-start gap-3 p-4 bg-secondary-50/50 border border-secondary-100 rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
+      <label className="flex items-start gap-3 p-4 bg-white/[0.03] border border-[var(--border)] rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
         <div className="relative shrink-0 mt-0.5">
           <input
             type="checkbox"
@@ -408,19 +408,19 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           />
           <div
             className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-              smsMarketingConsent ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+              smsMarketingConsent ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-white/20'
             }`}
           >
             {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
           </div>
         </div>
-        <span className="text-xs text-secondary-600 leading-relaxed">
+        <span className="text-xs text-[var(--text-muted)] leading-relaxed">
           {SMS_MARKETING_CONSENT_TEXT}
         </span>
       </label>
 
       {error && (
-        <p className="text-xs text-red-500 font-semibold text-center">{error}</p>
+        <p className="text-xs text-brand font-semibold text-center">{error}</p>
       )}
 
       <div className="pt-2 flex gap-3">
@@ -428,14 +428,14 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           type="button"
           onClick={onBack}
           disabled={busy}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-secondary-100 text-secondary shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer disabled:opacity-50"
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-[var(--border)] text-[var(--text)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer disabled:opacity-50"
         >
           <ArrowLeft size={14} /> Back
         </button>
         <button
           type="submit"
           disabled={busy || !termsAccepted || !canPay}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-secondary/10 hover:shadow-brand/20 active:scale-[0.99] cursor-pointer"
+          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_24px_-8px_rgba(255,0,110,0.35)] hover:shadow-[0_0_28px_-6px_rgba(255,0,110,0.5)] active:scale-[0.99] cursor-pointer"
         >
           {busy ? (
             <>
@@ -510,8 +510,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
 
   if (!isStripeConfigured) {
     return (
-      <div className="max-w-md mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
-        <p className="text-xs text-red-700 font-semibold">
+      <div className="max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
+        <p className="text-xs text-brand font-semibold">
           Stripe publishable key is missing. Add VITE_STRIPE_PUBLISHABLE_KEY to your environment.
         </p>
       </div>
@@ -520,8 +520,8 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
 
   if (!customerEmail?.includes('@')) {
     return (
-      <div className="max-w-md mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
-        <p className="text-xs text-red-700 font-semibold">
+      <div className="max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
+        <p className="text-xs text-brand font-semibold">
           A valid email is required before payment. Go back and add your email.
         </p>
       </div>
@@ -532,13 +532,13 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
     <div className="max-w-md mx-auto space-y-4">
       <div className="flex items-center justify-between gap-4 px-1">
         <div>
-          <h2 className="text-sm font-black text-secondary uppercase tracking-wider">Card payment</h2>
-          <p className="text-xs text-secondary-400 mt-0.5">${BOOKING_DEPOSIT_AMOUNT} deposit due today</p>
+          <h2 className="text-sm font-black text-[var(--text)] uppercase tracking-wider">Card payment</h2>
+          <p className="text-xs text-[var(--text-muted)] mt-0.5">${BOOKING_DEPOSIT_AMOUNT} deposit due today</p>
         </div>
       </div>
 
       {stripeLoading || !stripeInstance ? (
-        <div className="flex items-center justify-center gap-2 py-8 text-secondary-400 text-sm">
+        <div className="flex items-center justify-center gap-2 py-8 text-[var(--text-muted)] text-sm">
           <Loader2 className="animate-spin w-4 h-4" />
           Loading secure checkout...
         </div>

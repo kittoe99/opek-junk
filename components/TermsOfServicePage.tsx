@@ -24,7 +24,7 @@ export const TermsOfServicePage: React.FC = () => {
             By accessing, browsing, or using our website, platform, mobile applications, booking systems, or ordering services by phone or text, you acknowledge that you have read, understood, and agree to be bound by these Terms and our{' '}
             <a href="/privacy" className="text-brand font-semibold hover:underline">Privacy Policy</a>.
           </p>
-          <p className="font-bold text-secondary">
+          <p className="font-bold text-[var(--text)]">
             If you do not agree to these terms, please immediately cease using our platform and services.
           </p>
         </>
@@ -46,9 +46,9 @@ export const TermsOfServicePage: React.FC = () => {
             <li><strong>Transactional messages:</strong> Booking confirmations, quote follow-ups, provider dispatch updates, payment receipts, rescheduling notices, and customer support.</li>
             <li><strong>Marketing messages:</strong> Promotional offers, discounts, seasonal campaigns, service reminders, and news about Opek services — where permitted and with opt-out rights as described below.</li>
           </ul>
-          <div className="bg-brand-50 border border-brand-100 rounded-xl p-5 mb-4 space-y-2 text-sm">
-            <p className="font-bold text-secondary">SMS/Text Message Terms:</p>
-            <ul className="list-disc pl-5 space-y-1 text-secondary-700">
+          <div className="bg-brand/10 border border-brand/25 rounded-xl p-5 mb-4 space-y-2 text-sm">
+            <p className="font-bold text-[var(--text)]">SMS/Text Message Terms:</p>
+            <ul className="list-disc pl-5 space-y-1 text-[var(--text-muted)]">
               <li>Message frequency varies. Message and data rates may apply.</li>
               <li>Consent to receive marketing texts is <strong>not required</strong> as a condition of purchasing any goods or services.</li>
               <li>Reply <strong>STOP</strong> to opt out of promotional SMS. Reply <strong>HELP</strong> for help.</li>
@@ -74,7 +74,7 @@ export const TermsOfServicePage: React.FC = () => {
       icon: <Info size={18} className="text-brand shrink-0" />,
       content: (
         <>
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4 text-sm text-amber-900 rounded-r-xl">
+          <div className="bg-amber-400/10 border-l-4 border-amber-400 p-4 mb-4 text-sm text-amber-200 rounded-r-xl">
             <span className="font-bold">CRITICAL DISCLAIMER:</span> Opek Junk Removal is a technology matching platform. We do not provide physical hauling, junk removal, dumpster rental, or moving labor services ourselves.
           </div>
           <p className="mb-4">
@@ -226,7 +226,7 @@ export const TermsOfServicePage: React.FC = () => {
       icon: <ShieldAlert size={18} className="text-brand shrink-0" />,
       content: (
         <>
-          <p className="mb-4 font-bold text-secondary uppercase text-xs tracking-wider">
+          <p className="mb-4 font-bold text-[var(--text)] uppercase text-xs tracking-wider">
             THE OPEK PLATFORM IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND.
           </p>
           <p className="mb-4 text-sm">
@@ -238,7 +238,7 @@ export const TermsOfServicePage: React.FC = () => {
           <p className="mb-4 text-sm">
             <strong>Indemnification:</strong> You agree to indemnify, defend, and hold harmless Opek, its affiliates, officers, employees, and agents from any claims, damages, liabilities, losses, costs, and expenses (including reasonable attorneys' fees) arising out of your use of the platform, your breach of these Terms, your violation of any third-party rights, or any property damage or injury caused by your acts or omissions.
           </p>
-          <p className="text-sm font-bold text-secondary">
+          <p className="text-sm font-bold text-[var(--text)]">
             <strong>Statute of Limitations:</strong> You agree that any claim or cause of action arising out of or related to these Terms, the platform, or the services must be filed within one (1) year after such claim or cause of action arose, or be forever barred.
           </p>
         </>
@@ -271,10 +271,10 @@ export const TermsOfServicePage: React.FC = () => {
       icon: <CheckSquare size={18} className="text-brand shrink-0" />,
       content: (
         <>
-          <p className="mb-4 font-bold text-secondary">
+          <p className="mb-4 font-bold text-[var(--text)]">
             The following general terms apply to all users and customers booking services through the Opek platform:
           </p>
-          <ol className="list-decimal pl-6 space-y-3 font-semibold text-secondary-800">
+          <ol className="list-decimal pl-6 space-y-3 font-semibold text-[var(--text)]-800">
             <li>
               Our “SafeProtect” platform protection is not an insurance policy. It has a limit of $500 per occurrence. We may increase that amount in our discretion on a case by case basis.
             </li>
@@ -316,9 +316,9 @@ export const TermsOfServicePage: React.FC = () => {
             For questions, legal notices, or feedback regarding these Terms, please reach out to our team:
           </p>
           <div className="bg-secondary-50 border border-secondary-100 rounded-xl p-6 space-y-2">
-            <p className="text-sm text-secondary"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
-            <p className="text-sm text-secondary"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
-            <p className="text-sm text-secondary"><strong>Address:</strong> Nationwide Service, United States</p>
+            <p className="text-sm text-[var(--text)]"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Address:</strong> Nationwide Service, United States</p>
           </div>
         </>
       ),

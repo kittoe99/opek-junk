@@ -21,8 +21,7 @@ interface ServiceTypePickerProps {
 
 const MOVING_LABOR_FROM = 79;
 
-// Single site color for all icons
-const HERO_ICON_CLASS = 'w-full h-full text-secondary [&_.stroke-brand]:stroke-current';
+const HERO_ICON_CLASS = 'w-full h-full text-[var(--text-muted)] [&_.stroke-brand]:stroke-brand';
 
 export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
   title = 'What do you need help with?',
@@ -64,9 +63,9 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
     </div>
 
     {quoteLinkLabel && (
-      <p className="mt-8 text-center text-sm text-secondary-500 flex items-center justify-center gap-1.5">
-        <Search size={14} className="text-secondary-400" />
-        <Link to="/quote" className="text-secondary hover:text-brand font-medium transition-colors">
+      <p className="mt-8 text-center text-sm text-[var(--text-muted)] flex items-center justify-center gap-1.5">
+        <Search size={14} className="text-brand" />
+        <Link to="/quote" className="text-[var(--text)] hover:text-brand font-medium transition-colors">
           {quoteLinkLabel}
         </Link>
       </p>

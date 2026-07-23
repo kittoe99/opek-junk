@@ -2,7 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
-const relatedServices = [
+const allRelatedServices = [
+  {
+    title: 'Junk Removal',
+    path: '/services/junk-removal',
+    image: '/opek-junk-haul-away.png?v=1',
+    alt: 'Providers loading junk into a box truck',
+  },
   {
     title: 'Mattress Disposal',
     path: '/services/mattress-disposal',
@@ -27,14 +33,32 @@ const relatedServices = [
     image: '/opek-related-local-moves.png?v=1',
     alt: 'Provider loading boxes into a cargo van',
   },
+  {
+    title: 'Property Cleanouts',
+    path: '/services/property-cleanout',
+    image: '/opek-service-areas.png?v=1',
+    alt: 'Provider helping a customer after a property cleanout',
+  },
 ];
 
-export const RelatedServices: React.FC = () => {
+interface RelatedServicesProps {
+  /** Hide the current service page from the related list */
+  excludePath?: string;
+  limit?: number;
+}
+
+export const RelatedServices: React.FC<RelatedServicesProps> = ({
+  excludePath,
+  limit = 4,
+}) => {
+  const services = allRelatedServices
+    .filter((service) => service.path !== excludePath)
+    .slice(0, limit);
+
   return (
     <section className="relative py-14 sm:py-16 md:py-20 bg-[var(--bg)] border-t border-[var(--border)] overflow-hidden">
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 xl:gap-14 items-start">
-          {/* Intro */}
           <div className="lg:pt-1">
             <p className="text-[13px] sm:text-sm font-medium text-[var(--text-muted)] mb-2">
               Related removal services
@@ -51,9 +75,8 @@ export const RelatedServices: React.FC = () => {
             </p>
           </div>
 
-          {/* Service cutouts */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-4 md:gap-6">
-            {relatedServices.map((service) => (
+            {services.map((service) => (
               <Link
                 key={service.path}
                 to={service.path}

@@ -14,17 +14,18 @@ export const UtilityPageHeader: React.FC<UtilityPageHeaderProps> = ({
   centered = true,
 }) => {
   return (
-    <section className="bg-white border-b border-secondary-100/60">
-      <div className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 ${centered ? 'text-center' : ''}`}>
+    <section className="relative bg-[var(--bg)] border-b border-[var(--border)] overflow-hidden">
+      <div className="absolute -top-24 right-[-8%] h-[280px] w-[280px] rounded-full bg-brand/[0.08] blur-[110px] pointer-events-none" aria-hidden />
+      <div className={`relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 ${centered ? 'text-center' : ''}`}>
         <div className={centered ? 'max-w-2xl mx-auto' : 'max-w-2xl'}>
           {eyebrow && (
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">{eyebrow}</p>
+            <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">{eyebrow}</p>
           )}
-          <h1 className="font-serif text-3xl md:text-4xl font-semibold text-secondary tracking-tight leading-tight mb-3">
+          <h1 className="font-sans font-extrabold text-[1.85rem] sm:text-[2.4rem] md:text-[2.75rem] text-[var(--text)] tracking-tight leading-[1.1] mb-3">
             {title}
           </h1>
           {description && (
-            <p className="text-secondary-500 text-sm md:text-base leading-relaxed">{description}</p>
+            <p className="text-[14px] sm:text-base text-[var(--text-muted)] leading-relaxed">{description}</p>
           )}
         </div>
       </div>

@@ -524,7 +524,7 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-start justify-center px-4 py-16 md:py-24">
+      <div className="min-h-screen bg-[var(--surface)] flex items-start justify-center px-4 py-16 md:py-24">
         <BookingSuccessView
           orderNumber={orderNumber}
           serviceType={formData.serviceType}
@@ -638,17 +638,17 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-200 hover:border-secondary-300 hover:shadow-sm transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-secondary-50 rounded-xl flex items-center justify-center shrink-0">
-                      <Camera size={22} className="text-secondary" />
+                    <div className="w-12 h-12 bg-white/[0.04] rounded-xl flex items-center justify-center shrink-0">
+                      <Camera size={22} className="text-[var(--text)]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base font-semibold text-secondary mb-0.5">Take photo</h3>
-                      <p className="text-secondary-500 text-sm">Use your camera to capture the items</p>
+                      <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Take photo</h3>
+                      <p className="text-[var(--text-muted)] text-sm">Use your camera to capture the items</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-secondary-200 group-hover:border-secondary group-hover:bg-secondary flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-secondary-400 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white/20 group-hover:bg-brand flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-white transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
                   </button>
@@ -656,17 +656,17 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-white border border-secondary-200 hover:border-secondary-300 hover:shadow-sm transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-secondary-50 rounded-xl flex items-center justify-center shrink-0">
-                      <PhotoEstimateIcon size={24} className="text-secondary" />
+                    <div className="w-12 h-12 bg-white/[0.04] rounded-xl flex items-center justify-center shrink-0">
+                      <PhotoEstimateIcon size={24} className="text-[var(--text)]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base font-semibold text-secondary mb-0.5">Upload photo</h3>
-                      <p className="text-secondary-500 text-sm">Choose an existing photo from your device</p>
+                      <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Upload photo</h3>
+                      <p className="text-[var(--text-muted)] text-sm">Choose an existing photo from your device</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-secondary-200 group-hover:border-secondary group-hover:bg-secondary flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-secondary-400 group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white/20 group-hover:bg-brand flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-white transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                   </button>
@@ -674,7 +674,7 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleNextStep()}
-                    className="w-full text-secondary-500 hover:text-secondary transition-colors text-sm font-medium py-2 inline-flex items-center justify-center gap-1.5"
+                    className="w-full text-[var(--text-muted)] hover:text-[var(--text)] transition-colors text-sm font-medium py-2 inline-flex items-center justify-center gap-1.5"
                   >
                     Skip <ArrowRight size={13} />
                   </button>
@@ -683,12 +683,12 @@ export const BookingPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="relative overflow-hidden rounded-xl border border-secondary-200">
+                  <div className="relative overflow-hidden rounded-xl border border-white/15">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
                       <button
                         onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
-                        className="absolute top-3 right-3 bg-white text-secondary px-3 py-1.5 text-xs font-semibold shadow-lg hover:text-secondary-600 transition-colors rounded-lg inline-flex items-center gap-1"
+                        className="absolute top-3 right-3 bg-[var(--surface)] text-[var(--text)] px-3 py-1.5 text-xs font-semibold shadow-lg hover:text-[var(--text-muted)] transition-colors rounded-lg inline-flex items-center gap-1"
                       >
                         <X size={12} /> Change
                       </button>
@@ -707,8 +707,8 @@ export const BookingPage: React.FC = () => {
 
                   {loadingState === LoadingState.ANALYZING && (
                     <div className="py-8 text-center">
-                      <Loader2 size={36} className="animate-spin mx-auto mb-3 text-secondary" />
-                      <p className="text-secondary-500 text-sm">Analyzing your photo...</p>
+                      <Loader2 size={36} className="animate-spin mx-auto mb-3 text-[var(--text)]" />
+                      <p className="text-[var(--text-muted)] text-sm">Analyzing your photo...</p>
                     </div>
                   )}
 
@@ -727,42 +727,50 @@ export const BookingPage: React.FC = () => {
                       <div className="space-y-6">
                         <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
-                        <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
-                          <div className="w-20 h-16 shrink-0">
+                        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
+                          <div className="w-20 h-16 shrink-0 flex items-end justify-center">
                             <img
-                              src={formData.serviceType === 'Donation Pick Up' ? '/opek-nav.svg' : '/process-step-1.svg'}
+                              src={
+                                formData.serviceType === 'Donation Pick Up'
+                                  ? '/opek-service-areas.png?v=1'
+                                  : formData.serviceType === 'Moving Labor'
+                                    ? '/opek-related-moving.png?v=1'
+                                    : formData.serviceType === 'Dumpster Rental'
+                                      ? '/opek-related-dumpster.png?v=1'
+                                      : '/opek-hero-haulers.png?v=3'
+                              }
                               alt="Service"
-                              className="w-full h-full object-contain"
+                              className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                              <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Instant Estimate
                               </span>
-                              <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                              <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-300 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Guaranteed
                               </span>
                             </div>
-                            <h3 className="text-sm font-semibold text-secondary">{formData.serviceType}</h3>
-                            <p className="text-secondary-500 text-xs mt-0.5">{estimate.estimatedVolume}</p>
+                            <h3 className="text-sm font-semibold text-[var(--text)]">{formData.serviceType}</h3>
+                            <p className="text-[var(--text-muted)] text-xs mt-0.5">{estimate.estimatedVolume}</p>
                           </div>
-                          <p className="text-2xl font-semibold text-secondary shrink-0">${estimate.price}</p>
+                          <p className="text-2xl font-semibold text-[var(--text)] shrink-0">${estimate.price}</p>
                         </div>
 
                         <div>
-                          <p className="text-xs font-medium text-secondary-400 mb-2">Items detected</p>
+                          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Items detected</p>
                           <ul className="space-y-1.5">
                             {estimate.itemsDetected.map((item, index) => (
                               <li key={index} className="flex items-start gap-2">
-                                <Check size={14} className="text-secondary mt-0.5 shrink-0" strokeWidth={2.5} />
-                                <span className="text-secondary-600 text-sm">{item}</span>
+                                <Check size={14} className="text-[var(--text)] mt-0.5 shrink-0" strokeWidth={2.5} />
+                                <span className="text-[var(--text-muted)] text-sm">{item}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                        <div className="bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
                           <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                             <ShieldCheck size={18} strokeWidth={2.5} />
                           </div>
@@ -771,7 +779,7 @@ export const BookingPage: React.FC = () => {
                               <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
                               <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                             </div>
-                            <p className="text-xs text-emerald-700 mt-1 leading-normal">
+                            <p className="text-xs text-emerald-300 mt-1 leading-normal">
                               All bookings are covered by platform damage protection.{' '}
                               <button
                                 type="button"
@@ -784,7 +792,7 @@ export const BookingPage: React.FC = () => {
                           </div>
                         </div>
 
-                        <p className="text-sm text-secondary-500 leading-relaxed">{estimate.summary}</p>
+                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{estimate.summary}</p>
 
                         <FlowStickyNav
                           showBack
@@ -793,17 +801,17 @@ export const BookingPage: React.FC = () => {
                           onContinue={() => handleNextStep()}
                           continueLabel="Continue to book"
                         />
-                        <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
+                        <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
                       </div>
                     )
                   )}
 
                   {loadingState === LoadingState.ERROR && (
-                    <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-                      <p className="text-red-700 text-sm font-semibold mb-3">Failed to analyze photo</p>
+                    <div className="bg-brand/10 border border-brand/30 rounded-xl p-4 text-center">
+                      <p className="text-brand text-sm font-semibold mb-3">Failed to analyze photo</p>
                       <button
                         onClick={handleAnalyze}
-                        className="px-5 py-2.5 bg-secondary text-white font-semibold text-sm hover:bg-secondary-600 transition-colors rounded-full"
+                        className="px-5 py-2.5 bg-brand text-white font-semibold text-sm hover:bg-brand-600 transition-colors rounded-full"
                       >
                         Try again
                       </button>
@@ -857,23 +865,23 @@ export const BookingPage: React.FC = () => {
                     title="Rental duration"
                     subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
                   />
-                  <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center justify-between gap-4">
+                  <div className="bg-[var(--surface)] border border-white/15 rounded-xl p-4 flex items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-medium text-secondary">Rental period</p>
-                      <p className="text-xs text-secondary-500 mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
+                      <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
+                      <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                     </div>
-                    <div className="flex items-center gap-2 border border-secondary-200 rounded-full px-2 py-1">
+                    <div className="flex items-center gap-2 border border-white/15 rounded-full px-2 py-1">
                       <button
                         onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                         disabled={dumpsterDuration <= 1}
-                        className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary disabled:opacity-30 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="w-8 text-center text-sm font-semibold text-secondary">{dumpsterDuration}</span>
+                      <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
                       <button
                         onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                        className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary flex items-center justify-center"
+                        className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] flex items-center justify-center"
                       >
                         <Plus size={14} />
                       </button>
@@ -926,38 +934,42 @@ export const BookingPage: React.FC = () => {
                   <div className="space-y-6">
                     <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
-                    <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
-                      <div className="w-20 h-16 shrink-0">
-                        <img src="/dumpster-rental.svg" alt="Dumpster Rental" className="w-full h-full object-contain" />
+                    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
+                      <div className="w-20 h-16 shrink-0 flex items-end justify-center">
+                        <img
+                          src="/opek-related-dumpster.png?v=1"
+                          alt="Dumpster Rental"
+                          className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
+                        />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                          <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Instant Estimate
                           </span>
-                          <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                          <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-300 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Guaranteed
                           </span>
                         </div>
-                        <h3 className="text-sm font-semibold text-secondary">Dumpster Rental</h3>
-                        <p className="text-secondary-500 text-xs mt-0.5">{estimate.estimatedVolume}</p>
+                        <h3 className="text-sm font-semibold text-[var(--text)]">Dumpster Rental</h3>
+                        <p className="text-[var(--text-muted)] text-xs mt-0.5">{estimate.estimatedVolume}</p>
                       </div>
-                      <p className="text-2xl font-semibold text-secondary shrink-0">${estimate.price}</p>
+                      <p className="text-2xl font-semibold text-[var(--text)] shrink-0">${estimate.price}</p>
                     </div>
 
                     <div>
-                      <p className="text-xs font-medium text-secondary-400 mb-2">Rental details</p>
+                      <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Rental details</p>
                       <ul className="space-y-1.5">
                         {estimate.itemsDetected.map((item, index) => (
                           <li key={index} className="flex items-start gap-2">
-                            <Check size={14} className="text-secondary mt-0.5 shrink-0" strokeWidth={2.5} />
-                            <span className="text-secondary-600 text-sm">{item}</span>
+                            <Check size={14} className="text-[var(--text)] mt-0.5 shrink-0" strokeWidth={2.5} />
+                            <span className="text-[var(--text-muted)] text-sm">{item}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                    <div className="bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                         <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
@@ -966,7 +978,7 @@ export const BookingPage: React.FC = () => {
                           <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
                           <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                         </div>
-                        <p className="text-xs text-emerald-700 mt-1 leading-normal">
+                        <p className="text-xs text-emerald-300 mt-1 leading-normal">
                           All bookings are covered by platform damage protection.{' '}
                           <button
                             type="button"
@@ -979,7 +991,7 @@ export const BookingPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <p className="text-sm text-secondary-500 leading-relaxed">{estimate.summary}</p>
+                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">{estimate.summary}</p>
 
                     <FlowStickyNav
                       showBack
@@ -987,7 +999,7 @@ export const BookingPage: React.FC = () => {
                       onContinue={() => handleNextStep()}
                       continueLabel="Continue to book"
                     />
-                    <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
+                    <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
                   </div>
                 )
               )}
@@ -1069,51 +1081,51 @@ export const BookingPage: React.FC = () => {
 
       {/* Insurance Modal */}
       {showInsuranceModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-secondary/60 backdrop-blur-sm transition-all duration-300">
-          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-secondary-100 animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-all duration-300">
+          <div className="bg-[var(--surface)] rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-[var(--border)] animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
                   <ShieldCheck size={22} strokeWidth={2.5} />
                 </div>
                 <div>
-                  <h3 className="font-black text-secondary text-lg">Safe Protect™</h3>
-                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Platform Coverage Included</p>
+                  <h3 className="font-black text-[var(--text)] text-lg">Safe Protect™</h3>
+                  <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                 </div>
               </div>
               <button 
                 type="button"
                 onClick={() => setShowInsuranceModal(false)}
-                className="w-8 h-8 rounded-full bg-white hover:bg-secondary-100 flex items-center justify-center text-secondary transition-colors"
+                className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-white/[0.06] flex items-center justify-center text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
             </div>
             <div className="space-y-4 text-left">
-              <p className="text-xs text-secondary-500 leading-relaxed">
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                 Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
               </p>
-              <div className="h-px bg-secondary-100"></div>
+              <div className="h-px bg-white/[0.06]"></div>
               <div className="space-y-3">
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-secondary">Damage Protection</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Protects residential and commercial property from accidental damage during service.</p>
+                    <p className="text-xs font-black text-[var(--text)]">Damage Protection</p>
+                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5 leading-normal">Protects residential and commercial property from accidental damage during service.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-secondary">Same Day Service</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">Subject to availability, local service providers can get to your site on the same day.</p>
+                    <p className="text-xs font-black text-[var(--text)]">Same Day Service</p>
+                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5 leading-normal">Subject to availability, local service providers can get to your site on the same day.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-secondary">Satisfaction Guarantee</p>
-                    <p className="text-[11px] text-secondary-400 mt-0.5 leading-normal">If you're not satisfied with the quality of the job, the support team will resolve it quickly.</p>
+                    <p className="text-xs font-black text-[var(--text)]">Satisfaction Guarantee</p>
+                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5 leading-normal">If you're not satisfied with the quality of the job, the support team will resolve it quickly.</p>
                   </div>
                 </div>
               </div>
@@ -1121,7 +1133,7 @@ export const BookingPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowInsuranceModal(false)}
-              className="w-full mt-6 py-3 bg-secondary hover:bg-brand text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-secondary/15 transition-all"
+              className="w-full mt-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(255,0,110,0.4)] transition-all"
             >
               Got it
             </button>

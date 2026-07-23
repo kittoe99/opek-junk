@@ -35,7 +35,7 @@ import { FlowSelectionCard } from './flow/FlowSelectionCard';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 
-const MOVING_ICON_CLASS = 'w-5 h-5 text-secondary [&_.stroke-brand]:stroke-current';
+const MOVING_ICON_CLASS = 'w-5 h-5 text-[var(--text)] [&_.stroke-brand]:stroke-current';
 
 export interface MovingLaborEstimateResult {
   estimate: QuoteEstimate;
@@ -501,8 +501,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
 
         {accessType === 'stairs' && (
-          <div className="mt-4 rounded-xl border border-secondary-100 bg-white p-4">
-            <p className="text-xs font-semibold text-secondary-500 mb-3">How many flights of stairs?</p>
+          <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+            <p className="text-xs font-semibold text-[var(--text-muted)] mb-3">How many flights of stairs?</p>
             <div className="flex gap-2">
               {[1, 2, 3, 4].map((n) => (
                 <button
@@ -512,7 +512,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                   className={`flex-1 rounded-lg border py-2.5 text-sm font-semibold transition-all inline-flex items-center justify-center gap-1.5 ${
                     flightsOfStairs === n
                       ? 'border-brand bg-brand/5 text-brand'
-                      : 'border-secondary-100 bg-white text-secondary hover:border-brand/40'
+                      : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40'
                   }`}
                 >
                   {flightsOfStairs === n && <Check size={14} strokeWidth={3} className="text-brand" />}
@@ -520,7 +520,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-secondary-400 mt-2">Each extra flight adds about 1 hour.</p>
+            <p className="text-[11px] text-[var(--text-muted)] mt-2">Each extra flight adds about 1 hour.</p>
           </div>
         )}
 
@@ -543,7 +543,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           subtitle="Heavy items and extra help affect your estimate. Optional — skip if none apply."
         />
 
-        <p className="text-xs font-semibold text-secondary-500 mb-2">Heavy or bulky items</p>
+        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Heavy or bulky items</p>
         <div className="grid grid-cols-2 gap-3 mb-5">
           {HEAVY_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -554,18 +554,18 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 type="button"
                 onClick={() => toggleHeavyItem(item.id)}
                 className={`relative rounded-xl border p-4 text-left transition-all ${
-                  selected ? 'border-brand bg-brand/5' : 'border-secondary-100 bg-white hover:border-brand/40'
+                  selected ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
                 }`}
               >
                 <div
                   className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center ${
-                    selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                    selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
                   }`}
                 >
                   {selected && <Check size={12} className="text-white" strokeWidth={3} />}
                 </div>
-                <Icon size={20} className={selected ? 'text-brand' : 'text-secondary-400'} />
-                <p className={`text-xs font-semibold mt-2 ${selected ? 'text-brand' : 'text-secondary'}`}>
+                <Icon size={20} className={selected ? 'text-brand' : 'text-[var(--text-muted)]'} />
+                <p className={`text-xs font-semibold mt-2 ${selected ? 'text-brand' : 'text-[var(--text)]'}`}>
                   {item.label}
                 </p>
               </button>
@@ -573,60 +573,60 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           })}
         </div>
 
-        <p className="text-xs font-semibold text-secondary-500 mb-2">Extra help</p>
+        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Extra help</p>
         <div className="space-y-3 mb-4">
           <button
             type="button"
             onClick={() => setNeedsPackingHelp((v) => !v)}
             className={`w-full rounded-xl border p-4 text-left transition-all flex items-start gap-3 ${
-              needsPackingHelp ? 'border-brand bg-brand/5' : 'border-secondary-100 bg-white hover:border-brand/40'
+              needsPackingHelp ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
             }`}
           >
             <div
               className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsPackingHelp ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                needsPackingHelp ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
               }`}
             >
               {needsPackingHelp && <Check size={12} className="text-white" strokeWidth={3} />}
             </div>
-            <Package size={20} className={needsPackingHelp ? 'text-brand shrink-0' : 'text-secondary-400 shrink-0'} />
+            <Package size={20} className={needsPackingHelp ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
             <div>
-              <p className={`text-sm font-semibold ${needsPackingHelp ? 'text-brand' : 'text-secondary'}`}>
+              <p className={`text-sm font-semibold ${needsPackingHelp ? 'text-brand' : 'text-[var(--text)]'}`}>
                 Packing help
               </p>
-              <p className="text-xs text-secondary-400 mt-0.5">Help boxing items before the move · +~1 hr</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">Help boxing items before the move · +~1 hr</p>
             </div>
           </button>
           <button
             type="button"
             onClick={() => setNeedsDisassembly((v) => !v)}
             className={`w-full rounded-xl border p-4 text-left transition-all flex items-start gap-3 ${
-              needsDisassembly ? 'border-brand bg-brand/5' : 'border-secondary-100 bg-white hover:border-brand/40'
+              needsDisassembly ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
             }`}
           >
             <div
               className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsDisassembly ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                needsDisassembly ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
               }`}
             >
               {needsDisassembly && <Check size={12} className="text-white" strokeWidth={3} />}
             </div>
-            <Wrench size={20} className={needsDisassembly ? 'text-brand shrink-0' : 'text-secondary-400 shrink-0'} />
+            <Wrench size={20} className={needsDisassembly ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
             <div>
-              <p className={`text-sm font-semibold ${needsDisassembly ? 'text-brand' : 'text-secondary'}`}>
+              <p className={`text-sm font-semibold ${needsDisassembly ? 'text-brand' : 'text-[var(--text)]'}`}>
                 Furniture disassembly / reassembly
               </p>
-              <p className="text-xs text-secondary-400 mt-0.5">Beds, tables, and large pieces · +~1 hr</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">Beds, tables, and large pieces · +~1 hr</p>
             </div>
           </button>
         </div>
 
-        <p className="text-xs text-secondary-400 text-center mb-4">
+        <p className="text-xs text-[var(--text-muted)] text-center mb-4">
           {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ~{totalHours} hours estimated
         </p>
         {pricingError && (
-          <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-            <p className="text-red-700 text-xs font-bold">{pricingError}</p>
+          <div className="mb-3 p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <p className="text-brand text-xs font-bold">{pricingError}</p>
           </div>
         )}
         <FlowStickyNav
@@ -638,10 +638,10 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           continueDisabled={!draftOptions}
         />
         {pricingLoading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/[0.06] backdrop-blur-sm">
             <div className="text-center">
               <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
-              <p className="text-secondary-600 text-sm font-medium">Calculating your estimate...</p>
+              <p className="text-[var(--text-muted)] text-sm font-medium">Calculating your estimate...</p>
             </div>
           </div>
         )}
@@ -666,45 +666,45 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   return (
     <>
       <FlowStepTitle title="Your estimate" subtitle="Review your rate, then continue to book." />
-      <div className="bg-white rounded-xl border border-secondary-100 p-4 mb-4 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
+      <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 mb-4 shadow-none">
         <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-sm font-bold text-secondary">Local Moving</h3>
-          <span className="px-2 py-0.5 bg-secondary-100 text-secondary text-[10px] font-semibold rounded-full">
+          <h3 className="text-sm font-bold text-[var(--text)]">Local Moving</h3>
+          <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold rounded-full">
             {SCOPE_LABELS[draftOptions.serviceScope]}
           </span>
         </div>
 
         <div className="flex items-baseline gap-2 whitespace-nowrap mb-3">
-          <span className="text-3xl font-bold text-secondary">${hourlyRate}</span>
-          <span className="text-sm text-secondary-400">/hour</span>
-          <span className="text-xs text-secondary-400">· {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}</span>
+          <span className="text-3xl font-bold text-[var(--text)]">${hourlyRate}</span>
+          <span className="text-sm text-[var(--text-muted)]">/hour</span>
+          <span className="text-xs text-[var(--text-muted)]">· {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}</span>
           {draftOptions.needsTruck && (
             <>
-              <span className="text-xs text-secondary-400">· +$99 truck</span>
+              <span className="text-xs text-[var(--text-muted)]">· +$99 truck</span>
             </>
           )}
         </div>
 
-        <div className="border-t border-secondary-100 pt-3 mb-3">
-          <p className="text-xs text-secondary-400 leading-relaxed">
-            <span>Size <span className="font-medium text-secondary">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
-            <span className="select-none mx-1.5 text-secondary-300">·</span>
-            <span>Access <span className="font-medium text-secondary">{ACCESS_LABELS[draftOptions.accessType]}</span></span>
+        <div className="border-t border-[var(--border)] pt-3 mb-3">
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            <span>Size <span className="font-medium text-[var(--text)]">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
+            <span className="select-none mx-1.5 text-neutral-500">·</span>
+            <span>Access <span className="font-medium text-[var(--text)]">{ACCESS_LABELS[draftOptions.accessType]}</span></span>
             {draftOptions.heavyItems.length > 0 && (
               <>
-                <span className="select-none mx-1.5 text-secondary-300">·</span>
-                <span>Heavy items <span className="font-medium text-secondary">{draftOptions.heavyItems.length}</span></span>
+                <span className="select-none mx-1.5 text-neutral-500">·</span>
+                <span>Heavy items <span className="font-medium text-[var(--text)]">{draftOptions.heavyItems.length}</span></span>
               </>
             )}
             {draftOptions.needsPackingHelp && (
               <>
-                <span className="select-none mx-1.5 text-secondary-300">·</span>
+                <span className="select-none mx-1.5 text-neutral-500">·</span>
                 <span>Packing help</span>
               </>
             )}
             {draftOptions.needsDisassembly && (
               <>
-                <span className="select-none mx-1.5 text-secondary-300">·</span>
+                <span className="select-none mx-1.5 text-neutral-500">·</span>
                 <span>Disassembly</span>
               </>
             )}
@@ -712,8 +712,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
 
         <div className="flex items-start gap-2.5">
-          <ShieldCheck size={15} className="text-emerald-600 shrink-0 mt-0.5" />
-          <p className="text-xs text-emerald-700 leading-normal">
+          <ShieldCheck size={15} className="text-emerald-300 shrink-0 mt-0.5" />
+          <p className="text-xs text-emerald-300 leading-normal">
             Safe Protect™ damage coverage included on every booking.
           </p>
         </div>
@@ -738,7 +738,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         }
         continueLabel={continueLabel}
       />
-      <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
+      <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
     </>
   );
 };

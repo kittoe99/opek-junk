@@ -108,7 +108,7 @@ function HomePage() {
         onBookOnline={() => navigate('/booking')}
       />
       <JunkHaulAway />
-      <RelatedServices />
+      <RelatedServices excludePath="/services/junk-removal" />
       <HustleMuscle />
       <OpekApproach />
       <LocalServiceAreas />

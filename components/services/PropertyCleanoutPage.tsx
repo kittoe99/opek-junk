@@ -1,58 +1,85 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { PageHero } from '../shared/PageHero';
-import { EditorialContentSection } from '../shared/EditorialContentSection';
-import { TrustBadges } from '../TrustBadges';
-import { CharityBanner } from '../CharityBanner';
-import { Testimonials } from '../Testimonials';
-import { ProcessEditorial } from '../ProcessEditorial';
-import { ServiceArea } from '../ServiceArea';
+import { HeartHandshake, Home, Recycle, ShieldCheck } from 'lucide-react';
+import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 export const PropertyCleanoutPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white min-h-screen">
-      <PageHero
-        eyebrow="Professional Service"
-        title={<>Property<br />Cleanouts</>}
-        subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — partner service providers handle the hard parts so you don't have to."
-        image="/opek2.webp"
-        imageAlt="Property cleanout team clearing a home"
-        primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
-        secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
-      />
-
-      <TrustBadges />
-
-      <ProcessEditorial
-        variant="numbered"
-        eyebrow="How it works"
-        title="Property cleanouts in three steps"
-        subtitle="Compassionate crews, upfront pricing, and thorough clearing from start to finish."
-      />
-
-      <EditorialContentSection title="Thorough & compassionate property clearing">
-        <p>
-          Clearing out an entire property can be an overwhelming task. Property cleanout services are designed to handle even the most challenging situations with professionalism, discretion, and care. Whether you are dealing with an estate cleanout, a foreclosure, a tenant move-out, or a sensitive hoarding situation, partner providers approach every job with compassion and efficiency.
-        </p>
-        <p>
-          Providers work closely with families, real estate agents, landlords, and property managers to ensure a seamless experience. Vetted providers are background-checked and can arrive in unmarked vehicles upon request for maximum discretion. From heavy{' '}
-          <Link to="/services/junk-removal" className="text-brand hover:underline font-semibold">junk removal</Link>{' '}
-          to sorting valuable heirlooms from debris, partner providers work at your pace.
-        </p>
-        <p>
-          Property cleanout services are available nationwide, serving major areas from{' '}
-          <Link to="/locations/dallas-fort-worth" className="text-brand hover:underline font-semibold">Dallas-Fort Worth</Link>{' '}
-          to{' '}
-          <Link to="/locations/phoenix" className="text-brand hover:underline font-semibold">Phoenix</Link>{' '}
-          and beyond. Upfront, flat-rate pricing is offered with no hidden fees. If you're a business managing multiple REO properties, a junk removal provider network can also coordinate centralized billing and multi-location support.
-        </p>
-      </EditorialContentSection>
-
-      <Testimonials />
-      <CharityBanner />
-      <ServiceArea titleStart="Clear the property." titleAccent="With grace." />
-    </div>
+    <ServicePageLayout
+      path="/services/property-cleanout"
+      eyebrow="Property Cleanouts"
+      title={
+        <>
+          Full Property
+          <br />
+          Cleanouts
+        </>
+      }
+      subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — providers handle the hard parts."
+      heroImage="/opek-service-areas.png?v=1"
+      heroImageAlt="Provider greeting a customer after a property cleanout"
+      heroChip="Discreet & Thorough"
+      primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
+      secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
+      split={{
+        eyebrow: 'Property clearing',
+        title: 'Clear the whole property with care',
+        body: (
+          <p>
+            From estate cleanouts to tenant turnovers, matched crews work with families, agents, and
+            landlords at your pace. For single-item jobs, book{' '}
+            <Link to="/services/junk-removal" className="text-brand hover:text-brand-400 font-semibold">
+              junk removal
+            </Link>{' '}
+            instead.
+          </p>
+        ),
+        includesLabel: 'Cleanouts include:',
+        includes: [
+          { title: 'Full Home Clear', Icon: Home },
+          { title: 'Compassionate Crews', Icon: HeartHandshake },
+          { title: 'Insured Providers', Icon: ShieldCheck },
+          { title: 'Responsible Disposal', Icon: Recycle },
+        ],
+        image: '/opek-hustle-muscle.png?v=1',
+        imageAlt: 'Provider with clipboard ready for a property estimate',
+      }}
+      features={{
+        title: 'Cleanouts done right',
+        items: [
+          {
+            title: 'Estate & Move-Out',
+            body: 'Clear homes, garages, and storage with crews that respect your timeline and belongings.',
+          },
+          {
+            title: 'Foreclosure & REO',
+            body: 'Reliable clearing for agents and property managers — including multi-location coordination.',
+          },
+          {
+            title: 'Discretion First',
+            body: 'Background-checked providers. Unmarked vehicles available on request.',
+          },
+          {
+            title: 'Sort & Separate',
+            body: 'Keep heirlooms and donations aside while debris and junk are hauled away.',
+          },
+          {
+            title: 'Upfront Pricing',
+            body: 'Flat-rate quotes before work begins — no hidden fees mid-job.',
+          },
+          {
+            title: 'Nationwide Coverage',
+            body: 'Local pros across all 50 states for residential and light commercial cleanouts.',
+          },
+        ],
+      }}
+      serviceArea={{
+        titleStart: 'Clear the property.',
+        titleAccent: 'With care.',
+      }}
+      showHustleMuscle={false}
+    />
   );
 };

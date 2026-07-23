@@ -710,12 +710,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 placeholder="(555) 123-4567"
                 className={FLOW_INPUT}
               />
-            <p className="mt-1.5 text-xs text-secondary-400 leading-relaxed">
+            <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">
               {SMS_TRANSACTIONAL_NOTICE}
             </p>
           </div>
 
-          <label className="flex items-start gap-3 p-4 bg-white border border-secondary-200 rounded-xl cursor-pointer hover:border-secondary-300 transition-colors">
+          <label className="flex items-start gap-3 p-4 bg-[var(--surface)] border border-white/15 rounded-xl cursor-pointer hover:border-white/25 transition-colors">
             <div className="relative shrink-0 mt-0.5">
               <input
                 type="checkbox"
@@ -728,20 +728,20 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
               <div
                 className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                  localSmsMarketingConsentAt ? 'bg-brand border-brand' : 'bg-white border-secondary-300'
+                  localSmsMarketingConsentAt ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-white/20'
                 }`}
               >
                 {localSmsMarketingConsentAt && <Check size={12} className="text-white" strokeWidth={3.5} />}
               </div>
             </div>
-            <span className="text-xs text-secondary-500 leading-relaxed">
+            <span className="text-xs text-[var(--text-muted)] leading-relaxed">
               {SMS_MARKETING_CONSENT_TEXT}
             </span>
           </label>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 text-xs font-bold">{error}</p>
+            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+              <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
         </form>
@@ -771,8 +771,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           />
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 text-xs font-bold">{error}</p>
+            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+              <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
         </form>
@@ -790,7 +790,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         <>
         <form id="booking-address-form" onSubmit={handleAddressSubmit}>
           <div className="text-center mb-6">
-            <h1 className="text-xl md:text-2xl font-semibold text-secondary tracking-tight leading-snug">
+            <h1 className="text-xl md:text-2xl font-semibold text-[var(--text)] tracking-tight leading-snug">
               {isMovingLabor
                 ? movingScope === 'rearrange'
                   ? 'Service address'
@@ -801,7 +801,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                       : 'Pickup address'
                 : 'Pickup address'}
             </h1>
-            <p className="text-sm text-secondary-500 mt-2 leading-relaxed">
+            <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
               {isMovingLabor
                 ? movingScope === 'rearrange'
                   ? 'Where should the crew meet you?'
@@ -816,7 +816,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           {(needsPickupAddress || unloadingUsesPrimaryAddress) && (
             <>
-              <p className="text-xs font-semibold text-secondary-500 mb-2">
+              <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">
                 {unloadingUsesPrimaryAddress
                   ? 'Unload location'
                   : movingScope === 'rearrange'
@@ -851,8 +851,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
 
               {isMovingLabor && addressValidated && (
-                <div className="mt-3 mb-4 rounded-xl border border-secondary-100 bg-white p-4 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
-                  <p className="text-xs font-semibold text-secondary-500 mb-2">
+                <div className="mt-3 mb-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-none">
+                  <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">
                     {unloadingUsesPrimaryAddress ? 'Access at unload' : 'Access at this location'}
                   </p>
                   <div className="space-y-2">
@@ -872,12 +872,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                           className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition-all flex items-center gap-2.5 ${
                             selected
                               ? 'border-brand bg-brand/5 font-semibold text-brand'
-                              : 'border-secondary-100 text-secondary hover:border-brand/40'
+                              : 'border-[var(--border)] text-[var(--text)] hover:border-brand/40'
                           }`}
                         >
                           <div
                             className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
-                              selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                              selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
                             }`}
                           >
                             {selected && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -889,7 +889,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   </div>
                   {formData.pickupAccess === 'stairs' && (
                     <div className="mt-3">
-                      <p className="text-[11px] font-semibold text-secondary-400 mb-2">Flights of stairs</p>
+                      <p className="text-[11px] font-semibold text-[var(--text-muted)] mb-2">Flights of stairs</p>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4].map((n) => {
                           const selected = formData.pickupFlights === n;
@@ -901,7 +901,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                               className={`flex-1 rounded-lg border py-2 text-sm font-semibold inline-flex items-center justify-center gap-1 ${
                                 selected
                                   ? 'border-brand bg-brand/5 text-brand'
-                                  : 'border-secondary-100 text-secondary'
+                                  : 'border-[var(--border)] text-[var(--text)]'
                               }`}
                             >
                               {selected && <Check size={14} strokeWidth={3} />}
@@ -919,7 +919,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           {showDualMovingAddresses && pickupAccessComplete && (
             <div className="mt-4 animate-fade-in">
-              <p className="text-xs font-semibold text-secondary-500 mb-2">Drop-off location <span className="font-normal text-secondary-400">(optional)</span></p>
+              <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Drop-off location <span className="font-normal text-[var(--text-muted)]">(optional)</span></p>
               <ServiceAddressField
                 label="Drop-off Address"
                 value={{
@@ -946,8 +946,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
 
               {addressBValidated && (
-              <div className="mt-3 rounded-xl border border-secondary-100 bg-white p-4 animate-fade-in">
-                <p className="text-xs font-semibold text-secondary-500 mb-2">Access at drop-off</p>
+              <div className="mt-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 animate-fade-in">
+                <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Access at drop-off</p>
                 <div className="space-y-2">
                   {MOVING_ACCESS_CHOICES.map((choice) => {
                     const selected = formData.dropoffAccess === choice.id;
@@ -965,12 +965,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                         className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition-all flex items-center gap-2.5 ${
                           selected
                             ? 'border-brand bg-brand/5 font-semibold text-brand'
-                            : 'border-secondary-100 text-secondary hover:border-brand/40'
+                            : 'border-[var(--border)] text-[var(--text)] hover:border-brand/40'
                         }`}
                       >
                         <div
                           className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
-                            selected ? 'border-brand bg-brand' : 'border-secondary-200 bg-white'
+                            selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
                           }`}
                         >
                           {selected && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -982,7 +982,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 </div>
                 {formData.dropoffAccess === 'stairs' && (
                   <div className="mt-3">
-                    <p className="text-[11px] font-semibold text-secondary-400 mb-2">Flights of stairs</p>
+                    <p className="text-[11px] font-semibold text-[var(--text-muted)] mb-2">Flights of stairs</p>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4].map((n) => {
                         const selected = formData.dropoffFlights === n;
@@ -994,7 +994,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                             className={`flex-1 rounded-lg border py-2 text-sm font-semibold inline-flex items-center justify-center gap-1 ${
                               selected
                                 ? 'border-brand bg-brand/5 text-brand'
-                                : 'border-secondary-100 text-secondary'
+                                : 'border-[var(--border)] text-[var(--text)]'
                             }`}
                           >
                             {selected && <Check size={14} strokeWidth={3} />}
@@ -1011,8 +1011,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           )}
         </form>
         {error && step === 'address' && (
-          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-            <p className="text-red-700 text-xs font-bold">{error}</p>
+          <div className="mt-3 p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <p className="text-brand text-xs font-bold">{error}</p>
           </div>
         )}
         <FlowStickyNav
@@ -1035,18 +1035,18 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div className="space-y-3">
             {localImage ? (
-              <div className="relative border border-secondary-200 bg-white p-3 rounded-xl flex items-center gap-4">
-                <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-secondary-100 bg-secondary-50">
+              <div className="relative border border-white/15 bg-[var(--surface)] p-3 rounded-xl flex items-center gap-4">
+                <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-white/[0.04]">
                   <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-secondary">Photo uploaded</p>
-                  <p className="text-xs text-secondary-500 mt-0.5">Used to verify volume and service details.</p>
+                  <p className="text-sm font-medium text-[var(--text)]">Photo uploaded</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">Used to verify volume and service details.</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setLocalImage(null)}
-                  className="bg-red-50 hover:bg-red-100 text-red-500 p-2 rounded-lg transition-colors shrink-0"
+                  className="bg-brand/10 hover:bg-red-100 text-brand p-2 rounded-lg transition-colors shrink-0"
                   aria-label="Remove photo"
                 >
                   <Trash2 size={16} />
@@ -1074,8 +1074,8 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 text-xs font-bold">{error}</p>
+            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+              <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
 
@@ -1101,7 +1101,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               <input
                 readOnly
                 value={serviceType}
-                className={`${FLOW_INPUT} bg-secondary-50`}
+                className={`${FLOW_INPUT} bg-white/[0.04]`}
               />
             </div>
             <div>
@@ -1113,13 +1113,13 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                     ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}`
                     : ''
                 }
-                className={`${FLOW_INPUT} bg-secondary-50`}
+                className={`${FLOW_INPUT} bg-white/[0.04]`}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-secondary-400 uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
+            <label className="block text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
             <div className="relative group">
               <textarea
                 name="details"
@@ -1127,35 +1127,35 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={isMovingLabor ? "Tell the crew about fragile items, parking, gate codes, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="w-full px-4 py-3 bg-white border border-secondary-100 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] hover:border-brand/40 text-sm text-secondary placeholder:text-secondary-300 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_4px_20px_rgba(255,0,110,0.15)] transition-all duration-300 transition-colors"
+                className="w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
 
           {/* Review Section */}
-          <div className="bg-white rounded-xl border border-secondary-100 p-4 space-y-3 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
-            <div className="flex items-center justify-between border-b border-secondary-100 pb-3">
-              <p className="text-xs font-semibold text-secondary-500">Summary</p>
-              {estimate && <p className="text-lg font-bold text-secondary">${estimate.price}</p>}
+          <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 space-y-3 shadow-none">
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <p className="text-xs font-semibold text-[var(--text-muted)]">Summary</p>
+              {estimate && <p className="text-lg font-bold text-[var(--text)]">${estimate.price}</p>}
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-secondary-400">Name</span><span className="font-semibold text-secondary text-right">{formData.name}</span></div>
-              <div className="flex justify-between"><span className="text-secondary-400">Email</span><span className="font-semibold text-secondary text-right">{formData.email}</span></div>
-              <div className="flex justify-between"><span className="text-secondary-400">Phone</span><span className="font-semibold text-secondary text-right">{formData.phone}</span></div>
+              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Name</span><span className="font-semibold text-[var(--text)] text-right">{formData.name}</span></div>
+              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Email</span><span className="font-semibold text-[var(--text)] text-right">{formData.email}</span></div>
+              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Phone</span><span className="font-semibold text-[var(--text)] text-right">{formData.phone}</span></div>
               <div className="flex justify-between gap-4">
-                <span className="text-secondary-400 shrink-0">
+                <span className="text-[var(--text-muted)] shrink-0">
                   {unloadingUsesPrimaryAddress ? 'Unload' : isMovingLabor && movingScope === 'rearrange' ? 'Address' : 'Pickup'}
                 </span>
-                <span className="font-semibold text-secondary text-right max-w-[60%]">
+                <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
                   {formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}{formData.city ? `, ${[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}` : ''}
                 </span>
               </div>
               {isMovingLabor && (
                 <div className="flex justify-between">
-                  <span className="text-secondary-400">
+                  <span className="text-[var(--text-muted)]">
                     {unloadingUsesPrimaryAddress ? 'Unload access' : 'Pickup access'}
                   </span>
-                  <span className="font-semibold text-secondary text-right">
+                  <span className="font-semibold text-[var(--text)] text-right">
                     {formatAccessLabel(formData.pickupAccess, formData.pickupFlights)}
                   </span>
                 </div>
@@ -1163,37 +1163,37 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               {showDualMovingAddresses && formData.addressB && (
                 <>
                   <div className="flex justify-between gap-4">
-                    <span className="text-secondary-400 shrink-0">Drop-off</span>
-                    <span className="font-semibold text-secondary text-right max-w-[60%]">
+                    <span className="text-[var(--text-muted)] shrink-0">Drop-off</span>
+                    <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
                       {formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}{formData.cityB ? `, ${[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}` : ''}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-secondary-400">Drop-off access</span>
-                    <span className="font-semibold text-secondary text-right">
+                    <span className="text-[var(--text-muted)]">Drop-off access</span>
+                    <span className="font-semibold text-[var(--text)] text-right">
                       {formatAccessLabel(formData.dropoffAccess, formData.dropoffFlights)}
                     </span>
                   </div>
                 </>
               )}
-              <div className="flex justify-between"><span className="text-secondary-400">Service</span><span className="font-semibold text-secondary text-right">{isMovingLabor ? 'Local Moving' : serviceType}</span></div>
+              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Service</span><span className="font-semibold text-[var(--text)] text-right">{isMovingLabor ? 'Local Moving' : serviceType}</span></div>
               {movingOptions && (
                 <>
                   <div className="flex justify-between">
-                    <span className="text-secondary-400">Job type</span>
-                    <span className="font-semibold text-secondary text-right">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</span>
+                    <span className="text-[var(--text-muted)]">Job type</span>
+                    <span className="font-semibold text-[var(--text)] text-right">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-secondary-400">Move size</span>
-                    <span className="font-semibold text-secondary text-right">
+                    <span className="text-[var(--text-muted)]">Move size</span>
+                    <span className="font-semibold text-[var(--text)] text-right">
                       {movingOptions.homeSize === 'studio' ? 'Studio' : movingOptions.homeSize === '1bed' ? '1-Bedroom' : movingOptions.homeSize === '2bed' ? '2-Bedroom' : '3+ Bedrooms'}
                       {movingOptions.needsTruck ? ' · $99 truck' : ''}
                     </span>
                   </div>
                   {(movingOptions.heavyItems.length > 0 || movingOptions.needsPackingHelp || movingOptions.needsDisassembly) && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-secondary-400 shrink-0">Extras</span>
-                      <span className="font-semibold text-secondary text-right max-w-[60%]">
+                      <span className="text-[var(--text-muted)] shrink-0">Extras</span>
+                      <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
                         {[
                           movingOptions.heavyItems.length ? `${movingOptions.heavyItems.length} heavy item(s)` : null,
                           movingOptions.needsPackingHelp ? 'Packing help' : null,
@@ -1204,16 +1204,16 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                   )}
                 </>
               )}
-              <div className="flex justify-between"><span className="text-secondary-400">Date</span><span className="font-semibold text-secondary text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
+              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Date</span><span className="font-semibold text-[var(--text)] text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
               {isJunkRemoval && localImage && (
-                <div className="flex justify-between"><span className="text-secondary-400">Photo</span><span className="font-semibold text-secondary text-right">Attached</span></div>
+                <div className="flex justify-between"><span className="text-[var(--text-muted)]">Photo</span><span className="font-semibold text-[var(--text)] text-right">Attached</span></div>
               )}
             </div>
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 text-xs font-bold">{error}</p>
+            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+              <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
 

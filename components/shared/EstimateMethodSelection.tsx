@@ -26,7 +26,7 @@ export const EstimateMethodSelection: React.FC<EstimateMethodSelectionProps> = (
       title="Select your items"
       description="Choose from our catalog for an itemized quote"
       fromPrice="Instant"
-      icon={<ManualEntryIcon className="w-full h-full text-secondary [&_.stroke-brand]:stroke-current" />}
+      icon={<ManualEntryIcon className="w-full h-full text-[var(--text)] [&_.stroke-brand]:stroke-current" />}
       selected
       onClick={onSelectItems}
     />
@@ -34,7 +34,7 @@ export const EstimateMethodSelection: React.FC<EstimateMethodSelectionProps> = (
       title="Photo estimate"
       description="Snap a photo for AI-powered pricing"
       badge="Coming Soon"
-      icon={<PhotoEstimateIcon className="w-full h-full text-secondary [&_.stroke-brand]:stroke-current opacity-60" />}
+      icon={<PhotoEstimateIcon className="w-full h-full text-[var(--text)] [&_.stroke-brand]:stroke-current opacity-60" />}
       disabled
       onClick={onPhotoEstimate}
     />

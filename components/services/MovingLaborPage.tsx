@@ -1,57 +1,88 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { PageHero } from '../shared/PageHero';
-import { EditorialContentSection } from '../shared/EditorialContentSection';
-import { TrustBadges } from '../TrustBadges';
-import { CharityBanner } from '../CharityBanner';
-import { Testimonials } from '../Testimonials';
-import { ProcessEditorial } from '../ProcessEditorial';
-import { ServiceArea } from '../ServiceArea';
+import { Clock, Dumbbell, Package, Truck } from 'lucide-react';
+import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 export const MovingLaborPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white min-h-screen">
-      <PageHero
-        eyebrow="Professional Service"
-        title={<>Moving<br />Labor</>}
-        subtitle="Hire strong, experienced independent providers by the hour to load, unload, or rearrange items in your home. You provide the truck or storage unit, vetted providers provide the muscle."
-        image="/opek2.webp"
-        imageAlt="Moving labor team lifting a heavy sofa"
-        primaryCta={{ label: 'Book Labor', onClick: () => navigate('/booking') }}
-        secondaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}
-      />
-
-      <TrustBadges />
-
-      <ProcessEditorial
-        variant="numbered"
-        eyebrow="How it works"
-        title="Moving labor in three steps"
-        subtitle="Book by the hour, get matched with strong crews, and leave the heavy lifting to them."
-      />
-
-      <EditorialContentSection title="Heavy lifting & professional moving labor">
-        <p>
-          Sometimes you don't need a full-service moving company or junk removal truck—you just need a few strong pairs of hands. Vetted moving labor services provide experienced, background-checked independent providers by the hour. Whether you need help loading a rented U-Haul, unloading a PODS container, or simply rearranging heavy furniture within your home, partner providers provide the physical support you need.
-        </p>
-        <p>
-          Partner providers specialize in labor-only assistance. This means you maintain control over transportation and storage, while avoiding the exorbitant fees of traditional moving companies. If you happen to discover items you no longer want while packing or unpacking, a seamless transition to{' '}
-          <Link to="/services/junk-removal" className="text-brand hover:underline font-semibold">junk removal</Link>{' '}
-          services can clear them away on the spot.
-        </p>
-        <p>
-          Moving labor providers are vetted and available for jobs of all sizes, from quick 2-hour minimums to full-day loading projects. With providers standing by nationwide in cities like{' '}
-          <Link to="/locations/los-angeles" className="text-brand hover:underline font-semibold">Los Angeles</Link>{' '}
-          and{' '}
-          <Link to="/locations/jacksonville" className="text-brand hover:underline font-semibold">Jacksonville</Link>, the platform makes moving safer and significantly less stressful.
-        </p>
-      </EditorialContentSection>
-
-      <Testimonials />
-      <CharityBanner />
-      <ServiceArea titleStart="Hire the muscle." titleAccent="Skip the moving company." />
-    </div>
+    <ServicePageLayout
+      path="/services/moving-labor"
+      eyebrow="Hourly Moving Labor"
+      title={
+        <>
+          Moving
+          <br />
+          Labor
+        </>
+      }
+      subtitle="Hire strong, vetted providers by the hour to load, unload, or rearrange. You provide the truck or storage — they provide the muscle."
+      heroImage="/opek-related-moving.png?v=1"
+      heroImageAlt="Moving labor providers carrying furniture"
+      heroChip="By the Hour"
+      primaryCta={{ label: 'Book Labor', onClick: () => navigate('/booking') }}
+      secondaryCta={{ label: 'View Pricing', onClick: () => navigate('/quote') }}
+      split={{
+        eyebrow: 'Labor only',
+        title: 'Need muscle, not a full moving company?',
+        body: (
+          <p>
+            Perfect for U-Haul loading, PODS unloading, and rearranging heavy furniture. Found junk while
+            packing? Add{' '}
+            <Link to="/services/junk-removal" className="text-brand hover:text-brand-400 font-semibold">
+              junk removal
+            </Link>{' '}
+            in the same visit. Prefer truck + crew? See{' '}
+            <Link to="/services/small-local-moves" className="text-brand hover:text-brand-400 font-semibold">
+              small local moves
+            </Link>
+            .
+          </p>
+        ),
+        includesLabel: 'Labor includes:',
+        includes: [
+          { title: 'Heavy Lifting', Icon: Dumbbell },
+          { title: 'Load & Unload', Icon: Package },
+          { title: 'Hourly Rates', Icon: Clock },
+          { title: 'Truck Optional', Icon: Truck },
+        ],
+        image: '/opek-related-moving.png?v=1',
+        imageAlt: 'Hourly moving labor carrying a dresser',
+      }}
+      features={{
+        title: 'Moving labor that fits',
+        items: [
+          {
+            title: 'Book by the Hour',
+            body: 'Pay for the help you need — from quick 2-hour jobs to full-day loading projects.',
+          },
+          {
+            title: 'You Keep Control',
+            body: 'Bring your own truck or storage unit. Providers handle the physical work.',
+          },
+          {
+            title: 'Vetted Crews',
+            body: 'Background-checked, insured independent providers matched to your job size.',
+          },
+          {
+            title: 'Furniture Moves',
+            body: 'Rearrange rooms, haul heavy pieces upstairs, or stage a home for showings.',
+          },
+          {
+            title: 'Same-Day Options',
+            body: 'Fast booking in most metros when you need help today or tomorrow.',
+          },
+          {
+            title: 'Add Junk Removal',
+            body: 'Clear unwanted items on the spot instead of paying a second crew later.',
+          },
+        ],
+      }}
+      serviceArea={{
+        titleStart: 'Hire the muscle.',
+        titleAccent: 'Skip the moving company.',
+      }}
+    />
   );
 };

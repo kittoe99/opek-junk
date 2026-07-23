@@ -126,9 +126,9 @@ export const PrivacyPolicyPage: React.FC = () => {
           <p className="mb-4">
             These communications may include both <strong>transactional messages</strong> (booking confirmations, provider updates, receipts, support) and <strong>marketing messages</strong> (promotions, discounts, service reminders, and news about Opek). Message frequency varies based on your activity and preferences.
           </p>
-          <div className="bg-brand-50 border border-brand-100 rounded-xl p-5 mb-4 space-y-2 text-sm">
-            <p className="font-bold text-secondary">Text Message (SMS) Terms:</p>
-            <ul className="list-disc pl-5 space-y-1 text-secondary-700">
+          <div className="bg-brand/10 border border-brand/25 rounded-xl p-5 mb-4 space-y-2 text-sm">
+            <p className="font-bold text-[var(--text)]">Text Message (SMS) Terms:</p>
+            <ul className="list-disc pl-5 space-y-1 text-[var(--text-muted)]">
               <li>Message and data rates may apply depending on your mobile carrier plan.</li>
               <li>Consent to receive marketing texts is not a condition of purchase.</li>
               <li>Reply <strong>STOP</strong> to any marketing text to unsubscribe from promotional SMS. Reply <strong>HELP</strong> for assistance.</li>
@@ -298,10 +298,10 @@ export const PrivacyPolicyPage: React.FC = () => {
             If you have questions about this Privacy Policy, wish to access or delete your data, update your information, or manage your communication preferences, please contact us:
           </p>
           <div className="bg-secondary-50 border border-secondary-100 rounded-xl p-6 space-y-2">
-            <p className="text-sm text-secondary"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
-            <p className="text-sm text-secondary"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
-            <p className="text-sm text-secondary"><strong>Website:</strong> <a href="https://opekjunkremoval.com" className="text-brand hover:underline font-semibold">opekjunkremoval.com</a></p>
-            <p className="text-sm text-secondary"><strong>Service Area:</strong> Nationwide, United States</p>
+            <p className="text-sm text-[var(--text)]"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Website:</strong> <a href="https://opekjunkremoval.com" className="text-brand hover:underline font-semibold">opekjunkremoval.com</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Service Area:</strong> Nationwide, United States</p>
           </div>
         </>
       ),

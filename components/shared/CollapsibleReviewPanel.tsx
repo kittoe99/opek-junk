@@ -19,20 +19,20 @@ export const CollapsibleReviewPanel: React.FC<CollapsibleReviewPanelProps> = ({
   const [expanded, setExpanded] = useState(defaultExpanded);
 
   return (
-    <div className="border border-secondary-100 bg-secondary-50/50 rounded-2xl shadow-sm overflow-hidden">
+    <div className="border border-[var(--border)] bg-[var(--surface)]/[0.03] rounded-2xl shadow-none overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
-        className="w-full flex items-center gap-3 p-4 text-left hover:bg-secondary-50/80 transition-colors"
+        className="w-full flex items-center gap-3 p-4 text-left hover:bg-[var(--surface)]/[0.04] transition-colors"
         aria-expanded={expanded}
       >
         {icon && <span className="shrink-0">{icon}</span>}
         <span className="flex-1 min-w-0">
-          <span className="block text-[10px] font-bold text-secondary uppercase tracking-wider">
+          <span className="block text-[10px] font-bold text-[var(--text)] uppercase tracking-wider">
             {title}
           </span>
           {!expanded && summary && (
-            <span className="block text-xs font-semibold text-secondary-500 mt-0.5 truncate">
+            <span className="block text-xs font-semibold text-[var(--text-muted)] mt-0.5 truncate">
               {summary}
             </span>
           )}
@@ -47,7 +47,7 @@ export const CollapsibleReviewPanel: React.FC<CollapsibleReviewPanelProps> = ({
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 pt-0 border-t border-secondary-100/80 animate-fade-in">
+        <div className="px-4 pb-4 pt-0 border-t border-[var(--border)] animate-fade-in">
           <div className="pt-3">{children}</div>
         </div>
       )}

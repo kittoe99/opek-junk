@@ -12,7 +12,6 @@ import {
   UTILITY_PRIMARY_BUTTON,
 } from '../lib/flowPageLayout';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
-import { TrustBadges } from './TrustBadges';
 import { UtilityPageHeader } from './shared/UtilityPageHeader';
 
 export const ContactPage: React.FC = () => {
@@ -136,7 +135,7 @@ export const ContactPage: React.FC = () => {
           </div>
 
           {error && (
-            <p className="text-red-600 text-xs font-bold">{error}</p>
+            <p className="text-brand text-xs font-bold">{error}</p>
           )}
 
           <button
@@ -147,7 +146,7 @@ export const ContactPage: React.FC = () => {
           </button>
 
           <div className="flex items-center justify-between pt-2">
-            <a href="tel:8313187139" className="text-sm font-semibold text-secondary hover:text-brand transition-colors flex items-center gap-1.5">
+            <a href="tel:8313187139" className="text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors flex items-center gap-1.5">
               <Phone size={14} /> (831) 318-7139
             </a>
             <button type="button" onClick={() => navigate('/quote')} className="text-sm font-semibold text-brand hover:text-brand-600 transition-colors flex items-center gap-1">
@@ -157,8 +156,6 @@ export const ContactPage: React.FC = () => {
         </form>
       </div>
       </div>
-
-      <TrustBadges />
     </div>
   );
 };

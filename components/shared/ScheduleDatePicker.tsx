@@ -127,15 +127,15 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-bold text-secondary">{selectedStr || 'Select a date'}</p>
-          {timeSlot && <p className="text-xs text-secondary-400 mt-0.5">{formatTimeSlotLabel(timeSlot)}</p>}
+          <p className="text-sm font-bold text-[var(--text)]">{selectedStr || 'Select a date'}</p>
+          {timeSlot && <p className="text-xs text-[var(--text-muted)] mt-0.5">{formatTimeSlotLabel(timeSlot)}</p>}
         </div>
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, -1))}
             disabled={!canGoPrev}
-            className="w-7 h-7 rounded-lg text-secondary hover:bg-secondary-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            className="w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             aria-label="Previous month"
           >
             <ChevronLeft size={15} />
@@ -143,7 +143,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, 1))}
-            className="w-7 h-7 rounded-lg text-secondary hover:bg-secondary-100 transition-colors flex items-center justify-center"
+            className="w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] transition-colors flex items-center justify-center"
             aria-label="Next month"
           >
             <ChevronRight size={15} />
@@ -151,11 +151,11 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-secondary-100 p-3">
-        <p className="text-xs font-semibold text-secondary-500 text-center mb-3">{monthLabel}</p>
+      <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-3">
+        <p className="text-xs font-semibold text-[var(--text-muted)] text-center mb-3">{monthLabel}</p>
         <div className="grid grid-cols-7 gap-px mb-1">
           {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-            <div key={day} className="text-[10px] font-semibold text-secondary-300 text-center py-1">{day}</div>
+            <div key={day} className="text-[10px] font-semibold text-neutral-500 text-center py-1">{day}</div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-px">
@@ -171,7 +171,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 disabled={disabled}
                 onClick={() => onDateChange(toISODate(cellDate))}
                 className={`aspect-square rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${
-                  disabled ? 'text-secondary-200 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-secondary hover:bg-brand/10'
+                  disabled ? 'text-[var(--text)]-200 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-[var(--text)] hover:bg-brand/10'
                 } ${!disabled && !isSelected && isToday ? 'ring-1 ring-brand/40 ring-inset' : ''}`}
               >
                 {cellDate.getDate()}
@@ -181,8 +181,8 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div className="rounded-xl border border-secondary-100 bg-white p-3 shadow-sm">
-        <p className="text-xs font-semibold text-secondary-500 mb-2">Time slot</p>
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-none">
+        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Time slot</p>
         <div className="flex gap-2">
           {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
             const selected = timeSlot === id;
@@ -192,11 +192,11 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 type="button"
                 onClick={() => onTimeSlotChange(id)}
                 className={`flex-1 rounded-lg border py-2.5 text-center text-xs font-semibold transition-all ${
-                  selected ? 'border-secondary bg-secondary text-white shadow-sm' : 'border-secondary-100 bg-[#faf9f7] text-secondary hover:border-secondary-300 hover:bg-secondary-50'
+                  selected ? 'border-brand bg-brand text-white shadow-[0_0_20px_-6px_rgba(255,0,110,0.5)]' : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40 hover:bg-white/[0.04]'
                 }`}
               >
                 {label}
-                <span className={`block text-[10px] font-normal mt-0.5 ${selected ? 'text-white/70' : 'text-secondary-400'}`}>{range}</span>
+                <span className={`block text-[10px] font-normal mt-0.5 ${selected ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{range}</span>
               </button>
             );
           })}

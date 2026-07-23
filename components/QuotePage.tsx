@@ -577,38 +577,38 @@ export const QuotePage: React.FC = () => {
       <div className="space-y-6">
         <FlowStepTitle title="Your estimate" subtitle="Review your price breakdown, then continue to book." />
 
-        <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center gap-4">
-          <div className="w-20 h-16 md:w-24 md:h-20 shrink-0">
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
+          <div className="w-20 h-16 md:w-24 md:h-20 shrink-0 flex items-end justify-center">
             <img
               src={
-                selectedService === 'junk_removal' ? '/process-step-1.svg' :
-                selectedService === 'donation_pickup' ? '/opek-nav.svg' :
-                selectedService === 'moving_labor' ? '/process-step-2.svg' :
-                selectedService === 'dumpster_rental' ? '/dumpster-rental.svg' :
-                '/process-step-1.svg'
+                selectedService === 'junk_removal' ? '/opek-hero-haulers.png?v=3' :
+                selectedService === 'donation_pickup' ? '/opek-service-areas.png?v=1' :
+                selectedService === 'moving_labor' ? '/opek-related-moving.png?v=1' :
+                selectedService === 'dumpster_rental' ? '/opek-related-dumpster.png?v=1' :
+                '/opek-hero-haulers.png?v=3'
               }
               alt="Service breakdown"
-              className="w-full h-full object-contain"
+              className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-secondary">
+            <h3 className="text-sm font-semibold text-[var(--text)]">
               {selectedService === 'junk_removal' ? 'Junk Removal' :
                selectedService === 'donation_pickup' ? 'Donation Pick Up' :
                selectedService === 'moving_labor' ? 'Local Moving' :
                selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
                'Junk Removal'}
             </h3>
-            <p className="text-secondary-500 text-xs mt-0.5">{price.estimatedVolume}</p>
+            <p className="text-[var(--text-muted)] text-xs mt-0.5">{price.estimatedVolume}</p>
           </div>
-          <p className="text-2xl font-semibold text-secondary shrink-0">${price.price}</p>
+          <p className="text-2xl font-semibold text-[var(--text)] shrink-0">${price.price}</p>
         </div>
 
         {!isSpecialService ? (
           <JunkRemovalPriceBreakdown price={price} />
         ) : null}
 
-        <p className="text-sm text-secondary-500 leading-relaxed">{price.summary}</p>
+        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{price.summary}</p>
 
         <FlowStickyNav
           showBack
@@ -627,7 +627,7 @@ export const QuotePage: React.FC = () => {
           }}
           continueLabel="Continue to book"
         />
-        <p className="text-xs text-secondary-400 text-center">* Final price confirmed on-site</p>
+        <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
       </div>
     );
 
@@ -866,7 +866,7 @@ export const QuotePage: React.FC = () => {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-secondary mb-3">Preferred charity partner</label>
+                  <label className="block text-sm font-medium text-[var(--text)] mb-3">Preferred charity partner</label>
                   <div className="space-y-3">
                     {[
                       { label: 'No Preference', desc: 'First available partner charity' },
@@ -886,7 +886,7 @@ export const QuotePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary mb-3">Tax donation receipt</label>
+                  <label className="block text-sm font-medium text-[var(--text)] mb-3">Tax donation receipt</label>
                   <div className="space-y-3">
                     {[
                       { label: 'Receipt Requested', value: true, desc: 'A tax receipt from the charity will be emailed' },
@@ -922,7 +922,7 @@ export const QuotePage: React.FC = () => {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-secondary mb-3">Estimated size</label>
+                  <label className="block text-sm font-medium text-[var(--text)] mb-3">Estimated size</label>
                   <div className="space-y-3">
                     {[
                       { label: 'Bagged/Boxed Items', desc: 'Clothes, toys, small housewares' },
@@ -941,7 +941,7 @@ export const QuotePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary mb-3">Donation item location</label>
+                  <label className="block text-sm font-medium text-[var(--text)] mb-3">Donation item location</label>
                   <div className="space-y-3">
                     {[
                       { label: 'Curbside/Outside', desc: 'Items are outside, ready on curb/driveway' },
@@ -1039,23 +1039,23 @@ export const QuotePage: React.FC = () => {
                 title="Rental duration"
                 subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
               />
-              <div className="bg-white border border-secondary-200 rounded-xl p-4 flex items-center justify-between gap-4">
+              <div className="bg-[var(--surface)] border border-white/15 rounded-xl p-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-medium text-secondary">Rental period</p>
-                  <p className="text-xs text-secondary-500 mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
+                  <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                 </div>
-                <div className="flex items-center gap-2 border border-secondary-200 rounded-full px-2 py-1">
+                <div className="flex items-center gap-2 border border-white/15 rounded-full px-2 py-1">
                   <button
                     onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                     disabled={dumpsterDuration <= 1}
-                    className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary disabled:opacity-30 flex items-center justify-center"
+                    className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                   >
                     <Minus size={14} />
                   </button>
-                  <span className="w-8 text-center text-sm font-semibold text-secondary">{dumpsterDuration}</span>
+                  <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
                   <button
                     onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                    className="w-8 h-8 rounded-full hover:bg-secondary-50 text-secondary flex items-center justify-center"
+                    className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] flex items-center justify-center"
                   >
                     <Plus size={14} />
                   </button>
@@ -1063,9 +1063,9 @@ export const QuotePage: React.FC = () => {
               </div>
 
               {error && (
-                <div className="flex items-start gap-2 p-3 mt-4 bg-red-50 border border-red-200 rounded-lg">
-                  <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
-                  <p className="text-red-700 text-sm">{error}</p>
+                <div className="flex items-start gap-2 p-3 mt-4 bg-brand/10 border border-brand/30 rounded-lg">
+                  <AlertCircle size={15} className="text-brand shrink-0 mt-0.5" />
+                  <p className="text-brand text-sm">{error}</p>
                 </div>
               )}
 
