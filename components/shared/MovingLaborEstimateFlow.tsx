@@ -1,26 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Loader2,
-  ShieldCheck,
-  Truck,
-  Home,
-  Building2,
-  Warehouse,
-  Piano,
-  Dumbbell,
-  Weight,
-  Cog,
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  ArrowLeftRight,
-  RefreshCw,
-  ArrowUpNarrowWide,
-  Package,
-  Wrench,
-  Layers,
-  Check,
-  type LucideIcon,
-} from 'lucide-react';
+import { Loader2, ShieldCheck, Check } from 'lucide-react';
 import { calculateMovingLaborPrice } from '../../services/pricingService';
 import {
   MovingAccessType,
@@ -30,12 +9,35 @@ import {
   PriceEstimate,
   QuoteEstimate,
 } from '../../types';
+import {
+  LoadingUnloadingIcon,
+  LoadingIcon,
+  UnloadingIcon,
+  RearrangeIcon,
+  BringTruckIcon,
+  OwnTruckIcon,
+  StudioHomeIcon,
+  MultiHomeIcon,
+  OneHelperIcon,
+  TwoHelpersIcon,
+  GroundFloorIcon,
+  ElevatorIcon,
+  StairsAccessIcon,
+  PianoIcon,
+  GymEquipmentIcon,
+  SafeVaultIcon,
+  PoolTableIcon,
+  HotTubIcon,
+  PackingHelpIcon,
+  DisassemblyIcon,
+} from '../icons/ServiceIcons';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { FlowSelectionCard } from './flow/FlowSelectionCard';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 
-const MOVING_ICON_CLASS = 'w-5 h-5 text-[var(--text)] [&_.stroke-brand]:stroke-current';
+const MOVING_ICON_CLASS = 'w-full h-full';
+type FlowIcon = React.FC<{ className?: string; size?: number }>;
 
 export interface MovingLaborEstimateResult {
   estimate: QuoteEstimate;
@@ -68,31 +70,31 @@ const SERVICE_SCOPES: {
   id: MovingServiceScope;
   label: string;
   desc: string;
-  icon: LucideIcon;
+  icon: FlowIcon;
 }[] = [
   {
     id: 'both',
     label: 'Load & unload',
     desc: 'Full local move — load at pickup and unload at drop-off',
-    icon: ArrowLeftRight,
+    icon: LoadingUnloadingIcon,
   },
   {
     id: 'loading',
     label: 'Loading only',
     desc: 'Crew loads your truck, POD, or storage unit',
-    icon: ArrowUpFromLine,
+    icon: LoadingIcon,
   },
   {
     id: 'unloading',
     label: 'Unloading only',
     desc: 'Crew unloads into your home, office, or storage',
-    icon: ArrowDownToLine,
+    icon: UnloadingIcon,
   },
   {
     id: 'rearrange',
     label: 'In-home rearrange',
     desc: 'Move furniture between rooms — no truck needed',
-    icon: RefreshCw,
+    icon: RearrangeIcon,
   },
 ];
 
@@ -113,11 +115,13 @@ const CREW_OPTIONS = [
     helpers: 1 as const,
     label: '1 helper — I will help',
     desc: 'Best when you can assist with lifting',
+    icon: OneHelperIcon,
   },
   {
     helpers: 2 as const,
     label: '2 helpers',
     desc: 'A complete crew handles the lifting',
+    icon: TwoHelpersIcon,
   },
 ];
 
@@ -125,39 +129,39 @@ const ACCESS_OPTIONS: {
   id: MovingAccessType;
   label: string;
   desc: string;
-  icon: LucideIcon;
+  icon: FlowIcon;
   hourAddon: number;
 }[] = [
   {
     id: 'ground',
     label: 'Ground floor / street level',
     desc: 'Easy access — no stairs or elevator',
-    icon: Home,
+    icon: GroundFloorIcon,
     hourAddon: 0,
   },
   {
     id: 'elevator',
     label: 'Elevator available',
     desc: 'Building has a working elevator for furniture',
-    icon: Layers,
+    icon: ElevatorIcon,
     hourAddon: 0,
   },
   {
     id: 'stairs',
     label: 'Stairs required',
     desc: 'Upper floor, basement, or walk-up — no elevator',
-    icon: ArrowUpNarrowWide,
+    icon: StairsAccessIcon,
     hourAddon: 1,
   },
 ];
 
 const HEAVY_ITEMS = [
-  { id: 'piano', label: 'Piano', icon: Piano },
-  { id: 'treadmill', label: 'Treadmill / Gym', icon: Dumbbell },
-  { id: 'safe', label: 'Safe / Vault', icon: Weight },
-  { id: 'pool_table', label: 'Pool Table', icon: Cog },
-  { id: 'hot_tub', label: 'Hot Tub', icon: Warehouse },
-  { id: 'gun_safe', label: 'Gun Safe', icon: Weight },
+  { id: 'piano', label: 'Piano', icon: PianoIcon },
+  { id: 'treadmill', label: 'Treadmill / Gym', icon: GymEquipmentIcon },
+  { id: 'safe', label: 'Safe / Vault', icon: SafeVaultIcon },
+  { id: 'pool_table', label: 'Pool Table', icon: PoolTableIcon },
+  { id: 'hot_tub', label: 'Hot Tub', icon: HotTubIcon },
+  { id: 'gun_safe', label: 'Gun Safe', icon: SafeVaultIcon },
 ];
 
 const SCOPE_LABELS: Record<MovingServiceScope, string> = {
@@ -382,14 +386,14 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           <FlowSelectionCard
             title="Yes, bring a truck"
             description="Add a moving truck"
-            icon={<Truck className={MOVING_ICON_CLASS} />}
+            icon={<BringTruckIcon className={MOVING_ICON_CLASS} />}
             selected={needsTruck === true}
             onClick={() => setNeedsTruck(true)}
           />
           <FlowSelectionCard
             title="No, I have a truck"
             description="Just need a crew to help load and unload"
-            icon={<Home className={MOVING_ICON_CLASS} />}
+            icon={<OwnTruckIcon className={MOVING_ICON_CLASS} />}
             selected={needsTruck === false}
             onClick={() => setNeedsTruck(false)}
           />
@@ -415,10 +419,10 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
               title={size.label}
               description={`${size.desc} · ~${size.hours} hrs`}
               icon={
-                size.id === 'studio' ? (
-                  <Home className={MOVING_ICON_CLASS} />
+                size.id === 'studio' || size.id === '1bed' ? (
+                  <StudioHomeIcon className={MOVING_ICON_CLASS} />
                 ) : (
-                  <Building2 className={MOVING_ICON_CLASS} />
+                  <MultiHomeIcon className={MOVING_ICON_CLASS} />
                 )
               }
               selected={homeSize === size.id}
@@ -441,15 +445,19 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
       <>
         <FlowStepTitle title="How many helpers?" subtitle="Moving labor is billed hourly. Choose the level of help you need." />
         <div className="space-y-3">
-          {CREW_OPTIONS.map((option) => (
-            <FlowSelectionCard
-              key={option.helpers}
-              title={option.label}
-              description={option.desc}
-              selected={helpers === option.helpers}
-              onClick={() => setHelpers(option.helpers)}
-            />
-          ))}
+          {CREW_OPTIONS.map((option) => {
+            const Icon = option.icon;
+            return (
+              <FlowSelectionCard
+                key={option.helpers}
+                title={option.label}
+                description={option.desc}
+                icon={<Icon className={MOVING_ICON_CLASS} />}
+                selected={helpers === option.helpers}
+                onClick={() => setHelpers(option.helpers)}
+              />
+            );
+          })}
         </div>
         <FlowStickyNav
           showBack
@@ -564,7 +572,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 >
                   {selected && <Check size={12} className="text-white" strokeWidth={3} />}
                 </div>
-                <Icon size={20} className={selected ? 'text-brand' : 'text-[var(--text-muted)]'} />
+                <Icon size={20} className={`${selected ? 'text-brand' : 'text-[var(--text-muted)]'}`} />
                 <p className={`text-xs font-semibold mt-2 ${selected ? 'text-brand' : 'text-[var(--text)]'}`}>
                   {item.label}
                 </p>
@@ -589,7 +597,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             >
               {needsPackingHelp && <Check size={12} className="text-white" strokeWidth={3} />}
             </div>
-            <Package size={20} className={needsPackingHelp ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
+            <PackingHelpIcon size={20} className={needsPackingHelp ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
             <div>
               <p className={`text-sm font-semibold ${needsPackingHelp ? 'text-brand' : 'text-[var(--text)]'}`}>
                 Packing help
@@ -611,7 +619,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             >
               {needsDisassembly && <Check size={12} className="text-white" strokeWidth={3} />}
             </div>
-            <Wrench size={20} className={needsDisassembly ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
+            <DisassemblyIcon size={20} className={needsDisassembly ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
             <div>
               <p className={`text-sm font-semibold ${needsDisassembly ? 'text-brand' : 'text-[var(--text)]'}`}>
                 Furniture disassembly / reassembly

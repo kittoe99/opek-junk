@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import {
-  Camera,
-  Upload,
   Loader2,
   Check,
   Plus,
@@ -18,6 +16,7 @@ import { calculateStaticPrice } from '../../services/pricingService';
 import { supabase } from '../../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
+import { CameraCaptureIcon, UploadPhotoIcon } from '../icons/ServiceIcons';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { EstimateMethodSelection, EstimateMethodHero } from './EstimateMethodSelection';
 import { FlowSelectionCard } from './flow/FlowSelectionCard';
@@ -519,13 +518,13 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   <FlowSelectionCard
                     title="Take photo"
                     description="Use your camera to capture the junk"
-                    icon={<Camera className="w-full h-full" />}
+                    icon={<CameraCaptureIcon className="w-full h-full" />}
                     onClick={() => cameraInputRef.current?.click()}
                   />
                   <FlowSelectionCard
                     title="Upload photo"
                     description="Choose an existing photo from your device"
-                    icon={<Upload className="w-full h-full" />}
+                    icon={<UploadPhotoIcon className="w-full h-full" />}
                     onClick={() => fileInputRef.current?.click()}
                   />
                   <FlowStickyNav showBack onBack={() => setAiStep('tips')} showContinue={false} />

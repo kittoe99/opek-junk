@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertCircle, Check } from 'lucide-react';
 import { FLOW_INPUT, FLOW_LABEL } from '../../../lib/flowPageLayout';
+import { InputZipIcon } from '../../icons/ServiceIcons';
 import { FlowStepTitle } from './FlowStepTitle';
 import { FlowStickyNav } from './FlowStickyNav';
 
@@ -33,6 +34,12 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
     <FlowStepTitle title={title} subtitle={subtitle} />
 
     <div className="space-y-4">
+      <div className="flex justify-center">
+        <div className="w-14 h-14 rounded-2xl border border-brand/30 bg-brand/10 text-brand flex items-center justify-center shadow-[0_0_28px_-10px_rgba(255,0,110,0.55)]">
+          <InputZipIcon size={26} />
+        </div>
+      </div>
+
       <div>
         <label className={`${FLOW_LABEL} text-center`}>ZIP code</label>
         <input
@@ -56,7 +63,9 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
 
       {result && (
         <div className="flex items-center gap-2 p-3 bg-[var(--surface)] border border-brand/30 rounded-xl">
-          <Check size={16} className="text-brand shrink-0" strokeWidth={2.5} />
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 border border-brand/30 text-brand shrink-0">
+            <Check size={16} strokeWidth={2.5} />
+          </span>
           <span className="text-sm font-medium text-[var(--text)]">
             {result.city}, {result.state}
           </span>

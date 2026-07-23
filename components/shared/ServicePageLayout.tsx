@@ -42,9 +42,13 @@ interface ServicePageLayoutProps {
     titleStart: string;
     titleAccent: string;
   };
-  /** Optional mid-page block (e.g. mattress pricing) */
+  /** Optional mid-page block (e.g. ZIP magnet, FAQ) */
   children?: React.ReactNode;
   showHustleMuscle?: boolean;
+  showRelatedServices?: boolean;
+  showFeatures?: boolean;
+  /** Rendered after testimonials — e.g. final CTA strip */
+  afterTestimonials?: React.ReactNode;
 }
 
 export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
@@ -62,6 +66,9 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   serviceArea,
   children,
   showHustleMuscle = true,
+  showRelatedServices = true,
+  showFeatures = true,
+  afterTestimonials,
 }) => {
   return (
     <div className="home-dark min-h-screen">
@@ -90,9 +97,9 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
 
       {showHustleMuscle && <HustleMuscle />}
 
-      <ServiceFeatureGrid title={features.title} items={features.items} />
+      {showFeatures && <ServiceFeatureGrid title={features.title} items={features.items} />}
 
-      <RelatedServices excludePath={path} />
+      {showRelatedServices && <RelatedServices excludePath={path} />}
 
       <ServiceArea
         titleStart={serviceArea.titleStart}
@@ -101,6 +108,8 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       />
 
       <Testimonials theme="dark" />
+
+      {afterTestimonials}
     </div>
   );
 };

@@ -46,7 +46,9 @@ function getUSStateAbbreviation(stateName: string): string {
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAdsLandingPage = location.pathname === '/services/mattress-disposal';
+  const isAdsLandingPage =
+    location.pathname === '/services/mattress-disposal' ||
+    location.pathname === '/lp/junk-removal';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);

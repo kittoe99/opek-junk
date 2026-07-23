@@ -69,8 +69,8 @@ const CORE_OPTIONS: {
       <svg viewBox="0 0 24 24" fill="none" className={className}>
         <rect x="3" y="8" width="18" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" />
         <path d="M3 12h18" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 4" />
-        <circle cx="8" cy="12" r="1" className="stroke-brand" strokeWidth="1.5" />
-        <circle cx="16" cy="12" r="1" className="stroke-brand" strokeWidth="1.5" />
+        <circle cx="8" cy="12" r="1" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="16" cy="12" r="1" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
   },
@@ -83,7 +83,7 @@ const CORE_OPTIONS: {
       <svg viewBox="0 0 24 24" fill="none" className={className}>
         <rect x="3" y="10" width="18" height="8" stroke="currentColor" strokeWidth="1.5" />
         <path d="M6 10v8M12 10v8M18 10v8" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M3 14h18" className="stroke-brand" strokeWidth="1.5" />
+        <path d="M3 14h18" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
   },
@@ -96,7 +96,7 @@ const CORE_OPTIONS: {
       <svg viewBox="0 0 24 24" fill="none" className={className}>
         <path d="M4 4v16M20 10v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M4 14h16" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M4 8h5M4 11h5" className="stroke-brand" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M4 8h5M4 11h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },

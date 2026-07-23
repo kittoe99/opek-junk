@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Loader2, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../../lib/customerConsent';
 import { FLOW_INPUT, FLOW_LABEL } from '../../lib/flowPageLayout';
+import { InputUserIcon, InputPhoneIcon } from '../icons/ServiceIcons';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 
@@ -78,35 +79,45 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
         <div className="space-y-4">
           <div>
             <label className={FLOW_LABEL}>Full name *</label>
-            <input
-              type="text"
-              name="name"
-              autoComplete="name"
-              required
-              disabled={isLoading}
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                setError(null);
-              }}
-              placeholder="John Smith"
-              className={FLOW_INPUT}
-            />
+            <div className="relative">
+              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+                <InputUserIcon size={18} />
+              </span>
+              <input
+                type="text"
+                name="name"
+                autoComplete="name"
+                required
+                disabled={isLoading}
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError(null);
+                }}
+                placeholder="John Smith"
+                className={`${FLOW_INPUT} pl-11`}
+              />
+            </div>
           </div>
 
           <div>
             <label className={FLOW_LABEL}>Phone number *</label>
-            <input
-              type="tel"
-              name="phone"
-              autoComplete="tel"
-              required
-              disabled={isLoading}
-              value={formatDisplayPhone(phone)}
-              onChange={handlePhoneChange}
-              placeholder="(555) 000-0000"
-              className={FLOW_INPUT}
-            />
+            <div className="relative">
+              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+                <InputPhoneIcon size={18} />
+              </span>
+              <input
+                type="tel"
+                name="phone"
+                autoComplete="tel"
+                required
+                disabled={isLoading}
+                value={formatDisplayPhone(phone)}
+                onChange={handlePhoneChange}
+                placeholder="(555) 000-0000"
+                className={`${FLOW_INPUT} pl-11`}
+              />
+            </div>
             <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">{SMS_TRANSACTIONAL_NOTICE}</p>
           </div>
         </div>

@@ -167,7 +167,7 @@ export const InHomeEstimatePage: React.FC = () => {
           </>
         }
         subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
-        image="/opek-hustle-muscle.png?v=1"
+        image="/opek-hustle-muscle.png?v=2"
         imageAlt="Provider ready for an in-home estimate"
         chip="No Obligation"
         primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}

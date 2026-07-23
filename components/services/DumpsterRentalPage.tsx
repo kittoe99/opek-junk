@@ -79,6 +79,7 @@ export const DumpsterRentalPage: React.FC = () => {
         titleStart: 'Clear your site.',
         titleAccent: 'Rent a roll-off dumpster.',
       }}
+      showHustleMuscle={false}
     />
   );
 };

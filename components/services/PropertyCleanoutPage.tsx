@@ -43,7 +43,7 @@ export const PropertyCleanoutPage: React.FC = () => {
           { title: 'Insured Providers', Icon: ShieldCheck },
           { title: 'Responsible Disposal', Icon: Recycle },
         ],
-        image: '/opek-hustle-muscle.png?v=1',
+        image: '/opek-hustle-muscle.png?v=2',
         imageAlt: 'Provider with clipboard ready for a property estimate',
       }}
       features={{

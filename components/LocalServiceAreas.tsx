@@ -26,7 +26,7 @@ export const LocalServiceAreas: React.FC = () => {
               Affordable junk removal near you
             </h2>
             <p className="text-[14px] sm:text-base text-[var(--text-muted)] leading-relaxed mb-5 max-w-lg">
-              At Opek, we care about our neighbors across America and offer fast, affordable junk removal.
+              At Opek, we care about our neighbors nationwide and offer fast, affordable junk removal.
               Whether you&apos;re clearing out a home in <strong className="text-[var(--text)] font-semibold">Atlanta</strong>,
               decluttering in <strong className="text-[var(--text)] font-semibold">Dallas</strong>, or renovating in{' '}
               <strong className="text-[var(--text)] font-semibold">Jacksonville</strong>, local pros provide

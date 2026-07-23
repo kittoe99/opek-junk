@@ -21,7 +21,7 @@ interface ServiceTypePickerProps {
 
 const MOVING_LABOR_FROM = 79;
 
-const HERO_ICON_CLASS = 'w-full h-full text-[var(--text-muted)] [&_.stroke-brand]:stroke-brand';
+const HERO_ICON_CLASS = 'w-full h-full';
 
 export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
   title = 'What do you need help with?',

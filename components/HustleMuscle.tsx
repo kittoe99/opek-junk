@@ -12,8 +12,8 @@ export const HustleMuscle: React.FC = () => {
         <div className="relative lg:col-span-5 flex items-end justify-center px-6 pt-10 sm:pt-12 lg:pt-8 lg:pb-0 overflow-hidden min-h-[300px] sm:min-h-[360px]">
           <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
           <img
-            src="/opek-hustle-muscle.png?v=1"
-            alt="Opek junk removal estimator with clipboard ready for a pickup"
+            src="/opek-hustle-muscle.png?v=2"
+            alt="Opek junk removal pros carrying boxes, furniture, and a rug"
             className="relative z-10 h-full max-h-[340px] sm:max-h-[420px] lg:max-h-[520px] w-auto object-contain object-bottom drop-shadow-[0_28px_48px_rgba(0,0,0,0.55)]"
             loading="lazy"
           />

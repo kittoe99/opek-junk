@@ -70,7 +70,16 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
       >
         {description}
       </p>
-      {icon && <div className="w-12 h-12 shrink-0 text-[var(--text-muted)]">{icon}</div>}
+      {icon && (
+        <div
+          className={`w-12 h-12 shrink-0 flex items-end justify-center [&_svg]:w-full [&_svg]:h-full [&_svg_*]:stroke-current ${
+            disabled ? 'text-neutral-500' : 'text-brand'
+          }`}
+          aria-hidden
+        >
+          {icon}
+        </div>
+      )}
     </div>
   </button>
 );

@@ -9,7 +9,26 @@ const SITE_PHONE_DISPLAY = '(831) 318-7139';
 
 type Phase = 'idle' | 'checking' | 'found';
 
-export const ZipFinder: React.FC = () => {
+interface ZipFinderProps {
+  /** Override default /quote redirect after a successful ZIP check */
+  onResolved?: (zip: string) => void;
+  eyebrow?: string;
+  title?: React.ReactNode;
+  subtitle?: string;
+  buttonLabel?: string;
+  pricingHref?: string | null;
+  pricingLabel?: string;
+}
+
+export const ZipFinder: React.FC<ZipFinderProps> = ({
+  onResolved,
+  eyebrow = 'Instant coverage check',
+  title,
+  subtitle = 'Enter your ZIP—we’ll connect you with independent junk haulers available in your area.',
+  buttonLabel = 'Find Junk Haulers Near Me',
+  pricingHref = '/quote',
+  pricingLabel = 'View Pricing',
+}) => {
   const navigate = useNavigate();
   const [zip, setZip] = useState('');
   const [error, setError] = useState('');
@@ -41,6 +60,10 @@ export const ZipFinder: React.FC = () => {
     timerRef.current = window.setTimeout(() => {
       setPhase('found');
       timerRef.current = window.setTimeout(() => {
+        if (onResolved) {
+          onResolved(parsed.formatted);
+          return;
+        }
         const params = new URLSearchParams({ zip: parsed.formatted });
         navigate(`/quote?${params.toString()}`);
       }, FOUND_MS);
@@ -80,14 +103,18 @@ export const ZipFinder: React.FC = () => {
 
               <div>
                 <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-brand mb-3">
-                  Instant coverage check
+                  {eyebrow}
                 </p>
                 <h2 className="font-sans font-extrabold text-[1.65rem] sm:text-[2rem] md:text-[2.3rem] text-[var(--text)] tracking-tight leading-[1.1] mb-3">
-                  Check junk removal{' '}
-                  <span className="font-serif italic font-normal text-brand">near you</span>
+                  {title ?? (
+                    <>
+                      Check junk removal{' '}
+                      <span className="font-serif italic font-normal text-brand">near you</span>
+                    </>
+                  )}
                 </h2>
                 <p className="text-[var(--text-muted)] text-[14px] sm:text-[15px] leading-relaxed mb-6">
-                  Enter your ZIP—we’ll connect you with independent junk haulers available in your area.
+                  {subtitle}
                 </p>
 
                 <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-0 mb-2 max-w-lg" noValidate>
@@ -125,7 +152,7 @@ export const ZipFinder: React.FC = () => {
                     disabled={busy}
                     className="shrink-0 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none bg-brand px-5 py-3.5 text-sm font-semibold text-white hover:bg-brand-600 transition-all disabled:opacity-70 disabled:cursor-wait shadow-[0_0_24px_-6px_rgba(255,0,110,0.6)]"
                   >
-                    Find Junk Haulers Near Me
+                    {buttonLabel}
                   </button>
                 </form>
 
@@ -140,10 +167,14 @@ export const ZipFinder: React.FC = () => {
                   <a href={`tel:${SITE_PHONE}`} className="text-brand hover:text-brand-400 transition-colors">
                     {SITE_PHONE_DISPLAY}
                   </a>
-                  {' '}or{' '}
-                  <a href="/quote" className="text-brand hover:text-brand-400 transition-colors">
-                    View Pricing
-                  </a>
+                  {pricingHref ? (
+                    <>
+                      {' '}or{' '}
+                      <a href={pricingHref} className="text-brand hover:text-brand-400 transition-colors">
+                        {pricingLabel}
+                      </a>
+                    </>
+                  ) : null}
                 </p>
               </div>
             </div>

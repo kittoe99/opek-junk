@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { Camera, Upload, Loader2, Check, Plus, Minus, Trash2, Search, ListChecks, Armchair, Plug, Monitor, TreePine, HardHat, Warehouse, Package, ChevronDown, BedDouble, ScanSearch, Receipt, ArrowRight, ArrowLeft, X, MapPin, AlertCircle, CheckCircle2, Heart, HeartHandshake, Truck, BicepsFlexed, Download, RefreshCw, Home, Clock, PackagePlus, PackageMinus, ArrowLeftRight, Boxes, ShieldCheck, Container, Users, Sliders, ClipboardList, Eye, CalendarCheck, Sparkles, Sun, Maximize, Layers } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, InputZipIcon, InputMessageIcon } from './icons/ServiceIcons';
+import { CharityHeartIcon, ReceiptIcon, NoReceiptIcon, BaggedBoxedIcon, FurnitureIcon, GarageStorageIcon, CurbsideIcon, GaragePorchIcon, GroundFloorIcon, StairsAccessIcon, DumpsterSizeIcon } from './icons/ServiceIcons';
 import { ITEM_CATALOG, type CatalogItem, type CatalogCategory } from '../lib/itemCatalog';
 import { JunkRemovalEstimateFlow, type EstimateMode } from './shared/JunkRemovalEstimateFlow';
 import { MovingLaborEstimateFlow } from './shared/MovingLaborEstimateFlow';
@@ -869,19 +869,23 @@ export const QuotePage: React.FC = () => {
                   <label className="block text-sm font-medium text-[var(--text)] mb-3">Preferred charity partner</label>
                   <div className="space-y-3">
                     {[
-                      { label: 'No Preference', desc: 'First available partner charity' },
-                      { label: 'Goodwill', desc: 'Deliver to nearest Goodwill drop-off' },
-                      { label: 'Habitat ReStore', desc: 'Deliver to Habitat for Humanity ReStore' },
-                      { label: 'Local Shelter', desc: 'Deliver to a local shelter or mission' },
-                    ].map((charity) => (
-                      <FlowSelectionCard
-                        key={charity.label}
-                        title={charity.label}
-                        description={charity.desc}
-                        selected={donationCharity === charity.label}
-                        onClick={() => setDonationCharity(charity.label as any)}
-                      />
-                    ))}
+                      { label: 'No Preference', desc: 'First available partner charity', icon: CharityHeartIcon },
+                      { label: 'Goodwill', desc: 'Deliver to nearest Goodwill drop-off', icon: CharityHeartIcon },
+                      { label: 'Habitat ReStore', desc: 'Deliver to Habitat for Humanity ReStore', icon: CharityHeartIcon },
+                      { label: 'Local Shelter', desc: 'Deliver to a local shelter or mission', icon: CharityHeartIcon },
+                    ].map((charity) => {
+                      const Icon = charity.icon;
+                      return (
+                        <FlowSelectionCard
+                          key={charity.label}
+                          title={charity.label}
+                          description={charity.desc}
+                          icon={<Icon className="w-full h-full" />}
+                          selected={donationCharity === charity.label}
+                          onClick={() => setDonationCharity(charity.label as any)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -889,17 +893,21 @@ export const QuotePage: React.FC = () => {
                   <label className="block text-sm font-medium text-[var(--text)] mb-3">Tax donation receipt</label>
                   <div className="space-y-3">
                     {[
-                      { label: 'Receipt Requested', value: true, desc: 'A tax receipt from the charity will be emailed' },
-                      { label: 'No Receipt Needed', value: false, desc: 'Simply pick up and deliver the items' },
-                    ].map((option) => (
-                      <FlowSelectionCard
-                        key={option.label}
-                        title={option.label}
-                        description={option.desc}
-                        selected={donationReceipt === option.value}
-                        onClick={() => setDonationReceipt(option.value)}
-                      />
-                    ))}
+                      { label: 'Receipt Requested', value: true, desc: 'A tax receipt from the charity will be emailed', icon: ReceiptIcon },
+                      { label: 'No Receipt Needed', value: false, desc: 'Simply pick up and deliver the items', icon: NoReceiptIcon },
+                    ].map((option) => {
+                      const Icon = option.icon;
+                      return (
+                        <FlowSelectionCard
+                          key={option.label}
+                          title={option.label}
+                          description={option.desc}
+                          icon={<Icon className="w-full h-full" />}
+                          selected={donationReceipt === option.value}
+                          onClick={() => setDonationReceipt(option.value)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -925,18 +933,22 @@ export const QuotePage: React.FC = () => {
                   <label className="block text-sm font-medium text-[var(--text)] mb-3">Estimated size</label>
                   <div className="space-y-3">
                     {[
-                      { label: 'Bagged/Boxed Items', desc: 'Clothes, toys, small housewares' },
-                      { label: 'Few Furniture Items', desc: '1-3 large furniture pieces' },
-                      { label: 'Full Room/Multiple Items', desc: 'Entire room set or major cleanout' },
-                    ].map((size) => (
-                      <FlowSelectionCard
-                        key={size.label}
-                        title={size.label}
-                        description={size.desc}
-                        selected={donationSize === size.label}
-                        onClick={() => setDonationSize(size.label as any)}
-                      />
-                    ))}
+                      { label: 'Bagged/Boxed Items', desc: 'Clothes, toys, small housewares', icon: BaggedBoxedIcon },
+                      { label: 'Few Furniture Items', desc: '1-3 large furniture pieces', icon: FurnitureIcon },
+                      { label: 'Full Room/Multiple Items', desc: 'Entire room set or major cleanout', icon: GarageStorageIcon },
+                    ].map((size) => {
+                      const Icon = size.icon;
+                      return (
+                        <FlowSelectionCard
+                          key={size.label}
+                          title={size.label}
+                          description={size.desc}
+                          icon={<Icon className="w-full h-full" />}
+                          selected={donationSize === size.label}
+                          onClick={() => setDonationSize(size.label as any)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -944,19 +956,23 @@ export const QuotePage: React.FC = () => {
                   <label className="block text-sm font-medium text-[var(--text)] mb-3">Donation item location</label>
                   <div className="space-y-3">
                     {[
-                      { label: 'Curbside/Outside', desc: 'Items are outside, ready on curb/driveway' },
-                      { label: 'Garage/Porch', desc: 'Easy access, ground level external access' },
-                      { label: 'Inside Home (Ground Floor)', desc: 'Ground floor inside entry' },
-                      { label: 'Inside Home (Stairs)', desc: 'Upper floor, basement, or multi-level stairs' },
-                    ].map((loc) => (
-                      <FlowSelectionCard
-                        key={loc.label}
-                        title={loc.label}
-                        description={loc.desc}
-                        selected={donationLocation === loc.label}
-                        onClick={() => setDonationLocation(loc.label as any)}
-                      />
-                    ))}
+                      { label: 'Curbside/Outside', desc: 'Items are outside, ready on curb/driveway', icon: CurbsideIcon },
+                      { label: 'Garage/Porch', desc: 'Easy access, ground level external access', icon: GaragePorchIcon },
+                      { label: 'Inside Home (Ground Floor)', desc: 'Ground floor inside entry', icon: GroundFloorIcon },
+                      { label: 'Inside Home (Stairs)', desc: 'Upper floor, basement, or multi-level stairs', icon: StairsAccessIcon },
+                    ].map((loc) => {
+                      const Icon = loc.icon;
+                      return (
+                        <FlowSelectionCard
+                          key={loc.label}
+                          title={loc.label}
+                          description={loc.desc}
+                          icon={<Icon className="w-full h-full" />}
+                          selected={donationLocation === loc.label}
+                          onClick={() => setDonationLocation(loc.label as any)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -1018,6 +1034,7 @@ export const QuotePage: React.FC = () => {
                     title={size.label}
                     description={size.desc}
                     fromPrice={`${size.price} / 7 days`}
+                    icon={<DumpsterSizeIcon className="w-full h-full" />}
                     selected={dumpsterSize === `${size.label.toLowerCase()}` as any}
                     onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
                   />

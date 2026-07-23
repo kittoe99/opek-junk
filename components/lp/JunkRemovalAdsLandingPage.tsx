@@ -12,40 +12,39 @@ import { LocalServiceAreas } from '../LocalServiceAreas';
 import { ServiceArea } from '../ServiceArea';
 import { Testimonials } from '../Testimonials';
 import { ZipFinder } from '../ZipFinder';
-import { trackMattressConversion } from '../../lib/googleAds';
 
 const SITE_PHONE = '8313187139';
 const SITE_PHONE_DISPLAY = '(831) 318-7139';
 
 const tickerItems = [
+  'Furniture Removal',
+  'Appliance Hauling',
   'Mattress Pickup',
-  'Box Spring Removal',
-  'Bed Frame Hauling',
-  'Any Room Retrieval',
+  'Estate Cleanouts',
+  'Garage Cleanouts',
+  'Construction Debris',
   'Same-Day Crews',
-  'Eco Recycling',
-  'Insured Providers',
   'All 50 States',
-  'Stairs & Elevators',
-  'No Curb Dragging',
+  'Heavy Lifting',
+  'Proper Disposal',
 ];
 
 const approaches = [
   {
     title: 'Easy Booking',
-    body: 'Schedule mattress pickup online in minutes — no phone tag required.',
+    body: 'Book junk disposal online in minutes — the convenient way to clear clutter in your city.',
   },
   {
-    title: 'In-Home Retrieval',
-    body: 'Providers carry mattresses out of bedrooms, basements, and upper floors.',
+    title: 'In-Home Removal',
+    body: 'Providers lift and load from any room or floor. You point — they do the rest.',
   },
   {
     title: 'Same Day Pickup',
-    body: 'Same-day and next-day windows when local capacity allows in your area.',
+    body: 'Same-day and next-day windows when you book before noon in most areas.',
   },
   {
     title: '100% Transparent',
-    body: 'Know what’s included before you confirm. No surprise add-ons at the door.',
+    body: 'Honest haul-away from start to finish. Know what’s included before you confirm.',
   },
   {
     title: 'Order Tracking',
@@ -53,29 +52,32 @@ const approaches = [
   },
   {
     title: 'Thoughtful Disposal',
-    body: 'Mattress components recycled whenever possible — not left on the curb.',
+    body: 'Sustainable sorting, donation when possible, and responsible disposal.',
   },
 ];
 
-export const MattressDisposalPage: React.FC = () => {
+/** Standalone Google Ads landing page — not the public services page. */
+export const JunkRemovalAdsLandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const goToBooking = (zip?: string) => {
-    trackMattressConversion(zip ? 'mattress_zip_check' : 'mattress_view_pricing');
-    navigate('/booking/mattress', {
+    navigate('/booking', {
       state: zip
         ? {
             zipResult: { city: '', state: '', served: true },
             zipValue: zip,
-            preselectItems: [{ name: 'Mattress', quantity: 1 }],
+            serviceType: 'Junk Removal',
           }
-        : { preselectItems: [{ name: 'Mattress', quantity: 1 }] },
+        : { serviceType: 'Junk Removal' },
     });
+  };
+
+  const goToQuote = () => {
+    navigate('/quote');
   };
 
   return (
     <div className="home-dark">
-      {/* ── Hero (homepage pattern) ── */}
       <section className="relative overflow-hidden bg-[var(--bg)]">
         <div className="absolute inset-0 bg-dark-grid [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,black,transparent)]" aria-hidden />
         <div className="absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-brand/20 blur-[140px] animate-glow-pulse" aria-hidden />
@@ -86,12 +88,12 @@ export const MattressDisposalPage: React.FC = () => {
           <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] items-center gap-8 md:gap-6 lg:gap-10">
             <div className="relative z-10 max-w-xl md:max-w-none">
               <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3 sm:mb-4 animate-fade-in-up">
-                Mattress Pickup &amp; Recycling — All 50 States
+                Nationwide Junk Removal — All 50 States
               </p>
 
               <h1 className="font-sans font-extrabold text-[2.35rem] sm:text-[3.2rem] md:text-[3.5rem] lg:text-[3.85rem] leading-[1.06] tracking-tight text-white mb-4 sm:mb-5 animate-fade-in-up delay-100">
-                Old mattress?
-                <br className="hidden sm:block" /> We&apos;ll haul it today
+                Fast Junk Disposal
+                <br className="hidden sm:block" /> Nationwide
               </h1>
 
               <div className="flex flex-wrap items-center gap-2.5 mb-4 sm:mb-5 animate-fade-in-up delay-150">
@@ -109,7 +111,7 @@ export const MattressDisposalPage: React.FC = () => {
               </div>
 
               <p className="text-[14px] sm:text-base md:text-lg leading-relaxed text-[var(--text-muted)] mb-6 sm:mb-7 max-w-md animate-fade-in-up delay-200">
-                Local providers pick up mattresses, box springs, and frames from any room — same-day windows available in most areas.
+                Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options nationwide.
               </p>
 
               <div className="mb-5 sm:mb-6 animate-fade-in-up delay-250">
@@ -120,7 +122,7 @@ export const MattressDisposalPage: React.FC = () => {
                       Book pickup online in minutes
                     </p>
                     <p className="text-[12px] sm:text-[13px] text-[var(--text-muted)] mt-0.5">
-                      Matched with insured local crews — no curb dragging required.
+                      Matched with insured local crews — you point, they haul.
                     </p>
                   </div>
                 </div>
@@ -160,13 +162,21 @@ export const MattressDisposalPage: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              <button
+                type="button"
+                onClick={goToQuote}
+                className="mt-5 text-[13px] font-semibold text-neutral-400 hover:text-brand transition-colors animate-fade-in-up delay-300"
+              >
+                Prefer a quote first? Get an online estimate →
+              </button>
             </div>
 
             <div className="relative justify-self-center md:justify-self-end w-full max-w-[380px] sm:max-w-[520px] md:max-w-[580px] lg:max-w-[640px] -mx-2 sm:mx-0 animate-fade-in delay-200">
               <div className="absolute left-1/2 top-[55%] -translate-x-1/2 -translate-y-1/2 h-[65%] w-[65%] rounded-full bg-brand/25 blur-[90px] animate-glow-pulse" aria-hidden />
               <img
-                src="/opek-mattress-hero.png?v=1"
-                alt="Provider carrying a queen mattress for disposal"
+                src="/opek-hero-haulers.png?v=3"
+                alt="Junk removal providers lifting a heavy tool chest together"
                 className="relative z-10 w-full h-auto max-h-[360px] sm:max-h-[520px] md:max-h-[min(680px,78vh)] scale-[1.12] sm:scale-[1.18] origin-bottom object-contain object-bottom select-none drop-shadow-[0_28px_56px_rgba(0,0,0,0.55)]"
                 draggable={false}
               />
@@ -198,14 +208,13 @@ export const MattressDisposalPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Hustle + Muscle pattern ── */}
       <section className="relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[480px]">
           <div className="relative lg:col-span-5 flex items-end justify-center px-6 pt-10 sm:pt-12 lg:pt-8 lg:pb-0 overflow-hidden min-h-[300px] sm:min-h-[360px]">
             <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
             <img
-              src="/opek-mattress-crew.png?v=2"
-              alt="Providers carrying a mattress and box spring from the home"
+              src="/opek-hustle-muscle.png?v=2"
+              alt="Opek junk removal pros carrying boxes, furniture, and a rug"
               className="relative z-10 h-full max-h-[340px] sm:max-h-[420px] lg:max-h-[520px] w-auto object-contain object-bottom drop-shadow-[0_28px_48px_rgba(0,0,0,0.55)]"
               loading="lazy"
             />
@@ -219,16 +228,16 @@ export const MattressDisposalPage: React.FC = () => {
             <div className="max-w-xl w-full">
               <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">Hustle + Muscle</p>
               <h2 className="font-sans font-extrabold text-[1.75rem] sm:text-[2.25rem] md:text-[2.5rem] text-[var(--text)] tracking-tight leading-[1.1] mb-4 sm:mb-5">
-                Pros carry it out — from any room
+                Pros lift, load, and leave no junk behind
               </h2>
               <p className="text-[14px] sm:text-base text-[var(--text-muted)] leading-relaxed mb-6">
-                Book fully insured, background-checked local haulers. Your matched crew shows up ready to
-                remove the mattress from bedrooms, basements, or upper floors.
+                Book professional, fully insured and background-checked haulers nationwide.
+                Your matched crew shows up ready to clear every item you point to — from any room or floor.
               </p>
               <blockquote className="border-l-2 border-brand pl-4 sm:pl-5 mb-8">
                 <p className="text-[14px] sm:text-[15px] text-[var(--text)] leading-relaxed">
-                  Other junk companies say, &ldquo;All you have to do is point.&rdquo; With{' '}
-                  <span className="font-bold text-brand">Opek</span>, you won&apos;t lift a finger — even on stairs.
+                  Other junk removal companies say, &ldquo;All you have to do is point.&rdquo; With{' '}
+                  <span className="font-bold text-brand">Opek</span>, you won&apos;t lift a finger.
                 </p>
               </blockquote>
               <button
@@ -259,7 +268,6 @@ export const MattressDisposalPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Opek Approach pattern ── */}
       <section className="relative py-14 sm:py-16 md:py-20 lg:py-24 bg-[var(--bg)] border-t border-[var(--border)] overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-2/3 bg-gradient-to-r from-transparent via-brand/40 to-transparent" aria-hidden />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,7 +293,7 @@ export const MattressDisposalPage: React.FC = () => {
       <LocalServiceAreas />
 
       <ServiceArea
-        titleStart="Clear the bedroom."
+        titleStart="Schedule a pickup."
         titleAccent="Providers handle the rest."
         theme="dark"
       />
@@ -299,12 +307,12 @@ export const MattressDisposalPage: React.FC = () => {
         eyebrow="Instant coverage check"
         title={
           <>
-            Check mattress pickup{' '}
+            Check junk removal{' '}
             <span className="font-serif italic font-normal text-brand">near you</span>
           </>
         }
-        subtitle="Enter your ZIP — we’ll connect you with local providers ready to haul your mattress."
-        buttonLabel="Find Mattress Pickup Near Me"
+        subtitle="Enter your ZIP — we’ll connect you with local providers ready to haul your junk."
+        buttonLabel="Find Junk Haulers Near Me"
         pricingHref={null}
       />
     </div>

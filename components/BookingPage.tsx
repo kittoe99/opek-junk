@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Upload, Loader2, Camera, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, ScanSearch, CalendarCheck, Receipt, PackageCheck, ClipboardList, Truck, X, MapPin, AlertCircle, CheckCircle2, Search, Package, Heart, Trash2, HeartHandshake, Armchair, Container, Clock, Plus, Minus, Warehouse, Home, Boxes, PackagePlus, PackageMinus, ArrowLeftRight, ShieldCheck, Sliders, Sparkles, Users } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { JunkIcon, MovingLaborIcon, DumpsterIcon, LoadingIcon, UnloadingIcon, LoadingUnloadingIcon, StorageUnitIcon, BoxTruckIcon, InsideHomeIcon, OtherMoveIcon, TwoHelpersIcon, PhotoEstimateIcon, InputZipIcon } from './icons/ServiceIcons';
+import { CameraCaptureIcon, UploadPhotoIcon, DumpsterSizeIcon } from './icons/ServiceIcons';
 import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate, MovingLaborOptions } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
@@ -640,8 +640,8 @@ export const BookingPage: React.FC = () => {
                     onClick={() => cameraInputRef.current?.click()}
                     className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white/[0.04] rounded-xl flex items-center justify-center shrink-0">
-                      <Camera size={22} className="text-[var(--text)]" />
+                    <div className="w-12 h-12 bg-white/[0.04] border border-white/10 rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
+                      <CameraCaptureIcon size={22} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Take photo</h3>
@@ -658,8 +658,8 @@ export const BookingPage: React.FC = () => {
                     onClick={() => fileInputRef.current?.click()}
                     className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white/[0.04] rounded-xl flex items-center justify-center shrink-0">
-                      <PhotoEstimateIcon size={24} className="text-[var(--text)]" />
+                    <div className="w-12 h-12 bg-white/[0.04] border border-white/10 rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
+                      <UploadPhotoIcon size={22} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Upload photo</h3>
@@ -844,6 +844,7 @@ export const BookingPage: React.FC = () => {
                         title={size.label}
                         description={size.desc}
                         fromPrice={`${size.price} / 7 days`}
+                        icon={<DumpsterSizeIcon className="w-full h-full" />}
                         selected={dumpsterSize === `${size.label.toLowerCase()}` as any}
                         onClick={() => setDumpsterSize(`${size.label.toLowerCase()}` as any)}
                       />

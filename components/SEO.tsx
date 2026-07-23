@@ -209,6 +209,12 @@ export const seoConfig = {
     description: 'Nationwide residential and commercial junk removal in all 50 states. Furniture, appliances, office cleanouts, and retail clearing. Same-day available, upfront pricing, and vetted providers.',
     keywords: 'junk removal, residential junk removal, commercial junk removal, furniture removal, appliance removal, office cleanout, junk hauling, same-day junk removal',
   },
+  junkRemovalAds: {
+    title: 'Same-Day Junk Removal Pickup | Opek — Nationwide Hauling',
+    description: 'Local providers haul furniture, appliances, and clutter from any room. Same-day windows available. Schedule junk removal online nationwide.',
+    keywords: 'junk removal, residential junk removal, furniture removal, appliance removal, same-day junk removal, junk hauling near me',
+    noindex: true,
+  },
   dumpsterRental: {
     title: 'Dumpster Rental Services | Opek — Nationwide Roll-Off Containers',
     description: 'Roll-off dumpster rentals in all 50 states. Multiple sizes (10, 15, 20, 30 yards) available with flat-rate pricing, protective placement, and flexible rentals.',
@@ -235,8 +241,8 @@ export const seoConfig = {
     keywords: 'terms of service, user agreement, opek terms, legal agreement, hauling disclaimer',
   },
   mattressDisposal: {
-    title: 'Same-Day Mattress Disposal & Recycling | Opek — Upfront Pricing',
-    description: 'Upfront flat-rate pricing for mattress disposal and recycling. Vetted local providers pick up from any room. Same-day service available nationwide.',
-    keywords: 'mattress disposal, mattress recycling, remove old mattress, mattress pickup, get rid of mattress near me, box spring removal',
+    title: 'Same-Day Mattress Disposal & Recycling Pickup | Opek',
+    description: 'Local providers pick up old mattresses, box springs, and frames from any room. Same-day windows available. Check your ZIP to schedule responsible recycling or disposal.',
+    keywords: 'mattress disposal, mattress recycling, remove old mattress, mattress pickup, get rid of mattress near me, box spring removal, same day mattress removal',
   },
 };

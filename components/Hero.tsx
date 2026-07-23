@@ -40,7 +40,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
 
             <h1 className="font-sans font-extrabold text-[2.35rem] sm:text-[3.2rem] md:text-[3.5rem] lg:text-[3.85rem] leading-[1.06] tracking-tight text-white mb-4 sm:mb-5 animate-fade-in-up delay-100">
               Fast Junk Disposal
-              <br className="hidden sm:block" /> Across America
+              <br className="hidden sm:block" /> Nationwide
             </h1>
 
             <div className="flex flex-wrap items-center gap-2.5 mb-4 sm:mb-5 animate-fade-in-up delay-150">
@@ -133,12 +133,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               className="relative z-10 w-full h-auto max-h-[360px] sm:max-h-[520px] md:max-h-[min(680px,78vh)] scale-[1.12] sm:scale-[1.18] origin-bottom object-contain object-bottom select-none drop-shadow-[0_28px_56px_rgba(0,0,0,0.55)]"
               draggable={false}
             />
-
-            <div className="absolute right-0 sm:right-2 top-8 sm:top-12 z-20 animate-float">
-              <div className="rounded-lg border border-white/10 bg-[#121218]/95 backdrop-blur px-3 py-1.5 shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
-                <p className="text-[11px] sm:text-xs font-bold text-white leading-tight">Heavy Lifting</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

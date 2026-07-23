@@ -12,7 +12,7 @@ const allRelatedServices = [
   {
     title: 'Mattress Disposal',
     path: '/services/mattress-disposal',
-    image: '/opek-related-mattress.png?v=1',
+    image: '/opek-mattress-hero.png?v=1',
     alt: 'Provider carrying a mattress for disposal',
   },
   {

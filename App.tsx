@@ -18,6 +18,7 @@ import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage
 import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
+import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SEO, seoConfig } from './components/SEO';
@@ -56,6 +57,10 @@ function GlobalQuickActionBar() {
   const onBookOnline = () => {
     if (pathname === '/services/mattress-disposal') {
       navigate('/booking/mattress');
+      return;
+    }
+    if (pathname === '/lp/junk-removal') {
+      navigate('/booking', { state: { serviceType: 'Junk Removal' } });
       return;
     }
     navigate('/booking');
@@ -155,6 +160,15 @@ function JunkRemovalPageWithSEO() {
     <>
       <SEO {...seoConfig.junkRemoval} />
       <JunkRemovalPage />
+    </>
+  );
+}
+
+function JunkRemovalAdsLandingPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.junkRemovalAds} />
+      <JunkRemovalAdsLandingPage />
     </>
   );
 }
@@ -278,6 +292,7 @@ function App() {
             <Route path="/contact" element={<ContactPageWithSEO />} />
             <Route path="/booking" element={<BookingPageWithSEO />} />
             <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
+            <Route path="/lp/junk-removal" element={<JunkRemovalAdsLandingPageWithSEO />} />
             <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
             <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
