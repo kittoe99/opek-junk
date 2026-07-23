@@ -181,7 +181,7 @@ export const Navbar: React.FC = () => {
       type="button"
       onClick={fetchUserLocation}
       disabled={isDetectingLocation}
-      className={`inline-flex items-center gap-1.5 text-xs font-medium text-secondary-600 hover:text-brand transition-colors disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors disabled:opacity-50 ${className}`}
     >
       <MapPin size={14} className="text-brand shrink-0" strokeWidth={2.25} />
       <span className="truncate max-w-[8.5rem] sm:max-w-[10rem] md:max-w-none">{locationLabel}</span>
@@ -189,19 +189,19 @@ export const Navbar: React.FC = () => {
   );
 
   const mobileAccordionBtn =
-    'w-full flex items-center justify-between px-5 py-4 bg-secondary-600 hover:bg-secondary-500 text-white font-bold text-[15px] transition-colors';
+    'w-full flex items-center justify-between px-5 py-4 bg-white/[0.04] hover:bg-white/[0.07] text-white font-bold text-[15px] transition-colors';
 
   const mobileSubLink =
-    'w-full flex items-center gap-3 px-5 py-3.5 text-left text-sm font-medium text-white/90 hover:bg-white/5 transition-colors border-t border-white/10';
+    'w-full flex items-center gap-3 px-5 py-3.5 text-left text-sm font-medium text-neutral-300 hover:bg-white/5 hover:text-white transition-colors border-t border-white/[0.06]';
 
   return (
     <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md border-b border-secondary-100/80"
+        className="fixed top-0 left-0 right-0 z-[60] bg-[#08080b]/85 backdrop-blur-xl border-b border-white/[0.07]"
       >
         {!isAdsLandingPage && (
-          <div className="hidden md:block border-b border-secondary-100/60 bg-secondary-50/40">
+          <div className="hidden md:block border-b border-white/[0.05] bg-white/[0.015]">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center">
               <LocationButton />
             </div>
@@ -210,7 +210,11 @@ export const Navbar: React.FC = () => {
 
         <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-3.5 flex items-center justify-between gap-4">
           <button type="button" onClick={() => handleLinkClick('/')} className="shrink-0 z-[70]">
-            <img src="/logo1.png" alt="Opek Junk Removal" className="h-9 md:h-10 w-auto object-contain" />
+            <img
+              src="/opek-logo-white.png"
+              alt="Opek Junk Removal"
+              className="h-7 md:h-8 w-auto object-contain"
+            />
           </button>
 
           {isAdsLandingPage ? (
@@ -220,7 +224,7 @@ export const Navbar: React.FC = () => {
               </div>
               <a
                 href="tel:8313187139"
-                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_20px_-4px_rgba(255,0,110,0.55)]"
               >
                 <Phone size={15} />
                 (831) 318-7139
@@ -252,7 +256,7 @@ export const Navbar: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleLinkClick(link.path)}
-                          className="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-secondary hover:text-brand rounded-lg transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-neutral-300 hover:text-white rounded-lg transition-colors"
                         >
                           {link.name}
                           <ChevronDown
@@ -268,8 +272,8 @@ export const Navbar: React.FC = () => {
                               : 'opacity-0 invisible -translate-y-2 pointer-events-none'
                           }`}
                         >
-                          <div className="bg-white shadow-[0_8px_40px_rgba(53,80,112,0.12)] border border-secondary-100/80 rounded-2xl overflow-hidden p-2">
-                            <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-secondary-400">
+                          <div className="bg-[#101014] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)] border border-white/10 rounded-2xl overflow-hidden p-2">
+                            <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
                               Our services
                             </p>
                             {serviceItems.map((item) => {
@@ -282,16 +286,16 @@ export const Navbar: React.FC = () => {
                                     setShowServicesMega(false);
                                     handleLinkClick(item.path);
                                   }}
-                                  className="w-full text-left px-3 py-3 rounded-xl hover:bg-secondary-50 transition-colors group flex items-center gap-3"
+                                  className="w-full text-left px-3 py-3 rounded-xl hover:bg-white/5 transition-colors group flex items-center gap-3"
                                 >
-                                  <div className="w-10 h-10 rounded-xl bg-secondary-50 group-hover:bg-brand/10 flex items-center justify-center shrink-0 transition-colors">
-                                    <Icon className="w-5 h-5 text-secondary group-hover:text-brand transition-colors" />
+                                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/[0.06] group-hover:bg-brand/15 group-hover:border-brand/30 flex items-center justify-center shrink-0 transition-colors">
+                                    <Icon className="w-5 h-5 text-neutral-300 group-hover:text-brand transition-colors" />
                                   </div>
                                   <div>
-                                    <div className="font-semibold text-sm text-secondary group-hover:text-brand transition-colors">
+                                    <div className="font-semibold text-sm text-neutral-100 group-hover:text-brand transition-colors">
                                       {item.name}
                                     </div>
-                                    <div className="text-xs text-secondary-400">{item.desc}</div>
+                                    <div className="text-xs text-neutral-500">{item.desc}</div>
                                   </div>
                                 </button>
                               );
@@ -303,7 +307,7 @@ export const Navbar: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleLinkClick(link.path)}
-                        className="px-3 py-2 text-sm font-medium text-secondary hover:text-brand rounded-lg transition-colors"
+                        className="px-3 py-2 text-sm font-medium text-neutral-300 hover:text-white rounded-lg transition-colors"
                       >
                         {link.name}
                       </button>
@@ -314,7 +318,7 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/quote')}
-                  className="ml-2 px-5 py-2.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors inline-flex items-center gap-1.5"
+                  className="ml-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors inline-flex items-center gap-1.5 shadow-[0_0_22px_-6px_rgba(255,0,110,0.65)] hover:shadow-[0_0_28px_-4px_rgba(255,0,110,0.8)]"
                 >
                   Get a quote
                   <ArrowRight size={14} />
@@ -325,8 +329,8 @@ export const Navbar: React.FC = () => {
                 type="button"
                 className={`md:hidden relative z-[70] w-10 h-10 flex items-center justify-center rounded-full border transition-colors ${
                   isMenuOpen
-                    ? 'bg-secondary border-secondary text-white'
-                    : 'border-secondary-100 text-secondary hover:border-secondary-300 hover:bg-secondary-50'
+                    ? 'bg-brand border-brand text-white'
+                    : 'border-white/10 text-neutral-200 hover:border-white/25 hover:bg-white/5'
                 }`}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -339,16 +343,16 @@ export const Navbar: React.FC = () => {
         </nav>
 
         {!isAdsLandingPage && (
-          <div className="border-t border-secondary-100/60 bg-[#f3f3f3]">
+          <div className="border-t border-white/[0.05] bg-gradient-to-r from-brand/[0.14] via-brand/[0.05] to-transparent">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center gap-3 text-center">
-              <span className="text-secondary text-xs md:text-sm font-medium">
+              <span className="text-neutral-300 text-xs md:text-sm font-medium">
                 <span className="hidden sm:inline">Free in-home estimates — providers visit your property</span>
                 <span className="sm:hidden">Free in-home estimates</span>
               </span>
               <button
                 type="button"
                 onClick={() => navigate('/in-home-estimate')}
-                className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors"
+                className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
               >
                 Schedule
                 <ArrowRight size={12} />
@@ -359,7 +363,7 @@ export const Navbar: React.FC = () => {
       </header>
 
       <div
-        className={`fixed inset-0 z-[65] md:hidden flex flex-col bg-secondary-700 transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[65] md:hidden flex flex-col bg-[#0a0a0e] transition-opacity duration-300 ${
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         role="dialog"
@@ -370,9 +374,13 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => handleLinkClick('/')}
-            className="shrink-0 rounded-lg bg-white px-2.5 py-1.5 hover:bg-white/90 transition-colors"
+            className="shrink-0 rounded-lg px-2 py-1.5 hover:bg-white/5 transition-colors"
           >
-            <img src="/logo1.png" alt="Opek Junk Removal" className="h-7 w-auto object-contain" />
+            <img
+              src="/opek-logo-white.png"
+              alt="Opek Junk Removal"
+              className="h-6 w-auto object-contain"
+            />
           </button>
 
           <div className="flex items-center gap-2">
@@ -395,7 +403,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5">
-          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+          <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
             <button
               type="button"
               onClick={() => toggleMobileAccordion('services')}
@@ -409,7 +417,7 @@ export const Navbar: React.FC = () => {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+              className={`overflow-hidden transition-all duration-300 bg-black/30 ${
                 mobileAccordion === 'services' ? 'max-h-[24rem]' : 'max-h-0'
               }`}
             >
@@ -422,8 +430,8 @@ export const Navbar: React.FC = () => {
                     onClick={() => handleLinkClick(item.path)}
                     className={mobileSubLink}
                   >
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                      <Icon className="w-4 h-4 text-white" />
+                    <div className="w-8 h-8 rounded-lg bg-brand/15 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-brand" />
                     </div>
                     <span>{item.name}</span>
                   </button>
@@ -432,7 +440,7 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+          <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
             <button
               type="button"
               onClick={() => toggleMobileAccordion('booking')}
@@ -446,7 +454,7 @@ export const Navbar: React.FC = () => {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+              className={`overflow-hidden transition-all duration-300 bg-black/30 ${
                 mobileAccordion === 'booking' ? 'max-h-48' : 'max-h-0'
               }`}
             >
@@ -462,7 +470,7 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+          <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
             <button
               type="button"
               onClick={() => toggleMobileAccordion('support')}
@@ -476,7 +484,7 @@ export const Navbar: React.FC = () => {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+              className={`overflow-hidden transition-all duration-300 bg-black/30 ${
                 mobileAccordion === 'support' ? 'max-h-40' : 'max-h-0'
               }`}
             >
@@ -489,7 +497,7 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden bg-secondary-600/80">
+          <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
             <button
               type="button"
               onClick={() => toggleMobileAccordion('providers')}
@@ -503,7 +511,7 @@ export const Navbar: React.FC = () => {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 bg-secondary-700/60 ${
+              className={`overflow-hidden transition-all duration-300 bg-black/30 ${
                 mobileAccordion === 'providers' ? 'max-h-24' : 'max-h-0'
               }`}
             >
@@ -514,7 +522,7 @@ export const Navbar: React.FC = () => {
           </div>
         </nav>
 
-        <div className="shrink-0 grid grid-cols-2 border-t border-white/10 bg-secondary-800/50">
+        <div className="shrink-0 grid grid-cols-2 border-t border-white/10 bg-white/[0.02]">
           <a
             href="tel:8313187139"
             className="flex items-center justify-center gap-2 px-3 py-4 text-sm font-semibold text-white hover:bg-white/5 transition-colors border-r border-white/10"

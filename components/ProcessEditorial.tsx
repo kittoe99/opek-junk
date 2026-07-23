@@ -24,6 +24,7 @@ interface ProcessEditorialProps {
   subtitle?: string;
   steps?: EditorialStep[] | NumberedStep[];
   cta?: { label: string; onClick: () => void };
+  theme?: 'light' | 'dark';
 }
 
 const defaultEditorialSteps: EditorialStep[] = [
@@ -90,7 +91,9 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
   subtitle = 'No quote forms. No phone tag. Just photos, a fixed price, and a matched provider.',
   steps,
   cta,
+  theme = 'light',
 }) => {
+  const isDark = theme === 'dark';
   const resolvedVariant =
     variant ?? (steps?.length && isEditorialStep(steps[0]) ? 'editorial' : steps ? 'numbered' : 'editorial');
 
@@ -98,9 +101,20 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
     const numberedSteps = (steps as NumberedStep[] | undefined) ?? defaultNumberedSteps;
 
     return (
-      <section id="process" className="py-16 md:py-24 lg:py-28 bg-white overflow-hidden border-b border-secondary-100/60">
+      <section
+        id="process"
+        className={`py-16 md:py-24 lg:py-28 overflow-hidden border-b ${
+          isDark
+            ? 'bg-[var(--bg)] border-[var(--border)]'
+            : 'bg-white border-secondary-100/60'
+        }`}
+      >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold text-secondary text-center tracking-tight mb-14 md:mb-16">
+          <h2
+            className={`font-serif text-4xl md:text-5xl font-semibold text-center tracking-tight mb-14 md:mb-16 ${
+              isDark ? 'text-[var(--text)]' : 'text-secondary'
+            }`}
+          >
             {title ?? 'How it works'}
           </h2>
 
@@ -108,11 +122,16 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
             {numberedSteps.map((step) => (
               <div key={step.number} className="flex flex-col max-w-sm mx-auto md:max-w-none md:mx-0">
                 <div
-                  className="relative w-36 h-36 md:w-40 md:h-40 mx-auto mb-6 rounded-full border-2 border-secondary/90 flex items-center justify-center overflow-hidden"
+                  className={`relative w-36 h-36 md:w-40 md:h-40 mx-auto mb-6 rounded-full flex items-center justify-center overflow-hidden ${
+                    isDark ? 'border-2 border-[var(--border)]' : 'border-2 border-secondary/90'
+                  }`}
                   style={{
-                    background:
-                      'radial-gradient(circle at 35% 30%, #ffffff 0%, #f0f4f2 45%, #e8eeeb 100%)',
-                    boxShadow: 'inset 0 0 24px rgba(53, 80, 112, 0.06)',
+                    background: isDark
+                      ? 'radial-gradient(circle at 35% 30%, #2a2a2a 0%, #1c1c1c 45%, #161616 100%)'
+                      : 'radial-gradient(circle at 35% 30%, #ffffff 0%, #f0f4f2 45%, #e8eeeb 100%)',
+                    boxShadow: isDark
+                      ? 'inset 0 0 24px rgba(0, 0, 0, 0.35)'
+                      : 'inset 0 0 24px rgba(53, 80, 112, 0.06)',
                   }}
                 >
                   <img
@@ -122,10 +141,18 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
                     loading="lazy"
                   />
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-secondary mb-3 text-left">
+                <h3
+                  className={`text-base md:text-lg font-bold mb-3 text-left ${
+                    isDark ? 'text-[var(--text)]' : 'text-secondary'
+                  }`}
+                >
                   {step.number}. {step.title}
                 </h3>
-                <p className="text-secondary-500 text-sm leading-relaxed text-left">
+                <p
+                  className={`text-sm leading-relaxed text-left ${
+                    isDark ? 'text-[var(--text-muted)]' : 'text-secondary-500'
+                  }`}
+                >
                   {step.description}
                 </p>
               </div>
@@ -150,7 +177,14 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
   const editorialSteps = (steps as EditorialStep[] | undefined) ?? defaultEditorialSteps;
 
   return (
-    <section id="process" className="py-16 md:py-24 lg:py-32 bg-white overflow-hidden border-b border-secondary-100/60">
+    <section
+      id="process"
+      className={`py-16 md:py-24 lg:py-32 overflow-hidden border-b ${
+        isDark
+          ? 'bg-[var(--bg)] border-[var(--border)]'
+          : 'bg-white border-secondary-100/60'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 md:mb-20">
           <div>
@@ -158,11 +192,19 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
               <span className="block w-8 h-px bg-brand" />
               <span className="text-[11px] font-black text-brand uppercase tracking-[0.25em]">{eyebrow}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary leading-[1.05] tracking-tight">
+            <h2
+              className={`text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight ${
+                isDark ? 'text-[var(--text)]' : 'text-secondary'
+              }`}
+            >
               {title}
             </h2>
           </div>
-          <p className="text-secondary-500 text-sm md:text-base max-w-xs leading-relaxed md:text-right font-medium">
+          <p
+            className={`text-sm md:text-base max-w-xs leading-relaxed md:text-right font-medium ${
+              isDark ? 'text-[var(--text-muted)]' : 'text-secondary-500'
+            }`}
+          >
             {subtitle}
           </p>
         </div>
@@ -171,7 +213,11 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
           {editorialSteps.map((step, index) => (
             <div
               key={step.titleStart}
-              className={`group relative flex items-center md:block gap-4 md:gap-0 bg-secondary-50/50 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-2xl ${
+              className={`group relative flex items-center md:block gap-4 md:gap-0 p-4 md:p-0 rounded-2xl md:rounded-2xl ${
+                isDark
+                  ? 'bg-[var(--surface)] md:bg-transparent'
+                  : 'bg-secondary-50/50 md:bg-transparent'
+              } ${
                 index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
               }`}
             >
@@ -184,10 +230,18 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
                 />
               </div>
               <div>
-                <h3 className="text-[17px] md:text-3xl font-black text-secondary leading-[1.1] tracking-tight mb-1 md:mb-3">
+                <h3
+                  className={`text-[17px] md:text-3xl font-black leading-[1.1] tracking-tight mb-1 md:mb-3 ${
+                    isDark ? 'text-[var(--text)]' : 'text-secondary'
+                  }`}
+                >
                   {step.titleStart} <span className="text-brand">{step.titleAccent}</span>
                 </h3>
-                <p className="text-secondary-500 text-xs md:text-[15px] leading-relaxed max-w-sm">
+                <p
+                  className={`text-xs md:text-[15px] leading-relaxed max-w-sm ${
+                    isDark ? 'text-[var(--text-muted)]' : 'text-secondary-500'
+                  }`}
+                >
                   {step.desc}
                 </p>
               </div>

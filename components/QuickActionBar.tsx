@@ -44,23 +44,23 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline }) 
           : 'opacity-0 translate-y-10 pointer-events-none'
       }`}
     >
-      <div className="max-w-md md:max-w-lg mx-auto bg-white/95 backdrop-blur-xl border border-secondary-100/80 rounded-full shadow-[0_8px_32px_rgba(53,80,112,0.14)] px-2 py-2 flex items-center gap-1">
+      <div className="max-w-md md:max-w-lg mx-auto bg-[#101014]/90 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_12px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,0,110,0.08),0_0_32px_-8px_rgba(255,0,110,0.35)] px-2 py-2 flex items-center gap-1">
         <a
           href="tel:8313187139"
-          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-3 py-2.5 md:px-4 text-secondary hover:text-brand rounded-full hover:bg-secondary-50 transition-colors"
+          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-3 py-2.5 md:px-4 text-neutral-300 hover:text-white rounded-full hover:bg-white/5 transition-colors"
         >
-          <span className="w-8 h-8 rounded-full bg-secondary-50 flex items-center justify-center shrink-0">
-            <Phone size={15} className="text-secondary" />
+          <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+            <Phone size={15} className="text-brand" />
           </span>
           <span className="font-semibold text-xs md:text-sm whitespace-nowrap">(831) 318-7139</span>
         </a>
 
-        <div className="w-px h-7 bg-secondary-100 shrink-0" />
+        <div className="w-px h-7 bg-white/10 shrink-0" />
 
         <button
           type="button"
           onClick={onBookOnline}
-          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-4 py-2.5 md:px-5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors"
+          className="flex items-center justify-center gap-2 flex-1 md:flex-initial px-4 py-2.5 md:px-5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_20px_-4px_rgba(255,0,110,0.6)]"
         >
           <Calendar size={15} className="shrink-0" />
           <span className="whitespace-nowrap text-xs md:text-sm">Book Online</span>

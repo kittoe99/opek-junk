@@ -224,7 +224,7 @@ function formatMovingOptionsField(details: Record<string, any>): string {
   }
   if (opts.needs_packing_help) parts.push('Packing help');
   if (opts.needs_disassembly) parts.push('Disassembly');
-  return parts.filter(Boolean).join(' \u00b7 ');
+  return parts.filter(Boolean).join(' · ');
 }
 
 function formatLocationBlock(location: Record<string, any>): string {

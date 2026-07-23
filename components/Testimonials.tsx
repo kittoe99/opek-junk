@@ -28,15 +28,36 @@ const testimonials = [
   },
 ];
 
-export const Testimonials: React.FC = () => {
+interface TestimonialsProps {
+  theme?: 'light' | 'dark';
+}
+
+export const Testimonials: React.FC<TestimonialsProps> = ({ theme = 'light' }) => {
+  const isDark = theme === 'dark';
+
   return (
-    <section className="py-16 md:py-24 bg-secondary-50/40 border-b border-secondary-100/60 overflow-hidden">
+    <section
+      id="testimonials"
+      className={`py-16 md:py-24 overflow-hidden border-b ${
+        isDark
+          ? 'bg-[var(--bg-alt)] border-[var(--border)]'
+          : 'bg-white border-secondary-100/40'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 md:mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-secondary tracking-tight mb-3">
+          <h2
+            className={`font-serif text-3xl md:text-4xl font-semibold tracking-tight mb-3 ${
+              isDark ? 'text-[var(--text)]' : 'text-secondary'
+            }`}
+          >
             Join thousands of happy customers
           </h2>
-          <p className="text-secondary-400 text-sm md:text-base max-w-lg mx-auto">
+          <p
+            className={`text-sm md:text-base max-w-lg mx-auto ${
+              isDark ? 'text-[var(--text-muted)]' : 'text-secondary-400'
+            }`}
+          >
             Real reviews from homeowners and businesses who trusted us with the heavy lifting.
           </p>
         </div>
@@ -45,17 +66,29 @@ export const Testimonials: React.FC = () => {
           {testimonials.map((item) => (
             <figure
               key={item.author}
-              className="snap-center shrink-0 w-[85%] sm:w-auto bg-white rounded-2xl border border-secondary-100/80 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+              className={`snap-center shrink-0 w-[85%] sm:w-auto rounded-2xl p-6 transition-shadow duration-300 ${
+                isDark
+                  ? 'bg-[var(--surface)] border border-[var(--border)] shadow-[0_10px_40px_rgba(0,0,0,0.28)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.4)]'
+                  : 'bg-white border border-secondary-100/80 shadow-sm hover:shadow-md'
+              }`}
             >
               <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={14} className="text-brand fill-brand" />
                 ))}
               </div>
-              <blockquote className="text-secondary text-sm leading-relaxed mb-4">
+              <blockquote
+                className={`text-sm leading-relaxed mb-4 ${
+                  isDark ? 'text-[var(--text)]' : 'text-secondary'
+                }`}
+              >
                 &ldquo;{item.quote}&rdquo;
               </blockquote>
-              <figcaption className="text-secondary-400 text-xs font-semibold">
+              <figcaption
+                className={`text-xs font-semibold ${
+                  isDark ? 'text-[var(--text-muted)]' : 'text-secondary-400'
+                }`}
+              >
                 — {item.author}
               </figcaption>
             </figure>

@@ -524,7 +524,7 @@ export const BookingPage: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-start justify-center px-4 py-16 md:py-24">
+      <div className="min-h-screen bg-white flex items-start justify-center px-4 py-16 md:py-24">
         <BookingSuccessView
           orderNumber={orderNumber}
           serviceType={formData.serviceType}

@@ -851,7 +851,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
 
               {isMovingLabor && addressValidated && (
-                <div className="mt-3 mb-4 rounded-xl border border-secondary-100 bg-white p-4">
+                <div className="mt-3 mb-4 rounded-xl border border-secondary-100 bg-white p-4 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
                   <p className="text-xs font-semibold text-secondary-500 mb-2">
                     {unloadingUsesPrimaryAddress ? 'Access at unload' : 'Access at this location'}
                   </p>
@@ -1133,7 +1133,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {/* Review Section */}
-          <div className="bg-white rounded-xl border border-secondary-100 p-4 space-y-3">
+          <div className="bg-white rounded-xl border border-secondary-100 p-4 space-y-3 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
             <div className="flex items-center justify-between border-b border-secondary-100 pb-3">
               <p className="text-xs font-semibold text-secondary-500">Summary</p>
               {estimate && <p className="text-lg font-bold text-secondary">${estimate.price}</p>}

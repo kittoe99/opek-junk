@@ -2,13 +2,16 @@ import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { Services } from './components/Services';
-import { Testimonials } from './components/Testimonials';
+import { JunkHaulAway } from './components/JunkHaulAway';
+import { RelatedServices } from './components/RelatedServices';
+import { HustleMuscle } from './components/HustleMuscle';
+import { OpekApproach } from './components/OpekApproach';
+import { LocalServiceAreas } from './components/LocalServiceAreas';
 import { ServiceArea } from './components/ServiceArea';
+import { Testimonials } from './components/Testimonials';
+import { ZipFinder } from './components/ZipFinder';
 import { Footer } from './components/Footer';
 import { QuickActionBar } from './components/QuickActionBar';
-import { CharityBanner } from './components/CharityBanner';
-import { ProcessEditorial } from './components/ProcessEditorial';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
@@ -98,22 +101,25 @@ function HomePage() {
   }, [location]);
 
   return (
-    <>
+    <div className="home-dark">
       <SEO {...seoConfig.home} />
-      <Hero 
-        onGetQuote={() => navigate('/quote')} 
+      <Hero
+        onGetQuote={() => navigate('/quote')}
         onBookOnline={() => navigate('/booking')}
       />
-      <Services />
-      <ProcessEditorial
-        variant="numbered"
-        title="How it works"
-        cta={{ label: 'Book now', onClick: () => navigate('/booking') }}
+      <JunkHaulAway />
+      <RelatedServices />
+      <HustleMuscle />
+      <OpekApproach />
+      <LocalServiceAreas />
+      <ServiceArea
+        titleStart="Schedule a pickup."
+        titleAccent="Providers handle the rest."
+        theme="dark"
       />
-      <Testimonials />
-      <CharityBanner />
-      <ServiceArea onGetQuote={() => navigate('/quote')} />
-    </>
+      <Testimonials theme="dark" />
+      <ZipFinder />
+    </div>
   );
 }
 
@@ -259,7 +265,7 @@ function CityPageRouteWrapper() {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-white text-gray-900 selection:bg-black selection:text-white">
+      <div className="min-h-screen bg-[#070709] text-neutral-100 selection:bg-brand selection:text-white">
         <PageLoader />
         <ScrollToTop />
         <Navbar />

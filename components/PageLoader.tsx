@@ -34,7 +34,7 @@ export const PageLoader: React.FC = () => {
   return (
     <div
       aria-hidden="true"
-      className={`fixed inset-0 z-[200] flex items-center justify-center pointer-events-none transition-opacity duration-300 ease-out bg-white/15 ${
+        className={`fixed inset-0 z-[200] flex items-center justify-center pointer-events-none transition-opacity duration-300 ease-out bg-black/40 ${
         active ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -47,7 +47,7 @@ export const PageLoader: React.FC = () => {
         .pl-bar {
           width: 1.5rem;
           height: 3.5rem;
-          background: #355070;
+          background: #ff006e;
           border-radius: 2px;
           transform: skewX(-18deg) scaleY(0);
           transform-origin: bottom;

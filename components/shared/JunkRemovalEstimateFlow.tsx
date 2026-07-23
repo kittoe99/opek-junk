@@ -326,7 +326,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-xl border border-secondary-100 p-4">
+        <div className="bg-white rounded-xl border border-secondary-100 p-4 shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
           <div className="flex items-center justify-between mb-3 pb-3 border-b border-secondary-100">
             <div>
               <div className="flex items-center gap-2 mb-1">

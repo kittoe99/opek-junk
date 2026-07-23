@@ -14,6 +14,7 @@ interface UsCoverageMapProps {
   hoveredCitySlug?: string | null;
   onCityHover?: (city: CoverageCity | null) => void;
   onCitySelect?: (city: CoverageCity) => void;
+  theme?: 'light' | 'dark';
 }
 
 let cachedStatePaths: StatePath[] | null = null;
@@ -50,11 +51,17 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
   hoveredCitySlug,
   onCityHover,
   onCitySelect,
+  theme = 'light',
 }) => {
   const tooltipId = useId();
   const [statePaths, setStatePaths] = useState<StatePath[]>([]);
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
   const [focusedCitySlug, setFocusedCitySlug] = useState<string | null>(null);
+  const isDark = theme === 'dark';
+  const mutedText = isDark ? 'text-[var(--text-muted)]' : 'text-secondary-400';
+  const labelText = isDark ? 'text-[var(--text-muted)]' : 'text-secondary-500';
+  const pinIdle = isDark ? 'text-[#d4d4d8]' : 'text-secondary';
+  const stateStroke = isDark ? '#0b0b0f' : '#ffffff';
 
   useEffect(() => {
     let cancelled = false;
@@ -73,6 +80,13 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
   );
 
   const getStateFill = (stateId: string) => {
+    if (isDark) {
+      if (hoveredStateId === stateId) return '#2b2b36';
+      if (activeCity && stateId.toLowerCase() === activeCity.state.toLowerCase()) {
+        return 'rgba(255, 0, 110, 0.45)';
+      }
+      return '#1c1c24';
+    }
     if (hoveredStateId === stateId) return '#7a9b6d';
     if (activeCity && stateId.toLowerCase() === activeCity.state.toLowerCase()) {
       return '#8baa7e';
@@ -86,7 +100,7 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
         <svg viewBox="0 0 24 24" width={12} height={12} aria-hidden="true" className="text-brand shrink-0">
           <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
         </svg>
-        <span className="text-[10px] font-medium text-secondary-500 tracking-wide">Popular cities</span>
+        <span className={`text-[10px] font-medium tracking-wide ${labelText}`}>Popular cities</span>
       </div>
       <svg
         viewBox={MAP_VIEWBOX}
@@ -101,7 +115,7 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
             key={state.id}
             d={state.d}
             fill={getStateFill(state.id)}
-            stroke="#ffffff"
+            stroke={stateStroke}
             strokeWidth={1}
             className="transition-colors duration-200 cursor-default"
             onMouseEnter={() => setHoveredStateId(state.id)}
@@ -142,7 +156,7 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
               )}
               <g
                 className={`transition-transform duration-200 ${
-                  isActive ? 'text-brand scale-110' : 'text-secondary'
+                  isActive ? 'text-brand scale-110' : pinIdle
                 }`}
                 style={{ transformOrigin: '12px 12px' }}
               >
@@ -161,7 +175,9 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
       {activeCity && (
         <div
           id={tooltipId}
-          className="pointer-events-none absolute z-10 px-3 py-2 rounded-xl bg-secondary text-white text-xs font-semibold shadow-lg"
+          className={`pointer-events-none absolute z-10 px-3 py-2 rounded-xl text-white text-xs font-semibold shadow-lg ${
+            isDark ? 'bg-brand shadow-[0_0_20px_-4px_rgba(255,0,110,0.6)]' : 'bg-secondary'
+          }`}
           style={{
             left: `${(activeCity.x / 959) * 100}%`,
             top: `${(activeCity.y / 593) * 100}%`,
@@ -172,10 +188,10 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
         </div>
       )}
 
-      <p className="mt-3 text-center text-xs text-secondary-400 md:hidden">
+      <p className={`mt-3 text-center text-xs md:hidden ${mutedText}`}>
         Tap a pin to explore a popular city
       </p>
-      <p className="mt-3 text-center text-xs text-secondary-400 hidden md:block">
+      <p className={`mt-3 text-center text-xs hidden md:block ${mutedText}`}>
         Hover or click a pin to explore popular cities
       </p>
     </div>

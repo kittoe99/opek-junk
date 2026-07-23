@@ -107,5 +107,5 @@ export function calculatePriceLocally(body: Record<string, unknown>): PriceEstim
     );
   }
 
-  throw new Error(`Unknown calculation type: ${type}`);
+  throw new Error('Invalid calculation type');
 }

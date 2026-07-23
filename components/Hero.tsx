@@ -1,162 +1,169 @@
 import React from 'react';
-import { CalendarClock, PiggyBank, ShieldCheck, Star } from 'lucide-react';
-import { HERO_PRIMARY_CTA } from '../lib/flowPageLayout';
+import { ArrowRight, MapPin, MessageSquare, Phone, Star } from 'lucide-react';
 
 interface HeroProps {
   onGetQuote: () => void;
   onBookOnline?: () => void;
 }
 
-const HERO_FEATURES = [
-  {
-    icon: CalendarClock,
-    iconColor: 'text-brand',
-    title: 'Easy',
-    description: 'You set the time, and your provider will be there.',
-  },
-  {
-    icon: PiggyBank,
-    iconColor: 'text-brand',
-    title: 'Affordable',
-    description: 'Get a guaranteed, up-front price before you book.',
-  },
-  {
-    icon: ShieldCheck,
-    iconColor: 'text-brand',
-    title: 'Safe',
-    description: 'Rest easy with vetted providers & free damage protection.',
-  },
-] as const;
+const SITE_PHONE = '8313187139';
+const SITE_PHONE_DISPLAY = '(831) 318-7139';
 
-function RatingBadge({ centered }: { centered?: boolean }) {
-  return (
-    <p className={`text-sm font-medium text-secondary-500 mb-4 ${centered ? 'text-center' : ''}`}>
-      4.8{' '}
-      <Star size={14} className="inline -mt-0.5 text-brand fill-brand" strokeWidth={0} />{' '}
-      average rating
-    </p>
-  );
-}
-
-function FeatureList({ layout }: { layout: 'mobile' | 'desktop' }) {
-  if (layout === 'mobile') {
-    return (
-      <div className="border-t border-secondary-100/80 pt-8 mt-2 space-y-8">
-        {HERO_FEATURES.map((feature) => {
-          const Icon = feature.icon;
-          return (
-            <div key={feature.title} className="text-center px-2">
-              <Icon size={36} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-              <h3 className="text-base font-bold text-secondary mb-1.5">{feature.title}</h3>
-              <p className="text-sm text-secondary-500 leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-secondary-100/80 pb-10 xl:pb-12">
-      {HERO_FEATURES.map((feature) => {
-        const Icon = feature.icon;
-        return (
-          <div key={feature.title} className="text-center">
-            <Icon size={32} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-            <h3 className="text-[15px] font-bold text-secondary mb-1">{feature.title}</h3>
-            <p className="text-sm text-secondary-500 leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+const tickerItems = [
+  'Furniture Removal',
+  'Appliance Hauling',
+  'Mattress Pickup',
+  'Estate Cleanouts',
+  'Dumpster Rental',
+  'Construction Debris',
+  'Garage Cleanouts',
+  'Same-Day Crews',
+  'All 50 States',
+  'Upfront Flat-Rate Pricing',
+];
 
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
-    <section className="hero-section relative bg-white overflow-hidden border-b border-secondary-100/40">
-      {/* Mobile — centered copy, CTA, image, then features */}
-      <div className="lg:hidden">
-        <div className="px-5 pt-2.5 pb-6 text-center max-w-lg mx-auto">
-          <RatingBadge centered />
+    <section className="relative overflow-hidden bg-[var(--bg)]">
+      <div className="absolute inset-0 bg-dark-grid [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,black,transparent)]" aria-hidden />
+      <div className="absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-brand/20 blur-[140px] animate-glow-pulse" aria-hidden />
+      <div className="absolute bottom-[-20%] left-[-10%] h-[380px] w-[380px] rounded-full bg-brand/10 blur-[130px]" aria-hidden />
+      <div className="absolute inset-0 bg-noise opacity-[0.05] pointer-events-none" aria-hidden />
 
-          <h1 className="font-serif text-[2rem] sm:text-[2.25rem] font-semibold text-secondary tracking-tight leading-[1.12] mb-4">
-            Junk removal,
-            <br />
-            made easy.
-          </h1>
+      <div className="relative z-10 px-4 sm:px-8 lg:px-14 xl:px-20 pt-10 pb-14 sm:pt-14 md:pt-16 md:pb-16">
+        <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] items-center gap-8 md:gap-6 lg:gap-10">
+          {/* Copy */}
+          <div className="relative z-10 max-w-xl md:max-w-none">
+            <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3 sm:mb-4 animate-fade-in-up">
+              Nationwide Junk Removal — All 50 States
+            </p>
 
-          <p className="text-[15px] sm:text-base text-secondary-500 leading-relaxed mb-6 max-w-[20rem] mx-auto">
-            From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
-          </p>
+            <h1 className="font-sans font-extrabold text-[2.35rem] sm:text-[3.2rem] md:text-[3.5rem] lg:text-[3.85rem] leading-[1.06] tracking-tight text-white mb-4 sm:mb-5 animate-fade-in-up delay-100">
+              Fast Junk Disposal
+              <br className="hidden sm:block" /> Across America
+            </h1>
 
-          <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 w-full mb-2">
-            <button
-              type="button"
-              onClick={onGetQuote}
-              className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_PRIMARY_CTA}`}
-            >
-              View Pricing
-            </button>
+            <div className="flex flex-wrap items-center gap-2.5 mb-4 sm:mb-5 animate-fade-in-up delay-150">
+              <div className="flex items-center gap-0.5" aria-label="4.8 out of 5 stars">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={16} className="text-brand fill-brand" />
+                ))}
+              </div>
+              <a
+                href="#testimonials"
+                className="text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors"
+              >
+                4.8 · Top-rated local providers →
+              </a>
+            </div>
+
+            <p className="text-[14px] sm:text-base md:text-lg leading-relaxed text-[var(--text-muted)] mb-6 sm:mb-7 max-w-md animate-fade-in-up delay-200">
+              Don&apos;t stress the mess! Affordable junk hauling nationwide is just a click away.
+            </p>
+
+            <div className="mb-5 sm:mb-6 animate-fade-in-up delay-250">
+              <div className="flex items-start gap-2.5">
+                <MapPin size={18} className="text-brand shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-[14px] sm:text-[15px] font-bold text-[var(--text)] leading-tight">
+                    Easy upfront pricing online!
+                  </p>
+                  <p className="text-[12px] sm:text-[13px] text-[var(--text-muted)] mt-0.5">
+                    Select an option to start your custom quote.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-stretch sm:items-start gap-4 animate-fade-in-up delay-300">
+              <button
+                type="button"
+                onClick={onGetQuote}
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 sm:px-9 py-3.5 sm:py-4 text-[14px] sm:text-[15px] font-bold text-white transition-all hover:bg-brand-600 shadow-[0_0_28px_-6px_rgba(255,0,110,0.7)] hover:shadow-[0_0_38px_-4px_rgba(255,0,110,0.85)] border-2 border-white/10"
+              >
+                Get Online Price
+                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+
+              <div className="w-full sm:w-auto">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="h-px flex-1 bg-white/10" aria-hidden />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500">
+                    Or
+                  </span>
+                  <span className="h-px flex-1 bg-white/10" aria-hidden />
+                </div>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-5">
+                  <a
+                    href={`sms:${SITE_PHONE}`}
+                    className="inline-flex items-center gap-2.5 text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors"
+                  >
+                    <MessageSquare size={16} className="text-brand shrink-0" />
+                    Text {SITE_PHONE_DISPLAY}
+                  </a>
+                  <a
+                    href={`tel:${SITE_PHONE}`}
+                    className="inline-flex items-center gap-2.5 text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors"
+                  >
+                    <Phone size={16} className="text-brand shrink-0" />
+                    Call {SITE_PHONE_DISPLAY}
+                  </a>
+                </div>
+              </div>
+            </div>
 
             {onBookOnline && (
               <button
                 type="button"
                 onClick={onBookOnline}
-                className="shrink-0 py-3 text-sm font-medium text-secondary hover:text-brand transition-colors whitespace-nowrap"
+                className="mt-5 text-[13px] font-semibold text-neutral-400 hover:text-brand transition-colors animate-fade-in-up delay-300"
               >
-                Or book online
+                Prefer to book online? Schedule a pickup →
               </button>
             )}
           </div>
 
-          <div className="mt-7 rounded-2xl overflow-hidden bg-secondary-100 aspect-[4/3] sm:aspect-[16/11] border border-secondary-100 shadow-sm">
+          {/* Visual */}
+          <div className="relative justify-self-center md:justify-self-end w-full max-w-[380px] sm:max-w-[520px] md:max-w-[580px] lg:max-w-[640px] -mx-2 sm:mx-0 animate-fade-in delay-200">
+            <div className="absolute left-1/2 top-[55%] -translate-x-1/2 -translate-y-1/2 h-[65%] w-[65%] rounded-full bg-brand/25 blur-[90px] animate-glow-pulse" aria-hidden />
+
             <img
-              src="/opek2.webp"
-              alt="Professional junk removal crew hauling furniture"
-              className="w-full h-full object-cover object-center"
+              src="/opek-hero-haulers.png?v=3"
+              alt="Junk removal providers lifting a heavy tool chest together"
+              className="relative z-10 w-full h-auto max-h-[360px] sm:max-h-[520px] md:max-h-[min(680px,78vh)] scale-[1.12] sm:scale-[1.18] origin-bottom object-contain object-bottom select-none drop-shadow-[0_28px_56px_rgba(0,0,0,0.55)]"
+              draggable={false}
             />
-          </div>
 
-          <FeatureList layout="mobile" />
-        </div>
-      </div>
-
-      {/* Desktop — TaskRabbit-style split hero */}
-      <div className="hidden lg:block">
-        <div className="max-w-[72rem] mx-auto px-8 xl:px-10 pt-8 xl:pt-10 pb-0">
-          <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
-            <div className="max-w-[28rem] animate-slide-up" style={{ animationDelay: '0.05s' }}>
-              <RatingBadge />
-              <h1 className="font-serif text-[2.625rem] xl:text-[3.125rem] font-semibold text-secondary tracking-tight mb-4 leading-[1.1]">
-                Junk removal,
-                <br />
-                made easy.
-              </h1>
-              <p className="text-lg text-secondary-500 mb-7 leading-relaxed">
-                From furniture haul-away to apartment cleanouts, let us handle the heavy lifting.
-              </p>
-              <button
-                type="button"
-                onClick={onGetQuote}
-                className={`!rounded-full px-7 py-3 text-[15px] font-semibold ${HERO_PRIMARY_CTA}`}
-              >
-                Get a quote
-              </button>
-            </div>
-
-            <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
-              <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-secondary-100 border border-secondary-100 shadow-[0_12px_35px_rgba(53,80,112,0.1)]">
-                <img
-                  src="/opek2.webp"
-                  alt="Professional junk removal crew hauling furniture"
-                  className="w-full h-full object-cover object-center"
-                />
+            <div className="absolute right-0 sm:right-2 top-8 sm:top-12 z-20 animate-float">
+              <div className="rounded-lg border border-white/10 bg-[#121218]/95 backdrop-blur px-3 py-1.5 shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
+                <p className="text-[11px] sm:text-xs font-bold text-white leading-tight">Heavy Lifting</p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <FeatureList layout="desktop" />
+      {/* Ticker */}
+      <div className="relative z-10 border-t border-white/[0.07] bg-white/[0.015]">
+        <div className="relative overflow-hidden py-3.5 marquee-paused">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-20 sm:w-32 bg-gradient-to-r from-[var(--bg)] to-transparent z-10" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-20 sm:w-32 bg-gradient-to-l from-[var(--bg)] to-transparent z-10" aria-hidden />
+          <div className="flex w-max animate-marquee gap-0">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex shrink-0 items-center" aria-hidden={dup === 1}>
+                {tickerItems.map((item) => (
+                  <span key={`${dup}-${item}`} className="flex items-center shrink-0">
+                    <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 px-5 sm:px-7">
+                      {item}
+                    </span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-brand shrink-0" aria-hidden>
+                      <path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z" />
+                    </svg>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

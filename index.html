@@ -203,12 +203,12 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
     <style>
       body {
         font-family: 'Inter', system-ui, sans-serif;
-        background-color: #ffffff;
-        color: #111111;
+        background-color: #070709;
+        color: #f4f4f5;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         letter-spacing: -0.01em;
@@ -264,6 +264,133 @@
         --site-header-height: 124px;
       }
 
+      /* Homepage dark mode — scoped to .home-dark */
+      .home-dark {
+        --bg: #070709;
+        --bg-alt: #0b0b0f;
+        --surface: #101014;
+        --surface-2: #16161c;
+        --text: #f4f4f5;
+        --text-muted: #a1a1aa;
+        --border: rgba(255, 255, 255, 0.08);
+        --glow: rgba(255, 0, 110, 0.35);
+        --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+        --font-serif: 'Instrument Serif', Georgia, serif;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        letter-spacing: -0.015em;
+      }
+
+      /* Dark form fields inside the dark homepage */
+      .home-dark input:not([type="radio"]):not([type="checkbox"]),
+      .home-dark select,
+      .home-dark textarea {
+        background-color: #0e0e12;
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #f4f4f5;
+      }
+      .home-dark input:not([type="radio"]):not([type="checkbox"]):hover,
+      .home-dark select:hover,
+      .home-dark textarea:hover {
+        border-color: rgba(255, 255, 255, 0.22);
+        background-color: #121218;
+      }
+      .home-dark input:not([type="radio"]):not([type="checkbox"]):focus,
+      .home-dark select:focus,
+      .home-dark textarea:focus {
+        background-color: #121218;
+        border-color: #ff006e;
+        box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.18);
+      }
+      .home-dark input::placeholder,
+      .home-dark textarea::placeholder {
+        color: #63636b;
+      }
+
+      .home-dark h1,
+      .home-dark h2 {
+        font-family: var(--font-serif);
+        letter-spacing: -0.02em;
+        font-weight: 400;
+      }
+
+      .home-dark h3,
+      .home-dark h4,
+      .home-dark h5,
+      .home-dark h6 {
+        font-family: var(--font-sans);
+        letter-spacing: -0.02em;
+      }
+
+      .home-dark .font-serif {
+        font-family: var(--font-serif) !important;
+        font-weight: 400 !important;
+      }
+
+      .home-dark .font-sans {
+        font-family: var(--font-sans) !important;
+      }
+
+      .home-dark ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      .home-dark ::-webkit-scrollbar-thumb {
+        background: #3a3a3a;
+      }
+      .home-dark ::-webkit-scrollbar-thumb:hover {
+        background: #4f4f4f;
+      }
+
+      @keyframes zipCheckSpin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes zipCheckRing {
+        0%, 100% { transform: scale(1); opacity: 0.55; }
+        50% { transform: scale(1.08); opacity: 1; }
+      }
+      @keyframes zipCheckBar {
+        from { width: 0%; }
+        to { width: 100%; }
+      }
+      @keyframes zipCheckPop {
+        from { transform: scale(0.7); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      @keyframes zipCheckPanelIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .zip-check-spin {
+        animation: zipCheckSpin 0.9s linear infinite;
+      }
+      .zip-check-ring {
+        animation: zipCheckRing 1.6s ease-in-out infinite;
+      }
+      .zip-check-bar {
+        animation: zipCheckBar 1.5s linear forwards;
+      }
+      .zip-check-pop {
+        animation: zipCheckPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .zip-check-panel {
+        animation: zipCheckPanelIn 0.3s ease-out both;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .zip-check-spin,
+        .zip-check-ring,
+        .zip-check-bar,
+        .zip-check-pop,
+        .zip-check-panel {
+          animation: none !important;
+        }
+        .zip-check-bar {
+          width: 100%;
+        }
+      }
+
       @media (min-width: 768px) {
         :root {
           --site-header-height: 154px;
@@ -275,14 +402,14 @@
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #0b0b0f;
       }
       ::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
+        background: #2a2a32;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
+        background: #3d3d47;
       }
 
       .scrollbar-hide {
@@ -383,6 +510,98 @@
 
       .animate-pulse-slow {
         animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      /* ---- Dark homepage motion system ---- */
+      @keyframes marquee-x {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      @keyframes marquee-x-reverse {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
+      .animate-marquee {
+        animation: marquee-x 38s linear infinite;
+      }
+      .animate-marquee-fast {
+        animation: marquee-x 30s linear infinite;
+      }
+      .animate-marquee-reverse {
+        animation: marquee-x-reverse 46s linear infinite;
+      }
+      .marquee-paused:hover .animate-marquee,
+      .marquee-paused:hover .animate-marquee-fast,
+      .marquee-paused:hover .animate-marquee-reverse {
+        animation-play-state: paused;
+      }
+
+      @keyframes float-y {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      .animate-float {
+        animation: float-y 5s ease-in-out infinite;
+      }
+      .animate-float-slow {
+        animation: float-y 7s ease-in-out infinite;
+      }
+
+      @keyframes glow-pulse {
+        0%, 100% { opacity: 0.55; transform: scale(1); }
+        50% { opacity: 0.9; transform: scale(1.06); }
+      }
+      .animate-glow-pulse {
+        animation: glow-pulse 4.5s ease-in-out infinite;
+      }
+
+      @keyframes ping-dot {
+        0% { transform: scale(1); opacity: 0.9; }
+        75%, 100% { transform: scale(2.4); opacity: 0; }
+      }
+      .animate-ping-dot {
+        animation: ping-dot 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes spin-slow {
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 14s linear infinite;
+      }
+
+      @keyframes shimmer-line {
+        from { background-position: -200% 0; }
+        to { background-position: 200% 0; }
+      }
+      .animate-shimmer-line {
+        background-size: 200% 100%;
+        animation: shimmer-line 6s linear infinite;
+      }
+
+      /* Textured grid + noise backdrops */
+      .bg-dark-grid {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 44px 44px;
+      }
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animate-marquee,
+        .animate-marquee-fast,
+        .animate-marquee-reverse,
+        .animate-float,
+        .animate-float-slow,
+        .animate-glow-pulse,
+        .animate-ping-dot,
+        .animate-spin-slow,
+        .animate-shimmer-line {
+          animation: none !important;
+        }
       }
     </style>
 
