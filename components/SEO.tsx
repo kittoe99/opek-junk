@@ -240,6 +240,13 @@ export const seoConfig = {
     description: 'Review the terms, conditions, and disclaimers for using the Opek Junk Removal platform and booking local hauling or dumpster rentals.',
     keywords: 'terms of service, user agreement, opek terms, legal agreement, hauling disclaimer',
   },
+  smsConsent: {
+    title: 'SMS Opt-In Consent | Opek Junk Removal',
+    description:
+      'How customers opt in to receive texts from Opek Junk Removal on quote and booking forms. Includes consent language, STOP/HELP, and message frequency disclosure.',
+    keywords: 'sms consent, text message opt-in, opek sms, tcpa, a2p',
+    noindex: true,
+  },
   mattressDisposal: {
     title: 'Same-Day Mattress Disposal & Recycling Pickup | Opek',
     description: 'Local providers pick up old mattresses, box springs, and frames from any room. Same-day windows available. Check your ZIP to schedule responsible recycling or disposal.',

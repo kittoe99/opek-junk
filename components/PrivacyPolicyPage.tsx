@@ -1,6 +1,7 @@
 import React from 'react';
 import { Shield, Eye, Lock, FileText, HeartHandshake, PhoneCall, Mail, MessageSquare, Globe, UserCheck, Bell, Users } from 'lucide-react';
 import { LegalPageLayout } from './shared/LegalPageLayout';
+import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 
 interface PolicySection {
   id: string;
@@ -56,6 +57,9 @@ export const PrivacyPolicyPage: React.FC = () => {
               <strong>Communications Content:</strong> Messages you send through our contact form, in-home estimate requests, email replies, SMS/text exchanges, and phone call notes or transcripts.
             </li>
             <li>
+              <strong>SMS Consent Records:</strong> Whether you opted in to marketing texts via the optional checkbox on quote or booking forms, the timestamp of consent, and the consent language shown at the time of opt-in.
+            </li>
+            <li>
               <strong>Voice & Interaction Data:</strong> If you interact with our AI-powered phone assistant (powered by third-party platforms such as ElevenLabs), your voice interactions, call recordings, and conversation transcripts may be captured and stored for order execution, customer support, quality control, and service improvement.
             </li>
             <li>
@@ -88,10 +92,10 @@ export const PrivacyPolicyPage: React.FC = () => {
               <strong>Service Fulfillment:</strong> Processing quotes, bookings, payments, order tracking, provider matching, and dispatching independent local providers to your location.
             </li>
             <li>
-              <strong>Transactional Communications:</strong> Sending text messages (SMS/MMS), emails, and phone calls related to your request — including booking confirmations, quote follow-ups, arrival updates, payment receipts, rescheduling notices, and customer support responses.
+              <strong>Transactional Communications:</strong> Sending text messages (SMS/MMS), emails, and phone calls related to your request — including customer-requested payment links, job status notifications, appointment reminders, scheduling confirmations, quote follow-ups, payment receipts, and customer support responses.
             </li>
             <li>
-              <strong>Marketing & Promotional Communications:</strong> With your consent where required by law, we may send you promotional emails, text messages, and occasional phone calls about Opek services, special offers, seasonal promotions, service reminders, and related products or services we believe may interest you. You can opt out at any time (see Section 4).
+              <strong>Marketing & Promotional Communications:</strong> Only if you opt in (for SMS, via the optional checkbox on quote and booking forms), we may send promotional emails, text messages, and occasional phone calls about Opek services, seasonal offers, service reminders, and related follow-ups. You can opt out at any time (see Section 4).
             </li>
             <li>
               <strong>Customer Support & Follow-Up:</strong> Responding to inquiries, resolving disputes, collecting feedback, and following up on incomplete bookings or estimate requests.
@@ -116,7 +120,7 @@ export const PrivacyPolicyPage: React.FC = () => {
       content: (
         <>
           <p className="mb-4">
-            When you provide your phone number or email address — including through our quote forms, booking flows, contact page, phone calls, or AI voice assistant — you agree that Opek and our service providers may contact you using automated or manual technology, including:
+            When you provide your phone number or email address — including through our quote forms, booking flows, contact page, phone calls, or AI voice assistant — Opek and our service providers may contact you using automated or manual technology, including:
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li><strong>SMS/MMS text messages</strong> to the mobile number you provide</li>
@@ -124,15 +128,22 @@ export const PrivacyPolicyPage: React.FC = () => {
             <li><strong>Phone calls</strong>, including prerecorded or artificial voice messages where permitted by law</li>
           </ul>
           <p className="mb-4">
-            These communications may include both <strong>transactional messages</strong> (booking confirmations, provider updates, receipts, support) and <strong>marketing messages</strong> (promotions, discounts, service reminders, and news about Opek). Message frequency varies based on your activity and preferences.
+            <strong>Transactional SMS:</strong> Submitting your phone number on a quote or booking form authorizes texts about that request. We disclose:{' '}
+            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em> These may include customer-requested payment links, job status notifications, appointment reminders, scheduling confirmations, and support related to your quote or booking.
+          </p>
+          <p className="mb-4">
+            <strong>Marketing SMS (optional):</strong> We send marketing or promotional texts only if you check the optional consent box on our quote or booking forms. Consent is not required to get a quote or complete a booking. Exact checkbox language:{' '}
+            <em>&ldquo;{SMS_MARKETING_CONSENT_TEXT}&rdquo;</em> See our{' '}
+            <a href="/sms-consent" className="text-brand font-semibold hover:underline">SMS opt-in consent</a>{' '}
+            page for a live example of this disclosure.
           </p>
           <div className="bg-brand/10 border border-brand/25 rounded-xl p-5 mb-4 space-y-2 text-sm">
             <p className="font-bold text-[var(--text)]">Text Message (SMS) Terms:</p>
             <ul className="list-disc pl-5 space-y-1 text-[var(--text-muted)]">
-              <li>Message and data rates may apply depending on your mobile carrier plan.</li>
+              <li>Message frequency varies. Msg &amp; data rates may apply.</li>
               <li>Consent to receive marketing texts is not a condition of purchase.</li>
-              <li>Reply <strong>STOP</strong> to any marketing text to unsubscribe from promotional SMS. Reply <strong>HELP</strong> for assistance.</li>
-              <li>Even after opting out of marketing texts, we may still send transactional messages related to an active booking or account inquiry.</li>
+              <li>Reply <strong>STOP</strong> to unsubscribe from marketing texts. Reply <strong>HELP</strong> for help.</li>
+              <li>After opting out of marketing, we may still send transactional messages related to an active quote or booking.</li>
             </ul>
           </div>
           <p className="mb-4">
@@ -140,8 +151,13 @@ export const PrivacyPolicyPage: React.FC = () => {
             <a href="mailto:Support@opekjunkremoval.com" className="text-brand font-semibold hover:underline">Support@opekjunkremoval.com</a>{' '}
             with the subject line "Unsubscribe." Transactional emails related to your bookings may still be sent as needed.
           </p>
-          <p>
+          <p className="mb-4">
             <strong>Phone opt-out:</strong> You may request to be removed from promotional call lists by contacting us at (831) 318-7139 or Support@opekjunkremoval.com. We may still call you regarding an active service request or booking.
+          </p>
+          <p>
+            Additional details are in our{' '}
+            <a href="/terms" className="text-brand font-semibold hover:underline">Terms of Service</a>{' '}
+            (Communications, SMS &amp; Marketing).
           </p>
         </>
       ),
@@ -186,6 +202,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li><strong>Stripe</strong> — payment processing and customer billing</li>
+            <li><strong>Twilio</strong> — SMS/MMS text message delivery</li>
             <li><strong>Supabase</strong> — database hosting, file storage, and backend infrastructure</li>
             <li><strong>Resend</strong> — transactional and marketing email delivery</li>
             <li><strong>ElevenLabs</strong> — AI voice assistant and call handling</li>
@@ -312,7 +329,7 @@ export const PrivacyPolicyPage: React.FC = () => {
     <LegalPageLayout
       eyebrow="Legal & Privacy"
       title={<>Privacy <span className="text-brand">Policy.</span></>}
-      description="Last Updated: June 27, 2026. Please read this Privacy Policy carefully to understand how we collect, use, protect, and share your personal information — including how we contact you by text, email, and phone."
+      description="Last Updated: July 24, 2026. Please read this Privacy Policy carefully to understand how we collect, use, protect, and share your personal information — including how we contact you by text, email, and phone."
       sections={sections}
       defaultSection="introduction"
     />

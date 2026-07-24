@@ -21,6 +21,7 @@ import { MattressDisposalPage } from './components/services/MattressDisposalPage
 import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
+import { SmsConsentPage } from './components/SmsConsentPage';
 import { SEO, seoConfig } from './components/SEO';
 import { CityPage } from './components/CityPage';
 import { PageLoader } from './components/PageLoader';
@@ -35,7 +36,7 @@ const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').th
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
 const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
 
-const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking'];
+const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking', '/sms-consent'];
 const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking'];
 
 function RouteFallback() {
@@ -269,6 +270,15 @@ function TermsOfServicePageWithSEO() {
   );
 }
 
+function SmsConsentPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.smsConsent} />
+      <SmsConsentPage />
+    </>
+  );
+}
+
 function CityPageRouteWrapper() {
   const { slug } = useParams<{ slug: string }>();
   const city = getCityBySlug(slug ?? '');
@@ -308,6 +318,7 @@ function App() {
             <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />
             <Route path="/privacy" element={<PrivacyPolicyPageWithSEO />} />
             <Route path="/terms" element={<TermsOfServicePageWithSEO />} />
+            <Route path="/sms-consent" element={<SmsConsentPageWithSEO />} />
             <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
           </Routes>
         </Suspense>

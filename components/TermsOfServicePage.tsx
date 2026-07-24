@@ -1,6 +1,7 @@
 import React from 'react';
-import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare, ShieldCheck, AlertCircle, Mail, MessageSquare } from 'lucide-react';
+import { Scale, Info, CreditCard, Ban, ShieldAlert, AlertTriangle, Hammer, PhoneCall, CheckSquare, ShieldCheck, AlertCircle, MessageSquare } from 'lucide-react';
 import { LegalPageLayout } from './shared/LegalPageLayout';
+import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 
 interface TermsSection {
   id: string;
@@ -37,22 +38,23 @@ export const TermsOfServicePage: React.FC = () => {
       content: (
         <>
           <p className="mb-4">
-            By providing your phone number, email address, or other contact information through our website, booking flows, quote forms, contact page, phone calls, or AI voice assistant, you consent to receive communications from Opek and our authorized service providers at the contact information you provide.
+            When you provide your phone number, email address, or other contact information through our website, booking flows, quote forms, contact page, phone calls, or AI voice assistant, Opek and our authorized service providers may contact you at that information by <strong>automated or manual means</strong>, including SMS/MMS text messages, email, and phone calls (including prerecorded or artificial voice messages where permitted by law).
           </p>
           <p className="mb-4">
-            These communications may be sent by <strong>automated or manual means</strong>, including SMS/MMS text messages, email, and phone calls (including prerecorded or artificial voice messages where permitted by law). Communications may include:
+            <strong>Transactional texts:</strong> By submitting your phone number on a quote or booking form, you agree we may text you about that request. On those forms we disclose:{' '}
+            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em> Transactional messages may include customer-requested payment links, job status notifications, appointment reminders, scheduling confirmations, quote follow-ups, and two-way support about your request.
           </p>
-          <ul className="list-disc pl-6 space-y-2 mb-4">
-            <li><strong>Transactional messages:</strong> Booking confirmations, quote follow-ups, provider dispatch updates, payment receipts, rescheduling notices, and customer support.</li>
-            <li><strong>Marketing messages:</strong> Promotional offers, discounts, seasonal campaigns, service reminders, and news about Opek services — where permitted and with opt-out rights as described below.</li>
-          </ul>
+          <p className="mb-4">
+            <strong>Marketing texts (optional):</strong> Marketing or promotional texts are sent only if you opt in via the optional checkbox on our quote and booking forms. Consent is <strong>not required</strong> to receive a quote or complete a booking. The checkbox uses this exact language:{' '}
+            <em>&ldquo;{SMS_MARKETING_CONSENT_TEXT}&rdquo;</em>
+          </p>
           <div className="bg-brand/10 border border-brand/25 rounded-xl p-5 mb-4 space-y-2 text-sm">
             <p className="font-bold text-[var(--text)]">SMS/Text Message Terms:</p>
             <ul className="list-disc pl-5 space-y-1 text-[var(--text-muted)]">
-              <li>Message frequency varies. Message and data rates may apply.</li>
+              <li>Message frequency varies. Msg &amp; data rates may apply.</li>
               <li>Consent to receive marketing texts is <strong>not required</strong> as a condition of purchasing any goods or services.</li>
-              <li>Reply <strong>STOP</strong> to opt out of promotional SMS. Reply <strong>HELP</strong> for help.</li>
-              <li>You may still receive transactional texts related to active bookings after opting out of marketing.</li>
+              <li>Reply <strong>STOP</strong> to unsubscribe from marketing texts. Reply <strong>HELP</strong> for help.</li>
+              <li>After opting out of marketing, you may still receive transactional texts related to an active quote or booking.</li>
             </ul>
           </div>
           <p className="mb-4">
@@ -62,8 +64,11 @@ export const TermsOfServicePage: React.FC = () => {
             You represent that you are the owner or authorized user of any phone number or email address you provide, and that you have authority to consent to communications at that number or address.
           </p>
           <p>
-            For full details on how we collect, use, and protect your personal information, see our{' '}
-            <a href="/privacy" className="text-brand font-semibold hover:underline">Privacy Policy</a>.
+            See our{' '}
+            <a href="/sms-consent" className="text-brand font-semibold hover:underline">SMS opt-in consent</a>{' '}
+            page for a visual of the form checkbox, and our{' '}
+            <a href="/privacy" className="text-brand font-semibold hover:underline">Privacy Policy</a>{' '}
+            for how we collect, use, and protect your personal information.
           </p>
         </>
       ),
@@ -329,7 +334,7 @@ export const TermsOfServicePage: React.FC = () => {
     <LegalPageLayout
       eyebrow="Legal Agreement"
       title={<>Terms of <span className="text-brand">Service.</span></>}
-      description="Last Updated: June 27, 2026. Please read these Terms of Service carefully before booking dumpsters, junk removal, cleanouts, or moving services."
+      description="Last Updated: July 24, 2026. Please read these Terms of Service carefully before booking dumpsters, junk removal, cleanouts, or moving services."
       sections={sections}
       defaultSection="agreement"
     />

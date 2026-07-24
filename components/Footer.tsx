@@ -29,6 +29,9 @@ function FooterBottom() {
             <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors">
               Terms of Service
             </Link>
+            <Link to="/sms-consent" className="text-neutral-400 hover:text-white transition-colors">
+              SMS Consent
+            </Link>
             <a href="#" className="text-neutral-400 hover:text-white transition-colors">
               Accessibility
             </a>

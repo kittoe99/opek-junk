@@ -1,5 +1,5 @@
 export const SMS_MARKETING_CONSENT_TEXT =
-  'Optional: I agree to receive promotional text messages from Opek Junk Removal. Message frequency varies. Msg & data rates may apply. Reply STOP to unsubscribe, HELP for help.';
+  'I agree to receive texts from Opek Junk Removal. Msg frequency varies. Msg & data rates may apply. Reply STOP to unsubscribe, HELP for help.';
 
 export const SMS_TRANSACTIONAL_NOTICE =
   'We will use your phone number to contact you about this quote or booking.';
