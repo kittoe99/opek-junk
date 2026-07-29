@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Clock, Home, Package, Truck } from 'lucide-react';
+import { Clock, Dumbbell, Package, Truck } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
+/** Combined local moving page — truck + crew and labor-only. */
 export const SmallLocalMovesPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -17,37 +18,34 @@ export const SmallLocalMovesPage: React.FC = () => {
           Moves
         </>
       }
-      subtitle="Affordable hourly moving help for studios, 1-bedrooms, and small homes. Truck and crew available — or just the muscle."
-      heroImage="/opek-related-local-moves.png?v=1"
-      heroImageAlt="Provider loading boxes into a cargo van for a local move"
+      subtitle="Affordable hourly moving help for studios, 1-bedrooms, and small homes. Book truck + crew — or just the muscle if you already have a truck."
+      heroImage="/opek-related-moving.png?v=1"
+      heroImageAlt="Moving providers carrying furniture for a local move"
       heroChip="Truck + Crew"
       primaryCta={{ label: 'Book a Move', onClick: () => navigate('/booking') }}
       secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       split={{
-        eyebrow: 'Local relocating',
+        eyebrow: 'Labor or full move',
         title: 'Moving help sized for small jobs',
         body: (
           <p>
-            Built for studios and small homes — the jobs big movers overcharge for. Need labor only? Try{' '}
-            <Link to="/services/moving-labor" className="text-brand hover:text-brand-400 font-semibold">
-              moving labor
-            </Link>
-            . Clearing leftovers? Add{' '}
+            Built for studios and small homes — the jobs big movers overcharge for. Need junk cleared while you
+            pack? Add{' '}
             <Link to="/services/junk-removal" className="text-brand hover:text-brand-400 font-semibold">
               junk removal
-            </Link>
-            .
+            </Link>{' '}
+            in the same visit.
           </p>
         ),
         includesLabel: 'Moves include:',
         includes: [
           { title: 'Truck Options', Icon: Truck },
-          { title: 'Box Loading', Icon: Package },
+          { title: 'Load & Unload', Icon: Package },
           { title: 'Hourly Pricing', Icon: Clock },
-          { title: 'Small Homes', Icon: Home },
+          { title: 'Labor Only', Icon: Dumbbell },
         ],
         image: '/opek-related-local-moves.png?v=1',
-        imageAlt: 'Cargo van and provider for small local moves',
+        imageAlt: 'Provider loading boxes into a cargo van for a local move',
       }}
       features={{
         title: 'Local moves, no bloat',
@@ -58,7 +56,7 @@ export const SmallLocalMovesPage: React.FC = () => {
           },
           {
             title: 'Truck + Crew or Labor',
-            body: 'Book a van and helpers, or just extra hands if you already have a truck.',
+            body: 'Book a van and helpers, or just extra hands if you already have a truck or storage unit.',
           },
           {
             title: 'Hourly & Transparent',
@@ -69,12 +67,12 @@ export const SmallLocalMovesPage: React.FC = () => {
             body: 'Background-checked local movers rated by real customers.',
           },
           {
-            title: 'On-Time Arrival',
-            body: 'Matched providers show up ready to load, haul, and unload the same day when available.',
+            title: 'Same-Day Options',
+            body: 'Matched providers show up ready to load, haul, and unload when capacity allows.',
           },
           {
             title: 'Declutter While You Move',
-            body: 'Haul unwanted items in the same trip instead of a second booking.',
+            body: 'Haul unwanted items in the same trip instead of booking a second crew.',
           },
         ],
       }}

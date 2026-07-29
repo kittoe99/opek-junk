@@ -22,12 +22,6 @@ const allRelatedServices = [
     alt: 'Roll-off dumpster for debris and renovation waste',
   },
   {
-    title: 'Moving Labor',
-    path: '/services/moving-labor',
-    image: '/opek-related-moving.png?v=1',
-    alt: 'Hourly moving labor carrying furniture',
-  },
-  {
     title: 'Small Local Moves',
     path: '/services/small-local-moves',
     image: '/opek-related-local-moves.png?v=1',

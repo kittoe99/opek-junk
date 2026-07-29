@@ -142,8 +142,8 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services/moving-labor" className="text-neutral-400 hover:text-white text-sm transition-colors">
-                    Local Moving
+                  <Link to="/services/small-local-moves" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                    Small Local Moves
                   </Link>
                 </li>
                 <li>

@@ -15,7 +15,6 @@ import { QuickActionBar } from './components/QuickActionBar';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
 import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
-import { MovingLaborPage } from './components/services/MovingLaborPage';
 import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
 import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
@@ -194,11 +193,14 @@ function PropertyCleanoutPageWithSEO() {
 
 
 
-function MovingLaborPageWithSEO() {
+function SmallLocalMovesPageWithSEO() {
   return (
     <>
-      <SEO title="Moving Labor | Opek Junk Removal" description="Hire professional moving labor to load, unload, or move items within your home." />
-      <MovingLaborPage />
+      <SEO
+        title="Small Local Moves | Opek Junk Removal"
+        description="Affordable local moves for studios and small homes. Book truck and crew by the hour — or labor only if you already have a truck."
+      />
+      <SmallLocalMovesPage />
     </>
   );
 }
@@ -308,8 +310,8 @@ function App() {
             <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
             <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
-            <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
-            <Route path="/services/small-local-moves" element={<SmallLocalMovesPage />} />
+            <Route path="/services/moving-labor" element={<Navigate to="/services/small-local-moves" replace />} />
+            <Route path="/services/small-local-moves" element={<SmallLocalMovesPageWithSEO />} />
             <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />
             <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />

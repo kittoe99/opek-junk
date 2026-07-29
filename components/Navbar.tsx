@@ -29,7 +29,7 @@ const serviceItems = [
   { name: 'Junk Removal', desc: 'Single items, mattresses, furniture & more', path: '/services/junk-removal', icon: JunkIcon },
   { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
   { name: 'Property Cleanouts', desc: 'Estate clearing, garage cleanouts & move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
-  { name: 'Local Moving', desc: 'Truck and crew for apartment & small home moves', path: '/services/moving-labor', icon: MovingLaborIcon },
+  { name: 'Small Local Moves', desc: 'Truck and crew for apartment & small home moves', path: '/services/small-local-moves', icon: MovingLaborIcon },
 ];
 
 const navLinks = [
