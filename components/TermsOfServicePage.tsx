@@ -42,10 +42,10 @@ export const TermsOfServicePage: React.FC = () => {
           </p>
           <p className="mb-4">
             <strong>Transactional texts:</strong> By submitting your phone number on a quote or booking form, you agree we may text you about that request. On those forms we disclose:{' '}
-            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em> Transactional messages may include customer-requested payment links, job status notifications, appointment reminders, scheduling confirmations, quote follow-ups, and two-way support about your request.
+            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em>
           </p>
           <p className="mb-4">
-            <strong>Marketing texts (optional):</strong> Marketing or promotional texts are sent only if you opt in via the optional checkbox on our quote and booking forms. Consent is <strong>not required</strong> to receive a quote or complete a booking. The checkbox uses this exact language:{' '}
+            <strong>Marketing texts (optional, separate consent):</strong> Marketing or promotional texts are sent only if you opt in via the optional checkbox on our quote and booking forms. Consent is <strong>not required</strong> to receive a quote or complete a booking. The checkbox uses this exact language:{' '}
             <em>&ldquo;{SMS_MARKETING_CONSENT_TEXT}&rdquo;</em>
           </p>
           <div className="bg-brand/10 border border-brand/25 rounded-xl p-5 mb-4 space-y-2 text-sm">

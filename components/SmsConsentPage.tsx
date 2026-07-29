@@ -10,7 +10,7 @@ import { InputUserIcon, InputPhoneIcon } from './icons/ServiceIcons';
  * Shows the same SMS opt-in presented on /quote and /booking forms.
  */
 export const SmsConsentPage: React.FC = () => {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   return (
     <div className="home-dark min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]">
@@ -47,16 +47,18 @@ export const SmsConsentPage: React.FC = () => {
               Customers enter their name and phone number when requesting a quote or booking.
             </li>
             <li>
-              A transactional notice explains we will use their phone number to contact them about
-              that quote or booking.
+              <strong>Service texts (informational):</strong> Submitting a phone number includes
+              express consent for service messages about that quote or booking — status updates,
+              appointment reminders, requested payment links, and support replies.
             </li>
             <li>
-              An optional checkbox lets customers agree to receive texts from Opek Junk Removal.
-              Consent is not required to get a quote or complete a booking.
+              <strong>Marketing texts (separate opt-in):</strong> An optional, unchecked-by-default
+              checkbox is required before we send marketing texts or special offers. Marketing
+              consent is not required to get a quote or complete a booking.
             </li>
             <li>
               Message frequency varies. Msg &amp; data rates may apply. Reply <strong>STOP</strong>{' '}
-              to unsubscribe, <strong>HELP</strong> for help.
+              to unsubscribe from marketing, <strong>HELP</strong> for help.
             </li>
           </ul>
         </section>
@@ -132,9 +134,20 @@ export const SmsConsentPage: React.FC = () => {
 
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-[var(--text)]">Consent language (exact text)</h2>
-          <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-white/10 rounded-xl p-4 bg-[var(--surface)]">
-            {SMS_MARKETING_CONSENT_TEXT}
-          </p>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Service / informational</p>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-white/10 rounded-xl p-4 bg-[var(--surface)]">
+                {SMS_TRANSACTIONAL_NOTICE}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Marketing (optional checkbox)</p>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-white/10 rounded-xl p-4 bg-[var(--surface)]">
+                {SMS_MARKETING_CONSENT_TEXT}
+              </p>
+            </div>
+          </div>
         </section>
 
         <section className="space-y-3">

@@ -128,11 +128,11 @@ export const PrivacyPolicyPage: React.FC = () => {
             <li><strong>Phone calls</strong>, including prerecorded or artificial voice messages where permitted by law</li>
           </ul>
           <p className="mb-4">
-            <strong>Transactional SMS:</strong> Submitting your phone number on a quote or booking form authorizes texts about that request. We disclose:{' '}
-            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em> These may include customer-requested payment links, job status notifications, appointment reminders, scheduling confirmations, and support related to your quote or booking.
+            <strong>Transactional SMS:</strong> Submitting your phone number on a quote or booking form authorizes service texts about that request. We disclose:{' '}
+            <em>&ldquo;{SMS_TRANSACTIONAL_NOTICE}&rdquo;</em>
           </p>
           <p className="mb-4">
-            <strong>Marketing SMS (optional):</strong> We send marketing or promotional texts only if you check the optional consent box on our quote or booking forms. Consent is not required to get a quote or complete a booking. Exact checkbox language:{' '}
+            <strong>Marketing SMS (optional, separate opt-in):</strong> We send marketing or promotional texts only if you check the optional consent box on our quote or booking forms. Consent is not required to get a quote or complete a booking. Exact checkbox language:{' '}
             <em>&ldquo;{SMS_MARKETING_CONSENT_TEXT}&rdquo;</em> See our{' '}
             <a href="/sms-consent" className="text-brand font-semibold hover:underline">SMS opt-in consent</a>{' '}
             page for a live example of this disclosure.
