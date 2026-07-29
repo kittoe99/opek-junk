@@ -35,8 +35,9 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
 
     <div className="space-y-4">
       <div className="flex justify-center">
-        <div className="w-14 h-14 rounded-2xl border border-brand/30 bg-brand/10 text-brand flex items-center justify-center shadow-[0_0_28px_-10px_rgba(255,0,110,0.55)]">
-          <InputZipIcon size={26} />
+        <div className="relative w-16 h-16 rounded-2xl border border-brand/30 bg-brand/10 text-brand flex items-center justify-center shadow-[0_0_28px_-10px_rgba(255,0,110,0.55)]">
+          <span className="absolute inset-1.5 rounded-xl border border-brand/15 pointer-events-none" aria-hidden />
+          <InputZipIcon size={30} />
         </div>
       </div>
 

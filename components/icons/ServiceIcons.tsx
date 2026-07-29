@@ -248,10 +248,32 @@ export const InputMessageIcon = ({ className, size = 20 }: { className?: string,
 
 export const InputZipIcon = ({ className, size = 20 }: { className?: string, size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M3 7V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M21 17v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M8 12h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    {/* Nationwide coverage arcs */}
+    <path d="M3.75 17a9.5 9.5 0 0 1 16.5 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M6.5 14.25a6.5 6.5 0 0 1 11 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    {/* Location pin */}
+    <path d="M12 2.5c-2.75 0-5 2.2-5 4.9 0 3.4 5 8.85 5 8.85s5-5.45 5-8.85c0-2.7-2.25-4.9-5-4.9z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+    <circle cx="12" cy="7.4" r="1.6" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
+/** Large static icon for Instant coverage check / ZIP finder panels */
+export const CoverageCheckIcon = ({ className, size = 64 }: { className?: string; size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden>
+    {/* Static coverage rings */}
+    <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="1.5" opacity="0.25"/>
+    <circle cx="32" cy="32" r="20" stroke="currentColor" strokeWidth="1.5" opacity="0.4"/>
+    <circle cx="32" cy="32" r="12" stroke="currentColor" strokeWidth="1.5" opacity="0.55"/>
+    {/* Location pin */}
+    <path
+      d="M32 14c-5.1 0-9.25 4.05-9.25 9.05 0 6.35 9.25 16.7 9.25 16.7s9.25-10.35 9.25-16.7C41.25 18.05 37.1 14 32 14z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+    <circle cx="32" cy="23.1" r="3.1" stroke="currentColor" strokeWidth="2"/>
+    {/* Ground mark */}
+    <path d="M24 48.5h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
   </svg>
 );
 

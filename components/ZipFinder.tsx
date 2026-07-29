@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { normalizePostalInput, parsePostalCode } from '../lib/postalCode';
+import { CoverageCheckIcon } from './icons/ServiceIcons';
 
 const CHECK_MS = 1500;
 const FOUND_MS = 500;
@@ -83,21 +84,9 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
             <div className="absolute -top-20 -left-20 h-[260px] w-[260px] rounded-full bg-brand/15 blur-[100px]" aria-hidden />
 
             <div className="relative grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-10 p-7 sm:p-10 md:p-12">
-              {/* Radar visual */}
               <div className="relative flex items-center justify-center min-h-[190px] md:min-h-[240px]">
-                <div className="relative w-44 h-44 sm:w-52 sm:h-52">
-                  <span className="absolute inset-0 rounded-full border border-white/10" aria-hidden />
-                  <span className="absolute inset-6 rounded-full border border-white/[0.08]" aria-hidden />
-                  <span className="absolute inset-12 rounded-full border border-brand/25" aria-hidden />
-                  <span className="absolute inset-0 rounded-full border-2 border-transparent border-t-brand/70 animate-spin-slow" aria-hidden />
-                  <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_12px_rgba(255,0,110,0.9)]" aria-hidden />
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="relative flex h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem] items-center justify-center rounded-full bg-brand/15 border border-brand/40 shadow-[0_0_44px_rgba(255,0,110,0.45)]">
-                      <svg className="w-7 h-7 sm:w-8 sm:h-8 text-brand" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-                      </svg>
-                    </span>
-                  </span>
+                <div className="flex h-28 w-28 sm:h-32 sm:w-32 items-center justify-center rounded-3xl border border-brand/35 bg-brand/10 text-brand shadow-[0_0_48px_-12px_rgba(255,0,110,0.55)]">
+                  <CoverageCheckIcon size={72} />
                 </div>
               </div>
 
