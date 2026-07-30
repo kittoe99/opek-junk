@@ -6,8 +6,7 @@ function resolveSupabaseConfig(env: EnvMap = process.env as EnvMap) {
 
   const rawKey =
     env.SUPABASE_ANON_KEY ??
-    env.VITE_SUPABASE_ANON_KEY ??
-    env.SUPABASE_SERVICE_ROLE_KEY;
+    env.VITE_SUPABASE_ANON_KEY;
   const supabaseKey =
     rawKey && rawKey !== 'your_supabase_anon_key_here' ? rawKey : '';
 

@@ -29,25 +29,19 @@ export const supabase = new Proxy({} as SupabaseClient, {
   },
 });
 
-export async function sendConfirmationEmail(type: 'booking' | 'contact' | 'provider_signup', record: any) {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase is not configured; skipping confirmation email.');
-    return { success: false, error: new Error(supabaseConfigError) };
-  }
-
-  try {
-    const { data, error } = await getSupabase().functions.invoke('send-email', {
-      body: { type, record },
-    });
-    if (error) {
-      console.warn('Failed to send confirmation email:', error);
-      return { success: false, error };
-    }
-    return { success: true, data };
-  } catch (err) {
-    console.warn('Error invoking send-email function:', err);
-    return { success: false, error: err };
-  }
+/**
+ * Confirmation emails are delivered by the `send_notification_on_insert`
+ * database trigger → send-form-notification edge function (service_role JWT).
+ * The public client no longer calls send-email directly (abuse vector).
+ */
+export async function sendConfirmationEmail(
+  type: 'booking' | 'contact' | 'provider_signup',
+  _record: unknown,
+) {
+  console.warn(
+    `[sendConfirmationEmail:${type}] client-side email invoke removed; DB trigger handles delivery.`,
+  );
+  return { success: true, data: { handledBy: 'db_trigger' } };
 }
 
 export async function uploadBookingPhoto(base64Image: string, fileName: string): Promise<string | null> {

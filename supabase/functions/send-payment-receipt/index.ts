@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { isInternalRequest } from "../_shared/auth.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const NOTIFY_EMAIL = "support@opekjunkremoval.com";
@@ -194,6 +195,13 @@ async function sendEmail(to: string | string[], subject: string, html: string) {
 }
 
 Deno.serve(async (req: Request) => {
+  if (!isInternalRequest(req, { secretEnvVar: 'INTERNAL_WEBHOOK_SECRET' })) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const payload: WebhookPayload = await req.json();
     const payment = payload.record;

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { isInternalRequest } from "../_shared/auth.ts"
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://opekjunkremoval.com',
@@ -48,6 +49,14 @@ serve(async (req) => {
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
+  }
+
+  // Only internal callers (service_role or internal secret) may send email.
+  if (!isInternalRequest(req, { secretEnvVar: 'INTERNAL_WEBHOOK_SECRET' })) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized' }),
+      { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
   }
 
   try {

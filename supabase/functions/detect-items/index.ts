@@ -53,6 +53,28 @@ serve(async (req) => {
       )
     }
 
+    // Cap cost / abuse from unauthenticated calls with the public anon JWT.
+    const MAX_IMAGES = 3
+    const MAX_BASE64_CHARS = 3_000_000 // ~2.2 MB decoded
+
+    if (imageList.length > MAX_IMAGES) {
+      return new Response(
+        JSON.stringify({ error: `Too many images (max ${MAX_IMAGES})` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    for (const img of imageList) {
+      if (!img?.base64Image || !img?.mimeType) continue
+      const isAllowedType = /^image\/(jpeg|png|webp|heic)$/i.test(img.mimeType)
+      if (!isAllowedType || img.base64Image.length > MAX_BASE64_CHARS) {
+        return new Response(
+          JSON.stringify({ error: 'Unsupported or oversized image' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    }
+
     const openai = new OpenAI({ apiKey })
 
     const prompt = `You are a professional junk removal estimator. Analyze the provided photo(s) and detect every individual item that needs to be removed along with its quantity.

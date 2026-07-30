@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { isInternalRequest } from "../_shared/auth.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const FROM_EMAIL = Deno.env.get("EMAIL_FROM") || "Opek Junk Removal <notifications@opekjunkremoval.com>";
@@ -58,6 +59,13 @@ Deno.serve(async (req: Request) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
       },
+    });
+  }
+
+  if (!isInternalRequest(req, { secretEnvVar: 'INTERNAL_WEBHOOK_SECRET' })) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
     });
   }
 

@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.detect-items]
 verify_jwt = true
+
+[functions.submit-agent-booking]
+verify_jwt = true

@@ -1,4 +1,5 @@
 -- Send customer email receipt when a payment succeeds (via send-payment-receipt edge function)
+-- NOTE: Edge-function auth is re-secured in 20260730131000_internal_webhook_auth.sql (service_role JWT).
 
 ALTER TABLE public.payments
     ADD COLUMN IF NOT EXISTS receipt_sent_at TIMESTAMPTZ;
@@ -7,10 +8,15 @@ CREATE OR REPLACE FUNCTION public.trigger_send_payment_receipt()
 RETURNS TRIGGER AS $$
 DECLARE
   payload jsonb;
+  service_role_key text;
 BEGIN
+  service_role_key := current_setting('app.settings.supabase_service_role_key', true);
+
   IF NEW.status = 'succeeded'
      AND NEW.receipt_sent_at IS NULL
      AND (TG_OP = 'INSERT' OR OLD.status IS DISTINCT FROM 'succeeded')
+     AND service_role_key IS NOT NULL
+     AND service_role_key <> ''
   THEN
     payload := jsonb_build_object(
       'type', TG_OP,
@@ -23,7 +29,7 @@ BEGIN
       url := 'https://mjgwoukwyqwoectxfwqv.supabase.co/functions/v1/send-payment-receipt',
       headers := jsonb_build_object(
         'Content-Type', 'application/json',
-        'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZ3dvdWt3eXF3b2VjdHhmd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3NjAzNjcsImV4cCI6MjA3MDMzNjM2N30.3ee-rHN_BYQKaZmLOTiyoVxU4fYLDnNnfToI8veH5F8'
+        'Authorization', 'Bearer ' || service_role_key
       ),
       body := payload,
       timeout_milliseconds := 10000

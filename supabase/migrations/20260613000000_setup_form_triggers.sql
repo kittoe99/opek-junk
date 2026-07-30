@@ -1,5 +1,6 @@
 -- Migration: Setup Database Triggers for Form Submission Email Notifications
 -- Creates AFTER INSERT triggers on contacts, bookings, provider_signups, schedule_visits, and in_home_estimates.
+-- NOTE: Edge-function auth is re-secured in 20260730131000_internal_webhook_auth.sql (service_role JWT).
 
 -- 1. Ensure pg_net extension is available
 CREATE EXTENSION IF NOT EXISTS pg_net SCHEMA net;
@@ -9,8 +10,10 @@ CREATE OR REPLACE FUNCTION public.trigger_send_form_notification()
 RETURNS TRIGGER AS $$
 DECLARE
   payload jsonb;
+  service_role_key text;
 BEGIN
-  -- Build the webhook payload matching send-form-notification's WebhookPayload interface
+  service_role_key := current_setting('app.settings.supabase_service_role_key', true);
+
   payload := jsonb_build_object(
     'type', TG_OP,
     'table', TG_TABLE_NAME,
@@ -18,16 +21,17 @@ BEGIN
     'schema', TG_TABLE_SCHEMA
   );
 
-  -- Queue HTTP request using pg_net (runs asynchronously after commit)
-  PERFORM net.http_post(
-    url := 'https://mjgwoukwyqwoectxfwqv.supabase.co/functions/v1/send-form-notification',
-    headers := jsonb_build_object(
-      'Content-Type', 'application/json',
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZ3dvdWt3eXF3b2VjdHhmd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3NjAzNjcsImV4cCI6MjA3MDMzNjM2N30.3ee-rHN_BYQKaZmLOTiyoVxU4fYLDnNnfToI8veH5F8'
-    ),
-    body := payload,
-    timeout_milliseconds := 5000
-  );
+  IF service_role_key IS NOT NULL AND service_role_key <> '' THEN
+    PERFORM net.http_post(
+      url := 'https://mjgwoukwyqwoectxfwqv.supabase.co/functions/v1/send-form-notification',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer ' || service_role_key
+      ),
+      body := payload,
+      timeout_milliseconds := 5000
+    );
+  END IF;
 
   RETURN NEW;
 END;
