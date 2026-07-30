@@ -19,7 +19,7 @@ import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
 import { JunkRemovalPriceBreakdown } from './shared/JunkRemovalPriceBreakdown';
-import { sendQuoteSms } from '../lib/sendQuoteSms';
+import { sendQuoteSms, movingQuoteSmsFields } from '../lib/sendQuoteSms';
 import {
   FLOW_PAGE_SHELL,
   FLOW_PAGE_CONTENT,
@@ -538,6 +538,14 @@ export const QuotePage: React.FC = () => {
         serviceType: serviceTypeLabel,
         summary: price.summary,
         volume: price.estimatedVolume,
+        ...(movingOpts
+          ? movingQuoteSmsFields({
+              helpers: movingOpts.helpers,
+              hours: movingOpts.hours,
+              needsTruck: movingOpts.needsTruck,
+              totalPrice: price.price,
+            })
+          : {}),
       });
 
       setPartialBookingId(partialId);

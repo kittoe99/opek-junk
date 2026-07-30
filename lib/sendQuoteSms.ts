@@ -7,6 +7,8 @@ export interface SendQuoteSmsParams {
   serviceType: string;
   summary?: string;
   volume?: string;
+  /** Overrides the formatted price in the SMS (e.g. "$119/hour"). */
+  priceLabel?: string;
 }
 
 /**
@@ -25,6 +27,7 @@ export async function sendQuoteSms(
         serviceType: params.serviceType,
         summary: params.summary,
         volume: params.volume,
+        priceLabel: params.priceLabel,
       },
     });
 
@@ -44,4 +47,21 @@ export async function sendQuoteSms(
     console.warn('[sendQuoteSms] exception:', message);
     return { ok: false, error: message };
   }
+}
+
+/** Build moving-labor SMS price + detail lines from estimate options. */
+export function movingQuoteSmsFields(opts: {
+  helpers: number;
+  hours: number;
+  needsTruck?: boolean;
+  totalPrice: number;
+}): { serviceType: string; priceLabel: string; volume: string } {
+  const helpers = opts.helpers === 1 ? 1 : 2;
+  const hourlyRate = helpers === 1 ? 79 : 119;
+  const truckNote = opts.needsTruck ? ' · +$99 truck' : '';
+  return {
+    serviceType: 'Local Moving',
+    priceLabel: `$${hourlyRate}/hour`,
+    volume: `${helpers} helper${helpers === 1 ? '' : 's'} · ~${opts.hours} hr${opts.hours === 1 ? '' : 's'} (est. $${Math.round(opts.totalPrice)})${truckNote}`,
+  };
 }

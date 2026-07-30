@@ -12,6 +12,7 @@ interface QuoteSmsPayload {
   serviceType?: string;
   summary?: string;
   volume?: string;
+  priceLabel?: string;
 }
 
 function firstName(name: string): string {
@@ -28,12 +29,15 @@ function formatPrice(price: number | string): string {
 function buildQuoteMessage(payload: QuoteSmsPayload): string {
   const name = firstName(String(payload.name || ''));
   const service = String(payload.serviceType || 'junk removal').trim() || 'junk removal';
-  const price = formatPrice(payload.price ?? 0);
+  const priceLabel = String(payload.priceLabel || '').trim() || formatPrice(payload.price ?? 0);
   const volume = payload.volume ? String(payload.volume).trim() : '';
   const summary = payload.summary ? String(payload.summary).trim() : '';
+  const isHourly = /\/\s*hour/i.test(priceLabel) || /moving/i.test(service);
 
   const lines = [
-    `Hi ${name} — your ${service} estimate from Opek is ready: ${price}.`,
+    isHourly
+      ? `Hi ${name} — your ${service} rate from Opek is ready: ${priceLabel}.`
+      : `Hi ${name} — your ${service} estimate from Opek is ready: ${priceLabel}.`,
   ];
 
   if (volume) {

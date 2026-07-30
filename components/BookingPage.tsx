@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { toStoredMovingOptions } from '../lib/bookingPayloads';
-import { sendQuoteSms } from '../lib/sendQuoteSms';
+import { sendQuoteSms, movingQuoteSmsFields } from '../lib/sendQuoteSms';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
@@ -258,6 +258,16 @@ export const BookingPage: React.FC = () => {
         serviceType: formData.serviceType || 'Junk Removal',
         summary: est.summary,
         volume: est.estimatedVolume,
+        ...(movingOpts
+          ? movingQuoteSmsFields({
+              helpers: movingOpts.helpers,
+              hours: movingOpts.hours,
+              needsTruck: movingOpts.needsTruck,
+              totalPrice: est.price,
+            })
+          : formData.serviceType === 'Moving Labor'
+            ? { serviceType: 'Local Moving' }
+            : {}),
       });
 
       setPartialBookingId(partialId);
