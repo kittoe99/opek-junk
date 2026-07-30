@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Check, Minus, Package, Plus, ShieldCheck } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
+import { sendQuoteSms } from '../../lib/sendQuoteSms';
 import { trackMattressConversion } from '../../lib/googleAds';
 import { resolveZipLocation } from '../../services/addressSearch';
 import {
@@ -337,6 +338,15 @@ export const MattressBookingPage: React.FC = () => {
       } catch (err) {
         console.warn('Supabase mattress lead capture failed:', err);
       }
+
+      void sendQuoteSms({
+        name,
+        phone,
+        price: pricing.total,
+        serviceType: 'Mattress Disposal',
+        summary: `Mattress disposal: ${itemsList.join(', ')}.`,
+        volume: `${activeItems.reduce((s, i) => s + i.quantity, 0)} items`,
+      });
 
       setFormData((prev) => ({ ...prev, name, phone }));
       setSmsMarketingConsentAt(consentAt);

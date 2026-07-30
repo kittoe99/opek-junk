@@ -16,6 +16,7 @@ import { calculateStaticPrice } from '../../services/pricingService';
 import { supabase } from '../../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
+import { sendQuoteSms } from '../../lib/sendQuoteSms';
 import { CameraCaptureIcon, UploadPhotoIcon } from '../icons/ServiceIcons';
 import { ContactIntakeForm } from './ContactIntakeForm';
 import { EstimateMethodSelection, EstimateMethodHero } from './EstimateMethodSelection';
@@ -292,6 +293,14 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
       } catch (err) {
         console.warn('Supabase lead capture failed, proceeding in mock mode:', err);
       }
+      void sendQuoteSms({
+        name,
+        phone,
+        price: price.price,
+        serviceType: 'Junk Removal',
+        summary: price.summary,
+        volume: price.estimatedVolume,
+      });
       setPartialBookingId(partialId);
       setContactName(name);
       setContactPhone(phone);

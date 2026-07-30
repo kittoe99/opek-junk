@@ -19,6 +19,7 @@ import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
 import { JunkRemovalPriceBreakdown } from './shared/JunkRemovalPriceBreakdown';
+import { sendQuoteSms } from '../lib/sendQuoteSms';
 import {
   FLOW_PAGE_SHELL,
   FLOW_PAGE_CONTENT,
@@ -529,6 +530,15 @@ export const QuotePage: React.FC = () => {
       } catch (err) {
         console.warn('Supabase lead capture failed, proceeding in mock mode:', err);
       }
+
+      void sendQuoteSms({
+        name,
+        phone,
+        price: price.price,
+        serviceType: serviceTypeLabel,
+        summary: price.summary,
+        volume: price.estimatedVolume,
+      });
 
       setPartialBookingId(partialId);
       setContactName(name);

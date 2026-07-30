@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../lib/customerConsent';
 import { toStoredMovingOptions } from '../lib/bookingPayloads';
+import { sendQuoteSms } from '../lib/sendQuoteSms';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { BookingSuccessView } from './shared/BookingSuccessView';
@@ -249,6 +250,15 @@ export const BookingPage: React.FC = () => {
       } catch (err) {
         console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', err);
       }
+
+      void sendQuoteSms({
+        name,
+        phone,
+        price: est.price,
+        serviceType: formData.serviceType || 'Junk Removal',
+        summary: est.summary,
+        volume: est.estimatedVolume,
+      });
 
       setPartialBookingId(partialId);
       setContactName(name);

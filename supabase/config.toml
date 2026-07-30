@@ -8,3 +8,6 @@ verify_jwt = true
 
 [functions.submit-agent-booking]
 verify_jwt = true
+
+[functions.send-quote-sms]
+verify_jwt = true
