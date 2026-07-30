@@ -30,6 +30,7 @@ import { FlowZipCheck } from './shared/flow/FlowZipCheck';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
+import { FlowSmsIntro } from './shared/flow/FlowSmsIntro';
 import { ServiceTypePicker, type ServicePickerId } from './shared/flow/ServiceTypePicker';
 
 export { ITEM_CATALOG, type CatalogItem, type CatalogCategory };
@@ -58,6 +59,7 @@ export const QuotePage: React.FC = () => {
       : null;
 
   const [zipVerified, setZipVerified] = useState(!!incomingState?.zipResult);
+  const [smsIntroSeen, setSmsIntroSeen] = useState(!!incomingState?.zipResult);
   const [zipValue, setZipValue] = useState(incomingState?.zipValue || '');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
@@ -134,6 +136,7 @@ export const QuotePage: React.FC = () => {
 
     if (state.zipResult && state.zipValue) {
       setZipVerified(true);
+      setSmsIntroSeen(true);
       setZipValue(state.zipValue);
       setZipResult({
         city: state.zipResult.city,
@@ -699,6 +702,18 @@ export const QuotePage: React.FC = () => {
     );
   }
 
+  // ── SMS intro screen ──
+  if (!smsIntroSeen) {
+    return (
+      <div className={FLOW_PAGE_SHELL}>
+        <FlowProgressBar progress={0.08} />
+        <div className={FLOW_PAGE_CONTENT}>
+          <FlowSmsIntro onContinue={() => setSmsIntroSeen(true)} />
+        </div>
+      </div>
+    );
+  }
+
   // ── ZIP check screen ──
   if (!zipVerified) {
     return (
@@ -714,6 +729,8 @@ export const QuotePage: React.FC = () => {
             loading={zipLoading}
             error={zipError}
             result={zipResult?.servedCity ? { city: zipResult.city, state: zipResult.state } : null}
+            showBack
+            onBack={() => setSmsIntroSeen(false)}
           />
         </div>
       </div>
