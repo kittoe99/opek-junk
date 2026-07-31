@@ -199,6 +199,12 @@ export const seoConfig = {
     description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (831) 318-7139 or email Support@opekjunkremoval.com',
     keywords: 'contact junk removal, customer support, junk removal help, schedule pickup',
   },
+  chat: {
+    title: 'Live Chat with Macy | Opek Junk Removal',
+    description: 'Chat live with Opek for quotes, bookings, and questions. Text or voice — available anytime.',
+    keywords: 'junk removal chat, live chat, book junk removal, get a quote',
+    noindex: true,
+  },
   booking: {
     title: 'Book Junk Removal Online | Opek — Nationwide Same-Day Pickup',
     description: 'Book junk removal online in minutes anywhere in the US. Pick your date, time, and service. Same-day and next-day appointments in all 50 states.',

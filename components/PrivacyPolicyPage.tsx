@@ -25,7 +25,7 @@ export const PrivacyPolicyPage: React.FC = () => {
             Opek operates a technology platform that connects customers (users looking for junk removal, dumpster rentals, property cleanouts, or moving labor) with independent, vetted, third-party local service providers (each, a "Provider"). We are based in the United States and serve customers nationwide.
           </p>
           <p className="mb-4">
-            This Privacy Policy explains what personal information we collect, how we use and share it, how we communicate with you (including by SMS text message, email, and phone), and what choices you have. It applies to information collected through our website at opekjunkremoval.com, our booking and quote flows, contact forms, provider signup, phone and AI voice assistant interactions, and any related services.
+            This Privacy Policy explains what personal information we collect, how we use and share it, how we communicate with you (including by SMS text message, email, and phone), and what choices you have. It applies to information collected through our website at opekjunkremoval.com, our booking and quote flows, contact forms, live chat, provider signup, phone and AI voice assistant interactions, and any related services.
           </p>
           <p>
             By accessing or using our services, submitting a form, placing a booking, or providing your contact information, you consent to the collection, transfer, storage, disclosure, and use of your personal information as described in this Privacy Policy and our{' '}
@@ -60,7 +60,7 @@ export const PrivacyPolicyPage: React.FC = () => {
               <strong>SMS Consent Records:</strong> Whether you opted in to marketing texts via the optional checkbox on quote or booking forms, the timestamp of consent, and the consent language shown at the time of opt-in.
             </li>
             <li>
-              <strong>Voice & Interaction Data:</strong> If you interact with our AI-powered phone assistant (powered by third-party platforms such as ElevenLabs), your voice interactions, call recordings, and conversation transcripts may be captured and stored for order execution, customer support, quality control, and service improvement.
+              <strong>Voice & Interaction Data:</strong> If you interact with our AI-powered phone or website chat assistant (powered by third-party platforms such as ElevenLabs), your voice or text interactions, call/chat recordings, and conversation transcripts may be captured and stored for order execution, customer support, quality control, and service improvement.
             </li>
             <li>
               <strong>Payment Information:</strong> Billing name, email, phone, and payment method details processed through our payment partner Stripe. We do not store full credit or debit card numbers on our servers.
@@ -205,7 +205,7 @@ export const PrivacyPolicyPage: React.FC = () => {
             <li><strong>Twilio</strong> — SMS/MMS text message delivery</li>
             <li><strong>Supabase</strong> — database hosting, file storage, and backend infrastructure</li>
             <li><strong>Resend</strong> — transactional and marketing email delivery</li>
-            <li><strong>ElevenLabs</strong> — AI voice assistant and call handling</li>
+            <li><strong>ElevenLabs</strong> — AI voice and live chat assistant</li>
             <li><strong>Vercel</strong> — website hosting and serverless API functions</li>
           </ul>
           <p>

@@ -17,6 +17,7 @@ import { supabase } from '../lib/supabase';
 import { ServicePageHero } from './shared/ServicePageHero';
 import {
   UTILITY_FORM_CARD,
+  UTILITY_FORM_WRAP,
   UTILITY_INPUT,
   UTILITY_PAGE_CONTENT,
   UTILITY_PRIMARY_BUTTON,
@@ -329,7 +330,7 @@ export const TrackOrderPage: React.FC = () => {
       <div
         ref={formRef}
         id="track-lookup"
-        className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in scroll-mt-[var(--site-header-height)]"
+        className={`${UTILITY_FORM_WRAP} animate-fade-in scroll-mt-[var(--site-header-height)]`}
       >
         <div className={UTILITY_FORM_CARD}>
           <div className="text-center space-y-2 mb-6">

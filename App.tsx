@@ -28,6 +28,7 @@ import { getCityBySlug } from './lib/cityData';
 
 const QuotePage = React.lazy(() => import('./components/QuotePage').then((m) => ({ default: m.QuotePage })));
 const ContactPage = React.lazy(() => import('./components/ContactPage').then((m) => ({ default: m.ContactPage })));
+const ChatPage = React.lazy(() => import('./components/ChatPage').then((m) => ({ default: m.ChatPage })));
 const BookingPage = React.lazy(() => import('./components/BookingPage').then((m) => ({ default: m.BookingPage })));
 const ProviderSignupPage = React.lazy(() => import('./components/ProviderSignupPage').then((m) => ({ default: m.ProviderSignupPage })));
 const SignUpPage = React.lazy(() => import('./components/SignUpPage').then((m) => ({ default: m.SignUpPage })));
@@ -35,8 +36,8 @@ const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').th
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
 const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
 
-const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking', '/sms-consent'];
-const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking'];
+const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking', '/sms-consent', '/chat'];
+const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking', '/chat'];
 
 function RouteFallback() {
   return (
@@ -142,6 +143,15 @@ function ContactPageWithSEO() {
     <>
       <SEO {...seoConfig.contact} />
       <ContactPage />
+    </>
+  );
+}
+
+function ChatPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.chat} />
+      <ChatPage />
     </>
   );
 }
@@ -302,6 +312,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/quote" element={<QuotePageWithSEO />} />
             <Route path="/contact" element={<ContactPageWithSEO />} />
+            <Route path="/chat" element={<ChatPageWithSEO />} />
             <Route path="/booking" element={<BookingPageWithSEO />} />
             <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
             <Route path="/lp/junk-removal" element={<JunkRemovalAdsLandingPageWithSEO />} />

@@ -12,6 +12,7 @@ import {
 } from './shared/ServiceAddressField';
 import {
   UTILITY_FORM_CARD,
+  UTILITY_FORM_WRAP,
   UTILITY_INPUT,
   UTILITY_LABEL,
   UTILITY_PRIMARY_BUTTON,
@@ -174,7 +175,7 @@ export const InHomeEstimatePage: React.FC = () => {
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       />
 
-      <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
+      <div className={`${UTILITY_FORM_WRAP} animate-fade-in`}>
         <div className={UTILITY_FORM_CARD}>
           {step === 1 && (
             <form onSubmit={handleContactSubmit} className="space-y-6">

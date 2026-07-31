@@ -48,6 +48,10 @@ export const UTILITY_PAGE_SHELL = 'home-dark min-h-screen bg-[var(--bg)] text-[v
 
 export const UTILITY_PAGE_CONTENT = 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14';
 
+/** Standalone utility forms (contact, track order, in-home estimate) */
+export const UTILITY_FORM_WRAP =
+  'max-w-2xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12';
+
 export const UTILITY_FORM_CARD =
   'bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 md:p-10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]';
 
