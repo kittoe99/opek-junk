@@ -500,6 +500,7 @@ export const QuotePage: React.FC = () => {
 
         const bookingDetails = withBookingPhotos(
           {
+            intake_source: 'quote',
             service_type: serviceTypeLabel,
             zip_code: zipValue || null,
             details: detailsText,
