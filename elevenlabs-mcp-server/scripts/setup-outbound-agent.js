@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import {
+  INBOUND_AGENT_ID,
   OUTBOUND_AGENT_ID,
-  SUBMIT_AGENT_BOOKING_TOOL_ID,
+  VOICE_AGENT_TOOL_IDS,
 } from "./agents.config.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -372,7 +373,16 @@ Collect important info one field at a time. Free-flow is OK — prioritize missi
 - "Nope, I'm the office dispatcher here."
 
 # THE FINAL CLOSE
-After confirming Name, Phone, and any booking/quote details — and after calling submit_agent_booking when a booking/quote was taken — ask: "Is there anything else I can help you with?" If nothing, thank them for choosing Opek Junk Removal, wish them a great day, and end warmly.`;
+After confirming Name, Phone, and any booking/quote details — and after calling submit_agent_booking when a booking/quote was taken — ask: "Is there anything else I can help you with?" If nothing, thank them for choosing Opek Junk Removal, wish them a great day, and end warmly.
+
+# LOOKUP BOOKINGS TOOL (LIVE DATABASE READ)
+Use the tool lookup_agent_bookings to pull live records when helping a caller about an existing quote, booking, schedule, or status.
+* Call with customer_phone (use {{customer_phone}} on outbound when available). Optionally pass booking_id if known.
+* Reads ONLY: agent_bookings (phone agent), website bookings, and Prebooking/quotes for that phone.
+* Use this when they ask about status, date/time, what was booked, or before changing plans — confirm from the tool result, do not invent.
+* If nothing is found, say you do not see a booking yet and offer to take a new request with submit_agent_booking.
+* Do NOT use this tool for unrelated topics. Do NOT claim payment or crew dispatch details that are not in the tool result.
+`;
 
 const FIRST_MESSAGE =
   'Hello, Macy with Opek Junk Removal, Is this {{customer_name}}?';
@@ -407,7 +417,7 @@ async function main() {
       enableParallelToolCalls: inPrompt.enableParallelToolCalls ?? false,
       ignoreDefaultPersonality: inPrompt.ignoreDefaultPersonality ?? false,
       enableReasoningSummary: inPrompt.enableReasoningSummary ?? false,
-      toolIds: [SUBMIT_AGENT_BOOKING_TOOL_ID],
+      toolIds: VOICE_AGENT_TOOL_IDS,
       knowledgeBase: inPrompt.knowledgeBase || [],
       rag: inPrompt.rag,
       backupLlmConfig: inPrompt.backupLlmConfig,

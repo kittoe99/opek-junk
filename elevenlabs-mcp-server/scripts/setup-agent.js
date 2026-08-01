@@ -2,12 +2,14 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  INBOUND_AGENT_ID as AGENT_ID,
+  VOICE_AGENT_TOOL_IDS,
+} from "./agents.config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
-
-const AGENT_ID = "agent_5101kgxcwtkgek18m0j13cq16t3y";
 
 const SYSTEM_PROMPT = `# IDENTITY & ROLE
 You are Macy, the customer service representative for Opek Junk Removal. Your objective is to answer questions about our business, take booking and quote requests over the phone using the same details collected on our website forms, calculate estimates using the EXACT pricing rules below, and direct callers to the right pages when needed.
@@ -295,9 +297,16 @@ Collect important info one field at a time. Free-flow is OK — prioritize name,
 - "Nope, I'm the office dispatcher here."
 
 # THE FINAL CLOSE
-After confirming Name, Phone, and any booking/quote details — and after calling submit_agent_booking when a booking/quote was taken — ask: "Is there anything else I can help you with?" If nothing, thank them for calling Opek Junk Removal, wish them a great day, and end warmly.`;
+After confirming Name, Phone, and any booking/quote details — and after calling submit_agent_booking when a booking/quote was taken — ask: "Is there anything else I can help you with?" If nothing, thank them for calling Opek Junk Removal, wish them a great day, and end warmly.
 
-const BOOKING_TOOL_ID = "tool_4601kyd0dyjmfegvahahhwvkv6zh";
+# LOOKUP BOOKINGS TOOL (LIVE DATABASE READ)
+Use the tool lookup_agent_bookings to pull live records when helping a caller about an existing quote, booking, schedule, or status.
+* Call with customer_phone. Optionally pass booking_id if known.
+* Reads ONLY: agent_bookings (phone agent), website bookings, and Prebooking/quotes for that phone.
+* Use this when they ask about status, date/time, what was booked, or before changing plans — confirm from the tool result, do not invent.
+* If nothing is found, say you do not see a booking yet and offer to take a new request with submit_agent_booking.
+* Do NOT use this tool for unrelated topics. Do NOT claim payment or crew dispatch details that are not in the tool result.
+`;
 
 async function main() {
   const apiKey = process.env.ELEVENLABS_API_KEY;
@@ -313,20 +322,20 @@ async function main() {
     console.log(`Retrieving current agent configuration for ${AGENT_ID}...`);
     const agentData = await client.conversationalAi.agents.get(AGENT_ID);
 
-    console.log(`Updating agent prompt + attach submit_agent_booking tool...`);
+    console.log(`Updating agent prompt + attach booking tools...`);
     await client.conversationalAi.agents.update(AGENT_ID, {
       conversationConfig: {
         agent: {
           prompt: {
             prompt: SYSTEM_PROMPT,
-            toolIds: [BOOKING_TOOL_ID],
+            toolIds: VOICE_AGENT_TOOL_IDS,
           },
         },
       },
     });
 
     console.log(
-      `Agent '${agentData.name}' (${AGENT_ID}) updated with booking DB tool ${BOOKING_TOOL_ID}.`
+      `Agent '${agentData.name}' (${AGENT_ID}) updated with tools ${VOICE_AGENT_TOOL_IDS.join(", ")}.`
     );
   } catch (error) {
     console.error("Error updating agent:", error);
