@@ -31,9 +31,9 @@ const STRIPE_ELEMENT_STYLE = {
       'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSmoothing: 'antialiased',
     '::placeholder': {
-      color: '#9ca3af',
+      color: '#63636b',
     },
-    iconColor: '#9ca3af',
+    iconColor: '#63636b',
     lineHeight: '24px',
   },
   invalid: {
@@ -348,7 +348,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
               onChange={(e) => setPostalCode(e.target.value)}
               placeholder="12345"
               autoComplete="postal-code"
-              className="w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300"
+              className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300"
             />
           </div>
         </div>

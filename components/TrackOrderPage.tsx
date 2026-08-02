@@ -12,8 +12,13 @@ import {
   ChevronRight,
   Calendar,
   MapPin,
+  Loader2,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import {
+  requestOrderLookupOtp,
+  verifyOrderLookupOtp,
+} from '../lib/lookupOrderByPhone';
 import { ServicePageHero } from './shared/ServicePageHero';
 import {
   UTILITY_FORM_CARD,
@@ -83,10 +88,20 @@ const formatSchedule = (date?: string, time?: string | null) => {
   return time ? `${formatPreferredDate(date)} · ${time}` : formatPreferredDate(date);
 };
 
+function formatDisplayPhone(val: string) {
+  if (!val) return '';
+  if (val.length <= 3) return val;
+  if (val.length <= 6) return `(${val.slice(0, 3)}) ${val.slice(3)}`;
+  return `(${val.slice(0, 3)}) ${val.slice(3, 6)}-${val.slice(6)}`;
+}
+
 export const TrackOrderPage: React.FC = () => {
   const formRef = useRef<HTMLDivElement>(null);
   const [searchType, setSearchType] = useState<'phone' | 'order'>('phone');
   const [searchValue, setSearchValue] = useState('');
+  const [phoneDigits, setPhoneDigits] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpStep, setOtpStep] = useState(false);
   const [results, setResults] = useState<BookingResult[]>([]);
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -99,8 +114,89 @@ export const TrackOrderPage: React.FC = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const resetLookupState = () => {
+    setResults([]);
+    setSelectedOrder(null);
+    setStatusHistory([]);
+    setSearched(false);
+    setError(null);
+    setOtpStep(false);
+    setOtpCode('');
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length >= 11 && val.startsWith('1')) val = val.slice(1);
+    const digits = val.slice(0, 10);
+    setPhoneDigits(digits);
+    setSearchValue(formatDisplayPhone(digits));
+  };
+
+  const sendPhoneCode = async () => {
+    setError(null);
+    if (phoneDigits.length < 10) {
+      setError('Please enter a valid 10-digit phone number.');
+      return;
+    }
+    setLoading(true);
+    setResults([]);
+    setSelectedOrder(null);
+    setStatusHistory([]);
+    setSearched(false);
+    try {
+      const result = await requestOrderLookupOtp(formatDisplayPhone(phoneDigits));
+      if (!result.ok) {
+        if (result.reason === 'no_order') {
+          setSearched(true);
+          setResults([]);
+          setError(null);
+        } else {
+          setError(result.error || 'Could not send verification code.');
+        }
+        return;
+      }
+      setOtpStep(true);
+      setOtpCode('');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyPhoneCode = async () => {
+    setError(null);
+    const digits = otpCode.replace(/\D/g, '');
+    if (digits.length !== 6) {
+      setError('Enter the 6-digit code we texted you.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const result = await verifyOrderLookupOtp(formatDisplayPhone(phoneDigits), digits);
+      if (!result.ok || !result.bookings) {
+        setError(result.error || 'Verification failed.');
+        return;
+      }
+      setResults(result.bookings as BookingResult[]);
+      setSearched(true);
+      setOtpStep(false);
+      setOtpCode('');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (searchType === 'phone') {
+      if (otpStep) {
+        await verifyPhoneCode();
+      } else {
+        await sendPhoneCode();
+      }
+      return;
+    }
+
     const value = searchValue.trim();
     if (!value) return;
 
@@ -113,13 +209,13 @@ export const TrackOrderPage: React.FC = () => {
 
     try {
       const { data, error: queryError } = await supabase.rpc('track_order', {
-        p_search_type: searchType,
+        p_search_type: 'order',
         p_search_value: value,
       });
 
       if (queryError) throw queryError;
       setResults((data as BookingResult[]) || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Track order error:', err);
       setError('Unable to look up your order. Please check your input and try again.');
     } finally {
@@ -131,11 +227,15 @@ export const TrackOrderPage: React.FC = () => {
     setSelectedOrder(order);
     setHistoryLoading(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    const proofValue =
+      searchType === 'phone'
+        ? order.customer_info?.phone || formatDisplayPhone(phoneDigits)
+        : searchValue.trim();
     try {
       const { data, error: histError } = await supabase.rpc('get_order_status_history', {
         p_booking_id: order.id,
         p_search_type: searchType,
-        p_search_value: searchValue.trim(),
+        p_search_value: proofValue,
       });
 
       if (histError) throw histError;
@@ -334,67 +434,132 @@ export const TrackOrderPage: React.FC = () => {
       >
         <div className={UTILITY_FORM_CARD}>
           <div className="text-center space-y-2 mb-6">
-            <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Find your order</h2>
-            <p className="text-[var(--text-muted)] text-xs">Search by phone or confirmation number.</p>
+            <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">
+              {otpStep ? 'Enter your code' : 'Find your order'}
+            </h2>
+            <p className="text-[var(--text-muted)] text-xs">
+              {otpStep
+                ? `We texted a 6-digit code to ${formatDisplayPhone(phoneDigits)}.`
+                : 'Search by phone or confirmation number.'}
+            </p>
           </div>
 
-          <div className="flex bg-[var(--bg)] border border-[var(--border)] rounded-full p-1 mb-6">
-            <button
-              type="button"
-              onClick={() => {
-                setSearchType('phone');
-                setSearchValue('');
-                setSearched(false);
-                setResults([]);
-                setError(null);
-              }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-semibold transition-all ${
-                searchType === 'phone' ? 'bg-brand text-white shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
-              }`}
-            >
-              <Phone size={13} /> Phone
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setSearchType('order');
-                setSearchValue('');
-                setSearched(false);
-                setResults([]);
-                setError(null);
-              }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-semibold transition-all ${
-                searchType === 'order' ? 'bg-brand text-white shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
-              }`}
-            >
-              <Hash size={13} /> Order #
-            </button>
-          </div>
+          {!otpStep ? (
+            <div className="flex bg-[var(--bg)] border border-[var(--border)] rounded-full p-1 mb-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchType('phone');
+                  setSearchValue('');
+                  setPhoneDigits('');
+                  resetLookupState();
+                }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-semibold transition-all ${
+                  searchType === 'phone' ? 'bg-brand text-white shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
+                }`}
+              >
+                <Phone size={13} /> Phone
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchType('order');
+                  setSearchValue('');
+                  setPhoneDigits('');
+                  resetLookupState();
+                }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-semibold transition-all ${
+                  searchType === 'order' ? 'bg-brand text-white shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
+                }`}
+              >
+                <Hash size={13} /> Order #
+              </button>
+            </div>
+          ) : null}
 
           <form onSubmit={handleSearch}>
-            <div className="relative mb-4">
-              <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
-                className={UTILITY_INPUT}
-                required
-              />
-            </div>
+            {otpStep ? (
+              <div className="relative mb-4">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  value={otpCode}
+                  onChange={(e) => {
+                    setError(null);
+                    setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6));
+                  }}
+                  placeholder="######"
+                  className={`${UTILITY_INPUT} tracking-[0.35em] text-center text-lg font-semibold`}
+                  disabled={loading}
+                  required
+                />
+              </div>
+            ) : (
+              <div className="relative mb-4">
+                <input
+                  type={searchType === 'phone' ? 'tel' : 'text'}
+                  inputMode={searchType === 'phone' ? 'tel' : 'text'}
+                  value={searchValue}
+                  onChange={searchType === 'phone' ? handlePhoneChange : (e) => setSearchValue(e.target.value)}
+                  placeholder={searchType === 'phone' ? 'Enter your phone number' : 'e.g. OPK-A1B2C3'}
+                  className={UTILITY_INPUT}
+                  required
+                  disabled={loading}
+                />
+              </div>
+            )}
             <button
               type="submit"
-              disabled={loading || !searchValue.trim()}
+              disabled={
+                loading ||
+                (otpStep ? otpCode.length !== 6 : searchType === 'phone' ? phoneDigits.length < 10 : !searchValue.trim())
+              }
               className={UTILITY_PRIMARY_BUTTON}
             >
               {loading ? (
-                'Searching...'
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 size={14} className="animate-spin" />
+                  {otpStep ? 'Verifying...' : searchType === 'phone' ? 'Sending code...' : 'Searching...'}
+                </span>
+              ) : otpStep ? (
+                <>
+                  Verify <ArrowRight size={14} />
+                </>
+              ) : searchType === 'phone' ? (
+                <>
+                  Text me a code <ArrowRight size={14} />
+                </>
               ) : (
                 <>
                   Track Order <ArrowRight size={14} />
                 </>
               )}
             </button>
+            {otpStep ? (
+              <div className="mt-3 flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => void sendPhoneCode()}
+                  disabled={loading}
+                  className="w-full text-center text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors py-2"
+                >
+                  Resend code
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpStep(false);
+                    setOtpCode('');
+                    setError(null);
+                  }}
+                  disabled={loading}
+                  className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors py-2"
+                >
+                  <ArrowLeft size={13} /> Back
+                </button>
+              </div>
+            ) : null}
           </form>
         </div>
 
@@ -405,7 +570,7 @@ export const TrackOrderPage: React.FC = () => {
           </div>
         )}
 
-        {searched && !loading && !error && (
+        {searched && !loading && !error && !otpStep && (
           <div className="mt-10">
             {results.length === 0 ? (
               <div className="text-center py-12 px-6 bg-[var(--surface)] border border-[var(--border)] rounded-3xl">
@@ -476,10 +641,11 @@ export const TrackOrderPage: React.FC = () => {
           </div>
         )}
 
-        {!searched && (
+        {!searched && !otpStep && (
           <p className="text-xs text-[var(--text-muted)] mt-8 leading-relaxed text-center">
             Your order number (e.g. <span className="font-mono font-semibold text-[var(--text)]">OPK-A1B2C3</span>) was
-            sent in your booking confirmation. If you don&apos;t have it, use your phone number instead.
+            sent in your booking confirmation. If you don&apos;t have it, use your phone number — we&apos;ll text a
+            verification code before showing your orders.
           </p>
         )}
       </div>

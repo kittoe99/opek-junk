@@ -98,6 +98,18 @@ type PrebookingRow = {
   created_at: string;
 };
 
+type BookingRow = {
+  id: string;
+  order_number: string;
+  customer_info: Record<string, unknown> | null;
+  location_info: Record<string, unknown> | null;
+  booking_details: Record<string, unknown> | null;
+  status: string;
+  created_at: string;
+};
+
+type LookupPurpose = "quote" | "track_order";
+
 async function findLatestOpenPrebooking(
   supabase: ReturnType<typeof createClient>,
   digits: string,
@@ -118,6 +130,28 @@ async function findLatestOpenPrebooking(
 
   const match = (data || []).find((row) => phonesMatch(row.customer_info?.phone, digits));
   return (match as PrebookingRow | undefined) ?? null;
+}
+
+async function findBookingsByPhone(
+  supabase: ReturnType<typeof createClient>,
+  digits: string,
+): Promise<BookingRow[]> {
+  const pattern = phoneIlikePattern(digits);
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("id, order_number, customer_info, location_info, booking_details, status, created_at")
+    .ilike("customer_info->>phone", pattern)
+    .order("created_at", { ascending: false })
+    .limit(30);
+
+  if (error) {
+    console.error("[lookup-quote-otp] bookings lookup failed", error);
+    throw new Error(error.message);
+  }
+
+  return (data || [])
+    .filter((row) => phonesMatch(row.customer_info?.phone, digits))
+    .slice(0, 10) as BookingRow[];
 }
 
 function shapePayload(row: PrebookingRow) {
@@ -150,6 +184,45 @@ function shapePayload(row: PrebookingRow) {
   };
 }
 
+function shapeBooking(row: BookingRow) {
+  const ci = row.customer_info || {};
+  const li = row.location_info || {};
+  const bd = row.booking_details || {};
+  return {
+    id: row.id,
+    order_number: row.order_number,
+    created_at: row.created_at,
+    status: row.status,
+    customer_info: {
+      name: ci.name ?? null,
+      phone: ci.phone ?? null,
+      email: ci.email ?? null,
+    },
+    location_info: {
+      address: li.address ?? null,
+      unit_number: li.unit_number ?? null,
+      city: li.city ?? null,
+      state: li.state ?? null,
+      zip_code: li.zip_code ?? null,
+    },
+    booking_details: {
+      service_type: bd.service_type ?? null,
+      preferred_date: bd.preferred_date ?? null,
+      preferred_time: bd.preferred_time ?? null,
+      details: bd.details ?? null,
+      estimated_items: bd.estimated_items ?? null,
+      estimated_volume: bd.estimated_volume ?? null,
+      price: bd.price ?? null,
+      estimate_summary: bd.estimate_summary ?? null,
+      photo_url: bd.photo_url ?? null,
+    },
+  };
+}
+
+function parsePurpose(value: unknown): LookupPurpose {
+  return String(value || "").trim() === "track_order" ? "track_order" : "quote";
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -164,7 +237,7 @@ Deno.serve(async (req: Request) => {
     return json(401, { error: "Unauthorized" });
   }
 
-  let body: { action?: string; phone?: string; code?: string };
+  let body: { action?: string; phone?: string; code?: string; purpose?: string };
   try {
     body = await req.json();
   } catch {
@@ -172,6 +245,7 @@ Deno.serve(async (req: Request) => {
   }
 
   const action = String(body.action || "").trim();
+  const purpose = parsePurpose(body.purpose);
   const digits = last10(body.phone);
   if (digits.length < 10) {
     return json(400, { error: "A valid 10-digit phone number is required", reason: "invalid_phone" });
@@ -189,9 +263,16 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (action === "request_otp") {
-      const open = await findLatestOpenPrebooking(supabase, digits);
-      if (!open) {
-        return json(200, { ok: false, reason: "no_quote" });
+      if (purpose === "track_order") {
+        const bookings = await findBookingsByPhone(supabase, digits);
+        if (!bookings.length) {
+          return json(200, { ok: false, reason: "no_order" });
+        }
+      } else {
+        const open = await findLatestOpenPrebooking(supabase, digits);
+        if (!open) {
+          return json(200, { ok: false, reason: "no_quote" });
+        }
       }
 
       const { data: recent } = await supabase
@@ -285,6 +366,14 @@ Deno.serve(async (req: Request) => {
       }
 
       await supabase.from("quote_lookup_otps").delete().eq("phone_digits", digits);
+
+      if (purpose === "track_order") {
+        const bookings = await findBookingsByPhone(supabase, digits);
+        if (!bookings.length) {
+          return json(200, { ok: false, reason: "no_order" });
+        }
+        return json(200, { ok: true, bookings: bookings.map(shapeBooking) });
+      }
 
       const open = await findLatestOpenPrebooking(supabase, digits);
       if (!open) {

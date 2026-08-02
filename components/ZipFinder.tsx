@@ -130,7 +130,7 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                       placeholder="Enter Zip/Postal Code"
                       aria-invalid={Boolean(error)}
                       aria-describedby={error ? 'zip-error' : undefined}
-                      className={`w-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none border border-b-0 sm:border-b sm:border-r-0 bg-[#0e0e12] pl-10 pr-4 py-3.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-500 hover:bg-[#121218] disabled:opacity-70 ${
+                      className={`opek-field w-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none border border-b-0 sm:border-b sm:border-r-0 bg-[#0e0e12] pl-10 pr-4 py-3.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-500 hover:bg-[#121218] disabled:opacity-70 ${
                         error ? 'border-brand' : 'border-white/15'
                       }`}
                       required

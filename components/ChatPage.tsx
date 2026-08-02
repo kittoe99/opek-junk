@@ -194,7 +194,7 @@ function LiveChatModal({
           box-shadow: none !important;
         }
         [data-opek-live-chat] textarea.opek-chat-input::placeholder {
-          color: #73737f !important;
+          color: #63636b !important;
           opacity: 1 !important;
         }
         [data-opek-live-chat] textarea.opek-chat-input:focus {
@@ -329,7 +329,7 @@ function LiveChatModal({
                       ? 'Ask about pricing, bookings, or anything else…'
                       : 'Connecting…'
                   }
-                  className="opek-chat-input flex-1 resize-none rounded-2xl border border-white/15 px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
+                  className="opek-chat-input opek-field flex-1 resize-none rounded-2xl border border-white/15 px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
                   style={{
                     backgroundColor: '#16161c',
                     color: '#f4f4f5',

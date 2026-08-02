@@ -23,7 +23,7 @@ export function scrollToFlowStep(el: HTMLElement | null): void {
 }
 
 export const FLOW_INPUT =
-  'w-full px-4 py-3 rounded-xl text-sm transition-all disabled:opacity-55';
+  'opek-field w-full px-4 py-3 rounded-xl text-sm transition-all disabled:opacity-55 placeholder:text-neutral-500';
 
 export const FLOW_LABEL = 'block text-sm font-medium text-[var(--text)] mb-1.5';
 
@@ -56,7 +56,7 @@ export const UTILITY_FORM_CARD =
   'bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 md:p-10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]';
 
 export const UTILITY_INPUT =
-  'w-full px-4 py-3 rounded-xl text-sm transition-all duration-200';
+  'opek-field w-full px-4 py-3 rounded-xl text-sm transition-all duration-200 placeholder:text-neutral-500';
 
 export const UTILITY_LABEL = 'block text-xs font-semibold text-[var(--text-muted)] mb-1.5';
 

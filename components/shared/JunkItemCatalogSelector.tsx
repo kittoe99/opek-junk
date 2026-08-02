@@ -300,7 +300,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                   value={catalogSearch}
                   onChange={(e) => setCatalogSearch(e.target.value)}
                   placeholder="Search items…"
-                  className="w-full pl-10 pr-10 py-2.5 text-sm bg-white/[0.04] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:bg-[var(--surface)] focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
+                  className="opek-field w-full pl-10 pr-10 py-2.5 text-sm bg-white/[0.04] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:bg-[var(--surface)] focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
                 />
                 {catalogSearch && (
                   <button
@@ -406,7 +406,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                           }
                         }}
                         placeholder="Type item name"
-                        className="flex-1 px-3.5 py-2.5 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
+                        className="opek-field flex-1 px-3.5 py-2.5 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
                       />
                       <button
                         type="button"

@@ -25,7 +25,7 @@ export const EMPTY_SERVICE_ADDRESS: ServiceAddressValue = {
 };
 
 const INPUT_CLASS =
-  'w-full pl-9 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all';
+  'opek-field w-full pl-9 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all';
 
 export function isServiceAddressValidated(value: ServiceAddressValue): boolean {
   return Boolean(value.address.trim() && value.city.trim() && value.state.trim());
@@ -179,7 +179,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
           onChange={(e) => onChange({ ...value, unitNumber: e.target.value })}
           placeholder="Apt / Unit / Suite (optional)"
           autoComplete="address-line2"
-          className="w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl mt-2 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all"
+          className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl mt-2 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all"
         />
       )}
       {error && (

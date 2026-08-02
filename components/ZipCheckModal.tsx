@@ -111,7 +111,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="e.g. 75201"
-                    className="flex-1 min-w-0 w-full bg-transparent border-none px-4 py-3 text-sm font-extrabold text-secondary placeholder:text-secondary-300 focus:outline-none tracking-widest text-center"
+                    className="opek-field flex-1 min-w-0 w-full bg-transparent border-none px-4 py-3 text-sm font-extrabold text-secondary placeholder:text-neutral-500 focus:outline-none tracking-widest text-center"
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                     autoFocus
                   />

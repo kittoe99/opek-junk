@@ -71,7 +71,7 @@ export const FullServiceSection: React.FC = () => {
                 }}
                 onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                 placeholder="Enter ZIP code for pricing"
-                className="flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary focus:outline-none font-mono tracking-wider min-w-0"
+                className="opek-field flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary placeholder:text-neutral-500 focus:outline-none font-mono tracking-wider min-w-0"
                 style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
               />
               <button

@@ -9,8 +9,8 @@ interface FlowSmsIntroProps {
 export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => (
   <>
     <FlowStepTitle
-      title="Get Quote Sent To Your Phone"
-      subtitle="Tell us what you need — we'll send a clear price estimate straight to your phone."
+      title="Know the price before you book"
+      subtitle="Share what you need removed and we'll send the estimate straight to your phone."
     />
 
     <div className="flex justify-center mb-2">
@@ -66,7 +66,7 @@ export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => (
     </div>
 
     <p className="text-xs text-[var(--text-muted)] text-center leading-relaxed px-2">
-      Free estimate · No obligation · Nationwide coverage
+      Free · No obligation · Nationwide coverage
     </p>
 
     <FlowStickyNav

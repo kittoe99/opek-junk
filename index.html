@@ -253,6 +253,17 @@
         box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.1);
         outline: none;
       }
+
+      /* Default placeholder — dark gray sitewide (beats translucent white text inheritance) */
+      input::placeholder,
+      textarea::placeholder,
+      input::-webkit-input-placeholder,
+      textarea::-webkit-input-placeholder,
+      input::-moz-placeholder,
+      textarea::-moz-placeholder {
+        color: #63636b !important;
+        opacity: 1 !important;
+      }
       
       html {
         scroll-behavior: smooth;
@@ -304,8 +315,13 @@
         box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.18);
       }
       .home-dark input::placeholder,
-      .home-dark textarea::placeholder {
-        color: #63636b;
+      .home-dark textarea::placeholder,
+      .home-dark input::-webkit-input-placeholder,
+      .home-dark textarea::-webkit-input-placeholder,
+      .home-dark input::-moz-placeholder,
+      .home-dark textarea::-moz-placeholder {
+        color: #63636b !important;
+        opacity: 1 !important;
       }
 
       .home-dark h1,
@@ -602,6 +618,32 @@
         .animate-shimmer-line {
           animation: none !important;
         }
+      }
+    </style>
+    <!-- Loaded last so placeholders stay dark gray even if Tailwind injects later utilities -->
+    <style id="opek-placeholder-override">
+      input::placeholder,
+      textarea::placeholder,
+      .opek-field::placeholder,
+      .home-dark input::placeholder,
+      .home-dark textarea::placeholder,
+      .home-dark .opek-field::placeholder {
+        color: #63636b !important;
+        -webkit-text-fill-color: #63636b !important;
+        opacity: 1 !important;
+      }
+      input::-webkit-input-placeholder,
+      textarea::-webkit-input-placeholder,
+      .opek-field::-webkit-input-placeholder {
+        color: #63636b !important;
+        -webkit-text-fill-color: #63636b !important;
+        opacity: 1 !important;
+      }
+      input::-moz-placeholder,
+      textarea::-moz-placeholder,
+      .opek-field::-moz-placeholder {
+        color: #63636b !important;
+        opacity: 1 !important;
       }
     </style>
 

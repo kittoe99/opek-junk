@@ -1127,7 +1127,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={isMovingLabor ? "Tell the crew about fragile items, parking, gate codes, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300 transition-colors"
+                className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(255,0,110,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(255,0,110,0.45)] transition-all duration-300 transition-colors"
               />
             </div>
           </div>
