@@ -11,3 +11,6 @@ verify_jwt = true
 
 [functions.send-quote-sms]
 verify_jwt = true
+
+[functions.lookup-quote-otp]
+verify_jwt = true

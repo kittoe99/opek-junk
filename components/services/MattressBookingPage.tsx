@@ -20,7 +20,7 @@ import {
   FLOW_STEP_ANCHOR,
   scrollToFlowStep,
 } from '../../lib/flowPageLayout';
-import { FlowProgressBar } from '../shared/flow/FlowProgressBar';
+import { FlowChrome } from '../shared/flow/FlowChrome';
 import { FlowZipCheck } from '../shared/flow/FlowZipCheck';
 import { FlowStepTitle } from '../shared/flow/FlowStepTitle';
 import { FlowStickyNav } from '../shared/flow/FlowStickyNav';
@@ -213,6 +213,16 @@ export const MattressBookingPage: React.FC = () => {
   const pricing = getMattressPricingBreakdown(selectedItems);
   const activeItems = selectedItems.filter((i) => i.quantity > 0);
   const progress = step === 9 ? 1 : Math.min(0.95, step / 9);
+  const chromeStepLabel =
+    step === 1 ? 'ZIP check'
+    : step === 2 ? 'Items'
+    : step === 3 ? 'Contact'
+    : step === 4 ? 'Estimate'
+    : step === 5 ? 'Schedule'
+    : step === 6 ? 'Address'
+    : step === 7 ? 'Deposit'
+    : step === 8 ? 'Payment'
+    : 'Confirmed';
 
   const goTo = (next: Step) => {
     setFormError(null);
@@ -476,7 +486,14 @@ export const MattressBookingPage: React.FC = () => {
 
   return (
     <div className={FLOW_PAGE_SHELL}>
-      {step < 9 && <FlowProgressBar progress={progress} />}
+      {step < 9 && (
+        <FlowChrome
+          flowLabel="Mattress booking"
+          stepLabel={chromeStepLabel}
+          progress={progress}
+          hasProgress={step > 1 || zipCode.trim().length > 0}
+        />
+      )}
       <div className={FLOW_PAGE_CONTENT}>
         <div ref={stepAnchorRef} className={FLOW_STEP_ANCHOR} />
 

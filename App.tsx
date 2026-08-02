@@ -38,6 +38,7 @@ const MattressBookingPage = React.lazy(() => import('./components/services/Mattr
 
 const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking', '/sms-consent', '/chat'];
 const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking', '/chat'];
+const NAVBAR_HIDDEN_PREFIXES = ['/quote', '/booking', '/chat'];
 
 function RouteFallback() {
   return (
@@ -78,6 +79,27 @@ function GlobalFooter() {
   }
 
   return <Footer />;
+}
+
+function GlobalNavbar() {
+  const { pathname } = useLocation();
+
+  if (NAVBAR_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
+
+  return <Navbar />;
+}
+
+function MainShell({ children }: { children: React.ReactNode }) {
+  const { pathname } = useLocation();
+  const flowChrome = NAVBAR_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+  return (
+    <main className={flowChrome ? 'pt-0' : 'pt-[var(--site-header-height)]'}>
+      {children}
+    </main>
+  );
 }
 
 function ScrollToTop() {
@@ -304,9 +326,9 @@ function App() {
       <div className="min-h-screen bg-[#070709] text-neutral-100 selection:bg-brand selection:text-white">
         <PageLoader />
         <ScrollToTop />
-        <Navbar />
-        
-        <main className="pt-[var(--site-header-height)]">
+        <GlobalNavbar />
+
+        <MainShell>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -335,7 +357,7 @@ function App() {
             <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
           </Routes>
         </Suspense>
-        </main>
+        </MainShell>
 
         <GlobalQuickActionBar />
         <GlobalFooter />

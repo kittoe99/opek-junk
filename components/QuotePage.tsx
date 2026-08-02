@@ -26,7 +26,7 @@ import {
   flowPageMaxWidth,
   scrollToFlowStep,
 } from '../lib/flowPageLayout';
-import { FlowProgressBar } from './shared/flow/FlowProgressBar';
+import { FlowChrome } from './shared/flow/FlowChrome';
 import { FlowZipCheck } from './shared/flow/FlowZipCheck';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
@@ -667,7 +667,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={0.95} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Schedule & book" progress={0.95} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <BookingDetailsForm
             estimate={estimate}
@@ -725,7 +725,7 @@ export const QuotePage: React.FC = () => {
   if (!smsIntroSeen) {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={0.08} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Intro" progress={0.08} />
         <div className={FLOW_PAGE_CONTENT}>
           <FlowSmsIntro onContinue={() => setSmsIntroSeen(true)} />
         </div>
@@ -737,7 +737,7 @@ export const QuotePage: React.FC = () => {
   if (!zipVerified) {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={0.2} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="ZIP check" progress={0.2} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <FlowZipCheck
             title="Get a free quote"
@@ -767,7 +767,7 @@ export const QuotePage: React.FC = () => {
   if (!selectedService) {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={0.4} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Service" progress={0.4} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <ServiceTypePicker
             onSelect={handleQuoteServicePick}
@@ -789,7 +789,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={junkProgress} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Estimate" progress={junkProgress} hasProgress />
         <div className={`${flowPageMaxWidth(junkWide)} transition-all duration-300`}>
           <JunkRemovalEstimateFlow
             zipValue={zipValue}
@@ -831,7 +831,7 @@ export const QuotePage: React.FC = () => {
   if (selectedOption === 'moving_labor') {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={0.6} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Moving options" progress={0.6} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <MovingLaborEstimateFlow
             onBack={() => {
@@ -889,7 +889,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={donationProgress} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Donations" progress={donationProgress} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
 
           {/* STEP 1: DETAILS */}
@@ -1048,7 +1048,7 @@ export const QuotePage: React.FC = () => {
 
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowProgressBar progress={dumpsterProgress} />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Dumpster" progress={dumpsterProgress} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
 
           {/* STEP 1: SIZE SELECTION */}

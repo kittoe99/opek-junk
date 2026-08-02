@@ -20,12 +20,14 @@ import {
   FLOW_PAGE_CONTENT,
   flowPageMaxWidth,
 } from '../lib/flowPageLayout';
-import { FlowProgressBar } from './shared/flow/FlowProgressBar';
+import { FlowChrome } from './shared/flow/FlowChrome';
 import { FlowZipCheck } from './shared/flow/FlowZipCheck';
 import { ServiceTypePicker, type ServicePickerId } from './shared/flow/ServiceTypePicker';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
+import { ContinueFromQuote } from './shared/ContinueFromQuote';
+import type { HydratedQuoteResume } from '../lib/lookupQuoteByPhone';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -65,14 +67,15 @@ export const BookingPage: React.FC = () => {
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
   const [zipResult, setZipResult] = useState<{ city: string; state: string; served: boolean } | null>(null);
+  const [showContinueFromQuote, setShowContinueFromQuote] = useState(false);
 
-  // Auto-advance on served ZIP
+  // Auto-advance on served ZIP (only from the ZIP step — not resume hydration)
   useEffect(() => {
-    if (zipResult?.served) {
+    if (zipResult?.served && currentStep === 0 && !showContinueFromQuote) {
       const t = setTimeout(() => setCurrentStep(1), 2000);
       return () => clearTimeout(t);
     }
-  }, [zipResult]);
+  }, [zipResult, currentStep, showContinueFromQuote]);
 
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
@@ -156,45 +159,97 @@ export const BookingPage: React.FC = () => {
     }
   }, [formData.serviceType]);
 
-  // Pre-fill estimate data if available from QuotePage
+  // Pre-fill estimate data if available from QuotePage or continue-from-quote
+  const applyHydratedResume = useCallback((data: {
+    estimate: QuoteEstimate;
+    image?: string | null;
+    serviceType?: string;
+    prefilledName?: string;
+    prefilledPhone?: string;
+    partialBookingId?: string | null;
+    zipCode?: string;
+    movingOptions?: MovingLaborOptions | null;
+    smsMarketingConsentAt?: string | null;
+    details?: string;
+  }) => {
+    const est = data.estimate;
+    setEstimate(est);
+    setImage(data.image || null);
+    if (data.image) setEstimateImages([data.image]);
+    setLoadingState(LoadingState.SUCCESS);
+
+    const prefName = data.prefilledName || '';
+    const prefPhone = data.prefilledPhone || '';
+    const partId = data.partialBookingId || null;
+
+    if (prefName) setContactName(prefName);
+    if (prefPhone) setContactPhone(prefPhone);
+    if (partId) setPartialBookingId(partId);
+    if (prefName && prefPhone) setContactSubmitted(true);
+    if (data.smsMarketingConsentAt) setSmsMarketingConsentAt(data.smsMarketingConsentAt);
+    if (data.movingOptions) setMovingOptions(data.movingOptions);
+
+    const normalizedService = data.serviceType
+      ? (data.serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
+        : data.serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
+        : data.serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
+        : 'Junk Removal')
+      : 'Junk Removal';
+
+    const zipCode = (data.zipCode || '').trim();
+    if (zipCode) {
+      setZipValue(zipCode);
+      setZipResult({ city: '', state: '', served: true });
+    }
+
+    const details =
+      data.details ||
+      `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
+
+    setFormData((prev) => ({
+      ...prev,
+      name: prefName || prev.name,
+      phone: prefPhone || prev.phone,
+      serviceType: normalizedService,
+      zipCode: zipCode || prev.zipCode,
+      estimatedItems: est.itemsDetected,
+      estimatedVolume: est.estimatedVolume,
+      price: est.price,
+      estimateSummary: est.summary,
+      photoUrl: data.image || '',
+      details,
+    }));
+    setShowContinueFromQuote(false);
+    setCurrentStep(3);
+  }, []);
+
   useEffect(() => {
     if (estimateData?.estimate) {
-      const { estimate: est, image: img, serviceType } = estimateData;
-      setEstimate(est);
-      setImage(img || null);
-      setLoadingState(LoadingState.SUCCESS);
-      
-      const prefName = (estimateData as any).prefilledName || '';
-      const prefPhone = (estimateData as any).prefilledPhone || '';
-      const partId = (estimateData as any).partialBookingId || null;
-
-      if (prefName) setContactName(prefName);
-      if (prefPhone) setContactPhone(prefPhone);
-      if (partId) setPartialBookingId(partId);
-      if (prefName && prefPhone) setContactSubmitted(true);
-
-      const normalizedService = serviceType
-        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
-          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
-          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
-          : 'Junk Removal')
-        : 'Junk Removal';
-
-      setFormData(prev => ({
-        ...prev,
-        name: prefName,
-        phone: prefPhone,
-        serviceType: normalizedService,
-        estimatedItems: est.itemsDetected,
-        estimatedVolume: est.estimatedVolume,
-        price: est.price,
-        estimateSummary: est.summary,
-        photoUrl: img || '',
-        details: `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`
-      }));
-      setCurrentStep(3);
+      applyHydratedResume({
+        estimate: estimateData.estimate,
+        image: estimateData.image || null,
+        serviceType: estimateData.serviceType,
+        prefilledName: (estimateData as { prefilledName?: string }).prefilledName || '',
+        prefilledPhone: (estimateData as { prefilledPhone?: string }).prefilledPhone || '',
+        partialBookingId: (estimateData as { partialBookingId?: string }).partialBookingId || null,
+      });
     }
-  }, [estimateData]);
+  }, [estimateData, applyHydratedResume]);
+
+  const handleContinueFromQuote = (hydrated: HydratedQuoteResume) => {
+    applyHydratedResume({
+      estimate: hydrated.estimate,
+      image: hydrated.image,
+      serviceType: hydrated.serviceType,
+      prefilledName: hydrated.prefilledName,
+      prefilledPhone: hydrated.prefilledPhone,
+      partialBookingId: hydrated.partialBookingId,
+      zipCode: hydrated.zipCode,
+      movingOptions: hydrated.movingOptions,
+      smsMarketingConsentAt: hydrated.smsMarketingConsentAt,
+      details: hydrated.details,
+    });
+  };
 
   const handleContactReveal = async (
     name: string,
@@ -576,6 +631,19 @@ export const BookingPage: React.FC = () => {
     : currentStep === 1 ? 0.5
     : 0.25;
 
+  const chromeStepLabel =
+    currentStep <= 0 ? 'ZIP check'
+    : currentStep === 1 ? 'Service'
+    : currentStep === 2
+      ? (formData.serviceType === 'Junk Removal'
+          ? 'Estimate'
+          : formData.serviceType === 'Moving Labor'
+            ? 'Moving options'
+            : formData.serviceType === 'Dumpster Rental'
+              ? 'Dumpster options'
+              : 'Details')
+      : 'Schedule & book';
+
   const handleServicePick = (id: ServicePickerId) => {
     if (id === 'junk_removal') {
       setFormData((prev) => ({ ...prev, serviceType: 'Junk Removal' }));
@@ -592,22 +660,46 @@ export const BookingPage: React.FC = () => {
 
   return (
     <div className={FLOW_PAGE_SHELL}>
-      <FlowProgressBar progress={flowProgress} />
+      <FlowChrome
+        flowLabel="Book online"
+        stepLabel={chromeStepLabel}
+        progress={flowProgress}
+        hasProgress={currentStep > 0 || zipValue.trim().length > 0}
+      />
 
       <div className={`${FLOW_PAGE_CONTENT} transition-all duration-300 ${flowPageMaxWidth(junkUsesWideLayout)} ${junkFlowActive ? 'pt-4 md:pt-6' : ''}`}>
         {/* Form */}
         <div>
 
-          {currentStep === 0 && (
-            <FlowZipCheck
-              title="Book your pickup"
-              subtitle="Nationwide coverage in all 50 states — start with your ZIP code."
-              zipValue={zipValue}
-              onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
-              onCheck={handleZipCheck}
-              loading={zipLoading}
-              error={zipError}
-              result={zipResult?.served ? { city: zipResult.city, state: zipResult.state } : null}
+          {currentStep === 0 && !showContinueFromQuote && (
+            <>
+              <FlowZipCheck
+                title="Book your pickup"
+                subtitle="Nationwide coverage in all 50 states — start with your ZIP code."
+                zipValue={zipValue}
+                onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
+                onCheck={handleZipCheck}
+                loading={zipLoading}
+                error={zipError}
+                result={zipResult?.served ? { city: zipResult.city, state: zipResult.state } : null}
+              />
+              <div className="mt-6 text-center">
+                <button
+                  type="button"
+                  onClick={() => setShowContinueFromQuote(true)}
+                  className="text-sm font-semibold text-neutral-400 hover:text-white transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/50"
+                >
+                  Already have a quote? Continue with your phone
+                </button>
+              </div>
+            </>
+          )}
+
+          {currentStep === 0 && showContinueFromQuote && (
+            <ContinueFromQuote
+              onContinue={handleContinueFromQuote}
+              onStartNew={() => setShowContinueFromQuote(false)}
+              onBack={() => setShowContinueFromQuote(false)}
             />
           )}
 

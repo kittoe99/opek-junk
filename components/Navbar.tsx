@@ -10,20 +10,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { JunkIcon, DumpsterIcon, PropertyCleanoutIcon, MovingLaborIcon } from './icons/ServiceIcons';
-
-const US_STATES_MAP: Record<string, string> = {
-  alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA',
-  colorado: 'CO', connecticut: 'CT', delaware: 'DE', florida: 'FL', georgia: 'GA',
-  hawaii: 'HI', idaho: 'ID', illinois: 'IL', indiana: 'IN', iowa: 'IA',
-  kansas: 'KS', kentucky: 'KY', louisiana: 'LA', maine: 'ME', maryland: 'MD',
-  massachusetts: 'MA', michigan: 'MI', minnesota: 'MN', mississippi: 'MS', missouri: 'MO',
-  montana: 'MT', nebraska: 'NE', nevada: 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
-  'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', ohio: 'OH',
-  oklahoma: 'OK', oregon: 'OR', pennsylvania: 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
-  'south dakota': 'SD', tennessee: 'TN', texas: 'TX', utah: 'UT', vermont: 'VT',
-  virginia: 'VA', washington: 'WA', 'west virginia': 'WV', wisconsin: 'WI', wyoming: 'WY',
-  'district of columbia': 'DC',
-};
+import { useUserLocation } from '../lib/userLocation';
 
 const serviceItems = [
   { name: 'Junk Removal', desc: 'Single items, mattresses, furniture & more', path: '/services/junk-removal', icon: JunkIcon },
@@ -39,10 +26,6 @@ const navLinks = [
   { name: 'Track order', path: '/track-order' },
 ];
 
-function getUSStateAbbreviation(stateName: string): string {
-  return US_STATES_MAP[stateName.toLowerCase().trim()] || stateName;
-}
-
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,91 +35,8 @@ export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
-  const [userCity, setUserCity] = useState('');
-  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-
-  const fetchUserLocation = async () => {
-    setIsDetectingLocation(true);
-    try {
-      if (!navigator.geolocation) throw new Error('Geolocation not supported');
-
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: false,
-          timeout: 6000,
-          maximumAge: 600000,
-        });
-      });
-
-      const { latitude, longitude } = position.coords;
-      const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
-      );
-      if (!geoRes.ok) throw new Error('Reverse geocoding failed');
-
-      const geoData = await geoRes.json();
-      const address = geoData.address;
-      if (address) {
-        const city = address.city || address.town || address.village || address.hamlet || '';
-        const state = address.state || '';
-        const countryCode = address.country_code ? address.country_code.toUpperCase() : '';
-
-        if (city) {
-          const displayState = countryCode === 'US' ? getUSStateAbbreviation(state) : state;
-          const loc = countryCode === 'US' ? `${city}, ${displayState}` : `${city}, ${countryCode}`;
-          setUserCity(loc);
-          localStorage.setItem('user_city', loc);
-          setIsDetectingLocation(false);
-          return;
-        }
-      }
-      throw new Error('Could not parse city');
-    } catch {
-      const storedCity = localStorage.getItem('user_city');
-      if (storedCity) {
-        setUserCity(storedCity);
-        setIsDetectingLocation(false);
-        return;
-      }
-
-      try {
-        const res = await fetch('https://ipwho.is/');
-        const data = await res.json();
-        if (data.success && data.city) {
-          const loc =
-            data.country_code === 'US'
-              ? `${data.city}, ${data.region_code}`
-              : `${data.city}, ${data.country_code}`;
-          setUserCity(loc);
-          localStorage.setItem('user_city', loc);
-          return;
-        }
-      } catch {
-        try {
-          const res2 = await fetch('https://ipapi.co/json/');
-          const data2 = await res2.json();
-          if (data2.city) {
-            const loc =
-              data2.country_code === 'US'
-                ? `${data2.city}, ${data2.region_code}`
-                : `${data2.city}, ${data2.country_code}`;
-            setUserCity(loc);
-            localStorage.setItem('user_city', loc);
-            return;
-          }
-        } catch {
-          setUserCity('United States');
-        }
-      } finally {
-        setIsDetectingLocation(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchUserLocation();
-  }, []);
+  const { locationLabel, isDetectingLocation, fetchUserLocation } = useUserLocation();
 
   useEffect(() => {
     const header = headerRef.current;
@@ -175,8 +75,6 @@ export const Navbar: React.FC = () => {
   const toggleMobileAccordion = (id: string) => {
     setMobileAccordion((prev) => (prev === id ? null : id));
   };
-
-  const locationLabel = isDetectingLocation ? 'Detecting…' : userCity || 'Set location';
 
   const LocationButton = ({ className = '' }: { className?: string }) => (
     <button

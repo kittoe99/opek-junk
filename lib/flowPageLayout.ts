@@ -1,7 +1,7 @@
 /** Shared layout tokens for /quote and /booking multi-step flows — dark homepage theme. */
 
 export const FLOW_PAGE_SHELL =
-  'home-dark min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]';
+  'home-dark min-h-screen bg-[var(--bg)] text-[var(--text)]';
 
 export const FLOW_PAGE_COLUMN = 'max-w-lg mx-auto w-full px-4 sm:px-6';
 
