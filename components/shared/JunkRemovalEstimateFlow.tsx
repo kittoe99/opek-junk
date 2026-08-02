@@ -469,26 +469,29 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   return (
     <div>
       <div ref={contentTopRef} className={FLOW_STEP_ANCHOR}>
-        <FlowStepTitle
-          title={
-            mode === 'ai'
-              ? 'AI photo estimate'
-              : manualStep === 'review'
-                ? 'Review your list'
-                : manualStep === 'result'
-                  ? 'Your estimate'
-                  : 'Pick your items'
-          }
-          subtitle={
-            mode === 'ai'
-              ? "Upload a photo and we'll estimate the cost automatically."
-              : manualStep === 'review'
-                ? 'Confirm your items to calculate the estimate.'
-                : manualStep === 'result'
-                  ? 'Review your price breakdown, then continue.'
-                  : 'Browse categories and pick what you need.'
-          }
-        />
+        {/* Match Quote page: contact step owns its own heading — don't stack "Your estimate" above it */}
+        {!(manualStep === 'result' && !contactSubmitted) && (
+          <FlowStepTitle
+            title={
+              mode === 'ai'
+                ? 'AI photo estimate'
+                : manualStep === 'review'
+                  ? 'Review your list'
+                  : manualStep === 'result'
+                    ? 'Your estimate'
+                    : 'Pick your items'
+            }
+            subtitle={
+              mode === 'ai'
+                ? "Upload a photo and we'll estimate the cost automatically."
+                : manualStep === 'review'
+                  ? 'Confirm your items to calculate the estimate.'
+                  : manualStep === 'result'
+                    ? 'Review your price breakdown, then continue.'
+                    : 'Browse categories and pick what you need.'
+            }
+          />
+        )}
       </div>
 
       {mode === 'ai' && (
