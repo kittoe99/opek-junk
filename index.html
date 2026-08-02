@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" style="color-scheme: dark; background-color: #070709;">
   <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18232432396"></script>
@@ -12,6 +12,17 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser chrome: force dark UI for address bar / form controls -->
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#070709" />
+    <meta name="theme-color" content="#070709" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#070709" media="(prefers-color-scheme: dark)" />
+    <meta name="msapplication-TileColor" content="#070709" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Opek" />
+    <meta name="application-name" content="Opek Junk Removal" />
     
     <!-- Primary Meta Tags -->
     <title>Opek Junk Removal | Nationwide Service in All 50 States</title>
@@ -42,9 +53,16 @@
     <meta property="twitter:description" content="Nationwide junk removal, dumpster rental, and moving labor. Available in all 50 states with same-day service." />
     <meta property="twitter:image" content="https://opekjunkremoval.com/junk-removal.webp" />
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/logo1.png" />
-    <link rel="apple-touch-icon" href="/logo1.png" />
+    <!-- Favicons / site icons (tabs, bookmarks, Google, iOS, Android) -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:logo" content="https://opekjunkremoval.com/icon-512.png" />
+    <link rel="mask-icon" href="/favicon.svg" color="#070709" />
     
     <!-- Geo Tags -->
     <meta name="geo.region" content="US" />
@@ -56,7 +74,8 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Opek Junk Removal",
-      "image": "https://opekjunkremoval.com/logo1.png",
+      "image": "https://opekjunkremoval.com/icon-512.png",
+      "logo": "https://opekjunkremoval.com/icon-512.png",
       "description": "Professional junk removal and dumpster rental services connecting you with trusted providers nationwide.",
       "url": "https://opekjunkremoval.com",
       "telephone": "(831) 318-7139",
@@ -205,10 +224,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
     <style>
+      html {
+        color-scheme: dark;
+        background-color: #070709;
+        scroll-behavior: smooth;
+        scroll-padding-top: var(--site-header-height, 124px);
+      }
+
       body {
         font-family: 'Inter', system-ui, sans-serif;
         background-color: #070709;
         color: #f4f4f5;
+        color-scheme: dark;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         letter-spacing: -0.01em;
@@ -265,12 +292,8 @@
         opacity: 1 !important;
       }
       
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: var(--site-header-height, 124px);
-      }
-
       :root {
+        color-scheme: dark;
         /* Fallback until Navbar measures the live fixed header (nav + announcement bar). */
         --site-header-height: 124px;
       }
