@@ -57,7 +57,7 @@ export function movingQuoteSmsFields(opts: {
   totalPrice: number;
 }): { serviceType: string; priceLabel: string; volume: string } {
   const helpers = opts.helpers === 1 ? 1 : 2;
-  const hourlyRate = helpers === 1 ? 79 : 119;
+  const hourlyRate = helpers === 1 ? 69 : 99;
   const truckNote = opts.needsTruck ? ' · +$99 truck' : '';
   return {
     serviceType: 'Local Moving',

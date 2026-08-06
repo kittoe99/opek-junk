@@ -669,7 +669,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     );
   }
 
-  const hourlyRate = draftOptions.helpers === 1 ? 79 : 119;
+  const hourlyRate = draftOptions.helpers === 1 ? 69 : 99;
 
   return (
     <>
