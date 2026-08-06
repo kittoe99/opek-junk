@@ -19,7 +19,7 @@ interface ServiceTypePickerProps {
   quoteLinkLabel?: string;
 }
 
-const MOVING_LABOR_PRICE_LABEL = '$69/hour for 1 mover, $99/hour for 2 movers';
+const MOVING_LABOR_PRICE_LABEL = '$99/hour';
 
 const HERO_ICON_CLASS = 'w-full h-full';
 
