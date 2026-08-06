@@ -18,6 +18,7 @@ import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage
 import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
 import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
+import { LocalMovesAdsLandingPage } from './components/lp/LocalMovesAdsLandingPage';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SmsConsentPage } from './components/SmsConsentPage';
@@ -63,6 +64,10 @@ function GlobalQuickActionBar() {
     }
     if (pathname === '/lp/junk-removal') {
       navigate('/booking', { state: { serviceType: 'Junk Removal' } });
+      return;
+    }
+    if (pathname === '/lp/local-moves') {
+      navigate('/booking', { state: { serviceType: 'Moving Labor' } });
       return;
     }
     navigate('/booking');
@@ -205,6 +210,15 @@ function JunkRemovalAdsLandingPageWithSEO() {
   );
 }
 
+function LocalMovesAdsLandingPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.localMovesAds} />
+      <LocalMovesAdsLandingPage />
+    </>
+  );
+}
+
 function DumpsterRentalPageWithSEO() {
   return (
     <>
@@ -338,6 +352,7 @@ function App() {
             <Route path="/booking" element={<BookingPageWithSEO />} />
             <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
             <Route path="/lp/junk-removal" element={<JunkRemovalAdsLandingPageWithSEO />} />
+            <Route path="/lp/local-moves" element={<LocalMovesAdsLandingPageWithSEO />} />
             <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
             <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
