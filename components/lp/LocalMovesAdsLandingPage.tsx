@@ -132,10 +132,10 @@ export const LocalMovesAdsLandingPage: React.FC = () => {
               <div className="flex flex-col items-stretch sm:items-start gap-4 animate-fade-in-up delay-300">
                 <button
                   type="button"
-                  onClick={() => goToBooking()}
+                  onClick={goToQuote}
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 sm:px-9 py-3.5 sm:py-4 text-[14px] sm:text-[15px] font-bold text-white transition-all hover:bg-brand-600 shadow-[0_0_28px_-6px_rgba(255,0,110,0.7)] hover:shadow-[0_0_38px_-4px_rgba(255,0,110,0.85)] border-2 border-white/10"
                 >
-                  Book Local Movers
+                  View Pricing
                   <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
 
