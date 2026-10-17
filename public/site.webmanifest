@@ -4,8 +4,8 @@
   "description": "Nationwide junk removal, dumpster rental, and moving labor.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#070709",
-  "theme_color": "#070709",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/favicon-32.png",

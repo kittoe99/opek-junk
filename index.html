@@ -14,11 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Browser chrome: force dark UI for address bar / form controls -->
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#070709" />
-    <meta name="theme-color" content="#070709" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#070709" media="(prefers-color-scheme: light)" />
-    <meta name="msapplication-TileColor" content="#070709" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)" />
+    <meta name="msapplication-TileColor" content="#520f96" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Opek" />
@@ -62,7 +62,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:logo" content="https://opekjunkremoval.com/icon-512.png" />
-    <link rel="mask-icon" href="/favicon.svg" color="#070709" />
+    <link rel="mask-icon" href="/favicon.svg" color="#520f96" />
     
     <!-- Geo Tags -->
     <meta name="geo.region" content="US" />
@@ -353,6 +353,15 @@
       .home-light .home-cta:hover {
         background-color: var(--home-purple-dark);
       }
+      .home-light .home-menu-util {
+        display: flex; align-items: center; gap: 10px;
+        width: 100%; min-height: 40px; border-radius: 0;
+        color: #ffffff; text-align: left;
+        font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+        font-size: 13px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase;
+      }
+      .home-light .home-menu-util:hover { opacity: .8; }
+      .home-light .home-menu-util svg { flex-shrink: 0; }
       .home-light .home-cta:focus-visible,
       .home-light a:focus-visible,
       .home-light button:focus-visible {
@@ -448,44 +457,43 @@
       /* Mobile homepage: image banner, one purple action block, compact sections, sticky CTA. */
       @media (max-width: 767px) {
         .home-light .home-nav { height: 60px; }
-        .home-page .home-hero-visual { height: clamp(220px, 62vw, 320px); }
+        /* Mobile hero: photo banner over a vivid violet promo block (single CTA) */
+        .home-page .home-hero-visual { height: clamp(240px, 70vw, 340px); }
+        .home-page .home-hero-visual::before { right: 6%; }
         .home-page .home-hero-visual::after { display: none; }
-        .home-page .home-hero-visual img { height: 126%; left: 70%; bottom: -28%; }
-        .home-page .home-hero-ticket {
-          position: absolute; z-index: 3; left: 18px; top: 50%;
-          transform: translateY(-50%) rotate(-4deg);
-          display: flex; flex-direction: column; align-items: center;
-          width: 128px; padding: 12px 10px 10px; text-align: center;
-          background: #ffffff;
-          box-shadow: 0 16px 30px -14px rgb(40 10 80 / 55%);
+        .home-page .home-hero-visual img { height: 118%; left: 50%; bottom: -20%; }
+        .home-page .home-hero-copy {
+          padding: 28px 22px 40px; text-align: center; color: #ffffff;
+          background-color: #a020f0;
+          background-image:
+            radial-gradient(ellipse at 15% 10%, rgb(255 255 255 / 14%) 0%, transparent 45%),
+            radial-gradient(ellipse at 90% 95%, rgb(82 15 150 / 45%) 0%, transparent 55%),
+            repeating-radial-gradient(circle at 30% 40%, rgb(255 255 255 / 2.5%) 0 1px, transparent 1px 3px);
         }
-        .home-page .home-hero-copy { padding: 26px 20px 22px; }
-        .home-page .home-hero-copy > div { max-width: 440px; }
-        .home-page .home-hero-copy .home-eyebrow { color: #f3e8ff; margin-bottom: 12px; }
-        .home-page .home-hero-copy h1 { font-size: clamp(32px, 9.6vw, 46px); line-height: .94; font-variation-settings: "wdth" 80; }
-        .home-page .home-hero-copy h1 + p { color: rgb(255 255 255 / 92%); line-height: 1.45; margin-top: 14px; max-width: 320px; }
-        .home-page .home-cta.home-cta-invert {
-          width: 100%; background: #ffffff; color: #520f96; min-height: 56px; font-size: 16px;
-          box-shadow: 0 10px 24px -12px rgb(20 0 50 / 60%);
+        .home-page .home-hero-copy > div { max-width: 420px; }
+        .home-page .home-hero-badge {
+          display: inline-flex; align-items: center; justify-content: center;
+          padding: 7px 14px; margin-bottom: 16px;
+          border: 1.5px solid rgb(255 255 255 / 85%); border-radius: 999px;
         }
-        .home-page .home-cta.home-cta-invert:hover { background: #f2ecfa; }
-        .home-page .home-hero-ghost {
-          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-          min-height: 48px; border-radius: 0;
-          border: 1.5px solid rgb(255 255 255 / 70%);
-          color: #ffffff; font-size: 14px; font-weight: 700;
+        .home-page .home-hero-copy h1 {
+          color: #ffffff; font-size: clamp(31px, 9.3vw, 46px); line-height: .96;
+          font-variation-settings: "wdth" 78;
         }
-        .home-page .home-hero-ghost:active { background: rgb(255 255 255 / 12%); }
-        .home-page .home-cta.home-hero-pair,
-        .home-page .home-hero-ghost.home-hero-pair {
-          width: 100%; min-height: 54px; padding: 0 8px;
+        .home-page .home-hero-copy h1 .home-hero-price { color: #ffffff; }
+        .home-page .home-hero-copy h1 + p {
+          color: #ffffff; font-size: 15px; font-weight: 500; line-height: 1.45;
+          margin: 16px auto 0; max-width: 340px;
+        }
+        .home-page .home-hero-mobile-cta {
+          display: inline-flex; align-items: center; justify-content: center;
+          min-width: 200px; min-height: 54px; padding: 0 28px; border-radius: 0;
+          background: #520f96; color: #ffffff; border: 2px solid #ffffff;
           font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-          font-size: 14px; font-weight: 800; letter-spacing: .03em;
-          text-transform: uppercase; white-space: nowrap;
+          font-size: 15px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
         }
-        .home-page .home-hero-ghost.home-hero-pair { border-width: 2px; border-color: #ffffff; }
-        .home-page .home-hero-fine-print { background: #3a0a6b; }
-        .home-page .home-hero-fine-print p { padding: 12px 20px; color: #e9dcf8; }
+        .home-page .home-hero-mobile-cta:hover,
+        .home-page .home-hero-mobile-cta:active { background: #3a0a6b; }
         .home-page #process,
         .home-page #services,
         .home-page .home-ways,
@@ -643,14 +651,17 @@
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0b0b0f;
+        background: #f4eefc;
       }
       ::-webkit-scrollbar-thumb {
-        background: #2a2a32;
+        background: #c4a8e6;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #3d3d47;
+        background: #520f96;
+      }
+      html {
+        scrollbar-color: #c4a8e6 #f4eefc;
       }
 
       .scrollbar-hide {

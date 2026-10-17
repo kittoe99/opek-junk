@@ -145,6 +145,36 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   .site-page *, .site-page *::before, .site-page *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
+/* Photo backdrops remain separate from the transparent hero subjects. */
+.home-light .home-street-backdrop,
+.home-light .home-hero-visual.home-street-backdrop {
+  background-color: transparent;
+  background-image: url('/hero-backgrounds/residential-street.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.home-light .home-hero-visual.home-street-backdrop::before,
+.home-light .home-hero-visual.home-street-backdrop::after { content: none; }
+.home-light .home-hero-visual.home-hero-photo { background: none; }
+.home-light .home-hero-visual.home-hero-photo::before,
+.home-light .home-hero-visual.home-hero-photo::after { content: none; }
+.home-light .home-hero-visual.home-hero-photo > img {
+  width: 100%; height: 100%; left: 0; bottom: 0;
+  transform: none; object-fit: cover; object-position: 60% center; filter: none;
+}
+.home-light .home-street-backdrop > img { filter: drop-shadow(0 6px 5px rgb(0 0 0 / 22%)); }
+.home-light .home-street-backdrop .home-hero-banner-copy,
+.home-light .home-street-backdrop .flow-zip-banner {
+  color: white;
+  text-shadow: 0 1px 4px #17241a, 0 2px 12px #17241a;
+}
+.home-light .home-street-backdrop .home-hero-banner-label { border-color: white; }
+.home-light .home-street-backdrop .home-eyebrow { color: white; }
+@media (max-width: 767px) {
+  .home-page .home-hero-visual.home-street-backdrop > img { height: 94%; bottom: 0; left: 50%; }
+}
+
 /* Interior pages now reuse the homepage's actual composition and components. */
 .interior-home { --surface: #fff; --surface-2: #f2ecfa; --border: #e4e0e8; }
 .interior-home .home-display { font-family: Archivo, Inter, sans-serif !important; font-weight: 900; font-stretch: 82%; letter-spacing: -.025em; text-transform: uppercase; }

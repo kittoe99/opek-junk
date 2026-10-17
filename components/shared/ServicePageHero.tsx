@@ -37,7 +37,7 @@ export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
           {children && <div className="mt-5 text-sm">{children}</div>}
         </div>
       </div>
-      <div className="home-hero-visual home-image-backdrop relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
+      <div className="home-hero-visual home-street-backdrop relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
         <div className="home-hero-banner-copy md:hidden">
           <span className="home-hero-banner-label">{chip || 'A fresh start'}</span>
           <p className="home-display">{bannerTitle}</p>

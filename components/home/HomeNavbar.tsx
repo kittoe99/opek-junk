@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronRight, MapPin, Menu, Package, Phone, User, X } from 'lucide-react';
+import { ChevronRight, MapPin, Menu, MessageSquare, Package, Phone, User, UserPlus, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../../lib/userLocation';
 import { HomeLogo } from './HomeLogo';
@@ -18,6 +18,7 @@ const serviceItems = [
 export const HomeNavbar: React.FC = () => {
   const navigate = useNavigate();
   const headerRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { locationLabel, isDetectingLocation, fetchUserLocation } = useUserLocation();
 
@@ -35,7 +36,16 @@ export const HomeNavbar: React.FC = () => {
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
+    if (!isMenuOpen) return () => {
+      document.body.style.overflow = 'unset';
+    };
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
     return () => {
+      window.removeEventListener('keydown', onKey);
       document.body.style.overflow = 'unset';
     };
   }, [isMenuOpen]);
@@ -162,44 +172,95 @@ export const HomeNavbar: React.FC = () => {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-[70] lg:hidden flex flex-col bg-white transition-opacity duration-200 ${
-          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Menu"
+        className={`fixed inset-0 z-[70] lg:hidden ${isMenuOpen ? 'visible' : 'invisible pointer-events-none'}`}
+        aria-hidden={!isMenuOpen}
       >
-        <div className="shrink-0 flex items-center justify-between h-[64px] px-4 border-b border-[#e4e0e8]">
-          <HomeLogo className="h-7 w-auto" />
-          <button type="button" onClick={() => setIsMenuOpen(false)} className={iconBtn} aria-label="Close menu">
-            <X size={24} strokeWidth={2.4} aria-hidden />
-          </button>
-        </div>
-        <nav className="flex-1 overflow-y-auto px-5 py-6" aria-label="Mobile">
-          <p className="home-eyebrow mb-3">Services</p>
-          <ul className="space-y-2">
-            {serviceItems.map((item) => (
-              <li key={item.path}>
-                <button
-                  type="button"
-                  onClick={() => go(item.path)}
-                  className="home-display w-full rounded-none py-1.5 text-left text-[1.6rem] leading-tight text-[#140a1f]"
-                >
-                  {item.name}
+        <div
+          className={`absolute inset-0 flex flex-col bg-[#520f96] text-white transition-[opacity,transform] duration-300 ease-out ${
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'
+          }`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+        >
+          <div className="shrink-0 flex items-center justify-between h-[64px] px-6">
+            <button type="button" onClick={() => go('/')} className="rounded-none" aria-label="Opek Junk Removal home">
+              <img src="/opek-logo-white.png" alt="Opek Junk Removal" className="h-[26px] w-auto" />
+            </button>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={() => setIsMenuOpen(false)}
+              className="-mr-2 flex h-11 w-11 items-center justify-center rounded-none text-white"
+              aria-label="Close menu"
+            >
+              <X size={28} strokeWidth={2} aria-hidden />
+            </button>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto overscroll-contain px-6 pt-6 pb-10" aria-label="Mobile">
+            {/* Primary links */}
+            <ul className="space-y-1">
+              {serviceItems.map(({ name, path }) => (
+                <li key={path}>
+                  <button
+                    type="button"
+                    onClick={() => go(path)}
+                    className="home-display w-full rounded-none py-2.5 text-left text-[1.6rem] leading-none text-white hover:opacity-80"
+                  >
+                    {name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {/* Utility links */}
+            <ul className="mt-6 space-y-1">
+              <li>
+                <button type="button" onClick={() => go('/#service-area')} className="home-menu-util">
+                  <MapPin size={17} strokeWidth={2.4} aria-hidden />
+                  <span className="truncate">Check your area · {locationLabel}</span>
                 </button>
               </li>
-            ))}
-          </ul>
-          <div className="mt-6 grid grid-cols-2 gap-2 border-t border-[#e4e0e8] pt-5">
-            {[['Track your order', '/track-order'], ['Contact us', '/contact'], ['Free estimate', '/in-home-estimate'], ['Become a provider', '/provider-signup'], ['Provider account', '/sign-up']].map(([label, path]) => (
-              <button key={path} type="button" onClick={() => go(path)} className="min-h-11 rounded-none text-left text-sm font-semibold text-[#520f96]">{label}</button>
-            ))}
-          </div>
-        </nav>
-        <div className="shrink-0 p-4 border-t border-[#e4e0e8]">
-          <button type="button" onClick={() => go('/quote')} className="home-cta w-full">
-            Get my price
-          </button>
+              <li>
+                <button type="button" onClick={() => go('/provider-signup')} className="home-menu-util">
+                  <UserPlus size={17} strokeWidth={2.4} aria-hidden />
+                  Become a provider
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => go('/sign-up')} className="home-menu-util">
+                  <User size={17} strokeWidth={2.4} aria-hidden />
+                  Provider account
+                </button>
+              </li>
+            </ul>
+
+            <div className="my-7 h-px bg-white/20 shadow-[0_8px_16px_rgba(20,0,50,0.35)]" aria-hidden />
+
+            {/* Help */}
+            <p className="home-display text-center text-[1.15rem] leading-tight">Questions? Talk to a real person.</p>
+            <div className="mx-auto mt-4 grid max-w-[300px] grid-cols-2 gap-2.5">
+              <a href={`tel:${SITE_PHONE}`} className="flex min-h-11 items-center justify-center gap-2 border-2 border-white/80 text-[14px] font-bold">
+                <Phone size={16} aria-hidden />
+                Call
+              </a>
+              <a href={`sms:${SITE_PHONE}`} className="flex min-h-11 items-center justify-center gap-2 border-2 border-white/80 text-[14px] font-bold">
+                <MessageSquare size={16} aria-hidden />
+                Text
+              </a>
+            </div>
+
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => go('/quote')}
+                className="home-cta !bg-white !text-[#520f96] min-w-[200px] hover:!bg-[#f2ecfa]"
+              >
+                Get pricing
+              </button>
+            </div>
+          </nav>
         </div>
       </div>
     </div>

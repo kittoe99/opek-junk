@@ -1,5 +1,5 @@
 import React from 'react';
-import { BadgeCheck, Clock, MessageSquare, Phone, Star, Tag } from 'lucide-react';
+import { MessageSquare, Phone } from 'lucide-react';
 import { JUNK_REMOVAL_MIN_PRICE } from '../lib/junkRemovalPricing';
 
 interface HeroProps {
@@ -10,12 +10,6 @@ interface HeroProps {
 const SITE_PHONE = '8313187139';
 const SITE_PHONE_DISPLAY = '(831) 318-7139';
 
-const trustItems = [
-  { icon: Tag, label: 'Upfront pricing' },
-  { icon: Clock, label: 'Same-day crews' },
-  { icon: BadgeCheck, label: 'Vetted providers' },
-];
-
 export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
   return (
     <section className="home-hero relative overflow-hidden bg-[#f4eefc]" aria-labelledby="home-hero-heading">
@@ -23,18 +17,24 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         {/* Copy */}
         <div className="home-hero-copy relative flex md:justify-end px-5 sm:px-6 lg:px-8 pt-7 pb-8 sm:pt-14 md:py-16 lg:py-20">
           <div className="w-full max-w-[600px] md:pr-6 lg:pr-12 self-center">
-            <p className="home-eyebrow mb-3">Nationwide junk removal · All 50 states</p>
+            {/* Mobile badge */}
+            <span className="home-hero-badge md:hidden">
+              <img src="/opek-logo-white.png" alt="" className="h-[16px] w-auto" />
+            </span>
+
+            <p className="home-eyebrow mb-3 hidden md:block">Nationwide junk removal · All 50 states</p>
             <h1
               id="home-hero-heading"
               className="home-display text-[2.2rem] leading-[0.95] sm:text-[3.2rem] md:text-[2.4rem] lg:text-[3.3rem] xl:text-[3.5rem] text-[#140a1f]"
             >
               Junk hauled away
               <br />
-              from only ${JUNK_REMOVAL_MIN_PRICE}
+              from only <span className="home-hero-price">${JUNK_REMOVAL_MIN_PRICE}</span>
             </h1>
             <p className="mt-4 sm:mt-5 text-[15px] sm:text-[17px] leading-relaxed text-[#2b2236] max-w-md">
               <span className="md:hidden">
-                Vetted local providers, often the same day. See your upfront price in about a minute.
+                It’s easy to book junk removal online. Pick your items, see your upfront price, and a local crew hauls it
+                away.
               </span>
               <span className="hidden md:inline">
                 Furniture, appliances, mattresses and more — picked up by vetted local providers, often the same day.
@@ -42,16 +42,11 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               </span>
             </p>
 
-            {/* Mobile actions */}
-            <div className={`md:hidden mt-6 grid gap-2.5 ${onBookOnline ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              <button type="button" onClick={onGetQuote} className="home-cta home-cta-invert home-hero-pair">
+            {/* Mobile action */}
+            <div className="md:hidden mt-7 flex justify-center">
+              <button type="button" onClick={onGetQuote} className="home-hero-mobile-cta">
                 Get pricing
               </button>
-              {onBookOnline && (
-                <button type="button" onClick={onBookOnline} className="home-hero-ghost home-hero-pair">
-                  Book a pickup
-                </button>
-              )}
             </div>
 
             {/* Desktop actions */}
@@ -80,44 +75,23 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
                 Text us
               </a>
             </div>
-
-            {/* Mobile trust row */}
-            <ul className="md:hidden mt-6 grid grid-cols-3 border-t border-white/25 pt-5">
-              {trustItems.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex flex-col items-center gap-1.5 text-center text-[11px] font-semibold leading-tight text-white">
-                  <Icon size={20} strokeWidth={2.2} aria-hidden />
-                  {label}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
         {/* Visual */}
-        <div className="home-hero-visual home-image-backdrop relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
-          {/* Mobile rating ticket */}
-          <div className="home-hero-ticket md:hidden" aria-hidden>
-            <p className="home-display text-[22px] leading-none text-[#140a1f]">Rated 4.8</p>
-            <span className="mt-1.5 flex justify-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} size={12} className="fill-[#520f96] text-[#520f96]" />
-              ))}
-            </span>
-            <p className="mt-2 border-t border-dashed border-[#140a1f]/40 pt-1.5 font-mono text-[9px] font-bold uppercase tracking-wide text-[#140a1f]">
-              Local pros near you
-            </p>
-          </div>
+        <div className="home-hero-visual home-hero-photo relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
           <img
-            src="/home-transparent/hero-branded.png"
-            alt="Two junk removal providers lifting a heavy tool chest together"
+            src="/hero-backgrounds/opek-crew-high-five.png"
+            alt="Two Opek providers in purple shirts high-fiving beside a junk removal truck on a residential street"
+            fetchPriority="high"
             className="absolute bottom-0 left-[44%] -translate-x-1/2 h-[92%] w-auto max-w-none object-contain object-bottom select-none"
             draggable={false}
           />
         </div>
       </div>
 
-      {/* Fine print */}
-      <div className="home-hero-fine-print relative z-10 bg-[#3a3340] text-white">
+      {/* Fine print (desktop) */}
+      <div className="home-hero-fine-print relative z-10 hidden md:block bg-[#3a3340] text-white">
         <p className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-[11px] sm:text-[12px] leading-snug">
           ${JUNK_REMOVAL_MIN_PRICE} order minimum for junk removal. Your final price is confirmed once your items are
           reviewed; heavy, bulky or specialty items may cost more. Services are performed by independent local providers.

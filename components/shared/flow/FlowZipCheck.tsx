@@ -30,7 +30,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   showBack = false,
 }) => (
   <div className="home-light interior-home flow-zip-layout">
-    <div className="flow-zip-art home-image-backdrop">
+    <div className="flow-zip-art home-street-backdrop">
       <div className="flow-zip-banner"><span className="home-eyebrow">A fresh start</span><p className="home-display">Less junk.<br />More space.</p></div>
       <img src="/home-transparent/junk-dump-truck.png" alt="Purple dump truck ready for your pickup" />
     </div>
