@@ -17,7 +17,7 @@ export const JunkRemovalPriceBreakdown: React.FC<JunkRemovalPriceBreakdownProps>
     orderMinimum != null && subtotal > itemSubtotal && subtotal === orderMinimum;
 
   return (
-    <div className="bg-[var(--surface)] rounded-3xl p-5 md:p-6 border border-[var(--border)]">
+    <div className="flow-card p-5 md:p-6">
       {lines.length > 0 && (
         <div className="space-y-2.5 mb-5 pb-5 border-b border-[var(--border)]">
           {lines.map((line) => (
@@ -29,7 +29,7 @@ export const JunkRemovalPriceBreakdown: React.FC<JunkRemovalPriceBreakdownProps>
                 {line.name}
                 {line.quantity > 1 ? ` ×${line.quantity}` : ''}
               </span>
-              <span className="text-[var(--text)]-900 font-bold shrink-0">${line.lineTotal}</span>
+              <span className="text-[var(--text)] font-bold shrink-0">${line.lineTotal}</span>
             </div>
           ))}
         </div>
@@ -39,11 +39,11 @@ export const JunkRemovalPriceBreakdown: React.FC<JunkRemovalPriceBreakdownProps>
         <>
           <div className="flex justify-between items-center text-sm md:text-base mb-3">
             <span className="text-[var(--text-muted)] font-medium">Item subtotal</span>
-            <span className="text-[var(--text)]-900 font-bold">${itemSubtotal}</span>
+            <span className="text-[var(--text)] font-bold">${itemSubtotal}</span>
           </div>
           <div className="flex justify-between items-center text-sm md:text-base mb-5 pb-5 border-b border-[var(--border)]">
             <span className="text-[var(--text-muted)] font-medium">Order minimum</span>
-            <span className="text-[var(--text)]-900 font-bold">${orderMinimum}</span>
+            <span className="text-[var(--text)] font-bold">${orderMinimum}</span>
           </div>
         </>
       )}
@@ -51,7 +51,7 @@ export const JunkRemovalPriceBreakdown: React.FC<JunkRemovalPriceBreakdownProps>
       <div className="space-y-3 mb-5 pb-5 border-b border-[var(--border)]">
         <div className="flex justify-between items-center text-sm md:text-base">
           <span className="text-[var(--text-muted)] font-medium">Pick up & Admin fee</span>
-          <span className={`font-bold ${discount > 0 ? 'text-[var(--text-muted)] line-through' : 'text-[var(--text)]-900'}`}>
+          <span className={`font-bold ${discount > 0 ? 'text-[var(--text-muted)] line-through' : 'text-[var(--text)]'}`}>
             ${subtotal}
           </span>
         </div>

@@ -150,21 +150,9 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
         <div className="space-y-3">
           {/* Text path */}
-          <div
-            className={`rounded-2xl border p-4 transition-all ${
-              smsConsent
-                ? 'border-brand bg-brand/[0.07] shadow-[0_0_32px_-12px_rgba(82,15,150,0.4)]'
-                : 'border-[var(--border)] bg-[var(--surface)]'
-            }`}
-          >
+          <div className={`flow-card p-4 transition-colors ${smsConsent ? '!border-[#520f96] bg-[#faf6fe]' : ''}`}>
             <div className="flex items-start gap-3 mb-4">
-              <span
-                className={`flex h-11 w-11 items-center justify-center rounded-xl shrink-0 border ${
-                  smsConsent
-                    ? 'bg-brand border-brand/40 text-white shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]'
-                    : 'bg-[var(--surface-2)] border-[var(--border)] text-brand'
-                }`}
-              >
+              <span className="flow-option-icon !p-3">
                 <MessageSquare size={20} />
               </span>
               <div className="min-w-0 pt-0.5">
@@ -197,9 +185,9 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
           {/* Call path */}
           <a
             href={`tel:${SITE_PHONE}`}
-            className="group flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 hover:border-[var(--border)] hover:bg-[var(--surface-2)] transition-colors"
+            className="flow-option"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] group-hover:border-brand/40 group-hover:text-brand shrink-0 transition-colors">
+            <span className="flow-option-icon !p-3">
               <Phone size={20} />
             </span>
             <span className="min-w-0 pt-0.5 flex-1">
@@ -239,19 +227,11 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
         <FlowStepTitle title={title} subtitle={subtitle} />
 
-        <div className="flex justify-center mb-1" aria-hidden>
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-3.5 py-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-40" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
-            </span>
-            <span className="text-[11px] font-semibold text-brand tracking-wide">
-              Quote arrives by text
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-4">
+        <div className="flow-card p-5 space-y-4">
+          <p className="flex items-center gap-2 text-[13px] font-bold text-[#520f96]">
+            <MessageSquare size={16} aria-hidden />
+            Your quote arrives by text
+          </p>
           <div>
             <label className={FLOW_LABEL}>Full name *</label>
             <div className="relative">

@@ -1,8 +1,6 @@
 import React from 'react';
-import { AlertCircle, Check } from 'lucide-react';
-import { FLOW_INPUT, FLOW_LABEL } from '../../../lib/flowPageLayout';
+import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, Loader2, MapPin, ShieldCheck, Star, Truck } from 'lucide-react';
 import { FlowStepTitle } from './FlowStepTitle';
-import { FlowStickyNav } from './FlowStickyNav';
 
 interface FlowZipCheckProps {
   title?: React.ReactNode;
@@ -17,6 +15,7 @@ interface FlowZipCheckProps {
   showBack?: boolean;
 }
 
+/** ZIP coverage step shared by the quote and booking flows. */
 export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   title = 'Where do you need service?',
   subtitle = 'Enter your ZIP code to confirm nationwide coverage.',
@@ -28,62 +27,83 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   result = null,
   onBack,
   showBack = false,
-}) => (
-  <div className="home-light interior-home flow-zip-layout">
-    <div className="flow-zip-art home-scene-photo">
-      <img src="/service-scenes/junk-truck.png" alt="Purple dump truck ready for your pickup" />
-    </div>
-    <div className="flow-zip-content">
-    <FlowStepTitle title={title} subtitle={subtitle} />
+}) => {
+  const ready = zipValue.length === 5;
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (ready && !loading && !result) onCheck();
+  };
 
-    <div className="space-y-4">
-      <div>
-        <label htmlFor="flow-zip" className={`${FLOW_LABEL} text-center`}>ZIP code</label>
-        <input
-          id="flow-zip"
-          type="text"
-          inputMode="numeric"
-          maxLength={5}
-          value={zipValue}
-          onChange={(e) => onZipChange(e.target.value.replace(/\D/g, ''))}
-          onKeyDown={(e) => e.key === 'Enter' && zipValue.length === 5 && onCheck()}
-          placeholder="e.g. 90210"
-          className={`${FLOW_INPUT} font-mono tracking-wider text-center text-lg py-4`}
-        />
+  return (
+    <div className="home-light interior-home flow-zip-layout">
+      <div className="flow-zip-art home-scene-photo" aria-hidden>
+        <img src="/service-scenes/junk-truck.png" alt="" />
       </div>
 
-      {error && (
-        <div className="flex items-start gap-2 p-3 bg-brand/10 border border-brand/30 rounded-lg">
-          <AlertCircle size={15} className="text-brand shrink-0 mt-0.5" />
-          <p className="text-brand text-sm">{error}</p>
-        </div>
-      )}
+      <div className="flow-zip-content">
+        {showBack && onBack && (
+          <button type="button" onClick={onBack} className="flow-zip-back">
+            <ArrowLeft size={16} aria-hidden />
+            Back
+          </button>
+        )}
 
-      {result && (
-        <div className="flex items-center gap-2 p-3 bg-white/10 border border-white/30 rounded-xl">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 border border-brand/30 text-brand shrink-0">
-            <Check size={16} strokeWidth={2.5} />
-          </span>
-          <span className="text-sm font-medium text-[var(--text)]">
-            {result.city}, {result.state}
-          </span>
-          <span className="text-xs text-[var(--text-muted)] ml-auto">Continuing…</span>
-        </div>
-      )}
+        <FlowStepTitle eyebrow="Check coverage" title={title} subtitle={subtitle} />
 
-      <p className="text-xs text-[var(--text-muted)] text-center">Nationwide coverage · All 50 states</p>
+        <form onSubmit={submit} className="flow-zip-form" noValidate>
+          <label htmlFor="flow-zip" className="sr-only">ZIP code</label>
+          <div className={`flow-zip-field ${error ? 'has-error' : ''} ${result ? 'is-ok' : ''}`}>
+            <MapPin size={22} className="flow-zip-pin" aria-hidden />
+            <input
+              id="flow-zip"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="postal-code"
+              enterKeyHint="go"
+              maxLength={5}
+              value={zipValue}
+              onChange={(e) => onZipChange(e.target.value.replace(/\D/g, ''))}
+              placeholder="ZIP code"
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? 'flow-zip-error' : result ? 'flow-zip-result' : undefined}
+              disabled={Boolean(result)}
+            />
+            {result && <CheckCircle2 size={22} className="flow-zip-ok" aria-hidden />}
+          </div>
+
+          {error && (
+            <p id="flow-zip-error" role="alert" className="flow-zip-error">
+              <AlertCircle size={15} aria-hidden />
+              {error}
+            </p>
+          )}
+
+          {result ? (
+            <p id="flow-zip-result" className="flow-zip-success" aria-live="polite">
+              <CheckCircle2 size={18} aria-hidden />
+              <span><strong>{result.city}, {result.state}</strong> is covered. Continuing…</span>
+            </p>
+          ) : (
+            <button type="submit" disabled={!ready || loading} className="flow-btn flow-btn-primary w-full">
+              {loading ? (
+                <Loader2 size={18} className="animate-spin" aria-label="Checking" />
+              ) : (
+                <>
+                  Check my area
+                  <ArrowRight size={18} aria-hidden />
+                </>
+              )}
+            </button>
+          )}
+        </form>
+
+        <ul className="flow-zip-trust">
+          <li><Truck size={15} aria-hidden />All 50 states</li>
+          <li><ShieldCheck size={15} aria-hidden />Vetted providers</li>
+          <li><Star size={15} aria-hidden />Rated 4.8</li>
+        </ul>
+      </div>
     </div>
-    </div>
-
-    {!result && (
-      <FlowStickyNav
-        showBack={showBack}
-        onBack={onBack}
-        onContinue={onCheck}
-        continueLabel="Continue"
-        continueDisabled={zipValue.length !== 5}
-        continueLoading={loading}
-      />
-    )}
-  </div>
-);
+  );
+};

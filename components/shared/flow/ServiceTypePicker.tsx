@@ -35,7 +35,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
   <>
     <FlowStepTitle title={title} subtitle={subtitle} />
 
-    <div className="flow-service-options">
+    <div className="flow-options">
       <FlowSelectionCard
         title="Junk Removal"
         image="/service-scenes/junk-truck.png"

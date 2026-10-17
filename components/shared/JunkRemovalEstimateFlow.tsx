@@ -334,23 +334,17 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 shadow-none">
-          <div className="flex items-center justify-between mb-3 pb-3 border-b border-[var(--border)]">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold rounded-full">
-                  Instant Estimate
-                </span>
-                <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold rounded-full">
-                  Guaranteed
-                </span>
-              </div>
-              <h3 className="text-sm font-bold text-[var(--text)] mt-1">Junk Removal</h3>
-              <p className="text-[var(--text-muted)] text-xs mt-0.5">{price.estimatedVolume}</p>
+        <div className="flow-card overflow-hidden">
+          <div className="flow-estimate-head">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flow-option-title">Junk Removal</span>
+              <span className="flow-option-badge">Instant estimate</span>
+              <span className="flow-option-badge !bg-[#e7f6ec] !text-emerald-800">Guaranteed</span>
             </div>
-            <p className="text-xl font-bold text-[var(--text)]">${price.price}</p>
+            <p className="flow-estimate-price mt-3">${price.price}</p>
+            <p className="mt-1 text-[13px] text-[var(--text-muted)]">{price.estimatedVolume}</p>
           </div>
-          <div className="flex items-start gap-2.5">
+          <div className="flex items-start gap-2.5 px-4 py-3 bg-[#f1faf4]">
             <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
             <div>
               <div className="flex items-center gap-2">
@@ -414,8 +408,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
         <p className="text-xs text-[var(--text-muted)] text-center pb-4">* Final price confirmed on-site</p>
 
         {showInsuranceModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-all duration-300">
-            <div className="bg-[var(--surface)] rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-[var(--border)]">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#140a1f]/50">
+            <div className="bg-white rounded-lg p-6 md:p-8 max-w-md w-full shadow-[0_24px_60px_-20px_rgba(40,10,80,0.55)]">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
@@ -433,7 +427,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
               <p className="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
                 Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
               </p>
-              <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-full py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(82,15,150,0.4)] transition-all">
+              <button type="button" onClick={() => setShowInsuranceModal(false)} className="flow-btn flow-btn-primary w-full">
                 Got it
               </button>
             </div>
@@ -488,7 +482,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   ? 'Confirm your items to calculate the estimate.'
                   : manualStep === 'result'
                     ? 'Review your price breakdown, then continue.'
-                    : 'Browse categories and pick what you need.'
+                    : 'Tap everything that needs to go. Search if you don’t see it.'
             }
           />
         )}
@@ -504,8 +498,8 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 { title: 'Items only', desc: 'Photos of just the junk items work best. Avoid people or pets.' },
                 { title: 'Multiple angles', desc: 'For large piles, you can upload several photos of different sections.' },
               ].map((tip) => (
-                <div key={tip.title} className="flex gap-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4">
-                  <Check size={16} className="text-[var(--text)] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <div key={tip.title} className="flow-card flex gap-3 p-4">
+                  <Check size={16} className="text-[#520f96] shrink-0 mt-0.5" strokeWidth={2.5} />
                   <div>
                     <h4 className="text-sm font-semibold text-[var(--text)] mb-0.5">{tip.title}</h4>
                     <p className="text-sm text-[var(--text-muted)] leading-relaxed">{tip.desc}</p>
@@ -557,10 +551,10 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   </div>
                   {loadingState !== LoadingState.ANALYZING && (
                     <div className="flex gap-2">
-                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flex-1 py-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-[var(--surface-2)] transition-colors">
+                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flow-btn flow-btn-back flex-1">
                         Take another
                       </button>
-                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-[var(--surface-2)] transition-colors">
+                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flow-btn flow-btn-back flex-1">
                         Add more
                       </button>
                     </div>
@@ -612,34 +606,35 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
           {manualStep === 'review' && !manualPricingLoading && (
             <div className="space-y-4">
-              <div className="border border-[var(--border)] rounded-xl divide-y divide-secondary-100 overflow-hidden bg-[var(--surface)]">
+              <p className="flow-summary-pill">
+                {totalSelectedCount} item{totalSelectedCount === 1 ? '' : 's'} on your list
+              </p>
+              <ul className="flow-card review-list">
                 {selectedItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 p-3 md:p-4">
-                    <div className="w-12 h-12 rounded-lg bg-[var(--surface-2)] flex items-center justify-center shrink-0">
+                  <li key={item.id} className="review-row">
+                    <span className="review-icon" aria-hidden>
                       <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-8 h-8" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--text)] truncate">{item.name}</p>
-                      <p className="text-xs text-[var(--text-muted)]">Qty: {item.quantity}</p>
-                    </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center hover:border-[var(--border)] text-[var(--text-muted)] transition-colors">
-                        <Minus size={14} />
+                    </span>
+                    <p className="review-name min-w-0 flex-1 truncate">{item.name}</p>
+                    <div className="review-stepper shrink-0">
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} aria-label={`Remove one ${item.name}`}>
+                        <Minus size={15} strokeWidth={2.75} />
                       </button>
-                      <span className="w-6 text-center text-sm font-semibold text-[var(--text)]">{item.quantity}</span>
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center hover:border-[var(--border)] text-[var(--text-muted)] transition-colors">
-                        <Plus size={14} />
+                      <span className="tabular-nums">{item.quantity}</span>
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} aria-label={`Add one ${item.name}`}>
+                        <Plus size={15} strokeWidth={2.75} />
                       </button>
                     </div>
-                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-700 hover:bg-brand/10 transition-colors shrink-0" aria-label={`Remove ${item.name}`}>
-                      <Trash2 size={14} />
+                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="review-remove shrink-0" aria-label={`Remove ${item.name}`}>
+                      <Trash2 size={16} />
                     </button>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
-              <button type="button" onClick={() => setManualStep('select')} className="w-full py-3 text-sm font-medium text-[var(--text)] border border-dashed border-[var(--border)] rounded-xl hover:border-[var(--border)] transition-colors">
-                + Add more items
+              <button type="button" onClick={() => setManualStep('select')} className="review-add">
+                <Plus size={16} aria-hidden />
+                Add more items
               </button>
 
               <FlowStickyNav

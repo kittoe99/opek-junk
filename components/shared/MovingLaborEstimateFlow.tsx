@@ -509,26 +509,22 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
 
         {accessType === 'stairs' && (
-          <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-            <p className="text-xs font-semibold text-[var(--text-muted)] mb-3">How many flights of stairs?</p>
+          <div className="flow-card mt-4 p-4">
+            <p className="flow-section-label">How many flights of stairs?</p>
             <div className="flex gap-2">
               {[1, 2, 3, 4].map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => setFlightsOfStairs(n)}
-                  className={`flex-1 rounded-lg border py-2.5 text-sm font-semibold transition-all inline-flex items-center justify-center gap-1.5 ${
-                    flightsOfStairs === n
-                      ? 'border-brand bg-brand/5 text-brand'
-                      : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40'
-                  }`}
+                  aria-pressed={flightsOfStairs === n}
+                  className="flow-chip flex-1"
                 >
-                  {flightsOfStairs === n && <Check size={14} strokeWidth={3} className="text-brand" />}
                   {n === 4 ? '4+' : n}
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-[var(--text-muted)] mt-2">Each extra flight adds about 1 hour.</p>
+            <p className="text-[12px] text-[var(--text-muted)] mt-2.5">Each extra flight adds about 1 hour.</p>
           </div>
         )}
 
@@ -551,8 +547,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           subtitle="Heavy items and extra help affect your estimate. Optional — skip if none apply."
         />
 
-        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Heavy or bulky items</p>
-        <div className="grid grid-cols-2 gap-3 mb-5">
+        <p className="flow-section-label">Heavy or bulky items</p>
+        <div className="grid grid-cols-2 gap-2.5 mb-6">
           {HEAVY_ITEMS.map((item) => {
             const Icon = item.icon;
             const selected = heavyItems.includes(item.id);
@@ -561,75 +557,38 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 key={item.id}
                 type="button"
                 onClick={() => toggleHeavyItem(item.id)}
-                className={`relative rounded-xl border p-4 text-left transition-all ${
-                  selected ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
-                }`}
+                aria-pressed={selected}
+                className="flow-tile"
               >
-                <div
-                  className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center ${
-                    selected ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
-                  }`}
-                >
-                  {selected && <Check size={12} className="text-white" strokeWidth={3} />}
-                </div>
-                <Icon size={20} className={`${selected ? 'text-brand' : 'text-[var(--text-muted)]'}`} />
-                <p className={`text-xs font-semibold mt-2 ${selected ? 'text-brand' : 'text-[var(--text)]'}`}>
-                  {item.label}
-                </p>
+                <span className={`flow-option-radio flow-tile-check ${selected ? 'is-on' : ''}`} aria-hidden>
+                  {selected && <Check size={12} strokeWidth={3} />}
+                </span>
+                <Icon size={22} className="text-[#520f96]" />
+                <span className="mt-2 block text-[13px] font-bold text-[var(--text)]">{item.label}</span>
               </button>
             );
           })}
         </div>
 
-        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Extra help</p>
-        <div className="space-y-3 mb-4">
-          <button
-            type="button"
+        <p className="flow-section-label">Extra help</p>
+        <div className="flow-options mb-5">
+          <FlowSelectionCard
+            title="Packing help"
+            description="Help boxing items before the move · +~1 hr"
+            icon={<PackingHelpIcon className={MOVING_ICON_CLASS} />}
+            selected={needsPackingHelp}
             onClick={() => setNeedsPackingHelp((v) => !v)}
-            className={`w-full rounded-xl border p-4 text-left transition-all flex items-start gap-3 ${
-              needsPackingHelp ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
-            }`}
-          >
-            <div
-              className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsPackingHelp ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
-              }`}
-            >
-              {needsPackingHelp && <Check size={12} className="text-white" strokeWidth={3} />}
-            </div>
-            <PackingHelpIcon size={20} className={needsPackingHelp ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
-            <div>
-              <p className={`text-sm font-semibold ${needsPackingHelp ? 'text-brand' : 'text-[var(--text)]'}`}>
-                Packing help
-              </p>
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">Help boxing items before the move · +~1 hr</p>
-            </div>
-          </button>
-          <button
-            type="button"
+          />
+          <FlowSelectionCard
+            title="Disassembly & reassembly"
+            description="Beds, tables, and large pieces · +~1 hr"
+            icon={<DisassemblyIcon className={MOVING_ICON_CLASS} />}
+            selected={needsDisassembly}
             onClick={() => setNeedsDisassembly((v) => !v)}
-            className={`w-full rounded-xl border p-4 text-left transition-all flex items-start gap-3 ${
-              needsDisassembly ? 'border-brand bg-brand/5' : 'border-[var(--border)] bg-[var(--surface)] hover:border-brand/40'
-            }`}
-          >
-            <div
-              className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsDisassembly ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
-              }`}
-            >
-              {needsDisassembly && <Check size={12} className="text-white" strokeWidth={3} />}
-            </div>
-            <DisassemblyIcon size={20} className={needsDisassembly ? 'text-brand shrink-0' : 'text-[var(--text-muted)] shrink-0'} />
-            <div>
-              <p className={`text-sm font-semibold ${needsDisassembly ? 'text-brand' : 'text-[var(--text)]'}`}>
-                Furniture disassembly / reassembly
-              </p>
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">Beds, tables, and large pieces · +~1 hr</p>
-            </div>
-          </button>
+          />
         </div>
 
-        <p className="text-xs text-[var(--text-muted)] text-center mb-4">
+        <p className="flow-summary-pill mb-4">
           {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ~{totalHours} hours estimated
         </p>
         {pricingError && (
@@ -674,26 +633,23 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   return (
     <>
       <FlowStepTitle title="Your estimate" subtitle="Review your rate, then continue to book." />
-      <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 mb-4 shadow-none">
-        <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-sm font-bold text-[var(--text)]">Local Moving</h3>
-          <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold rounded-full">
-            {SCOPE_LABELS[draftOptions.serviceScope]}
-          </span>
+      <div className="flow-card flow-estimate mb-4 overflow-hidden">
+        <div className="flow-estimate-head">
+          <div className="flex items-center justify-between gap-2">
+            <span className="flow-option-title">Local Moving</span>
+            <span className="flow-option-badge">{SCOPE_LABELS[draftOptions.serviceScope]}</span>
+          </div>
+          <div className="mt-3 flex items-baseline gap-1.5 whitespace-nowrap">
+            <span className="flow-estimate-price">${hourlyRate}</span>
+            <span className="text-sm font-semibold text-[var(--text-muted)]">/hour</span>
+          </div>
+          <p className="mt-1 text-[13px] text-[var(--text-muted)]">
+            {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}
+            {draftOptions.needsTruck && ' · +$99 truck'}
+          </p>
         </div>
 
-        <div className="flex items-baseline gap-2 whitespace-nowrap mb-3">
-          <span className="text-3xl font-bold text-[var(--text)]">${hourlyRate}</span>
-          <span className="text-sm text-[var(--text-muted)]">/hour</span>
-          <span className="text-xs text-[var(--text-muted)]">· {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}</span>
-          {draftOptions.needsTruck && (
-            <>
-              <span className="text-xs text-[var(--text-muted)]">· +$99 truck</span>
-            </>
-          )}
-        </div>
-
-        <div className="border-t border-[var(--border)] pt-3 mb-3">
+        <div className="border-t border-[var(--border)] px-4 pt-3 pb-1">
           <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             <span>Size <span className="font-medium text-[var(--text)]">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
             <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
@@ -719,9 +675,9 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           </p>
         </div>
 
-        <div className="flex items-start gap-2.5">
+        <div className="flex items-start gap-2.5 px-4 py-3 bg-[#f1faf4]">
           <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
-          <p className="text-xs text-emerald-700 leading-normal">
+          <p className="text-xs font-semibold text-emerald-800 leading-normal">
             Safe Protect™ damage coverage included on every booking.
           </p>
         </div>

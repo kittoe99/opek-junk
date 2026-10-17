@@ -23,15 +23,15 @@ export function scrollToFlowStep(el: HTMLElement | null): void {
 }
 
 export const FLOW_INPUT =
-  'opek-field w-full px-4 py-3 rounded-xl text-sm transition-all disabled:opacity-55 placeholder:text-[var(--text-muted)]';
+  'opek-field flow-input w-full min-h-[52px] px-4 py-3 rounded-md text-base transition-colors disabled:opacity-55 placeholder:text-[#8a7f95]';
 
-export const FLOW_LABEL = 'block text-sm font-medium text-[var(--text)] mb-1.5';
+export const FLOW_LABEL = 'block text-[13px] font-bold text-[var(--text)] mb-2';
 
 export const FLOW_BACK_BUTTON =
-  'inline-flex items-center justify-center gap-2 flex-1 py-3.5 text-sm font-semibold border border-[var(--border)] text-[var(--text)] bg-transparent hover:bg-[var(--surface-2)] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  'flow-btn flow-btn-back inline-flex items-center justify-center gap-2 flex-1 disabled:opacity-50 disabled:cursor-not-allowed';
 
 export const FLOW_CONTINUE_BUTTON =
-  'inline-flex items-center justify-center gap-2 flex-[2] py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]';
+  'flow-btn flow-btn-primary inline-flex items-center justify-center gap-2 flex-[2] disabled:opacity-50 disabled:cursor-not-allowed';
 
 /** Marketing hero CTAs — homepage purple primary */
 export const HERO_PRIMARY_CTA =

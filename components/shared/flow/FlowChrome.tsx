@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Phone, X } from 'lucide-react';
-import { useUserLocation } from '../../../lib/userLocation';
+import { Phone, X } from 'lucide-react';
 import { HomeLogo } from '../../home/HomeLogo';
 import { FlowProgressBar } from './FlowProgressBar';
 
@@ -11,7 +10,7 @@ const SUPPORT_PHONE_TEL = 'tel:8313187139';
 interface FlowChromeProps {
   /** Used in the leave-confirm copy */
   flowLabel: string;
-  /** Optional step context (kept for callers; location chip is primary) */
+  /** Current step name, shown in the header */
   stepLabel?: string;
   /** 0–1 progress */
   progress: number;
@@ -23,6 +22,7 @@ interface FlowChromeProps {
 
 export const FlowChrome: React.FC<FlowChromeProps> = ({
   flowLabel,
+  stepLabel,
   progress,
   hasProgress = false,
   exitTo = '/',
@@ -30,7 +30,6 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
   const navigate = useNavigate();
   const headerRef = useRef<HTMLElement>(null);
   const [leaveOpen, setLeaveOpen] = useState(false);
-  const { locationLabel, isDetectingLocation, fetchUserLocation } = useUserLocation();
 
   useEffect(() => {
     const header = headerRef.current;
@@ -48,7 +47,7 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
       observer.disconnect();
       window.removeEventListener('resize', syncHeight);
     };
-  }, [locationLabel, leaveOpen]);
+  }, [leaveOpen]);
 
   const requestLeave = () => {
     if (hasProgress) {
@@ -79,17 +78,11 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
             <HomeLogo className="h-7 sm:h-8 w-auto" />
           </button>
 
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-20 sm:px-36">
-            <button
-              type="button"
-              onClick={() => void fetchUserLocation()}
-              disabled={isDetectingLocation}
-              className="pointer-events-auto inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-brand transition-colors disabled:opacity-50"
-              aria-label="Detect location"
-            >
-              <MapPin size={14} className="text-brand shrink-0" strokeWidth={2.25} aria-hidden />
-              <span className="truncate max-w-[8.5rem] sm:max-w-[12rem]">{locationLabel}</span>
-            </button>
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-24 sm:px-40 leading-tight">
+            <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--text-muted)]">{flowLabel}</span>
+            {stepLabel && (
+              <span className="truncate max-w-full text-[13px] font-extrabold text-[var(--text)]">{stepLabel}</span>
+            )}
           </div>
 
           <div className="relative z-10 ml-auto flex items-center gap-2 sm:gap-3">
@@ -132,11 +125,11 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
         >
           <button
             type="button"
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#140a1f]/50"
             aria-label="Dismiss"
             onClick={() => setLeaveOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)] animate-scale-in">
+          <div className="relative z-10 w-full max-w-sm rounded-lg bg-white p-6 shadow-[0_24px_60px_-20px_rgba(40,10,80,0.55)]">
             <h2 id="flow-leave-title" className="font-sans text-lg font-bold text-[var(--text)] tracking-tight">
               Leave this {flowLabel.toLowerCase()}?
             </h2>
@@ -147,14 +140,14 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
               <button
                 type="button"
                 onClick={() => setLeaveOpen(false)}
-                className="flex-1 inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-3 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                className="flow-btn flow-btn-back flex-1"
               >
                 Keep going
               </button>
               <button
                 type="button"
                 onClick={confirmLeave}
-                className="flex-1 inline-flex items-center justify-center rounded-full bg-brand px-4 py-3 text-sm font-semibold text-white hover:bg-brand-600 transition-colors"
+                className="flow-btn flow-btn-primary flex-1"
               >
                 Leave
               </button>

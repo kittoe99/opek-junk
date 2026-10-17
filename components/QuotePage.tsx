@@ -599,8 +599,8 @@ export const QuotePage: React.FC = () => {
       <div className="space-y-6">
         <FlowStepTitle title="Your estimate" subtitle="Review your price breakdown, then continue to book." />
 
-        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
-          <div className="w-20 h-16 md:w-24 md:h-20 shrink-0 flex items-end justify-center">
+        <div className="flow-card flow-estimate-head flex items-center gap-4">
+          <div className="flow-option-media home-image-backdrop shrink-0">
             <img
               src={
                 selectedService === 'junk_removal' ? '/hero-backgrounds/opek-crew-high-five.png' :
@@ -609,21 +609,20 @@ export const QuotePage: React.FC = () => {
                 selectedService === 'dumpster_rental' ? '/service-scenes/dumpster-rental.png' :
                 '/hero-backgrounds/opek-crew-high-five.png'
               }
-              alt="Service breakdown"
-              className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
+              alt=""
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-[var(--text)]">
+            <h3 className="flow-option-title">
               {selectedService === 'junk_removal' ? 'Junk Removal' :
                selectedService === 'donation_pickup' ? 'Donation Pick Up' :
                selectedService === 'moving_labor' ? 'Local Moving' :
                selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
                'Junk Removal'}
             </h3>
-            <p className="text-[var(--text-muted)] text-xs mt-0.5">{price.estimatedVolume}</p>
+            <p className="text-[var(--text-muted)] text-[13px] mt-1">{price.estimatedVolume}</p>
           </div>
-          <p className="text-2xl font-semibold text-[var(--text)] shrink-0">${price.price}</p>
+          <p className="flow-estimate-price shrink-0">${price.price}</p>
         </div>
 
         {!isSpecialService ? (
@@ -725,7 +724,7 @@ export const QuotePage: React.FC = () => {
   if (!smsIntroSeen) {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowChrome flowLabel="Get a quote" stepLabel="Intro" progress={0.08} />
+        <FlowChrome flowLabel="Get a quote" progress={0} />
         <div className="flow-home-intro-shell">
           <FlowSmsIntro onContinue={() => setSmsIntroSeen(true)} />
         </div>

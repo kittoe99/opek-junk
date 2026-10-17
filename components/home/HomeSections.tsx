@@ -331,7 +331,7 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
               Not sure what it’ll cost or how big the job is? Call or text and we’ll walk you through it, or have a provider
               stop by for a free in-home estimate.
             </p>
-            <div className="mt-5 grid grid-cols-2 gap-2 md:gap-x-6 md:gap-y-3 text-[14px] font-semibold">
+            <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-[14px] font-semibold">
               {[
                 ['Get a quote', '/quote'],
                 ['Track an order', '/track-order'],
@@ -341,7 +341,7 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
                 <Link
                   key={to}
                   to={to}
-                  className="flex min-h-11 items-center justify-center rounded-md border border-[#e0d6ec] text-[#520f96] md:block md:min-h-0 md:rounded-none md:border-0 hover:underline underline-offset-4"
+                  className="block text-[#520f96] hover:underline underline-offset-4"
                 >
                   {label}
                 </Link>

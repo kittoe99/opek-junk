@@ -13,6 +13,7 @@ interface FlowSelectionCardProps {
   onClick?: () => void;
 }
 
+/** Selectable option row used across the quote and booking flows. */
 export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
   title,
   description,
@@ -29,63 +30,27 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
     onClick={onClick}
     disabled={disabled}
     aria-pressed={selected}
-    className={`site-selection ${image ? 'flow-image-selection' : ''} w-full bg-[var(--surface)] border rounded-xl p-4 text-left transition-all ${
-      disabled
-        ? 'border-[var(--border)] opacity-55 cursor-not-allowed'
-        : selected
-          ? 'border-brand ring-2 ring-brand/20 shadow-[0_0_28px_-8px_rgba(82,15,150,0.45)]'
-          : 'border-[var(--border)] hover:border-brand/40 hover:bg-[var(--surface-2)]'
-    }`}
+    className={`site-selection flow-option ${image ? 'flow-option-has-image' : ''} w-full text-left`}
   >
-    {image && <div className="home-photo-frame flow-option-art"><img src={image} alt="" className="w-full h-full object-contain object-bottom" /></div>}
-    <div className="flex items-start justify-between gap-3 mb-2">
-      <div className="flex items-center gap-2.5 min-w-0">
-        <div
-          className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
-            selected ? 'border-brand bg-brand' : 'border-[var(--border)] bg-transparent'
-          }`}
-          aria-hidden
-        >
-          {selected && <Check size={12} className="text-white" strokeWidth={3} />}
-        </div>
-        <h3
-          className={`text-base font-semibold ${
-            disabled ? 'text-[var(--text-muted)]' : 'text-[var(--text)]'
-          }`}
-        >
-          {title}
-        </h3>
-        {badge && (
-          <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-[var(--surface-2)] text-[var(--text-muted)] rounded-full shrink-0 border border-[var(--border)]">
-            {badge}
-          </span>
-        )}
-      </div>
-      {fromPrice && !disabled && (
-        <span className="text-sm font-medium text-brand shrink-0 text-right leading-snug max-w-[14rem]">
-          {fromPrice}
-        </span>
-      )}
-    </div>
-    <div className="flex items-end justify-between gap-4 pl-[1.875rem]">
-      <p
-        className={`text-sm leading-relaxed flex-1 ${
-          disabled ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'
-        }`}
-      >
-        {description}
-      </p>
-      {icon && !image && (
-        <div
-          className={`w-12 h-12 shrink-0 flex items-end justify-center [&_svg]:w-full [&_svg]:h-full [&_svg_*]:stroke-current ${
-            disabled ? 'text-[var(--text-muted)]' : 'text-brand'
-          }`}
-          aria-hidden
-        >
-          {icon}
-        </div>
-      )}
-    </div>
-    {image && !disabled && <div className="flex justify-center"><span className="home-cta mt-5 min-w-[180px]" aria-hidden>Select service</span></div>}
+    {image ? (
+      <span className="flow-option-media home-image-backdrop" aria-hidden>
+        <img src={image} alt="" loading="lazy" />
+      </span>
+    ) : icon ? (
+      <span className="flow-option-icon" aria-hidden>{icon}</span>
+    ) : null}
+
+    <span className="min-w-0 flex-1">
+      <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="flow-option-title">{title}</span>
+        {badge && <span className="flow-option-badge">{badge}</span>}
+      </span>
+      {fromPrice && !disabled && <span className="flow-option-price">{fromPrice}</span>}
+      <span className="flow-option-desc">{description}</span>
+    </span>
+
+    <span className={`flow-option-radio ${selected ? 'is-on' : ''}`} aria-hidden>
+      {selected && <Check size={13} strokeWidth={3} />}
+    </span>
   </button>
 );

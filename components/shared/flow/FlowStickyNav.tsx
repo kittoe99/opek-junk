@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 
 interface FlowStickyNavProps {
   onBack?: () => void;
@@ -27,31 +27,43 @@ export const FlowStickyNav: React.FC<FlowStickyNavProps> = ({
   showBack = true,
   showContinue = true,
   className = '',
-}) => (
-  <div
-    className={`site-flow-nav fixed bottom-0 left-0 right-0 z-30 bg-[var(--surface)] backdrop-blur-md border-t border-[var(--border)] px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-16px_40px_rgba(0,0,0,0.45)] ${className}`}
-  >
-    <div className="max-w-lg mx-auto flex gap-3">
-      {showBack && onBack && (
-        <button
-          type="button"
-          onClick={onBack}
-          className={`${showContinue ? 'flex-1' : 'w-full'} py-3.5 text-sm font-semibold border border-[var(--border)] text-[var(--text)] bg-transparent hover:bg-[var(--surface-2)] rounded-sm transition-colors`}
-        >
-          {backLabel}
-        </button>
-      )}
-      {showContinue && (
-        <button
-          type={continueType}
-          form={continueForm}
-          onClick={continueType === 'button' ? onContinue : undefined}
-          disabled={continueDisabled || continueLoading}
-          className={`${showBack && onBack ? 'flex-[2]' : 'flex-1 w-full'} py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]`}
-        >
-          {continueLoading ? <Loader2 size={16} className="animate-spin" /> : continueLabel}
-        </button>
-      )}
+}) => {
+  const hasBack = showBack && !!onBack;
+  return (
+    <div
+      className={`site-flow-nav fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--border)] bg-white/95 backdrop-blur px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] ${className}`}
+    >
+      <div className="max-w-lg mx-auto flex gap-2.5">
+        {hasBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className={`flow-btn flow-btn-back ${showContinue ? 'shrink-0 px-4' : 'w-full'}`}
+            aria-label={showContinue ? backLabel : undefined}
+          >
+            <ArrowLeft size={18} aria-hidden />
+            <span className={showContinue ? 'sr-only sm:not-sr-only' : ''}>{backLabel}</span>
+          </button>
+        )}
+        {showContinue && (
+          <button
+            type={continueType}
+            form={continueForm}
+            onClick={continueType === 'button' ? onContinue : undefined}
+            disabled={continueDisabled || continueLoading}
+            className="flow-btn flow-btn-primary flex-1"
+          >
+            {continueLoading ? (
+              <Loader2 size={18} className="animate-spin" aria-label="Loading" />
+            ) : (
+              <>
+                {continueLabel}
+                <ArrowRight size={18} aria-hidden />
+              </>
+            )}
+          </button>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
