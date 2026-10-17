@@ -1,0 +1,5 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Input: junk-branded.png
+Output: junk-chest-logo.png
+
+Use case: precise-object-edit. Edit the provided transparent Junk Removal service photograph. Remove ONLY the white circular two-stripe logo from the upper BACK of the LEFT worker's purple T-shirt. Restore plain purple fabric with matching natural folds, texture, lighting and shading in that small region. Keep the white circular two-stripe CHEST logo on the RIGHT worker exactly as it is. Preserve all other pixels and content as closely as possible: both people, faces, body positions, purple shirt colors, couch, truck, mattress, boxes, chair, framing and dimensions. Preserve genuine transparent background and alpha, with no added background color, scenery, text or other logos.

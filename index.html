@@ -222,7 +222,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
     <style>
       html {
         color-scheme: dark;
@@ -296,6 +296,135 @@
         color-scheme: dark;
         /* Fallback until Navbar measures the live fixed header (nav + announcement bar). */
         --site-header-height: 124px;
+      }
+
+      /* Homepage light / purple theme — scoped to .home-light (homepage, its nav and footer) */
+      .home-light {
+        --bg: #ffffff;
+        --bg-alt: #f2f2f2;
+        --text: #140a1f;
+        --text-muted: #4a4256;
+        --border: rgba(20, 10, 31, 0.12);
+        --home-purple: #520f96;
+        --home-purple-dark: #3a0a6b;
+        --home-violet: #a020f0;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', system-ui, sans-serif;
+        color-scheme: light;
+      }
+      .home-light .home-image-backdrop {
+        background-color: #ece1f8;
+        background-image: radial-gradient(ellipse at 50% 35%, #faf7ff 0%, #eee5f8 55%, #ddc9f0 100%);
+      }
+
+      .home-light .home-display {
+        font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        font-stretch: 82%;
+        font-variation-settings: "wdth" 82;
+      }
+      .home-light .home-eyebrow {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #b0004f;
+      }
+      .home-light .home-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 52px;
+        padding: 0 2.25rem;
+        border-radius: 0;
+        background-color: var(--home-purple);
+        color: #ffffff;
+        font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        transition: background-color 0.2s ease;
+      }
+      .home-light .home-cta:hover {
+        background-color: var(--home-purple-dark);
+      }
+      .home-light .home-cta:focus-visible,
+      .home-light a:focus-visible,
+      .home-light button:focus-visible {
+        outline: 3px solid #a020f0;
+        outline-offset: 2px;
+      }
+
+      /* Mobile homepage: image-led hero and centered, swipeable steps. */
+      @media (max-width: 767px) {
+        .home-light .home-nav { height: 56px; gap: 8px; padding-inline: 16px; }
+        .home-light .home-nav > button:first-child img { height: 26px; }
+        .home-light .home-nav .h-10 { width: 40px; height: 44px; }
+        .home-light .home-mobile-location {
+          position: relative; top: 56px; min-height: 84px;
+          padding: 18px 20px; background: white; text-align: left;
+        }
+        .home-page { display: flex; flex-direction: column; }
+        .home-page > .home-hero { order: 0; }
+        .home-page > #process { order: 1; }
+        .home-page > #service-area { order: 2; }
+        .home-page > #services { order: 3; }
+        .home-page > .home-ways { order: 4; }
+        .home-page > #testimonials { order: 5; }
+        .home-light .home-hero > .grid { display: flex; flex-direction: column; }
+        .home-light .home-hero-visual {
+          order: -1; height: clamp(260px, 70vw, 390px); min-height: 0;
+          background-image: radial-gradient(ellipse at 50% 25%, #faf7ff, #ddc9f0);
+        }
+        .home-light .home-hero-visual img { height: 96%; left: 50%; }
+        .home-light .home-hero-copy,
+        .home-light .home-promo,
+        .home-light .home-booking-options {
+          background-color: #8b16d4;
+          background-image: radial-gradient(ellipse at 12% 15%, #b12af5 0%, transparent 60%),
+            radial-gradient(ellipse at 95% 85%, #690eb2 0%, transparent 65%);
+          color: white;
+        }
+        .home-light .home-hero-copy { padding: 30px 20px 34px; text-align: center; }
+        .home-light .home-hero-copy > div { max-width: 480px; margin-inline: auto; }
+        .home-light .home-hero-copy .home-eyebrow { color: white; font-size: 10px; letter-spacing: .1em; margin-bottom: 16px; }
+        .home-light .home-hero-copy h1 { color: white; font-size: clamp(30px, 8vw, 42px); line-height: 1; font-variation-settings: "wdth" 100; }
+        .home-light .home-hero-copy h1 + p { color: white; font-size: 15px; line-height: 1.5; margin: 18px auto 0; max-width: 360px; }
+        .home-light .home-hero-actions { align-items: center; gap: 16px; margin-top: 24px; flex-direction: column; }
+        .home-light .home-hero-actions .home-cta { width: 220px; min-height: 56px; border: 2px solid white; }
+        .home-light .home-hero-actions > button:not(.home-cta) { color: white; font-size: 13px; }
+        .home-light .home-hero-contact { display: none; }
+        .home-light .home-hero-fine-print { background: #520f96; }
+        .home-light .home-hero-fine-print p { font-size: 10px; line-height: 1.5; text-align: center; padding: 14px 22px; color: #f0e6fb; }
+        .home-light #process { padding-block: 56px 40px; }
+        .home-light #process h2,
+        .home-light #services h2,
+        .home-light .home-promo h2,
+        .home-light .home-ways h2,
+        .home-light #testimonials h2 { font-size: 30px; line-height: 1.05; font-variation-settings: "wdth" 100; }
+        .home-light #process h2 { max-width: 380px; margin-inline: auto; }
+        .home-light #process h2 + p { max-width: 340px; margin: 20px auto 0; line-height: 1.4; }
+        .home-light .home-process-track { padding-inline: 12%; scroll-padding-inline: 12%; gap: 24px; margin-top: 36px; }
+        .home-light .home-process-track article { flex: 0 0 100%; width: 100%; }
+        .home-light .home-process-track h3 { font-size: 24px; margin-top: 20px; }
+        .home-light .home-process-track p { font-size: 16px; line-height: 1.4; }
+        .home-light .home-process-track .home-image-backdrop { border-radius: 5px; }
+        .home-light .home-promo { padding: 54px 0; scroll-margin-top: 72px; }
+        .home-light .home-promo form { max-width: 400px; margin-inline: auto; margin-top: 26px; }
+        .home-light #services { background: white; padding-block: 56px; }
+        .home-light #services > div > .grid { gap: 44px; }
+        .home-light .home-ways { padding-top: 12px; padding-bottom: 56px; }
+        .home-light .home-booking-options { padding: 14px 22px; border-radius: 5px; }
+        .home-light .home-booking-options a { display: grid; grid-template-columns: 28px 1fr; gap: 4px 14px; padding-block: 20px; }
+        .home-light .home-booking-options svg { grid-row: span 2; align-self: center; }
+        .home-light .home-booking-options .home-display { font-size: 23px; }
+        .home-light .home-booking-detail { grid-column: 2; margin-left: 0; font-size: 13px; }
+        .home-quick-action { display: none; }
       }
 
       /* Homepage dark mode — scoped to .home-dark */

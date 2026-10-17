@@ -2,14 +2,15 @@ import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { JunkHaulAway } from './components/JunkHaulAway';
-import { RelatedServices } from './components/RelatedServices';
-import { HustleMuscle } from './components/HustleMuscle';
-import { OpekApproach } from './components/OpekApproach';
-import { LocalServiceAreas } from './components/LocalServiceAreas';
-import { ServiceArea } from './components/ServiceArea';
-import { Testimonials } from './components/Testimonials';
-import { ZipFinder } from './components/ZipFinder';
+import {
+  HomeFeaturedServices,
+  HomeHowItWorks,
+  HomePromoBand,
+  HomeReviews,
+  HomeWaysToBook,
+} from './components/home/HomeSections';
+import { HomeNavbar } from './components/home/HomeNavbar';
+import { HomeFooter } from './components/home/HomeFooter';
 import { Footer } from './components/Footer';
 import { QuickActionBar } from './components/QuickActionBar';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
@@ -73,7 +74,7 @@ function GlobalQuickActionBar() {
     navigate('/booking');
   };
 
-  return <QuickActionBar onBookOnline={onBookOnline} />;
+  return <QuickActionBar onBookOnline={onBookOnline} variant={pathname === '/' ? 'light' : 'dark'} />;
 }
 
 function GlobalFooter() {
@@ -83,7 +84,7 @@ function GlobalFooter() {
     return null;
   }
 
-  return <Footer />;
+  return pathname === '/' ? <HomeFooter /> : <Footer />;
 }
 
 function GlobalNavbar() {
@@ -93,7 +94,7 @@ function GlobalNavbar() {
     return null;
   }
 
-  return <Navbar />;
+  return pathname === '/' ? <HomeNavbar /> : <Navbar />;
 }
 
 function MainShell({ children }: { children: React.ReactNode }) {
@@ -134,24 +135,17 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="home-dark">
+    <div className="home-light home-page">
       <SEO {...seoConfig.home} />
       <Hero
         onGetQuote={() => navigate('/quote')}
         onBookOnline={() => navigate('/booking')}
       />
-      <JunkHaulAway />
-      <RelatedServices excludePath="/services/junk-removal" />
-      <HustleMuscle />
-      <OpekApproach />
-      <LocalServiceAreas />
-      <ServiceArea
-        titleStart="Schedule a pickup."
-        titleAccent="Providers handle the rest."
-        theme="dark"
-      />
-      <Testimonials theme="dark" />
-      <ZipFinder />
+      <HomeFeaturedServices />
+      <HomeHowItWorks />
+      <HomePromoBand />
+      <HomeWaysToBook />
+      <HomeReviews />
     </div>
   );
 }

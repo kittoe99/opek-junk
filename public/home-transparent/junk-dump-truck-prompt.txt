@@ -1,0 +1,9 @@
+Mode: built-in image_gen generation; transparent_background=true.
+Output: junk-dump-truck.png
+
+Use case: ads-marketing.
+Asset type: photorealistic cutout PNG for a junk removal website service card.
+Primary request: A professional medium-duty junk removal dump truck, isolated on a genuinely transparent background. White cab with a rich purple (#520f96) high-sided steel dump body, black chassis and tires. The dump bed is lowered in normal driving position, with a modest neatly contained load of discarded household furniture and boxes visible above the sides. No people.
+Composition: Landscape image roughly 17:10, full truck visible with comfortable padding on all sides, three-quarter front and side view showing the cab and long dump body. Truck fills most of the frame, wheels along the lower edge. Suitable for a small service card.
+Style: Realistic high-quality commercial photography, clean natural daylight, accurate truck proportions and crisp detail. Match polished photographic cutout imagery on a purple-themed website.
+Constraints: Transparent alpha background, no ground plane, no colored backdrop, no environment, no sky, no checkerboard. No text, no brand lettering, no watermark. All parts of truck and contained load opaque, only surrounding background transparent.
