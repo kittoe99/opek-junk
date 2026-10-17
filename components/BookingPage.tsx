@@ -687,7 +687,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowContinueFromQuote(true)}
-                  className="text-sm font-semibold text-neutral-400 hover:text-white transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/50"
+                  className="text-sm font-semibold text-[var(--text-muted)] hover:text-brand transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/50"
                 >
                   Already have a quote? Continue with your phone
                 </button>
@@ -750,17 +750,17 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--border)] hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white/[0.04] border border-white/10 rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
+                    <div className="w-12 h-12 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
                       <CameraCaptureIcon size={22} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Take photo</h3>
                       <p className="text-[var(--text-muted)] text-sm">Use your camera to capture the items</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white/20 group-hover:bg-brand flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-[var(--border)] group-hover:border-[var(--border)] group-hover:bg-brand flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-brand transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
                   </button>
@@ -768,17 +768,17 @@ export const BookingPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-[var(--surface)] border border-white/15 hover:border-white/25 hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--border)] hover:shadow-none transition-all p-5 rounded-xl text-left flex items-center gap-4 group"
                   >
-                    <div className="w-12 h-12 bg-white/[0.04] border border-white/10 rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
+                    <div className="w-12 h-12 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl flex items-center justify-center shrink-0 text-[var(--text-muted)] group-hover:border-brand/30 group-hover:text-brand transition-colors">
                       <UploadPhotoIcon size={22} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[var(--text)] mb-0.5">Upload photo</h3>
                       <p className="text-[var(--text-muted)] text-sm">Choose an existing photo from your device</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white/20 group-hover:bg-brand flex items-center justify-center transition-all">
-                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-white transition-all group-hover:translate-x-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-[var(--border)] group-hover:border-[var(--border)] group-hover:bg-brand flex items-center justify-center transition-all">
+                      <ArrowRight size={14} className="text-[var(--text-muted)] group-hover:text-brand transition-all group-hover:translate-x-0.5" />
                     </div>
                     <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                   </button>
@@ -795,7 +795,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="relative overflow-hidden rounded-xl border border-white/15">
+                  <div className="relative overflow-hidden rounded-xl border border-[var(--border)]">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
                       <button
@@ -844,12 +844,12 @@ export const BookingPage: React.FC = () => {
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
-                                  ? '/opek-service-areas.png?v=1'
+                                  ? '/home-transparent/haul-branded.png'
                                   : formData.serviceType === 'Moving Labor'
-                                    ? '/opek-related-moving.png?v=1'
+                                    ? '/home-transparent/junk-chest-logo.png'
                                     : formData.serviceType === 'Dumpster Rental'
                                       ? '/opek-related-dumpster.png?v=1'
-                                      : '/opek-hero-haulers.png?v=3'
+                                      : '/home-transparent/hero-branded.png'
                               }
                               alt="Service"
                               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -857,10 +857,10 @@ export const BookingPage: React.FC = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                              <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Instant Estimate
                               </span>
-                              <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-300 text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                              <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Guaranteed
                               </span>
                             </div>
@@ -891,7 +891,7 @@ export const BookingPage: React.FC = () => {
                               <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
                               <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                             </div>
-                            <p className="text-xs text-emerald-300 mt-1 leading-normal">
+                            <p className="text-xs text-emerald-700 mt-1 leading-normal">
                               All bookings are covered by platform damage protection.{' '}
                               <button
                                 type="button"
@@ -978,23 +978,23 @@ export const BookingPage: React.FC = () => {
                     title="Rental duration"
                     subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
                   />
-                  <div className="bg-[var(--surface)] border border-white/15 rounded-xl p-4 flex items-center justify-between gap-4">
+                  <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
                       <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                     </div>
-                    <div className="flex items-center gap-2 border border-white/15 rounded-full px-2 py-1">
+                    <div className="flex items-center gap-2 border border-[var(--border)] rounded-full px-2 py-1">
                       <button
                         onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                         disabled={dumpsterDuration <= 1}
-                        className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
                       <button
                         onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                        className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] flex items-center justify-center"
+                        className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
                       >
                         <Plus size={14} />
                       </button>
@@ -1057,10 +1057,10 @@ export const BookingPage: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                          <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Instant Estimate
                           </span>
-                          <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-300 text-[10px] font-semibold uppercase tracking-wide rounded-full">
+                          <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Guaranteed
                           </span>
                         </div>
@@ -1091,7 +1091,7 @@ export const BookingPage: React.FC = () => {
                           <p className="text-sm font-semibold text-emerald-950">Safe Protect™ Included</p>
                           <span className="bg-emerald-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">Covered</span>
                         </div>
-                        <p className="text-xs text-emerald-300 mt-1 leading-normal">
+                        <p className="text-xs text-emerald-700 mt-1 leading-normal">
                           All bookings are covered by platform damage protection.{' '}
                           <button
                             type="button"
@@ -1203,13 +1203,13 @@ export const BookingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-black text-[var(--text)] text-lg">Safe Protect™</h3>
-                  <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Platform Coverage Included</p>
+                  <p className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                 </div>
               </div>
               <button 
                 type="button"
                 onClick={() => setShowInsuranceModal(false)}
-                className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-white/[0.06] flex items-center justify-center text-[var(--text)] transition-colors"
+                className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
@@ -1218,7 +1218,7 @@ export const BookingPage: React.FC = () => {
               <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                 Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
               </p>
-              <div className="h-px bg-white/[0.06]"></div>
+              <div className="h-px bg-[var(--surface-2)]"></div>
               <div className="space-y-3">
                 <div className="flex gap-3">
                   <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -1246,7 +1246,7 @@ export const BookingPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowInsuranceModal(false)}
-              className="w-full mt-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(255,0,110,0.4)] transition-all"
+              className="w-full mt-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(82,15,150,0.4)] transition-all"
             >
               Got it
             </button>

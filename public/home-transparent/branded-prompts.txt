@@ -1,0 +1,51 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Input 1: corresponding *-purple.png. Input 2: ../opek-logo-white.png.
+Outputs: hero-branded.png, junk-branded.png, moving-branded.png, mattress-branded.png, schedule-branded.png, haul-branded.png.
+
+hero-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem to the visible upper chest of BOTH men, above the tool chest. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.
+
+junk-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem to the right man's visible upper chest, and the left back-facing man's upper back. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.
+
+moving-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem to the mover's visible upper chest, above the cardboard box. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.
+
+mattress-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem to the mover's visible upper chest. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.
+
+schedule-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem only to the male provider's purple T-shirt upper chest. Leave the female customer's clothing unchanged. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.
+
+haul-branded.png
+Use case: compositing.
+Asset type: transparent homepage provider photo.
+Input images: Image 1 is the edit target. Image 2 is the supporting logo reference; use ONLY its two parallel slanted stripe shapes at the far left, never the lettering.
+Primary request: Add a small white uniform emblem to the purple shirts. The emblem consists of exactly TWO solid white parallel slanted parallelogram bars, matching the two stripes in the reference, centered inside a clean thin WHITE CIRCULAR OUTLINE. Purple fabric must show through inside the circle around the white stripes. No solid white disk. No wordmark, no letters, no text, no trademark.
+Placement: Add the emblem to the visible upper chest of BOTH providers' purple work shirts, above the box. Use a modest chest badge scale, approximately 7 cm diameter. Match perspective, fabric folds, and natural shirt shading. Every badge uses the same two stripe proportions and enclosing white ring.
+Constraints: Change only the shirt branding; preserve the existing rich purple shirt color (#520f96 family), faces, bodies, pose, hands, clothing, objects, truck, composition, framing, and photographic style. Keep the subject fully visible. Preserve genuine transparent alpha background with clean edges. No scenery or background color. No additional logos or text.

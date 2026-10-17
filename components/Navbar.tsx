@@ -31,7 +31,8 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const isAdsLandingPage =
     location.pathname === '/services/mattress-disposal' ||
-    location.pathname === '/lp/junk-removal';
+    location.pathname === '/lp/junk-removal' ||
+    location.pathname === '/lp/local-moves';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);

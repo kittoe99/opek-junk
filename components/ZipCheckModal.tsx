@@ -102,7 +102,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                 </div>
 
                 {/* Sleek unified Input Pill */}
-                <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(255,0,110,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(255,0,110,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 p-1 mb-2.5 rounded-xl">
+                <div className="relative group flex items-center bg-white border border-secondary-100 hover:border-brand/40 hover:shadow-[0_4px_20px_rgba(82,15,150,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10 focus-within:shadow-[0_4px_20px_rgba(82,15,150,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-300 p-1 mb-2.5 rounded-xl">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -111,14 +111,14 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     onChange={(e) => { setZipCode(e.target.value.replace(/\D/g, '')); setError(''); }}
                     onKeyDown={(e) => e.key === 'Enter' && handleZipCheck()}
                     placeholder="e.g. 75201"
-                    className="opek-field flex-1 min-w-0 w-full bg-transparent border-none px-4 py-3 text-sm font-extrabold text-secondary placeholder:text-neutral-500 focus:outline-none tracking-widest text-center"
+                    className="opek-field flex-1 min-w-0 w-full bg-transparent border-none px-4 py-3 text-sm font-extrabold text-secondary placeholder:text-[var(--text-muted)] focus:outline-none tracking-widest text-center"
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                     autoFocus
                   />
                   <button
                     onClick={handleZipCheck}
                     disabled={isLoading || zipCode.length !== 5}
-                    className="px-5 py-3 bg-secondary text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(53,80,112,0.15)] hover:shadow-[0_4px_12px_rgba(255,0,110,0.25)] disabled:shadow-none shrink-0"
+                    className="px-5 py-3 bg-secondary text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(53,80,112,0.15)] hover:shadow-[0_4px_12px_rgba(82,15,150,0.25)] disabled:shadow-none shrink-0"
                   >
                     {isLoading ? (
                       <Loader2 size={12} className="animate-spin" />
@@ -151,7 +151,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
             {verified && (
               <>
                 <div className="flex flex-col items-center text-center pb-1">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white shadow-[0_6px_12px_rgba(16,185,129,0.2)] mb-3 animate-scale-in">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-[var(--text)] shadow-[0_6px_12px_rgba(16,185,129,0.2)] mb-3 animate-scale-in">
                     <Check size={20} strokeWidth={3} className="animate-fade-in" />
                   </div>
                   <h2 className="text-lg font-black text-secondary tracking-tight leading-tight mb-0.5">

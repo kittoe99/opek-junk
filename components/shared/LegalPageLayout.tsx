@@ -1,3 +1,5 @@
+import { ServicePageHero } from './ServicePageHero';
+import { HomeCallout } from '../home/HomePagePatterns';
 import React, { useState, useEffect } from 'react';
 
 export interface LegalSection {
@@ -26,11 +28,12 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 160;
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--site-header-height')) || 80;
+      const scrollPos = window.scrollY + headerHeight + 32;
       for (const section of sections) {
         const el = document.getElementById(section.id);
         if (el) {
-          const top = el.offsetTop;
+          const top = el.getBoundingClientRect().top + window.scrollY;
           const height = el.offsetHeight;
           if (scrollPos >= top && scrollPos < top + height) {
             setActiveSection(section.id);
@@ -46,31 +49,34 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const offset = el.offsetTop - 120;
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--site-header-height')) || 80;
+      const offset = el.getBoundingClientRect().top + window.scrollY - headerHeight - 24;
       window.scrollTo({ top: offset, behavior: 'smooth' });
       setActiveSection(id);
     }
   };
 
   return (
-    <div className="home-dark min-h-screen bg-[var(--bg)]">
-      <section className="relative border-b border-[var(--border)] bg-[var(--bg)] overflow-hidden">
-        <div className="absolute -top-24 right-[-8%] h-[280px] w-[280px] rounded-full bg-brand/[0.08] blur-[110px] pointer-events-none" aria-hidden />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
-          <div className="max-w-3xl">
-            <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">{eyebrow}</p>
-            <h1 className="font-sans font-extrabold text-[1.85rem] sm:text-[2.5rem] md:text-[3rem] text-[var(--text)] tracking-tight leading-[1.1] mb-4">
-              {title}
-            </h1>
-            <p className="text-[14px] sm:text-base text-[var(--text-muted)] leading-relaxed">{description}</p>
-          </div>
-        </div>
-      </section>
+    <div className="site-page home-light interior-home min-h-screen bg-[var(--bg)]">
+      <ServicePageHero eyebrow={eyebrow} title={title} subtitle={description}
+        image="/home-transparent/schedule-phone.png" imageAlt="Phone showing a pickup schedule"
+        chip="Clear information" bannerTitle={<>Good service.<br />Clear terms.</>} bannerDetail="Know where you stand."
+        primaryCta={{ label: 'Read the policy', href: '#policy-contents' }} secondaryCta={{ label: 'Contact us', href: '/contact' }} showRating={false} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <div id="policy-contents" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 scroll-mt-[var(--site-header-height)]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <aside className="lg:col-span-4 sticky top-28 hidden lg:block">
-            <div className="bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6">
+          <details className="lg:hidden rounded-lg border border-[var(--border)] bg-white p-5">
+            <summary className="cursor-pointer text-sm font-bold text-brand">On this page</summary>
+            <nav aria-label="Policy sections" className="mt-3 grid gap-1">
+              {sections.map((section) => (
+                <button key={section.id} type="button" onClick={() => scrollToSection(section.id)} className="min-h-11 text-left text-sm text-[var(--text-muted)] hover:text-brand">
+                  {section.title}
+                </button>
+              ))}
+            </nav>
+          </details>
+          <aside className="site-legal-nav lg:col-span-4 sticky hidden lg:block">
+            <div className="home-policy-menu bg-[#f2f2f2] p-6">
               <h2 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-4">
                 Sections
               </h2>
@@ -84,8 +90,8 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
                       onClick={() => scrollToSection(section.id)}
                       className={`w-full text-left px-4 py-2.5 rounded-full text-sm font-medium flex items-center gap-3 transition-all ${
                         isActive
-                          ? 'bg-brand text-white shadow-[0_0_20px_-6px_rgba(255,0,110,0.55)]'
-                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/[0.04]'
+                          ? 'bg-brand text-white shadow-[0_0_20px_-6px_rgba(82,15,150,0.55)]'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
                       }`}
                     >
                       {isActive
@@ -101,12 +107,12 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
             </div>
           </aside>
 
-          <div className="lg:col-span-8 bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 sm:p-10 space-y-12">
+          <div className="lg:col-span-8 space-y-12 px-1 sm:px-4">
             {sections.map((section) => (
               <section
                 key={section.id}
                 id={section.id}
-                className="scroll-mt-32 border-b border-white/[0.06] last:border-b-0 pb-10 last:pb-0"
+                className="scroll-mt-32 border-b border-[var(--border)] last:border-b-0 pb-10 last:pb-0"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-brand/10 rounded-2xl flex items-center justify-center border border-brand/25 shrink-0 text-brand">
@@ -124,6 +130,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
           </div>
         </div>
       </div>
+      <HomeCallout title="Questions? Let’s clear them up." body="Our team can help you understand our policies or answer a question about your service." label="Contact us" to="/contact" />
     </div>
   );
 };

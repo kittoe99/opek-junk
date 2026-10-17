@@ -46,7 +46,8 @@ export const Footer: React.FC = () => {
   const location = useLocation();
   const isAdsLandingPage =
     location.pathname === '/services/mattress-disposal' ||
-    location.pathname === '/lp/junk-removal';
+    location.pathname === '/lp/junk-removal' ||
+    location.pathname === '/lp/local-moves';
 
   if (isAdsLandingPage) {
     return (

@@ -34,7 +34,7 @@ function ConsentCheckbox({
       className={`flex items-start gap-3 p-3.5 rounded-xl cursor-pointer transition-colors ${
         checked
           ? 'bg-brand/10 border border-brand/35'
-          : 'bg-[var(--bg)] border border-white/10 hover:border-white/20'
+          : 'bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border)]'
       }`}
     >
       <div className="relative shrink-0 mt-0.5">
@@ -47,7 +47,7 @@ function ConsentCheckbox({
         />
         <div
           className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-            checked ? 'bg-brand border-white/20' : 'bg-[var(--surface)] border-white/20'
+            checked ? 'bg-brand border-[var(--border)]' : 'bg-[var(--surface)] border-[var(--border)]'
           }`}
         >
           {checked && <Check size={12} className="text-white" strokeWidth={3.5} />}
@@ -153,16 +153,16 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
           <div
             className={`rounded-2xl border p-4 transition-all ${
               smsConsent
-                ? 'border-brand bg-brand/[0.07] shadow-[0_0_32px_-12px_rgba(255,0,110,0.4)]'
-                : 'border-white/15 bg-[var(--surface)]'
+                ? 'border-brand bg-brand/[0.07] shadow-[0_0_32px_-12px_rgba(82,15,150,0.4)]'
+                : 'border-[var(--border)] bg-[var(--surface)]'
             }`}
           >
             <div className="flex items-start gap-3 mb-4">
               <span
                 className={`flex h-11 w-11 items-center justify-center rounded-xl shrink-0 border ${
                   smsConsent
-                    ? 'bg-brand border-brand/40 text-white shadow-[0_0_24px_-6px_rgba(255,0,110,0.55)]'
-                    : 'bg-white/[0.04] border-white/10 text-brand'
+                    ? 'bg-brand border-brand/40 text-white shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]'
+                    : 'bg-[var(--surface-2)] border-[var(--border)] text-brand'
                 }`}
               >
                 <MessageSquare size={20} />
@@ -187,19 +187,19 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
           {/* Divider */}
           <div className="flex items-center gap-3 py-1">
-            <span className="h-px flex-1 bg-white/10" aria-hidden />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
+            <span className="h-px flex-1 bg-[var(--surface-2)]" aria-hidden />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
               or
             </span>
-            <span className="h-px flex-1 bg-white/10" aria-hidden />
+            <span className="h-px flex-1 bg-[var(--surface-2)]" aria-hidden />
           </div>
 
           {/* Call path */}
           <a
             href={`tel:${SITE_PHONE}`}
-            className="group flex items-start gap-3 rounded-2xl border border-white/15 bg-[var(--surface)] p-4 hover:border-white/25 hover:bg-white/[0.03] transition-colors"
+            className="group flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 hover:border-[var(--border)] hover:bg-[var(--surface-2)] transition-colors"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] border border-white/10 text-[var(--text)] group-hover:border-brand/40 group-hover:text-brand shrink-0 transition-colors">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] group-hover:border-brand/40 group-hover:text-brand shrink-0 transition-colors">
               <Phone size={20} />
             </span>
             <span className="min-w-0 pt-0.5 flex-1">

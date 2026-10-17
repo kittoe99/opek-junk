@@ -79,7 +79,7 @@ export const TermsOfServicePage: React.FC = () => {
       icon: <Info size={18} className="text-brand shrink-0" />,
       content: (
         <>
-          <div className="bg-amber-400/10 border-l-4 border-amber-400 p-4 mb-4 text-sm text-amber-200 rounded-r-xl">
+          <div className="bg-amber-400/10 border-l-4 border-amber-400 p-4 mb-4 text-sm text-amber-700 rounded-r-xl">
             <span className="font-bold">CRITICAL DISCLAIMER:</span> Opek Junk Removal is a technology matching platform. We do not provide physical hauling, junk removal, dumpster rental, or moving labor services ourselves.
           </div>
           <p className="mb-4">

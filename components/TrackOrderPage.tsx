@@ -1,3 +1,5 @@
+import { HomeHowItWorks, HomeWaysToBook, HomeReviews } from './home/HomeSections';
+import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
 import React, { useRef, useState } from 'react';
 import {
   Clock,
@@ -66,13 +68,13 @@ interface StatusHistoryItem {
 }
 
 const STATUS_MAP: Record<string, { label: string; color: string; bg: string; dot: string }> = {
-  pending: { label: 'Pending', color: 'text-amber-300', bg: 'bg-amber-400/10 border-amber-400/30', dot: 'bg-yellow-400' },
+  pending: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-400/10 border-amber-400/30', dot: 'bg-yellow-400' },
   confirmed: { label: 'Confirmed', color: 'text-sky-300', bg: 'bg-sky-400/10 border-sky-400/30', dot: 'bg-blue-500' },
   scheduled: { label: 'Scheduled', color: 'text-indigo-300', bg: 'bg-indigo-400/10 border-indigo-400/30', dot: 'bg-indigo-500' },
   en_route: { label: 'En Route', color: 'text-orange-300', bg: 'bg-orange-400/10 border-orange-400/30', dot: 'bg-orange-500' },
   in_progress: { label: 'In Progress', color: 'text-orange-300', bg: 'bg-orange-400/10 border-orange-400/30', dot: 'bg-orange-500' },
-  completed: { label: 'Completed', color: 'text-emerald-300', bg: 'bg-emerald-400/10 border-emerald-400/30', dot: 'bg-emerald-500' },
-  cancelled: { label: 'Cancelled', color: 'text-red-300', bg: 'bg-red-400/10 border-red-400/30', dot: 'bg-red-500' },
+  completed: { label: 'Completed', color: 'text-emerald-700', bg: 'bg-emerald-400/10 border-emerald-400/30', dot: 'bg-emerald-500' },
+  cancelled: { label: 'Cancelled', color: 'text-red-700', bg: 'bg-red-400/10 border-red-400/30', dot: 'bg-red-500' },
 };
 
 const formatPreferredDate = (dateStr: string) => {
@@ -268,7 +270,7 @@ export const TrackOrderPage: React.FC = () => {
     const s = getStatus(selectedOrder.status);
     const detailLabel = 'text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1';
     return (
-      <div className="home-dark min-h-screen pb-24">
+      <div className="site-page home-light interior-home min-h-screen pb-24">
         <div className={`${UTILITY_PAGE_CONTENT} max-w-3xl`}>
           <button
             type="button"
@@ -308,19 +310,19 @@ export const TrackOrderPage: React.FC = () => {
                     const entryStatus = getStatus(entry.status);
                     return (
                       <div key={entry.id} className="flex gap-3 relative">
-                        {!isLast && <div className="absolute left-[9px] top-5 bottom-0 w-0.5 bg-white/10" />}
+                        {!isLast && <div className="absolute left-[9px] top-5 bottom-0 w-0.5 bg-[var(--surface-2)]" />}
                         <div className="relative z-10 mt-0.5 shrink-0">
                           {isLast ? (
                             <div className={`w-[18px] h-[18px] rounded-full ${entryStatus.dot} flex items-center justify-center`}>
                               {entry.status === 'completed' ? (
-                                <CheckCircle size={12} className="text-white" />
+                                <CheckCircle size={12} className="text-[var(--text)]" />
                               ) : (
-                                <Circle size={8} className="text-white fill-white" />
+                                <Circle size={8} className="text-[var(--text)] fill-white" />
                               )}
                             </div>
                           ) : (
-                            <div className="w-[18px] h-[18px] rounded-full bg-white/10 flex items-center justify-center">
-                              <CheckCircle size={12} className="text-neutral-400" />
+                            <div className="w-[18px] h-[18px] rounded-full bg-[var(--surface-2)] flex items-center justify-center">
+                              <CheckCircle size={12} className="text-[var(--text-muted)]" />
                             </div>
                           )}
                         </div>
@@ -409,7 +411,7 @@ export const TrackOrderPage: React.FC = () => {
   }
 
   return (
-    <div className="home-dark min-h-screen pb-24">
+    <div className="site-page home-light interior-home min-h-screen pb-24">
       <ServicePageHero
         eyebrow="Track Order"
         title={
@@ -420,18 +422,14 @@ export const TrackOrderPage: React.FC = () => {
           </>
         }
         subtitle="Enter your phone number or order number to see live status, schedule, and service details."
-        image="/opek-track-order-hero.png?v=2"
-        imageAlt="Opek junk removal provider carrying a rug and nightstand"
+        image="/home-transparent/schedule-phone.png"
+        imageAlt="A phone showing an Opek pickup schedule"
         chip="Live status"
         primaryCta={{ label: 'Look Up Order', onClick: scrollToForm }}
         secondaryCta={{ label: 'Call Support', href: 'tel:8313187139' }}
       />
 
-      <div
-        ref={formRef}
-        id="track-lookup"
-        className={`${UTILITY_FORM_WRAP} animate-fade-in scroll-mt-[var(--site-header-height)]`}
-      >
+      <HomeFormSection sectionRef={formRef} id="track-lookup" title="Your pickup, at a glance" description="Find your booking to see its status, schedule and service details." image="/home-transparent/schedule-phone.png" imageAlt="Phone showing pickup time choices" aside={<p>Use the order number from your booking confirmation, or verify your phone number to find your orders.</p>}>
         <div className={UTILITY_FORM_CARD}>
           <div className="text-center space-y-2 mb-6">
             <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">
@@ -566,7 +564,7 @@ export const TrackOrderPage: React.FC = () => {
         {error && (
           <div className="flex items-center gap-3 p-4 mt-8 bg-brand/10 border border-brand/30 rounded-2xl">
             <AlertCircle size={18} className="text-brand shrink-0" />
-            <p className="text-red-300 text-sm font-semibold">{error}</p>
+            <p className="text-red-700 text-sm font-semibold">{error}</p>
           </div>
         )}
 
@@ -575,7 +573,7 @@ export const TrackOrderPage: React.FC = () => {
             {results.length === 0 ? (
               <div className="text-center py-12 px-6 bg-[var(--surface)] border border-[var(--border)] rounded-3xl">
                 <div className="w-14 h-14 bg-[var(--bg)] rounded-full flex items-center justify-center mx-auto mb-4 border border-[var(--border)]">
-                  <Search size={22} className="text-neutral-500" />
+                  <Search size={22} className="text-[var(--text-muted)]" />
                 </div>
                 <h3 className="font-sans text-lg font-semibold text-[var(--text)] mb-2">No orders found</h3>
                 <p className="text-[var(--text-muted)] text-sm max-w-xs mx-auto">
@@ -631,7 +629,7 @@ export const TrackOrderPage: React.FC = () => {
                             <p className="text-sm font-semibold text-brand mt-2">${order.booking_details.price}</p>
                           )}
                         </div>
-                        <ChevronRight size={18} className="text-neutral-500 group-hover:text-brand transition-colors shrink-0" />
+                        <ChevronRight size={18} className="text-[var(--text-muted)] group-hover:text-brand transition-colors shrink-0" />
                       </div>
                     </button>
                   );
@@ -648,7 +646,15 @@ export const TrackOrderPage: React.FC = () => {
             verification code before showing your orders.
           </p>
         )}
-      </div>
+      </HomeFormSection>
+      <HomeHowItWorks title="All the details. A few taps." description="Stay connected from booking to pickup." items={[
+        { title: 'Find your booking', body: 'Enter your order number or verify the phone number used when booking.', image: '/home-transparent/schedule-phone.png', alt: 'Phone with pickup scheduling details' },
+        { title: 'Check your pickup', body: 'See your current status, scheduled window and service details in one place.', image: '/home-transparent/junk-chest-logo.png', alt: 'Providers loading furniture for pickup' },
+        { title: 'Get help anytime', body: 'Have a question about your job? Call or text (831) 318-7139.', image: '/home-transparent/junk-dump-truck.png', alt: 'Purple dump truck carrying household items' },
+      ]} />
+      <HomeCallout title="Need a hand with your booking?" body="We can help with questions about an upcoming pickup." label="Contact us" to="/contact" />
+      <HomeWaysToBook />
+      <HomeReviews />
     </div>
   );
 };

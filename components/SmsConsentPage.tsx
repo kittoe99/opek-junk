@@ -1,3 +1,5 @@
+import { ServicePageHero } from './shared/ServicePageHero';
+import { HomeCallout } from './home/HomePagePatterns';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
@@ -13,33 +15,14 @@ export const SmsConsentPage: React.FC = () => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <div className="home-dark min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]">
-      <section className="relative border-b border-[var(--border)] overflow-hidden">
-        <div
-          className="absolute -top-24 right-[-8%] h-[280px] w-[280px] rounded-full bg-brand/[0.08] blur-[110px] pointer-events-none"
-          aria-hidden
-        />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
-          <p className="text-[13px] sm:text-sm font-semibold text-brand mb-3">SMS compliance</p>
-          <h1 className="font-sans font-extrabold text-[1.85rem] sm:text-[2.5rem] text-[var(--text)] tracking-tight leading-[1.1] mb-4">
-            SMS opt-in consent
-          </h1>
-          <p className="text-[14px] sm:text-base text-[var(--text-muted)] leading-relaxed max-w-2xl">
-            This page documents how customers consent to receive texts from Opek Junk Removal. The
-            checkbox and disclosure below match the opt-in shown on our quote and booking forms at{' '}
-            <a href="https://opekjunkremoval.com/quote" className="text-brand font-semibold hover:underline">
-              /quote
-            </a>{' '}
-            and{' '}
-            <a href="https://opekjunkremoval.com/booking" className="text-brand font-semibold hover:underline">
-              /booking
-            </a>
-            .
-          </p>
-        </div>
-      </section>
+    <div className="site-page home-light interior-home min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]">
+      <ServicePageHero eyebrow="SMS consent" title={<>Your phone.<br />Your choice.</>}
+        subtitle="Understand how Opek uses text messages for quotes, bookings and optional marketing, and how you can manage your preferences."
+        image="/home-transparent/schedule-phone.png" imageAlt="A phone displaying pickup time options" chip="Stay informed"
+        bannerTitle={<>Useful updates.<br />Your choice.</>} bannerDetail="Clear, simple communication."
+        primaryCta={{ label: 'See how it works', href: '#consent-details' }} secondaryCta={{ label: 'Privacy policy', href: '/privacy' }} showRating={false} />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 space-y-10">
+      <div id="consent-details" className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8 py-14 md:py-20 space-y-12 scroll-mt-[var(--site-header-height)]">
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-[var(--text)]">How opt-in works</h2>
           <ul className="list-disc pl-5 space-y-2 text-sm text-[var(--text-muted)] leading-relaxed">
@@ -69,7 +52,7 @@ export const SmsConsentPage: React.FC = () => {
           </h2>
           <div
             id="sms-consent-demo"
-            className="max-w-lg rounded-2xl border border-white/15 bg-[var(--surface)] p-5 sm:p-6 space-y-5"
+            className="max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-5"
           >
             <div>
               <label className={FLOW_LABEL}>Full name *</label>
@@ -106,7 +89,7 @@ export const SmsConsentPage: React.FC = () => {
               </p>
             </div>
 
-            <label className="flex items-start gap-3 p-4 bg-[var(--bg)] border border-white/15 rounded-xl cursor-pointer hover:border-white/25 transition-colors">
+            <label className="flex items-start gap-3 p-4 bg-[var(--bg)] border border-[var(--border)] rounded-xl cursor-pointer hover:border-[var(--border)] transition-colors">
               <div className="relative shrink-0 mt-0.5">
                 <input
                   type="checkbox"
@@ -116,7 +99,7 @@ export const SmsConsentPage: React.FC = () => {
                 />
                 <div
                   className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                    checked ? 'bg-brand border-white/20' : 'bg-[var(--surface)] border-white/20'
+                    checked ? 'bg-brand border-[var(--border)]' : 'bg-[var(--surface)] border-[var(--border)]'
                   }`}
                 >
                   {checked && <Check size={12} className="text-white" strokeWidth={3.5} />}
@@ -137,13 +120,13 @@ export const SmsConsentPage: React.FC = () => {
           <div className="space-y-3">
             <div>
               <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Service / informational</p>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-white/10 rounded-xl p-4 bg-[var(--surface)]">
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-[var(--border)] rounded-xl p-4 bg-[var(--surface)]">
                 {SMS_TRANSACTIONAL_NOTICE}
               </p>
             </div>
             <div>
               <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Marketing (optional checkbox)</p>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-white/10 rounded-xl p-4 bg-[var(--surface)]">
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-[var(--border)] rounded-xl p-4 bg-[var(--surface)]">
                 {SMS_MARKETING_CONSENT_TEXT}
               </p>
             </div>
@@ -160,7 +143,7 @@ export const SmsConsentPage: React.FC = () => {
             href="/sms-consent-opt-in.png"
             target="_blank"
             rel="noopener noreferrer"
-            className="block rounded-2xl border border-white/15 overflow-hidden max-w-lg"
+            className="block rounded-2xl border border-[var(--border)] overflow-hidden max-w-lg"
           >
             <img
               src="/sms-consent-opt-in.png"
@@ -202,6 +185,7 @@ export const SmsConsentPage: React.FC = () => {
           </p>
         </section>
       </div>
+      <HomeCallout title="Need help with your messages?" body="Ask our team about service updates, SMS preferences or your booking." label="Contact us" to="/contact" />
     </div>
   );
 };

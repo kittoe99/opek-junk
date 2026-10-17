@@ -56,7 +56,7 @@ export const BentoFeatureSection: React.FC<BentoFeatureSectionProps> = ({
           <p className="text-secondary-500 text-sm md:text-base leading-relaxed">{description}</p>
 
           {tabs && onTabChange && (
-            <div className="mt-6 inline-flex p-1 bg-white/80 rounded-full border border-secondary-100">
+            <div className="mt-6 inline-flex p-1 bg-[var(--surface-2)] rounded-full border border-secondary-100">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -84,7 +84,7 @@ export const BentoFeatureSection: React.FC<BentoFeatureSectionProps> = ({
                 key={item.label}
                 type={item.onClick ? 'button' : undefined}
                 onClick={item.onClick}
-                className={`group text-left bg-white rounded-2xl p-6 md:p-7 shadow-sm border border-white/80 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ${
+                className={`group text-left bg-white rounded-2xl p-6 md:p-7 shadow-sm border border-[var(--border)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ${
                   item.onClick ? 'cursor-pointer w-full' : ''
                 }`}
               >

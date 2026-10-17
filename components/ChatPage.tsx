@@ -180,7 +180,7 @@ function LiveChatModal({
 
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-stretch sm:items-center justify-center p-0 sm:p-6 md:p-10"
+      className="site-page site-chat fixed inset-0 z-[120] flex items-stretch sm:items-center justify-center p-0 sm:p-6 md:p-10"
       role="dialog"
       aria-modal="true"
       aria-labelledby="live-chat-heading"
@@ -188,9 +188,9 @@ function LiveChatModal({
     >
       <style>{`
         [data-opek-live-chat] textarea.opek-chat-input {
-          background-color: #16161c !important;
-          color: #f4f4f5 !important;
-          border-color: rgba(255, 255, 255, 0.15) !important;
+          background-color: #ffffff !important;
+          color: #140a1f !important;
+          border-color: #d5c7e3 !important;
           box-shadow: none !important;
         }
         [data-opek-live-chat] textarea.opek-chat-input::placeholder {
@@ -198,23 +198,23 @@ function LiveChatModal({
           opacity: 1 !important;
         }
         [data-opek-live-chat] textarea.opek-chat-input:focus {
-          background-color: #1a1a22 !important;
-          border-color: #ff006e !important;
-          box-shadow: 0 0 0 4px rgba(255, 0, 110, 0.18) !important;
+          background-color: #ffffff !important;
+          border-color: #520f96 !important;
+          box-shadow: 0 0 0 4px rgba(82, 15, 150, 0.18) !important;
         }
       `}</style>
       <button
         type="button"
-        className="absolute inset-0 bg-black/75 backdrop-blur-md"
+        className="absolute inset-0 bg-[#3a0a6b]/10 backdrop-blur-md"
         aria-label="Close chat"
         onClick={endAndClose}
       />
 
-      <div className="relative z-10 flex h-[100dvh] sm:h-[min(860px,92dvh)] w-full sm:max-w-3xl flex-col overflow-hidden bg-[#0c0c10] sm:rounded-3xl border-0 sm:border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] animate-scale-in">
+      <div className="relative z-10 flex h-[100dvh] sm:h-[min(860px,92dvh)] w-full sm:max-w-3xl flex-col overflow-hidden bg-[var(--surface)] sm:rounded-3xl border-0 sm:border border-[var(--border)] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] animate-scale-in">
         <div className="absolute inset-0 bg-dark-grid opacity-40 pointer-events-none" aria-hidden />
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-brand/25 blur-[100px] pointer-events-none" aria-hidden />
 
-        <header className="relative z-10 flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-white/10 bg-[#101014]/90 backdrop-blur">
+        <header className="relative z-10 flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-[var(--border)] bg-[var(--surface)] backdrop-blur">
           <div className="flex items-center gap-3 min-w-0">
             <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand/20 text-brand">
               <span className="absolute inline-flex h-full w-full animate-ping-dot rounded-2xl bg-brand/25" aria-hidden />
@@ -223,11 +223,11 @@ function LiveChatModal({
             <div className="min-w-0">
               <h1
                 id="live-chat-heading"
-                className="font-sans text-base sm:text-lg font-bold text-white tracking-tight truncate"
+                className="font-sans text-base sm:text-lg font-bold text-[var(--text)] tracking-tight truncate"
               >
                 Live chat with Macy
               </h1>
-              <p className="text-[11px] sm:text-xs text-neutral-400 truncate">
+              <p className="text-[11px] sm:text-xs text-[var(--text-muted)] truncate">
                 {connecting
                   ? 'Connecting…'
                   : connected
@@ -239,7 +239,7 @@ function LiveChatModal({
           <button
             type="button"
             onClick={endAndClose}
-            className="shrink-0 h-10 w-10 rounded-full border border-white/10 text-neutral-300 hover:text-white hover:bg-white/5 flex items-center justify-center transition-colors"
+            className="shrink-0 h-10 w-10 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
             aria-label="Close chat"
           >
             <X size={18} />
@@ -252,8 +252,8 @@ function LiveChatModal({
               <div className="mb-6 h-16 w-16 rounded-3xl bg-brand/15 border border-brand/25 flex items-center justify-center text-brand">
                 <MessageCircle size={28} />
               </div>
-              <h2 className="font-serif text-3xl sm:text-4xl text-white mb-3">How can we help?</h2>
-              <p className="text-neutral-400 text-sm sm:text-base max-w-md mb-8 leading-relaxed">
+              <h2 className="font-serif text-3xl sm:text-4xl text-[var(--text)] mb-3">How can we help?</h2>
+              <p className="text-[var(--text-muted)] text-sm sm:text-base max-w-md mb-8 leading-relaxed">
                 Get instant quotes, book junk removal or moving help, and ask questions — by text or
                 voice.
               </p>
@@ -261,14 +261,14 @@ function LiveChatModal({
                 <button
                   type="button"
                   onClick={() => startChat(false)}
-                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_28px_-8px_rgba(255,0,110,0.65)]"
+                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_28px_-8px_rgba(82,15,150,0.65)]"
                 >
                   <MessageCircle size={16} /> Start text chat
                 </button>
                 <button
                   type="button"
                   onClick={() => startChat(true)}
-                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold rounded-full border border-white/15 bg-white/[0.03] text-neutral-100 hover:bg-white/[0.08] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold rounded-full border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
                 >
                   <Mic size={16} /> Start voice chat
                 </button>
@@ -282,7 +282,7 @@ function LiveChatModal({
                 className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-3.5"
               >
                 {connecting && messages.length === 0 && (
-                  <div className="flex flex-col items-center justify-center gap-3 py-16 text-neutral-400">
+                  <div className="flex flex-col items-center justify-center gap-3 py-16 text-[var(--text-muted)]">
                     <Loader2 size={22} className="animate-spin text-brand" />
                     <p className="text-sm">Connecting to Macy…</p>
                   </div>
@@ -296,7 +296,7 @@ function LiveChatModal({
                       className={`max-w-[88%] sm:max-w-[75%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap ${
                         m.role === 'user'
                           ? 'bg-brand text-white rounded-br-md'
-                          : 'bg-white/[0.07] text-neutral-100 rounded-bl-md border border-white/10'
+                          : 'bg-[var(--surface-2)] text-[var(--text)] rounded-bl-md border border-[var(--border)]'
                       }`}
                     >
                       {m.text || (m.role === 'agent' ? '…' : '')}
@@ -306,7 +306,7 @@ function LiveChatModal({
               </div>
 
               <form
-                className="shrink-0 flex items-end gap-2 p-3 sm:p-4 border-t border-white/10 bg-[#101014]"
+                className="shrink-0 flex items-end gap-2 p-3 sm:p-4 border-t border-[var(--border)] bg-[var(--surface)]"
                 onSubmit={(e) => {
                   e.preventDefault();
                   sendDraft();
@@ -329,11 +329,11 @@ function LiveChatModal({
                       ? 'Ask about pricing, bookings, or anything else…'
                       : 'Connecting…'
                   }
-                  className="opek-chat-input opek-field flex-1 resize-none rounded-2xl border border-white/15 px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
+                  className="opek-chat-input opek-field flex-1 resize-none rounded-2xl border border-[var(--border)] px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
                   style={{
-                    backgroundColor: '#16161c',
-                    color: '#f4f4f5',
-                    caretColor: '#ff006e',
+                    backgroundColor: '#ffffff',
+                    color: '#140a1f',
+                    caretColor: '#520f96',
                   }}
                 />
                 <button
@@ -348,7 +348,7 @@ function LiveChatModal({
                   type="button"
                   onClick={() => conversation.endSession()}
                   disabled={!connected}
-                  className="shrink-0 h-11 w-11 rounded-2xl border border-white/15 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center transition-colors disabled:opacity-40"
+                  className="shrink-0 h-11 w-11 rounded-2xl border border-[var(--border)] text-[var(--text-muted)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors disabled:opacity-40"
                   aria-label="End chat"
                   title="End chat"
                 >

@@ -80,12 +80,12 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
 
       <div className="relative max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
         <div className="relative rounded-3xl bg-gradient-to-br from-brand/50 via-white/10 to-transparent p-px shadow-[0_32px_80px_-24px_rgba(0,0,0,0.8)]">
-          <div className="relative rounded-[calc(1.5rem-1px)] bg-[#0c0c10] overflow-hidden">
+          <div className="relative rounded-[calc(1.5rem-1px)] bg-[var(--surface)] overflow-hidden">
             <div className="absolute -top-20 -left-20 h-[260px] w-[260px] rounded-full bg-brand/15 blur-[100px]" aria-hidden />
 
             <div className="relative grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-10 p-7 sm:p-10 md:p-12">
               <div className="relative flex items-center justify-center min-h-[190px] md:min-h-[240px]">
-                <div className="flex h-28 w-28 sm:h-32 sm:w-32 items-center justify-center rounded-3xl border border-brand/35 bg-brand/10 text-brand shadow-[0_0_48px_-12px_rgba(255,0,110,0.55)]">
+                <div className="flex h-28 w-28 sm:h-32 sm:w-32 items-center justify-center rounded-3xl border border-brand/35 bg-brand/10 text-brand shadow-[0_0_48px_-12px_rgba(82,15,150,0.55)]">
                   <CoverageCheckIcon size={72} />
                 </div>
               </div>
@@ -130,8 +130,8 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                       placeholder="Enter Zip/Postal Code"
                       aria-invalid={Boolean(error)}
                       aria-describedby={error ? 'zip-error' : undefined}
-                      className={`opek-field w-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none border border-b-0 sm:border-b sm:border-r-0 bg-[#0e0e12] pl-10 pr-4 py-3.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-500 hover:bg-[#121218] disabled:opacity-70 ${
-                        error ? 'border-brand' : 'border-white/15'
+                      className={`opek-field w-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none border border-b-0 sm:border-b sm:border-r-0 bg-[var(--surface)] pl-10 pr-4 py-3.5 text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-muted)] hover:bg-[var(--surface)] disabled:opacity-70 ${
+                        error ? 'border-brand' : 'border-[var(--border)]'
                       }`}
                       required
                     />
@@ -139,7 +139,7 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                   <button
                     type="submit"
                     disabled={busy}
-                    className="shrink-0 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none bg-brand px-5 py-3.5 text-sm font-semibold text-white hover:bg-brand-600 transition-all disabled:opacity-70 disabled:cursor-wait shadow-[0_0_24px_-6px_rgba(255,0,110,0.6)]"
+                    className="shrink-0 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none bg-brand px-5 py-3.5 text-sm font-semibold text-white hover:bg-brand-600 transition-all disabled:opacity-70 disabled:cursor-wait shadow-[0_0_24px_-6px_rgba(82,15,150,0.6)]"
                   >
                     {buttonLabel}
                   </button>
@@ -151,7 +151,7 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                   </p>
                 )}
 
-                <p className="text-sm font-bold text-neutral-300 mt-4">
+                <p className="text-sm font-bold text-[var(--text)] mt-4">
                   Call us at{' '}
                   <a href={`tel:${SITE_PHONE}`} className="text-brand hover:text-brand-400 transition-colors">
                     {SITE_PHONE_DISPLAY}
@@ -189,11 +189,11 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                       <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-brand mb-2">
                         Checking coverage
                       </p>
-                      <p className="font-serif text-[1.45rem] sm:text-[1.65rem] text-white tracking-tight leading-tight mb-2">
+                      <p className="font-serif text-[1.45rem] sm:text-[1.65rem] text-[var(--text)] tracking-tight leading-tight mb-2">
                         Looking for providers near {resolvedZip}…
                       </p>
                       <p className="text-sm text-[#b0b0b0]">Confirming service availability in your area.</p>
-                      <div className="mt-5 mx-auto h-1 max-w-[200px] overflow-hidden rounded-full bg-white/10">
+                      <div className="mt-5 mx-auto h-1 max-w-[200px] overflow-hidden rounded-full bg-[var(--surface-2)]">
                         <div className="h-full rounded-full bg-brand zip-check-bar" />
                       </div>
                     </>
@@ -209,7 +209,7 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                       <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-brand mb-2">
                         Providers available
                       </p>
-                      <p className="font-serif text-[1.45rem] sm:text-[1.65rem] text-white tracking-tight leading-tight mb-2">
+                      <p className="font-serif text-[1.45rem] sm:text-[1.65rem] text-[var(--text)] tracking-tight leading-tight mb-2">
                         Great news — we serve {resolvedZip}.
                       </p>
                       <p className="text-sm text-[#b0b0b0]">Taking you to pricing…</p>

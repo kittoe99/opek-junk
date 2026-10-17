@@ -18,8 +18,8 @@ export const JunkRemovalPage: React.FC = () => {
         </>
       }
       subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with upfront flat-rate pricing and same-day options."
-      heroImage="/opek-hero-haulers.png?v=3"
-      heroImageAlt="Junk removal providers lifting a heavy tool chest together"
+      heroImage="/home-transparent/junk-dump-truck.png"
+      heroImageAlt="A purple dump truck loaded for junk removal"
       heroChip="Heavy Lifting"
       primaryCta={{ label: 'Get Online Price', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
@@ -43,7 +43,7 @@ export const JunkRemovalPage: React.FC = () => {
           { title: 'Transport Valet', Icon: Truck },
           { title: 'Proper Disposal', Icon: Recycle },
         ],
-        image: '/opek-junk-haul-away.png?v=1',
+        image: '/home-transparent/junk-chest-logo.png',
         imageAlt: 'Providers loading a sofa and junk into a box truck',
       }}
       features={{

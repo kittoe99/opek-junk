@@ -338,10 +338,10 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           <div className="flex items-center justify-between mb-3 pb-3 border-b border-[var(--border)]">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold rounded-full">
+                <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold rounded-full">
                   Instant Estimate
                 </span>
-                <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-300 text-[10px] font-semibold rounded-full">
+                <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold rounded-full">
                   Guaranteed
                 </span>
               </div>
@@ -351,13 +351,13 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
             <p className="text-xl font-bold text-[var(--text)]">${price.price}</p>
           </div>
           <div className="flex items-start gap-2.5">
-            <ShieldCheck size={15} className="text-emerald-300 shrink-0 mt-0.5" />
+            <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
             <div>
               <div className="flex items-center gap-2">
                 <p className="text-xs font-semibold text-emerald-800">Safe Protect™ Included</p>
                 <span className="bg-emerald-500 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">Covered</span>
               </div>
-              <p className="text-xs text-emerald-300 mt-0.5">
+              <p className="text-xs text-emerald-700 mt-0.5">
                 All bookings are covered by platform damage protection.{' '}
                 <button type="button" onClick={() => setShowInsuranceModal(true)} className="font-medium hover:underline">Learn more</button>
               </p>
@@ -423,17 +423,17 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   </div>
                   <div>
                     <h3 className="font-black text-[var(--text)] text-lg">Safe Protect™</h3>
-                    <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Platform Coverage Included</p>
+                    <p className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                   </div>
                 </div>
-                <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-white/[0.06] flex items-center justify-center text-[var(--text)] transition-colors">
+                <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors">
                   <X size={16} />
                 </button>
               </div>
               <p className="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
                 Safety and peace of mind are prioritized. Every booking is covered by platform damage protection at no extra charge.
               </p>
-              <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-full py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(255,0,110,0.4)] transition-all">
+              <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-full py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(82,15,150,0.4)] transition-all">
                 Got it
               </button>
             </div>
@@ -504,7 +504,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 { title: 'Items only', desc: 'Photos of just the junk items work best. Avoid people or pets.' },
                 { title: 'Multiple angles', desc: 'For large piles, you can upload several photos of different sections.' },
               ].map((tip) => (
-                <div key={tip.title} className="flex gap-3 bg-[var(--surface)] border border-white/15 rounded-xl p-4">
+                <div key={tip.title} className="flex gap-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4">
                   <Check size={16} className="text-[var(--text)] shrink-0 mt-0.5" strokeWidth={2.5} />
                   <div>
                     <h4 className="text-sm font-semibold text-[var(--text)] mb-0.5">{tip.title}</h4>
@@ -545,7 +545,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {images.map((imgSrc, index) => (
-                      <div key={index} className="relative aspect-[4/3] border border-white/15 bg-[var(--surface)] overflow-hidden rounded-xl">
+                      <div key={index} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                         <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                         {loadingState !== LoadingState.ANALYZING && (
                           <button type="button" onClick={() => removeUploadedImage(index)} className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">
@@ -557,10 +557,10 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                   </div>
                   {loadingState !== LoadingState.ANALYZING && (
                     <div className="flex gap-2">
-                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flex-1 py-3 border border-white/15 bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-white/[0.04] transition-colors">
+                      <button type="button" onClick={() => cameraInputRef.current?.click()} className="flex-1 py-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-[var(--surface-2)] transition-colors">
                         Take another
                       </button>
-                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 border border-white/15 bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-white/[0.04] transition-colors">
+                      <button type="button" onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] text-sm font-medium rounded-full hover:bg-[var(--surface-2)] transition-colors">
                         Add more
                       </button>
                     </div>
@@ -612,10 +612,10 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
           {manualStep === 'review' && !manualPricingLoading && (
             <div className="space-y-4">
-              <div className="border border-white/15 rounded-xl divide-y divide-secondary-100 overflow-hidden bg-[var(--surface)]">
+              <div className="border border-[var(--border)] rounded-xl divide-y divide-secondary-100 overflow-hidden bg-[var(--surface)]">
                 {selectedItems.map((item) => (
                   <div key={item.id} className="flex items-center gap-3 p-3 md:p-4">
-                    <div className="w-12 h-12 rounded-lg bg-white/[0.04] flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-lg bg-[var(--surface-2)] flex items-center justify-center shrink-0">
                       <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-8 h-8" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -623,22 +623,22 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                       <p className="text-xs text-[var(--text-muted)]">Qty: {item.quantity}</p>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-full border border-white/15 bg-[var(--surface)] flex items-center justify-center hover:border-white/20 text-[var(--text-muted)] transition-colors">
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center hover:border-[var(--border)] text-[var(--text-muted)] transition-colors">
                         <Minus size={14} />
                       </button>
                       <span className="w-6 text-center text-sm font-semibold text-[var(--text)]">{item.quantity}</span>
-                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-full border border-white/15 bg-[var(--surface)] flex items-center justify-center hover:border-white/20 text-[var(--text-muted)] transition-colors">
+                      <button type="button" onClick={() => updateSelectedQuantity(item.id, 1)} className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center hover:border-[var(--border)] text-[var(--text-muted)] transition-colors">
                         <Plus size={14} />
                       </button>
                     </div>
-                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-brand/10 transition-colors shrink-0" aria-label={`Remove ${item.name}`}>
+                    <button type="button" onClick={() => toggleCatalogItem(item.name)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-700 hover:bg-brand/10 transition-colors shrink-0" aria-label={`Remove ${item.name}`}>
                       <Trash2 size={14} />
                     </button>
                   </div>
                 ))}
               </div>
 
-              <button type="button" onClick={() => setManualStep('select')} className="w-full py-3 text-sm font-medium text-[var(--text)] border border-dashed border-white/15 rounded-xl hover:border-white/25 transition-colors">
+              <button type="button" onClick={() => setManualStep('select')} className="w-full py-3 text-sm font-medium text-[var(--text)] border border-dashed border-[var(--border)] rounded-xl hover:border-[var(--border)] transition-colors">
                 + Add more items
               </button>
 
@@ -654,7 +654,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           )}
 
           {manualPricingLoading && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/[0.06] backdrop-blur-sm">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--surface-2)] backdrop-blur-sm">
               <div className="text-center">
                 <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
                 <p className="text-[var(--text-muted)] text-sm font-medium">Calculating your estimate...</p>

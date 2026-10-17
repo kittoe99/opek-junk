@@ -32,7 +32,7 @@ export const UseCases: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {haulJobs.map((item) => (
             <figure key={item.name} className="group">
-              <div className="aspect-[4/3] overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
+              <div className="aspect-[4/3] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
                 <img
                   src={item.image}
                   alt={item.alt}
@@ -40,7 +40,7 @@ export const UseCases: React.FC = () => {
                   loading="lazy"
                 />
               </div>
-              <figcaption className="mt-2.5 flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-neutral-300">
+              <figcaption className="mt-2.5 flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[var(--text)]">
                 <span className="h-1 w-1 rounded-full bg-brand shrink-0" aria-hidden />
                 {item.name}
               </figcaption>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { AlertCircle, Check } from 'lucide-react';
 import { FLOW_INPUT, FLOW_LABEL } from '../../../lib/flowPageLayout';
-import { InputZipIcon } from '../../icons/ServiceIcons';
 import { FlowStepTitle } from './FlowStepTitle';
 import { FlowStickyNav } from './FlowStickyNav';
 
@@ -30,20 +29,19 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   onBack,
   showBack = false,
 }) => (
-  <>
+  <div className="home-light interior-home flow-zip-layout">
+    <div className="flow-zip-art home-image-backdrop">
+      <div className="flow-zip-banner"><span className="home-eyebrow">A fresh start</span><p className="home-display">Less junk.<br />More space.</p></div>
+      <img src="/home-transparent/junk-dump-truck.png" alt="Purple dump truck ready for your pickup" />
+    </div>
+    <div className="flow-zip-content">
     <FlowStepTitle title={title} subtitle={subtitle} />
 
     <div className="space-y-4">
-      <div className="flex justify-center">
-        <div className="relative w-16 h-16 rounded-2xl border border-brand/30 bg-brand/10 text-brand flex items-center justify-center shadow-[0_0_28px_-10px_rgba(255,0,110,0.55)]">
-          <span className="absolute inset-1.5 rounded-xl border border-brand/15 pointer-events-none" aria-hidden />
-          <InputZipIcon size={30} />
-        </div>
-      </div>
-
       <div>
-        <label className={`${FLOW_LABEL} text-center`}>ZIP code</label>
+        <label htmlFor="flow-zip" className={`${FLOW_LABEL} text-center`}>ZIP code</label>
         <input
+          id="flow-zip"
           type="text"
           inputMode="numeric"
           maxLength={5}
@@ -63,7 +61,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
       )}
 
       {result && (
-        <div className="flex items-center gap-2 p-3 bg-[var(--surface)] border border-brand/30 rounded-xl">
+        <div className="flex items-center gap-2 p-3 bg-white/10 border border-white/30 rounded-xl">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 border border-brand/30 text-brand shrink-0">
             <Check size={16} strokeWidth={2.5} />
           </span>
@@ -76,6 +74,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
 
       <p className="text-xs text-[var(--text-muted)] text-center">Nationwide coverage · All 50 states</p>
     </div>
+    </div>
 
     {!result && (
       <FlowStickyNav
@@ -87,5 +86,5 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
         continueLoading={loading}
       />
     )}
-  </>
+  </div>
 );

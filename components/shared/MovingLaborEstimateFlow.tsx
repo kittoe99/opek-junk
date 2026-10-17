@@ -567,7 +567,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
               >
                 <div
                   className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center ${
-                    selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
+                    selected ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
                   }`}
                 >
                   {selected && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -592,7 +592,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           >
             <div
               className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsPackingHelp ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
+                needsPackingHelp ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
               }`}
             >
               {needsPackingHelp && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -614,7 +614,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           >
             <div
               className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                needsDisassembly ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
+                needsDisassembly ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
               }`}
             >
               {needsDisassembly && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -646,7 +646,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           continueDisabled={!draftOptions}
         />
         {pricingLoading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/[0.06] backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--surface-2)] backdrop-blur-sm">
             <div className="text-center">
               <Loader2 size={48} className="animate-spin mx-auto mb-4 text-brand" />
               <p className="text-[var(--text-muted)] text-sm font-medium">Calculating your estimate...</p>
@@ -677,7 +677,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
       <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 mb-4 shadow-none">
         <div className="flex items-center gap-2 mb-3">
           <h3 className="text-sm font-bold text-[var(--text)]">Local Moving</h3>
-          <span className="px-2 py-0.5 bg-white/[0.06] text-[var(--text)] text-[10px] font-semibold rounded-full">
+          <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold rounded-full">
             {SCOPE_LABELS[draftOptions.serviceScope]}
           </span>
         </div>
@@ -696,23 +696,23 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <div className="border-t border-[var(--border)] pt-3 mb-3">
           <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             <span>Size <span className="font-medium text-[var(--text)]">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
-            <span className="select-none mx-1.5 text-neutral-500">·</span>
+            <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
             <span>Access <span className="font-medium text-[var(--text)]">{ACCESS_LABELS[draftOptions.accessType]}</span></span>
             {draftOptions.heavyItems.length > 0 && (
               <>
-                <span className="select-none mx-1.5 text-neutral-500">·</span>
+                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
                 <span>Heavy items <span className="font-medium text-[var(--text)]">{draftOptions.heavyItems.length}</span></span>
               </>
             )}
             {draftOptions.needsPackingHelp && (
               <>
-                <span className="select-none mx-1.5 text-neutral-500">·</span>
+                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
                 <span>Packing help</span>
               </>
             )}
             {draftOptions.needsDisassembly && (
               <>
-                <span className="select-none mx-1.5 text-neutral-500">·</span>
+                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
                 <span>Disassembly</span>
               </>
             )}
@@ -720,8 +720,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
 
         <div className="flex items-start gap-2.5">
-          <ShieldCheck size={15} className="text-emerald-300 shrink-0 mt-0.5" />
-          <p className="text-xs text-emerald-300 leading-normal">
+          <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
+          <p className="text-xs text-emerald-700 leading-normal">
             Safe Protect™ damage coverage included on every booking.
           </p>
         </div>

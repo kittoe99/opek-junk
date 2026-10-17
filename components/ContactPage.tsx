@@ -1,3 +1,5 @@
+import { HomeHowItWorks, HomeWaysToBook, HomeReviews } from './home/HomeSections';
+import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, MessageCircle, Phone, Send } from 'lucide-react';
@@ -86,7 +88,7 @@ export const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="home-dark min-h-screen pb-24">
+    <div className="site-page home-light interior-home min-h-screen pb-24">
       <ServicePageHero
         eyebrow="Contact"
         title={
@@ -97,16 +99,22 @@ export const ContactPage: React.FC = () => {
           </>
         }
         subtitle="Question, quote, or partnership — chat live, drop a line, or call. We reply within 30 minutes during business hours."
-        image="/opek-contact-hero.png?v=2"
-        imageAlt="Opek junk removal provider carrying a chair and box"
+        image="/home-transparent/schedule-phone.png"
+        imageAlt="A hand holding a phone to schedule an Opek pickup"
         chip="Fast replies"
-        primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
+        primaryCta={{ label: 'Send a message', href: '#contact-form' }}
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       />
 
-      <div className={`${UTILITY_FORM_WRAP} space-y-8 animate-fade-in`}>
+      <HomeHowItWorks title={<>A question. A quote.<br />A helping hand.</>} description="Choose the easiest way to reach us." items={[
+        { title: 'Call or text', body: 'Reach our team at (831) 318-7139 for help with your next pickup.', image: '/home-transparent/schedule-phone.png', alt: 'A phone ready to schedule a pickup' },
+        { title: 'Tell us what you need', body: 'Ask about an item, a move or a whole property. We will help you find the right service.', image: '/home-transparent/mattress-branded.png', alt: 'A provider removing a mattress' },
+        { title: 'Make a plan', body: 'Get a quote, arrange a free estimate or find help with an existing booking.', image: '/home-transparent/junk-dump-truck.png', alt: 'A dump truck ready to haul away junk' },
+      ]} />
+      <HomeCallout title="Real people. Ready to help." body="Questions about your pickup? We typically respond within 30 minutes during business hours." label="Send us a message" onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} />
+      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/home-transparent/hero-branded.png" imageAlt="Two providers ready to help" aside={
         <section
-          className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand/15 via-[var(--surface)] to-[var(--surface-2)] p-6 sm:p-7"
+          className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-brand/15 via-[var(--surface)] to-[var(--surface-2)] p-6 sm:p-7"
           aria-labelledby="live-chat-heading"
         >
           <div className="flex items-start gap-3 mb-5">
@@ -132,7 +140,7 @@ export const ContactPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/chat?mode=text')}
-            className={`${UTILITY_PRIMARY_BUTTON} shadow-[0_0_28px_-8px_rgba(255,0,110,0.65)]`}
+            className={`${UTILITY_PRIMARY_BUTTON} shadow-[0_0_28px_-8px_rgba(82,15,150,0.65)]`}
           >
             <MessageCircle size={14} /> Open live chat
           </button>
@@ -140,7 +148,7 @@ export const ContactPage: React.FC = () => {
             Prefer writing? Send a message below, or call (831) 318-7139.
           </p>
         </section>
-
+      }>
         <div className={UTILITY_FORM_CARD}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="text-center space-y-2 mb-2">
@@ -250,7 +258,9 @@ export const ContactPage: React.FC = () => {
             </div>
           </form>
         </div>
-      </div>
+      </HomeFormSection>
+      <HomeWaysToBook />
+      <HomeReviews />
     </div>
   );
 };

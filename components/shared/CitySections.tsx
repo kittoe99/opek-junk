@@ -194,7 +194,7 @@ export const CityLinksSection: React.FC<CityLinksSectionProps> = ({ otherCities,
               <Link
                 key={c.slug}
                 to={`/locations/${c.slug}`}
-                className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-white transition-colors"
+                className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-brand transition-colors"
               >
                 {c.name}, {c.stateAbbr}
               </Link>
@@ -224,7 +224,7 @@ export const CityLinksSection: React.FC<CityLinksSectionProps> = ({ otherCities,
               <Link
                 key={s.path}
                 to={s.path}
-                className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-white transition-colors"
+                className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-brand transition-colors"
               >
                 {s.label}
               </Link>
@@ -243,7 +243,7 @@ export const CityLinksSection: React.FC<CityLinksSectionProps> = ({ otherCities,
                   href={cite.href}
                   target="_blank"
                   rel={cite.rel}
-                  className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-white transition-colors inline-flex items-center gap-1.5"
+                  className="px-4 py-2 bg-secondary-50 text-secondary text-sm font-medium rounded-full hover:bg-brand hover:text-brand transition-colors inline-flex items-center gap-1.5"
                 >
                   <ExternalLink size={12} />
                   {cite.label}

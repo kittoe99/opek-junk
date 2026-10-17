@@ -119,7 +119,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
           subtitle="Continue with this estimate, or start a new booking from scratch."
         />
 
-        <div className="rounded-2xl border border-white/10 bg-[var(--surface)] p-5 mb-6 space-y-3">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 mb-6 space-y-3">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-semibold text-[var(--text)]">{hydrated.serviceType}</p>
@@ -223,7 +223,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
             type="button"
             onClick={() => void sendCode()}
             disabled={loading}
-            className="w-full text-center text-xs font-semibold text-neutral-400 hover:text-white transition-colors py-2"
+            className="w-full text-center text-xs font-semibold text-[var(--text-muted)] hover:text-brand transition-colors py-2"
           >
             Resend code
           </button>
@@ -253,7 +253,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
           <div className="relative">
             <InputPhoneIcon
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
             />
             <input
               id="quote-lookup-phone"
@@ -276,7 +276,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
               <button
                 type="button"
                 onClick={onStartNew}
-                className="text-xs font-semibold text-neutral-200 underline underline-offset-2"
+                className="text-xs font-semibold text-[var(--text)] underline underline-offset-2"
               >
                 Start a new booking
               </button>

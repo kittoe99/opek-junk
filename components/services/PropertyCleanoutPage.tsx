@@ -18,7 +18,7 @@ export const PropertyCleanoutPage: React.FC = () => {
         </>
       }
       subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — providers handle the hard parts."
-      heroImage="/opek-service-areas.png?v=1"
+      heroImage="/home-transparent/haul-branded.png"
       heroImageAlt="Provider greeting a customer after a property cleanout"
       heroChip="Discreet & Thorough"
       primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
@@ -43,7 +43,7 @@ export const PropertyCleanoutPage: React.FC = () => {
           { title: 'Insured Providers', Icon: ShieldCheck },
           { title: 'Responsible Disposal', Icon: Recycle },
         ],
-        image: '/opek-hustle-muscle.png?v=2',
+        image: '/home-transparent/hero-branded.png',
         imageAlt: 'Provider with clipboard ready for a property estimate',
       }}
       features={{

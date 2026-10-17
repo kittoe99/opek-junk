@@ -1,3 +1,5 @@
+import { HomeHowItWorks, HomeWaysToBook, HomeReviews } from './home/HomeSections';
+import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Calendar, Clock, Receipt, Send } from 'lucide-react';
@@ -157,7 +159,7 @@ export const InHomeEstimatePage: React.FC = () => {
   }
 
   return (
-    <div className="home-dark min-h-screen pb-24">
+    <div className="site-page home-light interior-home min-h-screen">
       <ServicePageHero
         eyebrow="Free In-Home Estimate"
         title={
@@ -168,14 +170,20 @@ export const InHomeEstimatePage: React.FC = () => {
           </>
         }
         subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
-        image="/opek-hustle-muscle.png?v=2"
+        image="/home-transparent/hero-branded.png"
         imageAlt="Provider ready for an in-home estimate"
         chip="No Obligation"
-        primaryCta={{ label: 'Call Now', href: 'tel:8313187139' }}
+        primaryCta={{ label: 'Schedule my visit', href: '#estimate-details' }}
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       />
 
-      <div className={`${UTILITY_FORM_WRAP} animate-fade-in`}>
+      <HomeHowItWorks title="A real visit. A clear price." description="A free estimate makes bigger jobs easier to plan." items={[
+        { title: 'Tell us about the job', body: 'Share your contact details and the address of the property you want cleared.', image: '/home-transparent/haul-branded.png', alt: 'Providers carrying items from a property' },
+        { title: 'Pick your window', body: 'Choose a date and time that works for you and add any notes for your provider.', image: '/home-transparent/schedule-phone.png', alt: 'A pickup scheduling calendar on a phone' },
+        { title: 'Meet your provider', body: 'A vetted local provider visits your property and gives you a no-obligation quote.', image: '/home-transparent/hero-branded.png', alt: 'Local providers ready for a job' },
+      ]} />
+      <HomeCallout title="Big job? Start with a free visit." body="Get an accurate quote on the spot, with no obligation to book." label="Schedule my estimate" onClick={() => document.getElementById('estimate-details')?.scrollIntoView({ behavior: 'smooth' })} />
+      <HomeFormSection id="estimate-details" title="Let’s take a look" description="Tell us where to go and when to visit. We will confirm your estimate with you." image="/home-transparent/junk-chest-logo.png" imageAlt="Two providers loading a couch" aside={<p>From a single room to an entire property, your provider can walk through the job with you before you decide.</p>}>
         <div className={UTILITY_FORM_CARD}>
           {step === 1 && (
             <form onSubmit={handleContactSubmit} className="space-y-6">
@@ -331,7 +339,7 @@ export const InHomeEstimatePage: React.FC = () => {
                 />
               </div>
 
-              <div className="border border-[var(--border)] bg-white/[0.02] p-5 rounded-2xl">
+              <div className="border border-[var(--border)] bg-[var(--surface-2)] p-5 rounded-2xl">
                 <div className="flex items-center gap-2.5 mb-4">
                   <Receipt size={15} className="text-brand" strokeWidth={2.5} />
                   <h3 className="text-[10px] font-bold text-[var(--text)] uppercase tracking-[0.15em]">
@@ -352,7 +360,7 @@ export const InHomeEstimatePage: React.FC = () => {
                   ].map(([label, value]) => (
                     <div
                       key={label}
-                      className="flex justify-between gap-4 border-b border-white/[0.06] last:border-0 pb-2 last:pb-0"
+                      className="flex justify-between gap-4 border-b border-[var(--border)] last:border-0 pb-2 last:pb-0"
                     >
                       <span className="text-[var(--text-muted)] font-medium">{label}</span>
                       <span className="font-semibold text-[var(--text)] text-right max-w-[60%] truncate">
@@ -395,7 +403,9 @@ export const InHomeEstimatePage: React.FC = () => {
             </form>
           )}
         </div>
-      </div>
+      </HomeFormSection>
+      <HomeWaysToBook />
+      <HomeReviews />
     </div>
   );
 };

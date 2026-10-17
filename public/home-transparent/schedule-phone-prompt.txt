@@ -1,0 +1,9 @@
+Mode: built-in image_gen generation; transparent_background=true.
+Output: schedule-phone.png
+
+Use case: ads-marketing.
+Asset type: square transparent PNG for the "Choose a time" step of a purple-themed junk removal website.
+Primary request: A photorealistic close-up of one human hand holding a modern smartphone upright, displaying a clean pickup scheduling interface. Only a hand and a short section of forearm are visible, no face, no body. Natural anatomically correct grip. Phone angled very slightly for depth while the display remains clearly legible.
+Phone display: white background, rich purple #520f96 accents. Heading "Choose a time", a simple calendar grid with one day selected in purple, two large time-window choices "9 AM – 12 PM" and "12 PM – 3 PM", and a purple button labeled "Select time". Minimal elegant interface, no extra small text, no brand names or operating system logos.
+Composition: square framing; smartphone is the central focal point, large enough to read at card size; hand holds from the lower right, forearm exits at bottom. Keep full phone comfortably inside frame with small margins. Crisp realistic glass, subtle reflections that do not obscure screen, natural soft studio lighting.
+Constraints: genuinely transparent alpha background, no background color, no room, no scenery, no checkerboard, no ground plane. Phone and hand opaque. No faces, no floating extra hands, no extra fingers, no watermark. Match polished commercial photography.

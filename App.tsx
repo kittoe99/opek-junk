@@ -1,16 +1,15 @@
 import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { JunkHaulAway } from './components/JunkHaulAway';
-import { RelatedServices } from './components/RelatedServices';
-import { HustleMuscle } from './components/HustleMuscle';
-import { OpekApproach } from './components/OpekApproach';
-import { LocalServiceAreas } from './components/LocalServiceAreas';
-import { ServiceArea } from './components/ServiceArea';
-import { Testimonials } from './components/Testimonials';
-import { ZipFinder } from './components/ZipFinder';
-import { Footer } from './components/Footer';
+import {
+  HomeFeaturedServices,
+  HomeHowItWorks,
+  HomePromoBand,
+  HomeReviews,
+  HomeWaysToBook,
+} from './components/home/HomeSections';
+import { HomeNavbar } from './components/home/HomeNavbar';
+import { HomeFooter } from './components/home/HomeFooter';
 import { QuickActionBar } from './components/QuickActionBar';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
@@ -18,6 +17,7 @@ import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage
 import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
 import { MattressDisposalPage } from './components/services/MattressDisposalPage';
 import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
+import { LocalMovesAdsLandingPage } from './components/lp/LocalMovesAdsLandingPage';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SmsConsentPage } from './components/SmsConsentPage';
@@ -65,10 +65,14 @@ function GlobalQuickActionBar() {
       navigate('/booking', { state: { serviceType: 'Junk Removal' } });
       return;
     }
+    if (pathname === '/lp/local-moves') {
+      navigate('/booking', { state: { serviceType: 'Moving Labor' } });
+      return;
+    }
     navigate('/booking');
   };
 
-  return <QuickActionBar onBookOnline={onBookOnline} />;
+  return <QuickActionBar onBookOnline={onBookOnline} variant="light" />;
 }
 
 function GlobalFooter() {
@@ -78,7 +82,7 @@ function GlobalFooter() {
     return null;
   }
 
-  return <Footer />;
+  return <HomeFooter />;
 }
 
 function GlobalNavbar() {
@@ -88,7 +92,7 @@ function GlobalNavbar() {
     return null;
   }
 
-  return <Navbar />;
+  return <HomeNavbar />;
 }
 
 function MainShell({ children }: { children: React.ReactNode }) {
@@ -129,24 +133,17 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="home-dark">
+    <div className="home-light home-page">
       <SEO {...seoConfig.home} />
       <Hero
         onGetQuote={() => navigate('/quote')}
         onBookOnline={() => navigate('/booking')}
       />
-      <JunkHaulAway />
-      <RelatedServices excludePath="/services/junk-removal" />
-      <HustleMuscle />
-      <OpekApproach />
-      <LocalServiceAreas />
-      <ServiceArea
-        titleStart="Schedule a pickup."
-        titleAccent="Providers handle the rest."
-        theme="dark"
-      />
-      <Testimonials theme="dark" />
-      <ZipFinder />
+      <HomeFeaturedServices />
+      <HomeHowItWorks />
+      <HomePromoBand />
+      <HomeWaysToBook />
+      <HomeReviews />
     </div>
   );
 }
@@ -201,6 +198,15 @@ function JunkRemovalAdsLandingPageWithSEO() {
     <>
       <SEO {...seoConfig.junkRemovalAds} />
       <JunkRemovalAdsLandingPage />
+    </>
+  );
+}
+
+function LocalMovesAdsLandingPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.localMovesAds} />
+      <LocalMovesAdsLandingPage />
     </>
   );
 }
@@ -323,7 +329,7 @@ function CityPageRouteWrapper() {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-[#070709] text-neutral-100 selection:bg-brand selection:text-white">
+      <div className="site-root min-h-screen selection:bg-brand selection:text-white">
         <PageLoader />
         <ScrollToTop />
         <GlobalNavbar />
@@ -338,6 +344,7 @@ function App() {
             <Route path="/booking" element={<BookingPageWithSEO />} />
             <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
             <Route path="/lp/junk-removal" element={<JunkRemovalAdsLandingPageWithSEO />} />
+            <Route path="/lp/local-moves" element={<LocalMovesAdsLandingPageWithSEO />} />
             <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
             <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />

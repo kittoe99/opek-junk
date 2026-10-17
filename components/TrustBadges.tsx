@@ -14,7 +14,7 @@ export const TrustBadges: React.FC<TrustBadgesProps> = ({ className = '' }) => {
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="bg-[#00B67A] p-1 rounded-sm">
-                  <Star size={14} className="text-white fill-white" />
+                  <Star size={14} className="text-[var(--text)] fill-white" />
                 </div>
               ))}
             </div>

@@ -11,7 +11,7 @@ export const ContentSection: React.FC = () => {
   return (
     <section className="relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
       <div className="absolute -bottom-10 left-0 right-0 pointer-events-none select-none overflow-hidden" aria-hidden>
-        <p className="font-sans font-extrabold text-[22vw] leading-[0.8] tracking-tighter text-white/[0.025] text-center whitespace-nowrap">
+        <p className="font-sans font-extrabold text-[22vw] leading-[0.8] tracking-tighter text-[var(--text)]/[0.025] text-center whitespace-nowrap">
           OPEK
         </p>
       </div>
@@ -41,7 +41,7 @@ export const ContentSection: React.FC = () => {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="group relative border-t border-white/10 pt-5 transition-colors duration-500 hover:border-brand/60"
+              className="group relative border-t border-[var(--border)] pt-5 transition-colors duration-500 hover:border-brand/60"
             >
               <p className={`font-sans font-extrabold text-[2.1rem] sm:text-[2.6rem] md:text-[3rem] leading-none tracking-tight mb-2 ${
                 stat.accent ? 'text-brand' : 'text-[var(--text)]'

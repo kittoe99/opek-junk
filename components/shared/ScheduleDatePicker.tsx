@@ -155,7 +155,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         <p className="text-xs font-semibold text-[var(--text-muted)] text-center mb-3">{monthLabel}</p>
         <div className="grid grid-cols-7 gap-px mb-1">
           {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-            <div key={day} className="text-[10px] font-semibold text-neutral-500 text-center py-1">{day}</div>
+            <div key={day} className="text-[10px] font-semibold text-[var(--text-muted)] text-center py-1">{day}</div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-px">
@@ -171,7 +171,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 disabled={disabled}
                 onClick={() => onDateChange(toISODate(cellDate))}
                 className={`aspect-square rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${
-                  disabled ? 'text-[var(--text)]-200 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-[var(--text)] hover:bg-brand/10'
+                  disabled ? 'text-[var(--text-muted)] opacity-40 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-[var(--text)] hover:bg-brand/10'
                 } ${!disabled && !isSelected && isToday ? 'ring-1 ring-brand/40 ring-inset' : ''}`}
               >
                 {cellDate.getDate()}
@@ -192,7 +192,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 type="button"
                 onClick={() => onTimeSlotChange(id)}
                 className={`flex-1 rounded-lg border py-2.5 text-center text-xs font-semibold transition-all ${
-                  selected ? 'border-brand bg-brand text-white shadow-[0_0_20px_-6px_rgba(255,0,110,0.5)]' : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40 hover:bg-white/[0.04]'
+                  selected ? 'border-brand bg-brand text-white shadow-[0_0_20px_-6px_rgba(82,15,150,0.5)]' : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40 hover:bg-[var(--surface-2)]'
                 }`}
               >
                 {label}

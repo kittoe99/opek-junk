@@ -57,8 +57,8 @@ export const JunkRemovalPriceBreakdown: React.FC<JunkRemovalPriceBreakdownProps>
         </div>
         {discount > 0 && (
           <div className="flex justify-between items-center text-sm md:text-base">
-            <span className="text-emerald-300 font-medium">{JUNK_ONLINE_BOOKING_DISCOUNT_LABEL}</span>
-            <span className="text-emerald-300 font-bold">-${discount}</span>
+            <span className="text-emerald-700 font-medium">{JUNK_ONLINE_BOOKING_DISCOUNT_LABEL}</span>
+            <span className="text-emerald-700 font-bold">-${discount}</span>
           </div>
         )}
       </div>

@@ -19,7 +19,7 @@ export const SmallLocalMovesPage: React.FC = () => {
         </>
       }
       subtitle="Affordable hourly moving help for studios, 1-bedrooms, and small homes. Book truck + crew — or just the muscle if you already have a truck."
-      heroImage="/opek-related-moving.png?v=1"
+      heroImage="/home-transparent/junk-chest-logo.png"
       heroImageAlt="Moving providers carrying furniture for a local move"
       heroChip="Truck + Crew"
       primaryCta={{ label: 'Book a Move', onClick: () => navigate('/booking') }}
@@ -44,7 +44,7 @@ export const SmallLocalMovesPage: React.FC = () => {
           { title: 'Hourly Pricing', Icon: Clock },
           { title: 'Labor Only', Icon: Dumbbell },
         ],
-        image: '/opek-related-local-moves.png?v=1',
+        image: '/home-transparent/moving-branded.png',
         imageAlt: 'Provider loading boxes into a cargo van for a local move',
       }}
       features={{

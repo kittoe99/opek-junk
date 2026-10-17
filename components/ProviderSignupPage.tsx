@@ -1,3 +1,6 @@
+import { HomeHowItWorks } from './home/HomeSections';
+import { HomeCallout, HomeEditorialCards, HomeFormSection } from './home/HomePagePatterns';
+import { ServicePageHero } from './shared/ServicePageHero';
 import React, { useState, useRef } from 'react';
 import {
   ArrowRight,
@@ -384,130 +387,33 @@ export const ProviderSignupPage: React.FC = () => {
   }
 
   return (
-    <div className="home-dark min-h-screen bg-[var(--bg)]">
-      <section className="relative bg-[var(--surface)] overflow-hidden border-b border-[var(--border)]">
-        <div className="lg:hidden">
-          <div className="px-5 pt-2.5 pb-8 text-center max-w-lg mx-auto">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
+    <div className="site-page home-light interior-home min-h-screen bg-[var(--bg)]">
+      <ServicePageHero
+        eyebrow="Provider network"
+        title={<>Hauling work.<br />On your terms.</>}
+        subtitle="Apply to join independent contractors receiving local junk removal jobs through Opek’s dispatch network, with dispatch tools and weekly payouts."
+        image="/home-transparent/hero-branded.png"
+        imageAlt="Two Opek providers ready for a hauling job"
+        primaryCta={{ label: 'Start application', onClick: scrollToForm }}
+        secondaryCta={{ label: 'Questions? Call us', href: 'tel:8313187139' }}
+        showRating={false}
+      />
+      <HomeHowItWorks title="Your truck. Your hours. Your next job." description="Build your local hauling business with Opek." items={[
+        { title: 'Tell us about yourself', body: 'Share your business details and choose the metros you want to serve.', image: '/home-transparent/schedule-phone.png', alt: 'Phone for managing pickup schedules' },
+        { title: 'Show us your setup', body: 'Add your vehicle details and required documents so we can review your application.', image: '/home-transparent/junk-chest-logo.png', alt: 'A local hauling crew and truck' },
+        { title: 'Get ready for local work', body: 'Once approved, finish setting up your contractor account and access the driver app.', image: '/home-transparent/hero-branded.png', alt: 'Two Opek providers at work' },
+      ]} />
+      <HomeCallout title="Make your next move with Opek" body="Apply to join our independent provider network. Choose your service areas and availability." label="Start application" onClick={scrollToForm} />
+      <HomeEditorialCards title="Work that fits your life" cards={[
+        { title: 'Local jobs. Your schedule.', body: <div className="space-y-4">{PROVIDER_HERO_FEATURES.slice(0,2).map(feature => <p key={feature.title}><strong>{feature.title}.</strong> {feature.description}</p>)}</div>, image: '/home-transparent/junk-dump-truck.png', alt: 'Hauling truck ready for a local job', action: { label: 'Apply now', onClick: scrollToForm } },
+        { title: 'A network behind you', body: 'Onboard with clear standards, dispatch support and weekly payouts. Independent providers run their own operations.', image: '/home-transparent/junk-chest-logo.png', alt: 'Providers working together', action: { label: 'Create your account', to: '/sign-up' } },
+      ]} />
 
-            <h1 className="font-sans text-[2rem] sm:text-[2.25rem] font-semibold text-[var(--text)] tracking-tight leading-[1.12] mb-4">
-              Hauling work,
-              <br />
-              on your terms.
-            </h1>
-
-            <p className="text-[15px] sm:text-base text-[var(--text-muted)] leading-relaxed mb-6 max-w-[20rem] mx-auto">
-              Apply to join independent contractors receiving junk removal jobs through Opek&apos;s dispatch network.
-            </p>
-
-            <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 w-full mb-2">
-              <button
-                type="button"
-                onClick={scrollToForm}
-                className={`shrink-0 px-6 py-3 text-[15px] font-semibold !rounded-full whitespace-nowrap ${HERO_CTA}`}
-              >
-                Start application
-              </button>
-              <a
-                href="tel:8313187139"
-                className="shrink-0 py-3 text-sm font-medium text-[var(--text)] hover:text-brand transition-colors whitespace-nowrap inline-flex items-center gap-1"
-              >
-                <Phone size={14} />
-                Questions? Call us
-              </a>
-            </div>
-
-            <div className="mt-7 rounded-2xl overflow-hidden bg-white/[0.04] aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center p-6">
-              <img
-                src="/opek-junk-haul-away.png?v=1"
-                alt="Independent hauling contractor on a job"
-                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
-              />
-            </div>
-
-            <div className="border-t border-[var(--border)] pt-8 mt-2 space-y-8">
-              {PROVIDER_HERO_FEATURES.map((feature) => {
-                const Icon = feature.icon;
-                return (
-                  <div key={feature.title} className="text-center px-2">
-                    <Icon size={36} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-                    <h2 className="text-base font-bold text-[var(--text)] mb-1.5">{feature.title}</h2>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-[18rem] mx-auto">{feature.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        <div className="hidden lg:block">
-          <div className="max-w-[72rem] mx-auto px-8 xl:px-10 pt-8 xl:pt-10 pb-0">
-            <div className="grid grid-cols-2 gap-12 xl:gap-14 items-center">
-              <div className="max-w-[28rem]">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-brand mb-3">Provider network</p>
-                <h1 className="font-sans text-[2.625rem] xl:text-[3.125rem] font-semibold text-[var(--text)] tracking-tight mb-4 leading-[1.1]">
-                  Hauling work,
-                  <br />
-                  on your terms.
-                </h1>
-                <p className="text-lg text-[#6b7c78] mb-7 leading-relaxed">
-                  Apply to join vetted contractors receiving local junk removal jobs, dispatch tools, and weekly payouts.
-                </p>
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={scrollToForm}
-                    className={`!rounded-full px-7 py-3 text-[15px] font-semibold inline-flex items-center gap-2 ${HERO_CTA}`}
-                  >
-                    Start application
-                    <ArrowRight size={16} />
-                  </button>
-                  <a
-                    href="tel:8313187139"
-                    className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-[var(--text)] hover:text-brand transition-colors"
-                  >
-                    <Phone size={15} />
-                    (831) 318-7139
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <div className="aspect-[5/4] w-full overflow-hidden rounded-[1.5rem] bg-white/[0.04] flex items-center justify-center p-8 xl:p-10">
-                  <img
-                    src="/opek-junk-haul-away.png?v=1"
-                    alt="Independent hauling contractor on a job"
-                    className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-10 xl:gap-14 mt-12 xl:mt-14 pt-10 xl:pt-12 border-t border-[var(--border)] pb-10 xl:pb-12">
-              {PROVIDER_HERO_FEATURES.map((feature) => {
-                const Icon = feature.icon;
-                return (
-                  <div key={feature.title} className="text-center">
-                    <Icon size={32} className={`mx-auto mb-3 ${feature.iconColor}`} strokeWidth={1.5} />
-                    <h2 className="text-[15px] font-bold text-[var(--text)] mb-1">{feature.title}</h2>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-[15rem] mx-auto">{feature.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div
-        ref={formSectionRef}
-        className="scroll-mt-[var(--site-header-height)] bg-[var(--bg)] border-t border-[var(--border)]"
-      >
-        <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+      <HomeFormSection sectionRef={formSectionRef} title="Let’s get to know you" description="Start your provider application. We will guide you through your business, service areas, vehicle and availability." image="/home-transparent/hero-branded.png" imageAlt="Independent providers carrying a tool chest" aside={<p>Already approved? <a className="font-bold text-brand underline" href="/sign-up">Create your contractor account</a> with the email from your welcome message.</p>}>
           <div className="mb-3 flex items-center justify-between gap-3 px-1">
             <p className="text-xs font-semibold text-[var(--text-muted)]">
               Step {step} of {SIGNUP_STEPS.length}
-              <span className="text-neutral-500 font-normal"> · {SIGNUP_STEPS[step - 1]}</span>
+              <span className="text-[var(--text-muted)] font-normal"> · {SIGNUP_STEPS[step - 1]}</span>
             </p>
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
               <Truck size={13} className="text-brand" />
@@ -519,7 +425,7 @@ export const ProviderSignupPage: React.FC = () => {
           <div className="bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 md:p-10 shadow-[0_2px_12px_rgba(53,80,112,0.06)] mt-4 animate-fade-in">
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <FlowStepTitle
+              <FlowStepTitle as="h2"
                 title="About you"
                 subtitle="Start with your contact and business details."
               />
@@ -563,7 +469,7 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 2 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <FlowStepTitle
+              <FlowStepTitle as="h2"
                 title="Service areas"
                 subtitle="Select the metropolitan areas where you provide service."
               />
@@ -574,7 +480,7 @@ export const ProviderSignupPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeServiceArea(index)}
-                      className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/[0.04] hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 flex items-center justify-center transition-colors"
+                      className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[var(--surface-2)] hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 flex items-center justify-center transition-colors"
                     >
                       <Trash2 size={12} />
                     </button>
@@ -642,7 +548,7 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 3 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
-              <FlowStepTitle
+              <FlowStepTitle as="h2"
                 title="Vehicle & documents"
                 subtitle="Tell us about your equipment and upload supporting documents."
               />
@@ -760,7 +666,7 @@ export const ProviderSignupPage: React.FC = () => {
 
           {step === 4 && (
             <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
-              <FlowStepTitle
+              <FlowStepTitle as="h2"
                 title="Availability"
                 subtitle="How many jobs are you looking to take on?"
               />
@@ -839,12 +745,12 @@ export const ProviderSignupPage: React.FC = () => {
                   {submitting ? 'Submitting...' : <><Check size={14} strokeWidth={3} /> Submit Application</>}
                 </button>
               </div>
-              <p className="text-[10px] text-neutral-500 text-center">By submitting, you agree to the contractor terms and network guidelines.</p>
+              <p className="text-[10px] text-[var(--text-muted)] text-center">By submitting, you agree to the contractor terms and network guidelines.</p>
             </form>
           )}
           </div>
-        </div>
-      </div>
+      </HomeFormSection>
+      <HomeCallout title="Questions before you apply?" body="Our team can help you understand the provider network and application process." label="Contact our team" to="/contact" />
     </div>
   );
 };

@@ -46,7 +46,7 @@ const badges = [
 export const HeroTrustBar: React.FC = () => {
   return (
     <div className="mt-8 sm:mt-10 w-full animate-fade-in-up delay-500">
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-white/[0.08] pt-5 sm:pt-6">
+      <div className="flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-[var(--border)] pt-5 sm:pt-6">
         {badges.map((b) => (
           <div key={b.key} className="flex items-center gap-2.5 min-w-0">
             {b.icon}
@@ -60,7 +60,7 @@ export const HeroTrustBar: React.FC = () => {
           href={`tel:${SITE_PHONE}`}
           className="group flex items-center gap-2.5 min-w-0 sm:ml-auto"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] border border-white/10 text-neutral-300 transition-colors group-hover:border-brand/40 group-hover:text-brand">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] transition-colors group-hover:border-brand/40 group-hover:text-brand">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" strokeLinejoin="round" />
             </svg>

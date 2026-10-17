@@ -1,3 +1,5 @@
+import { ServicePageHero } from './shared/ServicePageHero';
+import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Loader2, Mail, ShieldCheck } from 'lucide-react';
@@ -274,13 +276,13 @@ export const SignUpPage: React.FC = () => {
 
   return (
     <div className={UTILITY_PAGE_SHELL}>
-      <UtilityPageHeader
-        eyebrow="Contractor account"
-        title={<>Create your <span className="text-brand">login.</span></>}
-        description="Use the approved email from your welcome message to set a password and access the driver app."
-      />
+      <ServicePageHero eyebrow="Contractor account" title={<>Your account.<br />Your next chapter.</>}
+        subtitle="Use the approved email from your welcome message to set a password and access the driver app."
+        image="/home-transparent/hero-branded.png" imageAlt="Two Opek providers at work" chip="Provider network"
+        bannerTitle={<>Local jobs.<br />Your terms.</>} bannerDetail="A network behind you."
+        primaryCta={{ label: 'Create my account', href: '#account-details' }} secondaryCta={{ label: 'Apply first', href: '/provider-signup' }} showRating={false} />
 
-      <div className={UTILITY_PAGE_CONTENT}>
+      <HomeFormSection id="account-details" title="Let’s make it official" description="Already approved? Use the email from your welcome message to finish setting up your login." image="/home-transparent/schedule-phone.png" imageAlt="A phone for managing local pickup jobs" aside={<p>Once your account is linked, sign in to the driver app with the same email and password.</p>}>
         <div className={`${UTILITY_FORM_CARD} max-w-lg mx-auto animate-fade-in`}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -298,7 +300,7 @@ export const SignUpPage: React.FC = () => {
                 readOnly={emailLocked}
                 required
                 placeholder="you@example.com"
-                className={`${UTILITY_INPUT}${emailLocked ? ' bg-white/[0.04] text-[var(--text-muted)]' : ''}`}
+                className={`${UTILITY_INPUT}${emailLocked ? ' bg-[var(--surface-2)] text-[var(--text-muted)]' : ''}`}
               />
               {checkingEligibility && (
                 <p className="mt-1.5 text-xs text-[var(--text-muted)]">Checking approval status…</p>
@@ -411,7 +413,8 @@ export const SignUpPage: React.FC = () => {
             </Link>
           </p>
         </div>
-      </div>
+      </HomeFormSection>
+      <HomeCallout title="Ready to join the network?" body="Start with a provider application. We will review your business, service areas and vehicle details." label="Become a provider" to="/provider-signup" />
     </div>
   );
 };

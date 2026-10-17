@@ -6,13 +6,13 @@ export const HustleMuscle: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
+    <section className="site-purple-band relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[480px]">
         {/* Cutout visual — below copy on mobile; left on desktop */}
         <div className="relative order-2 lg:order-1 lg:col-span-5 flex items-end justify-center px-6 pt-4 sm:pt-6 lg:pt-8 pb-0 overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[360px]">
           <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
           <img
-            src="/opek-hustle-muscle.png?v=2"
+            src="/home-transparent/hero-branded.png"
             alt="Opek junk removal pros carrying boxes, furniture, and a rug"
             className="relative z-10 h-full max-h-[340px] sm:max-h-[420px] lg:max-h-[520px] w-auto object-contain object-bottom drop-shadow-[0_28px_48px_rgba(0,0,0,0.55)]"
             loading="lazy"
@@ -49,7 +49,7 @@ export const HustleMuscle: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/booking')}
-              className="group inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-transparent px-6 sm:px-7 py-3 sm:py-3.5 text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:border-brand/50 hover:bg-white/[0.04] transition-all"
+              className="group inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-transparent px-6 sm:px-7 py-3 sm:py-3.5 text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:border-brand/50 hover:bg-[var(--surface-2)] transition-all"
             >
               <Calendar size={16} className="text-brand" />
               Book A Pickup
@@ -57,25 +57,7 @@ export const HustleMuscle: React.FC = () => {
             </button>
           </div>
 
-          {/* Floating rating badge */}
-          <div className="absolute bottom-6 right-5 sm:bottom-8 sm:right-8 hidden sm:flex items-center gap-2.5 rounded-xl border border-white/10 bg-[#121218]/95 backdrop-blur px-3.5 py-2.5 shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
-            <div className="flex flex-col items-start">
-              <span className="text-lg font-extrabold text-white leading-none">4.8</span>
-              <div className="flex items-center gap-0.5 mt-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={10} className="text-brand fill-brand" />
-                ))}
-              </div>
-            </div>
-            <div className="pl-2 border-l border-white/10">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 leading-tight">
-                Google
-              </p>
-              <p className="text-[11px] font-semibold text-neutral-300 leading-tight mt-0.5">
-                Top-rated
-              </p>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>

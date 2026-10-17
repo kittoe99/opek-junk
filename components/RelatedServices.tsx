@@ -6,13 +6,13 @@ const allRelatedServices = [
   {
     title: 'Junk Removal',
     path: '/services/junk-removal',
-    image: '/opek-junk-haul-away.png?v=1',
+    image: '/home-transparent/junk-chest-logo.png',
     alt: 'Providers loading junk into a box truck',
   },
   {
     title: 'Mattress Disposal',
     path: '/services/mattress-disposal',
-    image: '/opek-mattress-hero.png?v=1',
+    image: '/home-transparent/mattress-branded.png',
     alt: 'Provider carrying a mattress for disposal',
   },
   {
@@ -24,13 +24,13 @@ const allRelatedServices = [
   {
     title: 'Small Local Moves',
     path: '/services/small-local-moves',
-    image: '/opek-related-local-moves.png?v=1',
+    image: '/home-transparent/moving-branded.png',
     alt: 'Provider loading boxes into a cargo van',
   },
   {
     title: 'Property Cleanouts',
     path: '/services/property-cleanout',
-    image: '/opek-service-areas.png?v=1',
+    image: '/home-transparent/haul-branded.png',
     alt: 'Provider helping a customer after a property cleanout',
   },
 ];
@@ -61,7 +61,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
               We can also help with:
             </h2>
             <p className="text-[12px] sm:text-[13px] text-[var(--text-muted)] leading-relaxed max-w-sm">
-              <strong className="font-semibold text-neutral-300">Opek</strong> partners with independent
+              <strong className="font-semibold text-[var(--text)]">Opek</strong> partners with independent
               contractors and connects you with top-rated local service providers.{' '}
               <Link to="/terms" className="text-brand hover:text-brand-400 font-semibold transition-colors">
                 Terms
@@ -76,7 +76,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
                 to={service.path}
                 className="group flex flex-col items-start text-left"
               >
-                <div className="relative w-full aspect-square mb-3 flex items-end justify-center overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
+                <div className="relative w-full aspect-square mb-3 flex items-end justify-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
                   <div className="absolute inset-x-4 bottom-4 h-1/2 rounded-full bg-brand/10 blur-[28px] opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden />
                   <img
                     src={service.image}

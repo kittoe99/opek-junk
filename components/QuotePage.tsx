@@ -603,11 +603,11 @@ export const QuotePage: React.FC = () => {
           <div className="w-20 h-16 md:w-24 md:h-20 shrink-0 flex items-end justify-center">
             <img
               src={
-                selectedService === 'junk_removal' ? '/opek-hero-haulers.png?v=3' :
-                selectedService === 'donation_pickup' ? '/opek-service-areas.png?v=1' :
-                selectedService === 'moving_labor' ? '/opek-related-moving.png?v=1' :
+                selectedService === 'junk_removal' ? '/home-transparent/hero-branded.png' :
+                selectedService === 'donation_pickup' ? '/home-transparent/haul-branded.png' :
+                selectedService === 'moving_labor' ? '/home-transparent/junk-chest-logo.png' :
                 selectedService === 'dumpster_rental' ? '/opek-related-dumpster.png?v=1' :
-                '/opek-hero-haulers.png?v=3'
+                '/home-transparent/hero-branded.png'
               }
               alt="Service breakdown"
               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -726,7 +726,7 @@ export const QuotePage: React.FC = () => {
     return (
       <div className={FLOW_PAGE_SHELL}>
         <FlowChrome flowLabel="Get a quote" stepLabel="Intro" progress={0.08} />
-        <div className={FLOW_PAGE_CONTENT}>
+        <div className="flow-home-intro-shell">
           <FlowSmsIntro onContinue={() => setSmsIntroSeen(true)} />
         </div>
       </div>
@@ -1092,23 +1092,23 @@ export const QuotePage: React.FC = () => {
                 title="Rental duration"
                 subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
               />
-              <div className="bg-[var(--surface)] border border-white/15 rounded-xl p-4 flex items-center justify-between gap-4">
+              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
                 <div>
                   <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
                   <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                 </div>
-                <div className="flex items-center gap-2 border border-white/15 rounded-full px-2 py-1">
+                <div className="flex items-center gap-2 border border-[var(--border)] rounded-full px-2 py-1">
                   <button
                     onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
                     disabled={dumpsterDuration <= 1}
-                    className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
+                    className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                   >
                     <Minus size={14} />
                   </button>
                   <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
                   <button
                     onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                    className="w-8 h-8 rounded-full hover:bg-white/[0.04] text-[var(--text)] flex items-center justify-center"
+                    className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
                   >
                     <Plus size={14} />
                   </button>

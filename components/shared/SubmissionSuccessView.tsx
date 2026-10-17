@@ -25,7 +25,7 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
   const content = (
     <div className={`${UTILITY_FORM_CARD} max-w-lg w-full`}>
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-11 h-11 bg-brand text-white rounded-2xl flex items-center justify-center shrink-0 shadow-[0_0_24px_-6px_rgba(255,0,110,0.55)]">
+        <div className="w-11 h-11 bg-brand text-white rounded-2xl flex items-center justify-center shrink-0 shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]">
           <Check size={20} strokeWidth={2.5} />
         </div>
         <div>

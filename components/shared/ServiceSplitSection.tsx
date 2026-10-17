@@ -33,7 +33,7 @@ export const ServiceSplitSection: React.FC<ServiceSplitSectionProps> = ({
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 xl:gap-16 items-center">
-          <div className={`relative ${imageFirst ? 'order-2 lg:order-1' : 'order-2'}`}>
+          <div className={`site-split-visual relative ${imageFirst ? 'order-2 lg:order-1' : 'order-2'}`}>
             <div className="absolute inset-8 rounded-full bg-brand/15 blur-[80px]" aria-hidden />
             <img
               src={image}

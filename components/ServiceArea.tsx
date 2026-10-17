@@ -81,7 +81,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
         <div
           className={`rounded-3xl p-6 md:p-10 lg:p-12 ${
             isDark
-              ? 'bg-[var(--surface)] border border-white/[0.08] shadow-[0_32px_80px_-32px_rgba(0,0,0,0.8)]'
+              ? 'bg-[var(--surface)] border border-[var(--border)] shadow-[0_32px_80px_-32px_rgba(0,0,0,0.8)]'
               : 'bg-[#f3f3f3]'
           }`}
         >
@@ -122,7 +122,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
                 <div
                   className={`mt-5 p-4 rounded-2xl shadow-sm ${
                     isDark
-                      ? 'bg-[#121218] border border-white/10 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.7)]'
+                      ? 'bg-[var(--surface)] border border-[var(--border)] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.7)]'
                       : 'bg-white border border-secondary-100/80'
                   }`}
                 >
@@ -131,7 +131,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
                   </p>
                   <p
                     className={`text-lg font-semibold mb-2 ${
-                      isDark ? 'text-white' : 'text-secondary'
+                      isDark ? 'text-[var(--text)]' : 'text-secondary'
                     }`}
                   >
                     {displayCity.name}
@@ -148,7 +148,7 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
                     onClick={handleCityAction}
                     className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full transition-colors ${
                       isDark
-                        ? 'bg-brand text-white hover:bg-brand-600 shadow-[0_0_20px_-6px_rgba(255,0,110,0.6)]'
+                        ? 'bg-brand text-white hover:bg-brand-600 shadow-[0_0_20px_-6px_rgba(82,15,150,0.6)]'
                         : 'bg-secondary text-white hover:bg-secondary-600'
                     }`}
                   >
@@ -202,15 +202,15 @@ export const ServiceArea: React.FC<ServiceAreaProps> = ({
                       className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                         isSelected
                           ? isDark
-                            ? 'bg-brand text-white border-brand shadow-[0_0_16px_-4px_rgba(255,0,110,0.6)]'
+                            ? 'bg-brand text-white border-brand shadow-[0_0_16px_-4px_rgba(82,15,150,0.6)]'
                             : 'bg-secondary text-white border-secondary'
                           : isDark
                             ? isHovered
-                              ? 'bg-white/[0.08] text-white border-white/25'
-                              : 'bg-white/[0.04] text-neutral-400 border-white/10 hover:border-brand/50 hover:text-white'
+                              ? 'bg-[var(--surface-2)] text-brand border-[var(--border)]'
+                              : 'bg-[var(--surface-2)] text-[var(--text-muted)] border-[var(--border)] hover:border-brand/50 hover:text-brand'
                             : isHovered
                               ? 'bg-white text-secondary border-secondary-300'
-                              : 'bg-white/80 text-secondary-500 border-secondary-100 hover:border-secondary-300'
+                              : 'bg-[var(--surface-2)] text-secondary-500 border-secondary-100 hover:border-secondary-300'
                       }`}
                     >
                       {chip.label}

@@ -531,8 +531,8 @@ export const MattressBookingPage: React.FC = () => {
                     key={option.id}
                     className={`group relative flex flex-col rounded-2xl border bg-[var(--surface)] transition-all ${
                       selected
-                        ? 'border-brand shadow-[0_0_0_1px_rgba(255,0,110,0.12)]'
-                        : 'border-[var(--border)] hover:border-white/15'
+                        ? 'border-brand shadow-[0_0_0_1px_rgba(82,15,150,0.12)]'
+                        : 'border-[var(--border)] hover:border-[var(--border)]'
                     }`}
                   >
                     <button
@@ -543,14 +543,14 @@ export const MattressBookingPage: React.FC = () => {
                     >
                       <div
                         className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center ${
-                          selected ? 'border-brand bg-brand' : 'border-white/15 bg-[var(--surface)]'
+                          selected ? 'border-brand bg-brand' : 'border-[var(--border)] bg-[var(--surface)]'
                         }`}
                       >
                         {selected && <Check size={12} className="text-white" strokeWidth={3} />}
                       </div>
                       <div
                         className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-2 ${
-                          selected ? 'bg-brand/[0.06] text-brand' : 'bg-white/[0.04] text-[var(--text-muted)]'
+                          selected ? 'bg-brand/[0.06] text-brand' : 'bg-[var(--surface-2)] text-[var(--text-muted)]'
                         }`}
                       >
                         <Icon className="w-8 h-8" />
@@ -564,7 +564,7 @@ export const MattressBookingPage: React.FC = () => {
                     </button>
                     {selected && (
                       <div className="px-3 pb-3 flex justify-center">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white/[0.04] px-1.5 py-1">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-1.5 py-1">
                           <button
                             type="button"
                             onClick={() => setCoreQuantity(option.id, quantity - 1)}
@@ -594,9 +594,9 @@ export const MattressBookingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowExtrasCatalog(true)}
-                className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-white/15 mb-5"
+                className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-[var(--border)] mb-5"
               >
-                <div className="w-10 h-10 rounded-xl bg-white/[0.04] text-[var(--text-muted)] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[var(--surface-2)] text-[var(--text-muted)] flex items-center justify-center">
                   <Package size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -686,14 +686,14 @@ export const MattressBookingPage: React.FC = () => {
                     <span className="font-semibold text-brand">−${pricing.discount}</span>
                   </div>
                 )}
-                <div className="flex justify-between pt-2 border-t border-white/[0.06]">
+                <div className="flex justify-between pt-2 border-t border-[var(--border)]">
                   <span className="font-semibold text-[var(--text)]">Total</span>
                   <span className="font-bold text-[var(--text)]">${pricing.total}</span>
                 </div>
               </div>
               <div className="flex items-start gap-2.5">
-                <ShieldCheck size={15} className="text-emerald-300 shrink-0 mt-0.5" />
-                <p className="text-xs text-emerald-300 leading-normal">
+                <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
+                <p className="text-xs text-emerald-700 leading-normal">
                   Safe Protect™ damage coverage included. {MATTRESS_ONLINE_DISCOUNT_SUMMARY}
                 </p>
               </div>

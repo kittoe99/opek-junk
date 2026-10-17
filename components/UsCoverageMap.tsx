@@ -60,8 +60,8 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
   const isDark = theme === 'dark';
   const mutedText = isDark ? 'text-[var(--text-muted)]' : 'text-secondary-400';
   const labelText = isDark ? 'text-[var(--text-muted)]' : 'text-secondary-500';
-  const pinIdle = isDark ? 'text-[#d4d4d8]' : 'text-secondary';
-  const stateStroke = isDark ? '#0b0b0f' : '#ffffff';
+  const pinIdle = isDark ? 'text-[#520f96]' : 'text-secondary';
+  const stateStroke = isDark ? '#ffffff' : '#ffffff';
 
   useEffect(() => {
     let cancelled = false;
@@ -81,17 +81,17 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
 
   const getStateFill = (stateId: string) => {
     if (isDark) {
-      if (hoveredStateId === stateId) return '#2b2b36';
+      if (hoveredStateId === stateId) return '#b58bd6';
       if (activeCity && stateId.toLowerCase() === activeCity.state.toLowerCase()) {
-        return 'rgba(255, 0, 110, 0.45)';
+        return 'rgba(82, 15, 150, 0.45)';
       }
-      return '#1c1c24';
+      return '#ddc9f0';
     }
-    if (hoveredStateId === stateId) return '#7a9b6d';
+    if (hoveredStateId === stateId) return '#b58bd6';
     if (activeCity && stateId.toLowerCase() === activeCity.state.toLowerCase()) {
-      return '#8baa7e';
+      return '#c49de0';
     }
-    return '#a3b59b';
+    return '#ddc9f0';
   };
 
   return (
@@ -152,7 +152,7 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
             >
               <circle cx={12} cy={12} r={isActive ? 18 : 14} fill="transparent" />
               {isSelected && (
-                <circle cx={12} cy={12} r={16} fill="rgba(255, 0, 110, 0.12)" />
+                <circle cx={12} cy={12} r={16} fill="rgba(82, 15, 150, 0.12)" />
               )}
               <g
                 className={`transition-transform duration-200 ${
@@ -176,7 +176,7 @@ export const UsCoverageMap: React.FC<UsCoverageMapProps> = ({
         <div
           id={tooltipId}
           className={`pointer-events-none absolute z-10 px-3 py-2 rounded-xl text-white text-xs font-semibold shadow-lg ${
-            isDark ? 'bg-brand shadow-[0_0_20px_-4px_rgba(255,0,110,0.6)]' : 'bg-secondary'
+            isDark ? 'bg-brand shadow-[0_0_20px_-4px_rgba(82,15,150,0.6)]' : 'bg-secondary'
           }`}
           style={{
             left: `${(activeCity.x / 959) * 100}%`,

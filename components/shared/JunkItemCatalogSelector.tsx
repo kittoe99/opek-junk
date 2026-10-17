@@ -109,8 +109,8 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
           compact ? 'min-h-[128px]' : 'min-h-[148px]'
         } ${
           selected
-            ? 'border-brand shadow-[0_0_0_1px_rgba(255,0,110,0.12)]'
-            : 'border-[var(--border)] hover:border-white/15 hover:shadow-none'
+            ? 'border-brand shadow-[0_0_0_1px_rgba(82,15,150,0.12)]'
+            : 'border-[var(--border)] hover:border-[var(--border)] hover:shadow-none'
         }`}
       >
         <button
@@ -123,7 +123,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             className={`absolute top-2.5 right-2.5 w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
               selected
                 ? 'border-brand bg-brand'
-                : 'border-white/15 bg-[var(--surface)] group-hover:border-white/25'
+                : 'border-[var(--border)] bg-[var(--surface)] group-hover:border-[var(--border)]'
             }`}
             aria-hidden
           >
@@ -132,7 +132,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
 
           <div
             className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-2.5 transition-colors ${
-              selected ? 'bg-brand/[0.06]' : 'bg-white/[0.04] group-hover:bg-white/[0.06]'
+              selected ? 'bg-brand/[0.06]' : 'bg-[var(--surface-2)] group-hover:bg-[var(--surface-2)]'
             }`}
           >
             <ItemIconRenderer
@@ -156,7 +156,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             className="px-3 pb-3 flex justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white/[0.04] px-1.5 py-1">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-1.5 py-1">
               <button
                 type="button"
                 onClick={() => updateQuantity(selectedItem.id, -1)}
@@ -195,9 +195,9 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
         <button
           type="button"
           onClick={() => setShowCatalogModal(true)}
-          className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-white/15 hover:shadow-none transition-all"
+          className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-[var(--border)] hover:shadow-none transition-all"
         >
-          <div className="w-10 h-10 rounded-xl bg-white/[0.04] text-[var(--text-muted)] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[var(--surface-2)] text-[var(--text-muted)] flex items-center justify-center shrink-0">
             <LayoutGrid size={18} strokeWidth={2} />
           </div>
           <div className="min-w-0 flex-1">
@@ -223,7 +223,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                     className="flex items-center justify-between gap-3 px-4 py-3"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-9 h-9 rounded-xl bg-white/[0.04] flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-[var(--surface-2)] flex items-center justify-center shrink-0">
                         <ItemIconRenderer
                           imagePath={getCatalogItemImage(item.name)}
                           className="w-5 h-5"
@@ -257,12 +257,12 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             </ul>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-7 text-center rounded-2xl border border-dashed border-[var(--border)] bg-white/[0.04]/40">
+          <div className="flex flex-col items-center justify-center py-7 text-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-2)]/40">
             <div className="w-9 h-9 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center mb-2">
-              <EmptyIcon className="w-4 h-4 text-neutral-500" />
+              <EmptyIcon className="w-4 h-4 text-[var(--text-muted)]" />
             </div>
             <p className="text-xs font-semibold text-[var(--text-muted)]">No items selected</p>
-            <p className="text-[11px] text-neutral-500 mt-0.5 max-w-[220px]">{emptyMessage}</p>
+            <p className="text-[11px] text-[var(--text-muted)] mt-0.5 max-w-[220px]">{emptyMessage}</p>
           </div>
         )}
       </div>
@@ -282,7 +282,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
               <button
                 type="button"
                 onClick={() => setShowCatalogModal(false)}
-                className="w-9 h-9 rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:bg-white/[0.04] flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
                 aria-label="Close catalog"
               >
                 <X size={18} strokeWidth={2} />
@@ -293,20 +293,20 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
               <div className="relative">
                 <Search
                   size={16}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
                 />
                 <input
                   type="text"
                   value={catalogSearch}
                   onChange={(e) => setCatalogSearch(e.target.value)}
                   placeholder="Search items…"
-                  className="opek-field w-full pl-10 pr-10 py-2.5 text-sm bg-white/[0.04] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:bg-[var(--surface)] focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
+                  className="opek-field w-full pl-10 pr-10 py-2.5 text-sm bg-[var(--surface-2)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--surface)] focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
                 />
                 {catalogSearch && (
                   <button
                     type="button"
                     onClick={() => setCatalogSearch('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-2)] flex items-center justify-center"
                     aria-label="Clear search"
                   >
                     <X size={10} strokeWidth={2.5} />
@@ -316,7 +316,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
             </div>
 
             <div className="flex-1 min-h-0 flex flex-col sm:flex-row overflow-hidden">
-              <div className="w-full sm:w-52 shrink-0 flex flex-row sm:flex-col gap-1 border-b sm:border-b-0 sm:border-r border-[var(--border)] p-2.5 sm:p-3 overflow-x-auto sm:overflow-y-auto bg-white/[0.04]/30">
+              <div className="w-full sm:w-52 shrink-0 flex flex-row sm:flex-col gap-1 border-b sm:border-b-0 sm:border-r border-[var(--border)] p-2.5 sm:p-3 overflow-x-auto sm:overflow-y-auto bg-[var(--surface-2)]/30">
                 {ITEM_CATALOG.map((category) => {
                   const isActive = expandedCategory === category.label && !catalogSearch.trim();
                   const selectedCount = selectedItems.filter((i) => {
@@ -337,7 +337,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all shrink-0 sm:w-full ${
                         isActive
                           ? 'bg-[var(--surface)] text-[var(--text)] shadow-none border border-[var(--border)]'
-                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/70 border border-transparent'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] border border-transparent'
                       }`}
                     >
                       <span
@@ -376,10 +376,10 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                   </div>
 
                   {visibleCatalogItems.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-12 text-center rounded-2xl border border-dashed border-[var(--border)] bg-white/[0.04]/40">
-                      <Package size={20} className="text-neutral-500 mb-2" />
+                    <div className="flex flex-col items-center justify-center py-12 text-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-2)]/40">
+                      <Package size={20} className="text-[var(--text-muted)] mb-2" />
                       <p className="text-sm font-medium text-[var(--text-muted)]">No items found</p>
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
                         Try another search or add a custom item below.
                       </p>
                     </div>
@@ -389,7 +389,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                     </div>
                   )}
 
-                  <div className="rounded-2xl border border-dashed border-[var(--border)] p-4 bg-white/[0.04]/30">
+                  <div className="rounded-2xl border border-dashed border-[var(--border)] p-4 bg-[var(--surface-2)]/30">
                     <p className="text-xs font-semibold text-[var(--text-muted)] mb-2.5">
                       Don&apos;t see your item?
                     </p>
@@ -406,7 +406,7 @@ export const JunkItemCatalogSelector: React.FC<JunkItemCatalogSelectorProps> = (
                           }
                         }}
                         placeholder="Type item name"
-                        className="opek-field flex-1 px-3.5 py-2.5 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-neutral-500 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
+                        className="opek-field flex-1 px-3.5 py-2.5 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/10 transition-all"
                       />
                       <button
                         type="button"
