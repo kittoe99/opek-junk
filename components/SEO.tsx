@@ -222,8 +222,8 @@ export const seoConfig = {
     noindex: true,
   },
   localMovesAds: {
-    title: 'Local Movers From $119/Hour | Opek — 2 Helpers',
-    description: 'Local moves from $119/hour for 2 moving helpers. Studios, apartments, and short-distance jobs. Truck + crew or labor only. Book online.',
+    title: 'Local Movers From $99/Hour | Opek — 2 Helpers',
+    description: 'Local moves from $99/hour for 2 moving helpers. Studios, apartments, and short-distance jobs. Truck + crew or labor only. Book online.',
     keywords: 'local movers, apartment movers, small local moves, moving labor, hourly movers, short distance movers',
     noindex: true,
   },

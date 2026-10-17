@@ -603,11 +603,11 @@ export const QuotePage: React.FC = () => {
           <div className="w-20 h-16 md:w-24 md:h-20 shrink-0 flex items-end justify-center">
             <img
               src={
-                selectedService === 'junk_removal' ? '/home-transparent/hero-branded.png' :
-                selectedService === 'donation_pickup' ? '/home-transparent/haul-branded.png' :
-                selectedService === 'moving_labor' ? '/home-transparent/junk-chest-logo.png' :
-                selectedService === 'dumpster_rental' ? '/opek-related-dumpster.png?v=1' :
-                '/home-transparent/hero-branded.png'
+                selectedService === 'junk_removal' ? '/hero-backgrounds/opek-crew-high-five.png' :
+                selectedService === 'donation_pickup' ? '/service-scenes/property-cleanout.png' :
+                selectedService === 'moving_labor' ? '/service-scenes/local-moving.png' :
+                selectedService === 'dumpster_rental' ? '/service-scenes/dumpster-rental.png' :
+                '/hero-backgrounds/opek-crew-high-five.png'
               }
               alt="Service breakdown"
               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"

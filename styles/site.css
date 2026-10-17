@@ -164,15 +164,22 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   transform: none; object-fit: cover; object-position: 60% center; filter: none;
 }
 .home-light .home-street-backdrop > img { filter: drop-shadow(0 6px 5px rgb(0 0 0 / 22%)); }
-.home-light .home-street-backdrop .home-hero-banner-copy,
-.home-light .home-street-backdrop .flow-zip-banner {
-  color: white;
-  text-shadow: 0 1px 4px #17241a, 0 2px 12px #17241a;
-}
-.home-light .home-street-backdrop .home-hero-banner-label { border-color: white; }
 .home-light .home-street-backdrop .home-eyebrow { color: white; }
 @media (max-width: 767px) {
   .home-page .home-hero-visual.home-street-backdrop > img { height: 94%; bottom: 0; left: 50%; }
+}
+
+/* Complete photographs fill their frames without cutout padding or synthetic shadows. */
+.home-light .home-photo-frame { background: none; }
+.home-light .home-photo-frame > img {
+  width: 100%; height: 100%; padding: 0; object-fit: cover; object-position: center; filter: none;
+}
+.home-light .home-photo-frame.flow-option-art { padding: 0; }
+.home-light .interior-hero .home-hero-visual.home-hero-photo > img { object-position: center; }
+.home-light .flow-zip-art.home-scene-photo { background: none; }
+.home-light .flow-zip-art.home-scene-photo > img {
+  position: absolute; inset: 0; width: 100%; height: 100%; transform: none;
+  object-fit: cover; object-position: center; filter: none;
 }
 
 /* Interior pages now reuse the homepage's actual composition and components. */
@@ -190,8 +197,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .flow-zip-layout { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
 .flow-zip-art { position: relative; min-height: 480px; display: flex; align-items: flex-end; }
 .flow-zip-art img { width: 100%; height: 70%; object-fit: contain; object-position: bottom; }
-.flow-zip-banner { position: absolute; left: 32px; top: 32px; }
-.flow-zip-banner p { font-size: 38px; line-height: 1; margin-top: 12px; }
 .flow-zip-content { --text: #fff; --text-muted: #fff; background: linear-gradient(125deg,#a020f0,#6b12b4); padding: 44px 32px; }
 .flow-zip-content .text-brand { color: white; }
 .flow-zip-content .site-flow-title { margin-bottom: 26px; }
@@ -208,13 +213,8 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .flow-image-selection [class*="w-5 h-5"] { display: none; }
 .flow-image-selection[aria-pressed=true] .flow-option-art { outline: 3px solid #520f96; outline-offset: -3px; }
 @media (max-width:767px) {
-  .interior-hero .home-hero-visual > img { height: 104%; width: 69%; left: 80%; bottom: -4%; object-fit: contain; object-position: bottom; }
-  .interior-hero-vehicle .home-hero-visual > img { width: 56%; left: 72%; bottom: 0; height: 95%; }
-  .interior-hero .home-hero-actions .home-cta { width: min(100%,240px); }
-  .interior-hero .home-hero-banner-copy { width: 45%; }
-  .interior-hero .home-hero-banner-label { max-width: 100%; font-size: 8px; }
-  .interior-hero .home-hero-banner-copy .home-display { font-size: clamp(20px,6vw,32px); }
-  .interior-hero-secondary { color: #fff; }
+  .interior-hero .home-hero-visual > img { height: 96%; width: 86%; left: 50%; bottom: 0; object-fit: contain; object-position: bottom; }
+  .interior-hero-vehicle .home-hero-visual > img { width: 82%; height: 90%; }
   .home-form-aside { position: static; }
   .home-form-aside > .home-image-backdrop { aspect-ratio: 17/9; }
   .home-form-aside > .home-image-backdrop img { object-position: center; }
@@ -222,10 +222,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   .site-flow-content:has(.flow-zip-layout) { padding: 0 0 110px; }
   .flow-zip-layout { grid-template-columns: 1fr; }
   .flow-zip-art { min-height: 0; height: 220px; }
-  .flow-zip-art img { position: absolute; width: 55%; height: 100%; right: 0; }
-  .flow-zip-banner { left: 20px; top: 55px; width: 45%; z-index: 1; }
-  .flow-zip-banner p { font-size: 25px; }
-  .flow-zip-banner .home-eyebrow { font-size: 9px; }
+  .flow-zip-art img { position: absolute; width: 82%; height: 92%; left: 50%; bottom: 0; transform: translateX(-50%); }
   .flow-zip-content { padding: 32px 22px; }
   .flow-zip-content .site-flow-title h1 { font-size: 30px; }
   .flow-service-options { grid-template-columns: 1fr; gap: 28px; max-width: 420px; margin: auto; }

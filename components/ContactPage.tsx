@@ -1,5 +1,5 @@
-import { HomeHowItWorks, HomeWaysToBook, HomeReviews } from './home/HomeSections';
-import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
+import { HomeWaysToBook } from './home/HomeSections';
+import { HomeFormSection } from './home/HomePagePatterns';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, MessageCircle, Phone, Send } from 'lucide-react';
@@ -99,20 +99,16 @@ export const ContactPage: React.FC = () => {
           </>
         }
         subtitle="Question, quote, or partnership — chat live, drop a line, or call. We reply within 30 minutes during business hours."
-        image="/home-transparent/schedule-phone.png"
+        image="/service-scenes/pickup-scheduling.png"
         imageAlt="A hand holding a phone to schedule an Opek pickup"
         chip="Fast replies"
         primaryCta={{ label: 'Send a message', href: '#contact-form' }}
         secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       />
 
-      <HomeHowItWorks title={<>A question. A quote.<br />A helping hand.</>} description="Choose the easiest way to reach us." items={[
-        { title: 'Call or text', body: 'Reach our team at (831) 318-7139 for help with your next pickup.', image: '/home-transparent/schedule-phone.png', alt: 'A phone ready to schedule a pickup' },
-        { title: 'Tell us what you need', body: 'Ask about an item, a move or a whole property. We will help you find the right service.', image: '/home-transparent/mattress-branded.png', alt: 'A provider removing a mattress' },
-        { title: 'Make a plan', body: 'Get a quote, arrange a free estimate or find help with an existing booking.', image: '/home-transparent/junk-dump-truck.png', alt: 'A dump truck ready to haul away junk' },
-      ]} />
-      <HomeCallout title="Real people. Ready to help." body="Questions about your pickup? We typically respond within 30 minutes during business hours." label="Send us a message" onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} />
-      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/home-transparent/hero-branded.png" imageAlt="Two providers ready to help" aside={
+
+
+      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/hero-backgrounds/opek-crew-high-five.png" imageAlt="Two providers ready to help" aside={
         <section
           className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-brand/15 via-[var(--surface)] to-[var(--surface-2)] p-6 sm:p-7"
           aria-labelledby="live-chat-heading"
@@ -260,7 +256,7 @@ export const ContactPage: React.FC = () => {
         </div>
       </HomeFormSection>
       <HomeWaysToBook />
-      <HomeReviews />
+
     </div>
   );
 };

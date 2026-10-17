@@ -402,24 +402,6 @@
           height: 132%; left: 77%; bottom: -35%;
           filter: drop-shadow(0 8px 12px rgb(59 17 91 / 16%));
         }
-        .home-light .home-hero-banner-copy {
-          position: absolute; z-index: 3; left: 20px; top: 50%;
-          transform: translateY(-50%); width: 47%; color: #3a0a6b;
-        }
-        .home-light .home-hero-banner-label {
-          display: inline-block; margin-bottom: 14px; padding: 5px 8px;
-          border: 1px solid #b893da; border-radius: 3px;
-          font-size: 9px; line-height: 1; font-weight: 700;
-          text-transform: uppercase; letter-spacing: .12em;
-        }
-        .home-light .home-hero-banner-copy p {
-          font-size: clamp(20px, 6.5vw, 44px); line-height: 1.02;
-          letter-spacing: -.035em; font-variation-settings: "wdth" 88;
-        }
-        .home-light .home-hero-banner-detail {
-          display: block; max-width: 120px; margin-top: 14px;
-          font-size: 11px; line-height: 1.4; font-weight: 500;
-        }
         .home-light .home-hero-copy,
         .home-light .home-promo {
           background-color: #8b16d4;
@@ -432,10 +414,6 @@
         .home-light .home-hero-copy .home-eyebrow { color: white; font-size: 10px; letter-spacing: .1em; margin-bottom: 16px; }
         .home-light .home-hero-copy h1 { color: white; font-size: clamp(30px, 8vw, 42px); line-height: 1; font-variation-settings: "wdth" 100; }
         .home-light .home-hero-copy h1 + p { color: white; font-size: 15px; line-height: 1.5; margin: 18px auto 0; max-width: 360px; }
-        .home-light .home-hero-actions { align-items: center; gap: 16px; margin-top: 24px; flex-direction: column; }
-        .home-light .home-hero-actions .home-cta { width: 220px; min-height: 56px; border: 2px solid white; }
-        .home-light .home-hero-actions > button:not(.home-cta) { color: white; font-size: 13px; }
-        .home-light .home-hero-contact { display: none; }
         .home-light .home-hero-fine-print { background: #520f96; }
         .home-light .home-hero-fine-print p { font-size: 10px; line-height: 1.5; text-align: center; padding: 14px 22px; color: #f0e6fb; }
         .home-light #process { padding-block: 56px 40px; }
@@ -457,12 +435,12 @@
       /* Mobile homepage: image banner, one purple action block, compact sections, sticky CTA. */
       @media (max-width: 767px) {
         .home-light .home-nav { height: 60px; }
-        /* Mobile hero: photo banner over a vivid violet promo block (single CTA) */
-        .home-page .home-hero-visual { height: clamp(240px, 70vw, 340px); }
-        .home-page .home-hero-visual::before { right: 6%; }
-        .home-page .home-hero-visual::after { display: none; }
+        /* Mobile hero (homepage + interior pages): image banner over a vivid violet promo block */
+        .home-light .home-hero-visual { height: clamp(240px, 70vw, 340px); }
+        .home-light .home-hero-visual::before { right: 6%; }
+        .home-light .home-hero-visual::after { display: none; }
         .home-page .home-hero-visual img { height: 118%; left: 50%; bottom: -20%; }
-        .home-page .home-hero-copy {
+        .home-light .home-hero-copy {
           padding: 28px 22px 40px; text-align: center; color: #ffffff;
           background-color: #a020f0;
           background-image:
@@ -470,30 +448,38 @@
             radial-gradient(ellipse at 90% 95%, rgb(82 15 150 / 45%) 0%, transparent 55%),
             repeating-radial-gradient(circle at 30% 40%, rgb(255 255 255 / 2.5%) 0 1px, transparent 1px 3px);
         }
-        .home-page .home-hero-copy > div { max-width: 420px; }
-        .home-page .home-hero-badge {
+        .home-light .home-hero-copy > div { max-width: 420px; }
+        .home-light .home-hero-badge {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 7px 14px; margin-bottom: 16px;
           border: 1.5px solid rgb(255 255 255 / 85%); border-radius: 999px;
         }
-        .home-page .home-hero-copy h1 {
+        .home-light .home-hero-copy h1 {
           color: #ffffff; font-size: clamp(31px, 9.3vw, 46px); line-height: .96;
           font-variation-settings: "wdth" 78;
         }
-        .home-page .home-hero-copy h1 .home-hero-price { color: #ffffff; }
-        .home-page .home-hero-copy h1 + p {
+        .home-light .home-hero-copy h1 .home-hero-price { color: #ffffff; }
+        .home-light .home-hero-copy h1 + p {
           color: #ffffff; font-size: 15px; font-weight: 500; line-height: 1.45;
           margin: 16px auto 0; max-width: 340px;
         }
-        .home-page .home-hero-mobile-cta {
+        .home-light .home-hero-mobile-cta {
           display: inline-flex; align-items: center; justify-content: center;
           min-width: 200px; min-height: 54px; padding: 0 28px; border-radius: 0;
           background: #520f96; color: #ffffff; border: 2px solid #ffffff;
           font-family: 'Archivo', 'Inter', system-ui, sans-serif;
           font-size: 15px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
         }
-        .home-page .home-hero-mobile-cta:hover,
-        .home-page .home-hero-mobile-cta:active { background: #3a0a6b; }
+        .home-light .home-hero-mobile-cta:hover,
+        .home-light .home-hero-mobile-cta:active { background: #3a0a6b; }
+        .home-light .home-hero-badge-text {
+          color: #ffffff; font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+          font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+        }
+        .home-light .home-hero-mobile-link {
+          color: #ffffff; font-size: 13px; font-weight: 800; letter-spacing: .04em;
+          text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; border-radius: 0;
+        }
         .home-page #process,
         .home-page #services,
         .home-page .home-ways,

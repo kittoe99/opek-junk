@@ -20,7 +20,7 @@ export function HomeEditorialCards({ title, description, cards }: {
       {description && <div className="mx-auto mt-5 max-w-2xl text-center text-[15px] leading-relaxed text-[#2b2236]">{description}</div>}
       <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-10 max-w-[860px] mx-auto">
         {cards.map(card => <article key={card.title} className="flex flex-col items-center text-center">
-          <div className="home-image-backdrop w-full aspect-[17/10] overflow-hidden rounded-lg"><img src={card.image} alt={card.alt} className="h-full w-full object-contain object-bottom pt-4" loading="lazy" /></div>
+          <div className="home-photo-frame w-full aspect-[17/10] overflow-hidden rounded-lg"><img src={card.image} alt={card.alt} className="h-full w-full object-contain object-bottom pt-4" loading="lazy" /></div>
           <h3 className="home-display mt-5 text-[1.4rem] sm:text-[1.6rem] leading-tight text-[#140a1f]">{card.title}</h3>
           <div className="mt-3 text-[15px] leading-relaxed text-[#2b2236] w-full">{card.body}</div>
           {card.action && (card.action.to
@@ -63,7 +63,7 @@ export function HomeFormSection({ title, description, image, imageAlt, children,
       <p className="max-w-xl mx-auto mt-4 text-center text-[15px] text-[#2b2236] leading-relaxed">{description}</p>
       <div className="home-form-grid mt-10 grid md:grid-cols-[.8fr_1.2fr] gap-8 md:gap-12 items-start">
         <aside className="home-form-aside">
-          <div className="home-image-backdrop aspect-square overflow-hidden rounded-lg"><img src={image} alt={imageAlt} className="w-full h-full object-contain object-bottom pt-5" loading="lazy" /></div>
+          <div className="home-photo-frame aspect-square overflow-hidden rounded-lg"><img src={image} alt={imageAlt} className="w-full h-full object-contain object-bottom pt-5" loading="lazy" /></div>
           {aside && <div className="mt-6 text-[15px] leading-relaxed text-[#2b2236]">{aside}</div>}
         </aside>
         <div className="home-form-panel">{children}</div>

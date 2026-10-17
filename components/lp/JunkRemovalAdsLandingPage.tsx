@@ -51,13 +51,13 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
 
   return <ServicePageLayout
     path="/lp/junk-removal" eyebrow="Junk Removal Near You" title={<>Fast junk disposal.<br />Right in your area.</>}
-    subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options in your area." heroImage="/home-transparent/junk-dump-truck.png" heroImageAlt="Purple dump truck loaded with household junk" heroChip="A clear space"
+    subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options in your area." heroImage="/service-scenes/junk-truck.png" heroImageAlt="Purple dump truck loaded with household junk" heroChip="A clear space"
     primaryCta={{ label: 'View Pricing', onClick: () => goToBooking() }}
     secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
     onZipCheck={goToBooking}
     bookingState={{ serviceType: "Junk Removal" }}
     split={{ eyebrow: 'Junk Removal Near You', title: 'Make room for what matters',
-      body: <p>From a single couch to a full garage, your provider handles the lifting, loading and disposal. You point to what goes. Your crew takes it from there.</p>, image: '/home-transparent/junk-chest-logo.png', imageAlt: 'Purple dump truck loaded with household junk',
+      body: <p>From a single couch to a full garage, your provider handles the lifting, loading and disposal. You point to what goes. Your crew takes it from there.</p>, image: '/service-scenes/local-moving.png', imageAlt: 'Two providers loading a sofa into a truck',
       includes: [{ title: 'Flexible scheduling', Icon: CalendarCheck }, { title: 'Careful handling', Icon: Package }, { title: 'Vetted providers', Icon: ShieldCheck }, { title: 'Local crews', Icon: Truck }],
     }}
     features={{ title: 'A better way to clear out', items: approaches }}

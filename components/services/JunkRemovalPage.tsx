@@ -18,7 +18,7 @@ export const JunkRemovalPage: React.FC = () => {
         </>
       }
       subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with upfront flat-rate pricing and same-day options."
-      heroImage="/home-transparent/junk-dump-truck.png"
+      heroImage="/service-scenes/junk-truck.png"
       heroImageAlt="A purple dump truck loaded for junk removal"
       heroChip="Heavy Lifting"
       primaryCta={{ label: 'Get Online Price', onClick: () => navigate('/quote') }}
@@ -43,7 +43,7 @@ export const JunkRemovalPage: React.FC = () => {
           { title: 'Transport Valet', Icon: Truck },
           { title: 'Proper Disposal', Icon: Recycle },
         ],
-        image: '/home-transparent/junk-chest-logo.png',
+        image: '/service-scenes/local-moving.png',
         imageAlt: 'Providers loading a sofa and junk into a box truck',
       }}
       features={{

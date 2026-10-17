@@ -63,7 +63,7 @@ export const LocalServiceAreas: React.FC = () => {
           <div className="relative flex items-end justify-center">
             <div className="absolute inset-10 rounded-full bg-brand/15 blur-[80px]" aria-hidden />
             <img
-              src="/home-transparent/haul-branded.png"
+              src="/service-scenes/property-cleanout.png"
               alt="Opek junk removal provider greeting a customer after a pickup"
               className="relative z-10 w-full max-w-md h-auto max-h-[380px] sm:max-h-[440px] object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.55)]"
               loading="lazy"

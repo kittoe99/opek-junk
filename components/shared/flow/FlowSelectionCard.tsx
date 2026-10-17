@@ -37,7 +37,7 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
           : 'border-[var(--border)] hover:border-brand/40 hover:bg-[var(--surface-2)]'
     }`}
   >
-    {image && <div className="home-image-backdrop flow-option-art"><img src={image} alt="" className="w-full h-full object-contain object-bottom" /></div>}
+    {image && <div className="home-photo-frame flow-option-art"><img src={image} alt="" className="w-full h-full object-contain object-bottom" /></div>}
     <div className="flex items-start justify-between gap-3 mb-2">
       <div className="flex items-center gap-2.5 min-w-0">
         <div

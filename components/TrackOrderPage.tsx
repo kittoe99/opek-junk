@@ -1,5 +1,5 @@
-import { HomeHowItWorks, HomeWaysToBook, HomeReviews } from './home/HomeSections';
-import { HomeCallout, HomeFormSection } from './home/HomePagePatterns';
+import { HomeWaysToBook } from './home/HomeSections';
+import { HomeFormSection } from './home/HomePagePatterns';
 import React, { useRef, useState } from 'react';
 import {
   Clock,
@@ -422,14 +422,14 @@ export const TrackOrderPage: React.FC = () => {
           </>
         }
         subtitle="Enter your phone number or order number to see live status, schedule, and service details."
-        image="/home-transparent/schedule-phone.png"
+        image="/service-scenes/pickup-scheduling.png"
         imageAlt="A phone showing an Opek pickup schedule"
         chip="Live status"
         primaryCta={{ label: 'Look Up Order', onClick: scrollToForm }}
         secondaryCta={{ label: 'Call Support', href: 'tel:8313187139' }}
       />
 
-      <HomeFormSection sectionRef={formRef} id="track-lookup" title="Your pickup, at a glance" description="Find your booking to see its status, schedule and service details." image="/home-transparent/schedule-phone.png" imageAlt="Phone showing pickup time choices" aside={<p>Use the order number from your booking confirmation, or verify your phone number to find your orders.</p>}>
+      <HomeFormSection sectionRef={formRef} id="track-lookup" title="Your pickup, at a glance" description="Find your booking to see its status, schedule and service details." image="/service-scenes/pickup-scheduling.png" imageAlt="Phone showing pickup time choices" aside={<p>Use the order number from your booking confirmation, or verify your phone number to find your orders.</p>}>
         <div className={UTILITY_FORM_CARD}>
           <div className="text-center space-y-2 mb-6">
             <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">
@@ -647,14 +647,10 @@ export const TrackOrderPage: React.FC = () => {
           </p>
         )}
       </HomeFormSection>
-      <HomeHowItWorks title="All the details. A few taps." description="Stay connected from booking to pickup." items={[
-        { title: 'Find your booking', body: 'Enter your order number or verify the phone number used when booking.', image: '/home-transparent/schedule-phone.png', alt: 'Phone with pickup scheduling details' },
-        { title: 'Check your pickup', body: 'See your current status, scheduled window and service details in one place.', image: '/home-transparent/junk-chest-logo.png', alt: 'Providers loading furniture for pickup' },
-        { title: 'Get help anytime', body: 'Have a question about your job? Call or text (831) 318-7139.', image: '/home-transparent/junk-dump-truck.png', alt: 'Purple dump truck carrying household items' },
-      ]} />
-      <HomeCallout title="Need a hand with your booking?" body="We can help with questions about an upcoming pickup." label="Contact us" to="/contact" />
+
+
       <HomeWaysToBook />
-      <HomeReviews />
+
     </div>
   );
 };

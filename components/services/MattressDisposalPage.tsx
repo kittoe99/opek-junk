@@ -47,13 +47,13 @@ export const MattressDisposalPage: React.FC = () => {
   };
   return <ServicePageLayout
     path="/services/mattress-disposal" eyebrow="Mattress Pickup & Recycling" title={<>Old mattress?<br />We’ll haul it today.</>}
-    subtitle="Local providers pick up mattresses, box springs, and frames from any room — same-day windows available in most areas." heroImage="/home-transparent/mattress-branded.png" heroImageAlt="Provider carrying a mattress for disposal" heroChip="Room to rest"
+    subtitle="Local providers pick up mattresses, box springs, and frames from any room — same-day windows available in most areas." heroImage="/service-scenes/mattress-pickup.png" heroImageAlt="Provider carrying a mattress for disposal" heroChip="Room to rest"
     primaryCta={{ label: 'View Pricing', onClick: () => goToBooking() }}
     secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
     onZipCheck={goToBooking}
     bookingPath="/booking/mattress"
     split={{ eyebrow: 'Mattress Pickup & Recycling', title: 'A fresh start for your bedroom',
-      body: <p>No curb dragging required. Your matched provider carries out mattresses, box springs and bed frames from bedrooms, basements and upper floors.</p>, image: '/home-transparent/mattress-branded.png', imageAlt: 'Provider carrying a mattress for disposal',
+      body: <p>No curb dragging required. Your matched provider carries out mattresses, box springs and bed frames from bedrooms, basements and upper floors.</p>, image: '/service-scenes/mattress-pickup.png', imageAlt: 'Provider carrying a mattress for disposal',
       includes: [{ title: 'Flexible scheduling', Icon: CalendarCheck }, { title: 'Careful handling', Icon: Package }, { title: 'Vetted providers', Icon: ShieldCheck }, { title: 'Local crews', Icon: Truck }],
     }}
     features={{ title: 'We lift. You relax.', items: approaches }}

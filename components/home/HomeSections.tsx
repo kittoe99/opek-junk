@@ -20,7 +20,7 @@ export const HomeFeaturedServices: React.FC = () => {
     {
       title: 'Junk removal',
       body: 'Couches, appliances, mattresses, yard debris and full loads. Pick your items, see your price, and a crew hauls it all away.',
-      image: '/home-transparent/junk-dump-truck.png',
+      image: '/service-scenes/junk-truck.png',
       alt: 'Purple dump truck loaded with furniture and household junk',
       cta: 'Get a price',
       onClick: () => navigate('/quote'),
@@ -28,7 +28,7 @@ export const HomeFeaturedServices: React.FC = () => {
     {
       title: 'Small local moves',
       body: 'Truck and crew for apartments, studios and short-distance moves. Book helpers by the hour, with or without a truck.',
-      image: '/home-transparent/junk-chest-logo.png',
+      image: '/service-scenes/local-moving.png',
       alt: 'Two providers carrying a couch to a moving truck',
       cta: 'Book a move',
       onClick: () => navigate('/booking', { state: { serviceType: 'Moving Labor' } }),
@@ -54,7 +54,7 @@ export const HomeFeaturedServices: React.FC = () => {
         <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-10 max-w-[860px] mx-auto">
           {cards.map((card) => (
             <article key={card.title} className="flex flex-col items-center text-center">
-              <div className="home-image-backdrop w-full aspect-[17/10] overflow-hidden rounded-lg">
+              <div className="home-photo-frame w-full aspect-[17/10] overflow-hidden rounded-lg">
                 <img
                   src={card.image}
                   alt={card.alt}
@@ -99,14 +99,14 @@ const steps = [
   {
     title: 'Pick your items',
     body: 'Tell us what’s going — one couch or a whole garage — and see your upfront price online.',
-    image: '/home-transparent/mattress-branded.png',
+    image: '/service-scenes/mattress-pickup.png',
     alt: 'Provider carrying a mattress',
     fit: 'contain' as const,
   },
   {
     title: 'Choose a time',
     body: 'Book a pickup window that works for you, including same-day where providers are available.',
-    image: '/home-transparent/schedule-phone.png',
+    image: '/service-scenes/pickup-scheduling.png',
     alt: 'Hand holding a phone with a pickup calendar and time-window choices',
     imageClassName: 'h-full w-full object-contain object-bottom pt-5',
     fit: 'contain' as const,
@@ -114,7 +114,7 @@ const steps = [
   {
     title: 'We haul it away',
     body: 'Your provider loads everything up and takes care of disposal, donation or recycling.',
-    image: '/home-transparent/junk-dump-truck.png',
+    image: '/service-scenes/junk-truck.png',
     alt: 'Purple dump truck loaded with furniture and household junk',
     fit: 'contain' as const,
   },
@@ -160,7 +160,7 @@ export const HomeHowItWorks: React.FC<{
               key={step.title}
               className="grid grid-cols-[104px_minmax(0,1fr)] items-center gap-4 border-b border-[#ece6f2] py-4 first:pt-0 last:border-0 last:pb-0 md:block md:border-0 md:p-0 md:text-center"
             >
-              <div className="home-image-backdrop relative aspect-square overflow-hidden rounded-lg">
+              <div className="home-photo-frame relative aspect-square overflow-hidden rounded-lg">
                 <img
                   src={step.image}
                   alt={step.alt}

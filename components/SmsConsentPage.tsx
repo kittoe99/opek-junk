@@ -18,9 +18,8 @@ export const SmsConsentPage: React.FC = () => {
     <div className="site-page home-light interior-home min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]">
       <ServicePageHero eyebrow="SMS consent" title={<>Your phone.<br />Your choice.</>}
         subtitle="Understand how Opek uses text messages for quotes, bookings and optional marketing, and how you can manage your preferences."
-        image="/home-transparent/schedule-phone.png" imageAlt="A phone displaying pickup time options" chip="Stay informed"
-        bannerTitle={<>Useful updates.<br />Your choice.</>} bannerDetail="Clear, simple communication."
-        primaryCta={{ label: 'See how it works', href: '#consent-details' }} secondaryCta={{ label: 'Privacy policy', href: '/privacy' }} showRating={false} />
+        image="/service-scenes/pickup-scheduling.png" imageAlt="A phone displaying pickup time options" chip="Stay informed"
+        primaryCta={{ label: 'See how it works', href: '#consent-details' }} secondaryCta={{ label: 'Privacy policy', href: '/privacy' }} />
 
       <div id="consent-details" className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8 py-14 md:py-20 space-y-12 scroll-mt-[var(--site-header-height)]">
         <section className="space-y-3">

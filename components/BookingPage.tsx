@@ -844,12 +844,12 @@ export const BookingPage: React.FC = () => {
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
-                                  ? '/home-transparent/haul-branded.png'
+                                  ? '/service-scenes/property-cleanout.png'
                                   : formData.serviceType === 'Moving Labor'
-                                    ? '/home-transparent/junk-chest-logo.png'
+                                    ? '/service-scenes/local-moving.png'
                                     : formData.serviceType === 'Dumpster Rental'
-                                      ? '/opek-related-dumpster.png?v=1'
-                                      : '/home-transparent/hero-branded.png'
+                                      ? '/service-scenes/dumpster-rental.png'
+                                      : '/hero-backgrounds/opek-crew-high-five.png'
                               }
                               alt="Service"
                               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -1050,7 +1050,7 @@ export const BookingPage: React.FC = () => {
                     <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
-                          src="/opek-related-dumpster.png?v=1"
+                          src="/service-scenes/dumpster-rental.png"
                           alt="Dumpster Rental"
                           className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
                         />

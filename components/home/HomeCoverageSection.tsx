@@ -12,8 +12,20 @@ type StatePath = Awaited<ReturnType<typeof loadStatePaths>>[number];
 
 const shortName = (city: CoverageCity) => city.name.replace(/, [A-Z.]+$/, '');
 
-/** Homepage ZIP check paired with the nationwide coverage map. */
-export const HomeCoverageSection: React.FC = () => {
+interface HomeCoverageSectionProps {
+  /** Two-part heading: the second part is shown in purple. */
+  titleStart?: string;
+  titleAccent?: string;
+  /** Called with a valid ZIP instead of going to /quote. */
+  onCheck?: (zip: string) => void;
+}
+
+/** ZIP check paired with the nationwide coverage map (homepage and service pages). */
+export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
+  titleStart = 'Providers in',
+  titleAccent = 'all 50 states',
+  onCheck,
+}) => {
   const navigate = useNavigate();
   const [zip, setZip] = useState('');
   const [error, setError] = useState('');
@@ -44,7 +56,8 @@ export const HomeCoverageSection: React.FC = () => {
       return;
     }
     setError('');
-    navigate(`/quote?${new URLSearchParams({ zip: parsed.formatted }).toString()}`);
+    if (onCheck) onCheck(parsed.formatted);
+    else navigate(`/quote?${new URLSearchParams({ zip: parsed.formatted }).toString()}`);
   };
 
   return (
@@ -62,9 +75,9 @@ export const HomeCoverageSection: React.FC = () => {
               id="home-coverage-heading"
               className="home-display mt-3 text-[2.1rem] leading-[0.95] sm:text-[2.8rem] lg:text-[3.2rem] text-[#140a1f]"
             >
-              Providers in
+              {titleStart}
               <br />
-              <span className="text-[#520f96]">all 50 states</span>
+              <span className="text-[#520f96]">{titleAccent}</span>
             </h2>
             <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-[#2b2236] max-w-md mx-auto lg:mx-0">
               Matched local providers arrive ready to load and haul. Enter your ZIP to confirm coverage and see your price.

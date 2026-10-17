@@ -1,4 +1,3 @@
-import { ServicePageHero } from './ServicePageHero';
 import { HomeCallout } from '../home/HomePagePatterns';
 import React, { useState, useEffect } from 'react';
 
@@ -58,12 +57,15 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
 
   return (
     <div className="site-page home-light interior-home min-h-screen bg-[var(--bg)]">
-      <ServicePageHero eyebrow={eyebrow} title={title} subtitle={description}
-        image="/home-transparent/schedule-phone.png" imageAlt="Phone showing a pickup schedule"
-        chip="Clear information" bannerTitle={<>Good service.<br />Clear terms.</>} bannerDetail="Know where you stand."
-        primaryCta={{ label: 'Read the policy', href: '#policy-contents' }} secondaryCta={{ label: 'Contact us', href: '/contact' }} showRating={false} />
+      <header className="border-b border-[#e6ddec] bg-[#f4eefc]">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 py-11 md:py-16">
+          <p className="home-eyebrow mb-3">{eyebrow}</p>
+          <h1 className="home-display text-[2.3rem] leading-[0.95] sm:text-[3rem] md:text-[3.4rem] text-[#140a1f]">{title}</h1>
+          <p className="mt-4 max-w-2xl text-[15px] sm:text-base leading-relaxed text-[#3d3547]">{description}</p>
+        </div>
+      </header>
 
-      <div id="policy-contents" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 scroll-mt-[var(--site-header-height)]">
+      <div id="policy-contents" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 scroll-mt-[var(--site-header-height)]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <details className="lg:hidden rounded-lg border border-[var(--border)] bg-white p-5">
             <summary className="cursor-pointer text-sm font-bold text-brand">On this page</summary>
@@ -88,9 +90,9 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
                       key={section.id}
                       type="button"
                       onClick={() => scrollToSection(section.id)}
-                      className={`w-full text-left px-4 py-2.5 rounded-full text-sm font-medium flex items-center gap-3 transition-all ${
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-3 transition-colors ${
                         isActive
-                          ? 'bg-brand text-white shadow-[0_0_20px_-6px_rgba(82,15,150,0.55)]'
+                          ? 'bg-brand text-white'
                           : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
                       }`}
                     >

@@ -2,7 +2,8 @@ import React from 'react';
 import { ServicePageHero } from './ServicePageHero';
 import { ServiceIncludeItem } from './ServiceSplitSection';
 import { ServiceFeatureItem } from './ServiceFeatureGrid';
-import { HomeHowItWorks, HomePromoBand, HomeWaysToBook, HomeReviews, HomeStep } from '../home/HomeSections';
+import { HomeHowItWorks, HomeWaysToBook, HomeReviews, HomeStep } from '../home/HomeSections';
+import { HomeCoverageSection } from '../home/HomeCoverageSection';
 import { HomeEditorialCards } from '../home/HomePagePatterns';
 
 interface CtaProps {
@@ -64,20 +65,19 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   const steps: HomeStep[] = processSteps || [
     { title: moving ? 'Tell us about your move' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
       body: moving ? 'Choose truck and crew or labor only, then tell us what needs moving.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : mattress ? 'Tell us how many mattresses, box springs and bed frames you need removed.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
-      image: mattress || (!moving && !dumpster && !cleanout) ? '/home-transparent/mattress-branded.png' : heroImage, alt: mattress || (!moving && !dumpster && !cleanout) ? 'Provider carrying a mattress' : heroImageAlt },
-    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/home-transparent/schedule-phone.png', alt: 'Hand holding a phone with pickup time choices' },
+      image: mattress || (!moving && !dumpster && !cleanout) ? '/service-scenes/mattress-pickup.png' : heroImage, alt: mattress || (!moving && !dumpster && !cleanout) ? 'Provider carrying a mattress' : heroImageAlt },
+    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/service-scenes/pickup-scheduling.png', alt: 'Hand holding a phone with pickup time choices' },
     { title: moving ? 'Settle into your space' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
       body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
-      image: moving ? '/home-transparent/junk-chest-logo.png' : '/home-transparent/junk-dump-truck.png', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
+      image: moving ? '/service-scenes/local-moving.png' : '/service-scenes/junk-truck.png', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
   ];
   return <div className="home-light interior-home">
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}
       chip={heroChip} primaryCta={primaryCta} secondaryCta={secondaryCta}
-      bannerTitle={moving ? <>New place.<br />Fresh start.</> : dumpster ? <>Big project.<br />Less mess.</> : mattress ? <>Sleep easy.<br />We’ll lift.</> : <>Less junk.<br />More space.</>}
     />
     <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
       description={`Booking ${moving ? 'local moving help' : dumpster ? 'a dumpster' : 'your pickup'} online has never been easier.`} items={steps} />
-    <HomePromoBand title={<>{serviceArea.titleStart}<br />{serviceArea.titleAccent}</>} onCheck={onZipCheck} />
+    <HomeCoverageSection titleStart={serviceArea.titleStart} titleAccent={serviceArea.titleAccent} onCheck={onZipCheck} />
     <HomeEditorialCards title={split.title} description={split.body} cards={[
       { title: split.eyebrow, image: split.image, alt: split.imageAlt,
         body: <><p className="font-semibold mb-4">{split.includesLabel || 'We take care of the whole job.'}</p><div className="grid grid-cols-2 gap-4 text-left">{split.includes.map(({ title: label, Icon }) => <div key={label} className="flex items-center gap-2 text-sm font-semibold"><Icon size={20} className="shrink-0 text-[#520f96]" />{label}</div>)}</div></>,
