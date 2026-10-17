@@ -7,8 +7,8 @@ export interface DumpsterRentalOptions {
 }
 
 const MOVING_LABOR_RULES = {
-  price_per_hour_1_helper: 79,
-  price_per_hour_2_helpers: 119,
+  price_per_hour_1_helper: 69,
+  price_per_hour_2_helpers: 99,
   truck_fee: 99,
 };
 

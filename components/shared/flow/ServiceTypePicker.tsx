@@ -19,7 +19,7 @@ interface ServiceTypePickerProps {
   quoteLinkLabel?: string;
 }
 
-const MOVING_LABOR_FROM = 79;
+const MOVING_LABOR_PRICE_LABEL = '$99/hour';
 
 const HERO_ICON_CLASS = 'w-full h-full';
 
@@ -49,7 +49,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         title="Local Moving"
         image="/home-transparent/junk-chest-logo.png"
         description="Truck and crew for apartment & small home moves"
-        fromPrice={`From $${MOVING_LABOR_FROM}/hour`}
+        fromPrice={MOVING_LABOR_PRICE_LABEL}
         icon={<MovingLaborIcon className={HERO_ICON_CLASS} />}
         selected={selectedId === 'moving_labor'}
         onClick={() => onSelect('moving_labor')}

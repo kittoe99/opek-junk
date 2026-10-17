@@ -185,7 +185,7 @@ serve(async (req) => {
     else if (type === 'moving_labor') {
       const { helpers, hours, needsTruck = false } = payload
       const resolvedHelpers = helpers === 1 ? 1 : 2
-      const pricePerHour = resolvedHelpers === 1 ? 79 : 119
+      const pricePerHour = resolvedHelpers === 1 ? 69 : 99
       const truckFee = needsTruck ? 99 : 0
       const finalPrice = Math.round(pricePerHour * hours + truckFee)
       const helperLabel = `${resolvedHelpers} helper${resolvedHelpers === 1 ? '' : 's'}`
