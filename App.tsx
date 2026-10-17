@@ -4,12 +4,13 @@ import { Hero } from './components/Hero';
 import {
   HomeFeaturedServices,
   HomeHowItWorks,
-  HomePromoBand,
   HomeReviews,
   HomeWaysToBook,
 } from './components/home/HomeSections';
 import { HomeNavbar } from './components/home/HomeNavbar';
 import { HomeFooter } from './components/home/HomeFooter';
+import { HomeMobileCTA } from './components/home/HomeMobileCTA';
+import { HomeCoverageSection } from './components/home/HomeCoverageSection';
 import { QuickActionBar } from './components/QuickActionBar';
 import { JunkRemovalPage } from './components/services/JunkRemovalPage';
 import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
@@ -141,9 +142,10 @@ function HomePage() {
       />
       <HomeFeaturedServices />
       <HomeHowItWorks />
-      <HomePromoBand />
+      <HomeCoverageSection />
       <HomeWaysToBook />
       <HomeReviews />
+      <HomeMobileCTA onGetQuote={() => navigate('/quote')} />
     </div>
   );
 }

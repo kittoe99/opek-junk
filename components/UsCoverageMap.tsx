@@ -19,7 +19,7 @@ interface UsCoverageMapProps {
 
 let cachedStatePaths: StatePath[] | null = null;
 
-async function loadStatePaths(): Promise<StatePath[]> {
+export async function loadStatePaths(): Promise<StatePath[]> {
   if (cachedStatePaths) return cachedStatePaths;
 
   const response = await fetch('/us-coverage-map.svg');

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
@@ -51,7 +51,7 @@ export const HomeFeaturedServices: React.FC = () => {
           Clear out your space
         </h2>
 
-        <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-10 max-w-[860px] mx-auto">
+        <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-10 max-w-[860px] mx-auto">
           {cards.map((card) => (
             <article key={card.title} className="flex flex-col items-center text-center">
               <div className="home-image-backdrop w-full aspect-[17/10] overflow-hidden rounded-lg">
@@ -74,13 +74,13 @@ export const HomeFeaturedServices: React.FC = () => {
           ))}
         </div>
 
-        <nav aria-label="More services" className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <nav aria-label="More services" className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 md:gap-y-3">
           <span className="text-[13px] font-bold uppercase tracking-wide text-[#4a4256]">More services:</span>
           {moreServices.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="text-[14px] font-semibold text-[#520f96] underline underline-offset-4 hover:text-[#3a0a6b]"
+              className="py-2.5 md:py-0 text-[14px] font-semibold text-[#520f96] underline underline-offset-4 hover:text-[#3a0a6b]"
             >
               {item.label}
             </Link>
@@ -137,28 +137,6 @@ export const HomeHowItWorks: React.FC<{
   description = 'Booking junk removal online has never been easier.',
   items = steps,
 }) => {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-
-  const handleScroll = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const cards = Array.from(track.children) as HTMLElement[];
-    const firstOffset = cards[0]?.offsetLeft ?? 0;
-    const nearest = cards.reduce((best, card, index) =>
-      Math.abs(card.offsetLeft - firstOffset - track.scrollLeft) <
-      Math.abs(cards[best].offsetLeft - firstOffset - track.scrollLeft) ? index : best, 0);
-    setActive(nearest);
-  };
-
-  const goTo = (index: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const first = track.children[0] as HTMLElement;
-    const card = track.children[index] as HTMLElement;
-    track.scrollTo({ left: card.offsetLeft - first.offsetLeft, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  };
-
   return (
     <section id="process" className="bg-white py-14 sm:py-16 md:py-20" aria-labelledby="home-process-heading">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,43 +153,33 @@ export const HomeHowItWorks: React.FC<{
         </div>
 
         <div
-          ref={trackRef}
-          onScroll={handleScroll}
-          className="home-process-track relative mt-10 -mx-4 px-4 flex md:grid md:grid-cols-3 gap-5 md:gap-10 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-auto md:px-0 md:max-w-[840px]"
+          className="home-process-track relative mt-8 md:mt-10 flex flex-col md:grid md:grid-cols-3 md:gap-10 md:mx-auto md:max-w-[840px]"
         >
           {items.map((step, i) => (
-            <article key={step.title} className="snap-start shrink-0 w-[78%] sm:w-[46%] md:w-auto text-center">
+            <article
+              key={step.title}
+              className="grid grid-cols-[104px_minmax(0,1fr)] items-center gap-4 border-b border-[#ece6f2] py-4 first:pt-0 last:border-0 last:pb-0 md:block md:border-0 md:p-0 md:text-center"
+            >
               <div className="home-image-backdrop relative aspect-square overflow-hidden rounded-lg">
                 <img
                   src={step.image}
                   alt={step.alt}
                   loading="lazy"
-                  className={step.imageClassName ?? 'h-full w-full object-contain object-bottom pt-5'}
+                  className={step.imageClassName ?? 'h-full w-full object-contain object-bottom pt-2 md:pt-5'}
                 />
-                <span className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center bg-white font-['Archivo'] text-[15px] font-black text-[#520f96]">
+                <span className="absolute left-1.5 top-1.5 md:left-3 md:top-3 flex h-7 w-7 md:h-9 md:w-9 items-center justify-center bg-[#520f96] md:bg-white font-['Archivo'] text-[13px] md:text-[15px] font-black text-white md:text-[#520f96]">
                   {i + 1}
                 </span>
               </div>
-              <h3 className="home-display mt-5 text-[1.35rem] sm:text-[1.5rem] leading-tight text-[#140a1f]">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-[#2b2236]">{step.body}</p>
+              <div>
+                <h3 className="home-display md:mt-5 text-[1.2rem] sm:text-[1.5rem] leading-tight text-[#140a1f]">
+                  {step.title}
+                </h3>
+                <p className="mt-1 md:mt-2 text-[14px] md:text-[15px] leading-snug md:leading-relaxed text-[#2b2236]">
+                  {step.body}
+                </p>
+              </div>
             </article>
-          ))}
-        </div>
-
-        <div className="mt-8 flex justify-center gap-3 md:hidden" role="group" aria-label="Choose step">
-          {items.map((step, i) => (
-            <button
-              key={step.title}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Show step ${i + 1}: ${step.title}`}
-              aria-current={active === i ? 'true' : undefined}
-              className="flex h-11 w-9 items-center justify-center rounded-full"
-            >
-              <span aria-hidden className={`h-4 w-4 rounded-full transition-colors ${active === i ? 'bg-[#520f96]' : 'bg-[#b9b4bf]'}`} />
-            </button>
           ))}
         </div>
       </div>
@@ -262,7 +230,11 @@ export const HomePromoBand: React.FC<{
           {description}
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col sm:flex-row items-stretch justify-center gap-3" noValidate>
+        <form
+          onSubmit={handleSubmit}
+          className="mt-6 mx-auto flex max-w-[420px] sm:max-w-none flex-row items-stretch justify-center gap-0 sm:gap-3"
+          noValidate
+        >
           <label htmlFor="home-zip" className="sr-only">
             ZIP code
           </label>
@@ -278,10 +250,11 @@ export const HomePromoBand: React.FC<{
             }}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? 'home-zip-error' : undefined}
-            className="h-[52px] w-full sm:w-56 rounded-none border-0 bg-white px-4 text-[16px] font-semibold text-[#140a1f]"
+            className="h-[54px] min-w-0 flex-1 sm:flex-none sm:w-56 rounded-none border-0 bg-white px-4 text-[16px] font-semibold text-[#140a1f]"
           />
-          <button type="submit" className="home-cta">
-            Check my area
+          <button type="submit" className="home-cta home-zip-submit shrink-0">
+            <span className="sm:hidden">Check</span>
+            <span className="hidden sm:inline">Check my area</span>
           </button>
         </form>
         {error && (
@@ -318,17 +291,21 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
         </h2>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] gap-8 md:gap-10 items-center max-w-[860px] mx-auto">
-          <div className="home-booking-options bg-[#a020f0] rounded-lg px-6 py-4 sm:px-8">
-            <ul className="divide-y divide-white/25">
+          <div className="home-booking-options md:bg-[#a020f0] md:rounded-lg md:px-8 md:py-4">
+            <ul className="grid grid-cols-2 gap-2.5 md:block md:divide-y md:divide-white/25">
               {options.map(({ label, detail, href, to, icon: Icon }) => {
                 const inner = (
                   <>
                     <Icon size={26} className="shrink-0" aria-hidden />
-                    <span className="home-display text-[1.45rem] sm:text-[1.75rem] leading-none">{label}</span>
-                    <span className="home-booking-detail ml-auto text-[13px] sm:text-[14px] font-semibold">{detail}</span>
+                    <span>
+                      <span className="home-display block text-[1.2rem] md:inline md:text-[1.75rem] leading-none">{label}</span>
+                      <span className="md:hidden mt-1 block text-[12px] font-semibold text-white/85">{detail}</span>
+                    </span>
+                    <span className="home-booking-detail hidden md:inline ml-auto text-[14px] font-semibold">{detail}</span>
                   </>
                 );
-                const cls = 'flex items-center gap-4 py-4 text-white hover:opacity-85 transition-opacity';
+                const cls =
+                  'flex h-full min-h-[118px] flex-col items-start justify-between gap-3 rounded-lg bg-[#8b16d4] p-4 text-white transition-opacity hover:opacity-85 md:min-h-0 md:flex-row md:items-center md:justify-start md:gap-4 md:rounded-none md:bg-transparent md:px-0 md:py-4';
                 return (
                   <li key={label}>
                     {to ? (
@@ -354,19 +331,21 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
               Not sure what it’ll cost or how big the job is? Call or text and we’ll walk you through it, or have a provider
               stop by for a free in-home estimate.
             </p>
-            <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-[14px] font-semibold">
-              <Link to="/quote" className="text-[#520f96] hover:underline underline-offset-4">
-                Get a quote
-              </Link>
-              <Link to="/track-order" className="text-[#520f96] hover:underline underline-offset-4">
-                Track an order
-              </Link>
-              <Link to="/contact" className="text-[#520f96] hover:underline underline-offset-4">
-                Contact us
-              </Link>
-              <Link to="/provider-signup" className="text-[#520f96] hover:underline underline-offset-4">
-                Become a provider
-              </Link>
+            <div className="mt-5 grid grid-cols-2 gap-2 md:gap-x-6 md:gap-y-3 text-[14px] font-semibold">
+              {[
+                ['Get a quote', '/quote'],
+                ['Track an order', '/track-order'],
+                ['Contact us', '/contact'],
+                ['Become a provider', '/provider-signup'],
+              ].map(([label, to]) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="flex min-h-11 items-center justify-center rounded-md border border-[#e0d6ec] text-[#520f96] md:block md:min-h-0 md:rounded-none md:border-0 hover:underline underline-offset-4"
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -403,9 +382,15 @@ export const HomeReviews: React.FC = () => (
       >
         Rated 4.8 by customers
       </h2>
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+      <p className="md:hidden mt-3 flex items-center justify-center gap-1 text-[13px] font-semibold text-[#4a4256]">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} size={15} className="text-[#520f96] fill-[#520f96]" aria-hidden />
+        ))}
+        <span className="ml-1">Swipe for more</span>
+      </p>
+      <div className="mt-7 md:mt-10 -mx-4 px-4 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 md:gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {reviews.map((review) => (
-          <figure key={review.author} className="bg-white rounded-lg p-6 flex flex-col">
+          <figure key={review.author} className="snap-start shrink-0 w-[84%] md:w-auto bg-white rounded-lg p-6 flex flex-col">
             <div className="flex gap-0.5" aria-label="5 out of 5 stars">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} size={18} className="text-[#520f96] fill-[#520f96]" aria-hidden />

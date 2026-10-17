@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronRight, Menu, Package, Phone, User, X } from 'lucide-react';
+import { ChevronRight, MapPin, Menu, Package, Phone, User, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../../lib/userLocation';
 import { HomeLogo } from './HomeLogo';
@@ -62,10 +62,6 @@ export const HomeNavbar: React.FC = () => {
             <HomeLogo className="h-7 md:h-8 w-auto" />
           </button>
 
-          <button type="button" onClick={() => setIsMenuOpen(true)} className={`${iconBtn} md:hidden`} aria-label="Open menu" aria-expanded={isMenuOpen}>
-            <Menu size={23} aria-hidden />
-          </button>
-
           {/* Desktop links */}
           <ul className="hidden lg:flex items-center gap-6 xl:gap-7 ml-6">
             {serviceItems.map((item) => (
@@ -83,14 +79,23 @@ export const HomeNavbar: React.FC = () => {
 
           {/* Location + icons */}
           <div className="ml-auto flex items-center gap-2 md:gap-4">
-            <div className="home-mobile-location md:hidden">
-              <button type="button" onClick={() => go('/#service-area')} className="inline-flex items-center font-bold uppercase tracking-wide text-[#520f96]">
-                Check your service area <ChevronRight size={11} aria-hidden />
+            <div className="flex items-center gap-1.5 md:hidden">
+              <a
+                href={`tel:${SITE_PHONE}`}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f2ecfa] text-[#520f96]"
+                aria-label="Call Opek Junk Removal"
+              >
+                <Phone size={19} strokeWidth={2.4} aria-hidden />
+              </a>
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(true)}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#520f96] text-white"
+                aria-label="Open menu"
+                aria-expanded={isMenuOpen}
+              >
+                <Menu size={21} strokeWidth={2.4} aria-hidden />
               </button>
-              <p className="text-[#3d3547]">
-                {locationLabel}{' '}
-                <button type="button" onClick={() => go('/#service-area')} className="ml-1 text-[#520f96] underline underline-offset-2">Change</button>
-              </p>
             </div>
             <div className="hidden md:block text-right leading-tight">
               <button
@@ -137,6 +142,22 @@ export const HomeNavbar: React.FC = () => {
             </div>
           </div>
         </nav>
+
+        {/* Mobile location strip */}
+        <div className="md:hidden flex items-center justify-between gap-3 h-9 px-4 bg-[#f4eefc] border-t border-[#ebe3f5] text-[13px]">
+          <span className="flex min-w-0 items-center gap-1.5 text-[#3d3547]">
+            <MapPin size={14} className="shrink-0 text-[#520f96]" strokeWidth={2.4} aria-hidden />
+            <span className="truncate font-semibold">{locationLabel}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => go('/#service-area')}
+            className="shrink-0 inline-flex items-center gap-0.5 rounded-none font-bold text-[#520f96]"
+          >
+            Check service area
+            <ChevronRight size={14} aria-hidden />
+          </button>
+        </div>
       </header>
 
       {/* Mobile menu */}

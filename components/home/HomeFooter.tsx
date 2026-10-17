@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { HomeLogo } from './HomeLogo';
 
@@ -63,25 +64,25 @@ const disclaimer =
 export const HomeFooter: React.FC = () => (
   <footer className="home-light">
     <div className="bg-[#520f96] text-white">
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-14 pb-28 md:pt-20 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-12 lg:gap-16">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-11 pb-10 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-9 md:gap-12 lg:gap-16">
         <div>
-          <p className="home-display text-[2.6rem] leading-[0.92] sm:text-[3.4rem] lg:text-[4rem]">
+          <p className="home-display text-[2.3rem] leading-[0.92] sm:text-[3.4rem] lg:text-[4rem]">
             Clear the clutter. Book in minutes.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div className="mt-6 md:mt-8 flex items-center gap-4 md:gap-5 rounded-xl md:rounded-none bg-white/10 md:bg-transparent p-4 md:p-0">
             <a
               href={`tel:${SITE_PHONE}`}
-              className="flex h-[88px] w-[120px] shrink-0 items-center justify-center rounded-xl bg-white text-[#520f96]"
+              className="flex h-[64px] w-[84px] md:h-[88px] md:w-[120px] shrink-0 items-center justify-center rounded-xl bg-white text-[#520f96]"
               aria-label={`Call ${SITE_PHONE_DISPLAY}`}
             >
-              <HomeLogo className="h-auto w-[96px]" />
+              <HomeLogo className="h-auto w-[66px] md:w-[96px]" />
             </a>
-            <div>
-              <p className="text-[15px] font-bold uppercase tracking-wide">Call or text any time</p>
-              <a href={`tel:${SITE_PHONE}`} className="home-display text-[1.6rem] leading-tight hover:underline">
+            <div className="min-w-0">
+              <p className="text-[12px] md:text-[15px] font-bold uppercase tracking-wide">Call or text any time</p>
+              <a href={`tel:${SITE_PHONE}`} className="home-display text-[1.45rem] md:text-[1.6rem] leading-tight hover:underline">
                 {SITE_PHONE_DISPLAY}
               </a>
-              <p className="mt-1 text-[14px]">
+              <p className="mt-1 truncate text-[13px] md:text-[14px]">
                 <a href="mailto:Support@opekjunkremoval.com" className="underline underline-offset-2">
                   Support@opekjunkremoval.com
                 </a>
@@ -91,7 +92,28 @@ export const HomeFooter: React.FC = () => (
         </div>
 
         <div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+          {/* Phone: collapsible groups */}
+          <div className="sm:hidden border-t border-white/25">
+            {columns.map((col) => (
+              <details key={col.title} className="group border-b border-white/25">
+                <summary className="flex min-h-[54px] cursor-pointer list-none items-center justify-between text-[14px] font-extrabold uppercase tracking-wide [&::-webkit-details-marker]:hidden">
+                  {col.title}
+                  <ChevronDown size={18} className="transition-transform group-open:rotate-180" aria-hidden />
+                </summary>
+                <ul className="grid grid-cols-2 gap-x-4 gap-y-1 pb-4">
+                  {col.links.map((link) => (
+                    <li key={link.to}>
+                      <Link to={link.to} className="flex min-h-10 items-center text-[14px] font-semibold">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ))}
+          </div>
+
+          <div className="hidden sm:grid grid-cols-3 gap-8">
             {columns.map((col) => (
               <div key={col.title}>
                 <h2 className="text-[14px] font-extrabold uppercase tracking-wide">{col.title}</h2>
@@ -108,10 +130,10 @@ export const HomeFooter: React.FC = () => (
             ))}
           </div>
 
-          <ul className="mt-12 flex items-center gap-6">
+          <ul className="mt-8 md:mt-12 flex items-center gap-2 md:gap-6">
             {socials.map((s) => (
               <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="block hover:opacity-80">
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 md:block md:h-auto md:w-auto md:rounded-none md:bg-transparent hover:opacity-80">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
                     <path d={s.path} />
                   </svg>
@@ -120,7 +142,7 @@ export const HomeFooter: React.FC = () => (
             ))}
           </ul>
 
-          <p className="mt-8 text-[13px] leading-relaxed text-white/90">{disclaimer}</p>
+          <p className="mt-6 md:mt-8 text-[12px] md:text-[13px] leading-relaxed text-white/80 md:text-white/90">{disclaimer}</p>
 
           <div className="mt-8 border-t border-white/30 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <p className="text-[12px] font-semibold">
