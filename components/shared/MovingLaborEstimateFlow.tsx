@@ -563,7 +563,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
                 <span className={`flow-option-radio flow-tile-check ${selected ? 'is-on' : ''}`} aria-hidden>
                   {selected && <Check size={12} strokeWidth={3} />}
                 </span>
-                <Icon size={22} className="text-[#520f96]" />
+                <Icon size={36} className="text-[#520f96]" />
                 <span className="mt-2 block text-[13px] font-bold text-[var(--text)]">{item.label}</span>
               </button>
             );
