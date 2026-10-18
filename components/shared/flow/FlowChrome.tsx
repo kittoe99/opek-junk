@@ -78,7 +78,7 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
             <HomeLogo className="h-7 sm:h-8 w-auto" />
           </button>
 
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-24 sm:px-40 leading-tight">
+          <div className="pointer-events-none absolute inset-0 hidden sm:flex flex-col items-center justify-center px-24 sm:px-40 leading-tight">
             <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--text-muted)]">{flowLabel}</span>
             {stepLabel && (
               <span className="truncate max-w-full text-[13px] font-extrabold text-[var(--text)]">{stepLabel}</span>
@@ -88,18 +88,11 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
           <div className="relative z-10 ml-auto flex items-center gap-2 sm:gap-3">
             <a
               href={SUPPORT_PHONE_TEL}
-              className="hidden sm:inline-flex items-center gap-1.5 shrink-0 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-3 py-1.5 text-xs font-semibold text-[var(--text)] hover:border-[var(--border)] hover:bg-[var(--surface-2)] transition-colors"
-            >
-              <Phone size={13} className="text-brand" />
-              {SUPPORT_PHONE_DISPLAY}
-            </a>
-
-            <a
-              href={SUPPORT_PHONE_TEL}
-              className="sm:hidden shrink-0 h-9 w-9 rounded-full border border-[var(--border)] bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+              className="inline-flex items-center gap-1.5 shrink-0 min-h-11 text-[13px] font-black whitespace-nowrap text-brand hover:opacity-80 transition-opacity"
               aria-label={`Call ${SUPPORT_PHONE_DISPLAY}`}
             >
-              <Phone size={15} className="text-brand" />
+              <Phone size={15} strokeWidth={3} aria-hidden />
+              <span className="underline underline-offset-4">{SUPPORT_PHONE_DISPLAY}</span>
             </a>
 
             <button
@@ -113,6 +106,10 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
           </div>
         </div>
 
+        <div className="sm:hidden flex flex-wrap items-center justify-center gap-x-2 px-4 pb-2 text-center leading-tight">
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--text-muted)]">{flowLabel}</span>
+          {stepLabel && <span className="text-[12px] font-extrabold text-[var(--text)]">{stepLabel}</span>}
+        </div>
         <FlowProgressBar progress={progress} />
       </header>
 

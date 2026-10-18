@@ -12,11 +12,13 @@ export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => {
   return (
     <section className="flow-intro" aria-labelledby="flow-intro-title">
       <div className="flow-intro-inner">
-        <img
-          src="/service-scenes/quote-estimate-phone.png"
-          alt="Hand holding a phone showing an illustrated junk removal price estimate"
-          className="flow-intro-image"
-        />
+        <div className="flow-intro-art">
+          <img
+            src="/service-scenes/quote-estimate-phone-cutout.png"
+            alt="Hand holding a phone showing an illustrated junk removal price estimate"
+            className="flow-intro-image"
+          />
+        </div>
         <div className="flow-intro-copy">
           <h1 id="flow-intro-title" className="home-display flow-intro-title">
             Know the price.

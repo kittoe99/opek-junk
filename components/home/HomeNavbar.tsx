@@ -92,10 +92,11 @@ export const HomeNavbar: React.FC = () => {
             <div className="flex items-center gap-1.5 md:hidden">
               <a
                 href={`tel:${SITE_PHONE}`}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f2ecfa] text-[#520f96]"
-                aria-label="Call Opek Junk Removal"
+                className="flex h-11 shrink-0 items-center gap-1.5 text-[13px] font-black whitespace-nowrap text-[#520f96] hover:text-[#751bb5]"
+                aria-label="Call Opek Junk Removal at (831) 318-7139"
               >
-                <Phone size={19} strokeWidth={2.4} aria-hidden />
+                <Phone size={15} strokeWidth={3} aria-hidden />
+                <span className="underline underline-offset-4">(831) 318-7139</span>
               </a>
               <button
                 type="button"
