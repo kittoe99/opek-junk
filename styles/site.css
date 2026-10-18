@@ -11,8 +11,6 @@
   --glow: rgba(82, 15, 150, .12);
 }
 html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; }
-.site-route-progress { transform-origin: left; animation: route-progress .7s ease-out forwards; }
-@keyframes route-progress { from { transform: scaleX(.05); } to { transform: scaleX(1); } }
 .site-page {
   --bg: #fff; --bg-alt: #faf7ff; --surface: #fff; --surface-2: #f3ecfa;
   --text: #140a1f; --text-muted: #61536d; --border: #e6ddec;
@@ -276,29 +274,28 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 /* Quote intro: one headline, one line, one button */
 .flow-intro {
   min-height: calc(100dvh - var(--site-header-height, 60px));
-  display: flex; align-items: center; justify-content: center;
-  padding: 32px 22px calc(32px + env(safe-area-inset-bottom));
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 0;
   background: radial-gradient(ellipse at 50% 0%, #efe4fb 0%, #fff 60%);
   text-align: center;
 }
-.flow-intro-inner { width: 100%; max-width: 420px; }
+.flow-intro-inner { width: 100%; }
 .flow-intro-image {
-  display: block; width: 100%; max-width: 300px; height: clamp(150px, 30dvh, 280px);
-  margin: 0 auto 24px; object-fit: cover; border-radius: 16px;
-  box-shadow: 0 20px 40px -28px rgba(40, 10, 80, .55);
+  display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 0;
+  margin: 0 auto; object-fit: cover; object-position: center;
 }
-@media (max-height: 640px) {
-  .flow-intro { padding-top: 20px; padding-bottom: 20px; }
-  .flow-intro-image { height: 110px; margin-bottom: 16px; }
-  .flow-intro-sub { margin-top: 10px; font-size: 15px; }
-  .flow-intro-cta { margin-top: 18px; min-height: 56px; }
+.flow-intro-copy {
+  padding: 32px 22px calc(32px + env(safe-area-inset-bottom));
 }
 .flow-intro-title { font-size: clamp(32px, 9.4vw, 56px); line-height: .94; color: #140a1f; text-wrap: balance; }
 .flow-intro-sub { margin-top: 16px; font-size: 17px; line-height: 1.45; color: #3d3547; }
 .flow-intro-cta { width: 100%; margin-top: 28px; min-height: 60px; font-size: 16px; }
 .flow-intro-note { margin-top: 12px; font-size: 13px; font-weight: 600; color: #6b5f78; }
 @media (min-width: 768px) {
-  .flow-intro-inner { max-width: 600px; }
+  .flow-intro { padding: 40px 32px; }
+  .flow-intro-inner { max-width: 760px; }
+  .flow-intro-image { max-width: 560px; }
+  .flow-intro-copy { padding: 36px 0 0; }
   .flow-intro-cta { width: auto; min-width: 320px; }
 }
 
@@ -473,3 +470,36 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   border: 1.5px dashed #c9b3e3; border-radius: 10px; color: #520f96; font-weight: 800; font-size: 14px;
 }
 .review-add:hover { background: #faf6fe; }
+
+/* Page transition: a small, translucent Opek mark animates in the centre (page stays visible) */
+.pt-logo {
+  position: fixed; left: 50%; top: 50%; z-index: 300; pointer-events: none;
+  width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgb(82 15 150 / 72%);
+  -webkit-backdrop-filter: blur(6px) saturate(1.2); backdrop-filter: blur(6px) saturate(1.2);
+  box-shadow: 0 18px 40px -18px rgb(40 10 80 / 55%);
+  animation: pt-badge .85s cubic-bezier(.2, .8, .2, 1) both;
+}
+.pt-mark { width: 40px; height: 40px; overflow: visible; }
+.pt-slash { fill: #fff; transform-box: fill-box; transform-origin: center; }
+.pt-slash-a { animation: pt-slash .42s cubic-bezier(.2, .8, .2, 1) .08s both; }
+.pt-slash-b { animation: pt-slash .42s cubic-bezier(.2, .8, .2, 1) .16s both; }
+@keyframes pt-badge {
+  0% { opacity: 0; transform: scale(.82); }
+  22% { opacity: 1; transform: scale(1); }
+  72% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(.92); }
+}
+@keyframes pt-slash {
+  0% { opacity: 0; transform: translateY(45%) skewX(-8deg); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) skewX(0); }
+}
+/* Page content eases in (opacity only, so fixed/sticky children are unaffected). */
+.pt-enter { animation: pt-fade .35s ease-out .05s both; }
+@keyframes pt-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .pt-logo { display: none; }
+  .pt-enter { animation: pt-fade .2s ease-out both; }
+}

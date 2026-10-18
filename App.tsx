@@ -24,7 +24,7 @@ import { TermsOfServicePage } from './components/TermsOfServicePage';
 import { SmsConsentPage } from './components/SmsConsentPage';
 import { SEO, seoConfig } from './components/SEO';
 import { CityPage } from './components/CityPage';
-import { PageLoader } from './components/PageLoader';
+import { PageTransition, PageEnter } from './components/PageTransition';
 import { getCityBySlug } from './lib/cityData';
 
 const QuotePage = React.lazy(() => import('./components/QuotePage').then((m) => ({ default: m.QuotePage })));
@@ -111,7 +111,8 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Instant: the page transition curtain covers the jump.
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
 
   return null;
@@ -332,11 +333,12 @@ function App() {
   return (
     <Router>
       <div className="site-root min-h-screen selection:bg-brand selection:text-white">
-        <PageLoader />
+        <PageTransition />
         <ScrollToTop />
         <GlobalNavbar />
 
         <MainShell>
+        <PageEnter>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -366,6 +368,7 @@ function App() {
             <Route path="/locations/:slug" element={<CityPageRouteWrapper />} />
           </Routes>
         </Suspense>
+        </PageEnter>
         </MainShell>
 
         <GlobalQuickActionBar />

@@ -17,17 +17,19 @@ export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => {
           alt="Hand holding a phone showing an illustrated junk removal price estimate"
           className="flow-intro-image"
         />
-        <h1 id="flow-intro-title" className="home-display flow-intro-title">
-          Know the price.
-          <br />
-          Then make room.
-        </h1>
-        <p className="flow-intro-sub">Free estimate by text in about a minute.</p>
-        <button type="button" onClick={continueAtTop} className="flow-btn flow-btn-primary flow-intro-cta">
-          Get my free quote
-          <ArrowRight size={18} aria-hidden />
-        </button>
-        <p className="flow-intro-note">No obligation to book.</p>
+        <div className="flow-intro-copy">
+          <h1 id="flow-intro-title" className="home-display flow-intro-title">
+            Know the price.
+            <br />
+            Then make room.
+          </h1>
+          <p className="flow-intro-sub">Free estimate by text in about a minute.</p>
+          <button type="button" onClick={continueAtTop} className="flow-btn flow-btn-primary flow-intro-cta">
+            Get my free quote
+            <ArrowRight size={18} aria-hidden />
+          </button>
+          <p className="flow-intro-note">No obligation to book.</p>
+        </div>
       </div>
     </section>
   );
