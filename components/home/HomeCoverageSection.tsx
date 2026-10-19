@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, CalendarCheck, CheckCircle2, Loader2, MapPin } from 'lucide-react';
 import { loadStatePaths } from '../UsCoverageMap';
 import { CoverageCity, coverageCities } from '../../lib/coverageCities';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
@@ -32,6 +32,8 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
   const [states, setStates] = useState<StatePath[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
+  const [result, setResult] = useState<{ zip: string; city: string; state: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,17 +50,50 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
     (c): c is CoverageCity => Boolean(c),
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (checking) return;
     const parsed = parsePostalCode(zip);
     if (parsed.ok === false) {
       setError(parsed.error);
       return;
     }
     setError('');
-    if (onCheck) onCheck(parsed.formatted);
-    else navigate(`/quote?${new URLSearchParams({ zip: parsed.formatted }).toString()}`);
+    setChecking(true);
+    try {
+      // Same public ZIP lookup the quote flow uses; only the ZIP is sent.
+      const res = await fetch(`https://api.zippopotam.us/us/${parsed.formatted}`);
+      if (!res.ok) {
+        setError('We couldn’t find that ZIP code. Please check it and try again.');
+        return;
+      }
+      const data = await res.json();
+      const place = data.places?.[0];
+      setResult({
+        zip: parsed.formatted,
+        city: place?.['place name'] ?? '',
+        state: place?.['state abbreviation'] ?? '',
+      });
+    } catch {
+      setError('We couldn’t check that ZIP right now. Please try again.');
+    } finally {
+      setChecking(false);
+    }
   };
+
+  const continueWithZip = () => {
+    if (!result) return;
+    if (onCheck) onCheck(result.zip);
+    else navigate(`/quote?${new URLSearchParams({ zip: result.zip }).toString()}`);
+  };
+
+  const resetZip = () => {
+    setResult(null);
+    setZip('');
+    requestAnimationFrame(() => document.getElementById('home-zip')?.focus());
+  };
+
+  const highlightState = (active?.state ?? result?.state ?? '').toLowerCase();
 
   return (
     <section
@@ -83,6 +118,43 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
               Enter your ZIP to confirm coverage and see your price. Local providers arrive ready to load and haul.
             </p>
 
+            {result ? (
+              <div className="coverage-result mt-7 max-w-[440px] mx-auto lg:mx-0 text-left" role="status" aria-live="polite">
+                <div className="flex items-start gap-3.5">
+                  <span className="coverage-result-check" aria-hidden>
+                    <CheckCircle2 size={26} strokeWidth={2.4} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="coverage-result-eyebrow">Available in your area</p>
+                    <p className="coverage-result-city">
+                      {result.city}
+                      {result.state && <span>, {result.state}</span>}
+                    </p>
+                    <p className="coverage-result-meta">
+                      <MapPin size={14} aria-hidden />
+                      ZIP {result.zip} · Providers ready to help
+                    </p>
+                  </div>
+                </div>
+
+                <div className={`mt-5 grid gap-2.5 ${onCheck ? '' : 'sm:grid-cols-[1.25fr_1fr]'}`}>
+                  <button type="button" onClick={continueWithZip} className="coverage-result-primary">
+                    {onCheck ? 'Continue' : 'Get my price'}
+                    <ArrowRight size={18} aria-hidden />
+                  </button>
+                  {!onCheck && (
+                    <Link to="/booking" className="coverage-result-secondary">
+                      <CalendarCheck size={17} aria-hidden />
+                      Book a pickup
+                    </Link>
+                  )}
+                </div>
+
+                <button type="button" onClick={resetZip} className="coverage-result-change">
+                  Not your ZIP? Change it
+                </button>
+              </div>
+            ) : (
             <form onSubmit={handleSubmit} className="mt-7 flex max-w-[440px] mx-auto lg:mx-0 shadow-[0_14px_30px_-20px_rgba(20,0,50,0.8)]" noValidate>
               <label htmlFor="home-zip" className="sr-only">
                 ZIP code
@@ -104,10 +176,11 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                   className="h-[56px] w-full rounded-none border-2 border-r-0 border-white bg-white pl-11 pr-3 text-[16px] font-semibold text-[#140a1f]"
                 />
               </div>
-              <button type="submit" className="home-cta shrink-0 !min-h-[56px] !px-5 sm:!px-7 border-2 border-white">
-                Check area
+              <button type="submit" disabled={checking} className="home-cta shrink-0 !min-h-[56px] !px-5 sm:!px-7 border-2 border-white min-w-[132px]">
+                {checking ? <Loader2 size={20} className="animate-spin" aria-label="Checking" /> : 'Check area'}
               </button>
             </form>
+            )}
             {error && (
               <p id="home-zip-error" role="alert" className="mt-3 text-sm font-bold text-[#ffd1dc]">
                 {error}
@@ -143,7 +216,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                   <path
                     key={s.id}
                     d={s.d}
-                    fill={active && s.id.toLowerCase() === active.state.toLowerCase() ? 'rgba(255,255,255,0.34)' : 'rgba(255,255,255,0.14)'}
+                    fill={highlightState && s.id.toLowerCase() === highlightState ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.14)'}
                     stroke="#520f96"
                     strokeWidth={1.4}
                     className="transition-colors duration-200"
