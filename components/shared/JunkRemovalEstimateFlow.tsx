@@ -534,7 +534,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {images.map((imgSrc, index) => (
-                      <div key={index} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                      <div key={index} className="ui-image-frame ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                         <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                         {loadingState !== LoadingState.ANALYZING && (
                           <button type="button" onClick={() => removeUploadedImage(index)} className="ui-icon-button absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">

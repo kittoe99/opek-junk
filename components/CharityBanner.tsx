@@ -27,7 +27,7 @@ export const CharityBanner: React.FC<CharityBannerProps> = ({ theme = 'light' })
           style={{ backgroundColor: panelBg }}
         >
           <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-center gap-0">
-            <div className="relative h-40 sm:h-48 md:h-full md:min-h-[220px] overflow-hidden">
+            <div className="ui-image-frame relative h-40 sm:h-48 md:h-full md:min-h-[220px] overflow-hidden">
               <img
                 src="/optimized/charity-childrens-heart-clean.webp"
                 alt="Children holding a glowing heart"

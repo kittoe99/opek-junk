@@ -9,7 +9,7 @@ export const HustleMuscle: React.FC = () => {
     <section className="site-purple-band relative bg-[var(--bg-alt)] border-t border-[var(--border)] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[480px]">
         {/* Cutout visual — below copy on mobile; left on desktop */}
-        <div className="relative order-2 lg:order-1 lg:col-span-5 flex items-end justify-center px-6 pt-4 sm:pt-6 lg:pt-8 pb-0 overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[360px]">
+        <div className="ui-image-frame relative order-2 lg:order-1 lg:col-span-5 flex items-end justify-center px-6 pt-4 sm:pt-6 lg:pt-8 pb-0 overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[360px]">
           <div className="absolute left-1/2 bottom-[18%] -translate-x-1/2 h-[55%] w-[55%] rounded-full bg-brand/20 blur-[90px]" aria-hidden />
           <img
             src="/optimized/hero-backgrounds/opek-crew-high-five.webp"

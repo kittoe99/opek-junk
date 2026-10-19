@@ -101,7 +101,10 @@ function MainShell({ children }: { children: React.ReactNode }) {
   const flowChrome = NAVBAR_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   return (
-    <main className={flowChrome ? 'pt-0' : 'pt-[var(--site-header-height)]'}>
+    <main
+      className={flowChrome ? 'pt-0' : 'pt-[var(--site-header-height)]'}
+      data-image-borders={pathname.startsWith('/quote') ? 'off' : 'on'}
+    >
       {children}
     </main>
   );

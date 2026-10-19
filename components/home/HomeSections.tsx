@@ -54,7 +54,7 @@ export const HomeFeaturedServices: React.FC = () => {
         <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-10 max-w-[860px] mx-auto">
           {cards.map((card) => (
             <article key={card.title} className="flex flex-col items-center text-center">
-              <div className="home-photo-frame w-full aspect-[17/10] overflow-hidden rounded-lg">
+              <div className="ui-image-frame home-photo-frame w-full aspect-[17/10] overflow-hidden rounded-lg">
                 <img
                   src={card.image}
                   alt={card.alt}
@@ -160,7 +160,7 @@ export const HomeHowItWorks: React.FC<{
               key={step.title}
               className="grid grid-cols-[104px_minmax(0,1fr)] items-center gap-4 border-b border-[#ece6f2] py-4 first:pt-0 last:border-0 last:pb-0 md:block md:border-0 md:p-0 md:text-center"
             >
-              <div className="home-photo-frame relative aspect-square overflow-hidden rounded-lg">
+              <div className="ui-image-frame home-photo-frame relative aspect-square overflow-hidden rounded-lg">
                 <img
                   src={step.image}
                   alt={step.alt}

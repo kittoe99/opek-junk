@@ -32,7 +32,7 @@ export const UseCases: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {haulJobs.map((item) => (
             <figure key={item.name} className="group">
-              <div className="aspect-[4/3] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
+              <div className="ui-image-frame aspect-[4/3] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
                 <img
                   src={item.image}
                   alt={item.alt}

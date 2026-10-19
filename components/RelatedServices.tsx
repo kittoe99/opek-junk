@@ -76,7 +76,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({
                 to={service.path}
                 className="group flex flex-col items-start text-left"
               >
-                <div className="relative w-full aspect-square mb-3 flex items-end justify-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
+                <div className="ui-image-frame relative w-full aspect-square mb-3 flex items-end justify-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 group-hover:border-brand/40">
                   <div className="absolute inset-x-4 bottom-4 h-1/2 rounded-full bg-brand/10 blur-[28px] opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden />
                   <img
                     src={service.image}

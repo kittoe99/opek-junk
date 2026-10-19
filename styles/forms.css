@@ -86,4 +86,13 @@ body .site-root .ui-address-results button { min-height: 48px; border-radius: 0;
 body .site-root .ui-address-results button:hover { background: var(--ui-tint); }
 
 @media (min-width: 768px) { :root { --ui-card-padding: 28px; } }
+
+/* Frame content photography in the brand palette. Hero images and logos do
+   not opt in; quote pages also disable this treatment for shared components. */
+body .site-root main[data-image-borders="on"] .ui-image-frame {
+  border: 2px solid #b58ad4;
+  border-bottom: 5px solid var(--button-purple);
+  border-radius: 0;
+}
+
 @media (prefers-reduced-motion: reduce) { body .site-root :is(input, select, textarea) { transition: none; } }

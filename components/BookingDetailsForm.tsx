@@ -1022,7 +1022,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div className="space-y-3">
             {localImage ? (
               <div className="ui-panel relative border border-[var(--border)] bg-[var(--surface)] p-3 rounded-xl flex items-center gap-4">
-                <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface-2)]">
+                <div className="ui-image-frame w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface-2)]">
                   <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">

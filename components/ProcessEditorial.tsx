@@ -122,7 +122,7 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
             {numberedSteps.map((step) => (
               <div key={step.number} className="flex flex-col max-w-sm mx-auto md:max-w-none md:mx-0">
                 <div
-                  className={`relative w-36 h-36 md:w-40 md:h-40 mx-auto mb-6 rounded-full flex items-center justify-center overflow-hidden ${
+                  className={`ui-image-frame relative w-36 h-36 md:w-40 md:h-40 mx-auto mb-6 rounded-full flex items-center justify-center overflow-hidden ${
                     isDark ? 'border-2 border-[var(--border)]' : 'border-2 border-secondary/90'
                   }`}
                   style={{
@@ -221,7 +221,7 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
                 index === 1 ? 'md:mt-16 lg:mt-24' : index === 2 ? 'md:mt-8 lg:mt-12' : ''
               }`}
             >
-              <div className="relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square md:mb-5">
+              <div className="ui-image-frame relative w-24 h-24 shrink-0 md:w-full md:h-auto md:aspect-square md:mb-5">
                 <img
                   src={step.image}
                   alt={step.alt}

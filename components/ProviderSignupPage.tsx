@@ -583,7 +583,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {vehicleImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {vehicleImages.map((img, i) => (
-                        <div key={i} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                        <div key={i} className="ui-image-frame ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Vehicle ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
@@ -619,7 +619,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {insuranceImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {insuranceImages.map((img, i) => (
-                        <div key={i} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                        <div key={i} className="ui-image-frame ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Insurance doc ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"

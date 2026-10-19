@@ -33,7 +33,7 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
     className={`site-selection flow-option ${image ? 'flow-option-has-image' : ''} w-full text-left`}
   >
     {image ? (
-      <span className="flow-option-media home-image-backdrop" aria-hidden>
+      <span className="ui-image-frame flow-option-media home-image-backdrop" aria-hidden>
         <img src={image} alt="" loading="lazy" />
       </span>
     ) : icon ? (

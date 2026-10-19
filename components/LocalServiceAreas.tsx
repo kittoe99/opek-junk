@@ -60,7 +60,7 @@ export const LocalServiceAreas: React.FC = () => {
           </div>
 
           {/* Visual */}
-          <div className="relative flex items-end justify-center">
+          <div className="ui-image-frame relative flex items-end justify-center">
             <div className="absolute inset-10 rounded-full bg-brand/15 blur-[80px]" aria-hidden />
             <img
               src="/optimized/service-scenes/property-cleanout.webp"

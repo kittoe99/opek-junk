@@ -125,7 +125,7 @@ export const SmsConsentPage: React.FC = () => {
             href="/sms-consent-opt-in.png"
             target="_blank"
             rel="noopener noreferrer"
-            className="ui-panel block overflow-hidden max-w-lg"
+            className="ui-image-frame ui-panel block overflow-hidden max-w-lg"
           >
             <img
               src="/sms-consent-opt-in.png"

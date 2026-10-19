@@ -21,7 +21,7 @@ export function HomeEditorialCards({ title, description, cards }: {
       {description && <div className="mx-auto mt-5 max-w-2xl text-center text-[15px] leading-relaxed text-[#4a4256]">{description}</div>}
       <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-[880px] mx-auto items-start">
         {cards.map(card => <article key={card.title} className="soft-card home-service-card">
-          <div className="soft-card-media home-service-media"><img src={card.image} alt={card.alt} loading="lazy" /></div>
+          <div className="ui-image-frame soft-card-media home-service-media"><img src={card.image} alt={card.alt} loading="lazy" /></div>
           <h3 className="home-display text-[1.4rem] sm:text-[1.6rem] leading-tight text-[#140a1f]">{card.title}</h3>
           <div className="mt-3 text-[15px] leading-relaxed text-[#4a4256] w-full">{card.body}</div>
           {card.action && (card.action.to
@@ -64,7 +64,7 @@ export function HomeFormSection({ title, description, image, imageAlt, children,
       <p className="max-w-xl mx-auto mt-4 text-center text-[15px] text-[#2b2236] leading-relaxed">{description}</p>
       <div className="home-form-grid mt-10 grid md:grid-cols-[.8fr_1.2fr] gap-8 md:gap-12 items-start">
         <aside className="home-form-aside">
-          <div className="home-photo-frame aspect-square overflow-hidden rounded-lg"><img src={image} alt={imageAlt} className="w-full h-full object-contain object-bottom pt-5" loading="lazy" /></div>
+          <div className="ui-image-frame home-photo-frame aspect-square overflow-hidden rounded-lg"><img src={image} alt={imageAlt} className="w-full h-full object-contain object-bottom pt-5" loading="lazy" /></div>
           {aside && <div className="mt-6 text-[15px] leading-relaxed text-[#2b2236]">{aside}</div>}
         </aside>
         <div className="home-form-panel">{children}</div>

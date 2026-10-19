@@ -797,7 +797,7 @@ export const BookingPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="relative overflow-hidden rounded-xl border border-[var(--border)]">
+                  <div className="ui-image-frame relative overflow-hidden rounded-xl border border-[var(--border)]">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
                       <button type="button"
@@ -842,7 +842,7 @@ export const BookingPage: React.FC = () => {
                         <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
                         <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
-                          <div className="w-20 h-16 shrink-0 flex items-end justify-center">
+                          <div className="ui-image-frame w-20 h-16 shrink-0 flex items-end justify-center">
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
@@ -1053,7 +1053,7 @@ export const BookingPage: React.FC = () => {
                     <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
                     <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
-                      <div className="w-20 h-16 shrink-0 flex items-end justify-center">
+                      <div className="ui-image-frame w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
                           src="/optimized/service-scenes/dumpster-rental.webp"
                           alt="Dumpster Rental"
