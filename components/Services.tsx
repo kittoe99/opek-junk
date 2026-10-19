@@ -196,7 +196,7 @@ export const Services: React.FC = () => {
               </span>
 
               <div className="p-2.5 sm:p-3 pb-0">
-                <div className="relative aspect-[16/9] sm:aspect-[16/10] overflow-hidden rounded-xl bg-[var(--surface)] border border-[var(--border)]">
+                <div className="ui-image-frame relative aspect-[16/9] sm:aspect-[16/10] overflow-hidden rounded-xl bg-[var(--surface)] border border-[var(--border)]">
                   <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.05]">
                     <group.Art />
                   </div>
