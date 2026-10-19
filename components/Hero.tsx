@@ -22,7 +22,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
               <img src="/opek-logo-white.png" alt="" className="h-[16px] w-auto" />
             </span>
 
-            <p className="home-eyebrow mb-3 hidden md:block">Nationwide junk removal · All 50 states</p>
             <h1
               id="home-hero-heading"
               className="home-display text-[2.2rem] leading-[0.95] sm:text-[3.2rem] md:text-[2.4rem] lg:text-[3.3rem] xl:text-[3.5rem] text-[#140a1f]"

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronRight, MapPin, Menu, MessageSquare, Package, Phone, User, UserPlus, X } from 'lucide-react';
+import { ChevronRight, MapPin, Menu, MessageSquare, Phone, User, UserPlus, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../../lib/userLocation';
 import { HomeLogo } from './HomeLogo';
@@ -87,7 +87,7 @@ export const HomeNavbar: React.FC = () => {
             ))}
           </ul>
 
-          {/* Location + icons */}
+          {/* Location + responsive menu */}
           <div className="ml-auto flex items-center gap-2 md:gap-4">
             <div className="flex items-center gap-1.5 md:hidden">
               <a
@@ -129,22 +129,11 @@ export const HomeNavbar: React.FC = () => {
                 </button>
               </p>
             </div>
-
-            <div className="hidden md:flex items-center gap-1">
-              <a href={`tel:${SITE_PHONE}`} className={iconBtn} aria-label="Call Opek Junk Removal">
-                <Phone size={21} strokeWidth={2.4} aria-hidden />
-              </a>
-              <button type="button" onClick={() => go('/sign-up')} className={iconBtn} aria-label="Sign up">
-                <User size={22} strokeWidth={2.4} aria-hidden />
-              </button>
-              <span className="hidden sm:block mx-1 h-6 w-px bg-[#d6d0dc]" aria-hidden />
-              <button type="button" onClick={() => go('/track-order')} className={iconBtn} aria-label="Track your order">
-                <Package size={22} strokeWidth={2.4} aria-hidden />
-              </button>
+            <div className="hidden md:flex lg:hidden">
               <button
                 type="button"
                 onClick={() => setIsMenuOpen(true)}
-                className={`${iconBtn} hidden md:flex lg:hidden`}
+                className={iconBtn}
                 aria-label="Open menu"
                 aria-expanded={isMenuOpen}
               >

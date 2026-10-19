@@ -87,8 +87,8 @@ body .site-root .ui-address-results button:hover { background: var(--ui-tint); }
 
 @media (min-width: 768px) { :root { --ui-card-padding: 28px; } }
 
-/* Frame opted-in photography and illustrations. Only the homepage hero opts in;
-   quote pages only opt in for the ZIP card image. */
+/* Frame opted-in photography, illustrations, and home/service heroes.
+   Quote pages only opt in for the ZIP card image. */
 body .site-root main[data-image-borders="on"] .ui-image-frame,
 body .site-root main .flow-zip-card-media.ui-image-frame {
   border: 2px solid #b58ad4;

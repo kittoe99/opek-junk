@@ -73,7 +73,8 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   ];
   return <div className="home-light interior-home">
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}
-      variant={path.startsWith('/services/') ? 'compact' : 'full'}
+      variant={path.startsWith('/services/') ? 'banner' : 'full'}
+      imagePosition={moving || cleanout || mattress ? 'center top' : undefined}
       chip={heroChip} primaryCta={primaryCta} secondaryCta={secondaryCta}
     />
     <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
