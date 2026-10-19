@@ -672,7 +672,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div>
             <label className={FLOW_LABEL}>Full name *</label>
-            <input
+            <input aria-label="Full name"
                 name="name"
                 autoComplete="name"
                 value={formData.name}
@@ -686,7 +686,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div>
             <label className={FLOW_LABEL}>Email *</label>
-            <input
+            <input aria-label="Email"
                 name="email"
                 autoComplete="email"
                 value={formData.email}
@@ -701,7 +701,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div>
             <label className={FLOW_LABEL}>Phone *</label>
-            <input
+            <input aria-label="Phone"
                 name="phone"
                 autoComplete="tel"
                 value={formData.phone}
@@ -724,7 +724,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </CheckboxCard>
 
           {error && (
-            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
@@ -755,7 +755,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           />
 
           {error && (
-            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
@@ -810,6 +810,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                       : 'Address'}
               </p>
               <ServiceAddressField
+                showLabel={false}
                 label="Service Address"
                 value={{
                   address: formData.address,
@@ -835,7 +836,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
 
               {isMovingLabor && addressValidated && (
-                <div className="mt-3 mb-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-none">
+                <div className="ui-panel mt-3 mb-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-none">
                   <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">
                     {unloadingUsesPrimaryAddress ? 'Access at unload' : 'Access at this location'}
                   </p>
@@ -905,6 +906,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <div className="mt-4 animate-fade-in">
               <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Drop-off location <span className="font-normal text-[var(--text-muted)]">(optional)</span></p>
               <ServiceAddressField
+                showLabel={false}
                 label="Drop-off Address"
                 value={{
                   address: formData.addressB,
@@ -930,7 +932,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
               />
 
               {addressBValidated && (
-              <div className="mt-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 animate-fade-in">
+              <div className="ui-panel mt-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 animate-fade-in">
                 <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Access at drop-off</p>
                 <div className="space-y-2">
                   {MOVING_ACCESS_CHOICES.map((choice) => {
@@ -995,7 +997,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           )}
         </form>
         {error && step === 'address' && (
-          <div className="mt-3 p-3 bg-brand/10 border border-brand/30 rounded-xl">
+          <div className="ui-notice mt-3 p-3 bg-brand/10 border border-brand/30 rounded-xl">
             <p className="text-brand text-xs font-bold">{error}</p>
           </div>
         )}
@@ -1019,7 +1021,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
 
           <div className="space-y-3">
             {localImage ? (
-              <div className="relative border border-[var(--border)] bg-[var(--surface)] p-3 rounded-xl flex items-center gap-4">
+              <div className="ui-panel relative border border-[var(--border)] bg-[var(--surface)] p-3 rounded-xl flex items-center gap-4">
                 <div className="w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface-2)]">
                   <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
                 </div>
@@ -1058,7 +1060,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {error && (
-            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}
@@ -1082,7 +1084,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={FLOW_LABEL}>Service type</label>
-              <input
+              <input aria-label="Service type"
                 readOnly
                 value={serviceType}
                 className={`${FLOW_INPUT} bg-[var(--surface-2)]`}
@@ -1090,7 +1092,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </div>
             <div>
               <label className={FLOW_LABEL}>Preferred date</label>
-              <input
+              <input aria-label="Preferred date"
                 readOnly
                 value={
                   formData.date
@@ -1196,7 +1198,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {error && (
-            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           )}

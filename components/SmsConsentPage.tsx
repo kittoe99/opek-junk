@@ -102,13 +102,13 @@ export const SmsConsentPage: React.FC = () => {
           <div className="space-y-3">
             <div>
               <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Service / informational</p>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-[var(--border)] rounded-xl p-4 bg-[var(--surface)]">
+              <p className="ui-panel text-sm text-[var(--text-muted)] leading-relaxed p-4">
                 {SMS_TRANSACTIONAL_NOTICE}
               </p>
             </div>
             <div>
               <p className="text-xs font-semibold text-[var(--text)] mb-1.5">Marketing (optional checkbox)</p>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed border border-[var(--border)] rounded-xl p-4 bg-[var(--surface)]">
+              <p className="ui-panel text-sm text-[var(--text-muted)] leading-relaxed p-4">
                 {SMS_MARKETING_CONSENT_TEXT}
               </p>
             </div>
@@ -125,7 +125,7 @@ export const SmsConsentPage: React.FC = () => {
             href="/sms-consent-opt-in.png"
             target="_blank"
             rel="noopener noreferrer"
-            className="block rounded-2xl border border-[var(--border)] overflow-hidden max-w-lg"
+            className="ui-panel block overflow-hidden max-w-lg"
           >
             <img
               src="/sms-consent-opt-in.png"

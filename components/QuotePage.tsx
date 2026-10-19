@@ -1064,7 +1064,7 @@ export const QuotePage: React.FC = () => {
                 title="Rental duration"
                 subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
               />
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
+              <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
                 <div>
                   <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
                   <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
@@ -1091,7 +1091,7 @@ export const QuotePage: React.FC = () => {
               </div>
 
               {error && (
-                <div className="flex items-start gap-2 p-3 mt-4 bg-brand/10 border border-brand/30 rounded-lg">
+                <div className="ui-notice flex items-start gap-2 p-3 mt-4 bg-brand/10 border border-brand/30 rounded-lg">
                   <AlertCircle size={15} className="text-brand shrink-0 mt-0.5" />
                   <p className="text-brand text-sm">{error}</p>
                 </div>

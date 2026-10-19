@@ -841,7 +841,7 @@ export const BookingPage: React.FC = () => {
                       <div className="space-y-6">
                         <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
-                        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
+                        <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                           <div className="w-20 h-16 shrink-0 flex items-end justify-center">
                             <img
                               src={
@@ -884,7 +884,7 @@ export const BookingPage: React.FC = () => {
                           </ul>
                         </div>
 
-                        <div className="bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                        <div className="ui-notice bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
                           <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                             <ShieldCheck size={18} strokeWidth={2.5} />
                           </div>
@@ -921,7 +921,7 @@ export const BookingPage: React.FC = () => {
                   )}
 
                   {loadingState === LoadingState.ERROR && (
-                    <div className="bg-brand/10 border border-brand/30 rounded-xl p-4 text-center">
+                    <div className="ui-notice bg-brand/10 border border-brand/30 rounded-xl p-4 text-center">
                       <p className="text-brand text-sm font-semibold mb-3">Failed to analyze photo</p>
                       <button type="button"
                         onClick={handleAnalyze}
@@ -980,7 +980,7 @@ export const BookingPage: React.FC = () => {
                     title="Rental duration"
                     subtitle="Base rate includes 7 days. Extra days: $25/day. 14+ day rentals get 10% off."
                   />
-                  <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
+                  <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-medium text-[var(--text)]">Rental period</p>
                       <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
@@ -1052,7 +1052,7 @@ export const BookingPage: React.FC = () => {
                   <div className="space-y-6">
                     <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
-                    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
+                    <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
                           src="/optimized/service-scenes/dumpster-rental.webp"
@@ -1087,7 +1087,7 @@ export const BookingPage: React.FC = () => {
                       </ul>
                     </div>
 
-                    <div className="bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
+                    <div className="ui-notice bg-emerald-400/10 border border-emerald-100 rounded-xl p-4 flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
                         <ShieldCheck size={18} strokeWidth={2.5} />
                       </div>
@@ -1200,7 +1200,7 @@ export const BookingPage: React.FC = () => {
       {/* Insurance Modal */}
       {showInsuranceModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-all duration-300">
-          <div className="bg-[var(--surface)] rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-[var(--border)] animate-in fade-in zoom-in duration-200">
+          <div className="ui-dialog bg-[var(--surface)] rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-[var(--border)] animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">

@@ -26,20 +26,20 @@ const STRIPE_APPEARANCE = {
 
 const STRIPE_ELEMENT_STYLE = {
   base: {
-    fontSize: '14px',
-    color: '#1f2937',
+    fontSize: '16px',
+    color: '#140a1f',
     fontFamily:
       'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSmoothing: 'antialiased',
     '::placeholder': {
-      color: '#63636b',
+      color: '#9488a3',
     },
     iconColor: '#63636b',
     lineHeight: '24px',
   },
   invalid: {
-    color: '#ef4444',
-    iconColor: '#ef4444',
+    color: '#b01f42',
+    iconColor: '#b01f42',
   },
   complete: {
     color: '#1f2937',
@@ -477,7 +477,7 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
 
   if (!isStripeConfigured) {
     return (
-      <div className="max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
+      <div className="ui-notice max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
         <p className="text-xs text-brand font-semibold">
           Stripe publishable key is missing. Add VITE_STRIPE_PUBLISHABLE_KEY to your environment.
         </p>
@@ -487,7 +487,7 @@ export const BookingDepositPayment: React.FC<BookingDepositPaymentProps> = ({
 
   if (!customerEmail?.includes('@')) {
     return (
-      <div className="max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
+      <div className="ui-notice max-w-md mx-auto p-4 bg-brand/10 border border-red-100 rounded-2xl text-center">
         <p className="text-xs text-brand font-semibold">
           A valid email is required before payment. Go back and add your email.
         </p>

@@ -195,7 +195,7 @@ export const InHomeEstimatePage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>Name *</label>
-                    <input
+                    <input aria-label="Name"
                       type="text"
                       name="name"
                       autoComplete="name"
@@ -208,7 +208,7 @@ export const InHomeEstimatePage: React.FC = () => {
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Phone *</label>
-                    <input
+                    <input aria-label="Phone"
                       type="tel"
                       name="phone"
                       autoComplete="tel"
@@ -222,7 +222,7 @@ export const InHomeEstimatePage: React.FC = () => {
                 </div>
                 <div>
                   <label className={UTILITY_LABEL}>Email *</label>
-                  <input
+                  <input aria-label="Email"
                     type="email"
                     name="email"
                     autoComplete="email"
@@ -269,7 +269,7 @@ export const InHomeEstimatePage: React.FC = () => {
                       <Calendar size={10} className="inline mr-1" />
                       Preferred Date *
                     </label>
-                    <input
+                    <input aria-label="Preferred Date"
                       type="date"
                       name="preferredDate"
                       value={formData.preferredDate}
@@ -284,7 +284,7 @@ export const InHomeEstimatePage: React.FC = () => {
                       <Clock size={10} className="inline mr-1" />
                       Preferred Time *
                     </label>
-                    <select
+                    <select aria-label="Preferred Time"
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleInputChange}
@@ -328,7 +328,7 @@ export const InHomeEstimatePage: React.FC = () => {
 
               <div>
                 <label className={UTILITY_LABEL}>Additional Details</label>
-                <textarea
+                <textarea aria-label="Additional Details"
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
@@ -338,7 +338,7 @@ export const InHomeEstimatePage: React.FC = () => {
                 />
               </div>
 
-              <div className="border border-[var(--border)] bg-[var(--surface-2)] p-5 rounded-2xl">
+              <div className="ui-panel ui-panel--muted border border-[var(--border)] bg-[var(--surface-2)] p-5 rounded-2xl">
                 <div className="flex items-center gap-2.5 mb-4">
                   <Receipt size={15} className="text-brand" strokeWidth={2.5} />
                   <h3 className="text-[10px] font-bold text-[var(--text)] uppercase tracking-[0.15em]">
@@ -371,7 +371,7 @@ export const InHomeEstimatePage: React.FC = () => {
               </div>
 
               {error && (
-                <div className="p-4 bg-brand/10 border border-brand/30 rounded-xl">
+                <div className="ui-notice p-4 bg-brand/10 border border-brand/30 rounded-xl">
                   <p className="text-brand text-xs font-bold">{error}</p>
                 </div>
               )}

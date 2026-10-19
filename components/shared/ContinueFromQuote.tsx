@@ -196,7 +196,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
           </div>
 
           {error ? (
-            <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
             </div>
           ) : null}
@@ -270,7 +270,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
         </div>
 
         {error ? (
-          <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl space-y-2">
+          <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl space-y-2">
             <p className="text-brand text-xs font-bold">{error}</p>
             {error.includes('No open quote') ? (
               <button

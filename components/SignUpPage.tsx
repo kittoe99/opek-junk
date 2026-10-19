@@ -308,7 +308,7 @@ export const SignUpPage: React.FC = () => {
                 <p className="mt-1.5 text-xs text-emerald-700">Approved — you can create your account with this email.</p>
               )}
               {eligibilityMessage && (
-                <p className="mt-1.5 text-xs text-amber-800 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 leading-relaxed">
+                <p className="ui-notice mt-1.5 text-xs text-amber-800 bg-amber-50 border border-amber-100 px-3 py-2 leading-relaxed">
                   {eligibilityMessage}
                 </p>
               )}
@@ -385,7 +385,7 @@ export const SignUpPage: React.FC = () => {
             </div>
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+              <p className="ui-notice text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
                 {error}
               </p>
             )}

@@ -210,7 +210,7 @@ function LiveChatModal({
         onClick={endAndClose}
       />
 
-      <div className="relative z-10 flex h-[100dvh] sm:h-[min(860px,92dvh)] w-full sm:max-w-3xl flex-col overflow-hidden bg-[var(--surface)] sm:rounded-3xl border-0 sm:border border-[var(--border)] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] animate-scale-in">
+      <div className="ui-dialog relative z-10 flex h-[100dvh] sm:h-[min(860px,92dvh)] w-full sm:max-w-3xl flex-col overflow-hidden bg-[var(--surface)] sm:rounded-3xl border-0 sm:border border-[var(--border)] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] animate-scale-in">
         <div className="absolute inset-0 bg-dark-grid opacity-40 pointer-events-none" aria-hidden />
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-brand/25 blur-[100px] pointer-events-none" aria-hidden />
 

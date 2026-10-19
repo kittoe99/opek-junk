@@ -126,7 +126,7 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
             aria-label="Dismiss"
             onClick={() => setLeaveOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-sm rounded-lg bg-white p-6 shadow-[0_24px_60px_-20px_rgba(40,10,80,0.55)]">
+          <div className="ui-dialog relative z-10 w-full max-w-sm bg-white p-6 border border-[var(--border)]">
             <h2 id="flow-leave-title" className="font-sans text-lg font-bold text-[var(--text)] tracking-tight">
               Leave this {flowLabel.toLowerCase()}?
             </h2>

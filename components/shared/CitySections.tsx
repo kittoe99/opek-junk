@@ -55,7 +55,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             {faqs.map((faq, i) => (
               <div
                 key={faq.question}
-                className="bg-white rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)] overflow-hidden transition-all duration-300"
+                className="ui-panel bg-white rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)] overflow-hidden transition-all duration-300"
               >
                 <button type="button"
                   className="w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer"
@@ -124,7 +124,7 @@ export const CityLocalSection: React.FC<CityLocalSectionProps> = ({
       </div>
 
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)]">
+        <div className="ui-panel bg-white rounded-2xl p-6 md:p-8 shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)]">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-secondary-100/60">
             <div>
               <p className="text-sm font-medium text-secondary-500 mb-1">Call or book online</p>

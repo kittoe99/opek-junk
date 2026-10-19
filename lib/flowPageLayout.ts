@@ -51,7 +51,7 @@ export const UTILITY_PAGE_CONTENT = 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-1
 export const UTILITY_FORM_WRAP =
   'max-w-2xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12';
 
-/** White card with soft border and shadow, shared with Track Order and the Quote flow. */
+/** Shared bordered form container; geometry is defined alongside the button system. */
 export const UTILITY_FORM_CARD = 'soft-card';
 
 export const UTILITY_INPUT = 'opek-field w-full px-4 py-3';

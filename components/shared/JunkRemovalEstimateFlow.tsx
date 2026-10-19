@@ -404,7 +404,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
         {showInsuranceModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#140a1f]/50">
-            <div className="bg-white rounded-lg p-6 md:p-8 max-w-md w-full shadow-[0_24px_60px_-20px_rgba(40,10,80,0.55)]">
+            <div className="ui-dialog bg-white rounded-lg p-6 md:p-8 max-w-md w-full shadow-[0_24px_60px_-20px_rgba(40,10,80,0.55)]">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
@@ -534,7 +534,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {images.map((imgSrc, index) => (
-                      <div key={index} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                      <div key={index} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                         <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                         {loadingState !== LoadingState.ANALYZING && (
                           <button type="button" onClick={() => removeUploadedImage(index)} className="ui-icon-button absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">
@@ -569,7 +569,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                     </div>
                   )}
                   {loadingState === LoadingState.ERROR && (
-                    <div className="p-4 bg-brand/10 border border-brand/30 rounded-xl text-center">
+                    <div className="ui-notice p-4 bg-brand/10 border border-brand/30 rounded-xl text-center">
                       <p className="text-brand text-sm font-medium mb-1">Failed to analyze photo{images.length > 1 ? 's' : ''}</p>
                       {error && <p className="text-brand text-xs mb-2">{error}</p>}
                       <button type="button" onClick={handleAnalyze} className="text-sm font-medium text-[var(--text)] underline hover:text-brand transition-colors">Try again</button>

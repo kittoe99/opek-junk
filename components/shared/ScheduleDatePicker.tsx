@@ -124,7 +124,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
     : '';
 
   return (
-    <div className="space-y-3">
+    <div className="ui-calendar space-y-3">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-bold text-[var(--text)]">{selectedStr || 'Select a date'}</p>
@@ -151,7 +151,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-3">
+      <div className="ui-panel bg-[var(--surface)] rounded-xl border border-[var(--border)] p-3">
         <p className="text-xs font-semibold text-[var(--text-muted)] text-center mb-3">{monthLabel}</p>
         <div className="grid grid-cols-7 gap-px mb-1">
           {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
@@ -181,7 +181,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-none">
+      <div className="ui-panel rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-none">
         <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Time slot</p>
         <div className="flex gap-2">
           {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {

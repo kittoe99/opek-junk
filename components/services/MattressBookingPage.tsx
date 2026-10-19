@@ -532,7 +532,7 @@ export const MattressBookingPage: React.FC = () => {
                 return (
                   <div
                     key={option.id}
-                    className={`group relative flex flex-col rounded-2xl border bg-[var(--surface)] transition-all ${
+                    className={`ui-selection-surface group relative flex flex-col border bg-[var(--surface)] transition-all ${
                       selected
                         ? 'border-brand shadow-[0_0_0_1px_rgba(82,15,150,0.12)]'
                         : 'border-[var(--border)] hover:border-[var(--border)]'
@@ -747,7 +747,7 @@ export const MattressBookingPage: React.FC = () => {
                 />
               </div>
               {formError && (
-                <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
+                <div className="ui-notice p-3 bg-brand/10 border border-brand/30">
                   <p className="text-brand text-xs font-bold">{formError}</p>
                 </div>
               )}

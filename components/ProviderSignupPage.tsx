@@ -431,26 +431,26 @@ export const ProviderSignupPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>First Name *</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={UTILITY_INPUT} />
+                    <input aria-label="First Name" type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required placeholder="John" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Last Name *</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={UTILITY_INPUT} />
+                    <input aria-label="Last Name" type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required placeholder="Smith" className={UTILITY_INPUT} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>Email Address *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={UTILITY_INPUT} />
+                    <input aria-label="Email Address" type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Phone Number *</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={UTILITY_INPUT} />
+                    <input aria-label="Phone Number" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={UTILITY_INPUT} />
                   </div>
                 </div>
                 <div>
                   <label className={UTILITY_LABEL}>Business Name *</label>
-                    <input type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} required placeholder="e.g. John's Hauling LLC" className={UTILITY_INPUT} />
+                    <input aria-label="Business Name" type="text" name="businessName" value={formData.businessName} onChange={handleInputChange} required placeholder="e.g. John's Hauling LLC" className={UTILITY_INPUT} />
                 </div>
               </div>
 
@@ -474,7 +474,7 @@ export const ProviderSignupPage: React.FC = () => {
 
               <div className="space-y-4">
                 {formData.serviceAreas.map((area, index) => (
-                  <div key={index} className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl space-y-3 relative shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
+                  <div key={index} className="ui-panel p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl space-y-3 relative shadow-[0_2px_8px_rgba(53,80,112,0.06)]">
                     <button
                       type="button"
                       onClick={() => removeServiceArea(index)}
@@ -486,7 +486,7 @@ export const ProviderSignupPage: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-8">
                       <div>
                         <label className={UTILITY_LABEL}>State *</label>
-                        <select
+                        <select aria-label="State"
                           value={area.state}
                           onChange={(e) => updateServiceArea(index, 'state', e.target.value)}
                           required
@@ -500,7 +500,7 @@ export const ProviderSignupPage: React.FC = () => {
                       </div>
                       <div>
                         <label className={UTILITY_LABEL}>Metro Area *</label>
-                        <select
+                        <select aria-label="Metro Area"
                           value={area.metroArea}
                           onChange={(e) => updateServiceArea(index, 'metroArea', e.target.value)}
                           required
@@ -520,7 +520,7 @@ export const ProviderSignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={addServiceArea}
-                  className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                  className="ui-upload w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
                 >
                   <Plus size={14} /> Add Service Area
                 </button>
@@ -555,24 +555,24 @@ export const ProviderSignupPage: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <label className={UTILITY_LABEL}>Vehicle Type *</label>
-                  <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={selectCls}>
+                  <select aria-label="Vehicle Type" name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} required className={selectCls}>
                     <option value="">Select vehicle type</option>
                     {vehicleTypes.map(type => <option key={type} value={type}>{type}</option>)}
                   </select>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className={UTILITY_LABEL}>Year *</label>
-                    <input type="text" name="vehicleYear" value={formData.vehicleYear} onChange={handleInputChange} required maxLength={4} placeholder="2024" className={UTILITY_INPUT} />
+                    <input aria-label="Year" type="text" name="vehicleYear" value={formData.vehicleYear} onChange={handleInputChange} required maxLength={4} placeholder="2024" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Make *</label>
-                    <input type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInputChange} required placeholder="Ford" className={UTILITY_INPUT} />
+                    <input aria-label="Make" type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInputChange} required placeholder="Ford" className={UTILITY_INPUT} />
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Model *</label>
-                    <input type="text" name="vehicleModel" value={formData.vehicleModel} onChange={handleInputChange} required placeholder="F-150" className={UTILITY_INPUT} />
+                    <input aria-label="Model" type="text" name="vehicleModel" value={formData.vehicleModel} onChange={handleInputChange} required placeholder="F-150" className={UTILITY_INPUT} />
                   </div>
                 </div>
 
@@ -583,7 +583,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {vehicleImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {vehicleImages.map((img, i) => (
-                        <div key={i} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                        <div key={i} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Vehicle ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
@@ -602,7 +602,7 @@ export const ProviderSignupPage: React.FC = () => {
                     type="button"
                     onClick={() => vehicleInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    className="ui-upload w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
                     {uploading ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
                     {vehicleImages.length > 0 ? 'Add More Vehicle Photos' : 'Upload Vehicle Photos'}
@@ -619,7 +619,7 @@ export const ProviderSignupPage: React.FC = () => {
                   {insuranceImages.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
                       {insuranceImages.map((img, i) => (
-                        <div key={i} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
+                        <div key={i} className="ui-panel relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                           <img src={img} alt={`Insurance doc ${i + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
@@ -638,7 +638,7 @@ export const ProviderSignupPage: React.FC = () => {
                     type="button"
                     onClick={() => insuranceInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    className="ui-upload w-full py-3 border-2 border-dashed border-secondary-200 hover:border-brand/40 rounded-xl text-[var(--text-muted)] hover:text-brand text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
                     {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                     {insuranceImages.length > 0 ? 'Add More Documents' : 'Upload Insurance / COI'}
@@ -711,7 +711,7 @@ export const ProviderSignupPage: React.FC = () => {
 
                 <div>
                   <label className={UTILITY_LABEL}>Additional Details *</label>
-                  <textarea
+                  <textarea aria-label="Additional Details"
                     name="additionalInfo"
                     value={formData.additionalInfo}
                     onChange={handleInputChange}
@@ -724,7 +724,7 @@ export const ProviderSignupPage: React.FC = () => {
               </div>
 
               {error && (
-                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl">
+                <div className="ui-notice flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl">
                   <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
                   <p className="text-red-700 text-xs font-bold">{error}</p>
                 </div>

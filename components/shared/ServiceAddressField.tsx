@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Loader2, MapPinned } from 'lucide-react';
 import {
   AddressLocationBias,
@@ -36,6 +36,7 @@ export function formatServiceAddressLocation(value: ServiceAddressValue): string
 
 interface ServiceAddressFieldProps {
   label?: string;
+  showLabel?: boolean;
   value: ServiceAddressValue;
   onChange: (value: ServiceAddressValue) => void;
   validated: boolean;
@@ -52,6 +53,7 @@ interface ServiceAddressFieldProps {
 
 export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
   label = 'Service Address',
+  showLabel = true,
   value,
   onChange,
   validated,
@@ -64,6 +66,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
   inputClassName = INPUT_CLASS,
   showUnitField = true,
 }) => {
+  const errorId = useId();
   const resolvedBias: AddressLocationBias = {
     zipCode: locationBias?.zipCode || searchBiasZip,
     city: locationBias?.city,
@@ -143,8 +146,13 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
 
   return (
     <div ref={containerRef} className="relative">
+      {showLabel && <label htmlFor={`${errorId}-input`} className="field-label">{label}</label>}
       <div className="relative">
         <input
+          id={`${errorId}-input`}
+          aria-label={label}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
           value={addressQuery}
           onChange={(e) => handleAddressInput(e.target.value)}
           onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
@@ -158,7 +166,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
         )}
       </div>
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-lg max-h-48 overflow-y-auto">
+        <div className="ui-address-results absolute z-50 w-full mt-1 bg-[var(--surface)] border border-[var(--border)] max-h-48 overflow-y-auto">
           {suggestions.map((suggestion, index) => (
             <button
               key={`${suggestion.display}-${index}`}
@@ -174,6 +182,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
       )}
       {validated && showUnitField && (
         <input
+          aria-label="Apartment, unit, or suite (optional)"
           value={value.unitNumber}
           onChange={(e) => onChange({ ...value, unitNumber: e.target.value })}
           placeholder="Apt / Unit / Suite (optional)"
@@ -182,7 +191,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
         />
       )}
       {error && (
-        <p className="mt-2 text-xs font-semibold text-brand">{error}</p>
+        <p id={errorId} role="alert" className="field-hint text-[#b01f42]">{error}</p>
       )}
     </div>
   );

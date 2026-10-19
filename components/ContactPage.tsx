@@ -155,7 +155,7 @@ export const ContactPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={UTILITY_LABEL}>Name *</label>
-                <input
+                <input aria-label="Name"
                   type="text"
                   name="name"
                   autoComplete="name"
@@ -168,7 +168,7 @@ export const ContactPage: React.FC = () => {
               </div>
               <div>
                 <label className={UTILITY_LABEL}>Phone *</label>
-                <input
+                <input aria-label="Phone"
                   type="tel"
                   name="phone"
                   autoComplete="tel"
@@ -183,7 +183,7 @@ export const ContactPage: React.FC = () => {
 
             <div>
               <label className={UTILITY_LABEL}>Email *</label>
-              <input
+              <input aria-label="Email"
                 type="email"
                 name="email"
                 autoComplete="email"
@@ -197,7 +197,7 @@ export const ContactPage: React.FC = () => {
 
             <div>
               <label className={UTILITY_LABEL}>Subject *</label>
-              <select
+              <select aria-label="Subject"
                 name="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
@@ -214,7 +214,7 @@ export const ContactPage: React.FC = () => {
 
             <div>
               <label className={UTILITY_LABEL}>Message *</label>
-              <textarea
+              <textarea aria-label="Message"
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}

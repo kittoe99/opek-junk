@@ -67,7 +67,7 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
       {/* Modal Container */}
       <div className="fixed inset-0 z-[101] flex items-center justify-center p-4">
         <div
-          className="bg-white w-full max-w-md rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border border-secondary-100 animate-scale-in overflow-hidden relative transition-all duration-300"
+          className="ui-dialog bg-white w-full max-w-md rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border border-secondary-100 animate-scale-in overflow-hidden relative transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Subtle Ambient Accent Glows */}
