@@ -50,7 +50,7 @@ body .site-root :is(.soft-card, .soft-surface, .flow-card, .site-form-card, .ui-
 }
 body .site-root .soft-card { padding: var(--ui-card-padding); }
 body .site-root .ui-panel--muted { background: var(--ui-tint); }
-body .site-root :is(.soft-card-media, .home-photo-frame, .flow-zip-art, .flow-zip-layout, .ui-dialog, .ui-notice, .ui-upload, .ui-calendar, .track-empty, .cat-empty, .home-booking-options, .home-booking-options a, .home-booking-options button, .quick-action-bar > div, .quick-action-bar > div > a) { border-radius: 0; }
+body .site-root :is(.soft-card-media, .home-photo-frame, .flow-zip-art, .flow-zip-layout, .flow-zip-steps, .flow-option-media, .ui-dialog, .ui-notice, .ui-upload, .ui-calendar, .track-empty, .cat-empty, .home-booking-options, .home-booking-options a, .home-booking-options button, .quick-action-bar > div, .quick-action-bar > div > a) { border-radius: 0; }
 body .site-root .soft-card-media {
   margin: calc(-1 * var(--ui-card-padding)) calc(-1 * var(--ui-card-padding)) 20px;
 }
