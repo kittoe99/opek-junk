@@ -502,6 +502,8 @@ export const MattressBookingPage: React.FC = () => {
           <FlowZipCheck
             title="Where should we pick up?"
             subtitle="Enter your ZIP to confirm coverage for mattress disposal."
+            variant="card"
+            image="/optimized/service-scenes/mattress-pickup.webp"
             zipValue={zipCode}
             onZipChange={(v) => {
               setZipCode(v);
@@ -569,7 +571,8 @@ export const MattressBookingPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setCoreQuantity(option.id, quantity - 1)}
-                            className="w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
+                            aria-label={`Remove one ${option.name}`}
+                            className="ui-icon-button w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
                           >
                             <Minus size={12} strokeWidth={2.5} />
                           </button>
@@ -579,7 +582,8 @@ export const MattressBookingPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setCoreQuantity(option.id, quantity + 1)}
-                            className="w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
+                            aria-label={`Add one ${option.name}`}
+                            className="ui-icon-button w-6 h-6 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
                           >
                             <Plus size={12} strokeWidth={2.5} />
                           </button>
@@ -595,7 +599,7 @@ export const MattressBookingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowExtrasCatalog(true)}
-                className="w-full flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3.5 text-left hover:border-[var(--border)] mb-5"
+                className="w-full flex items-center gap-3 soft-surface px-4 py-3.5 text-left hover:border-[var(--border)] mb-5"
               >
                 <div className="w-10 h-10 rounded-xl bg-[var(--surface-2)] text-[var(--text-muted)] flex items-center justify-center">
                   <Package size={18} />
@@ -609,7 +613,7 @@ export const MattressBookingPage: React.FC = () => {
                 <span className="text-xs font-semibold text-brand">Browse</span>
               </button>
             ) : (
-              <div className="mb-5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+              <div className="mb-5 soft-surface p-4">
                 <JunkItemCatalogSelector
                   selectedItems={extrasForCatalog}
                   onSelectedItemsChange={syncExtrasFromCatalog}
@@ -622,7 +626,7 @@ export const MattressBookingPage: React.FC = () => {
             )}
 
             {activeItems.length > 0 && (
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] mb-4 overflow-hidden">
+              <div className="soft-surface mb-4 overflow-hidden">
                 <div className="px-4 py-2.5 border-b border-[var(--border)]">
                   <p className="text-xs font-semibold text-[var(--text-muted)]">
                     Selected · {activeItems.reduce((s, i) => s + i.quantity, 0)}
@@ -664,7 +668,7 @@ export const MattressBookingPage: React.FC = () => {
               title="Your estimate"
               subtitle="Review your flat rate, then continue to schedule."
             />
-            <div className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-4 mb-4">
+            <div className="soft-surface p-4 mb-4">
               <div className="flex items-start justify-between gap-3 mb-4 pb-4 border-b border-[var(--border)]">
                 <div>
                   <h3 className="text-sm font-bold text-[var(--text)]">Mattress Disposal</h3>

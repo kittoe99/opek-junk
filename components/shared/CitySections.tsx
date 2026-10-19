@@ -57,7 +57,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
                 key={faq.question}
                 className="bg-white rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.06),0_4px_16px_rgba(53,80,112,0.05)] overflow-hidden transition-all duration-300"
               >
-                <button
+                <button type="button"
                   className="w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
@@ -134,15 +134,15 @@ export const CityLocalSection: React.FC<CityLocalSectionProps> = ({
               </a>
             </div>
             <div className="flex flex-wrap gap-2">
-              <button
+              <button type="button"
                 onClick={onGetQuote}
-                className="px-5 py-2.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 rounded-full transition-colors inline-flex items-center gap-1.5"
+                className="ui-button"
               >
                 Get a Quote <ArrowRight size={14} />
               </button>
-              <button
+              <button type="button"
                 onClick={onBookOnline}
-                className="px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors inline-flex items-center gap-1.5"
+                className="ui-button"
               >
                 Book Online <ArrowRight size={14} />
               </button>

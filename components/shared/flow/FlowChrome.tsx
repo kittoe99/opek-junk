@@ -98,7 +98,7 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
             <button
               type="button"
               onClick={requestLeave}
-              className="shrink-0 h-9 w-9 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
+              className="ui-icon-button shrink-0 h-9 w-9 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
               aria-label="Close and go home"
             >
               <X size={16} />

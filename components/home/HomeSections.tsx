@@ -374,7 +374,7 @@ const reviews = [
 ];
 
 export const HomeReviews: React.FC = () => (
-  <section id="testimonials" className="bg-[#f2f2f2] py-14 sm:py-16 md:py-20" aria-labelledby="home-reviews-heading">
+  <section id="testimonials" className="home-soft-band py-14 sm:py-16 md:py-20" aria-labelledby="home-reviews-heading">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2
         id="home-reviews-heading"
@@ -390,7 +390,7 @@ export const HomeReviews: React.FC = () => (
       </p>
       <div className="mt-7 md:mt-10 -mx-4 px-4 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 md:gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {reviews.map((review) => (
-          <figure key={review.author} className="snap-start shrink-0 w-[84%] md:w-auto bg-white rounded-lg p-6 flex flex-col">
+          <figure key={review.author} className="soft-card snap-start shrink-0 w-[84%] md:w-auto flex flex-col">
             <div className="flex gap-0.5" aria-label="5 out of 5 stars">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} size={18} className="text-[#520f96] fill-[#520f96]" aria-hidden />

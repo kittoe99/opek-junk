@@ -207,7 +207,7 @@ export const SignUpPage: React.FC = () => {
         <div className={UTILITY_PAGE_CONTENT}>
           <div className={`${UTILITY_FORM_CARD} max-w-lg mx-auto animate-fade-in`}>
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-11 h-11 bg-secondary text-white rounded-2xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-brand text-white rounded-full flex items-center justify-center shrink-0">
                 <Mail size={20} strokeWidth={2.5} />
               </div>
               <div>
@@ -242,7 +242,7 @@ export const SignUpPage: React.FC = () => {
         <div className={UTILITY_PAGE_CONTENT}>
           <div className={`${UTILITY_FORM_CARD} max-w-lg mx-auto animate-fade-in space-y-6`}>
             <div className="flex items-start gap-4">
-              <div className="w-11 h-11 bg-secondary text-white rounded-2xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-brand text-white rounded-full flex items-center justify-center shrink-0">
                 <ShieldCheck size={20} strokeWidth={2.5} />
               </div>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">

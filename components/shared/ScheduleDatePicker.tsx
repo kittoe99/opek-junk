@@ -135,7 +135,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, -1))}
             disabled={!canGoPrev}
-            className="w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            className="ui-icon-button w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             aria-label="Previous month"
           >
             <ChevronLeft size={15} />
@@ -143,7 +143,7 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, 1))}
-            className="w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] transition-colors flex items-center justify-center"
+            className="ui-icon-button w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] transition-colors flex items-center justify-center"
             aria-label="Next month"
           >
             <ChevronRight size={15} />

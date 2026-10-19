@@ -56,7 +56,7 @@ export const HomeNavbar: React.FC = () => {
   };
 
   const iconBtn =
-    'flex h-10 w-10 items-center justify-center rounded-none text-[#520f96] hover:bg-[#f2ecfa] transition-colors';
+    'ui-icon-button flex h-11 w-11 items-center justify-center rounded-none text-[#520f96] hover:bg-[#f2ecfa] transition-colors';
 
   return (
     <div className="home-light">
@@ -101,7 +101,7 @@ export const HomeNavbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsMenuOpen(true)}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#520f96] text-white"
+                className="ui-icon-button flex h-11 w-11 items-center justify-center rounded-full bg-[#520f96] text-white"
                 aria-label="Open menu"
                 aria-expanded={isMenuOpen}
               >
@@ -155,7 +155,7 @@ export const HomeNavbar: React.FC = () => {
         </nav>
 
         {/* Mobile location strip */}
-        <div className="md:hidden flex items-center justify-between gap-3 h-9 px-4 bg-[#f4eefc] border-t border-[#ebe3f5] text-[13px]">
+        <div className="md:hidden flex items-center justify-between gap-3 min-h-[44px] px-4 bg-[#f4eefc] border-t border-[#ebe3f5] text-[13px]">
           <span className="flex min-w-0 items-center gap-1.5 text-[#3d3547]">
             <MapPin size={14} className="shrink-0 text-[#520f96]" strokeWidth={2.4} aria-hidden />
             <span className="truncate font-semibold">{locationLabel}</span>
@@ -163,7 +163,7 @@ export const HomeNavbar: React.FC = () => {
           <button
             type="button"
             onClick={() => go('/#service-area')}
-            className="shrink-0 inline-flex items-center gap-0.5 rounded-none font-bold text-[#520f96]"
+            className="min-h-[44px] shrink-0 inline-flex items-center gap-0.5 rounded-none font-bold text-[#520f96]"
           >
             Check service area
             <ChevronRight size={14} aria-hidden />
@@ -192,7 +192,7 @@ export const HomeNavbar: React.FC = () => {
               ref={closeRef}
               type="button"
               onClick={() => setIsMenuOpen(false)}
-              className="-mr-2 flex h-11 w-11 items-center justify-center rounded-none text-white"
+              className="ui-icon-button -mr-2 flex h-11 w-11 items-center justify-center rounded-none text-white"
               aria-label="Close menu"
             >
               <X size={28} strokeWidth={2} aria-hidden />

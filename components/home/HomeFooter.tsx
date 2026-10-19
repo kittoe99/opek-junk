@@ -133,7 +133,7 @@ export const HomeFooter: React.FC = () => (
           <ul className="mt-8 md:mt-12 flex items-center gap-2 md:gap-6">
             {socials.map((s) => (
               <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 md:block md:h-auto md:w-auto md:rounded-none md:bg-transparent hover:opacity-80">
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="ui-icon-button flex h-11 w-11 items-center justify-center rounded-full bg-white/10 md:block md:h-auto md:w-auto md:rounded-none md:bg-transparent hover:opacity-80">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
                     <path d={s.path} />
                   </svg>

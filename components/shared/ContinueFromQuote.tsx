@@ -119,7 +119,7 @@ export const ContinueFromQuote: React.FC<ContinueFromQuoteProps> = ({
           subtitle="Continue with this estimate, or start a new booking from scratch."
         />
 
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 mb-6 space-y-3">
+        <div className="soft-surface p-5 mb-6 space-y-3">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-semibold text-[var(--text)]">{hydrated.serviceType}</p>

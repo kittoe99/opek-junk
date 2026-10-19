@@ -75,11 +75,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline, va
         <button
           type="button"
           onClick={onBookOnline}
-          className={`flex items-center justify-center gap-2 flex-1 md:flex-initial px-4 py-2.5 md:px-5 text-sm font-semibold text-white rounded-full transition-colors ${
-            light
-              ? 'bg-[#520f96] hover:bg-[#3a0a6b]'
-              : 'bg-brand hover:bg-brand-600 shadow-[0_0_20px_-4px_rgba(255,0,110,0.6)]'
-          }`}
+          className="ui-button ui-button--compact flex-1 md:flex-initial"
         >
           <Calendar size={15} className="shrink-0" />
           <span className="whitespace-nowrap text-xs md:text-sm">Book Online</span>

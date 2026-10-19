@@ -677,6 +677,7 @@ export const BookingPage: React.FC = () => {
               <FlowZipCheck
                 title="Book your pickup"
                 subtitle="Nationwide coverage in all 50 states — start with your ZIP code."
+                variant="card"
                 zipValue={zipValue}
                 onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
                 onCheck={handleZipCheck}
@@ -688,7 +689,7 @@ export const BookingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowContinueFromQuote(true)}
-                  className="text-sm font-semibold text-[var(--text-muted)] hover:text-brand transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/50"
+                  className="ui-text-button"
                 >
                   Already have a quote? Continue with your phone
                 </button>
@@ -799,7 +800,7 @@ export const BookingPage: React.FC = () => {
                   <div className="relative overflow-hidden rounded-xl border border-[var(--border)]">
                     <img src={image} alt="Upload" className="w-full" />
                     {loadingState !== LoadingState.ANALYZING && (
-                      <button
+                      <button type="button"
                         onClick={() => { setImage(null); setEstimate(null); setLoadingState(LoadingState.IDLE); }}
                         className="absolute top-3 right-3 bg-[var(--surface)] text-[var(--text)] px-3 py-1.5 text-xs font-semibold shadow-lg hover:text-[var(--text-muted)] transition-colors rounded-lg inline-flex items-center gap-1"
                       >
@@ -922,9 +923,9 @@ export const BookingPage: React.FC = () => {
                   {loadingState === LoadingState.ERROR && (
                     <div className="bg-brand/10 border border-brand/30 rounded-xl p-4 text-center">
                       <p className="text-brand text-sm font-semibold mb-3">Failed to analyze photo</p>
-                      <button
+                      <button type="button"
                         onClick={handleAnalyze}
-                        className="px-5 py-2.5 bg-brand text-white font-semibold text-sm hover:bg-brand-600 transition-colors rounded-full"
+                        className="ui-button"
                       >
                         Try again
                       </button>
@@ -985,17 +986,20 @@ export const BookingPage: React.FC = () => {
                       <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                     </div>
                     <div className="flex items-center gap-2 border border-[var(--border)] rounded-full px-2 py-1">
-                      <button
+                      <button type="button"
                         onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
+                        aria-label="Decrease rental days"
                         disabled={dumpsterDuration <= 1}
-                        className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
+                        className="ui-icon-button w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
-                      <button
+                      <button type="button"
                         onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                        className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
+                        aria-label="Increase rental days"
+                        disabled={dumpsterDuration >= 30}
+                        className="ui-icon-button w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
                       >
                         <Plus size={14} />
                       </button>
@@ -1210,7 +1214,8 @@ export const BookingPage: React.FC = () => {
               <button 
                 type="button"
                 onClick={() => setShowInsuranceModal(false)}
-                className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors"
+                aria-label="Close coverage details"
+                className="ui-icon-button w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
@@ -1247,7 +1252,7 @@ export const BookingPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowInsuranceModal(false)}
-              className="w-full mt-6 py-3 bg-brand hover:bg-brand-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_24px_-8px_rgba(82,15,150,0.4)] transition-all"
+              className="ui-button w-full mt-6"
             >
               Got it
             </button>

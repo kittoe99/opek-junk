@@ -91,7 +91,7 @@ export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
         <p className="text-[var(--text-muted)] text-xs">One last step before you confirm your booking.</p>
       </div>
 
-      <div className="bg-[var(--surface)] rounded-3xl p-6 border border-[var(--border)] shadow-none text-center space-y-4">
+      <div className="soft-surface p-6 text-center space-y-4">
         <p className="text-4xl font-black text-brand">${BOOKING_DEPOSIT_AMOUNT}</p>
         <p className="text-sm text-[var(--text-muted)] leading-relaxed">
           A <span className="font-bold text-[var(--text)]">${BOOKING_DEPOSIT_AMOUNT} deposit</span> is required to confirm your booking. It is fully refundable and will be applied toward your remaining balance.
@@ -102,14 +102,14 @@ export const BookingDepositIntro: React.FC<BookingDepositIntroProps> = ({
         <button
           type="button"
           onClick={onBack}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-[var(--border)] text-[var(--text)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_0_28px_-8px_rgba(82,15,150,0.35)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer"
+          className="ui-button ui-button--secondary  flex-1"
         >
           <ArrowLeft size={14} /> Back
         </button>
         <button
           type="button"
           onClick={handleContinue}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_24px_-8px_rgba(82,15,150,0.35)] hover:shadow-[0_0_28px_-6px_rgba(82,15,150,0.5)] active:scale-[0.99] cursor-pointer"
+          className="ui-button flex-1"
         >
           Continue <ArrowRight size={14} />
         </button>

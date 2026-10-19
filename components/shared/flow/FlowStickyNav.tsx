@@ -51,10 +51,11 @@ export const FlowStickyNav: React.FC<FlowStickyNavProps> = ({
             form={continueForm}
             onClick={continueType === 'button' ? onContinue : undefined}
             disabled={continueDisabled || continueLoading}
+            aria-busy={continueLoading}
             className="flow-btn flow-btn-primary flex-1"
           >
             {continueLoading ? (
-              <Loader2 size={18} className="animate-spin" aria-label="Loading" />
+              <><Loader2 size={18} className="animate-spin" aria-hidden /><span>{continueLabel}</span></>
             ) : (
               <>
                 {continueLabel}

@@ -51,7 +51,7 @@ export const SmsConsentPage: React.FC = () => {
           </h2>
           <div
             id="sms-consent-demo"
-            className="max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-5"
+            className="max-w-lg soft-surface p-5 sm:p-6 space-y-5"
           >
             <div>
               <label className={FLOW_LABEL}>Full name *</label>

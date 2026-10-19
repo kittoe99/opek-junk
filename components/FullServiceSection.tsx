@@ -74,12 +74,13 @@ export const FullServiceSection: React.FC = () => {
                 className="opek-field flex-1 px-4 py-3 text-sm bg-transparent border-none text-secondary placeholder:text-[var(--text-muted)] focus:outline-none font-mono tracking-wider min-w-0"
                 style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
               />
-              <button
+              <button type="button"
                 onClick={handleZipCheck}
                 disabled={zipValue.length !== 5 || zipLoading}
-                className="px-5 py-3 bg-brand hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 rounded-lg shrink-0 flex items-center gap-1.5"
+                aria-busy={zipLoading}
+                className="ui-button shrink-0"
               >
-                {zipLoading ? <Loader2 size={14} className="animate-spin" /> : 'Check Rates'}
+                {zipLoading ? <><Loader2 size={14} className="animate-spin" aria-hidden />Checking…</> : 'Check Rates'}
               </button>
             </div>
             {zipError && <p className="text-xs text-red-500 font-semibold mt-2">{zipError}</p>}

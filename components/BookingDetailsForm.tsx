@@ -1117,7 +1117,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           </div>
 
           {/* Review Section */}
-          <div className="bg-[var(--surface)] rounded-xl border border-[var(--border)] p-4 space-y-3 shadow-none">
+          <div className="soft-surface p-4 space-y-3 shadow-none">
             <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
               <p className="text-xs font-semibold text-[var(--text-muted)]">Summary</p>
               {estimate && <p className="text-lg font-bold text-[var(--text)]">${estimate.price}</p>}

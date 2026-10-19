@@ -1070,17 +1070,20 @@ export const QuotePage: React.FC = () => {
                   <p className="text-xs text-[var(--text-muted)] mt-0.5">{dumpsterDuration} day{dumpsterDuration > 1 ? 's' : ''}</p>
                 </div>
                 <div className="flex items-center gap-2 border border-[var(--border)] rounded-full px-2 py-1">
-                  <button
+                  <button type="button"
                     onClick={() => setDumpsterDuration(d => Math.max(1, d - 1))}
+                    aria-label="Decrease rental days"
                     disabled={dumpsterDuration <= 1}
-                    className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
+                    className="ui-icon-button w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] disabled:opacity-30 flex items-center justify-center"
                   >
                     <Minus size={14} />
                   </button>
                   <span className="w-8 text-center text-sm font-semibold text-[var(--text)]">{dumpsterDuration}</span>
-                  <button
+                  <button type="button"
                     onClick={() => setDumpsterDuration(d => Math.min(30, d + 1))}
-                    className="w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
+                    aria-label="Increase rental days"
+                    disabled={dumpsterDuration >= 30}
+                    className="ui-icon-button w-8 h-8 rounded-full hover:bg-[var(--surface-2)] text-[var(--text)] flex items-center justify-center"
                   >
                     <Plus size={14} />
                   </button>

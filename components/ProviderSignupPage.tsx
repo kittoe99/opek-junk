@@ -420,7 +420,7 @@ export const ProviderSignupPage: React.FC = () => {
           </div>
           <FlowProgressBar progress={step / SIGNUP_STEPS.length} />
 
-          <div className="bg-[var(--surface)] rounded-3xl border border-[var(--border)] p-6 md:p-10 shadow-[0_2px_12px_rgba(53,80,112,0.06)] mt-4 animate-fade-in">
+          <div className="soft-card mt-4 animate-fade-in">
           {step === 1 && (
             <form onSubmit={handleNext} className="space-y-6 animate-in fade-in duration-300">
               <FlowStepTitle as="h2"
@@ -478,7 +478,8 @@ export const ProviderSignupPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeServiceArea(index)}
-                      className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[var(--surface-2)] hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 flex items-center justify-center transition-colors"
+                      aria-label={`Remove service area ${index + 1}`}
+                      className="ui-icon-button absolute top-3 right-3 w-6 h-6 rounded-full bg-[var(--surface-2)] hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 flex items-center justify-center transition-colors"
                     >
                       <Trash2 size={12} />
                     </button>
@@ -587,7 +588,8 @@ export const ProviderSignupPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => removeImage(i, 'vehicle')}
-                            className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors rounded-full shadow"
+                            aria-label={`Remove vehicle photo ${i + 1}`}
+                            className="ui-icon-button absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors rounded-full shadow"
                           >
                             <X size={12} />
                           </button>
@@ -622,7 +624,8 @@ export const ProviderSignupPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => removeImage(i, 'insurance')}
-                            className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors rounded-full shadow"
+                            aria-label={`Remove insurance document ${i + 1}`}
+                            className="ui-icon-button absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center transition-colors rounded-full shadow"
                           >
                             <X size={12} />
                           </button>

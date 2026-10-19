@@ -139,7 +139,7 @@ export const ZipFinder: React.FC<ZipFinderProps> = ({
                   <button
                     type="submit"
                     disabled={busy}
-                    className="shrink-0 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none bg-brand px-5 py-3.5 text-sm font-semibold text-white hover:bg-brand-600 transition-all disabled:opacity-70 disabled:cursor-wait shadow-[0_0_24px_-6px_rgba(82,15,150,0.6)]"
+                    className="ui-button shrink-0"
                   >
                     {buttonLabel}
                   </button>

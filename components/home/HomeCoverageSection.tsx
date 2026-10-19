@@ -168,9 +168,9 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                 aria-describedby={error ? 'home-zip-error' : undefined}
                 className="cov-form-input"
               />
-              <button type="submit" disabled={checking} className="cov-form-btn">
+              <button type="submit" disabled={checking} aria-busy={checking} className="cov-form-btn">
                 {checking ? (
-                  <Loader2 size={20} className="animate-spin" aria-label="Checking" />
+                  <><Loader2 size={18} className="animate-spin" aria-hidden /><span>Checking…</span></>
                 ) : (
                   <>
                     Check

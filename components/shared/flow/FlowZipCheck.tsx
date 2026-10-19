@@ -17,6 +17,8 @@ interface FlowZipCheckProps {
   showBack?: boolean;
   /** "split" pairs the form with a photo; "card" is the centered soft-card layout. */
   variant?: 'split' | 'card';
+  /** Photo shown with the form. */
+  image?: string;
 }
 
 /** ZIP coverage step shared by the quote and booking flows. */
@@ -33,6 +35,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   onBack,
   showBack = false,
   variant = 'split',
+  image = '/optimized/service-scenes/junk-truck.webp',
 }) => {
   const ready = zipValue.length === 5;
   const submit = (e: React.FormEvent) => {
@@ -87,9 +90,9 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
           <span><strong>{result.city}, {result.state}</strong> is covered. Continuing…</span>
         </p>
       ) : (
-        <button type="submit" disabled={!ready || loading} className="flow-btn flow-btn-primary w-full">
+        <button type="submit" disabled={!ready || loading} aria-busy={loading} className="flow-btn flow-btn-primary w-full">
           {loading ? (
-            <Loader2 size={18} className="animate-spin" aria-label="Checking" />
+            <><Loader2 size={18} className="animate-spin" aria-hidden /><span>Checking area…</span></>
           ) : (
             <>
               Check my area
@@ -115,6 +118,9 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
         <h1 className="home-display soft-title">{title}</h1>
         {subtitle && <p className="soft-sub">{subtitle}</p>}
         <div className="soft-card">
+          <div className="soft-card-media" aria-hidden>
+            <img src={image} alt="" />
+          </div>
           {stepsStrip}
           {form}
           {trust}
@@ -129,7 +135,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   return (
     <div className="home-light interior-home flow-zip-layout">
       <div className="flow-zip-art home-scene-photo" aria-hidden>
-        <img src="/optimized/service-scenes/junk-truck.webp" alt="" />
+        <img src={image} alt="" />
       </div>
 
       <div className="flow-zip-content">

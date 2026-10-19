@@ -132,7 +132,7 @@ export const Navbar: React.FC = () => {
               </a>
               <a
                 href="tel:8313187139"
-                className="md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full"
+                className="ui-icon-button md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full"
                 aria-label="Call Opek Junk Removal"
               >
                 <Phone size={17} />
@@ -219,7 +219,7 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/quote')}
-                  className="ml-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors inline-flex items-center gap-1.5 shadow-[0_0_22px_-6px_rgba(255,0,110,0.65)] hover:shadow-[0_0_28px_-4px_rgba(255,0,110,0.8)]"
+                  className="ui-button ml-2"
                 >
                   Get a quote
                   <ArrowRight size={14} />
@@ -253,7 +253,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/in-home-estimate')}
-                className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+                className="ui-button shrink-0"
               >
                 Schedule
                 <ArrowRight size={12} />
@@ -288,14 +288,14 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => handleLinkClick('/booking')}
-              className="px-5 py-2.5 text-sm font-bold bg-brand text-white hover:bg-brand-600 rounded-lg transition-colors"
+              className="ui-button"
             >
               Book
             </button>
             <button
               type="button"
               onClick={() => setIsMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="ui-icon-button w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors"
               aria-label="Close menu"
             >
               <Menu size={22} />

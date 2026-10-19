@@ -76,7 +76,7 @@ export const CharityBanner: React.FC<CharityBannerProps> = ({ theme = 'light' })
               <button
                 type="button"
                 onClick={() => navigate('/quote')}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors"
+                className="ui-button"
               >
                 Book with purpose
                 <ArrowRight size={14} />

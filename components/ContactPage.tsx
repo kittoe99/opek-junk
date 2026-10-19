@@ -110,7 +110,7 @@ export const ContactPage: React.FC = () => {
 
       <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/optimized/hero-backgrounds/opek-crew-high-five.webp" imageAlt="Two providers ready to help" aside={
         <section
-          className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-brand/15 via-[var(--surface)] to-[var(--surface-2)] p-6 sm:p-7"
+          className="soft-surface p-6 sm:p-7"
           aria-labelledby="live-chat-heading"
         >
           <div className="flex items-start gap-3 mb-5">
@@ -247,7 +247,7 @@ export const ContactPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/quote')}
-                className="text-sm font-semibold text-brand hover:text-brand-600 transition-colors flex items-center gap-1"
+                className="ui-text-button"
               >
                 Get a quote <ArrowRight size={14} />
               </button>

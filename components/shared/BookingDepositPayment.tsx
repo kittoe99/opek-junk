@@ -47,11 +47,10 @@ const STRIPE_ELEMENT_STYLE = {
   },
 } as const;
 
-const CARD_FIELD_WRAPPER =
-  'px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(82,15,150,0.35)] hover:border-brand/40 focus-within:ring-4 focus-within:ring-brand/10 focus-within:border-brand focus-within:shadow-[0_0_28px_-6px_rgba(82,15,150,0.45)] transition-all duration-300';
+/** Matches the site field design (.opek-field) around Stripe's card iframes. */
+const CARD_FIELD_WRAPPER = 'stripe-field';
 
-const FIELD_LABEL =
-  'block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1.5';
+const FIELD_LABEL = 'field-label';
 
 async function parseJsonResponse(response: Response) {
   const responseText = await response.text();
@@ -244,7 +243,7 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/30 p-4 space-y-4">
+      <div className="soft-surface p-4 space-y-4">
         <div className="flex items-center justify-between gap-3 pb-1">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shadow-none">
@@ -395,14 +394,15 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
           type="button"
           onClick={onBack}
           disabled={busy}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest border border-[var(--border)] text-[var(--text)] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_0_28px_-8px_rgba(82,15,150,0.35)] hover:border-brand/40 hover:text-brand transition-all duration-300 rounded-xl flex items-center justify-center gap-2 bg-transparent cursor-pointer disabled:opacity-50"
+          className="ui-button ui-button--secondary flex-1"
         >
           <ArrowLeft size={14} /> Back
         </button>
         <button
           type="submit"
           disabled={busy || !termsAccepted || !canPay}
-          className="flex-1 py-4 text-xs font-black uppercase tracking-widest bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_24px_-8px_rgba(82,15,150,0.35)] hover:shadow-[0_0_28px_-6px_rgba(82,15,150,0.5)] active:scale-[0.99] cursor-pointer"
+          aria-busy={busy}
+          className="ui-button flex-1"
         >
           {busy ? (
             <>

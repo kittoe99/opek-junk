@@ -239,7 +239,7 @@ function LiveChatModal({
           <button
             type="button"
             onClick={endAndClose}
-            className="shrink-0 h-10 w-10 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
+            className="ui-icon-button shrink-0 h-10 w-10 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
             aria-label="Close chat"
           >
             <X size={18} />
@@ -261,14 +261,14 @@ function LiveChatModal({
                 <button
                   type="button"
                   onClick={() => startChat(false)}
-                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_28px_-8px_rgba(82,15,150,0.65)]"
+                  className="ui-button w-full"
                 >
                   <MessageCircle size={16} /> Start text chat
                 </button>
                 <button
                   type="button"
                   onClick={() => startChat(true)}
-                  className="inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold rounded-full border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                  className="ui-button ui-button--secondary w-full"
                 >
                   <Mic size={16} /> Start voice chat
                 </button>
@@ -339,7 +339,7 @@ function LiveChatModal({
                 <button
                   type="submit"
                   disabled={!connected || !draft.trim()}
-                  className="shrink-0 h-11 w-11 rounded-2xl bg-brand text-white flex items-center justify-center hover:bg-brand-600 disabled:opacity-40 transition-colors"
+                  className="ui-icon-button shrink-0 h-11 w-11 rounded-2xl bg-brand text-white flex items-center justify-center hover:bg-brand-600 disabled:opacity-40 transition-colors"
                   aria-label="Send message"
                 >
                   <Send size={17} />
@@ -348,7 +348,7 @@ function LiveChatModal({
                   type="button"
                   onClick={() => conversation.endSession()}
                   disabled={!connected}
-                  className="shrink-0 h-11 w-11 rounded-2xl border border-[var(--border)] text-[var(--text-muted)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors disabled:opacity-40"
+                  className="ui-icon-button shrink-0 h-11 w-11 rounded-2xl border border-[var(--border)] text-[var(--text-muted)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors disabled:opacity-40"
                   aria-label="End chat"
                   title="End chat"
                 >

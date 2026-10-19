@@ -1,0 +1,116 @@
+/* Shared action styles. Cards, tabs, and inline navigation keep their own roles. */
+:root {
+  --button-purple: #520f96;
+  --button-hover: #3a0a6b;
+  --button-height: 52px;
+}
+
+body .site-root :is(.ui-button, .home-cta, .home-hero-mobile-cta, .site-button, .flow-btn, .coverage-result-primary, .cov-form-btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--button-height);
+  height: auto;
+  padding: 12px 24px;
+  border: 2px solid var(--button-purple);
+  border-radius: 0;
+  background: var(--button-purple);
+  color: #fff;
+  box-shadow: none;
+  font-family: Archivo, Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: .04em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+body .site-root :is(.ui-button, .home-cta, .home-hero-mobile-cta, .site-button, .flow-btn, .coverage-result-primary, .cov-form-btn):hover:not(:disabled):not([aria-disabled=true]) {
+  background: var(--button-hover);
+  border-color: var(--button-hover);
+  color: #fff;
+}
+body .site-root :is(.ui-button--secondary, .site-button-outline, .flow-btn-back) {
+  background: #fff;
+  color: var(--button-purple);
+  border-color: var(--button-purple);
+}
+body .site-root :is(.ui-button--secondary, .site-button-outline, .flow-btn-back):hover:not(:disabled):not([aria-disabled=true]) {
+  background: #f2eafa;
+  color: var(--button-hover);
+  border-color: var(--button-hover);
+}
+body .site-root .ui-button--inverse {
+  background: #fff;
+  color: var(--button-purple);
+  border-color: #fff;
+}
+body .site-root .ui-button--inverse:hover:not(:disabled) { background: #eee5f8; color: var(--button-purple); border-color: #eee5f8; }
+body .site-root .ui-button--compact { min-height: 44px; padding: 10px 16px; font-size: 13px; }
+body .site-root :is(.ui-button, .home-cta, .home-hero-mobile-cta, .site-button, .flow-btn, .coverage-result-primary, .cov-form-btn):is(:disabled, [aria-disabled=true]) {
+  background: #e9e1f2;
+  border-color: #e9e1f2;
+  color: #655573;
+  opacity: 1;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+body .site-root [aria-busy=true] { cursor: progress; }
+body .site-root :is(.ui-button, .home-cta, .site-button, .flow-btn) svg { flex-shrink: 0; }
+
+/* Compact controls still have a 44px touch target. */
+:where(.ui-icon-button) { display: inline-flex; }
+body .site-root .ui-icon-button {
+  align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; width: 44px; height: 44px;
+  padding: 10px; border-radius: 6px; flex-shrink: 0; cursor: pointer;
+  touch-action: manipulation;
+}
+body .site-root .ui-icon-button:disabled { opacity: .45; cursor: not-allowed; }
+body .site-root .ui-text-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding-block: 8px; color: var(--button-purple);
+  font-size: 14px; font-weight: 700; text-decoration: underline;
+  text-underline-offset: 4px; border-radius: 0; background: transparent;
+}
+body .site-root .ui-text-button:hover:not(:disabled) { color: var(--button-hover); }
+body .site-root button:disabled { cursor: not-allowed; }
+body .site-root :is(button, a, [role=button], summary):focus-visible {
+  outline: 3px solid #a561df; outline-offset: 3px;
+  box-shadow: 0 0 0 2px #fff;
+}
+body .site-root :is(.cat-chip, .flow-chip, .track-back, .flow-zip-back, .coverage-result-change, .track-otp-actions button) { min-height: 44px; }
+body .site-root :is(.cat-stepper button, .review-stepper button, .review-remove, .cat-search-clear) { min-width: 44px; min-height: 44px; }
+body .site-root .cat-stepper { min-height: 44px; }
+body .site-root .soft-tabs button { min-height: 44px; }
+body .site-root :is(.home-policy-menu button, nav[aria-label="Policy sections"] button) { min-height: 44px; }
+body .site-root .home-nav > button:first-child { min-height: 44px; }
+body .site-root .home-nav > ul button { min-height: 44px; }
+body .site-root .home-menu-util { min-height: 44px; }
+body .site-root :is(.home-hero-mobile-link, .site-flow-header button) { min-height: 44px; }
+body .site-root .site-flow-nav .flow-btn { min-width: 48px; padding-inline: 16px; }
+
+/* White borders keep actions distinct on the purple mobile hero. */
+body .site-root .home-hero-mobile-cta { border-color: #fff; }
+body .site-root .home-hero-mobile-cta:hover { border-color: #fff; }
+@media (max-width: 767px) {
+  :root { --button-height: 48px; }
+  body .site-root :is(.ui-button, .home-cta, .site-button, .flow-btn, .coverage-result-primary, .cov-form-btn) { padding: 12px 18px; }
+  body .site-root .cov-form-btn { padding-inline: 14px; min-width: 100px; }
+  body .site-root .site-hero-actions .site-button-outline { background: transparent; color: #fff; border-color: #fff; }
+}
+@media (max-width: 479px) {
+  body .site-root .review-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 44px; gap: 10px 12px; }
+  body .site-root .review-name { white-space: normal; overflow: visible; }
+  body .site-root .review-stepper { grid-column: 2; justify-self: start; }
+  body .site-root .review-remove { grid-column: 3; grid-row: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body .site-root :is(button, a) { transition: none; }
+}

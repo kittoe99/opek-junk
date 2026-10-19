@@ -176,7 +176,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .home-form-panel > div[class*="max-w-"] { max-width: none; }
 .home-form-panel .site-form-card { border-radius: 0; }
 .home-form-aside { position: sticky; top: calc(var(--site-header-height) + 24px); }
-.home-detail summary { list-style-position: outside; margin-left: 18px; padding-right: 8px; }
+
 @media (max-width:767px) {
   .interior-hero .home-hero-visual > img { height: 96%; width: 86%; left: 50%; bottom: 0; object-fit: contain; object-position: bottom; }
   .interior-hero-vehicle .home-hero-visual > img { width: 82%; height: 90%; }
@@ -815,7 +815,40 @@ select.opek-field {
 .soft-callout button { font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .soft-note { margin-top: 14px; text-align: center; font-size: 13px; line-height: 1.5; color: #6b5f78; }
 .soft-card .flow-zip-steps { margin: 0 0 18px; }
-.soft-card .flow-zip-trust { margin-top: 18px; gap: 6px 12px; font-size: 12px; }
+.soft-card .flow-zip-trust { margin-top: 18px; gap: 6px 10px; font-size: 12px; }
+.soft-card .flow-zip-trust li { gap: 4px; }
 .soft-card > .check-card { margin-top: 4px; }
 .soft-card > .soft-details:first-child { margin-top: 0; border-top: 0; }
 .soft-card > .soft-details:first-child > div:first-child { padding-top: 0; }
+.soft-card-media {
+  margin: -22px -22px 20px; height: clamp(150px, 42vw, 220px); overflow: hidden;
+  border-radius: 15px 15px 0 0; background: #efe6f9;
+}
+.soft-card-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+@media (min-width: 768px) { .soft-card-media { margin: -28px -28px 24px; } }
+
+/* Homepage: soft-card polish */
+.home-soft-band { background: linear-gradient(#f7f2fd, #fbf8fe 60%, #fff); }
+.home-service-card { display: flex; flex-direction: column; text-align: left; }
+.home-light .home-service-media { height: auto; aspect-ratio: 16 / 9; background: #f1e9fa; }
+.home-service-media img { object-fit: cover; object-position: center 65%; }
+.home-card-details { margin-top: 20px; border-top: 1.5px solid #f0eaf6; }
+.home-detail { border-bottom: 1.5px solid #f0eaf6; }
+.home-detail:last-child { border-bottom: 0; }
+.home-detail summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; cursor: pointer;
+  list-style: none; font-size: 14.5px; font-weight: 700; color: #140a1f;
+}
+.home-detail summary::-webkit-details-marker { display: none; }
+.home-detail summary svg { flex: none; color: #520f96; transition: transform .2s; }
+.home-detail[open] summary svg { transform: rotate(180deg); }
+/* Card look without padding, for containers that set their own spacing. */
+.soft-surface { background: #fff; border: 1.5px solid #e9e1f2; border-radius: 16px; box-shadow: 0 24px 50px -36px rgb(40 10 80 / 45%); }
+.stripe-field {
+  display: flex; flex-direction: column; justify-content: center; min-height: 54px; padding: 0 16px;
+  background: #fcfaff; border: 1.5px solid #ddd1ea; border-radius: 10px; box-shadow: 0 1px 2px rgb(40 10 80 / 4%);
+  transition: border-color .15s, background-color .15s, box-shadow .15s;
+}
+.stripe-field:hover { border-color: #b9a3d3; }
+.stripe-field:focus-within { border-color: #520f96; background: #fff; box-shadow: 0 0 0 4px rgb(82 15 150 / 12%); }
+.stripe-field > * { width: 100%; }

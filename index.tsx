@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/tailwind.css';
 import './styles/site.css';
+import './styles/buttons.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

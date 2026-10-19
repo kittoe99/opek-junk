@@ -49,7 +49,7 @@ export const HustleMuscle: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/booking')}
-              className="group inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-transparent px-6 sm:px-7 py-3 sm:py-3.5 text-[13px] sm:text-sm font-semibold text-[var(--text)] hover:border-brand/50 hover:bg-[var(--surface-2)] transition-all"
+              className="ui-button ui-button--secondary"
             >
               <Calendar size={16} className="text-brand" />
               Book A Pickup

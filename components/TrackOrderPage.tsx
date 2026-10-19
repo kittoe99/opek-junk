@@ -358,9 +358,9 @@ export const TrackOrderPage: React.FC = () => {
               </>
             )}
 
-            <button type="submit" disabled={submitDisabled} className="flow-btn flow-btn-primary w-full">
+            <button type="submit" disabled={submitDisabled} aria-busy={loading} className="flow-btn flow-btn-primary w-full">
               {loading ? (
-                <Loader2 size={18} className="animate-spin" aria-label="Loading" />
+                <><Loader2 size={18} className="animate-spin" aria-hidden /><span>{otpStep ? 'Verifying…' : searchType === 'phone' ? 'Sending code…' : 'Finding order…'}</span></>
               ) : (
                 <>
                   {otpStep ? 'Verify' : searchType === 'phone' ? 'Text me a code' : 'Find my order'}

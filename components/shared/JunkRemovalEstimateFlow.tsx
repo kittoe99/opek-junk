@@ -415,7 +415,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                     <p className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Platform Coverage Included</p>
                   </div>
                 </div>
-                <button type="button" onClick={() => setShowInsuranceModal(false)} className="w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors">
+                <button type="button" onClick={() => setShowInsuranceModal(false)} aria-label="Close coverage details" className="ui-icon-button w-8 h-8 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] flex items-center justify-center text-[var(--text)] transition-colors">
                   <X size={16} />
                 </button>
               </div>
@@ -537,7 +537,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                       <div key={index} className="relative aspect-[4/3] border border-[var(--border)] bg-[var(--surface)] overflow-hidden rounded-xl">
                         <img src={imgSrc} alt={`Capture ${index + 1}`} className="w-full h-full object-cover" />
                         {loadingState !== LoadingState.ANALYZING && (
-                          <button type="button" onClick={() => removeUploadedImage(index)} className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">
+                          <button type="button" onClick={() => removeUploadedImage(index)} className="ui-icon-button absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-500 text-white w-6 h-6 flex items-center justify-center text-xs rounded-full" aria-label="Remove photo">
                             <X size={12} />
                           </button>
                         )}

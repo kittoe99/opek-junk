@@ -58,7 +58,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
                 <button
                   type="button"
                   onClick={onBookOnline}
-                  className="rounded-none text-[14px] font-bold uppercase tracking-wide text-[#520f96] underline underline-offset-4 decoration-2 hover:text-[#3a0a6b]"
+                  className="ui-button ui-button--secondary"
                 >
                   Book a pickup
                 </button>

@@ -161,9 +161,9 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
 
           {cta && (
             <div className="mt-14 md:mt-16 text-center">
-              <button
+              <button type="button"
                 onClick={cta.onClick}
-                className="px-10 py-3.5 text-sm font-semibold bg-secondary text-white hover:bg-secondary-600 transition-colors duration-200 rounded-full shadow-sm"
+                className="ui-button"
               >
                 {cta.label}
               </button>
@@ -251,9 +251,9 @@ export const ProcessEditorial: React.FC<ProcessEditorialProps> = ({
 
         {cta && (
           <div className="mt-16 md:mt-24 text-center">
-            <button
+            <button type="button"
               onClick={cta.onClick}
-              className="px-8 py-4 text-sm font-bold uppercase tracking-wider bg-brand text-white hover:bg-brand-600 transition-all duration-300 rounded-xl shadow-md hover:shadow-xl inline-flex items-center gap-2"
+              className="ui-button"
             >
               <span>{cta.label}</span>
               <ArrowRight size={14} strokeWidth={2.5} />

@@ -75,9 +75,10 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
           <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-secondary/5 rounded-full blur-2xl pointer-events-none" />
 
           {/* Close button */}
-          <button
+          <button type="button"
             onClick={handleClose}
-            className="absolute top-3.5 right-3.5 w-7 h-7 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-white transition-all rounded-full z-20"
+            aria-label="Close service area check"
+            className="ui-icon-button absolute top-3.5 right-3.5 w-7 h-7 flex items-center justify-center text-secondary-400 hover:text-secondary hover:bg-white transition-all rounded-full z-20"
           >
             <X size={16} />
           </button>
@@ -115,13 +116,14 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                     style={{ border: 'none', background: 'transparent', boxShadow: 'none' }}
                     autoFocus
                   />
-                  <button
+                  <button type="button"
                     onClick={handleZipCheck}
                     disabled={isLoading || zipCode.length !== 5}
-                    className="px-5 py-3 bg-secondary text-white font-black text-[10px] uppercase tracking-wider rounded-lg hover:bg-brand active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 shadow-[0_3px_8px_rgba(53,80,112,0.15)] hover:shadow-[0_4px_12px_rgba(82,15,150,0.25)] disabled:shadow-none shrink-0"
+                    aria-busy={isLoading}
+                    className="ui-button shrink-0"
                   >
                     {isLoading ? (
-                      <Loader2 size={12} className="animate-spin" />
+                      <><Loader2 size={12} className="animate-spin" aria-hidden />Checking…</>
                     ) : (
                       <>
                         <span>Check</span>
@@ -174,14 +176,14 @@ export const ZipCheckModal: React.FC<ZipCheckModalProps> = ({ isOpen, onClose, o
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={handleGetQuote}
-                  className="w-full py-4 bg-secondary text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-brand active:scale-98 transition-all duration-300 flex items-center justify-center gap-1.5 shadow-lg shadow-secondary/10 hover:shadow-brand/20"
+                  className="ui-button w-full"
                 >
                   <span>Get a Free Quote</span>
                   <ArrowRight size={12} />
                 </button>
-                <button
+                <button type="button"
                   onClick={reset}
                   className="w-full py-2.5 text-[10px] font-bold text-secondary-400 hover:text-brand transition-colors mt-1"
                 >
