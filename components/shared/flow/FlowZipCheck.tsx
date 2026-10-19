@@ -118,7 +118,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
         <h1 className="home-display soft-title">{title}</h1>
         {subtitle && <p className="soft-sub">{subtitle}</p>}
         <div className="soft-card">
-          <div className="ui-image-frame soft-card-media" aria-hidden>
+          <div className="ui-image-frame flow-zip-card-media soft-card-media" aria-hidden>
             <img src={image} alt="" />
           </div>
           {stepsStrip}
