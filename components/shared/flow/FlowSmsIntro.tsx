@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 
 interface FlowSmsIntroProps { onContinue: () => void; }
 
@@ -26,11 +26,26 @@ export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => {
             Then make room.
           </h1>
           <p className="flow-intro-sub">Free estimate by text in about a minute.</p>
+          <ol className="flow-intro-steps" aria-label="How it works">
+            {['Pick your items', 'Get your price by text', 'Book a time'].map((step, i) => (
+              <li key={step}>
+                <span className="flow-intro-step-num" aria-hidden>{i + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
           <button type="button" onClick={continueAtTop} className="flow-btn flow-btn-primary flow-intro-cta">
             Get my free quote
             <ArrowRight size={18} aria-hidden />
           </button>
-          <p className="flow-intro-note">No obligation to book.</p>
+          <p className="flow-intro-note">
+            No obligation to book
+            <span aria-hidden> · </span>
+            <span className="inline-flex items-center gap-1">
+              <Star size={13} className="fill-[#520f96] text-[#520f96]" aria-hidden />
+              Rated 4.8
+            </span>
+          </p>
         </div>
       </div>
     </section>
