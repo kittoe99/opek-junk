@@ -93,7 +93,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
     >
       <div className="cov-inner">
         {/* Decorative map: the ZIP check is the real coverage answer. */}
-        <div className="ui-image-frame ui-image-frame--illustration cov-map" aria-hidden>
+        <div className="cov-map" aria-hidden>
           <svg viewBox="0 0 959 593">
             <defs>
               <pattern id={`${mapId}-dots`} width={9} height={9} patternUnits="userSpaceOnUse">

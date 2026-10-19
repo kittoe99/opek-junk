@@ -1,7 +1,6 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { HomeLogo } from './HomeLogo';
 
 const SITE_PHONE = '8313187139';
 const SITE_PHONE_DISPLAY = '(831) 318-7139';
@@ -69,20 +68,23 @@ export const HomeFooter: React.FC = () => (
           <p className="home-display text-[2.3rem] leading-[0.92] sm:text-[3.4rem] lg:text-[4rem]">
             Clear the clutter. Book in minutes.
           </p>
-          <div className="mt-6 md:mt-8 flex items-center gap-4 md:gap-5 rounded-xl md:rounded-none bg-white/10 md:bg-transparent p-4 md:p-0">
+          <div className="mt-6 md:mt-8 flex items-center gap-4 md:gap-5">
             <a
               href={`tel:${SITE_PHONE}`}
-              className="flex h-[64px] w-[84px] md:h-[88px] md:w-[120px] shrink-0 items-center justify-center rounded-xl bg-white text-[#520f96]"
+              className="flex h-16 w-12 md:h-20 md:w-16 shrink-0 items-center justify-center text-white hover:opacity-80"
               aria-label={`Call ${SITE_PHONE_DISPLAY}`}
             >
-              <HomeLogo className="h-auto w-[66px] md:w-[96px]" />
+              <svg viewBox="8 4 22 24" className="w-full h-auto" fill="currentColor" aria-hidden="true">
+                <polygon points="15.04,5.12 20.16,5.12 14.4,26.88 9.28,26.88" />
+                <polygon points="23.36,5.12 28.48,5.12 22.72,26.88 17.6,26.88" />
+              </svg>
             </a>
             <div className="min-w-0">
               <p className="text-[12px] md:text-[15px] font-bold uppercase tracking-wide">Call or text any time</p>
               <a href={`tel:${SITE_PHONE}`} className="home-display text-[1.45rem] md:text-[1.6rem] leading-tight hover:underline">
                 {SITE_PHONE_DISPLAY}
               </a>
-              <p className="mt-1 truncate text-[13px] md:text-[14px]">
+              <p className="mt-1 [overflow-wrap:anywhere] text-[13px] md:text-[14px]">
                 <a href="mailto:Support@opekjunkremoval.com" className="underline underline-offset-2">
                   Support@opekjunkremoval.com
                 </a>

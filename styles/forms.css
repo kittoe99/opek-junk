@@ -87,20 +87,20 @@ body .site-root .ui-address-results button:hover { background: var(--ui-tint); }
 
 @media (min-width: 768px) { :root { --ui-card-padding: 28px; } }
 
-/* Frame content photography and illustrations in the brand palette. Hero images and logos do
-   not opt in; quote pages only opt in for the ZIP card image. */
+/* Frame opted-in photography and illustrations. Only the homepage hero opts in;
+   quote pages only opt in for the ZIP card image. */
 body .site-root main[data-image-borders="on"] .ui-image-frame,
 body .site-root main .flow-zip-card-media.ui-image-frame {
   border: 2px solid #b58ad4;
   border-bottom: 5px solid var(--button-purple);
   border-radius: 0;
 }
+body .site-root main[data-image-borders="on"] .ui-image-frame--home-hero {
+  border-bottom-color: #fff;
+  border-bottom-width: 2px;
+}
 body .site-root main[data-image-borders="on"] .ui-image-frame--illustration {
   padding: clamp(12px, 2vw, 24px);
-}
-body .site-root main[data-image-borders="on"] .cov-map.ui-image-frame {
-  background: rgb(255 255 255 / 4%);
-  filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) { body .site-root :is(input, select, textarea) { transition: none; } }
