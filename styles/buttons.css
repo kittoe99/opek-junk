@@ -105,11 +105,15 @@ body .site-root .home-hero-mobile-cta:hover { border-color: #fff; }
   body .site-root .cov-form-btn { padding-inline: 14px; min-width: 100px; }
   body .site-root .site-hero-actions .site-button-outline { background: transparent; color: #fff; border-color: #fff; }
 }
-@media (max-width: 479px) {
-  body .site-root .review-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 44px; gap: 10px 12px; }
-  body .site-root .review-name { white-space: normal; overflow: visible; }
-  body .site-root .review-stepper { grid-column: 2; justify-self: start; }
-  body .site-root .review-remove { grid-column: 3; grid-row: 1; }
+@media (max-width: 639px) {
+  body .site-root .review-row { display: flex; flex-wrap: nowrap; gap: 6px; padding: 12px 8px; }
+  body .site-root .review-icon { flex-basis: 32px; height: 36px; border-radius: 6px; }
+  body .site-root .review-icon svg { width: 28px; height: 28px; }
+  body .site-root .review-name { font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+  body .site-root .review-stepper { gap: 0; padding: 0 2px; }
+  body .site-root .review-stepper button { width: 32px; min-width: 32px; height: 44px; }
+  body .site-root .review-stepper span { min-width: 20px; font-size: 14px; }
+  body .site-root .review-remove { width: 36px; min-width: 36px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   body .site-root :is(button, a) { transition: none; }

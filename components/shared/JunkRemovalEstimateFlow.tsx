@@ -610,7 +610,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                     <span className="review-icon" aria-hidden>
                       <ItemIconRenderer imagePath={getItemImage(item.name)} className="w-8 h-8" />
                     </span>
-                    <p className="review-name min-w-0 flex-1 truncate">{item.name}</p>
+                    <p className="review-name min-w-0 flex-1">{item.name}</p>
                     <div className="review-stepper shrink-0">
                       <button type="button" onClick={() => updateSelectedQuantity(item.id, -1)} aria-label={`Remove one ${item.name}`}>
                         <Minus size={15} strokeWidth={2.75} />
