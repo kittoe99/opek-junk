@@ -1,0 +1,11 @@
+Use case: product-mockup
+Asset type: Opek junk removal quote page hero, isolated transparent PNG.
+Primary request: A premium photorealistic 3D product composition of exactly TWO modern smartphones in vertical portrait orientation, gently tilted in opposite directions, demonstrating a junk removal price estimate. No hands. Both front screens face viewer, crisp and readable. The left phone sits slightly behind and leans left by 12 degrees; the right phone is slightly lower, leans right by 10 degrees, and is the main focus. Slight overlap of outer frames only, never obstruct the displayed price.
+Composition: compact centered pair filling approximately 88% of a square canvas with comfortable clear margins around every phone corner. Both phones fully visible. Thin realistic charcoal frames, glass screens, subtle reflections, soft studio lighting. No pedestal or surrounding objects.
+Palette: Opek deep purple #520f96, bright purple accents, pale lavender and clean white interfaces.
+Left screen: purple header with exact text "Opek", white main heading "Your items", attractive purple line illustration of a sofa with two moving boxes, simple summary below "Sofa + boxes", small purple check icon and text "Ready for pickup".
+Right screen: purple header with exact text "Opek", main heading "Your estimate", small text "Sample estimate" immediately above a VERY LARGE bold purple "$169", small line "Junk removal", a lavender rounded information strip "No obligation to book", and a purple button labeled "View estimate".
+Typography: clean modern sans serif, high legibility, restrained spacious app UI, exact spelling. All interface text belongs within phone screens only.
+Constraints: genuinely transparent alpha background, no baked-in colored backdrop, no checkerboard, no hand, no people, no extra devices, no floating badges, no outside text, no watermark. This is an illustrative sample price, clearly labeled. Website applies its own faded purple background.
+
+Generated with built-in image_gen, transparent_background=true. Website applies the faded purple background separately.

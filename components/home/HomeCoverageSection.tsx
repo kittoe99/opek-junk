@@ -13,7 +13,7 @@ type StatePath = Awaited<ReturnType<typeof loadStatePaths>>[number];
 const shortName = (city: CoverageCity) => city.name.replace(/, [A-Z.]+$/, '');
 
 interface HomeCoverageSectionProps {
-  /** Two-part heading: the second part is shown in purple. */
+  /** Two-part heading: the second part is shown in lavender. */
   titleStart?: string;
   titleAccent?: string;
   /** Called with a valid ZIP instead of going to /quote. */
@@ -63,27 +63,27 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
   return (
     <section
       id="service-area"
-      className="bg-[#f4eefc] py-12 md:py-20 scroll-mt-[var(--site-header-height)]"
+      className="coverage bg-[#520f96] text-white py-14 md:py-20 scroll-mt-[var(--site-header-height)]"
       aria-labelledby="home-coverage-heading"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] gap-8 lg:gap-12 items-center">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] gap-10 lg:gap-14 items-center">
           {/* Copy + ZIP */}
           <div className="text-center lg:text-left">
-            <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#520f96]">Nationwide coverage</p>
+            <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#d9c2f5]">Nationwide coverage</p>
             <h2
               id="home-coverage-heading"
-              className="home-display mt-3 text-[2.1rem] leading-[0.95] sm:text-[2.8rem] lg:text-[3.2rem] text-[#140a1f]"
+              className="home-display mt-3 text-[2.3rem] leading-[0.95] sm:text-[2.8rem] lg:text-[3.2rem] text-white"
             >
               {titleStart}
               <br />
-              <span className="text-[#520f96]">{titleAccent}</span>
+              <span className="text-[#d9c2f5]">{titleAccent}</span>
             </h2>
-            <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-[#2b2236] max-w-md mx-auto lg:mx-0">
-              Matched local providers arrive ready to load and haul. Enter your ZIP to confirm coverage and see your price.
+            <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-[#eadcfb] max-w-md mx-auto lg:mx-0">
+              Enter your ZIP to confirm coverage and see your price. Local providers arrive ready to load and haul.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-6 flex max-w-[440px] mx-auto lg:mx-0 shadow-[0_14px_30px_-20px_rgba(40,10,80,0.6)]" noValidate>
+            <form onSubmit={handleSubmit} className="mt-7 flex max-w-[440px] mx-auto lg:mx-0 shadow-[0_14px_30px_-20px_rgba(20,0,50,0.8)]" noValidate>
               <label htmlFor="home-zip" className="sr-only">
                 ZIP code
               </label>
@@ -101,58 +101,57 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                   }}
                   aria-invalid={Boolean(error)}
                   aria-describedby={error ? 'home-zip-error' : undefined}
-                  className="h-[56px] w-full rounded-none border-2 border-r-0 border-[#520f96] bg-white pl-11 pr-3 text-[16px] font-semibold text-[#140a1f]"
+                  className="h-[56px] w-full rounded-none border-2 border-r-0 border-white bg-white pl-11 pr-3 text-[16px] font-semibold text-[#140a1f]"
                 />
               </div>
-              <button type="submit" className="home-cta shrink-0 !min-h-[56px] !px-5 sm:!px-7">
+              <button type="submit" className="home-cta shrink-0 !min-h-[56px] !px-5 sm:!px-7 border-2 border-white">
                 Check area
               </button>
             </form>
             {error && (
-              <p id="home-zip-error" role="alert" className="mt-3 text-sm font-bold text-[#b0004f]">
+              <p id="home-zip-error" role="alert" className="mt-3 text-sm font-bold text-[#ffd1dc]">
                 {error}
               </p>
             )}
 
             {/* Selected city */}
-            <div className="mt-5 min-h-[52px] max-w-[440px] mx-auto lg:mx-0" aria-live="polite">
-              {selectedCity ? (
-                <div className="flex items-center justify-between gap-3 rounded-lg bg-white px-4 py-3 text-left">
-                  <span className="flex min-w-0 items-center gap-2 text-[14px] font-semibold text-[#140a1f]">
-                    <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#22a35a]" aria-hidden />
-                    <span className="truncate">Providers serve {shortName(selectedCity)}</span>
-                  </span>
-                  <Link
-                    to={selectedCity.hasCityPage ? `/locations/${selectedCity.slug}` : '/quote'}
-                    className="inline-flex shrink-0 items-center gap-1 text-[14px] font-bold text-[#520f96]"
-                  >
-                    {selectedCity.hasCityPage ? 'City page' : 'Get pricing'}
-                    <ArrowRight size={15} aria-hidden />
-                  </Link>
-                </div>
-              ) : (
-                <p className="text-[13px] text-[#5a5266]">Or pick a popular city on the map.</p>
-              )}
-            </div>
+            {selectedCity && (
+              <div
+                className="mt-4 max-w-[440px] mx-auto lg:mx-0 flex items-center justify-between gap-3 rounded-lg bg-white/10 px-4 py-3 text-left"
+                aria-live="polite"
+              >
+                <span className="flex min-w-0 items-center gap-2 text-[14px] font-semibold">
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#5ee08f]" aria-hidden />
+                  <span className="truncate">Providers serve {shortName(selectedCity)}</span>
+                </span>
+                <Link
+                  to={selectedCity.hasCityPage ? `/locations/${selectedCity.slug}` : '/quote'}
+                  className="inline-flex shrink-0 items-center gap-1 text-[14px] font-bold underline underline-offset-4"
+                >
+                  {selectedCity.hasCityPage ? 'City page' : 'Get pricing'}
+                  <ArrowRight size={15} aria-hidden />
+                </Link>
+              </div>
+            )}
           </div>
 
-          {/* Map card */}
-          <div className="rounded-2xl bg-white p-3 sm:p-6 shadow-[0_24px_50px_-30px_rgba(40,10,80,0.45)]">
+          {/* Map */}
+          <div>
             <div className="relative">
               <svg viewBox="0 0 959 593" className="h-auto w-full touch-manipulation" role="img" aria-label="Map of popular Opek service cities across the United States">
                 {states.map((s) => (
                   <path
                     key={s.id}
                     d={s.d}
-                    fill={active && s.id.toLowerCase() === active.state.toLowerCase() ? '#c39be6' : '#e6d8f6'}
-                    stroke="#ffffff"
-                    strokeWidth={1.2}
+                    fill={active && s.id.toLowerCase() === active.state.toLowerCase() ? 'rgba(255,255,255,0.34)' : 'rgba(255,255,255,0.14)'}
+                    stroke="#520f96"
+                    strokeWidth={1.4}
                     className="transition-colors duration-200"
                   />
                 ))}
                 {coverageCities.map((city) => {
                   const isActive = city.slug === activeSlug;
-                  const size = isActive ? 34 : 24;
+                  const size = isActive ? 36 : 24;
                   return (
                     <g
                       key={city.slug}
@@ -176,7 +175,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                     >
                       <circle cx={size / 2} cy={size / 2} r={22} fill="transparent" />
                       <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden>
-                        <path d={PIN} fill={isActive ? '#a020f0' : '#520f96'} />
+                        <path d={PIN} fill={isActive ? '#d9c2f5' : '#ffffff'} />
                       </svg>
                     </g>
                   );
@@ -185,7 +184,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
 
               {active && (
                 <div
-                  className="pointer-events-none absolute z-10 whitespace-nowrap bg-[#140a1f] px-2.5 py-1.5 text-[12px] font-bold text-white"
+                  className="pointer-events-none absolute z-10 whitespace-nowrap rounded-md bg-white px-2.5 py-1.5 text-[12px] font-bold text-[#520f96] shadow-[0_10px_24px_-12px_rgba(20,0,50,0.7)]"
                   style={{
                     left: `${(active.x / 959) * 100}%`,
                     top: `${(active.y / 593) * 100}%`,
@@ -197,17 +196,17 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
               )}
             </div>
 
-            <div className="mt-3 sm:mt-4 -mx-3 sm:mx-0 px-3 sm:px-0 flex sm:flex-wrap sm:justify-center gap-2 lg:gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="mt-5 flex flex-wrap justify-center gap-2" aria-label="Popular cities">
               {popular.map((city) => (
                 <button
                   key={city.slug}
                   type="button"
                   onClick={() => setSelected(city.slug)}
                   aria-pressed={city.slug === selected}
-                  className={`shrink-0 min-h-10 rounded-full border px-3.5 lg:px-3 text-[13px] lg:text-[12.5px] font-semibold transition-colors ${
+                  className={`min-h-10 rounded-full border px-4 text-[13px] font-bold transition-colors ${
                     city.slug === selected
-                      ? 'border-[#520f96] bg-[#520f96] text-white'
-                      : 'border-[#ddd0ee] bg-[#f7f3fc] text-[#3a0a6b] hover:border-[#520f96]'
+                      ? 'border-white bg-white text-[#520f96]'
+                      : 'border-white/35 text-white hover:border-white hover:bg-white/10'
                   }`}
                 >
                   {shortName(city)}
@@ -217,7 +216,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
           </div>
         </div>
 
-        <p className="mt-8 text-center lg:text-left text-[12px] leading-snug text-[#5a5266]">
+        <p className="mt-10 text-center lg:text-left text-[12px] leading-snug text-[#cdb6ea]">
           Opek connects customers with independent local providers. Service availability varies by location; enter your ZIP
           to confirm coverage in your area.
         </p>

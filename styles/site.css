@@ -289,7 +289,8 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   background: radial-gradient(ellipse at 40% 30%, #d6b6f2 0%, #eadcf8 48%, #f7f1fc 76%, #fff 100%);
 }
 .flow-intro-image {
-  display: block; width: 100%; height: 100%; object-fit: cover; object-position: center;
+  display: block; width: 100%; height: 100%; padding: 12px;
+  object-fit: contain; object-position: center;
 }
 .flow-intro-copy {
   padding: 32px 22px calc(32px + env(safe-area-inset-bottom));
@@ -300,7 +301,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .flow-intro-note { margin-top: 12px; font-size: 13px; font-weight: 600; color: #6b5f78; }
 @media (min-width: 768px) {
   .flow-intro-art { height: clamp(400px, 50vw, 560px); }
-  .flow-intro-image { object-fit: contain; object-position: right bottom; }
+  .flow-intro-image { padding: 20px; }
   .flow-intro-copy { max-width: 760px; margin: 0 auto; padding: 36px 32px; }
   .flow-intro-cta { width: auto; min-width: 320px; }
 }
@@ -317,8 +318,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
     height: clamp(480px, 36vw, 560px); background: none;
   }
   .flow-intro-image {
-    object-fit: cover; object-position: right center;
-    mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+    padding: 24px 0;
   }
   .flow-intro-copy {
     grid-area: copy; max-width: none; margin: 0; padding: 48px 24px 48px 0;
@@ -536,4 +536,22 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 @media (prefers-reduced-motion: reduce) {
   .pt-logo { display: none; }
   .pt-enter { animation: pt-fade .2s ease-out both; }
+}
+
+/* Phone hero: the violet block fades up out of the photo so the two read as one section */
+@media (max-width: 767px) {
+  .home-light .home-hero:has(.home-hero-photo) .home-hero-visual { height: clamp(300px, 86vw, 420px); }
+  .home-light .home-hero:has(.home-hero-photo) .home-hero-copy {
+    position: relative; z-index: 1;
+    margin-top: -120px; padding-top: 132px;
+    background-color: transparent;
+    background-image:
+      linear-gradient(180deg,
+        rgb(160 32 240 / 0) 0,
+        rgb(160 32 240 / .35) 40px,
+        rgb(160 32 240 / .82) 88px,
+        #a020f0 128px,
+        #9a1ce8 70%,
+        #8a14d6 100%);
+  }
 }

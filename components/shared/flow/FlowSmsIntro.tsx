@@ -14,8 +14,8 @@ export const FlowSmsIntro: React.FC<FlowSmsIntroProps> = ({ onContinue }) => {
       <div className="flow-intro-inner">
         <div className="flow-intro-art">
           <img
-            src="/service-scenes/quote-estimate-phone-cutout.png"
-            alt="Hand holding a phone showing an illustrated junk removal price estimate"
+            src="/service-scenes/quote-estimate-two-phones.png"
+            alt="Two tilted phones showing sofa and box pickup items beside a sample $169 junk removal estimate"
             className="flow-intro-image"
           />
         </div>
