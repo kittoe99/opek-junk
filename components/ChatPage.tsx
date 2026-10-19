@@ -329,7 +329,7 @@ function LiveChatModal({
                       ? 'Ask about pricing, bookings, or anything else…'
                       : 'Connecting…'
                   }
-                  className="opek-chat-input opek-field flex-1 resize-none rounded-2xl border border-[var(--border)] px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
+                  className="opek-chat-input min-h-0 flex-1 resize-none rounded-2xl border border-[var(--border)] px-4 py-3 text-sm focus:outline-none focus:border-brand disabled:opacity-50"
                   style={{
                     backgroundColor: '#ffffff',
                     color: '#140a1f',

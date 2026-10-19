@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { Stripe } from '@stripe/stripe-js';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Check, CreditCard, Loader2, Lock } from 'lucide-react';
+import { ArrowLeft, CreditCard, Loader2, Lock } from 'lucide-react';
 import {
   CardCvcElement,
   CardExpiryElement,
@@ -14,6 +14,7 @@ import { BOOKING_DEPOSIT_AMOUNT, BOOKING_DEPOSIT_AMOUNT_CENTS } from '../../lib/
 import { SMS_MARKETING_CONSENT_TEXT } from '../../lib/customerConsent';
 import { apiUrl } from '../../lib/apiBase';
 import { isStripeConfigured, stripePromise } from '../../lib/stripe';
+import { CheckboxCard } from './CheckboxCard';
 
 const STRIPE_APPEARANCE = {
   theme: 'stripe' as const,
@@ -348,33 +349,17 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
               onChange={(e) => setPostalCode(e.target.value)}
               placeholder="12345"
               autoComplete="postal-code"
-              className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(82,15,150,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(82,15,150,0.45)] transition-all duration-300"
+              className="opek-field w-full px-4 py-3"
             />
           </div>
         </div>
       </div>
 
-      <label className="flex items-start gap-3 p-4 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
-        <div className="relative shrink-0 mt-0.5">
-          <input
-            type="checkbox"
-            checked={termsAccepted}
-            onChange={(e) => {
-              setTermsAccepted(e.target.checked);
-              if (e.target.checked) setError(null);
-            }}
-            className="sr-only"
-          />
-          <div
-            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-              termsAccepted ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-[var(--border)]'
-            }`}
-          >
-            {termsAccepted && <Check size={12} className="text-white" strokeWidth={3.5} />}
-          </div>
-        </div>
-        <span className="text-xs text-[var(--text-muted)] leading-relaxed">
-          I agree to the{' '}
+      <CheckboxCard checked={termsAccepted} onChange={(checked) => {
+              setTermsAccepted(checked);
+              if (checked) setError(null);
+            }}>
+        I agree to the{' '}
           <Link
             to="/terms"
             target="_blank"
@@ -395,29 +380,11 @@ const DepositPaymentForm: React.FC<DepositPaymentFormProps> = ({
             Privacy Policy
           </Link>{' '}
           and authorize Opek Junk Removal to charge my payment method for the ${BOOKING_DEPOSIT_AMOUNT} deposit and any additional deposits or balances as described.
-        </span>
-      </label>
+      </CheckboxCard>
 
-      <label className="flex items-start gap-3 p-4 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl cursor-pointer hover:border-brand/30 transition-colors">
-        <div className="relative shrink-0 mt-0.5">
-          <input
-            type="checkbox"
-            checked={smsMarketingConsent}
-            onChange={(e) => handleSmsMarketingConsentChange(e.target.checked)}
-            className="sr-only"
-          />
-          <div
-            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-              smsMarketingConsent ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-[var(--border)]'
-            }`}
-          >
-            {smsMarketingConsent && <Check size={12} className="text-white" strokeWidth={3.5} />}
-          </div>
-        </div>
-        <span className="text-xs text-[var(--text-muted)] leading-relaxed">
-          {SMS_MARKETING_CONSENT_TEXT}
-        </span>
-      </label>
+      <CheckboxCard checked={smsMarketingConsent} onChange={handleSmsMarketingConsentChange}>
+        {SMS_MARKETING_CONSENT_TEXT}
+      </CheckboxCard>
 
       {error && (
         <p className="text-xs text-brand font-semibold text-center">{error}</p>

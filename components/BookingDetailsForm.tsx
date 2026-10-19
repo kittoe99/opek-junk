@@ -23,6 +23,7 @@ import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { generateOrderNumber } from '../lib/orderNumber';
+import { CheckboxCard } from './shared/CheckboxCard';
 
 const MOVING_ACCESS_CHOICES: { id: MovingAccessType; label: string }[] = [
   { id: 'ground', label: 'Ground floor / street level' },
@@ -716,29 +717,11 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </p>
           </div>
 
-          <label className="flex items-start gap-3 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-xl cursor-pointer hover:border-[var(--border)] transition-colors">
-            <div className="relative shrink-0 mt-0.5">
-              <input
-                type="checkbox"
-                checked={Boolean(localSmsMarketingConsentAt)}
-                onChange={(e) => {
-                  setLocalSmsMarketingConsentAt(e.target.checked ? new Date().toISOString() : null);
-                }}
-                disabled={contactSubmitting}
-                className="sr-only"
-              />
-              <div
-                className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                  localSmsMarketingConsentAt ? 'bg-brand border-brand' : 'bg-[var(--surface)] border-[var(--border)]'
-                }`}
-              >
-                {localSmsMarketingConsentAt && <Check size={12} className="text-white" strokeWidth={3.5} />}
-              </div>
-            </div>
-            <span className="text-xs text-[var(--text-muted)] leading-relaxed">
-              {SMS_MARKETING_CONSENT_TEXT}
-            </span>
-          </label>
+          <CheckboxCard checked={Boolean(localSmsMarketingConsentAt)} onChange={(checked) => {
+                  setLocalSmsMarketingConsentAt(checked ? new Date().toISOString() : null);
+                }} disabled={contactSubmitting}>
+            {SMS_MARKETING_CONSENT_TEXT}
+          </CheckboxCard>
 
           {error && (
             <div className="p-3 bg-brand/10 border border-brand/30 rounded-xl">
@@ -1128,7 +1111,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 onChange={handleInputChange}
                 rows={3}
                 placeholder={isMovingLabor ? "Tell the crew about fragile items, parking, gate codes, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-none hover:shadow-[0_0_28px_-8px_rgba(82,15,150,0.35)] hover:border-brand/40 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-4 focus:ring-brand/10 focus:border-brand focus:shadow-[0_0_28px_-6px_rgba(82,15,150,0.45)] transition-all duration-300 transition-colors"
+                className="opek-field w-full px-4 py-3"
               />
             </div>
           </div>

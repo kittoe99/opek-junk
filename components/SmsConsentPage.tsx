@@ -2,10 +2,10 @@ import { ServicePageHero } from './shared/ServicePageHero';
 import { HomeCallout } from './home/HomePagePatterns';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check } from 'lucide-react';
 import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
 import { FLOW_INPUT, FLOW_LABEL } from '../lib/flowPageLayout';
 import { InputUserIcon, InputPhoneIcon } from './icons/ServiceIcons';
+import { CheckboxCard } from './shared/CheckboxCard';
 
 /**
  * Public proof-of-consent page for Twilio A2P campaign registration.
@@ -88,26 +88,9 @@ export const SmsConsentPage: React.FC = () => {
               </p>
             </div>
 
-            <label className="flex items-start gap-3 p-4 bg-[var(--bg)] border border-[var(--border)] rounded-xl cursor-pointer hover:border-[var(--border)] transition-colors">
-              <div className="relative shrink-0 mt-0.5">
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={(e) => setChecked(e.target.checked)}
-                  className="sr-only"
-                />
-                <div
-                  className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                    checked ? 'bg-brand border-[var(--border)]' : 'bg-[var(--surface)] border-[var(--border)]'
-                  }`}
-                >
-                  {checked && <Check size={12} className="text-white" strokeWidth={3.5} />}
-                </div>
-              </div>
-              <span className="text-xs text-[var(--text-muted)] leading-relaxed">
-                {SMS_MARKETING_CONSENT_TEXT}
-              </span>
-            </label>
+            <CheckboxCard checked={checked} onChange={setChecked}>
+              {SMS_MARKETING_CONSENT_TEXT}
+            </CheckboxCard>
           </div>
           <p className="mt-3 text-xs text-[var(--text-muted)]">
             Demo fields above are for review only and do not submit data.

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Check } from 'lucide-react';
-import { UTILITY_FORM_CARD, UTILITY_PAGE_CONTENT, UTILITY_PAGE_SHELL } from '../../lib/flowPageLayout';
 
 export interface SummaryRow {
   label: string;
@@ -15,6 +14,7 @@ interface SubmissionSuccessViewProps {
   fullScreen?: boolean;
 }
 
+/** Confirmation screen in the soft-card style shared with Track Order. */
 export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
   title = 'Submitted',
   description = 'Your information has been received.',
@@ -22,50 +22,47 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
   summary = [],
   fullScreen = true,
 }) => {
+  const rows = summary.filter((row) => row.value);
+
   const content = (
-    <div className={`${UTILITY_FORM_CARD} max-w-lg w-full`}>
-      <div className="flex items-start gap-4 mb-6">
-        <div className="w-11 h-11 bg-brand text-white rounded-2xl flex items-center justify-center shrink-0 shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]">
-          <Check size={20} strokeWidth={2.5} />
-        </div>
-        <div>
-          <h2 className="font-sans font-extrabold text-2xl text-[var(--text)] tracking-tight">{title}</h2>
-          <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed">{description}</p>
-        </div>
-      </div>
+    <div className="soft-wrap">
+      <span className="soft-success-icon" aria-hidden>
+        <Check size={26} strokeWidth={3} />
+      </span>
+      <h1 className="home-display soft-title">{title}</h1>
+      <p className="soft-sub">{description}</p>
 
-      {orderNumber && (
-        <div className="mb-5 pb-5 border-b border-[var(--border)]">
-          <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1">
-            Order number
-          </p>
-          <p className="text-base font-mono font-semibold text-[var(--text)]">{orderNumber}</p>
-        </div>
-      )}
-
-      {summary.length > 0 && (
-        <dl className="space-y-3">
-          {summary.map(({ label, value }) =>
-            value ? (
-              <div key={label} className="flex flex-col sm:flex-row sm:gap-4">
-                <dt className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider sm:w-32 shrink-0">
-                  {label}
-                </dt>
-                <dd className="text-sm text-[var(--text)] break-words">{value}</dd>
+      {(orderNumber || rows.length > 0) && (
+        <div className="soft-card">
+          {orderNumber && (
+            <div className="soft-head">
+              <div>
+                <p className="soft-label">Order number</p>
+                <p className="soft-order-number">{orderNumber}</p>
               </div>
-            ) : null,
+            </div>
           )}
-        </dl>
+          {rows.length > 0 && (
+            <dl className="soft-details">
+              {rows.map(({ label, value }, i) => (
+                <div key={`${label}-${i}`}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
       )}
+
+      <p className="soft-help">
+        Questions? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+      </p>
     </div>
   );
 
   if (fullScreen) {
-    return (
-      <div className={`${UTILITY_PAGE_SHELL} flex items-start justify-center`}>
-        <div className={UTILITY_PAGE_CONTENT}>{content}</div>
-      </div>
-    );
+    return <div className="site-page home-light interior-home soft-page">{content}</div>;
   }
 
   return content;

@@ -23,15 +23,9 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .site-page :is(h1,h2) { text-transform: uppercase; }
 .site-page h3 { letter-spacing: -.025em; }
 .site-page :is(.animate-fade-in,.animate-fade-in-up,.animate-slide-up,.animate-scale-in) { animation: none; opacity: 1; transform: none; }
-.site-page :is(button,a,input,select,textarea):focus-visible {
+.site-page :is(button,a):focus-visible {
   outline: 3px solid #9a4bd4; outline-offset: 4px;
 }
-.site-page :is(input:not([type=checkbox]):not([type=radio]), select, textarea) {
-  border: 1px solid #d5c7e3; background: #fff; color: #140a1f; border-radius: 6px;
-  min-height: 48px; box-shadow: none;
-}
-.site-page :is(input,select,textarea):focus { border-color: #520f96; box-shadow: 0 0 0 3px #eee5f8; }
-.site-page input[type=checkbox], .site-page input[type=radio] { accent-color: #520f96; }
 .site-page button { cursor: pointer; }
 .site-page button:disabled { cursor: not-allowed; }
 .site-page :is(button,a).rounded-full { border-radius: 4px; }
@@ -195,11 +189,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 /* Quote & booking flow forms */
 .site-flow { background: linear-gradient(#f7f2fd, #fff 360px); }
 .flow-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #520f96; }
-.site-flow :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea) {
-  min-height: 52px; font-size: 16px; border: 1.5px solid #d9cce7; border-radius: 6px; background: #fff;
-}
-.site-flow textarea { min-height: 110px; }
-.site-flow :is(input, select, textarea):focus { border-color: #520f96; box-shadow: 0 0 0 3px #ece2f8; outline: none; }
 .flow-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 54px; padding: 0 20px; border-radius: 0;
@@ -526,6 +515,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .cov-form:focus-within { box-shadow: 0 0 0 4px rgb(217 194 245 / 55%), 0 22px 40px -24px rgb(20 0 50 / 85%); }
 .cov-form-pin { position: absolute; left: 18px; color: #520f96; pointer-events: none; }
 #service-area .cov-form-input {
+  min-height: 0; border-radius: 0;
   flex: 1; min-width: 0; height: 52px; padding: 0 8px 0 40px; border: 0; background: transparent; box-shadow: none;
   font-size: 17px; font-weight: 700; color: #140a1f; outline: none;
 }
@@ -622,7 +612,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   body .flow-btn { min-height: 48px; font-size: 13.5px; }
   body .flow-zip-form .flow-btn { min-height: 52px; }
   body .site-flow .flow-zip-field input { min-height: 54px; font-size: 20px; }
-  body .site-flow :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select) { min-height: 48px; }
 
   /* Option rows, cards, catalog */
   body .flow-option { padding: 12px; gap: 12px; }
@@ -650,3 +639,183 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   body [class*="text-[16px]"] { font-size: 15px; }
   body [class*="text-[15px]"] { font-size: 14px; }
 }
+
+/* ── Form system ──────────────────────────────────────────────
+   Every text field, select and textarea on the site. Generic fields get it
+   at zero specificity (:where) so special-purpose inputs (ZIP bars, search)
+   keep their own look; `.opek-field` opts a field in explicitly. Padding is
+   left to utility classes so icon-prefixed fields keep their offsets. */
+.opek-field,
+:where(.site-root) :where(input:not([type=checkbox], [type=radio], [type=range], [type=file], [type=hidden], [type=submit], [type=button]), select, textarea) {
+  min-height: 54px; border: 1.5px solid #ddd1ea; border-radius: 10px;
+  background-color: #fcfaff; color: #140a1f;
+  font-size: 16px; font-weight: 500; line-height: 1.4;
+  box-shadow: 0 1px 2px rgb(40 10 80 / 4%);
+  transition: border-color .15s, background-color .15s, box-shadow .15s;
+}
+:where(.site-root) :where(input, select, textarea):where(:not([type=checkbox], [type=radio], [type=range])):hover,
+.opek-field:hover { border-color: #b9a3d3; }
+:where(.site-root) :where(input, select, textarea):where(:not([type=checkbox], [type=radio], [type=range])):focus,
+.opek-field:focus {
+  outline: none; border-color: #520f96; background-color: #fff;
+  box-shadow: 0 0 0 4px rgb(82 15 150 / 12%);
+}
+:where(.site-root) :where(input, select, textarea)[aria-invalid=true],
+.opek-field[aria-invalid=true] { border-color: #c2264b; background-color: #fff; }
+:where(.site-root) :where(input, select, textarea)[aria-invalid=true]:focus,
+.opek-field[aria-invalid=true]:focus { box-shadow: 0 0 0 4px rgb(194 38 75 / 14%); }
+:where(.site-root) :where(input, select, textarea):disabled,
+.opek-field:disabled { background-color: #f4f0f8; color: #8a7f95; cursor: not-allowed; box-shadow: none; }
+:where(.site-root) :where(textarea),
+textarea.opek-field { min-height: 120px; padding-top: 14px; padding-bottom: 14px; resize: vertical; }
+:where(.site-root) :where(select),
+select.opek-field {
+  appearance: none; -webkit-appearance: none; padding-right: 44px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23520f96' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
+}
+.site-root input::placeholder, .site-root textarea::placeholder { color: #9488a3; font-weight: 500; opacity: 1; }
+.site-root input[type=checkbox], .site-root input[type=radio] { accent-color: #520f96; }
+
+/* Field labels and helper text */
+.field-label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 700; color: #2b2236; }
+.field-hint { margin-top: 6px; font-size: 12.5px; line-height: 1.45; color: #6b5f78; }
+
+/* Checkbox card (consent, terms) */
+.check-card {
+  display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; cursor: pointer;
+  background: #fff; border: 1.5px solid #e4dbee; border-radius: 12px;
+  transition: border-color .15s, background-color .15s;
+}
+.check-card:hover { border-color: #b9a3d3; }
+.check-card:has(input:checked) { border-color: #520f96; background: #faf6fe; }
+.check-card:has(input:disabled) { opacity: .6; cursor: not-allowed; }
+.check-box {
+  flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 6px;
+  border: 2px solid #c7b6db; background: #fff; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: background-color .15s, border-color .15s, box-shadow .15s;
+}
+.check-card input:checked + .check-box { background: #520f96; border-color: #520f96; }
+.check-card input:focus-visible + .check-box { box-shadow: 0 0 0 4px rgb(82 15 150 / 18%); }
+.check-text { font-size: 13px; line-height: 1.5; color: #4a4256; }
+.check-text a { color: #520f96; font-weight: 700; }
+.check-text a:hover { text-decoration: underline; }
+
+/* ── Soft card pattern (Track order, Quote) ───────────────────── */
+.soft-page { min-height: 70vh; background: linear-gradient(#f7f2fd, #fff 320px); }
+.soft-wrap { max-width: 480px; margin: 0 auto; padding: 40px 16px 72px; }
+.soft-title { font-size: clamp(2rem, 8vw, 2.8rem); line-height: .95; color: #140a1f; text-align: center; }
+.soft-sub { margin: 12px auto 0; max-width: 360px; text-align: center; font-size: 15.5px; line-height: 1.5; color: #61536d; }
+.soft-card {
+  margin-top: 28px; padding: 22px; background: #fff; border: 1.5px solid #e9e1f2; border-radius: 16px;
+  box-shadow: 0 24px 50px -36px rgb(40 10 80 / 45%);
+}
+.soft-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 18px; border-radius: 12px; background: #f3edfa; }
+.soft-tabs button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 42px; border-radius: 9px;
+  font-size: 14px; font-weight: 700; color: #61536d; transition: background-color .15s, color .15s, box-shadow .15s;
+}
+.soft-tabs button[aria-selected=true] { background: #fff; color: #520f96; box-shadow: 0 2px 8px -3px rgb(40 10 80 / 25%); }
+.track-form { display: grid; gap: 12px; }
+.track-code-input { text-align: center; font-size: 22px !important; font-weight: 800 !important; letter-spacing: .4em; }
+.soft-hint { font-size: 13px; color: #6b5f78; text-align: center; }
+.soft-error { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #b01f42; }
+.track-otp-actions { display: flex; justify-content: center; gap: 22px; }
+.track-otp-actions button { min-height: 36px; font-size: 13.5px; font-weight: 700; color: #520f96; text-decoration: underline; text-underline-offset: 3px; }
+.soft-help { margin-top: 26px; text-align: center; font-size: 14px; color: #61536d; }
+.soft-help a { font-weight: 800; color: #520f96; white-space: nowrap; }
+
+.track-empty {
+  margin-top: 20px; padding: 26px 20px; text-align: center; border-radius: 14px; background: #fff;
+  border: 1.5px dashed #ddd1ea; color: #61536d; font-size: 14px;
+}
+.track-empty svg { margin: 0 auto 8px; color: #9488a3; }
+.track-empty-title { font-size: 16px; font-weight: 800; color: #140a1f; margin-bottom: 4px; }
+.track-results { margin-top: 24px; display: grid; gap: 10px; }
+.track-result {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; text-align: left;
+  background: #fff; border: 1.5px solid #e9e1f2; border-radius: 14px; transition: border-color .15s;
+}
+.track-result:hover { border-color: #b9a3d3; }
+.track-result-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.track-result-number { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 15px; font-weight: 700; color: #140a1f; }
+.track-result-meta { display: block; margin-top: 6px; font-size: 13.5px; color: #61536d; }
+
+.soft-label { font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #6b5f78; }
+.soft-badge {
+  flex: none; display: inline-flex; align-items: center; padding: 5px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 800; background: #f1e8fb; color: #520f96;
+}
+.soft-badge.is-done { background: #e7f7ee; color: #146c3a; }
+.soft-badge.is-cancelled { background: #fdecef; color: #b01f42; }
+
+.track-back {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; margin-bottom: 4px;
+  font-size: 14px; font-weight: 700; color: #520f96;
+}
+.soft-wrap > .track-back + .soft-card { margin-top: 8px; }
+.track-order-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.soft-order-number { margin-top: 2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 24px; font-weight: 800; color: #140a1f; }
+
+.track-steps { display: grid; grid-template-columns: repeat(4, 1fr); margin: 26px 0 6px; }
+.track-steps li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.track-steps li + li::before {
+  content: ''; position: absolute; top: 11px; right: 50%; width: 100%; height: 3px; background: #e9e1f2; z-index: 0;
+}
+.track-steps li.is-done + li::before { background: #520f96; }
+.track-step-dot {
+  position: relative; z-index: 1; width: 24px; height: 24px; border-radius: 999px; border: 3px solid #e9e1f2; background: #fff;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.track-steps li.is-done .track-step-dot { background: #520f96; border-color: #520f96; }
+.track-steps li.is-current .track-step-dot { border-color: #520f96; box-shadow: 0 0 0 5px rgb(82 15 150 / 14%); }
+.track-steps li.is-current .track-step-dot:empty::after { content: ''; width: 8px; height: 8px; border-radius: 999px; background: #520f96; }
+.track-step-label { font-size: 12px; font-weight: 700; line-height: 1.2; color: #9488a3; }
+.track-steps li.is-done .track-step-label, .track-steps li.is-current .track-step-label { color: #140a1f; }
+
+.soft-details { margin-top: 22px; border-top: 1.5px solid #f0eaf6; }
+.soft-details > div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1.5px solid #f0eaf6; }
+.soft-details > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.soft-details dt { flex: none; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #6b5f78; }
+.soft-details dt svg { color: #520f96; }
+.soft-details dd { text-align: right; font-size: 14.5px; font-weight: 700; color: #140a1f; }
+.soft-price { font-size: 20px !important; color: #520f96 !important; }
+@media (min-width: 768px) {
+  .soft-wrap { padding-top: 64px; }
+  .soft-card { padding: 28px; }
+}
+
+/* Soft card pattern: shared pieces for Quote flow screens */
+.soft-card { margin-top: 0; }
+.soft-sub + .soft-card, .soft-title + .soft-card { margin-top: 28px; }
+.soft-details > div { min-width: 0; }
+.soft-details dd { min-width: 0; overflow-wrap: anywhere; }
+.soft-details dd.is-discount { color: #146c3a; }
+.soft-details dd s { margin-right: 6px; font-weight: 600; color: #9488a3; }
+.soft-details .soft-total { padding-top: 16px; border-top: 1.5px solid #e4dbee; }
+.soft-details .soft-total dt { font-weight: 800; color: #140a1f; }
+.soft-details .soft-total dd { font-size: 20px; color: #520f96; }
+.soft-flow { padding-top: 8px; }
+.soft-flow .soft-title { font-size: clamp(1.9rem, 7.5vw, 2.4rem); }
+.soft-success-icon {
+  display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin: 0 auto 18px;
+  border-radius: 999px; background: #520f96; color: #fff; box-shadow: 0 0 0 8px rgb(82 15 150 / 12%);
+}
+.soft-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.soft-service { margin-top: 2px; font-family: Archivo, Inter, sans-serif; font-weight: 900; text-transform: uppercase; font-size: 18px; line-height: 1.1; color: #140a1f; }
+.soft-price-hero { margin-top: 18px; font-family: Archivo, Inter, sans-serif; font-weight: 900; font-size: 44px; line-height: 1; color: #520f96; }
+.soft-meta { margin-top: 6px; font-size: 14px; color: #61536d; }
+.soft-callout {
+  display: flex; align-items: flex-start; gap: 10px; margin-top: 18px; padding: 12px 14px;
+  border-radius: 12px; background: #f1faf4; color: #146c3a; font-size: 13px; line-height: 1.45;
+}
+.soft-callout svg { flex: none; margin-top: 1px; }
+.soft-callout strong { color: #0f5a2f; }
+.soft-callout button { font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.soft-note { margin-top: 14px; text-align: center; font-size: 13px; line-height: 1.5; color: #6b5f78; }
+.soft-card .flow-zip-steps { margin: 0 0 18px; }
+.soft-card .flow-zip-trust { margin-top: 18px; gap: 6px 12px; font-size: 12px; }
+.soft-card > .check-card { margin-top: 4px; }
+.soft-card > .soft-details:first-child { margin-top: 0; border-top: 0; }
+.soft-card > .soft-details:first-child > div:first-child { padding-top: 0; }

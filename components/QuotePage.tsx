@@ -596,35 +596,23 @@ export const QuotePage: React.FC = () => {
       <div className="space-y-6">
         <FlowStepTitle title="Your estimate" subtitle="Review your price breakdown, then continue to book." />
 
-        <div className="flow-card flow-estimate-head flex items-center gap-4">
-          <div className="flow-option-media home-image-backdrop shrink-0">
-            <img
-              src={
-                selectedService === 'junk_removal' ? '/optimized/hero-backgrounds/opek-crew-high-five.webp' :
-                selectedService === 'donation_pickup' ? '/optimized/service-scenes/property-cleanout.webp' :
-                selectedService === 'moving_labor' ? '/optimized/service-scenes/local-moving.webp' :
-                selectedService === 'dumpster_rental' ? '/optimized/service-scenes/dumpster-rental.webp' :
-                '/optimized/hero-backgrounds/opek-crew-high-five.webp'
-              }
-              alt=""
-            />
+        <div className="soft-card">
+          <div className="soft-head">
+            <div>
+              <p className="soft-label">Your estimate</p>
+              <p className="soft-service">
+                {selectedService === 'donation_pickup' ? 'Donation Pick Up' :
+                 selectedService === 'moving_labor' ? 'Local Moving' :
+                 selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
+                 'Junk Removal'}
+              </p>
+            </div>
+            <span className="soft-badge">Online price</span>
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="flow-option-title">
-              {selectedService === 'junk_removal' ? 'Junk Removal' :
-               selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-               selectedService === 'moving_labor' ? 'Local Moving' :
-               selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
-               'Junk Removal'}
-            </h3>
-            <p className="text-[var(--text-muted)] text-[13px] mt-1">{price.estimatedVolume}</p>
-          </div>
-          <p className="flow-estimate-price shrink-0">${price.price}</p>
+          <p className="soft-price-hero">${price.price}</p>
+          {price.estimatedVolume && <p className="soft-meta">{price.estimatedVolume}</p>}
+          {!isSpecialService ? <JunkRemovalPriceBreakdown price={price} embedded /> : null}
         </div>
-
-        {!isSpecialService ? (
-          <JunkRemovalPriceBreakdown price={price} />
-        ) : null}
 
         <p className="text-sm text-[var(--text-muted)] leading-relaxed">{price.summary}</p>
 
@@ -645,7 +633,7 @@ export const QuotePage: React.FC = () => {
           }}
           continueLabel="Continue to book"
         />
-        <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
+        <p className="soft-note">Final price confirmed on-site before any work starts.</p>
       </div>
     );
 
@@ -727,6 +715,7 @@ export const QuotePage: React.FC = () => {
             title="Get a free quote"
             subtitle="Free estimate by text in about a minute. No obligation to book."
             steps={['Pick your items', 'Get your price by text', 'Book a time']}
+            variant="card"
             zipValue={zipValue}
             onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
             onCheck={handleZipCheck}

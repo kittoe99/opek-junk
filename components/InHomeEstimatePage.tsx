@@ -261,7 +261,6 @@ export const InHomeEstimatePage: React.FC = () => {
                   onValidatedChange={setAddressValidated}
                   error={addressError}
                   onErrorChange={setAddressError}
-                  inputClassName={UTILITY_INPUT}
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

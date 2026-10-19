@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Check, Phone, MessageSquare } from 'lucide-react';
+import { AlertCircle, Phone, MessageSquare } from 'lucide-react';
 import { SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../../lib/customerConsent';
 import { FLOW_INPUT, FLOW_LABEL } from '../../lib/flowPageLayout';
 import { InputUserIcon, InputPhoneIcon } from '../icons/ServiceIcons';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
+import { CheckboxCard } from './CheckboxCard';
 
 const SITE_PHONE = '8313187139';
 const SITE_PHONE_DISPLAY = '(831) 318-7139';
@@ -30,31 +31,9 @@ function ConsentCheckbox({
   disabled?: boolean;
 }) {
   return (
-    <label
-      className={`flex items-start gap-3 p-3.5 rounded-xl cursor-pointer transition-colors ${
-        checked
-          ? 'bg-brand/10 border border-brand/35'
-          : 'bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border)]'
-      }`}
-    >
-      <div className="relative shrink-0 mt-0.5">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          disabled={disabled}
-          className="sr-only"
-        />
-        <div
-          className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-            checked ? 'bg-brand border-[var(--border)]' : 'bg-[var(--surface)] border-[var(--border)]'
-          }`}
-        >
-          {checked && <Check size={12} className="text-white" strokeWidth={3.5} />}
-        </div>
-      </div>
-      <span className="text-xs text-[var(--text-muted)] leading-relaxed">{SMS_MARKETING_CONSENT_TEXT}</span>
-    </label>
+    <CheckboxCard checked={checked} onChange={onChange} disabled={disabled}>
+      {SMS_MARKETING_CONSENT_TEXT}
+    </CheckboxCard>
   );
 }
 
@@ -227,7 +206,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
         <FlowStepTitle title={title} subtitle={subtitle} />
 
-        <div className="flow-card p-5 space-y-4">
+        <div className="soft-card space-y-4">
           <p className="flex items-center gap-2 text-[13px] font-bold text-[#520f96]">
             <MessageSquare size={16} aria-hidden />
             Your quote arrives by text
@@ -273,19 +252,26 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 className={`${FLOW_INPUT} pl-11`}
               />
             </div>
-            <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">
-              {phoneHint || SMS_TRANSACTIONAL_NOTICE}
-            </p>
+            <p className="field-hint">{phoneHint || SMS_TRANSACTIONAL_NOTICE}</p>
           </div>
+
+          <ConsentCheckbox
+            checked={smsConsent}
+            onChange={setSmsConsent}
+            disabled={isLoading}
+          />
+
+          {error && (
+            <p className="soft-error" role="alert">
+              <AlertCircle size={16} aria-hidden />
+              {error}
+            </p>
+          )}
         </div>
 
-        <ConsentCheckbox
-          checked={smsConsent}
-          onChange={setSmsConsent}
-          disabled={isLoading}
-        />
-
-        {error && <p className="text-brand text-sm">{error}</p>}
+        <p className="soft-help">
+          Prefer to talk? Call or text <a href={`tel:${SITE_PHONE}`}>{SITE_PHONE_DISPLAY}</a>
+        </p>
       </form>
 
       <FlowStickyNav

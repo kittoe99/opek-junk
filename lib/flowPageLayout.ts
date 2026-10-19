@@ -22,10 +22,9 @@ export function scrollToFlowStep(el: HTMLElement | null): void {
   }, 50);
 }
 
-export const FLOW_INPUT =
-  'opek-field flow-input w-full min-h-[52px] px-4 py-3 rounded-md text-base transition-colors disabled:opacity-55 placeholder:text-[#8a7f95]';
+export const FLOW_INPUT = 'opek-field flow-input w-full px-4 py-3';
 
-export const FLOW_LABEL = 'block text-[13px] font-bold text-[var(--text)] mb-2';
+export const FLOW_LABEL = 'field-label';
 
 export const FLOW_BACK_BUTTON =
   'flow-btn flow-btn-back inline-flex items-center justify-center gap-2 flex-1 disabled:opacity-50 disabled:cursor-not-allowed';
@@ -55,10 +54,9 @@ export const UTILITY_FORM_WRAP =
 export const UTILITY_FORM_CARD =
   'site-form-card bg-[var(--surface)] rounded-lg border border-[var(--border)] p-6 md:p-10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]';
 
-export const UTILITY_INPUT =
-  'opek-field w-full px-4 py-3 rounded-xl text-sm transition-all duration-200 placeholder:text-[var(--text-muted)]';
+export const UTILITY_INPUT = 'opek-field w-full px-4 py-3';
 
-export const UTILITY_LABEL = 'block text-xs font-semibold text-[var(--text-muted)] mb-1.5';
+export const UTILITY_LABEL = 'field-label';
 
 export const UTILITY_PRIMARY_BUTTON =
   'inline-flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_24px_-6px_rgba(82,15,150,0.55)]';

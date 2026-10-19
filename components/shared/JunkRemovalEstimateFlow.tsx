@@ -334,32 +334,27 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="flow-card overflow-hidden">
-          <div className="flow-estimate-head">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flow-option-title">Junk Removal</span>
-              <span className="flow-option-badge">Instant estimate</span>
-              <span className="flow-option-badge !bg-[#e7f6ec] !text-emerald-800">Guaranteed</span>
-            </div>
-            <p className="flow-estimate-price mt-3">${price.price}</p>
-            <p className="mt-1 text-[13px] text-[var(--text-muted)]">{price.estimatedVolume}</p>
-          </div>
-          <div className="flex items-start gap-2.5 px-4 py-3 bg-[#f1faf4]">
-            <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
+        <div className="soft-card">
+          <div className="soft-head">
             <div>
-              <div className="flex items-center gap-2">
-                <p className="text-xs font-semibold text-emerald-800">Safe Protect™ Included</p>
-                <span className="bg-emerald-500 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">Covered</span>
-              </div>
-              <p className="text-xs text-emerald-700 mt-0.5">
-                All bookings are covered by platform damage protection.{' '}
-                <button type="button" onClick={() => setShowInsuranceModal(true)} className="font-medium hover:underline">Learn more</button>
-              </p>
+              <p className="soft-label">Your estimate</p>
+              <p className="soft-service">Junk Removal</p>
             </div>
+            <span className="soft-badge is-done">Guaranteed</span>
+          </div>
+          <p className="soft-price-hero">${price.price}</p>
+          <p className="soft-meta">{price.estimatedVolume}</p>
+
+          <JunkRemovalPriceBreakdown price={price} embedded />
+
+          <div className="soft-callout">
+            <ShieldCheck size={16} aria-hidden />
+            <p>
+              <strong>Safe Protect™ included.</strong> Every booking is covered by platform damage protection.{' '}
+              <button type="button" onClick={() => setShowInsuranceModal(true)}>Learn more</button>
+            </p>
           </div>
         </div>
-
-        <JunkRemovalPriceBreakdown price={price} />
 
         {!price.lines?.length && (
         <div>
@@ -405,7 +400,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           }}
           continueLabel={continueLabel}
         />
-        <p className="text-xs text-[var(--text-muted)] text-center pb-4">* Final price confirmed on-site</p>
+        <p className="soft-note pb-4">Final price confirmed on-site before any work starts.</p>
 
         {showInsuranceModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#140a1f]/50">

@@ -24,8 +24,7 @@ export const EMPTY_SERVICE_ADDRESS: ServiceAddressValue = {
   zipCode: '',
 };
 
-const INPUT_CLASS =
-  'opek-field w-full pl-9 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all';
+const INPUT_CLASS = 'opek-field w-full pl-11 pr-4 py-3';
 
 export function isServiceAddressValidated(value: ServiceAddressValue): boolean {
   return Boolean(value.address.trim() && value.city.trim() && value.state.trim());
@@ -153,9 +152,9 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
           autoComplete="off"
           className={inputClassName}
         />
-        <MapPinned size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none" />
+        <MapPinned size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#520f96] pointer-events-none" />
         {loading && (
-          <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-[var(--text-muted)]" />
+          <Loader2 size={18} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-[var(--text-muted)]" />
         )}
       </div>
       {showSuggestions && suggestions.length > 0 && (
@@ -179,7 +178,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
           onChange={(e) => onChange({ ...value, unitNumber: e.target.value })}
           placeholder="Apt / Unit / Suite (optional)"
           autoComplete="address-line2"
-          className="opek-field w-full px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl mt-2 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all"
+          className="opek-field w-full px-4 py-3 mt-2"
         />
       )}
       {error && (
