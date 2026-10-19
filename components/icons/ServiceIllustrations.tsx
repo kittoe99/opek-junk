@@ -3,12 +3,12 @@ import React from 'react';
 type IconProps = { className?: string; size?: number };
 
 /** Opek service illustrations: a shared 48-unit grid, rounded ink, and a quiet second tone. */
-const Illustration = ({ className, size = 24, children }: IconProps & { children: React.ReactNode }) => (
+export const Illustration = ({ className, size = 24, children }: IconProps & { children: React.ReactNode }) => (
   <svg width={size} height={size} viewBox="0 0 48 48" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"
     className={className} aria-hidden="true" focusable="false">{children}</svg>
 );
-const Tint = ({ d }: { d: string }) => <path d={d} fill="currentColor" fillOpacity=".14" stroke="none" />;
+export const Tint = ({ d }: { d: string }) => <path d={d} fill="currentColor" fillOpacity=".14" stroke="none" />;
 const Box = ({ x = 7, y = 22, s = 16 }: { x?: number; y?: number; s?: number }) => (
   <g><rect x={x} y={y} width={s} height={s} rx="2" fill="currentColor" fillOpacity=".12" />
     <path d={`M${x + s / 2} ${y}v${s / 3}m-3 0h6`} /></g>

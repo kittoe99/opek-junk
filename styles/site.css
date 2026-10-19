@@ -480,10 +480,10 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   padding: 14px 8px 12px; border-radius: 12px; text-align: center;
 }
 .cat-card-icon {
-  width: 60px; height: 60px; border-radius: 14px; background: #f4eefc;
-  display: flex; align-items: center; justify-content: center; transition: background-color .15s;
+  width: 60px; height: 60px; color: #520f96;
+  display: flex; align-items: center; justify-content: center;
 }
-.cat-card.is-selected .cat-card-icon { background: #fff; }
+.junk-item-illustration { color: #520f96; flex-shrink: 0; }
 .cat-card-name {
   font-size: 12.5px; font-weight: 700; line-height: 1.25; color: #2b2236;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -571,23 +571,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   .pt-enter { animation: pt-fade .2s ease-out both; }
 }
 
-/* Phone hero: the violet block fades up out of the photo so the two read as one section */
-@media (max-width: 767px) {
-  .home-light .home-hero:has(.home-hero-photo) .home-hero-visual { height: clamp(300px, 86vw, 420px); }
-  .home-light .home-hero:has(.home-hero-photo) .home-hero-copy {
-    position: relative; z-index: 1;
-    margin-top: -120px; padding-top: 132px;
-    background-color: transparent;
-    background-image:
-      linear-gradient(180deg,
-        rgb(122 20 196 / 0) 0,
-        rgb(122 20 196 / .4) 40px,
-        rgb(122 20 196 / .85) 88px,
-        #7a14c4 128px,
-        #7212ba 70%,
-        #680fae 100%);
-  }
-}
 /* Coverage ZIP result */
 .coverage-result {
   padding: 20px; border-radius: 14px; background: #fff; color: #140a1f;
@@ -621,3 +604,81 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   font-size: 13px; font-weight: 700; color: #520f96; text-decoration: underline; text-underline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) { .coverage-result { animation: none; } }
+/* Moving estimate result */
+.moving-est-head { padding: 18px 18px 16px; }
+.moving-est-label { margin-top: 14px; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #6b5f78; }
+.moving-est-head .flow-estimate-price { margin-top: 4px; font-size: 48px; }
+.moving-est-sub { margin-top: 6px; font-size: 13.5px; font-weight: 600; color: #61536d; }
+.moving-est-lines { margin: 0; padding: 4px 18px; border-top: 1px solid #efe8f6; }
+.moving-est-lines > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; font-size: 14px; }
+.moving-est-lines > div + div { border-top: 1px dashed #e6ddf0; }
+.moving-est-lines dt { font-weight: 600; color: #2b2236; }
+.moving-est-lines dt span { font-weight: 500; color: #8a7f95; }
+.moving-est-lines dd { margin: 0; font-weight: 800; color: #140a1f; font-variant-numeric: tabular-nums; }
+.moving-est-lines .moving-est-total { border-top-style: solid !important; border-top-color: #ddd0ee !important; }
+.moving-est-lines .moving-est-total dt, .moving-est-lines .moving-est-total dd { font-size: 15px; font-weight: 900; color: #520f96; }
+.moving-est-details { padding: 14px 18px 16px; border-top: 1px solid #efe8f6; }
+.moving-est-chip { padding: 6px 10px; border-radius: 999px; background: #f4eefc; color: #3a0a6b; font-size: 12.5px; font-weight: 700; }
+.moving-est-next { margin-top: 22px; padding: 16px 18px; border-radius: 10px; background: #faf7fe; }
+.moving-est-next ol { display: grid; gap: 10px; }
+.moving-est-next li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.4; color: #2b2236; }
+.moving-est-next li span {
+  flex: 0 0 22px; height: 22px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+  background: #520f96; color: #fff; font-size: 12px; font-weight: 800;
+}
+/* ===== Phone sizing layer: smaller type, controls and spacing (desktop untouched) ===== */
+@media (max-width: 767px) {
+  /* rem-based Tailwind spacing and text scale down ~7% */
+  html { font-size: 15px; }
+
+  /* Display headings */
+  body .home-light .home-hero-copy h1,
+  body .home-hero-copy h1 { font-size: clamp(27px, 8.2vw, 38px); }
+  body .home-light h2.home-display { font-size: clamp(24px, 7vw, 28px) !important; line-height: 1.02; }
+  body .home-light h3.home-display { font-size: 1.15rem !important; }
+  body .site-flow .site-flow-title h1,
+  body .site-flow .site-flow-title h2 { font-size: clamp(24px, 7.2vw, 30px); }
+  body .flow-intro-title { font-size: clamp(28px, 8.4vw, 40px); }
+  body .flow-intro-sub { font-size: 15px; }
+  body .site-page > header h1.home-display { font-size: clamp(28px, 8.4vw, 36px); }
+  body .home-light .home-hero-copy h1 + p { font-size: 14px; }
+  body .home-light .home-hero-badge { margin-bottom: 12px; }
+
+  /* Buttons and fields */
+  body .home-light .home-cta { min-height: 46px; font-size: 13.5px; padding: 0 1.6rem; }
+  body .home-light .home-hero-mobile-cta { min-height: 48px; min-width: 180px; font-size: 14px; }
+  body .flow-btn { min-height: 48px; font-size: 13.5px; }
+  body .flow-intro-cta, body .flow-home-intro .home-hero-mobile-cta { min-height: 52px; font-size: 15px; }
+  body .flow-zip-form .flow-btn { min-height: 52px; }
+  body .site-flow .flow-zip-field input { min-height: 54px; font-size: 20px; }
+  body .site-flow :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select) { min-height: 48px; }
+  body #service-area input#home-zip { height: 50px; }
+  body #service-area button[type=submit] { min-height: 50px !important; }
+
+  /* Option rows, cards, catalog */
+  body .flow-option { padding: 12px; gap: 12px; }
+  body .flow-option-title { font-size: 15px; }
+  body .flow-option-desc { font-size: 13px; }
+  body .flow-option-media { flex-basis: 64px; height: 64px; }
+  body .flow-option-icon { flex-basis: 42px; height: 42px; padding: 9px; }
+  body .cat-card-icon { width: 52px; height: 52px; }
+  body .cat-card-name { font-size: 12px; }
+  body .flow-estimate-price { font-size: 34px; }
+  body .moving-est-head .flow-estimate-price { font-size: 40px; }
+
+  /* Section rhythm */
+  body .home-page #process,
+  body .home-page #services,
+  body .home-page .home-ways,
+  body .home-page #testimonials { padding-block: 40px; }
+  body .home-light .home-hero-copy { padding-top: 22px; padding-bottom: 30px; }
+  body .home-light .home-hero-visual { height: clamp(210px, 62vw, 300px); }
+  body #service-area.coverage { padding-block: 44px; }
+}
+
+/* Fixed-pixel body copy on phones (Tailwind arbitrary sizes) */
+@media (max-width: 639px) {
+  body [class*="text-[17px]"] { font-size: 15px; }
+  body [class*="text-[16px]"] { font-size: 15px; }
+  body [class*="text-[15px]"] { font-size: 14px; }
+}

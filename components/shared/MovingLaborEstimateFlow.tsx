@@ -629,58 +629,83 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   }
 
   const hourlyRate = draftOptions.helpers === 1 ? 69 : 99;
+  const truckFee = draftOptions.needsTruck ? 99 : 0;
+  const estimatedTotal = priceEstimate.price;
+  const laborTotal = Math.max(0, estimatedTotal - truckFee);
+  const moveDetails = [
+    HOME_SIZE_LABELS[draftOptions.homeSize],
+    ACCESS_LABELS[draftOptions.accessType],
+    ...(draftOptions.heavyItems.length > 0
+      ? [`${draftOptions.heavyItems.length} heavy item${draftOptions.heavyItems.length === 1 ? '' : 's'}`]
+      : []),
+    ...(draftOptions.needsPackingHelp ? ['Packing help'] : []),
+    ...(draftOptions.needsDisassembly ? ['Disassembly'] : []),
+  ];
 
   return (
     <>
-      <FlowStepTitle title="Your estimate" subtitle="Review your rate, then continue to book." />
-      <div className="flow-card flow-estimate mb-4 overflow-hidden">
-        <div className="flow-estimate-head">
+      <FlowStepTitle eyebrow="Your estimate" title="Here’s your price" subtitle="Based on what you told us. Continue to pick a date and time." />
+
+      <div className="flow-card overflow-hidden">
+        {/* Total */}
+        <div className="moving-est-head">
           <div className="flex items-center justify-between gap-2">
-            <span className="flow-option-title">Local Moving</span>
+            <span className="flow-option-title">Local moving</span>
             <span className="flow-option-badge">{SCOPE_LABELS[draftOptions.serviceScope]}</span>
           </div>
-          <div className="mt-3 flex items-baseline gap-1.5 whitespace-nowrap">
-            <span className="flow-estimate-price">${hourlyRate}</span>
-            <span className="text-sm font-semibold text-[var(--text-muted)]">/hour</span>
-          </div>
-          <p className="mt-1 text-[13px] text-[var(--text-muted)]">
-            {totalHelpers} helper{totalHelpers === 1 ? '' : 's'}
-            {draftOptions.needsTruck && ' · +$99 truck'}
+          <p className="moving-est-label">Estimated total</p>
+          <p className="flow-estimate-price">${estimatedTotal}</p>
+          <p className="moving-est-sub">
+            ~{totalHours} hours · {totalHelpers} helper{totalHelpers === 1 ? '' : 's'} · ${hourlyRate}/hour
           </p>
         </div>
 
-        <div className="border-t border-[var(--border)] px-4 pt-3 pb-1">
-          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-            <span>Size <span className="font-medium text-[var(--text)]">{HOME_SIZE_LABELS[draftOptions.homeSize]}</span></span>
-            <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
-            <span>Access <span className="font-medium text-[var(--text)]">{ACCESS_LABELS[draftOptions.accessType]}</span></span>
-            {draftOptions.heavyItems.length > 0 && (
-              <>
-                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
-                <span>Heavy items <span className="font-medium text-[var(--text)]">{draftOptions.heavyItems.length}</span></span>
-              </>
-            )}
-            {draftOptions.needsPackingHelp && (
-              <>
-                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
-                <span>Packing help</span>
-              </>
-            )}
-            {draftOptions.needsDisassembly && (
-              <>
-                <span className="select-none mx-1.5 text-[var(--text-muted)]">·</span>
-                <span>Disassembly</span>
-              </>
-            )}
-          </p>
+        {/* Breakdown */}
+        <dl className="moving-est-lines">
+          <div>
+            <dt>
+              Labor <span>({totalHelpers} helper{totalHelpers === 1 ? '' : 's'} × ~{totalHours} hr)</span>
+            </dt>
+            <dd>${laborTotal}</dd>
+          </div>
+          {truckFee > 0 && (
+            <div>
+              <dt>Moving truck <span>(one-time)</span></dt>
+              <dd>${truckFee}</dd>
+            </div>
+          )}
+          <div className="moving-est-total">
+            <dt>Estimated total</dt>
+            <dd>${estimatedTotal}</dd>
+          </div>
+        </dl>
+
+        {/* Move details */}
+        <div className="moving-est-details">
+          <p className="flow-section-label !mb-2">Your move</p>
+          <ul className="flex flex-wrap gap-1.5">
+            {moveDetails.map((d) => (
+              <li key={d} className="moving-est-chip">{d}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="flex items-start gap-2.5 px-4 py-3 bg-[#f1faf4]">
-          <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
-          <p className="text-xs font-semibold text-emerald-800 leading-normal">
+          <ShieldCheck size={16} className="text-emerald-700 shrink-0 mt-0.5" />
+          <p className="text-[13px] font-semibold text-emerald-800 leading-normal">
             Safe Protect™ damage coverage included on every booking.
           </p>
         </div>
+      </div>
+
+      {/* What happens next */}
+      <div className="moving-est-next">
+        <p className="flow-section-label">What happens next</p>
+        <ol>
+          <li><span>1</span>Pick a date and time that works for you.</li>
+          <li><span>2</span>We match you with a local moving crew.</li>
+          <li><span>3</span>Your final price is confirmed on-site, based on actual time.</li>
+        </ol>
       </div>
 
       <FlowStickyNav
@@ -702,7 +727,6 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         }
         continueLabel={continueLabel}
       />
-      <p className="text-xs text-[var(--text-muted)] text-center">* Final price confirmed on-site</p>
     </>
   );
 };
