@@ -5,44 +5,24 @@ import {
   normalizeStripeCustomerContact,
   type StripeCustomerContact,
 } from './stripeCustomer.js';
+import { ClientError } from './httpErrors.js';
 import { getSupabaseAdmin, isSupabaseAdminConfigured } from './supabaseAdmin.js';
 
 export const BOOKING_DEPOSIT_AMOUNT_CENTS = 100;
 
 export interface CreatePaymentIntentOptions extends StripeCustomerContact {
   serviceType?: string;
-  stripeCustomerId?: string;
 }
 
 async function resolveStripeCustomer(
   stripe: Stripe,
   options: CreatePaymentIntentOptions
 ): Promise<Stripe.Customer> {
-  if (options.stripeCustomerId) {
-    const retrieved = await stripe.customers.retrieve(options.stripeCustomerId);
-    if ('deleted' in retrieved && retrieved.deleted) {
-      throw new Error('Stripe customer not found. Please try again.');
-    }
-
-    const existing = retrieved as Stripe.Customer;
-
-    if (isSupabaseAdminConfigured()) {
-      const supabase = getSupabaseAdmin();
-      await upsertStripeCustomer(supabase, {
-        stripeCustomerId: existing.id,
-        email: existing.email ?? null,
-        name: existing.name ?? null,
-        phone: existing.phone ?? null,
-        metadata: (existing.metadata ?? {}) as Record<string, string>,
-      });
-    }
-
-    return existing;
-  }
-
+  // The customer is always resolved from the submitted contact details; a
+  // client-supplied Stripe customer ID is never trusted.
   const normalized = normalizeStripeCustomerContact(options);
   if (!normalized.email) {
-    throw new Error('A valid email is required before payment can be initialized.');
+    throw new ClientError('A valid email is required before payment can be initialized.');
   }
 
   const { stripeCustomer } = await ensureStripeCustomer(stripe, options);

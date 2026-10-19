@@ -22,6 +22,7 @@ import { FLOW_INPUT, FLOW_LABEL } from '../lib/flowPageLayout';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
+import { generateOrderNumber } from '../lib/orderNumber';
 
 const MOVING_ACCESS_CHOICES: { id: MovingAccessType; label: string }[] = [
   { id: 'ground', label: 'Ground floor / street level' },
@@ -490,7 +491,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           : 'Junk Removal')
         : 'Junk Removal';
 
-      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const generatedOrderNumber = generateOrderNumber();
       let resultData = null;
       let dbError = null;
 

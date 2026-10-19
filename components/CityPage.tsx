@@ -54,7 +54,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         eyebrow={city.hero.badge || `Junk Removal in ${city.name}`}
         title={<>{city.hero.headlineStart}<br />{city.hero.headlineAccent}</>}
         subtitle={city.hero.subheadline}
-        heroImage="/hero-backgrounds/opek-crew-high-five.png"
+        heroImage="/optimized/hero-backgrounds/opek-crew-high-five.webp"
         heroImageAlt={`Local junk removal providers in ${city.name}`}
         heroChip={city.name}
         primaryCta={{ label: 'Get my price', onClick: () => navigate('/quote') }}
@@ -63,7 +63,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         split={{
           eyebrow: 'Almost anything goes', title: `Make room for more in ${city.name}`,
           body: <p>Serving {city.metroArea} with vetted local providers. From one unwanted couch to a whole property, get a crew that handles the heavy lifting.</p>,
-          image: '/service-scenes/junk-truck.png', imageAlt: 'Purple dump truck loaded with household junk',
+          image: '/optimized/service-scenes/junk-truck.webp', imageAlt: 'Purple dump truck loaded with household junk',
           includes: [{ title: 'Furniture & mattresses', Icon: Sofa }, { title: 'Appliances', Icon: Refrigerator }, { title: 'Electronics', Icon: Monitor }, { title: 'Yard waste', Icon: TreePine }],
         }}
         features={{ title: 'Your neighborhood. Your crew.', items: [

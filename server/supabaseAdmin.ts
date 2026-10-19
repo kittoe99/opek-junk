@@ -7,7 +7,7 @@ function getSupabaseUrl(): string {
   if (rawUrl && rawUrl !== 'your_supabase_url_here') {
     return rawUrl;
   }
-  return 'https://mjgwoukwyqwoectxfwqv.supabase.co';
+  return '';
 }
 
 function getServiceRoleKey(): string | undefined {
@@ -15,10 +15,14 @@ function getServiceRoleKey(): string | undefined {
 }
 
 export function isSupabaseAdminConfigured(): boolean {
-  return Boolean(getServiceRoleKey());
+  return Boolean(getSupabaseUrl() && getServiceRoleKey());
 }
 
 export function getSupabaseAdmin(): SupabaseClient {
+  const supabaseUrl = getSupabaseUrl();
+  if (!supabaseUrl) {
+    throw new Error('SUPABASE_URL is not configured. Add it to Vercel project settings.');
+  }
   const serviceRoleKey = getServiceRoleKey();
   if (!serviceRoleKey) {
     throw new Error(
@@ -27,7 +31,7 @@ export function getSupabaseAdmin(): SupabaseClient {
   }
 
   if (!adminClient) {
-    adminClient = createClient(getSupabaseUrl(), serviceRoleKey, {
+    adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
   }

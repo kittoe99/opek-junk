@@ -20,7 +20,7 @@ export const HomeFeaturedServices: React.FC = () => {
     {
       title: 'Junk removal',
       body: 'Couches, appliances, mattresses, yard debris and full loads. Pick your items, see your price, and a crew hauls it all away.',
-      image: '/service-scenes/junk-truck.png',
+      image: '/optimized/service-scenes/junk-truck.webp',
       alt: 'Purple dump truck loaded with furniture and household junk',
       cta: 'Get a price',
       onClick: () => navigate('/quote'),
@@ -28,7 +28,7 @@ export const HomeFeaturedServices: React.FC = () => {
     {
       title: 'Small local moves',
       body: 'Truck and crew for apartments, studios and short-distance moves. Book helpers by the hour, with or without a truck.',
-      image: '/service-scenes/local-moving.png',
+      image: '/optimized/service-scenes/local-moving.webp',
       alt: 'Two providers carrying a couch to a moving truck',
       cta: 'Book a move',
       onClick: () => navigate('/booking', { state: { serviceType: 'Moving Labor' } }),
@@ -99,14 +99,14 @@ const steps = [
   {
     title: 'Pick your items',
     body: 'Tell us what’s going — one couch or a whole garage — and see your upfront price online.',
-    image: '/service-scenes/mattress-pickup.png',
+    image: '/optimized/service-scenes/mattress-pickup.webp',
     alt: 'Provider carrying a mattress',
     fit: 'contain' as const,
   },
   {
     title: 'Choose a time',
     body: 'Book a pickup window that works for you, including same-day where providers are available.',
-    image: '/service-scenes/pickup-scheduling.png',
+    image: '/optimized/service-scenes/pickup-scheduling.webp',
     alt: 'Hand holding a phone with a pickup calendar and time-window choices',
     imageClassName: 'h-full w-full object-contain object-bottom pt-5',
     fit: 'contain' as const,
@@ -114,7 +114,7 @@ const steps = [
   {
     title: 'We haul it away',
     body: 'Your provider loads everything up and takes care of disposal, donation or recycling.',
-    image: '/service-scenes/junk-truck.png',
+    image: '/optimized/service-scenes/junk-truck.webp',
     alt: 'Purple dump truck loaded with furniture and household junk',
     fit: 'contain' as const,
   },

@@ -170,7 +170,7 @@ export const InHomeEstimatePage: React.FC = () => {
           </>
         }
         subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
-        image="/service-scenes/in-home-estimate.png"
+        image="/optimized/service-scenes/in-home-estimate.webp"
         imageAlt="Provider ready for an in-home estimate"
         chip="No Obligation"
         primaryCta={{ label: 'Schedule my visit', href: '#estimate-details' }}
@@ -178,12 +178,12 @@ export const InHomeEstimatePage: React.FC = () => {
       />
 
       <HomeHowItWorks title="A real visit. A clear price." description="A free estimate makes bigger jobs easier to plan." items={[
-        { title: 'Tell us about the job', body: 'Share your contact details and the address of the property you want cleared.', image: '/service-scenes/property-cleanout.png', alt: 'Providers carrying items from a property' },
-        { title: 'Pick your window', body: 'Choose a date and time that works for you and add any notes for your provider.', image: '/service-scenes/pickup-scheduling.png', alt: 'A pickup scheduling calendar on a phone' },
-        { title: 'Meet your provider', body: 'A vetted local provider visits your property and gives you a no-obligation quote.', image: '/service-scenes/in-home-estimate.png', alt: 'A provider meeting a homeowner for an estimate' },
+        { title: 'Tell us about the job', body: 'Share your contact details and the address of the property you want cleared.', image: '/optimized/service-scenes/property-cleanout.webp', alt: 'Providers carrying items from a property' },
+        { title: 'Pick your window', body: 'Choose a date and time that works for you and add any notes for your provider.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'A pickup scheduling calendar on a phone' },
+        { title: 'Meet your provider', body: 'A vetted local provider visits your property and gives you a no-obligation quote.', image: '/optimized/service-scenes/in-home-estimate.webp', alt: 'A provider meeting a homeowner for an estimate' },
       ]} />
 
-      <HomeFormSection id="estimate-details" title="Let’s take a look" description="Tell us where to go and when to visit. We will confirm your estimate with you." image="/service-scenes/in-home-estimate.png" imageAlt="A provider discussing a cleanout with a homeowner" aside={<p>From a single room to an entire property, your provider can walk through the job with you before you decide.</p>}>
+      <HomeFormSection id="estimate-details" title="Let’s take a look" description="Tell us where to go and when to visit. We will confirm your estimate with you." image="/optimized/service-scenes/in-home-estimate.webp" imageAlt="A provider discussing a cleanout with a homeowner" aside={<p>From a single room to an entire property, your provider can walk through the job with you before you decide.</p>}>
         <div className={UTILITY_FORM_CARD}>
           {step === 1 && (
             <form onSubmit={handleContactSubmit} className="space-y-6">

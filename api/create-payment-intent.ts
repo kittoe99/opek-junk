@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createBookingPaymentIntent } from '../server/createPaymentIntent.js';
+import { toErrorResponse } from '../server/httpErrors.js';
 
 function getStripeSecretKey(): string | undefined {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
@@ -24,14 +25,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body ?? {});
-    const { email, name, phone, serviceType, stripeCustomerId } = body;
+    const { email, name, phone, serviceType } = body;
 
     const result = await createBookingPaymentIntent(secretKey, {
       email: typeof email === 'string' ? email : undefined,
       name: typeof name === 'string' ? name : undefined,
       phone: typeof phone === 'string' ? phone : undefined,
       serviceType: typeof serviceType === 'string' ? serviceType : undefined,
-      stripeCustomerId: typeof stripeCustomerId === 'string' ? stripeCustomerId : undefined,
     });
 
     return res.status(200).json({
@@ -41,8 +41,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (error) {
     console.error('Stripe PaymentIntent error:', error);
-    const message =
-      error instanceof Error ? error.message : 'Failed to create payment intent. Please try again.';
-    return res.status(500).json({ error: message });
+    const { status, message } = toErrorResponse(
+      error,
+      'Failed to create payment intent. Please try again.'
+    );
+    return res.status(status).json({ error: message });
   }
 }

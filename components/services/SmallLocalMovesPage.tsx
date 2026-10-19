@@ -19,7 +19,7 @@ export const SmallLocalMovesPage: React.FC = () => {
         </>
       }
       subtitle="Affordable hourly moving help for studios, 1-bedrooms, and small homes. Book truck + crew — or just the muscle if you already have a truck."
-      heroImage="/service-scenes/local-moving.png"
+      heroImage="/optimized/service-scenes/local-moving.webp"
       heroImageAlt="Moving providers carrying furniture for a local move"
       heroChip="Truck + Crew"
       primaryCta={{ label: 'Book a Move', onClick: () => navigate('/booking') }}
@@ -44,7 +44,7 @@ export const SmallLocalMovesPage: React.FC = () => {
           { title: 'Hourly Pricing', Icon: Clock },
           { title: 'Labor Only', Icon: Dumbbell },
         ],
-        image: '/service-scenes/local-moving.png',
+        image: '/optimized/service-scenes/local-moving.webp',
         imageAlt: 'Two providers carrying a sofa up a ramp into a moving truck',
       }}
       features={{

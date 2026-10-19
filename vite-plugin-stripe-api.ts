@@ -76,7 +76,6 @@ export function stripeApiDevPlugin(stripeSecretKey?: string, env: Record<string,
             name?: string;
             phone?: string;
             serviceType?: string;
-            stripeCustomerId?: string;
             paymentIntentId?: string;
           };
 

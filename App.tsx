@@ -12,18 +12,7 @@ import { HomeFooter } from './components/home/HomeFooter';
 import { HomeMobileCTA } from './components/home/HomeMobileCTA';
 import { HomeCoverageSection } from './components/home/HomeCoverageSection';
 import { QuickActionBar } from './components/QuickActionBar';
-import { JunkRemovalPage } from './components/services/JunkRemovalPage';
-import { DumpsterRentalPage } from './components/services/DumpsterRentalPage';
-import { PropertyCleanoutPage } from './components/services/PropertyCleanoutPage';
-import { SmallLocalMovesPage } from './components/services/SmallLocalMovesPage';
-import { MattressDisposalPage } from './components/services/MattressDisposalPage';
-import { JunkRemovalAdsLandingPage } from './components/lp/JunkRemovalAdsLandingPage';
-import { LocalMovesAdsLandingPage } from './components/lp/LocalMovesAdsLandingPage';
-import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
-import { TermsOfServicePage } from './components/TermsOfServicePage';
-import { SmsConsentPage } from './components/SmsConsentPage';
 import { SEO, seoConfig } from './components/SEO';
-import { CityPage } from './components/CityPage';
 import { PageTransition, PageEnter } from './components/PageTransition';
 import { getCityBySlug } from './lib/cityData';
 
@@ -36,6 +25,17 @@ const SignUpPage = React.lazy(() => import('./components/SignUpPage').then((m) =
 const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
 const MattressBookingPage = React.lazy(() => import('./components/services/MattressBookingPage').then((m) => ({ default: m.MattressBookingPage })));
+const JunkRemovalPage = React.lazy(() => import('./components/services/JunkRemovalPage').then((m) => ({ default: m.JunkRemovalPage })));
+const DumpsterRentalPage = React.lazy(() => import('./components/services/DumpsterRentalPage').then((m) => ({ default: m.DumpsterRentalPage })));
+const PropertyCleanoutPage = React.lazy(() => import('./components/services/PropertyCleanoutPage').then((m) => ({ default: m.PropertyCleanoutPage })));
+const SmallLocalMovesPage = React.lazy(() => import('./components/services/SmallLocalMovesPage').then((m) => ({ default: m.SmallLocalMovesPage })));
+const MattressDisposalPage = React.lazy(() => import('./components/services/MattressDisposalPage').then((m) => ({ default: m.MattressDisposalPage })));
+const JunkRemovalAdsLandingPage = React.lazy(() => import('./components/lp/JunkRemovalAdsLandingPage').then((m) => ({ default: m.JunkRemovalAdsLandingPage })));
+const LocalMovesAdsLandingPage = React.lazy(() => import('./components/lp/LocalMovesAdsLandingPage').then((m) => ({ default: m.LocalMovesAdsLandingPage })));
+const PrivacyPolicyPage = React.lazy(() => import('./components/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage })));
+const TermsOfServicePage = React.lazy(() => import('./components/TermsOfServicePage').then((m) => ({ default: m.TermsOfServicePage })));
+const SmsConsentPage = React.lazy(() => import('./components/SmsConsentPage').then((m) => ({ default: m.SmsConsentPage })));
+const CityPage = React.lazy(() => import('./components/CityPage').then((m) => ({ default: m.CityPage })));
 
 const QUICK_ACTION_HIDDEN_PREFIXES = ['/quote', '/booking', '/sms-consent', '/chat'];
 const FOOTER_HIDDEN_PREFIXES = ['/quote', '/booking', '/chat'];

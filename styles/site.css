@@ -140,7 +140,7 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .home-light .home-street-backdrop,
 .home-light .home-hero-visual.home-street-backdrop {
   background-color: transparent;
-  background-image: url('/hero-backgrounds/residential-street.png');
+  background-image: url('/optimized/hero-backgrounds/residential-street.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -183,7 +183,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .home-form-panel .site-form-card { border-radius: 0; }
 .home-form-aside { position: sticky; top: calc(var(--site-header-height) + 24px); }
 .home-detail summary { list-style-position: outside; margin-left: 18px; padding-right: 8px; }
-.flow-home-intro-shell { width: 100%; }
 @media (max-width:767px) {
   .interior-hero .home-hero-visual > img { height: 96%; width: 86%; left: 50%; bottom: 0; object-fit: contain; object-position: bottom; }
   .interior-hero-vehicle .home-hero-visual > img { width: 82%; height: 90%; }
@@ -275,94 +274,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   font-family: Archivo, Inter, sans-serif; font-weight: 900; font-size: 40px; line-height: 1;
   letter-spacing: -.02em; color: #140a1f;
 }
-/* Quote intro: one headline, one line, one button */
-.flow-intro {
-  min-height: calc(100dvh - var(--site-header-height, 60px));
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 0;
-  background: radial-gradient(ellipse at 50% 0%, #efe4fb 0%, #fff 60%);
-  text-align: center;
-}
-.flow-intro-inner { width: 100%; }
-.flow-intro-art {
-  width: 100%; height: clamp(220px, 70vw, 320px); margin: 0 auto; overflow: hidden;
-  background: radial-gradient(ellipse at 40% 30%, #d6b6f2 0%, #eadcf8 48%, #f7f1fc 76%, #fff 100%);
-}
-.flow-intro-image {
-  display: block; width: 100%; height: 100%; padding: 12px;
-  object-fit: contain; object-position: center;
-}
-.flow-intro-copy {
-  padding: 32px 22px calc(32px + env(safe-area-inset-bottom));
-}
-.flow-intro-title { font-size: clamp(32px, 9.4vw, 56px); line-height: .94; color: #140a1f; text-wrap: balance; }
-.flow-intro-sub { margin-top: 16px; font-size: 17px; line-height: 1.45; color: #3d3547; }
-.flow-intro-cta { width: 100%; margin-top: 28px; min-height: 60px; font-size: 16px; }
-.flow-intro-note { margin-top: 12px; font-size: 13px; font-weight: 600; color: #6b5f78; }
-@media (min-width: 768px) {
-  .flow-intro-art { height: clamp(400px, 50vw, 560px); }
-  .flow-intro-image { padding: 20px; }
-  .flow-intro-copy { max-width: 760px; margin: 0 auto; padding: 36px 32px; }
-  .flow-intro-cta { width: auto; min-width: 320px; }
-}
-@media (min-width: 1024px) {
-  .flow-intro { background: #fff; }
-  .flow-intro-inner {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: 'copy art'; align-items: stretch;
-    padding-inline: max(32px, calc((100% - 1120px) / 2));
-    background: radial-gradient(ellipse at 70% 35%, #d6b6f2 0%, #eadcf8 40%, #f7f1fc 76%, #fff 100%);
-  }
-  .flow-intro-art {
-    grid-area: art; width: 100%; margin: 0;
-    height: clamp(480px, 36vw, 560px); background: none;
-  }
-  .flow-intro-image {
-    padding: 24px 0;
-  }
-  .flow-intro-copy {
-    grid-area: copy; max-width: none; margin: 0; padding: 48px 24px 48px 0;
-    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-    text-align: left;
-  }
-  .flow-intro-title { font-size: clamp(40px, 4vw, 56px); }
-  .flow-intro-sub { max-width: 360px; font-size: 18px; }
-  .flow-intro-cta { min-width: 0; padding-inline: 32px; }
-}
-
-/* Quote intro: steps strip + phone layout (one continuous screen, copy in the thumb zone) */
-.flow-intro-steps {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
-  margin: 22px auto 0; max-width: 420px; text-align: center;
-}
-.flow-intro-steps li {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  font-size: 12.5px; font-weight: 700; line-height: 1.25; color: #3d3547;
-}
-.flow-intro-step-num {
-  width: 28px; height: 28px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
-  background: #520f96; color: #fff; font-family: Archivo, Inter, sans-serif; font-size: 13px; font-weight: 900;
-}
-.flow-intro-note { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0 4px; }
-@media (max-width: 1023px) {
-  .flow-intro { background: linear-gradient(180deg, #ecdffa 0%, #f6f0fd 46%, #fff 100%); }
-  .flow-intro-inner { display: flex; flex-direction: column; min-height: calc(100dvh - var(--site-header-height, 60px)); }
-  .flow-intro-art { position: relative; flex: 1 1 0; height: auto; min-height: 170px; background: none; }
-  .flow-intro-art .flow-intro-image { position: absolute; inset: 0; width: 100%; height: 100%; padding: 14px 18px 4px; }
-  .flow-intro-copy { padding: 6px 22px calc(22px + env(safe-area-inset-bottom)); }
-  .flow-intro-sub { margin-top: 12px; }
-  .flow-intro-cta { margin-top: 22px; }
-}
-@media (min-width: 1024px) {
-  .flow-intro-steps { margin: 28px 0 0; max-width: 440px; text-align: left; }
-  .flow-intro-steps li { align-items: flex-start; }
-  .flow-intro-note { justify-content: flex-start; }
-}
-@media (max-height: 640px) and (max-width: 1023px) {
-  .flow-intro-steps { display: none; }
-  .flow-intro-art { min-height: 130px; }
-}
-
 /* ZIP coverage step (quote + booking) */
 .site-flow-content:has(.flow-zip-layout) { max-width: 1000px; padding-top: 40px; padding-bottom: 48px; }
 .flow-zip-layout {
@@ -373,6 +284,18 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
 .flow-zip-art { position: relative; min-height: 460px; }
 .flow-zip-content { padding: 40px 40px 32px; display: flex; flex-direction: column; justify-content: center; }
 .flow-zip-content .site-flow-title { margin-bottom: 24px; }
+.flow-zip-steps {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+  margin: -6px 0 22px; padding: 12px 14px; border-radius: 10px; background: #f6f0fd;
+}
+.flow-zip-steps li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 700; line-height: 1.25; color: #3d3547;
+}
+.flow-zip-step-num {
+  flex: none; width: 24px; height: 24px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+  background: #520f96; color: #fff; font-family: Archivo, Inter, sans-serif; font-size: 12px; font-weight: 900;
+}
 .flow-zip-back {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 18px;
   min-height: 40px; border-radius: 0; font-size: 13px; font-weight: 800; color: #520f96;
@@ -414,6 +337,8 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
     margin-bottom: 22px; border-radius: 14px; overflow: hidden;
   }
   .flow-zip-content { padding: 0; }
+  .flow-zip-steps { gap: 6px; margin: -10px 0 18px; padding: 10px; }
+  .flow-zip-steps li { flex-direction: column; text-align: center; gap: 5px; font-size: 11.5px; }
   .flow-zip-trust { gap: 6px 14px; font-size: 12.5px; }
 }
 
@@ -638,8 +563,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   body .home-light h3.home-display { font-size: 1.15rem !important; }
   body .site-flow .site-flow-title h1,
   body .site-flow .site-flow-title h2 { font-size: clamp(24px, 7.2vw, 30px); }
-  body .flow-intro-title { font-size: clamp(28px, 8.4vw, 40px); }
-  body .flow-intro-sub { font-size: 15px; }
   body .site-page > header h1.home-display { font-size: clamp(28px, 8.4vw, 36px); }
   body .home-light .home-hero-copy h1 + p { font-size: 14px; }
   body .home-light .home-hero-badge { margin-bottom: 12px; }
@@ -648,7 +571,6 @@ html, body, .site-root { background: #fff; color: #140a1f; color-scheme: light; 
   body .home-light .home-cta { min-height: 46px; font-size: 13.5px; padding: 0 1.6rem; }
   body .home-light .home-hero-mobile-cta { min-height: 48px; min-width: 180px; font-size: 14px; }
   body .flow-btn { min-height: 48px; font-size: 13.5px; }
-  body .flow-intro-cta, body .flow-home-intro .home-hero-mobile-cta { min-height: 52px; font-size: 15px; }
   body .flow-zip-form .flow-btn { min-height: 52px; }
   body .site-flow .flow-zip-field input { min-height: 54px; font-size: 20px; }
   body .site-flow :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select) { min-height: 48px; }

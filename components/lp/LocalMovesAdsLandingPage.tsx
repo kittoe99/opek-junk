@@ -51,13 +51,13 @@ export const LocalMovesAdsLandingPage: React.FC = () => {
 
   return <ServicePageLayout
     path="/lp/local-moves" eyebrow="Local Movers Near You" title={<>Local moves.<br />From $99/hour.</>}
-    subtitle="2 moving helpers from $99/hour. Studios, apartments, and short-distance jobs — truck + crew or labor only." heroImage="/service-scenes/local-moving.png" heroImageAlt="Two providers loading furniture into a moving truck" heroChip="Your next chapter"
+    subtitle="2 moving helpers from $99/hour. Studios, apartments, and short-distance jobs — truck + crew or labor only." heroImage="/optimized/service-scenes/local-moving.webp" heroImageAlt="Two providers loading furniture into a moving truck" heroChip="Your next chapter"
     primaryCta={{ label: 'View Pricing', onClick: () => goToQuote() }}
     secondaryCta={{ label: 'Book a move', onClick: () => goToBooking() }}
     onZipCheck={goToBooking}
     bookingState={{ serviceType: "Moving Labor" }}
     split={{ eyebrow: 'Local Movers Near You', title: 'Small move. Big help.',
-      body: <p>Right-sized crews for studios, apartments and short-distance jobs. Book a vehicle and helpers, or get extra hands if you already have your own truck.</p>, image: '/service-scenes/local-moving.png', imageAlt: 'Two providers loading furniture into a moving truck',
+      body: <p>Right-sized crews for studios, apartments and short-distance jobs. Book a vehicle and helpers, or get extra hands if you already have your own truck.</p>, image: '/optimized/service-scenes/local-moving.webp', imageAlt: 'Two providers loading furniture into a moving truck',
       includes: [{ title: 'Flexible scheduling', Icon: CalendarCheck }, { title: 'Careful handling', Icon: Package }, { title: 'Vetted providers', Icon: ShieldCheck }, { title: 'Local crews', Icon: Truck }],
     }}
     features={{ title: 'Your move, your way', items: approaches }}

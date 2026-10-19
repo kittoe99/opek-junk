@@ -29,7 +29,7 @@ export const CharityBanner: React.FC<CharityBannerProps> = ({ theme = 'light' })
           <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-center gap-0">
             <div className="relative h-40 sm:h-48 md:h-full md:min-h-[220px] overflow-hidden">
               <img
-                src="/charity-childrens-heart-clean.png"
+                src="/optimized/charity-childrens-heart-clean.webp"
                 alt="Children holding a glowing heart"
                 className="absolute inset-0 w-full h-full object-cover object-center"
                 loading="lazy"

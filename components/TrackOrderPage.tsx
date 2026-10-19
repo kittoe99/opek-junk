@@ -422,14 +422,14 @@ export const TrackOrderPage: React.FC = () => {
           </>
         }
         subtitle="Enter your phone number or order number to see live status, schedule, and service details."
-        image="/service-scenes/pickup-scheduling.png"
+        image="/optimized/service-scenes/pickup-scheduling.webp"
         imageAlt="A phone showing an Opek pickup schedule"
         chip="Live status"
         primaryCta={{ label: 'Look Up Order', onClick: scrollToForm }}
         secondaryCta={{ label: 'Call Support', href: 'tel:8313187139' }}
       />
 
-      <HomeFormSection sectionRef={formRef} id="track-lookup" title="Your pickup, at a glance" description="Find your booking to see its status, schedule and service details." image="/service-scenes/pickup-scheduling.png" imageAlt="Phone showing pickup time choices" aside={<p>Use the order number from your booking confirmation, or verify your phone number to find your orders.</p>}>
+      <HomeFormSection sectionRef={formRef} id="track-lookup" title="Your pickup, at a glance" description="Find your booking to see its status, schedule and service details." image="/optimized/service-scenes/pickup-scheduling.webp" imageAlt="Phone showing pickup time choices" aside={<p>Use the order number from your booking confirmation, or verify your phone number to find your orders.</p>}>
         <div className={UTILITY_FORM_CARD}>
           <div className="text-center space-y-2 mb-6">
             <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">

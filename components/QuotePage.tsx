@@ -31,7 +31,6 @@ import { FlowZipCheck } from './shared/flow/FlowZipCheck';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
-import { FlowSmsIntro } from './shared/flow/FlowSmsIntro';
 import { ServiceTypePicker, type ServicePickerId } from './shared/flow/ServiceTypePicker';
 
 export { ITEM_CATALOG, type CatalogItem, type CatalogCategory };
@@ -60,7 +59,6 @@ export const QuotePage: React.FC = () => {
       : null;
 
   const [zipVerified, setZipVerified] = useState(!!incomingState?.zipResult);
-  const [smsIntroSeen, setSmsIntroSeen] = useState(!!incomingState?.zipResult);
   const [zipValue, setZipValue] = useState(incomingState?.zipValue || '');
   const [zipLoading, setZipLoading] = useState(false);
   const [zipError, setZipError] = useState<string | null>(null);
@@ -137,7 +135,6 @@ export const QuotePage: React.FC = () => {
 
     if (state.zipResult && state.zipValue) {
       setZipVerified(true);
-      setSmsIntroSeen(true);
       setZipValue(state.zipValue);
       setZipResult({
         city: state.zipResult.city,
@@ -603,11 +600,11 @@ export const QuotePage: React.FC = () => {
           <div className="flow-option-media home-image-backdrop shrink-0">
             <img
               src={
-                selectedService === 'junk_removal' ? '/hero-backgrounds/opek-crew-high-five.png' :
-                selectedService === 'donation_pickup' ? '/service-scenes/property-cleanout.png' :
-                selectedService === 'moving_labor' ? '/service-scenes/local-moving.png' :
-                selectedService === 'dumpster_rental' ? '/service-scenes/dumpster-rental.png' :
-                '/hero-backgrounds/opek-crew-high-five.png'
+                selectedService === 'junk_removal' ? '/optimized/hero-backgrounds/opek-crew-high-five.webp' :
+                selectedService === 'donation_pickup' ? '/optimized/service-scenes/property-cleanout.webp' :
+                selectedService === 'moving_labor' ? '/optimized/service-scenes/local-moving.webp' :
+                selectedService === 'dumpster_rental' ? '/optimized/service-scenes/dumpster-rental.webp' :
+                '/optimized/hero-backgrounds/opek-crew-high-five.webp'
               }
               alt=""
             />
@@ -720,18 +717,6 @@ export const QuotePage: React.FC = () => {
     );
   }
 
-  // ── SMS intro screen ──
-  if (!smsIntroSeen) {
-    return (
-      <div className={FLOW_PAGE_SHELL}>
-        <FlowChrome flowLabel="Get a quote" progress={0} />
-        <div className="flow-home-intro-shell">
-          <FlowSmsIntro onContinue={() => setSmsIntroSeen(true)} />
-        </div>
-      </div>
-    );
-  }
-
   // ── ZIP check screen ──
   if (!zipVerified) {
     return (
@@ -740,15 +725,14 @@ export const QuotePage: React.FC = () => {
         <div className={FLOW_PAGE_CONTENT}>
           <FlowZipCheck
             title="Get a free quote"
-            subtitle="Nationwide coverage in all 50 states — start with your ZIP code."
+            subtitle="Free estimate by text in about a minute. No obligation to book."
+            steps={['Pick your items', 'Get your price by text', 'Book a time']}
             zipValue={zipValue}
             onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
             onCheck={handleZipCheck}
             loading={zipLoading}
             error={zipError}
             result={zipResult?.servedCity ? { city: zipResult.city, state: zipResult.state } : null}
-            showBack
-            onBack={() => setSmsIntroSeen(false)}
           />
         </div>
       </div>

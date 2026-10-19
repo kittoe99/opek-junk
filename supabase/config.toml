@@ -1,4 +1,6 @@
-project_id = "mjgwoukwyqwoectxfwqv"
+# Local project identifier, not a remote production target.
+# Remote backend ownership and migration blockers: ../docs/backend-status.md
+project_id = "opek-website"
 
 [functions.calculate-price]
 verify_jwt = true

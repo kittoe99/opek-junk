@@ -65,11 +65,11 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   const steps: HomeStep[] = processSteps || [
     { title: moving ? 'Tell us about your move' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
       body: moving ? 'Choose truck and crew or labor only, then tell us what needs moving.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : mattress ? 'Tell us how many mattresses, box springs and bed frames you need removed.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
-      image: mattress || (!moving && !dumpster && !cleanout) ? '/service-scenes/mattress-pickup.png' : heroImage, alt: mattress || (!moving && !dumpster && !cleanout) ? 'Provider carrying a mattress' : heroImageAlt },
-    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/service-scenes/pickup-scheduling.png', alt: 'Hand holding a phone with pickup time choices' },
+      image: mattress || (!moving && !dumpster && !cleanout) ? '/optimized/service-scenes/mattress-pickup.webp' : heroImage, alt: mattress || (!moving && !dumpster && !cleanout) ? 'Provider carrying a mattress' : heroImageAlt },
+    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'Hand holding a phone with pickup time choices' },
     { title: moving ? 'Settle into your space' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
       body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
-      image: moving ? '/service-scenes/local-moving.png' : '/service-scenes/junk-truck.png', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
+      image: moving ? '/optimized/service-scenes/local-moving.webp' : '/optimized/service-scenes/junk-truck.webp', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
   ];
   return <div className="home-light interior-home">
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}

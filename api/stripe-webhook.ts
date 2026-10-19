@@ -98,7 +98,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Invalid webhook signature';
     console.error('Stripe webhook signature verification failed:', message);
-    return res.status(400).json({ error: message });
+    return res.status(400).json({ error: 'Invalid webhook signature.' });
   }
 
   try {
@@ -123,7 +123,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error('Stripe webhook handler error:', error);
-    const message = error instanceof Error ? error.message : 'Webhook handler failed';
-    return res.status(500).json({ error: message });
+    return res.status(500).json({ error: 'Webhook handler failed.' });
   }
 }

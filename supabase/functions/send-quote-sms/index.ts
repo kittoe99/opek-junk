@@ -1,4 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+import { checkRateLimits, clientIp } from "../_shared/rateLimit.ts";
+
+const HOUR_MS = 60 * 60 * 1000;
 
 const corsHeaders: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
@@ -66,14 +70,15 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const smsUrl = (Deno.env.get('OPEK_SMS_URL') || 'https://opek-sms-zllz4.ondigitalocean.app').replace(
+  // Legacy integration only: never silently route to the retired DigitalOcean app.
+  const smsUrl = (Deno.env.get('OPEK_SMS_URL') || '').replace(
     /\/$/,
     ''
   );
   const apiKey = Deno.env.get('OPEK_SMS_API_KEY');
 
-  if (!apiKey) {
-    console.error('[send-quote-sms] OPEK_SMS_API_KEY is not set');
+  if (!smsUrl || !apiKey) {
+    console.error('[send-quote-sms] SMS bridge is not configured');
     return new Response(JSON.stringify({ error: 'SMS not configured' }), {
       status: 503,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -91,8 +96,11 @@ Deno.serve(async (req: Request) => {
   }
 
   const phone = String(payload.phone || '').trim();
-  if (!phone) {
-    return new Response(JSON.stringify({ error: 'phone is required' }), {
+  const digits = phone.replace(/\D/g, '');
+  const digits10 = digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+  // US numbers only: blocks premium/international SMS pumping.
+  if (!/^[2-9]\d{2}[2-9]\d{6}$/.test(digits10)) {
+    return new Response(JSON.stringify({ error: 'A valid US phone number is required' }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -100,6 +108,38 @@ Deno.serve(async (req: Request) => {
   if (payload.price === undefined || payload.price === null || payload.price === '') {
     return new Response(JSON.stringify({ error: 'price is required' }), {
       status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!supabaseUrl || !serviceKey) {
+    console.error('[send-quote-sms] Supabase service role is not configured');
+    return new Response(JSON.stringify({ error: 'SMS not configured' }), {
+      status: 503,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  try {
+    const supabase = createClient(supabaseUrl, serviceKey);
+    const exceeded = await checkRateLimits(supabase, [
+      { bucket: `quote-sms:phone:${digits10}`, limit: 3, windowMs: HOUR_MS },
+      { bucket: `quote-sms:phone-day:${digits10}`, limit: 5, windowMs: 24 * HOUR_MS },
+      { bucket: `quote-sms:ip:${clientIp(req)}`, limit: 10, windowMs: HOUR_MS },
+    ]);
+    if (exceeded) {
+      return new Response(JSON.stringify({ error: 'Too many requests. Please try again later.' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+  } catch (err) {
+    // Fail closed: without the limiter this endpoint can be used to pump SMS.
+    console.error('[send-quote-sms] rate limit check failed', err);
+    return new Response(JSON.stringify({ error: 'SMS temporarily unavailable' }), {
+      status: 503,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
@@ -133,8 +173,7 @@ Deno.serve(async (req: Request) => {
       console.error('[send-quote-sms] upstream error', upstream.status, data);
       return new Response(
         JSON.stringify({
-          error: (data.error as string) || 'Failed to send SMS',
-          detail: data.detail || null,
+          error: 'Failed to send SMS',
         }),
         {
           status: upstream.status >= 400 && upstream.status < 600 ? upstream.status : 502,
@@ -143,7 +182,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    return new Response(JSON.stringify({ ok: true, message: data.message || null, to: data.to || null }), {
+    return new Response(JSON.stringify({ ok: true }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -152,7 +191,6 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         error: 'Failed to reach SMS server',
-        detail: err instanceof Error ? err.message : String(err),
       }),
       {
         status: 502,

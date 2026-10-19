@@ -278,10 +278,10 @@ export const SignUpPage: React.FC = () => {
     <div className={UTILITY_PAGE_SHELL}>
       <ServicePageHero eyebrow="Contractor account" title={<>Your account.<br />Your next chapter.</>}
         subtitle="Use the approved email from your welcome message to set a password and access the driver app."
-        image="/hero-backgrounds/opek-crew-high-five.png" imageAlt="Two Opek providers at work" chip="Provider network"
+        image="/optimized/hero-backgrounds/opek-crew-high-five.webp" imageAlt="Two Opek providers at work" chip="Provider network"
         primaryCta={{ label: 'Create my account', href: '#account-details' }} secondaryCta={{ label: 'Apply first', href: '/provider-signup' }} />
 
-      <HomeFormSection id="account-details" title="Let’s make it official" description="Already approved? Use the email from your welcome message to finish setting up your login." image="/service-scenes/pickup-scheduling.png" imageAlt="A phone for managing local pickup jobs" aside={<p>Once your account is linked, sign in to the driver app with the same email and password.</p>}>
+      <HomeFormSection id="account-details" title="Let’s make it official" description="Already approved? Use the email from your welcome message to finish setting up your login." image="/optimized/service-scenes/pickup-scheduling.webp" imageAlt="A phone for managing local pickup jobs" aside={<p>Once your account is linked, sign in to the driver app with the same email and password.</p>}>
         <div className={`${UTILITY_FORM_CARD} max-w-lg mx-auto animate-fade-in`}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

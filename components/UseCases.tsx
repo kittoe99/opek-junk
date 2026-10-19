@@ -1,16 +1,16 @@
 import React from 'react';
 
 const haulJobs = [
-  { name: 'Furniture Haul-Away', image: '/card-junk-removal.png', alt: 'Junk removal crew hauling furniture out of a home' },
+  { name: 'Furniture Haul-Away', image: '/optimized/card-junk-removal.webp', alt: 'Junk removal crew hauling furniture out of a home' },
   { name: 'Appliance Removal', image: '/opek2.webp', alt: 'Providers loading bulky junk onto a truck' },
   { name: 'Mattress Pickup', image: '/mattress-disposal.webp', alt: 'Mattress ready for junk removal pickup' },
-  { name: 'Garage Cleanouts', image: '/service-property-cleanout.png', alt: 'Property and garage cleanout in progress' },
-  { name: 'Dumpster Loads', image: '/card-dumpster-rental.png', alt: 'Roll-off dumpster for junk and debris' },
+  { name: 'Garage Cleanouts', image: '/optimized/service-property-cleanout.webp', alt: 'Property and garage cleanout in progress' },
+  { name: 'Dumpster Loads', image: '/optimized/card-dumpster-rental.webp', alt: 'Roll-off dumpster for junk and debris' },
   { name: 'Estate Cleanouts', image: '/junk-removal.webp', alt: 'Full home estate junk removal cleanout' },
-  { name: 'Truck & Hauling', image: '/hero-truck-loading.png', alt: 'Junk removal truck being loaded' },
-  { name: 'Same-Day Crews', image: '/workers-opek.png', alt: 'Junk removal providers ready for a haul' },
-  { name: 'Construction Debris', image: '/dumpster-rental.png', alt: 'Dumpster filled with construction debris' },
-  { name: 'Move-Out Junk', image: '/card-moving-labor.png', alt: 'Moving labor and leftover junk haul-away' },
+  { name: 'Truck & Hauling', image: '/optimized/hero-truck-loading.webp', alt: 'Junk removal truck being loaded' },
+  { name: 'Same-Day Crews', image: '/optimized/workers-opek.webp', alt: 'Junk removal providers ready for a haul' },
+  { name: 'Construction Debris', image: '/optimized/dumpster-rental.webp', alt: 'Dumpster filled with construction debris' },
+  { name: 'Move-Out Junk', image: '/optimized/card-moving-labor.webp', alt: 'Moving labor and leftover junk haul-away' },
 ];
 
 export const UseCases: React.FC = () => {

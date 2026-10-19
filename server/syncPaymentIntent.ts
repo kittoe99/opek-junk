@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { ClientError } from './httpErrors.js';
 import { getSupabaseAdmin, isSupabaseAdminConfigured } from './supabaseAdmin.js';
 import {
   resolveStripeCustomerForIntent,
@@ -24,7 +25,7 @@ export async function syncSucceededPaymentIntent(
   });
 
   if (paymentIntent.status !== 'succeeded') {
-    throw new Error('Payment has not succeeded yet.');
+    throw new ClientError('Payment has not succeeded yet.');
   }
 
   const db = supabase ?? (isSupabaseAdminConfigured() ? getSupabaseAdmin() : null);

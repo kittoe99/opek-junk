@@ -38,6 +38,7 @@ import {
 } from '../shared/MattressDepositPayment';
 import { BookingSuccessView } from '../shared/BookingSuccessView';
 import { JunkItemCatalogSelector } from '../shared/JunkItemCatalogSelector';
+import { generateOrderNumber } from '../../lib/orderNumber';
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
@@ -413,7 +414,7 @@ export const MattressBookingPage: React.FC = () => {
   const handleFinalSubmit = async (paymentIntentId: string) => {
     setSubmitLoading(true);
     try {
-      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const generatedOrderNumber = generateOrderNumber();
       const itemsList = activeItems.map((i) => `${i.quantity}x ${i.name}`);
       const customerInfo = buildPrebookingCustomerInfo(
         formData.name,

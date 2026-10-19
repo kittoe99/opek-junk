@@ -6,31 +6,31 @@ const allRelatedServices = [
   {
     title: 'Junk Removal',
     path: '/services/junk-removal',
-    image: '/service-scenes/local-moving.png',
+    image: '/optimized/service-scenes/local-moving.webp',
     alt: 'Providers loading junk into a box truck',
   },
   {
     title: 'Mattress Disposal',
     path: '/services/mattress-disposal',
-    image: '/service-scenes/mattress-pickup.png',
+    image: '/optimized/service-scenes/mattress-pickup.webp',
     alt: 'Provider carrying a mattress for disposal',
   },
   {
     title: 'Dumpster Rental',
     path: '/services/dumpster-rental',
-    image: '/service-scenes/dumpster-rental.png',
+    image: '/optimized/service-scenes/dumpster-rental.webp',
     alt: 'Roll-off dumpster for debris and renovation waste',
   },
   {
     title: 'Small Local Moves',
     path: '/services/small-local-moves',
-    image: '/service-scenes/local-moving.png',
+    image: '/optimized/service-scenes/local-moving.webp',
     alt: 'Provider loading boxes into a cargo van',
   },
   {
     title: 'Property Cleanouts',
     path: '/services/property-cleanout',
-    image: '/service-scenes/property-cleanout.png',
+    image: '/optimized/service-scenes/property-cleanout.webp',
     alt: 'Provider helping a customer after a property cleanout',
   },
 ];

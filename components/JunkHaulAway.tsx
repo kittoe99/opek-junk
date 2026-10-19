@@ -31,7 +31,7 @@ export const JunkHaulAway: React.FC = () => {
           <div className="relative order-2 lg:order-1">
             <div className="absolute inset-8 rounded-full bg-brand/15 blur-[80px]" aria-hidden />
             <img
-              src="/service-scenes/local-moving.png"
+              src="/optimized/service-scenes/local-moving.webp"
               alt="Opek providers loading a sofa and junk into a box truck"
               className="relative z-10 w-full h-auto max-h-[360px] sm:max-h-[440px] object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]"
               loading="lazy"

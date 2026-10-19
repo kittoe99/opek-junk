@@ -28,6 +28,7 @@ import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { ContinueFromQuote } from './shared/ContinueFromQuote';
 import type { HydratedQuoteResume } from '../lib/lookupQuoteByPhone';
+import { generateOrderNumber } from '../lib/orderNumber';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -526,7 +527,7 @@ export const BookingPage: React.FC = () => {
     setError(null);
 
     try {
-      const generatedOrderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const generatedOrderNumber = generateOrderNumber();
       const photos = await persistBookingPhotos(
         formData.photoUrl ? [formData.photoUrl] : estimateImages.length > 0 ? estimateImages : image ? [image] : [],
         `booking_${generatedOrderNumber}`
@@ -844,12 +845,12 @@ export const BookingPage: React.FC = () => {
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
-                                  ? '/service-scenes/property-cleanout.png'
+                                  ? '/optimized/service-scenes/property-cleanout.webp'
                                   : formData.serviceType === 'Moving Labor'
-                                    ? '/service-scenes/local-moving.png'
+                                    ? '/optimized/service-scenes/local-moving.webp'
                                     : formData.serviceType === 'Dumpster Rental'
-                                      ? '/service-scenes/dumpster-rental.png'
-                                      : '/hero-backgrounds/opek-crew-high-five.png'
+                                      ? '/optimized/service-scenes/dumpster-rental.webp'
+                                      : '/optimized/hero-backgrounds/opek-crew-high-five.webp'
                               }
                               alt="Service"
                               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -1050,7 +1051,7 @@ export const BookingPage: React.FC = () => {
                     <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                       <div className="w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
-                          src="/service-scenes/dumpster-rental.png"
+                          src="/optimized/service-scenes/dumpster-rental.webp"
                           alt="Dumpster Rental"
                           className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
                         />

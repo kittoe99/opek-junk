@@ -3,10 +3,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const rawUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
 const supabaseUrl = rawUrl && rawUrl !== 'your_supabase_url_here' ? rawUrl : '';
 
-const rawKey =
-  process.env.SUPABASE_ANON_KEY ??
-  process.env.VITE_SUPABASE_ANON_KEY ??
-  process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Public anon key only: this proxy forwards untrusted input, so it must never
+// carry the service role key.
+const rawKey = process.env.SUPABASE_ANON_KEY ?? process.env.VITE_SUPABASE_ANON_KEY;
 const supabaseKey =
   rawKey && rawKey !== 'your_supabase_anon_key_here' ? rawKey : '';
 
@@ -18,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({
       error:
-        'Supabase is not configured on the server. Set SUPABASE_URL and VITE_SUPABASE_ANON_KEY (or SUPABASE_SERVICE_ROLE_KEY) in your environment.',
+        'Supabase is not configured on the server. Set SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.',
     });
   }
 
@@ -41,7 +40,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.send(text);
   } catch (error) {
     console.error('calculate-price proxy error:', error);
-    const message = error instanceof Error ? error.message : 'Failed to calculate price';
-    return res.status(500).json({ error: message });
+    return res.status(500).json({ error: 'Failed to calculate price.' });
   }
 }

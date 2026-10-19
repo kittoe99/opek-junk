@@ -1,0 +1,146 @@
+{
+  "/card-dumpster-rental.png": {
+    "output": "/optimized/card-dumpster-rental.webp",
+    "originalBytes": 947811,
+    "optimizedBytes": 220928,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/card-junk-removal.png": {
+    "output": "/optimized/card-junk-removal.webp",
+    "originalBytes": 731128,
+    "optimizedBytes": 103916,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/card-moving-labor.png": {
+    "output": "/optimized/card-moving-labor.webp",
+    "originalBytes": 718230,
+    "optimizedBytes": 84182,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/charity-childrens-heart-clean.png": {
+    "output": "/optimized/charity-childrens-heart-clean.webp",
+    "originalBytes": 368748,
+    "optimizedBytes": 28494,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/dumpster-rental.png": {
+    "output": "/optimized/dumpster-rental.webp",
+    "originalBytes": 945161,
+    "optimizedBytes": 227402,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/hero-backgrounds/opek-crew-high-five.png": {
+    "output": "/optimized/hero-backgrounds/opek-crew-high-five.webp",
+    "originalBytes": 2352091,
+    "optimizedBytes": 178346,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/hero-backgrounds/residential-street.png": {
+    "output": "/optimized/hero-backgrounds/residential-street.webp",
+    "originalBytes": 2979891,
+    "optimizedBytes": 281122,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/hero-truck-loading.png": {
+    "output": "/optimized/hero-truck-loading.webp",
+    "originalBytes": 379482,
+    "optimizedBytes": 37472,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-property-cleanout.png": {
+    "output": "/optimized/service-property-cleanout.webp",
+    "originalBytes": 217242,
+    "optimizedBytes": 9100,
+    "width": 1024,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/dumpster-rental.png": {
+    "output": "/optimized/service-scenes/dumpster-rental.webp",
+    "originalBytes": 2588018,
+    "optimizedBytes": 227646,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/in-home-estimate.png": {
+    "output": "/optimized/service-scenes/in-home-estimate.webp",
+    "originalBytes": 2230233,
+    "optimizedBytes": 131542,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/junk-truck.png": {
+    "output": "/optimized/service-scenes/junk-truck.webp",
+    "originalBytes": 2950051,
+    "optimizedBytes": 315346,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/local-moving.png": {
+    "output": "/optimized/service-scenes/local-moving.webp",
+    "originalBytes": 2839690,
+    "optimizedBytes": 268058,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/mattress-pickup.png": {
+    "output": "/optimized/service-scenes/mattress-pickup.webp",
+    "originalBytes": 2610784,
+    "optimizedBytes": 209770,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/pickup-scheduling.png": {
+    "output": "/optimized/service-scenes/pickup-scheduling.webp",
+    "originalBytes": 2086280,
+    "optimizedBytes": 135190,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/property-cleanout.png": {
+    "output": "/optimized/service-scenes/property-cleanout.webp",
+    "originalBytes": 2227029,
+    "optimizedBytes": 153428,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/quote-estimate-two-phones-stripes.png": {
+    "output": "/optimized/service-scenes/quote-estimate-two-phones-stripes.webp",
+    "originalBytes": 1462911,
+    "optimizedBytes": 181564,
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true
+  },
+  "/workers-opek.png": {
+    "output": "/optimized/workers-opek.webp",
+    "originalBytes": 2212886,
+    "optimizedBytes": 674568,
+    "width": 2386,
+    "height": 1554,
+    "hasAlpha": false
+  }
+}

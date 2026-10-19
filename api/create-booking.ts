@@ -1,19 +1,23 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createClient } from '@supabase/supabase-js';
-
-const rawUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
-const supabaseUrl = (rawUrl && rawUrl !== 'your_supabase_url_here') ? rawUrl : '';
-
-const rawAnonKey = process.env.VITE_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
-const supabaseAnonKey =
-  (rawAnonKey && rawAnonKey !== 'your_supabase_anon_key_here') ? rawAnonKey : '';
-
-const supabase =
-  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+import { timingSafeEqual } from 'node:crypto';
+import { generateOrderNumber } from '../lib/orderNumber.js';
+import { getSupabaseAdmin, isSupabaseAdminConfigured } from '../server/supabaseAdmin.js';
 
 const isString = (v: unknown): v is string => typeof v === 'string';
 const trimmed = (v: unknown): string => (isString(v) ? v.trim() : '');
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Callers (e.g. the voice agent) must send `Authorization: Bearer <BOOKING_API_SECRET>`. */
+function isAuthorized(req: VercelRequest): boolean {
+  const expected = process.env.BOOKING_API_SECRET?.trim();
+  if (!expected) return false;
+
+  const header = req.headers.authorization ?? '';
+  const provided = header.startsWith('Bearer ') ? header.slice('Bearer '.length).trim() : '';
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
 
 export default async function handler(
   req: VercelRequest,
@@ -24,7 +28,11 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!supabase) {
+  if (!isAuthorized(req)) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' });
+  }
+
+  if (!isSupabaseAdminConfigured()) {
     return res.status(500).json({
       status: 'error',
       message: 'Server is not configured.'
@@ -78,7 +86,7 @@ export default async function handler(
         : 'Junk Removal')
       : 'Junk Removal';
 
-    const orderNumber = `OPK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    const orderNumber = generateOrderNumber();
 
     const customerInfo = {
       name,
@@ -105,8 +113,9 @@ export default async function handler(
       photo_url: ''
     };
 
-    // Insert into Supabase bookings table
-    const { error } = await supabase
+    // Insert into Supabase bookings table. The generate_order_number trigger
+    // assigns the final order number, so read it back instead of trusting ours.
+    const { data: inserted, error } = await getSupabaseAdmin()
       .from('bookings')
       .insert([
         {
@@ -116,7 +125,9 @@ export default async function handler(
           status: 'pending',
           order_number: orderNumber
         }
-      ]);
+      ])
+      .select('order_number')
+      .single();
 
     if (error) {
       console.error('Supabase error:', error);
@@ -126,7 +137,7 @@ export default async function handler(
       });
     }
 
-    const finalOrderNumber = orderNumber;
+    const finalOrderNumber = inserted?.order_number ?? orderNumber;
 
     // Confirmation + admin emails are sent automatically by the
     // send_notification_on_insert trigger on public.bookings.
@@ -138,7 +149,7 @@ export default async function handler(
       message: `Booking confirmed successfully! The order number is ${finalOrderNumber}. Kofi or a crew member will call to confirm details within 15 minutes.`
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Webhook Error:', error);
     return res.status(500).json({
       status: 'error',

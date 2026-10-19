@@ -99,7 +99,7 @@ export const ContactPage: React.FC = () => {
           </>
         }
         subtitle="Question, quote, or partnership — chat live, drop a line, or call. We reply within 30 minutes during business hours."
-        image="/service-scenes/pickup-scheduling.png"
+        image="/optimized/service-scenes/pickup-scheduling.webp"
         imageAlt="A hand holding a phone to schedule an Opek pickup"
         chip="Fast replies"
         primaryCta={{ label: 'Send a message', href: '#contact-form' }}
@@ -108,7 +108,7 @@ export const ContactPage: React.FC = () => {
 
 
 
-      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/hero-backgrounds/opek-crew-high-five.png" imageAlt="Two providers ready to help" aside={
+      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/optimized/hero-backgrounds/opek-crew-high-five.webp" imageAlt="Two providers ready to help" aside={
         <section
           className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-brand/15 via-[var(--surface)] to-[var(--surface-2)] p-6 sm:p-7"
           aria-labelledby="live-chat-heading"

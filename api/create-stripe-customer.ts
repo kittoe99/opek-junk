@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
 import { ensureStripeCustomer } from '../server/stripeCustomer.js';
+import { toErrorResponse } from '../server/httpErrors.js';
 
 function getStripeSecretKey(): string | undefined {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
@@ -47,8 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (error) {
     console.error('Stripe customer creation error:', error);
-    const message =
-      error instanceof Error ? error.message : 'Failed to create Stripe customer.';
-    return res.status(500).json({ error: message });
+    const { status, message } = toErrorResponse(error, 'Failed to create Stripe customer.');
+    return res.status(status).json({ error: message });
   }
 }

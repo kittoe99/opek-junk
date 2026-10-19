@@ -9,3 +9,10 @@ dist/
 .vite/
 coverage/
 elevenlabs-mcp-server/node_modules/
+
+# Local scratch / tool attachments
+scratch/
+.codex-remote-attachments/
+supabase/.temp/
+__pycache__/
+*.pyc

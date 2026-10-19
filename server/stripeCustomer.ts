@@ -1,3 +1,4 @@
+import { ClientError } from './httpErrors.js';
 import type Stripe from 'stripe';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { upsertStripeCustomer } from './stripeCustomerStore.js';
@@ -73,7 +74,7 @@ export async function findOrCreateStripeCustomer(
   const normalized = normalizeStripeCustomerContact(contact);
 
   if (!hasStripeCustomerIdentity(normalized)) {
-    throw new Error('Customer contact details are required before payment.');
+    throw new ClientError('Customer contact details are required before payment.');
   }
 
   if (normalized.email) {

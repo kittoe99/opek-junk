@@ -52,12 +52,12 @@ function generateOtp(): string {
 }
 
 async function sendOtpSms(phone: string, code: string): Promise<{ ok: boolean; error?: string }> {
-  const smsUrl = (Deno.env.get("OPEK_SMS_URL") || "https://opek-sms-zllz4.ondigitalocean.app").replace(
+  const smsUrl = (Deno.env.get("OPEK_SMS_URL") || "").replace(
     /\/$/,
     "",
   );
   const apiKey = Deno.env.get("OPEK_SMS_API_KEY");
-  if (!apiKey) {
+  if (!smsUrl || !apiKey) {
     return { ok: false, error: "SMS not configured" };
   }
 

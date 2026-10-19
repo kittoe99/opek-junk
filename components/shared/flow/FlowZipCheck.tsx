@@ -5,6 +5,8 @@ import { FlowStepTitle } from './FlowStepTitle';
 interface FlowZipCheckProps {
   title?: React.ReactNode;
   subtitle?: string;
+  /** Optional "how it works" strip shown under the title. */
+  steps?: string[];
   zipValue: string;
   onZipChange: (value: string) => void;
   onCheck: () => void;
@@ -19,6 +21,7 @@ interface FlowZipCheckProps {
 export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   title = 'Where do you need service?',
   subtitle = 'Enter your ZIP code to confirm nationwide coverage.',
+  steps,
   zipValue,
   onZipChange,
   onCheck,
@@ -37,7 +40,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   return (
     <div className="home-light interior-home flow-zip-layout">
       <div className="flow-zip-art home-scene-photo" aria-hidden>
-        <img src="/service-scenes/junk-truck.png" alt="" />
+        <img src="/optimized/service-scenes/junk-truck.webp" alt="" />
       </div>
 
       <div className="flow-zip-content">
@@ -49,6 +52,17 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
         )}
 
         <FlowStepTitle eyebrow="Check coverage" title={title} subtitle={subtitle} />
+
+        {steps && steps.length > 0 && (
+          <ol className="flow-zip-steps" aria-label="How it works">
+            {steps.map((step, i) => (
+              <li key={step}>
+                <span className="flow-zip-step-num" aria-hidden>{i + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
+        )}
 
         <form onSubmit={submit} className="flow-zip-form" noValidate>
           <label htmlFor="flow-zip" className="sr-only">ZIP code</label>

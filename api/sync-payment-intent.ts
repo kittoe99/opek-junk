@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
 import { syncSucceededPaymentIntent } from '../server/syncPaymentIntent.js';
+import { toErrorResponse } from '../server/httpErrors.js';
 
 function getStripeSecretKey(): string | undefined {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
@@ -38,8 +39,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(result);
   } catch (error) {
     console.error('Stripe payment sync error:', error);
-    const message =
-      error instanceof Error ? error.message : 'Failed to sync payment method to customer.';
-    return res.status(500).json({ error: message });
+    const { status, message } = toErrorResponse(error, 'Failed to sync payment method to customer.');
+    return res.status(status).json({ error: message });
   }
 }
