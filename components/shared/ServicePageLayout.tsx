@@ -69,10 +69,11 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
     { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'Hand holding a phone with pickup time choices' },
     { title: moving ? 'Settle into your space' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
       body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
-      image: moving ? '/optimized/service-scenes/local-moving.webp' : '/optimized/service-scenes/junk-truck.webp', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
+      image: moving ? '/optimized/service-scenes/local-moving.webp' : '/optimized/service-scenes/junk-truck-unbranded.webp', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
   ];
   return <div className="home-light interior-home">
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}
+      variant={path.startsWith('/services/') ? 'compact' : 'full'}
       chip={heroChip} primaryCta={primaryCta} secondaryCta={secondaryCta}
     />
     <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}

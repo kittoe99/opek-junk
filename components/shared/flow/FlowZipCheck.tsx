@@ -35,7 +35,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
   onBack,
   showBack = false,
   variant = 'split',
-  image = '/optimized/service-scenes/junk-truck.webp',
+  image = '/optimized/service-scenes/junk-truck-unbranded.webp',
 }) => {
   const ready = zipValue.length === 5;
   const submit = (e: React.FormEvent) => {

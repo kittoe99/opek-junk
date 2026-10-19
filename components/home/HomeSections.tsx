@@ -20,7 +20,7 @@ export const HomeFeaturedServices: React.FC = () => {
     {
       title: 'Junk removal',
       body: 'Couches, appliances, mattresses, yard debris and full loads. Pick your items, see your price, and a crew hauls it all away.',
-      image: '/optimized/service-scenes/junk-truck.webp',
+      image: '/optimized/service-scenes/junk-truck-unbranded.webp',
       alt: 'Purple dump truck loaded with furniture and household junk',
       cta: 'Get a price',
       onClick: () => navigate('/quote'),
@@ -114,7 +114,7 @@ const steps = [
   {
     title: 'We haul it away',
     body: 'Your provider loads everything up and takes care of disposal, donation or recycling.',
-    image: '/optimized/service-scenes/junk-truck.webp',
+    image: '/optimized/service-scenes/junk-truck-unbranded.webp',
     alt: 'Purple dump truck loaded with furniture and household junk',
     fit: 'contain' as const,
   },

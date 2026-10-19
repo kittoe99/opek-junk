@@ -142,5 +142,29 @@
     "width": 2386,
     "height": 1554,
     "hasAlpha": false
+  },
+  "/hero-backgrounds/opek-crew-high-five-unbranded.png": {
+    "output": "/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp",
+    "originalBytes": 2186107,
+    "optimizedBytes": 169028,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/junk-truck-unbranded.png": {
+    "output": "/optimized/service-scenes/junk-truck-unbranded.webp",
+    "originalBytes": 2723927,
+    "optimizedBytes": 288360,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/dumpster-rental-unbranded.png": {
+    "output": "/optimized/service-scenes/dumpster-rental-unbranded.webp",
+    "originalBytes": 2395658,
+    "optimizedBytes": 197686,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
   }
 }

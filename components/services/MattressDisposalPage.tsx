@@ -46,8 +46,8 @@ export const MattressDisposalPage: React.FC = () => {
     });
   };
   return <ServicePageLayout
-    path="/services/mattress-disposal" eyebrow="Mattress Pickup & Recycling" title={<>Old mattress?<br />We’ll haul it today.</>}
-    subtitle="Local providers pick up mattresses, box springs, and frames from any room — same-day windows available in most areas." heroImage="/optimized/service-scenes/mattress-pickup.webp" heroImageAlt="Provider carrying a mattress for disposal" heroChip="Room to rest"
+    path="/services/mattress-disposal" eyebrow="Mattress Pickup & Recycling" title="Mattress Disposal"
+    subtitle="Make room for better rest. Local providers pick up mattresses, box springs, and frames from any room." heroImage="/optimized/service-scenes/mattress-pickup.webp" heroImageAlt="Provider carrying a mattress for disposal" heroChip="Room to rest"
     primaryCta={{ label: 'View Pricing', onClick: () => goToBooking() }}
     secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
     onZipCheck={goToBooking}

@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ onGetQuote, onBookOnline }) => {
         {/* Visual */}
         <div className="ui-image-frame ui-image-frame--home-hero home-hero-visual home-hero-photo relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
           <img
-            src="/optimized/hero-backgrounds/opek-crew-high-five.webp"
+            src="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp"
             alt="Two Opek providers in purple shirts high-fiving beside a junk removal truck on a residential street"
             fetchPriority="high"
             className="absolute bottom-0 left-[44%] -translate-x-1/2 h-[92%] w-auto max-w-none object-contain object-bottom select-none"

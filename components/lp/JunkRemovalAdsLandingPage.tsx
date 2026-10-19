@@ -51,7 +51,7 @@ export const JunkRemovalAdsLandingPage: React.FC = () => {
 
   return <ServicePageLayout
     path="/lp/junk-removal" eyebrow="Junk Removal Near You" title={<>Fast junk disposal.<br />Right in your area.</>}
-    subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options in your area." heroImage="/optimized/service-scenes/junk-truck.webp" heroImageAlt="Purple dump truck loaded with household junk" heroChip="A clear space"
+    subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with same-day options in your area." heroImage="/optimized/service-scenes/junk-truck-unbranded.webp" heroImageAlt="Purple dump truck loaded with household junk" heroChip="A clear space"
     primaryCta={{ label: 'View Pricing', onClick: () => goToBooking() }}
     secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
     onZipCheck={goToBooking}

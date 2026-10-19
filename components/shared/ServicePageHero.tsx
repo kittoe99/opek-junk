@@ -5,6 +5,7 @@ interface CtaProps { label: string; onClick?: () => void; href?: string; }
 export interface ServicePageHeroProps {
   eyebrow?: string; title: React.ReactNode; subtitle: string; image: string; imageAlt: string;
   primaryCta?: CtaProps; secondaryCta?: CtaProps;
+  variant?: 'full' | 'compact';
   /** Short label shown in the pill above the headline on phones. Falls back to the eyebrow. */
   chip?: string;
   children?: React.ReactNode; finePrint?: string;
@@ -17,10 +18,36 @@ function Action({ cta, className }: { cta: CtaProps; className: string }) {
 
 /** Interior-page hero built on the same structure as the homepage hero (desktop split, phone promo block). */
 export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
-  eyebrow, title, subtitle, image, imageAlt, primaryCta, secondaryCta, chip, children,
+  eyebrow, title, subtitle, image, imageAlt, primaryCta, secondaryCta, chip, children, variant = 'full',
   finePrint = 'Services are performed by independent local providers. Pricing, availability and same-day service vary by area.',
 }) => {
   const badge = chip || eyebrow;
+  if (variant === 'compact') {
+    return (
+      <section className="service-mini-hero">
+        <div className="service-mini-inner">
+          <div className="service-mini-heading">
+            <p className="service-mini-eyebrow">Opek services</p>
+            <h1 className="home-display service-mini-title">{title}</h1>
+          </div>
+          <div className="service-mini-image">
+            <img src={image} alt={imageAlt} fetchPriority="high" />
+          </div>
+          <p className="service-mini-description">{subtitle}</p>
+          {(primaryCta || secondaryCta) && (
+            <div className="service-mini-actions">
+              {primaryCta && <Action cta={primaryCta} className="ui-button" />}
+              {secondaryCta && <Action cta={secondaryCta} className="ui-text-button" />}
+            </div>
+          )}
+          <div className="service-mini-note">
+            {children}
+            {finePrint && <p>{finePrint}</p>}
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className={`home-hero interior-hero ${image.includes('dump') ? 'interior-hero-vehicle' : ''} relative overflow-hidden bg-[#f4eefc]`}>
       <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,46%)]">

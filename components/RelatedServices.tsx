@@ -18,7 +18,7 @@ const allRelatedServices = [
   {
     title: 'Dumpster Rental',
     path: '/services/dumpster-rental',
-    image: '/optimized/service-scenes/dumpster-rental.webp',
+    image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
     alt: 'Roll-off dumpster for debris and renovation waste',
   },
   {

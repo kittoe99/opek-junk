@@ -11,14 +11,8 @@ export const SmallLocalMovesPage: React.FC = () => {
     <ServicePageLayout
       path="/services/small-local-moves"
       eyebrow="Small Local Moves"
-      title={
-        <>
-          Local
-          <br />
-          Moves
-        </>
-      }
-      subtitle="Affordable hourly moving help for studios, 1-bedrooms, and small homes. Book truck + crew — or just the muscle if you already have a truck."
+      title="Local Moves"
+      subtitle="A little help for your next move. Book a truck and crew, or just the muscle if you have your own truck."
       heroImage="/optimized/service-scenes/local-moving.webp"
       heroImageAlt="Moving providers carrying furniture for a local move"
       heroChip="Truck + Crew"

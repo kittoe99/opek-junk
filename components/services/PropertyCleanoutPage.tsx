@@ -10,16 +10,10 @@ export const PropertyCleanoutPage: React.FC = () => {
     <ServicePageLayout
       path="/services/property-cleanout"
       eyebrow="Property Cleanouts"
-      title={
-        <>
-          Full Property
-          <br />
-          Cleanouts
-        </>
-      }
-      subtitle="Estate clearing, foreclosures, move-outs, and hoarding situations. Professional, thorough, and discreet — providers handle the hard parts."
+      title="Property Cleanouts"
+      subtitle="From move-outs to estate cleanouts, get thoughtful, thorough help clearing the space."
       heroImage="/optimized/service-scenes/property-cleanout.webp"
-      heroImageAlt="Provider greeting a customer after a property cleanout"
+      heroImageAlt="Local providers carrying items out during a property cleanout"
       heroChip="Discreet & Thorough"
       primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}

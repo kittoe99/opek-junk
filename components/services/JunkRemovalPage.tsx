@@ -10,15 +10,9 @@ export const JunkRemovalPage: React.FC = () => {
     <ServicePageLayout
       path="/services/junk-removal"
       eyebrow="Nationwide Junk Removal"
-      title={
-        <>
-          Fast Junk
-          <br />
-          Disposal
-        </>
-      }
-      subtitle="Furniture, appliances, cleanouts, and clutter — book vetted local providers with upfront flat-rate pricing and same-day options."
-      heroImage="/optimized/service-scenes/junk-truck.webp"
+      title="Junk Removal"
+      subtitle="Furniture, appliances, and everyday clutter. Get an upfront price and let a local crew handle the lifting."
+      heroImage="/optimized/service-scenes/junk-truck-unbranded.webp"
       heroImageAlt="A purple dump truck loaded for junk removal"
       heroChip="Heavy Lifting"
       primaryCta={{ label: 'Get Online Price', onClick: () => navigate('/quote') }}

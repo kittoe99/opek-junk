@@ -108,7 +108,7 @@ export const ContactPage: React.FC = () => {
 
 
 
-      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/optimized/hero-backgrounds/opek-crew-high-five.webp" imageAlt="Two providers ready to help" aside={
+      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp" imageAlt="Two providers ready to help" aside={
         <section
           className="soft-surface p-6 sm:p-7"
           aria-labelledby="live-chat-heading"

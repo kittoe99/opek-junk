@@ -850,8 +850,8 @@ export const BookingPage: React.FC = () => {
                                   : formData.serviceType === 'Moving Labor'
                                     ? '/optimized/service-scenes/local-moving.webp'
                                     : formData.serviceType === 'Dumpster Rental'
-                                      ? '/optimized/service-scenes/dumpster-rental.webp'
-                                      : '/optimized/hero-backgrounds/opek-crew-high-five.webp'
+                                      ? '/optimized/service-scenes/dumpster-rental-unbranded.webp'
+                                      : '/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp'
                               }
                               alt="Service"
                               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -1055,7 +1055,7 @@ export const BookingPage: React.FC = () => {
                     <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                       <div className="ui-image-frame w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
-                          src="/optimized/service-scenes/dumpster-rental.webp"
+                          src="/optimized/service-scenes/dumpster-rental-unbranded.webp"
                           alt="Dumpster Rental"
                           className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
                         />

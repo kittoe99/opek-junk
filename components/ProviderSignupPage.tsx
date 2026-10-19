@@ -392,7 +392,7 @@ export const ProviderSignupPage: React.FC = () => {
         eyebrow="Provider network"
         title={<>Hauling work.<br />On your terms.</>}
         subtitle="Apply to join independent contractors receiving local junk removal jobs through Opek’s dispatch network, with dispatch tools and weekly payouts."
-        image="/optimized/hero-backgrounds/opek-crew-high-five.webp"
+        image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp"
         imageAlt="Two Opek providers ready for a hauling job"
         primaryCta={{ label: 'Start application', onClick: scrollToForm }}
         secondaryCta={{ label: 'Questions? Call us', href: 'tel:8313187139' }}
@@ -400,14 +400,14 @@ export const ProviderSignupPage: React.FC = () => {
       <HomeHowItWorks title="Your truck. Your hours. Your next job." description="Build your local hauling business with Opek." items={[
         { title: 'Tell us about yourself', body: 'Share your business details and choose the metros you want to serve.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'Phone for managing pickup schedules' },
         { title: 'Show us your setup', body: 'Add your vehicle details and required documents so we can review your application.', image: '/optimized/service-scenes/local-moving.webp', alt: 'A local hauling crew and truck' },
-        { title: 'Get ready for local work', body: 'Once approved, finish setting up your contractor account and access the driver app.', image: '/optimized/hero-backgrounds/opek-crew-high-five.webp', alt: 'Two Opek providers at work' },
+        { title: 'Get ready for local work', body: 'Once approved, finish setting up your contractor account and access the driver app.', image: '/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp', alt: 'Two Opek providers at work' },
       ]} />
       <HomeEditorialCards title="Work that fits your life" cards={[
-        { title: 'Local jobs. Your schedule.', body: <div className="space-y-4">{PROVIDER_HERO_FEATURES.slice(0,2).map(feature => <p key={feature.title}><strong>{feature.title}.</strong> {feature.description}</p>)}</div>, image: '/optimized/service-scenes/junk-truck.webp', alt: 'Hauling truck ready for a local job', action: { label: 'Apply now', onClick: scrollToForm } },
+        { title: 'Local jobs. Your schedule.', body: <div className="space-y-4">{PROVIDER_HERO_FEATURES.slice(0,2).map(feature => <p key={feature.title}><strong>{feature.title}.</strong> {feature.description}</p>)}</div>, image: '/optimized/service-scenes/junk-truck-unbranded.webp', alt: 'Hauling truck ready for a local job', action: { label: 'Apply now', onClick: scrollToForm } },
         { title: 'A network behind you', body: 'Onboard with clear standards, dispatch support and weekly payouts. Independent providers run their own operations.', image: '/optimized/service-scenes/local-moving.webp', alt: 'Providers working together', action: { label: 'Create your account', to: '/sign-up' } },
       ]} />
 
-      <HomeFormSection sectionRef={formSectionRef} title="Let’s get to know you" description="Start your provider application. We will guide you through your business, service areas, vehicle and availability." image="/optimized/hero-backgrounds/opek-crew-high-five.webp" imageAlt="Two Opek providers high-fiving beside their truck" aside={<p>Already approved? <a className="font-bold text-brand underline" href="/sign-up">Create your contractor account</a> with the email from your welcome message.</p>}>
+      <HomeFormSection sectionRef={formSectionRef} title="Let’s get to know you" description="Start your provider application. We will guide you through your business, service areas, vehicle and availability." image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp" imageAlt="Two Opek providers high-fiving beside their truck" aside={<p>Already approved? <a className="font-bold text-brand underline" href="/sign-up">Create your contractor account</a> with the email from your welcome message.</p>}>
           <div className="mb-3 flex items-center justify-between gap-3 px-1">
             <p className="text-xs font-semibold text-[var(--text-muted)]">
               Step {step} of {SIGNUP_STEPS.length}

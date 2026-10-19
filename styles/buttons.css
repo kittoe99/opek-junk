@@ -96,9 +96,7 @@ body .site-root .home-menu-util { min-height: 44px; }
 body .site-root :is(.home-hero-mobile-link, .site-flow-header button) { min-height: 44px; }
 body .site-root .site-flow-nav .flow-btn { min-width: 48px; padding-inline: 16px; }
 
-/* White borders keep actions distinct on the purple mobile hero. */
-body .site-root .home-hero-mobile-cta { border-color: #fff; }
-body .site-root .home-hero-mobile-cta:hover { border-color: #fff; }
+body .site-root .home-hero-mobile-cta { border: 0; }
 @media (max-width: 767px) {
   :root { --button-height: 48px; }
   body .site-root :is(.ui-button, .home-cta, .site-button, .flow-btn, .coverage-result-primary, .cov-form-btn) { padding: 12px 18px; }

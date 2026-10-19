@@ -38,7 +38,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
     <div className="flow-options">
       <FlowSelectionCard
         title="Junk Removal"
-        image="/optimized/service-scenes/junk-truck.webp"
+        image="/optimized/service-scenes/junk-truck-unbranded.webp"
         description="Haul away furniture, debris, and unwanted clutter"
         fromPrice={`From $${JUNK_REMOVAL_MIN_PRICE}`}
         icon={<JunkIcon className={HERO_ICON_CLASS} />}
@@ -56,7 +56,7 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
       />
       <FlowSelectionCard
         title="Dumpster Rental"
-        image="/optimized/service-scenes/dumpster-rental.webp"
+        image="/optimized/service-scenes/dumpster-rental-unbranded.webp"
         description="Roll-off container delivered to your site"
         fromPrice="From $350"
         icon={<DumpsterIcon className={HERO_ICON_CLASS} />}
