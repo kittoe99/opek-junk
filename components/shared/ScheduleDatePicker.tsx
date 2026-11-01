@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarCheck, Check, ChevronLeft, ChevronRight, Sun, Sunrise, Sunset } from 'lucide-react';
 
 export type TimeSlot = 'morning' | 'midday' | 'evening';
 
@@ -12,6 +12,8 @@ export const TIME_SLOT_OPTIONS: {
   { id: 'midday', label: 'Mid-day', range: '12pm – 4pm' },
   { id: 'evening', label: 'Evening', range: '4pm – 7pm' },
 ];
+
+const SLOT_ICONS: Record<TimeSlot, typeof Sun> = { morning: Sunrise, midday: Sun, evening: Sunset };
 
 export function formatTimeSlotLabel(slot: TimeSlot | ''): string {
   if (!slot) return '';
@@ -108,59 +110,48 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
     return startOfDay(prevMonthEnd) >= minSelectable;
   }, [viewMonth, minSelectable]);
 
-  const selectedSummary = useMemo(() => {
-    if (!selectedDate) return 'Select a date below';
-    const formatted = selectedDate.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    });
-    const slotLabel = timeSlot ? formatTimeSlotLabel(timeSlot) : '';
-    return slotLabel ? `${formatted} · ${slotLabel}` : formatted;
-  }, [selectedDate, timeSlot]);
+  // Skip weeks that are entirely in the past so the month opens on bookable days.
+  const weeks = useMemo(() => {
+    const rows: typeof calendarDays[] = [];
+    for (let i = 0; i < calendarDays.length; i += 7) rows.push(calendarDays.slice(i, i + 7));
+    return rows.filter((row) => row.some(({ date: d }) => d && startOfDay(d) >= minSelectable));
+  }, [calendarDays, minSelectable]);
 
-  const selectedStr = selectedDate
-    ? selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  const pickedLabel = selectedDate
+    ? selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
     : '';
+  const pickedSlot = TIME_SLOT_OPTIONS.find((o) => o.id === timeSlot);
 
   return (
-    <div className="ui-calendar space-y-3">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-bold text-[var(--text)]">{selectedStr || 'Select a date'}</p>
-          {timeSlot && <p className="text-xs text-[var(--text-muted)] mt-0.5">{formatTimeSlotLabel(timeSlot)}</p>}
-        </div>
-        <div className="flex items-center gap-1">
+    <div className="qcal">
+      <div className="qcal-card">
+        <div className="qcal-head">
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, -1))}
             disabled={!canGoPrev}
-            className="ui-icon-button w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            className="qcal-nav"
             aria-label="Previous month"
           >
-            <ChevronLeft size={15} />
+            <ChevronLeft size={20} aria-hidden />
           </button>
+          <p className="qcal-month" aria-live="polite">{monthLabel}</p>
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, 1))}
-            className="ui-icon-button w-7 h-7 rounded-lg text-[var(--text)] hover:bg-[var(--surface)]/[0.06] transition-colors flex items-center justify-center"
+            className="qcal-nav"
             aria-label="Next month"
           >
-            <ChevronRight size={15} />
+            <ChevronRight size={20} aria-hidden />
           </button>
         </div>
-      </div>
 
-      <div className="ui-panel bg-[var(--surface)] rounded-xl border border-[var(--border)] p-3">
-        <p className="text-xs font-semibold text-[var(--text-muted)] text-center mb-3">{monthLabel}</p>
-        <div className="grid grid-cols-7 gap-px mb-1">
-          {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-            <div key={day} className="text-[10px] font-semibold text-[var(--text-muted)] text-center py-1">{day}</div>
+        <div className="qcal-grid" role="group" aria-label={`Dates in ${monthLabel}`}>
+          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+            <span key={i} className="qcal-dow" aria-hidden="true">{day}</span>
           ))}
-        </div>
-        <div className="grid grid-cols-7 gap-px">
-          {calendarDays.map(({ date: cellDate, key }) => {
-            if (!cellDate) return <div key={key} className="aspect-square" aria-hidden="true" />;
+          {weeks.flat().map(({ date: cellDate, key }) => {
+            if (!cellDate) return <span key={key} aria-hidden="true" />;
             const disabled = startOfDay(cellDate) < minSelectable;
             const isSelected = selectedDate ? isSameDay(cellDate, selectedDate) : false;
             const isToday = isSameDay(cellDate, today);
@@ -169,10 +160,10 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
                 key={key}
                 type="button"
                 disabled={disabled}
+                aria-pressed={isSelected}
+                aria-label={cellDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 onClick={() => onDateChange(toISODate(cellDate))}
-                className={`aspect-square rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${
-                  disabled ? 'text-[var(--text-muted)] opacity-40 cursor-not-allowed' : isSelected ? 'bg-brand text-white' : 'text-[var(--text)] hover:bg-brand/10'
-                } ${!disabled && !isSelected && isToday ? 'ring-1 ring-brand/40 ring-inset' : ''}`}
+                className={`qcal-day${isSelected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
               >
                 {cellDate.getDate()}
               </button>
@@ -181,27 +172,37 @@ export const ScheduleDatePicker: React.FC<ScheduleDatePickerProps> = ({
         </div>
       </div>
 
-      <div className="ui-panel rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-none">
-        <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">Time slot</p>
-        <div className="flex gap-2">
-          {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
-            const selected = timeSlot === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => onTimeSlotChange(id)}
-                className={`flex-1 rounded-lg border py-2.5 text-center text-xs font-semibold transition-all ${
-                  selected ? 'border-brand bg-brand text-white shadow-[0_0_20px_-6px_rgba(82,15,150,0.5)]' : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-brand/40 hover:bg-[var(--surface-2)]'
-                }`}
-              >
-                {label}
-                <span className={`block text-[10px] font-normal mt-0.5 ${selected ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{range}</span>
-              </button>
-            );
-          })}
-        </div>
+      <div className="qslots" role="radiogroup" aria-label="Arrival window">
+        <p className="qslots-title">Arrival window</p>
+        {TIME_SLOT_OPTIONS.map(({ id, label, range }) => {
+          const selected = timeSlot === id;
+          const Icon = SLOT_ICONS[id];
+          return (
+            <button
+              key={id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              onClick={() => onTimeSlotChange(id)}
+              className={`qslot${selected ? ' is-selected' : ''}`}
+            >
+              <span className="qslot-icon"><Icon size={20} aria-hidden /></span>
+              <span className="qslot-text">
+                <span className="qslot-label">{label}</span>
+                <span className="qslot-range">{range}</span>
+              </span>
+              <span className="qslot-check" aria-hidden="true">{selected && <Check size={14} strokeWidth={3} />}</span>
+            </button>
+          );
+        })}
       </div>
+
+      <p className={`qcal-picked${selectedDate ? '' : ' is-empty'}`} aria-live="polite">
+        <CalendarCheck size={18} aria-hidden />
+        {selectedDate
+          ? <span><strong>{pickedLabel}</strong>{pickedSlot ? ` · ${pickedSlot.label}, ${pickedSlot.range}` : ' · choose an arrival window'}</span>
+          : <span>Pick a day, then an arrival window</span>}
+      </p>
     </div>
   );
 };

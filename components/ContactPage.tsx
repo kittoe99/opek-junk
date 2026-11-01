@@ -1,26 +1,14 @@
-import { HomeWaysToBook } from './home/HomeSections';
-import { HomeFormSection } from './home/HomePagePatterns';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, MessageCircle, Phone, Send } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { ServicePageHero } from './shared/ServicePageHero';
+import React, { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AlertCircle, ArrowRight, Loader2, MessageCircle, MessageSquare, Phone, Send } from 'lucide-react';
+import { CONTACT_SMS_CONSENT, CONTACT_SUBJECTS, createContactSubmitter } from '../lib/crmContact';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
-import {
-  UTILITY_FORM_CARD,
-  UTILITY_FORM_WRAP,
-  UTILITY_INPUT,
-  UTILITY_LABEL,
-  UTILITY_PRIMARY_BUTTON,
-} from '../lib/flowPageLayout';
+import { ServicePageHero } from './shared/ServicePageHero';
+import { UTILITY_INPUT, UTILITY_LABEL, UTILITY_PRIMARY_BUTTON } from '../lib/flowPageLayout';
 
-const SUBJECTS = [
-  'General question',
-  'Quote / pricing',
-  'Existing order',
-  'Partnership',
-  'Something else',
-];
+const SUBJECTS = CONTACT_SUBJECTS;
+
+const SITE_PHONE = '18777574365';
 
 export const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,43 +18,33 @@ export const ContactPage: React.FC = () => {
     phone: '',
     subject: SUBJECTS[0],
     message: '',
+    smsOptIn: false,
+    website: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const submitContact = useRef(createContactSubmitter());
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
+    setError(null);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     setSubmitting(true);
     setError(null);
 
     try {
-      const messageText = `${formData.subject}: ${formData.message}`;
-      const { error: insertError } = await supabase.from('contacts').insert([
-        {
-          customer_info: {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-          },
-          contact_info: {
-            message: messageText,
-          },
-        },
-      ]);
-
-      if (insertError) throw insertError;
+      await submitContact.current(formData);
       setSubmitted(true);
-    } catch (err: any) {
-      console.error('Error submitting contact form:', err);
-      setError(err.message || 'Failed to submit form. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'We couldn’t send your message. Please try again, or call us.');
       setSubmitting(false);
     }
   };
@@ -75,90 +53,58 @@ export const ContactPage: React.FC = () => {
     return (
       <SubmissionSuccessView
         title="Message sent"
-        description="We received your message and will get back to you soon."
+        description="Thanks — we’ve received your message. Our team will get back to you during business hours."
         summary={[
+          { label: 'Topic', value: formData.subject },
           { label: 'Name', value: formData.name },
-          { label: 'Email', value: formData.email },
           { label: 'Phone', value: formData.phone },
-          { label: 'Subject', value: formData.subject },
-          { label: 'Message', value: formData.message },
+          { label: 'Email', value: formData.email },
         ]}
       />
     );
   }
 
   return (
-    <div className="site-page home-light interior-home min-h-screen pb-24">
+    <div className="site-page home-light interior-home soft-page">
       <ServicePageHero
-        eyebrow="Contact"
-        title={
-          <>
-            Get in
-            <br />
-            touch
-          </>
-        }
-        subtitle="Question, quote, or partnership — chat live, drop a line, or call. We reply within 30 minutes during business hours."
-        image="/optimized/service-scenes/pickup-scheduling.webp"
-        imageAlt="A hand holding a phone to schedule an Opek pickup"
-        chip="Fast replies"
+        rating={false}
+        title={<>Real people.<br />Quick answers.</>}
+        subtitle="Questions about a quote, a booking or an order? Call, text or send a message. We usually reply within 30 minutes."
+        image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp"
+        imageAlt="Two Opek providers high-fiving beside their truck"
         primaryCta={{ label: 'Send a message', href: '#contact-form' }}
-        secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
+        secondaryCta={{ label: 'Call (877) 757-4365', href: `tel:+${SITE_PHONE}` }}
       />
 
-
-
-      <HomeFormSection id="contact-form" title="Let’s talk about your space" description="Send a message below, or open a chat for help with quotes, bookings and questions." image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp" imageAlt="Two providers ready to help" aside={
-        <section
-          className="soft-surface p-6 sm:p-7"
-          aria-labelledby="live-chat-heading"
-        >
-          <div className="flex items-start gap-3 mb-5">
-            <span className="relative mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand/20 text-brand">
-              <span
-                className="absolute inline-flex h-full w-full animate-ping-dot rounded-xl bg-brand/30"
-                aria-hidden
-              />
-              <MessageCircle size={18} className="relative" />
-            </span>
-            <div>
-              <h2
-                id="live-chat-heading"
-                className="text-lg font-bold text-[var(--text)] tracking-tight font-sans"
-              >
-                Live chat with Macy
-              </h2>
-              <p className="mt-1 text-[var(--text-muted)] text-xs leading-relaxed">
-                Opens a full chat window — get quotes, book a job, or ask questions by text or voice.
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigate('/chat?mode=text')}
-            className={`${UTILITY_PRIMARY_BUTTON} shadow-[0_0_28px_-8px_rgba(82,15,150,0.65)]`}
-          >
-            <MessageCircle size={14} /> Open live chat
+      <div id="contact-form" className="soft-wrap contact-wrap scroll-mt-[var(--site-header-height)]">
+        <div className="contact-options">
+          <a href={`tel:+${SITE_PHONE}`} className="soft-surface contact-option" aria-label="Call (877) 757-4365">
+            <Phone size={20} aria-hidden />
+            <span>Call</span>
+          </a>
+          <a href={`sms:+${SITE_PHONE}`} className="soft-surface contact-option" aria-label="Text (877) 757-4365">
+            <MessageSquare size={20} aria-hidden />
+            <span>Text</span>
+          </a>
+          <button type="button" onClick={() => navigate('/chat?mode=text')} className="soft-surface contact-option">
+            <MessageCircle size={20} aria-hidden />
+            <span>Live chat</span>
           </button>
-          <p className="mt-3 text-[11px] text-[var(--text-muted)]">
-            Prefer writing? Send a message below, or call (831) 318-7139.
-          </p>
-        </section>
-      }>
-        <div className={UTILITY_FORM_CARD}>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="text-center space-y-2 mb-2">
-              <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Send a message</h2>
-              <p className="text-[var(--text-muted)] text-xs">We typically respond within 30 minutes.</p>
-            </div>
+        </div>
 
+        <div className="soft-card contact-card">
+          <h2 className="contact-card-title">Send a message</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <fieldset disabled={submitting} className="space-y-4 min-w-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className={UTILITY_LABEL}>Name *</label>
-                <input aria-label="Name"
+                <label htmlFor="contact-name" className={UTILITY_LABEL}>Name</label>
+                <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   autoComplete="name"
+                  maxLength={200}
                   value={formData.name}
                   onChange={handleInputChange}
                   required
@@ -167,26 +113,29 @@ export const ContactPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label className={UTILITY_LABEL}>Phone *</label>
-                <input aria-label="Phone"
+                <label htmlFor="contact-phone" className={UTILITY_LABEL}>Phone</label>
+                <input
+                  id="contact-phone"
                   type="tel"
                   name="phone"
                   autoComplete="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  placeholder="(831) 318-7139"
+                  placeholder="(555) 123-4567"
                   className={UTILITY_INPUT}
                 />
               </div>
             </div>
 
             <div>
-              <label className={UTILITY_LABEL}>Email *</label>
-              <input aria-label="Email"
+              <label htmlFor="contact-email" className={UTILITY_LABEL}>Email</label>
+              <input
+                id="contact-email"
                 type="email"
                 name="email"
                 autoComplete="email"
+                maxLength={320}
                 value={formData.email}
                 onChange={handleInputChange}
                 required
@@ -196,67 +145,79 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <div>
-              <label className={UTILITY_LABEL}>Subject *</label>
-              <select aria-label="Subject"
+              <label htmlFor="contact-subject" className={UTILITY_LABEL}>Topic</label>
+              <select
+                id="contact-subject"
                 name="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
-                required
                 className={UTILITY_INPUT}
               >
                 {SUBJECTS.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className={UTILITY_LABEL}>Message *</label>
-              <textarea aria-label="Message"
+              <label htmlFor="contact-message" className={UTILITY_LABEL}>Message</label>
+              <textarea
+                id="contact-message"
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
                 required
-                rows={5}
+                rows={4}
+                maxLength={2000}
                 placeholder="How can we help?"
-                className={`${UTILITY_INPUT} resize-none`}
+                className={UTILITY_INPUT}
               />
             </div>
 
-            {error && <p className="text-brand text-xs font-bold">{error}</p>}
+            <label className="flex items-start gap-3 text-sm text-[var(--text-muted)]">
+              <input
+                type="checkbox"
+                name="smsOptIn"
+                checked={formData.smsOptIn}
+                onChange={(e) => setFormData((prev) => ({ ...prev, smsOptIn: e.target.checked }))}
+                className="mt-1 h-4 w-4 shrink-0 accent-[#520f96]"
+              />
+              <span>{CONTACT_SMS_CONSENT}</span>
+            </label>
+            <p className="text-xs text-[var(--text-muted)]">
+              Opt in to receive an immediate text acknowledgment. You can also submit without SMS.
+              {' '}<Link to="/privacy" className="underline">Privacy policy</Link>
+            </p>
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="contact-website">Leave this field blank</label>
+              <input id="contact-website" name="website" value={formData.website} onChange={handleInputChange} tabIndex={-1} autoComplete="off" />
+            </div>
+
+            {error && (
+              <p className="soft-error" role="alert">
+                <AlertCircle size={16} aria-hidden />
+                {error}
+              </p>
+            )}
 
             <button type="submit" disabled={submitting} className={UTILITY_PRIMARY_BUTTON}>
               {submitting ? (
-                'Sending...'
+                <Loader2 size={18} className="animate-spin" aria-label="Sending" />
               ) : (
                 <>
-                  <Send size={14} /> Send Message
+                  Send message
+                  <Send size={16} aria-hidden />
                 </>
               )}
             </button>
-
-            <div className="flex items-center justify-between pt-2">
-              <a
-                href="tel:8313187139"
-                className="text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors flex items-center gap-1.5"
-              >
-                <Phone size={14} /> (831) 318-7139
-              </a>
-              <button
-                type="button"
-                onClick={() => navigate('/quote')}
-                className="ui-text-button"
-              >
-                Get a quote <ArrowRight size={14} />
-              </button>
-            </div>
+            </fieldset>
           </form>
         </div>
-      </HomeFormSection>
-      <HomeWaysToBook />
 
+        <p className="soft-help">
+          Need a price? <Link to="/quote">Get a free quote <ArrowRight size={14} className="inline -mt-0.5" aria-hidden /></Link>
+        </p>
+      </div>
     </div>
   );
 };

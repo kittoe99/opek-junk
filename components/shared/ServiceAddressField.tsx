@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { Loader2, MapPinned } from 'lucide-react';
+import { Loader2, MapPin, Search, X } from 'lucide-react';
 import {
   AddressLocationBias,
   AddressSuggestion,
@@ -62,7 +62,7 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
   onErrorChange,
   locationBias,
   searchBiasZip,
-  placeholder = 'Start typing an address...',
+  placeholder = 'Search your street address',
   inputClassName = INPUT_CLASS,
   showUnitField = true,
 }) => {
@@ -74,11 +74,15 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [addressQuery, setAddressQuery] = useState(value.address);
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchedQuery, setSearchedQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const listId = `${errorId}-list`;
 
   useEffect(() => {
     if (validated) {
@@ -98,15 +102,22 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
 
   const loadSuggestions = useCallback(
     async (query: string) => {
+      if (query.trim().length < 3) {
+        setSuggestions([]);
+        setSearchedQuery('');
+        return;
+      }
       setLoading(true);
       try {
         const results = await fetchAddressSuggestions(query, resolvedBias);
         setSuggestions(results);
-        setShowSuggestions(results.length > 0);
+        setShowSuggestions(true);
       } catch {
         setSuggestions([]);
-        setShowSuggestions(false);
+        setShowSuggestions(true);
       } finally {
+        setSearchedQuery(query);
+        setActiveIndex(-1);
         setLoading(false);
       }
     },
@@ -142,43 +153,109 @@ export const ServiceAddressField: React.FC<ServiceAddressFieldProps> = ({
     onErrorChange?.(null);
     setShowSuggestions(false);
     setSuggestions([]);
+    setActiveIndex(-1);
   };
 
+  const changeAddress = () => {
+    setAddressQuery('');
+    setSearchedQuery('');
+    onValidatedChange(false);
+    onChange({ ...value, address: '', city: '', state: '', zipCode: '' });
+    requestAnimationFrame(() => inputRef.current?.focus());
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % suggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((i) => (i <= 0 ? suggestions.length - 1 : i - 1));
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault();
+      selectSuggestion(suggestions[activeIndex]);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+    }
+  };
+
+  const typedEnough = addressQuery.trim().length >= 3;
+  const noMatches = showSuggestions && !loading && typedEnough && searchedQuery === addressQuery && suggestions.length === 0;
+  const location = formatServiceAddressLocation(value);
+
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="qaddr relative">
       {showLabel && <label htmlFor={`${errorId}-input`} className="field-label">{label}</label>}
-      <div className="relative">
-        <input
-          id={`${errorId}-input`}
-          aria-label={label}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          value={addressQuery}
-          onChange={(e) => handleAddressInput(e.target.value)}
-          onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-          placeholder={placeholder}
-          autoComplete="off"
-          className={inputClassName}
-        />
-        <MapPinned size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#520f96] pointer-events-none" />
-        {loading && (
-          <Loader2 size={18} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-[var(--text-muted)]" />
-        )}
-      </div>
-      {showSuggestions && suggestions.length > 0 && (
-        <div className="ui-address-results absolute z-50 w-full mt-1 bg-[var(--surface)] border border-[var(--border)] max-h-48 overflow-y-auto">
-          {suggestions.map((suggestion, index) => (
-            <button
-              key={`${suggestion.display}-${index}`}
-              type="button"
-              onClick={() => selectSuggestion(suggestion)}
-              className="w-full text-left px-3 py-2.5 text-sm hover:bg-[var(--surface)]/[0.06] transition-colors flex items-start gap-2 text-[var(--text)] border-b border-[var(--border)] last:border-b-0"
-            >
-              <MapPinned size={14} className="text-[var(--text-muted)] mt-0.5 shrink-0" />
-              <span>{suggestion.display}</span>
-            </button>
-          ))}
+      {validated ? (
+        <div className="qaddr-picked">
+          <span className="qaddr-picked-icon"><MapPin size={20} aria-hidden /></span>
+          <span className="qaddr-picked-text">
+            <span className="qaddr-picked-street">{value.address}</span>
+            {location && <span className="qaddr-picked-city">{location}</span>}
+          </span>
+          <button type="button" onClick={changeAddress} className="qaddr-change">Change</button>
         </div>
+      ) : (
+        <div className="relative">
+          <input
+            ref={inputRef}
+            id={`${errorId}-input`}
+            role="combobox"
+            aria-label={label}
+            aria-expanded={showSuggestions && suggestions.length > 0}
+            aria-controls={listId}
+            aria-autocomplete="list"
+            aria-activedescendant={activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
+            value={addressQuery}
+            onChange={(e) => handleAddressInput(e.target.value)}
+            onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+            onKeyDown={onKeyDown}
+            placeholder={placeholder}
+            autoComplete="off"
+            className={`${inputClassName} qaddr-input`}
+          />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#520f96] pointer-events-none" aria-hidden />
+          {loading ? (
+            <Loader2 size={18} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-[var(--text-muted)]" aria-label="Searching" />
+          ) : addressQuery && (
+            <button type="button" onClick={changeAddress} className="qaddr-clear" aria-label="Clear address">
+              <X size={16} aria-hidden />
+            </button>
+          )}
+        </div>
+      )}
+      {!validated && showSuggestions && suggestions.length > 0 && (
+        <ul id={listId} role="listbox" aria-label="Address suggestions" className="ui-address-results qaddr-results">
+          {suggestions.map((suggestion, index) => (
+            <li key={`${suggestion.display}-${index}`} role="presentation">
+              <button
+                id={`${listId}-${index}`}
+                type="button"
+                role="option"
+                aria-selected={index === activeIndex}
+                tabIndex={-1}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => selectSuggestion(suggestion)}
+                className={`qaddr-option${index === activeIndex ? ' is-active' : ''}`}
+              >
+                <MapPin size={16} className="qaddr-option-icon" aria-hidden />
+                <span className="qaddr-option-text">
+                  <span className="qaddr-option-street">{suggestion.street}</span>
+                  <span className="qaddr-option-city">{[suggestion.city, suggestion.state, suggestion.zipCode].filter(Boolean).join(', ')}</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {!validated && noMatches && (
+        <p className="qaddr-empty" role="status">No matching addresses yet. Keep typing your street number and name.</p>
+      )}
+      {!validated && !typedEnough && !error && (
+        <p className="qaddr-hint">Start with your house number, then pick your address from the list.</p>
       )}
       {validated && showUnitField && (
         <input

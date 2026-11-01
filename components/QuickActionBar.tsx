@@ -55,7 +55,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline, va
         }`}
       >
         <a
-          href="tel:8313187139"
+          href="tel:+18777574365"
           className={`flex items-center justify-center gap-2 flex-1 md:flex-initial px-3 py-2.5 md:px-4 rounded-full transition-colors ${
             light ? 'text-[#140a1f] hover:bg-[#f2ecfa]' : 'text-neutral-300 hover:text-white hover:bg-white/5'
           }`}
@@ -67,7 +67,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ onBookOnline, va
           >
             <Phone size={15} className={light ? 'text-[#520f96]' : 'text-brand'} />
           </span>
-          <span className="font-semibold text-xs md:text-sm whitespace-nowrap">(831) 318-7139</span>
+          <span className="font-semibold text-xs md:text-sm whitespace-nowrap">(877) 757-4365</span>
         </a>
 
         <div className={`w-px h-7 shrink-0 ${light ? 'bg-[#e4e0e8]' : 'bg-white/10'}`} />

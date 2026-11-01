@@ -5,6 +5,7 @@ import './styles/tailwind.css';
 import './styles/site.css';
 import './styles/buttons.css';
 import './styles/forms.css';
+import './styles/polish.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

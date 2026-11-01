@@ -1,14 +1,18 @@
 # Opek Junk Removal
 
 Marketing site and online booking flow for [opekjunkremoval.com](https://opekjunkremoval.com):
-instant quotes, deposit payments, order tracking and provider signup.
+instant quotes, CRM booking requests, order tracking and provider signup.
+
+Booking requests now use the **Opek Junk Removal** business in E2 CRM with no
+deposit. CRM collection, the opt-in SMS acknowledgment and the website
+integration are live in production. See [booking integration](docs/booking-crm-integration.md).
 
 ## Stack
 
 - **Frontend:** React 19 + Vite + Tailwind CSS (built via PostCSS, config in `tailwind.config.js`)
 - **API routes:** Vercel serverless functions in `api/` (shared server code in `server/`)
 - **Database / edge functions:** Supabase (`supabase/migrations`, `supabase/functions`)
-- **Payments:** Stripe (deposit PaymentIntents + webhook)
+- **Payments:** Historical Stripe deposit routes remain; the booking flow no longer uses them.
 - **Voice agent:** ElevenLabs (`elevenlabs-mcp-server/`)
 
 ## Run locally

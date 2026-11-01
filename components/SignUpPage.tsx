@@ -276,7 +276,7 @@ export const SignUpPage: React.FC = () => {
 
   return (
     <div className={UTILITY_PAGE_SHELL}>
-      <ServicePageHero eyebrow="Contractor account" title={<>Your account.<br />Your next chapter.</>}
+      <ServicePageHero rating={false} eyebrow="Contractor account" title={<>Your account.<br />Your next chapter.</>}
         subtitle="Use the approved email from your welcome message to set a password and access the driver app."
         image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp" imageAlt="Two Opek providers at work" chip="Provider network"
         primaryCta={{ label: 'Create my account', href: '#account-details' }} secondaryCta={{ label: 'Apply first', href: '/provider-signup' }} />
@@ -343,7 +343,7 @@ export const SignUpPage: React.FC = () => {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
-                placeholder="(831) 318-7139"
+                placeholder="(555) 123-4567"
                 className={UTILITY_INPUT}
               />
             </div>

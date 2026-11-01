@@ -107,7 +107,7 @@ serve(async (req) => {
           Need assistance?
         </p>
         <p style="color: #6b7280; margin: 0 0 16px 0; font-family: sans-serif; font-size: 13px;">
-          Call us at <a href="tel:8313187139" style="color: #ff5a1f; text-decoration: none; font-weight: 700;">(831) 318-7139</a> or reply to this email.
+          Call us at <a href="tel:+18777574365" style="color: #ff5a1f; text-decoration: none; font-weight: 700;">(877) 757-4365</a> or reply to this email.
         </p>
         <p style="color: #9ca3af; margin: 0; font-family: sans-serif; font-size: 11px;">
           &copy; ${new Date().getFullYear()} Opek Junk Removal. All rights reserved.

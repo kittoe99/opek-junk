@@ -11,3 +11,8 @@ supabase
 *.log
 .env.local
 .env
+.env.*
+.claude
+.codex-remote-attachments
+.do
+output

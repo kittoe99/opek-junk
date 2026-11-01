@@ -879,3 +879,65 @@ select.opek-field {
   .service-banner-inner { padding: 32px 20px; }
   .interior-home .service-banner-title { font-size: clamp(32px, 8.5vw, 44px); line-height: 1.02; }
 }
+
+/* Contact page */
+.contact-wrap { max-width: 560px; }
+.contact-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 28px; }
+.contact-option {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 76px; padding: 12px 8px; font-size: 14px; font-weight: 800; color: #140a1f;
+  transition: border-color .15s, background-color .15s;
+}
+.contact-option svg { color: #520f96; }
+.contact-option:hover { border-color: #b9a3d3; background: #faf6fe; }
+.soft-wrap > .contact-options + .soft-card { margin-top: 16px; }
+.contact-card-title { margin-bottom: 18px; font-family: Archivo, Inter, sans-serif; font-weight: 900; text-transform: uppercase; font-size: 18px; color: #140a1f; }
+.soft-help a { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ── Lighter, minimal homepage + page heroes ───────────────────
+   Keeps the existing type, buttons and imagery; swaps the heavy
+   purple blocks for white/very light surfaces with purple accents. */
+@media (max-width: 767px) {
+  body .home-light .home-hero-copy { background: #fff; background-image: none; color: #140a1f; border-bottom: 1px solid #ece6f2; }
+  body .home-light .home-hero-copy h1,
+  body .home-light .home-hero-copy h1 .home-hero-price { color: #140a1f; }
+  body .home-light .home-hero-copy h1 .home-hero-price { color: #520f96; }
+  body .home-light .home-hero-copy h1 + p { color: #4a4256; }
+  body .home-light .home-hero-copy .home-eyebrow,
+  body .home-light .home-hero-badge-text { color: #520f96; }
+  body .home-light .home-hero-badge { display: none; }
+  body .home-light .home-hero-mobile-cta { border-color: #520f96; }
+  body .home-light .home-hero-mobile-link { color: #520f96; }
+  body .home-light .home-hero-fine-print { background: #f7f6f9; }
+  body .home-light .home-hero-fine-print p { color: #61536d; }
+}
+/* Light mobile menu */
+.home-menu-light .home-menu-util { color: #140a1f; }
+.home-menu-light .home-menu-util svg { color: #520f96; }
+.home-menu-light .home-menu-util:hover { opacity: 1; color: #520f96; }
+
+/* Service area band: light version (same layout, map and ZIP bar) */
+body .site-root .cov { background: #f7f6f9; color: #140a1f; border-top: 1px solid #ece6f2; border-bottom: 1px solid #ece6f2; }
+body .site-root .cov-map { filter: none; }
+body .site-root .cov-land { fill: #e9e3f1; stroke: #fff; stroke-width: 1.2; }
+body .site-root .cov-grid-dot { fill: rgb(82 15 150 / 22%); }
+body .site-root .cov-state.is-on { fill: rgb(82 15 150 / 28%); stroke: #fff; }
+body .site-root .cov-dot { fill: #520f96; stroke: #fff; stroke-width: 2; }
+body .site-root .cov-pulse { fill: #b48ee0; }
+body .site-root .cov-map circle[fill^="url"] { opacity: .35; }
+body .site-root .cov-title { color: #140a1f; }
+body .site-root .cov-title span { color: #520f96; }
+body .site-root .cov-sub { color: #4a4256; }
+body .site-root .cov-form { border: 2px solid #ddd1ea; box-shadow: none; }
+body .site-root .cov-form:focus-within { border-color: #520f96; box-shadow: 0 0 0 3px rgb(82 15 150 / 14%); }
+body .site-root .cov-error { color: #b01f42; }
+body .site-root .cov-trust { color: #4a4256; }
+body .site-root .cov-trust svg { color: #520f96; }
+body .site-root .cov-note { color: #61536d; }
+body .site-root .cov .coverage-result { border: 1.5px solid #e9e1f2; box-shadow: none; }
+
+/* Callout bands (legal, provider, sign-up, SMS pages): light version */
+body .site-root .home-callout,
+body .site-root .home-light .home-callout { background: #f7f6f9; background-image: none; color: #140a1f; border-top: 1px solid #ece6f2; }
+body .site-root .home-callout h2 { color: #140a1f; }
+body .site-root .home-callout p { color: #4a4256; }

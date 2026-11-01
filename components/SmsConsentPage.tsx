@@ -16,7 +16,7 @@ export const SmsConsentPage: React.FC = () => {
 
   return (
     <div className="site-page home-light interior-home min-h-[calc(100vh-var(--site-header-height))] bg-[var(--bg)] text-[var(--text)]">
-      <ServicePageHero eyebrow="SMS consent" title={<>Your phone.<br />Your choice.</>}
+      <ServicePageHero rating={false} eyebrow="SMS consent" title={<>Your phone.<br />Your choice.</>}
         subtitle="Understand how Opek uses text messages for quotes, bookings and optional marketing, and how you can manage your preferences."
         image="/optimized/service-scenes/pickup-scheduling.webp" imageAlt="A phone displaying pickup time options" chip="Stay informed"
         primaryCta={{ label: 'See how it works', href: '#consent-details' }} secondaryCta={{ label: 'Privacy policy', href: '/privacy' }} />
@@ -163,7 +163,7 @@ export const SmsConsentPage: React.FC = () => {
             >
               Support@opekjunkremoval.com
             </a>{' '}
-            · (831) 318-7139
+            · (877) 757-4365
           </p>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Loader2, ShieldCheck, Check } from 'lucide-react';
 import { calculateMovingLaborPrice } from '../../services/pricingService';
+import { getMovingHourlyRate, MOVING_LABOR_HOURLY_RATES, MOVING_TRUCK_FEE } from '../../lib/movingLaborPricing';
 import {
   MovingAccessType,
   MovingHomeSize,
@@ -18,8 +19,8 @@ import {
   OwnTruckIcon,
   StudioHomeIcon,
   MultiHomeIcon,
-  OneHelperIcon,
   TwoHelpersIcon,
+  ThreeHelpersIcon,
   GroundFloorIcon,
   ElevatorIcon,
   StairsAccessIcon,
@@ -50,6 +51,8 @@ export interface MovingLaborEstimateResult {
 }
 
 interface MovingLaborEstimateFlowProps {
+  crmQuote?: boolean;
+  localEstimateOnly?: boolean;
   onBack: () => void;
   onComplete: (result: MovingLaborEstimateResult) => void;
   onContactReveal?: (
@@ -58,7 +61,8 @@ interface MovingLaborEstimateFlowProps {
     consentAt: string | null,
     estimate: QuoteEstimate,
     price: PriceEstimate,
-    movingOptions: MovingLaborOptions
+    movingOptions: MovingLaborOptions,
+    email?: string
   ) => Promise<void>;
   continueLabel?: string;
   initialContact?: { name: string; phone: string; consentAt: string | null };
@@ -112,16 +116,16 @@ const HOME_SIZES: {
 
 const CREW_OPTIONS = [
   {
-    helpers: 1 as const,
-    label: '1 helper — I will help',
-    desc: 'Best when you can assist with lifting',
-    icon: OneHelperIcon,
-  },
-  {
     helpers: 2 as const,
-    label: '2 helpers',
+    label: `2 helpers — $${MOVING_LABOR_HOURLY_RATES[2]}/hour`,
     desc: 'A complete crew handles the lifting',
     icon: TwoHelpersIcon,
+  },
+  {
+    helpers: 3 as const,
+    label: `3 helpers — $${MOVING_LABOR_HOURLY_RATES[3]}/hour`,
+    desc: 'Faster for larger homes and heavy items',
+    icon: ThreeHelpersIcon,
   },
 ];
 
@@ -229,12 +233,14 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   onBack,
   onComplete,
   onContactReveal,
+  crmQuote = false,
+  localEstimateOnly = false,
   continueLabel = 'Continue to book',
   initialContact,
 }) => {
   const [serviceScope, setServiceScope] = useState<MovingServiceScope | null>(null);
   const [homeSize, setHomeSize] = useState<MovingHomeSize | null>(null);
-  const [helpers, setHelpers] = useState<1 | 2 | null>(null);
+  const [helpers, setHelpers] = useState<2 | 3 | null>(null);
   const [needsTruck, setNeedsTruck] = useState<boolean | null>(null);
   const [accessType, setAccessType] = useState<MovingAccessType | null>(null);
   const [flightsOfStairs, setFlightsOfStairs] = useState<number | null>(null);
@@ -316,12 +322,12 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     }
   };
 
-  const handleContactReveal = async (name: string, phone: string, consentAt: string | null) => {
+  const handleContactReveal = async (name: string, phone: string, consentAt: string | null, email?: string) => {
     if (!priceEstimate || !estimate || !draftOptions) return;
     setContactLoading(true);
     try {
       if (onContactReveal) {
-        await onContactReveal(name, phone, consentAt, estimate, priceEstimate, draftOptions);
+        await onContactReveal(name, phone, consentAt, estimate, priceEstimate, draftOptions, email);
       }
       setContactName(name);
       setContactPhone(phone);
@@ -618,9 +624,10 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
 
   if (!priceEstimate || !estimate || !draftOptions) return null;
 
-  if (!contactSubmitted) {
+  if (!contactSubmitted && !localEstimateOnly) {
     return (
       <ContactIntakeForm
+        crmQuote={crmQuote}
         serviceType="Local Moving"
         isLoading={contactLoading}
         onReveal={handleContactReveal}
@@ -628,8 +635,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     );
   }
 
-  const hourlyRate = draftOptions.helpers === 1 ? 69 : 99;
-  const truckFee = draftOptions.needsTruck ? 99 : 0;
+  const hourlyRate = getMovingHourlyRate(draftOptions.helpers);
+  const truckFee = draftOptions.needsTruck ? MOVING_TRUCK_FEE : 0;
   const estimatedTotal = priceEstimate.price;
   const laborTotal = Math.max(0, estimatedTotal - truckFee);
   const moveDetails = [

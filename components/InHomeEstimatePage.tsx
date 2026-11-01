@@ -1,8 +1,7 @@
-import { HomeHowItWorks, HomeReviews } from './home/HomeSections';
-import { HomeFormSection } from './home/HomePagePatterns';
+import { HomeReviews } from './home/HomeSections';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Calendar, Clock, Receipt, Send } from 'lucide-react';
+import { AlertCircle, Loader2, Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { ServicePageHero } from './shared/ServicePageHero';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
@@ -12,18 +11,10 @@ import {
   formatServiceAddressLocation,
   isServiceAddressValidated,
 } from './shared/ServiceAddressField';
-import {
-  UTILITY_FORM_CARD,
-  UTILITY_FORM_WRAP,
-  UTILITY_INPUT,
-  UTILITY_LABEL,
-  UTILITY_PRIMARY_BUTTON,
-  UTILITY_SECONDARY_BUTTON,
-} from '../lib/flowPageLayout';
+import { UTILITY_INPUT, UTILITY_LABEL, UTILITY_PRIMARY_BUTTON } from '../lib/flowPageLayout';
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,31 +59,14 @@ export const InHomeEstimatePage: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(2);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleAppointmentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    if (submitting) return;
     if (!addressValidated || !isServiceAddressValidated(formData)) {
       setAddressError('Please select your address from the suggestions list.');
       return;
     }
     setAddressError(null);
-    setStep(3);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleBackStep = () => {
-    if (step === 3) setStep(2);
-    else if (step === 2) setStep(1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
     setSubmitting(true);
     setError(null);
 
@@ -159,250 +133,106 @@ export const InHomeEstimatePage: React.FC = () => {
   }
 
   return (
-    <div className="site-page home-light interior-home min-h-screen">
+    <div className="site-page home-light interior-home soft-page">
       <ServicePageHero
-        eyebrow="Free In-Home Estimate"
-        title={
-          <>
-            Providers come
-            <br />
-            to you
-          </>
-        }
-        subtitle="Schedule a free, no-obligation in-home estimate. Vetted providers visit your property and provide an accurate quote on the spot."
+        rating={false}
+        title={<>Providers come<br />to you</>}
+        subtitle="Book a free, no-obligation visit. A vetted local provider walks through the job with you and gives you a price on the spot."
         image="/optimized/service-scenes/in-home-estimate.webp"
         imageAlt="Provider ready for an in-home estimate"
-        chip="No Obligation"
         primaryCta={{ label: 'Schedule my visit', href: '#estimate-details' }}
-        secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
+        secondaryCta={{ label: 'Get an online quote instead', onClick: () => navigate('/quote') }}
       />
 
-      <HomeHowItWorks title="A real visit. A clear price." description="A free estimate makes bigger jobs easier to plan." items={[
-        { title: 'Tell us about the job', body: 'Share your contact details and the address of the property you want cleared.', image: '/optimized/service-scenes/property-cleanout.webp', alt: 'Providers carrying items from a property' },
-        { title: 'Pick your window', body: 'Choose a date and time that works for you and add any notes for your provider.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'A pickup scheduling calendar on a phone' },
-        { title: 'Meet your provider', body: 'A vetted local provider visits your property and gives you a no-obligation quote.', image: '/optimized/service-scenes/in-home-estimate.webp', alt: 'A provider meeting a homeowner for an estimate' },
-      ]} />
-
-      <HomeFormSection id="estimate-details" title="Let’s take a look" description="Tell us where to go and when to visit. We will confirm your estimate with you." image="/optimized/service-scenes/in-home-estimate.webp" imageAlt="A provider discussing a cleanout with a homeowner" aside={<p>From a single room to an entire property, your provider can walk through the job with you before you decide.</p>}>
-        <div className={UTILITY_FORM_CARD}>
-          {step === 1 && (
-            <form onSubmit={handleContactSubmit} className="space-y-6">
-              <div className="text-center space-y-2 mb-2">
-                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Contact Details</h2>
-                <p className="text-[var(--text-muted)] text-xs">Tell us how to confirm your free estimate.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={UTILITY_LABEL}>Name *</label>
-                    <input aria-label="Name"
-                      type="text"
-                      name="name"
-                      autoComplete="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="John Smith"
-                      className={UTILITY_INPUT}
-                    />
-                  </div>
-                  <div>
-                    <label className={UTILITY_LABEL}>Phone *</label>
-                    <input aria-label="Phone"
-                      type="tel"
-                      name="phone"
-                      autoComplete="tel"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="(831) 318-7139"
-                      className={UTILITY_INPUT}
-                    />
-                  </div>
+      <div id="estimate-details" className="soft-wrap contact-wrap scroll-mt-[var(--site-header-height)]">
+        <div className="soft-card contact-card">
+          <h2 className="contact-card-title">Schedule your visit</h2>
+          <form onSubmit={handleSubmit}>
+            <fieldset disabled={submitting} className="space-y-4 min-w-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="estimate-name" className={UTILITY_LABEL}>Name</label>
+                  <input id="estimate-name" type="text" name="name" autoComplete="name" value={formData.name}
+                    onChange={handleInputChange} required placeholder="John Smith" className={UTILITY_INPUT} />
                 </div>
                 <div>
-                  <label className={UTILITY_LABEL}>Email *</label>
-                  <input aria-label="Email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="you@email.com"
-                    className={UTILITY_INPUT}
-                  />
+                  <label htmlFor="estimate-phone" className={UTILITY_LABEL}>Phone</label>
+                  <input id="estimate-phone" type="tel" name="phone" autoComplete="tel" value={formData.phone}
+                    onChange={handleInputChange} required placeholder="(555) 123-4567" className={UTILITY_INPUT} />
                 </div>
-              </div>
-              <button type="submit" className={UTILITY_PRIMARY_BUTTON}>
-                Continue <ArrowRight size={14} />
-              </button>
-            </form>
-          )}
-
-          {step === 2 && (
-            <form onSubmit={handleAppointmentSubmit} className="space-y-6">
-              <div className="text-center space-y-2 mb-2">
-                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Appointment Details</h2>
-                <p className="text-[var(--text-muted)] text-xs">Choose where and when providers should visit.</p>
-              </div>
-              <div className="space-y-4">
-                <ServiceAddressField
-                  label="Service Address"
-                  value={{
-                    address: formData.address,
-                    unitNumber: formData.unitNumber,
-                    city: formData.city,
-                    state: formData.state,
-                    zipCode: formData.zipCode,
-                  }}
-                  onChange={handleAddressChange}
-                  validated={addressValidated}
-                  onValidatedChange={setAddressValidated}
-                  error={addressError}
-                  onErrorChange={setAddressError}
-                />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={UTILITY_LABEL}>
-                      <Calendar size={10} className="inline mr-1" />
-                      Preferred Date *
-                    </label>
-                    <input aria-label="Preferred Date"
-                      type="date"
-                      name="preferredDate"
-                      value={formData.preferredDate}
-                      onChange={handleInputChange}
-                      required
-                      min={new Date().toISOString().split('T')[0]}
-                      className={UTILITY_INPUT}
-                    />
-                  </div>
-                  <div>
-                    <label className={UTILITY_LABEL}>
-                      <Clock size={10} className="inline mr-1" />
-                      Preferred Time *
-                    </label>
-                    <select aria-label="Preferred Time"
-                      name="preferredTime"
-                      value={formData.preferredTime}
-                      onChange={handleInputChange}
-                      required
-                      className={UTILITY_INPUT}
-                    >
-                      <option value="">Select a time preference</option>
-                      {timeOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <button type="button" onClick={handleBackStep} className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}>
-                  <ArrowLeft size={14} /> Back
-                </button>
-                <button
-                  type="submit"
-                  disabled={!addressValidated}
-                  className={`${UTILITY_PRIMARY_BUTTON} flex-1`}
-                >
-                  Continue <ArrowRight size={14} />
-                </button>
-              </div>
-            </form>
-          )}
-
-          {step === 3 && (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="text-center space-y-2 mb-2">
-                <div className="w-12 h-12 bg-brand/15 rounded-full flex items-center justify-center mx-auto mb-3 border border-brand/30">
-                  <Receipt className="w-6 h-6 text-brand" strokeWidth={2.5} />
-                </div>
-                <h2 className="text-lg font-bold text-[var(--text)] tracking-tight">Review Request</h2>
-                <p className="text-[var(--text-muted)] text-xs">Add final notes and confirm your request.</p>
               </div>
 
               <div>
-                <label className={UTILITY_LABEL}>Additional Details</label>
-                <textarea aria-label="Additional Details"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={3}
-                  placeholder="Tell the provider about the items needing removal, access conditions, or any special requirements..."
-                  className={`${UTILITY_INPUT} resize-none`}
-                />
+                <label htmlFor="estimate-email" className={UTILITY_LABEL}>Email</label>
+                <input id="estimate-email" type="email" name="email" autoComplete="email" value={formData.email}
+                  onChange={handleInputChange} required placeholder="you@email.com" className={UTILITY_INPUT} />
               </div>
 
-              <div className="ui-panel ui-panel--muted border border-[var(--border)] bg-[var(--surface-2)] p-5 rounded-2xl">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <Receipt size={15} className="text-brand" strokeWidth={2.5} />
-                  <h3 className="text-[10px] font-bold text-[var(--text)] uppercase tracking-[0.15em]">
-                    Review Request
-                  </h3>
+              <ServiceAddressField
+                label="Address"
+                value={{
+                  address: formData.address,
+                  unitNumber: formData.unitNumber,
+                  city: formData.city,
+                  state: formData.state,
+                  zipCode: formData.zipCode,
+                }}
+                onChange={handleAddressChange}
+                validated={addressValidated}
+                onValidatedChange={setAddressValidated}
+                error={addressError}
+                onErrorChange={setAddressError}
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="estimate-date" className={UTILITY_LABEL}>Preferred date</label>
+                  <input id="estimate-date" type="date" name="preferredDate" value={formData.preferredDate}
+                    onChange={handleInputChange} required min={new Date().toISOString().split('T')[0]} className={UTILITY_INPUT} />
                 </div>
-                <div className="space-y-2.5 text-xs">
-                  {[
-                    ['Name', formData.name],
-                    ['Phone', formData.phone],
-                    ['Email', formData.email],
-                    [
-                      'Address',
-                      `${formData.address}${formData.unitNumber ? `, ${formData.unitNumber}` : ''}, ${formatServiceAddressLocation(formData)}`,
-                    ],
-                    ['Preferred Date', formData.preferredDate],
-                    ['Preferred Time', formData.preferredTime],
-                  ].map(([label, value]) => (
-                    <div
-                      key={label}
-                      className="flex justify-between gap-4 border-b border-[var(--border)] last:border-0 pb-2 last:pb-0"
-                    >
-                      <span className="text-[var(--text-muted)] font-medium">{label}</span>
-                      <span className="font-semibold text-[var(--text)] text-right max-w-[60%] truncate">
-                        {value}
-                      </span>
-                    </div>
-                  ))}
+                <div>
+                  <label htmlFor="estimate-time" className={UTILITY_LABEL}>Preferred time</label>
+                  <select id="estimate-time" name="preferredTime" value={formData.preferredTime}
+                    onChange={handleInputChange} required className={UTILITY_INPUT}>
+                    <option value="">Choose a time</option>
+                    {timeOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+
+              <div>
+                <label htmlFor="estimate-message" className={UTILITY_LABEL}>Notes (optional)</label>
+                <textarea id="estimate-message" name="message" value={formData.message} onChange={handleInputChange}
+                  rows={3} placeholder="What needs to go, and anything about access or parking"
+                  className={`${UTILITY_INPUT} resize-none`} />
               </div>
 
               {error && (
-                <div className="ui-notice p-4 bg-brand/10 border border-brand/30 rounded-xl">
-                  <p className="text-brand text-xs font-bold">{error}</p>
-                </div>
+                <p className="soft-error" role="alert">
+                  <AlertCircle size={16} aria-hidden />
+                  {error}
+                </p>
               )}
 
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={handleBackStep}
-                  disabled={submitting}
-                  className={`${UTILITY_SECONDARY_BUTTON} flex-1 !w-auto px-6`}
-                >
-                  <ArrowLeft size={14} /> Back
-                </button>
-                <button type="submit" disabled={submitting} className={`${UTILITY_PRIMARY_BUTTON} flex-1`}>
-                  {submitting ? (
-                    'Sending...'
-                  ) : (
-                    <>
-                      <Send size={14} /> Request Free Estimate
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <p className="text-[10px] text-[var(--text-muted)] text-center font-medium">
-                No obligation. The appointment will be confirmed within 24 hours.
+              <button type="submit" disabled={submitting} className={UTILITY_PRIMARY_BUTTON}>
+                {submitting ? (
+                  <Loader2 size={18} className="animate-spin" aria-label="Sending" />
+                ) : (
+                  <>
+                    Request free estimate
+                    <Send size={16} aria-hidden />
+                  </>
+                )}
+              </button>
+              <p className="text-xs text-center text-[var(--text-muted)]">
+                No obligation. We confirm your visit within 24 hours.
               </p>
-            </form>
-          )}
+            </fieldset>
+          </form>
         </div>
-      </HomeFormSection>
+      </div>
 
       <HomeReviews />
     </div>

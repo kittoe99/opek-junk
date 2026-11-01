@@ -9,7 +9,7 @@ import {
 } from './components/home/HomeSections';
 import { HomeNavbar } from './components/home/HomeNavbar';
 import { HomeFooter } from './components/home/HomeFooter';
-import { HomeMobileCTA } from './components/home/HomeMobileCTA';
+import { HomeStartBar } from './components/home/HomeStartBar';
 import { HomeCoverageSection } from './components/home/HomeCoverageSection';
 import { QuickActionBar } from './components/QuickActionBar';
 import { SEO, seoConfig } from './components/SEO';
@@ -53,7 +53,8 @@ function GlobalQuickActionBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  if (QUICK_ACTION_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+  // Pages with their own start bar (homepage and service-style pages) skip the floating bar.
+  if (pathname === '/' || ['/services/', '/lp/', '/locations/'].some((p) => pathname.startsWith(p)) || QUICK_ACTION_HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
     return null;
   }
 
@@ -140,16 +141,13 @@ function HomePage() {
   return (
     <div className="home-light home-page">
       <SEO {...seoConfig.home} />
-      <Hero
-        onGetQuote={() => navigate('/quote')}
-        onBookOnline={() => navigate('/booking')}
-      />
+      <HomeStartBar onGetQuote={() => navigate('/quote')} />
+      <Hero />
       <HomeFeaturedServices />
       <HomeHowItWorks />
       <HomeCoverageSection />
       <HomeWaysToBook />
       <HomeReviews />
-      <HomeMobileCTA onGetQuote={() => navigate('/quote')} />
     </div>
   );
 }

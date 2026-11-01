@@ -1,0 +1,382 @@
+OPEK JUNK REMOVAL — SALES & CALL SCRIPT
+Updated Oct 21, 2026
+
+====================================================================
+1. HOW TO USE THIS SCRIPT
+====================================================================
+
+Every call ends in one of three outcomes: a booked job, a logged quote
+with a follow-up time, or a solved problem. If none of those happened,
+the call isn't done.
+
+OPEK AT A GLANCE
+- Services: junk removal, property cleanouts, small local moves and moving labor, mattress disposal, dumpster rentals.
+- Coverage: all 50 states, through vetted local providers.
+- Hours: 7 days a week, 7 am to 8 pm.
+- Arrival windows: morning 8–12, midday 12–4, evening 4–7.
+- Pricing: upfront and item-by-item for junk. Moving is hourly. Online booking price includes a 10% discount.
+- Booking: a $1 fully refundable deposit holds the spot and is applied to the balance.
+- Support: (831) 318-7139 · Support@opekjunkremoval.com · opekjunkremoval.com
+
+FIVE RULES THAT MAKE THIS CONVERT
+1. Ask one question at a time. Short questions, then listen. Callers who talk more buy more.
+2. Get name and phone first, on every call. Read the phone number back digit by digit.
+3. Give a number fast. Quote the total in one sentence, then stop talking.
+4. Always ask for the booking. After every price, ask for the date. Never end on "let me know."
+5. Sound like the office, not a call center. Use "truck," "crew," "haul," "load."
+
+CORE CALL FLOW
+1. Greet — name, company, warm offer to help.
+2. Capture — full name, then phone.
+3. Identify — new job, existing order, or problem? Route to the right section.
+4. Discover — ZIP, service, what's going, access, timing.
+5. Quote — one clear number (or hourly rates for moves), plus the value.
+6. Close — assumptive date question, then the $1 deposit.
+7. Confirm and wrap — read back details, set expectations, log the call.
+
+====================================================================
+2. OPENINGS AND CALL ROUTING
+====================================================================
+
+INBOUND GREETING
+"Thanks for calling Opek Junk Removal, this is [Name]. Who do I have the pleasure of speaking with?"
+"Great, [First name]. And what's the best number to reach you, in case we get cut off?" (Read it back.)
+"Perfect. What can I help you get taken care of today?"
+
+AFTER-HOURS / BUSY-LINE CALLBACK
+"Hi [Name], this is [Rep] with Opek Junk Removal returning your call. Is now still a good time to get you a price?"
+
+OUTBOUND TO A WEB QUOTE LEAD
+"Hi [Name], it's [Rep] from Opek Junk Removal. You started a quote on our site for [service] — I've got your estimate pulled up. Do you have two minutes to lock in a date?"
+
+ROUTING BY WHAT THEY SAY
+- "How much to haul…" / "I need a quote" → Quote requests
+  "Happy to get you a price. What ZIP code is the pickup in?"
+- "I'm moving" / "I need help moving" → Quote requests: Local moves
+  "Got it. Is it loading and unloading, or just one end?"
+- "Do you take…" / "Do you service…" → General inquiries
+  Answer, then bridge to a quote.
+- "Where's my crew?" / "I have a booking" → Order updates
+  "Let me pull it up. Is this the number on the booking?"
+- "I need to change my date" → Order updates: Reschedule
+  "No problem. What date works better?"
+- Upset, damage, billing → Support issues
+  "I'm sorry about that. Let me get the details so I can fix it."
+- "I want to work with you" (hauler / mover) → Providers
+  Send to opekjunkremoval.com/provider-signup
+
+THE BRIDGE (use after any answered question)
+"Good question. While I have you, want me to get you an exact price? It takes about two minutes."
+
+====================================================================
+3. QUOTE REQUESTS
+====================================================================
+
+The goal is a booked date on this call. Discover fast, quote once, then ask for the date.
+
+SHARED DISCOVERY (EVERY SERVICE)
+1. "What ZIP code is this in?"
+2. "And what are we helping with — junk removal, a move, a mattress, a cleanout, or a dumpster?"
+3. "When were you hoping to get this done?" (Urgency tells you how hard to close.)
+4. "Is it ground floor, or are there stairs or an elevator?"
+
+--- JUNK REMOVAL AND PROPERTY CLEANOUTS ---
+
+DISCOVER
+"Walk me through what's going — just the big pieces first."
+"Anything else? Bags, boxes, anything in the garage or yard?" (Always ask twice.)
+
+PRICE IT (internal, don't read aloud)
+- Each item has a set price (sofa $99, mattress $89, fridge $119, dresser $89, TV $69; unknown item $49).
+- Extra units of the same item cost 85% each.
+- Minimum order is $169 total — it's a floor, not an add-on.
+- Quote the booking price: subtotal minus 10%.
+
+Examples:
+- 1 chair: subtotal $169 (minimum) → booking price $152
+- 1 sofa + 1 mattress: subtotal $188 → booking price $169
+- Sectional + 2 dressers + 5 bags: $159 + $165 + $216 = $540 → booking price $486
+
+PRESENT IT
+"Okay, for the sofa, the mattress and the boxes, you're at [price] all in — that's loading, hauling, and disposal, and it already has your 10% booking discount."
+(Then stop talking. Let them respond.)
+
+CLOSE
+"I've got [day] morning or [day] afternoon open in your area. Which works better?"
+"To hold it, there's a one-dollar deposit — fully refundable, and it comes off your total. Want me to text you the link, or would you like to book at opekjunkremoval.com/booking?"
+
+LARGE OR UNCLEAR JOBS (whole house, hoarding, estate cleanout)
+"For a job this size, a quick look gets you the most accurate price. I can set up a free in-home estimate — what day works?"
+(Book at opekjunkremoval.com/in-home-estimate.)
+
+--- LOCAL MOVES AND MOVING LABOR ---
+
+NEVER give a total dollar figure for a move. Share hourly rates and the truck fee only.
+
+DISCOVER (in this order)
+1. "Is it loading and unloading, just one end, or rearranging inside the home?"
+2. "Do you need us to bring the truck?" (Skip for rearranges.)
+3. "How big is the place — studio, one, two, or three-plus bedrooms?"
+4. "One helper or two?" (Recommend two for 2+ bedrooms: it's faster.)
+5. "Stairs or elevator at either place? How many flights?"
+6. "Any heavy items — piano, safe, treadmill, pool table?"
+7. "Need any packing or furniture taken apart?"
+8. "What's the drop-off address?"
+
+PRESENT IT
+"It's one-nineteen an hour for two helpers, or one-forty-nine an hour for three, plus a ninety-nine-dollar truck fee since you need the truck. Rearranges have no truck fee."
+
+IF THEY ASK HOW LONG (only if asked)
+"Rough estimate only — a two-bedroom with stairs usually runs around five hours, but it's not fixed. It depends on the day."
+Internal guide: studio 2 h, 1-bed 3 h, 2-bed 4 h, 3+ bed 6 h. Add about 1 h for stairs (plus 1 per extra flight), heavy items, packing, or disassembly. One end only is about 70%; rearranges about 60%.
+
+CLOSE
+"Two helpers will get you in and out faster. Want me to lock in [date], morning window?"
+
+--- MATTRESS DISPOSAL ---
+
+"How many pieces — mattress, box spring, bed frame?"
+- 1 piece: standard $169 → online booking price $138
+- 2 pieces: standard $209 → online booking price $169
+- 3 or more: standard $269 → online booking price $227
+
+"For the mattress and box spring, it's $169 with your online discount. What day should we grab them?"
+
+--- DUMPSTER RENTALS ---
+
+"What's the project — a remodel, a cleanout, roofing?" (Recommend the size.)
+- 10 yard: $350 / 7 days — garage or single-room cleanout
+- 15 yard: $400 / 7 days — kitchen or bath remodel
+- 20 yard: $450 / 7 days — multi-room cleanout, flooring
+- 30 yard: $550 / 7 days — whole-home cleanout, construction
+Extra days are $25/day. Rentals of 14+ days get 10% off.
+
+"A 20-yard fits that well — $450 for the week. When do you want it dropped off?"
+
+--- WHAT CAN'T BE HAULED ---
+
+Hazardous waste: chemicals, wet paint, gasoline, motor oil, asbestos, propane tanks, biological waste.
+"We can't take those for safety reasons, but everything else on your list we can haul."
+
+====================================================================
+4. OBJECTION HANDLING
+====================================================================
+
+Use Acknowledge → Reframe → Ask again. Agree with the feeling, give one reason, then ask for the date a second time.
+
+"THAT'S MORE THAN I EXPECTED."
+"I hear you. That price covers the crew, the truck, the loading, and the dump fees — nothing extra on the day. And it already has 10% off. If we take the [smallest item] off, you'd be at [lower price]. Want to go with the full load or trim it?"
+
+"I'M GETTING OTHER QUOTES."
+"Smart move. When you compare, check if they include disposal fees and labor — ours does. And since the deposit is just a dollar and fully refundable, you can hold a spot now and keep shopping. Want me to lock in [day] so you don't lose it?"
+
+"I NEED TO THINK ABOUT IT."
+"Totally fair. Is it the price, the timing, or something else?" (Solve the real one.)
+"How about I hold [day] with the one-dollar refundable deposit? If you change your mind, you can cancel free up to 72 hours before."
+
+"CAN YOU DO IT CHEAPER?"
+"The online price is already our best rate — that's where the 10% comes in. What I can do is help you trim the list so it fits your budget."
+
+"I NEED IT DONE TODAY / TOMORROW."
+"Let me check what's open near you right now. If we can get a crew there, I'll need to lock it in on this call. Ready to grab that spot?"
+(Never promise a time until it's confirmed.)
+
+"I'M NOT SURE EVERYTHING WILL FIT / MY LIST MAY CHANGE."
+"No problem. The crew confirms the load when they arrive. If it's more or less than we discussed, they'll adjust the price before any work starts."
+
+"ARE YOU GUYS LEGIT? WHO'S ACTUALLY COMING?"
+"Good question. We match you with a vetted, insured local provider in your area. You'll get confirmation and can track your order at opekjunkremoval.com/track-order."
+
+MOVING: "JUST GIVE ME A TOTAL."
+"I'd rather not guess and have it be wrong on the day. You only pay for the hours used — one-nineteen an hour for two helpers or one-forty-nine for three, plus the truck fee. Three helpers usually finish bigger moves faster, which saves you money."
+
+====================================================================
+5. GENERAL INQUIRIES
+====================================================================
+
+Answer in one or two sentences, then use the bridge to a quote. Every inquiry is a sales call.
+
+Q: "Do you service my area?"
+A: "We cover all 50 states. What's your ZIP? I'll check availability."
+
+Q: "What are your hours?"
+A: "Seven days a week, 7 am to 8 pm."
+
+Q: "What do you haul?"
+A: "Furniture, appliances, mattresses, yard debris, construction debris, hot tubs, pianos — almost anything non-hazardous."
+
+Q: "What can't you take?"
+A: "Hazardous stuff: chemicals, wet paint, gas, motor oil, asbestos, propane tanks, biological waste."
+
+Q: "How does pricing work?"
+A: "Junk is priced by item, with a $169 minimum. Moves are hourly. Booking online gets you 10% off."
+
+Q: "Is there a deposit?"
+A: "Just one dollar to hold your spot. It's fully refundable and comes off your total."
+
+Q: "When do I pay the rest?"
+A: "The deposit comes off your total, and the remaining balance is settled once the job is done." [confirm payment timing]
+
+Q: "Do I need to be home?"
+A: "Someone should be there to show the crew what's going and to approve the final price."
+
+Q: "Do I have to carry stuff out?"
+A: "No. The crew loads it from wherever it is — basement, attic, backyard."
+
+Q: "Where does it go?"
+A: "Your provider handles disposal, donation, or recycling."
+
+Q: "Are you insured?"
+A: "Yes, we work with vetted, licensed, and insured local providers."
+
+Q: "Can I get an in-person estimate?"
+A: "Yes, free. Book it at opekjunkremoval.com/in-home-estimate or I can set it up now."
+
+Q: "Can the price change?"
+A: "Only if the load is different from what we discussed. The crew confirms before starting."
+
+Q: "Do you do same-day?"
+A: "Often, depending on your area. Let me check what's open."
+
+Q: "I'm a hauler / mover. Can I work with you?"
+A: "Love that. Apply at opekjunkremoval.com/provider-signup and our team will reach out."
+
+BRIDGE BACK TO THE SALE
+"Does that help? Since you're thinking about it, tell me what you need gone and I'll give you a price right now."
+
+====================================================================
+6. ORDER UPDATES AND BOOKING CHANGES
+====================================================================
+
+Look it up before you answer. Never guess a time, crew, or status.
+
+FIND THE ORDER
+"Happy to check. Is this the phone number on the booking?" (If not: "What number did you book with?")
+"Do you have your order number handy? It starts with OPK." (Optional — phone is enough.)
+Self-serve option: opekjunkremoval.com/track-order
+
+READ THE STATUS BACK
+- Booked: "We have your request for [date], [window]. We're matching you with a local provider now, and you'll get a confirmation."
+- Confirmed: "You're confirmed for [date] in the [window] window."
+- Scheduled: "Your crew is scheduled for [date], [window]. They'll reach out before they arrive."
+- On the way: "Good news — your crew is on the way."
+- In progress: "The crew is working on your job now."
+- Completed: "That job shows as completed on [date]. How did everything go?" (Ask for a review if happy.)
+- Cancelled: "That booking shows as cancelled. Want me to get you back on the schedule?"
+- Not found: "I don't see a booking under that number yet. Let me take your details and get you set up now."
+
+"WHERE'S MY CREW?" (RUNNING LATE)
+"I'm sorry for the wait. Let me reach out to your provider right now and call you back within [15] minutes with an update. Is this number best?"
+
+RESCHEDULE
+"No problem at all. What date works better? I have [option A] or [option B]."
+"Changes are free up to 72 hours before your arrival window." (Under 72 hours, see the fee below — offer a new date first.)
+
+CANCELLATION (SAVE ATTEMPT FIRST)
+"I can help with that. Can I ask what changed?"
+- Timing → "Would moving it to [date] work instead? It keeps your price locked in."
+- Price → "If we trim the list, we can get you to [lower price]. Want to try that?"
+- Found someone else → "Understood. Just so you know, our price already includes disposal and labor."
+- Still cancelling → "No problem. I've cancelled it." (State the fee if it applies.)
+
+CANCELLATION FEES (from the Terms of Service)
+- 72+ hours before the arrival window: free.
+- Under 72 hours: $69 cancellation fee.
+- Dumpster cancelled within 48 hours of drop-off: $150 dry-run fee.
+- If Opek cancels: full refund of anything paid.
+
+ADD OR CHANGE ITEMS
+"Sure, what are we adding?" (Re-price and read the new total.)
+"That brings you to [new price]. I'll update the order now."
+
+====================================================================
+7. SUPPORT ISSUES AND COMPLAINTS
+====================================================================
+
+For upset callers, use LEAP: Listen, Empathize, Apologize, Plan. Don't defend or explain until they've finished.
+
+OPENING FOR AN UPSET CALLER
+"I'm really sorry you're dealing with this. Tell me what happened — I'm going to take notes so I get it right."
+(After they finish) "That's frustrating, and I'd feel the same way. Here's what I'm going to do…"
+
+CREW NO-SHOW OR VERY LATE
+"I'm sorry — that's not the experience we want for you. I'm contacting your provider now. I'll call you back within [15] minutes with a firm update or a new time."
+If it can't be saved the same day: offer the first open slot and note the order for a goodwill review by a manager.
+
+PRICE ON THE DAY WAS HIGHER THAN QUOTED
+"Let's look at it together. The quote was for [items]. Did the crew add anything, or was the load bigger than we discussed?"
+- Load was bigger → "That's why the price moved. The crew should have walked you through it before starting. I'm sorry that wasn't clear."
+- Load was the same → "That shouldn't happen. I'm escalating it to our team today for review."
+
+PROPERTY DAMAGE
+"I'm sorry that happened. Let's get a claim started right away."
+1. Get the order number, date, and what was damaged.
+2. Tell them: "Please email photos and a short description to Support@opekjunkremoval.com within 48 hours of the job. That's required for the claim."
+3. Explain: "Claims are reviewed under our SafeProtect platform protection. It isn't insurance, and it doesn't cover pre-existing damage or surfaces that weren't protected or cleared."
+4. Never promise an amount or an outcome on the call.
+
+SOMETHING WAS LEFT BEHIND / ITEM TAKEN BY MISTAKE
+"Thanks for letting us know. What was it, and where was it? I'll contact your provider today and call you back with next steps."
+
+REFUND REQUEST
+- Deposit, job not done → "Your one-dollar deposit is fully refundable. I'll process that now."
+- Opek cancelled the job → "You'll get a full refund of anything you paid."
+- Job completed → "Our policy doesn't offer refunds for completed jobs. But I want to understand what went wrong — let me write this up for our team to review."
+
+BILLING OR PAYMENT QUESTIONS
+"Let me pull up the order. What's the charge you're seeing, and what date?"
+(Confirm from the record. Never read full card numbers.)
+
+ESCALATE TO A MANAGER WHEN
+- The caller asks twice for a manager.
+- Damage, injury, or a safety concern.
+- A refund or credit beyond the deposit.
+- A legal threat, or a chargeback is mentioned.
+
+"I want to make sure this is handled right, so I'm bringing in my manager. They'll call you by [time]. Is this number still best?"
+
+CLOSE EVERY SUPPORT CALL
+"So to recap, I'm going to [action] and you'll hear back by [time]. Anything else I can help with?"
+
+====================================================================
+8. FOLLOW-UPS, VOICEMAIL, SMS AND WRAP-UP
+====================================================================
+
+Speed wins unbooked quotes. Call within 1 hour of a web quote, then again the next day.
+
+FOLLOW-UP CALL (QUOTE NOT BOOKED)
+"Hi [Name], it's [Rep] from Opek Junk Removal. I gave you a price of [price] for [items] on [day]. I've still got [date] open near you — want me to hold it with the one-dollar refundable deposit?"
+
+VOICEMAIL — NEW QUOTE LEAD
+"Hi [Name], this is [Rep] with Opek Junk Removal. Your estimate for [service] is ready, and I have openings this week. Call or text me back at (831) 318-7139. Again, (831) 318-7139. Talk soon."
+
+VOICEMAIL — SECOND ATTEMPT
+"Hi [Name], [Rep] from Opek again. Just making sure you got your price of [price]. I can hold a spot for a dollar, fully refundable. Call me at (831) 318-7139."
+
+SMS TEMPLATES (only to contacts who consented to texts; include opt-out)
+
+Quote:
+Hi [Name], it's [Rep] at Opek Junk Removal. Your price for [items] is [price] with 10% off. Book here: opekjunkremoval.com/booking. Reply STOP to opt out.
+
+Nudge:
+Hi [Name], still need that [service]? I have [day] open near you. A $1 refundable deposit holds it. Reply YES and I'll set it up.
+
+Confirmation:
+You're booked with Opek for [date], [window]. Track it at opekjunkremoval.com/track-order. Questions? (831) 318-7139.
+
+Review ask:
+Thanks for choosing Opek, [Name]! If the crew did a great job, a quick review would mean a lot: [link].
+
+WRAP-UP CHECKLIST (EVERY CALL)
+[ ] Full name and phone confirmed (read back)
+[ ] Email captured
+[ ] Service, ZIP, and full address
+[ ] Items or move details written down
+[ ] Price stated (junk total, or hourly rates + truck fee for moves)
+[ ] Date and arrival window set, or a follow-up time agreed
+[ ] Deposit link sent, or booking page shared
+[ ] Cancellation policy mentioned on bookings
+[ ] Call summary logged in the CRM
+
+CLOSING LINE
+"You're all set, [Name]. Is there anything else I can help with today? Thanks for calling Opek Junk Removal — have a great day."

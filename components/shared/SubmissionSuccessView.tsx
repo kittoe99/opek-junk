@@ -12,6 +12,7 @@ interface SubmissionSuccessViewProps {
   orderNumber?: string | null;
   summary?: SummaryRow[];
   fullScreen?: boolean;
+  referenceLabel?: string;
 }
 
 /** Confirmation screen in the soft-card style shared with Track Order. */
@@ -21,6 +22,7 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
   orderNumber,
   summary = [],
   fullScreen = true,
+  referenceLabel = 'Order number',
 }) => {
   const rows = summary.filter((row) => row.value);
 
@@ -37,7 +39,7 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
           {orderNumber && (
             <div className="soft-head">
               <div>
-                <p className="soft-label">Order number</p>
+                <p className="soft-label">{referenceLabel}</p>
                 <p className="soft-order-number">{orderNumber}</p>
               </div>
             </div>
@@ -56,7 +58,7 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
       )}
 
       <p className="soft-help">
-        Questions? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+        Questions? Call or text <a href="tel:+18777574365">(877) 757-4365</a>
       </p>
     </div>
   );

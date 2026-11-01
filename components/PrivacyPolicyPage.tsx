@@ -152,7 +152,7 @@ export const PrivacyPolicyPage: React.FC = () => {
             with the subject line "Unsubscribe." Transactional emails related to your bookings may still be sent as needed.
           </p>
           <p className="mb-4">
-            <strong>Phone opt-out:</strong> You may request to be removed from promotional call lists by contacting us at (831) 318-7139 or Support@opekjunkremoval.com. We may still call you regarding an active service request or booking.
+            <strong>Phone opt-out:</strong> You may request to be removed from promotional call lists by contacting us at (877) 757-4365 or Support@opekjunkremoval.com. We may still call you regarding an active service request or booking.
           </p>
           <p>
             Additional details are in our{' '}
@@ -270,7 +270,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <p className="mb-4">
             To exercise any of these rights, email{' '}
             <a href="mailto:Support@opekjunkremoval.com" className="text-brand font-semibold hover:underline">Support@opekjunkremoval.com</a>{' '}
-            or call (831) 318-7139. We will verify your identity before processing requests and respond within the timeframe required by applicable law.
+            or call (877) 757-4365. We will verify your identity before processing requests and respond within the timeframe required by applicable law.
           </p>
           <p>
             We will not discriminate against you for exercising your privacy rights.
@@ -316,7 +316,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           </p>
           <div className="bg-secondary-50 border border-secondary-100 rounded-xl p-6 space-y-2">
             <p className="text-sm text-[var(--text)]"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
-            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:+18777574365" className="text-brand hover:underline font-semibold">(877) 757-4365</a></p>
             <p className="text-sm text-[var(--text)]"><strong>Website:</strong> <a href="https://opekjunkremoval.com" className="text-brand hover:underline font-semibold">opekjunkremoval.com</a></p>
             <p className="text-sm text-[var(--text)]"><strong>Service Area:</strong> Nationwide, United States</p>
           </div>

@@ -124,14 +124,14 @@ export const Navbar: React.FC = () => {
                 <LocationButton />
               </div>
               <a
-                href="tel:8313187139"
+                href="tel:+18777574365"
                 className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-brand text-white hover:bg-brand-600 rounded-full transition-colors shadow-[0_0_20px_-4px_rgba(255,0,110,0.55)]"
               >
                 <Phone size={15} />
-                (831) 318-7139
+                (877) 757-4365
               </a>
               <a
-                href="tel:8313187139"
+                href="tel:+18777574365"
                 className="ui-icon-button md:hidden flex items-center justify-center w-10 h-10 bg-brand text-white rounded-full"
                 aria-label="Call Opek Junk Removal"
               >
@@ -425,11 +425,11 @@ export const Navbar: React.FC = () => {
 
         <div className="shrink-0 grid grid-cols-2 border-t border-white/10 bg-white/[0.02]">
           <a
-            href="tel:8313187139"
+            href="tel:+18777574365"
             className="flex items-center justify-center gap-2 px-3 py-4 text-sm font-semibold text-white hover:bg-white/5 transition-colors border-r border-white/10"
           >
             <Phone size={16} className="text-brand shrink-0" />
-            <span className="truncate">(831) 318-7139</span>
+            <span className="truncate">(877) 757-4365</span>
           </a>
           <button
             type="button"

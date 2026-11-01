@@ -54,11 +54,12 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
     </ol>
   ) : null;
 
+  const card = variant === 'card';
   const form = (
-    <form onSubmit={submit} className="flow-zip-form" noValidate>
+    <form onSubmit={submit} className={card ? 'zip-hero-form' : 'flow-zip-form'} noValidate>
       <label htmlFor="flow-zip" className="sr-only">ZIP code</label>
-      <div className={`flow-zip-field ${error ? 'has-error' : ''} ${result ? 'is-ok' : ''}`}>
-        <MapPin size={22} className="flow-zip-pin" aria-hidden />
+      <div className={`${card ? 'zip-hero-field' : 'flow-zip-field'} ${error ? 'has-error' : ''} ${result ? 'is-ok' : ''}`}>
+        <MapPin size={22} strokeWidth={card ? 1.8 : 2} className={card ? undefined : 'flow-zip-pin'} aria-hidden />
         <input
           id="flow-zip"
           type="text"
@@ -69,7 +70,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
           maxLength={5}
           value={zipValue}
           onChange={(e) => onZipChange(e.target.value.replace(/\D/g, ''))}
-          placeholder="ZIP code"
+          placeholder={card ? 'Enter ZIP code' : 'ZIP code'}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? 'flow-zip-error' : result ? 'flow-zip-result' : undefined}
           disabled={Boolean(result)}
@@ -90,9 +91,16 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
           <span><strong>{result.city}, {result.state}</strong> is covered. Continuing…</span>
         </p>
       ) : (
-        <button type="submit" disabled={!ready || loading} aria-busy={loading} className="flow-btn flow-btn-primary w-full">
+        <button
+          type="submit"
+          disabled={!ready || loading}
+          aria-busy={loading}
+          className={card ? 'home-cta zip-hero-submit' : 'flow-btn flow-btn-primary w-full'}
+        >
           {loading ? (
-            <><Loader2 size={18} className="animate-spin" aria-hidden /><span>Checking area…</span></>
+            <><Loader2 size={18} className="animate-spin" aria-hidden /><span>Checking…</span></>
+          ) : card ? (
+            'Check availability'
           ) : (
             <>
               Check my area
@@ -112,22 +120,25 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
     </ul>
   );
 
-  if (variant === 'card') {
+  if (card) {
+    // Same layout as the homepage hero: headline, photo, overlapping ZIP card.
     return (
-      <div className="soft-flow">
-        <h1 className="home-display soft-title">{title}</h1>
-        {subtitle && <p className="soft-sub">{subtitle}</p>}
-        <div className="soft-card">
-          <div className="ui-image-frame flow-zip-card-media soft-card-media" aria-hidden>
-            <img src={image} alt="" />
-          </div>
-          {stepsStrip}
-          {form}
-          {trust}
+      <div className="zip-hero flow-zip-hero">
+        <div className="zip-hero-head">
+          <h1 className="home-display zip-hero-title">{title}</h1>
+          {subtitle && <p className="zip-hero-sub">{subtitle}</p>}
         </div>
-        <p className="soft-help">
-          Prefer to talk? Call or text <a href="tel:8313187139">(831) 318-7139</a>
-        </p>
+        <div className="zip-hero-media" aria-hidden>
+          <img src={image} alt="" />
+        </div>
+        <div className="zip-hero-card-wrap">
+          <div className="zip-hero-card">
+            {form}
+            <p className="zip-hero-call">
+              Or call <a href="tel:+18777574365">(877) 757-4365</a>
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

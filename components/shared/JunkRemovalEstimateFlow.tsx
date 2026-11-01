@@ -16,6 +16,7 @@ import { calculateStaticPrice } from '../../services/pricingService';
 import { supabase } from '../../lib/supabase';
 import { persistBookingPhotos, withBookingPhotos } from '../../lib/bookingPhotos';
 import { withSmsMarketingConsent } from '../../lib/customerConsent';
+import { createQuoteSubmitter } from '../../lib/crmQuote';
 import { sendQuoteSms } from '../../lib/sendQuoteSms';
 import { CameraCaptureIcon, UploadPhotoIcon } from '../icons/ServiceIcons';
 import { ContactIntakeForm } from './ContactIntakeForm';
@@ -24,7 +25,7 @@ import { FlowSelectionCard } from './flow/FlowSelectionCard';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './JunkItemCatalogSelector';
-import { JunkRemovalPriceBreakdown } from './JunkRemovalPriceBreakdown';
+import { JunkEstimateSummary } from './JunkEstimateSummary';
 import { FLOW_STEP_ANCHOR, scrollToFlowStep } from '../../lib/flowPageLayout';
 import { ItemIconRenderer } from '../icons/JunkItemIcons';
 
@@ -41,6 +42,8 @@ export interface JunkRemovalEstimateResult {
 }
 
 interface JunkRemovalEstimateFlowProps {
+  crmQuote?: boolean;
+  localEstimateOnly?: boolean;
   zipValue: string;
   onContinue: (result: JunkRemovalEstimateResult) => void;
   onBack: () => void;
@@ -64,6 +67,8 @@ export type EstimateMode = 'method' | 'ai' | 'manual';
 
 export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = ({
   zipValue,
+  crmQuote = false,
+  localEstimateOnly = false,
   onContinue,
   onBack,
   onModeChange,
@@ -72,6 +77,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   initialMode,
   resumeState,
 }) => {
+  const submitQuote = useRef(createQuoteSubmitter());
   const hasPreselect = Boolean(preselectItems?.length);
   const [mode, setMode] = useState<EstimateMode>(
     resumeState ? 'manual' : initialMode ?? (hasPreselect ? 'manual' : 'method')
@@ -259,10 +265,22 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
     phone: string,
     consentAt: string | null,
     items: DetectedItem[],
-    price: PriceEstimate
+    price: PriceEstimate,
+    email?: string
   ) => {
     setContactLoading(true);
     try {
+      if (crmQuote) {
+        await submitQuote.current({ name, phone, email: email || '', serviceType: 'Junk Removal',
+          zipCode: zipValue, items: items.map(i => `${i.quantity}x ${i.name}`), price: price.price,
+          summary: price.summary, volume: price.estimatedVolume, smsOptIn: Boolean(consentAt) });
+        setPartialBookingId(null);
+        setContactName(name);
+        setContactPhone(phone);
+        setSmsMarketingConsentAt(consentAt);
+        setContactSubmitted(true);
+        return;
+      }
       const detailsText = `Items: ${items.map((i) => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Items: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
       let partialId = `mock-lead-${Date.now()}`;
       try {
@@ -307,6 +325,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
       setSmsMarketingConsentAt(consentAt);
       setContactSubmitted(true);
     } catch (err) {
+      if (crmQuote) throw err;
       console.error('Error in handleContactReveal:', err);
       setContactName(name);
       setContactPhone(phone);
@@ -318,14 +337,15 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
   };
 
   const renderPriceResult = (items: DetectedItem[], price: PriceEstimate, onEditBack: () => void, backLabel: string) => {
-    if (!contactSubmitted) {
+    if (!contactSubmitted && !localEstimateOnly) {
       return (
         <div className="max-w-md mx-auto">
           <ContactIntakeForm
+            crmQuote={crmQuote}
             serviceType="Junk Removal"
             isLoading={contactLoading}
-            onReveal={async (name, phone, consentAt) => {
-              await handleContactReveal(name, phone, consentAt, items, price);
+            onReveal={async (name, phone, consentAt, email) => {
+              await handleContactReveal(name, phone, consentAt, items, price, email);
             }}
           />
         </div>
@@ -334,45 +354,7 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
     return (
       <div className="space-y-6">
-        <div className="soft-card">
-          <div className="soft-head">
-            <div>
-              <p className="soft-label">Your estimate</p>
-              <p className="soft-service">Junk Removal</p>
-            </div>
-            <span className="soft-badge is-done">Guaranteed</span>
-          </div>
-          <p className="soft-price-hero">${price.price}</p>
-          <p className="soft-meta">{price.estimatedVolume}</p>
-
-          <JunkRemovalPriceBreakdown price={price} embedded />
-
-          <div className="soft-callout">
-            <ShieldCheck size={16} aria-hidden />
-            <p>
-              <strong>Safe Protect™ included.</strong> Every booking is covered by platform damage protection.{' '}
-              <button type="button" onClick={() => setShowInsuranceModal(true)}>Learn more</button>
-            </p>
-          </div>
-        </div>
-
-        {!price.lines?.length && (
-        <div>
-          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">
-            {items.reduce((sum, i) => sum + i.quantity, 0)} items
-          </p>
-          <div className="space-y-1">
-            {items.map((item) => (
-              <div key={item.id} className="flex items-center justify-between text-sm">
-                <span className="text-[var(--text-muted)]">{item.name}</span>
-                {item.quantity > 1 && <span className="text-[var(--text-muted)] text-xs">×{item.quantity}</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-        )}
-
-        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{price.summary}</p>
+        <JunkEstimateSummary price={price} items={items} onLearnMoreProtection={() => setShowInsuranceModal(true)} />
 
         <FlowStickyNav
           showBack
@@ -400,7 +382,6 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
           }}
           continueLabel={continueLabel}
         />
-        <p className="soft-note pb-4">Final price confirmed on-site before any work starts.</p>
 
         {showInsuranceModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#140a1f]/50">
@@ -601,10 +582,12 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
 
           {manualStep === 'review' && !manualPricingLoading && (
             <div className="space-y-4">
-              <p className="flow-summary-pill">
-                {totalSelectedCount} item{totalSelectedCount === 1 ? '' : 's'} on your list
-              </p>
-              <ul className="flow-card review-list">
+              <section className="qsum" aria-labelledby="qest-list-title">
+              <header className="qest-head">
+                <h2 id="qest-list-title">Your items</h2>
+                <span>{totalSelectedCount} item{totalSelectedCount === 1 ? '' : 's'}</span>
+              </header>
+              <ul className="review-list">
                 {selectedItems.map((item) => (
                   <li key={item.id} className="review-row">
                     <span className="review-icon" aria-hidden>
@@ -627,10 +610,13 @@ export const JunkRemovalEstimateFlow: React.FC<JunkRemovalEstimateFlowProps> = (
                 ))}
               </ul>
 
-              <button type="button" onClick={() => setManualStep('select')} className="review-add">
-                <Plus size={16} aria-hidden />
+              <button type="button" onClick={() => setManualStep('select')} className="qest-add">
+                <Plus size={18} aria-hidden />
                 Add more items
               </button>
+              </section>
+
+              <p className="qest-note">Next, we’ll price your list. Nothing is booked yet.</p>
 
               <FlowStickyNav
                 showBack

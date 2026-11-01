@@ -61,7 +61,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
       <header className="border-b border-[#e6ddec] bg-[#f4eefc]">
         <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 py-11 md:py-16">
           <p className="home-eyebrow mb-3">{eyebrow}</p>
-          <h1 className="home-display text-[2.3rem] leading-[0.95] sm:text-[3rem] md:text-[3.4rem] text-[#140a1f]">{title}</h1>
+          <h1 className="home-display text-[#520f96]">{title}</h1>
           <p className="mt-4 max-w-2xl text-[15px] sm:text-base leading-relaxed text-[#3d3547]">{description}</p>
         </div>
       </header>

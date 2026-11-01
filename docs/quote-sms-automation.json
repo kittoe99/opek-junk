@@ -1,0 +1,130 @@
+{
+  "businessId": "biz-1c0c09ce-819e-4795-86b9-0e457ab92f58",
+  "formId": "cf1eb32e-db50-4a3f-b1fa-74147701bdc3",
+  "formRevision": 5,
+  "automationRevision": 9,
+  "publishedVersion": 3,
+  "websiteConnectionId": "de1dc646-aa05-4210-b122-6dd4f577ef92",
+  "timeZone": "America/Denver",
+  "nominalDays": [
+    0,
+    1,
+    2,
+    3,
+    7,
+    10,
+    14,
+    17,
+    21,
+    24,
+    28,
+    31
+  ],
+  "sequence": {
+    "aiRepliesEnabled": true,
+    "instantAcknowledgment": true,
+    "trigger": "submission",
+    "leadHours": 24,
+    "replyPolicy": "pause",
+    "startHour": 9,
+    "endHour": 18,
+    "steps": [
+      {
+        "body": "Hi {{first_name}}, Opek Junk Removal here. Your {{field.service_type}} estimate is {{field.estimated_price}}, based on the details you entered. Reply with questions or to arrange service. Reply STOP to opt out.",
+        "delayCount": 0,
+        "delayUnit": "minute",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, Opek Junk Removal here. Do you have any questions about your quote or the service you need? Reply here and we can help. Reply STOP to opt out.",
+        "delayCount": 1,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, checking in from Opek Junk Removal. What date are you hoping to get your project done? Reply with your preferred timing. Reply STOP to opt out.",
+        "delayCount": 1,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, would you like help with the next step for your quote? Reply here to talk with Opek Junk Removal about your request. Reply STOP to opt out.",
+        "delayCount": 1,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, still planning your project? Opek Junk Removal is here if you need to update your quote details. Reply STOP to opt out.",
+        "delayCount": 4,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, any changes to your items, location, or preferred date? Reply to Opek Junk Removal so we can review your quote request. Reply STOP to opt out.",
+        "delayCount": 3,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, Opek Junk Removal checking in. Need help deciding what service fits your project? Reply with your questions. Reply STOP to opt out.",
+        "delayCount": 4,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, is your project still on your list? Reply to Opek Junk Removal if you'd like help planning the next step. Reply STOP to opt out.",
+        "delayCount": 3,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, following up on your quote request with Opek Junk Removal. Let us know if your plans or timing have changed. Reply STOP to opt out.",
+        "delayCount": 4,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, Opek Junk Removal here. If you're ready to discuss scheduling, reply with your preferred date and we'll review availability. Reply STOP to opt out.",
+        "delayCount": 3,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, do you still need help with your project? Reply to Opek Junk Removal with any questions about your quote request. Reply STOP to opt out.",
+        "delayCount": 4,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      },
+      {
+        "body": "Hi {{first_name}}, this is our last scheduled check-in about your quote request. Reply whenever you need help from Opek Junk Removal. Reply STOP to opt out.",
+        "delayCount": 3,
+        "delayUnit": "day",
+        "sendCount": 1,
+        "intervalCount": 1,
+        "intervalUnit": "day"
+      }
+    ]
+  }
+}

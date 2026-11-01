@@ -24,6 +24,8 @@ interface BookingSuccessViewProps {
   estimatedVolume?: string;
   depositPaid?: number | null;
   fullScreen?: boolean;
+  requestOnly?: boolean;
+  arrivalWindow?: string;
 }
 
 export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
@@ -49,11 +51,13 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
   estimatedVolume,
   depositPaid,
   fullScreen = true,
+  requestOnly = false,
+  arrivalWindow,
 }) => {
   const formattedDate = React.useMemo(() => {
     if (!date) return '';
     try {
-      return new Date(date).toLocaleDateString('en-US', {
+      return new Date(date.length === 10 ? `${date}T12:00:00` : date).toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
@@ -90,6 +94,7 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
     { label: addressB ? 'Pickup' : 'Address', value: fullAddress },
     ...(fullAddressB ? [{ label: 'Drop-off', value: fullAddressB }] : []),
     { label: 'Date', value: formattedDate },
+    ...(arrivalWindow ? [{ label: 'Requested arrival (Mountain Time)', value: arrivalWindow }] : []),
     ...(itemsDetected?.length
       ? [{ label: 'Items', value: itemsDetected.join(', ') }]
       : []),
@@ -101,9 +106,10 @@ export const BookingSuccessView: React.FC<BookingSuccessViewProps> = ({
 
   return (
     <SubmissionSuccessView
-      title="Booking submitted"
-      description="We received your booking. A confirmation email will follow shortly."
+      title={requestOnly ? 'Booking request received' : 'Booking submitted'}
+      description={requestOnly ? 'Our team will confirm availability and final pricing. Your requested window is not reserved yet. No payment was collected.' : 'We received your booking. A confirmation email will follow shortly.'}
       orderNumber={orderNumber}
+      referenceLabel={requestOnly ? 'Request reference' : undefined}
       summary={summary}
       fullScreen={fullScreen}
     />

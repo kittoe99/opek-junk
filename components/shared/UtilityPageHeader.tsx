@@ -21,7 +21,7 @@ export const UtilityPageHeader: React.FC<UtilityPageHeaderProps> = ({
           {eyebrow && (
             <p className="site-eyebrow">{eyebrow}</p>
           )}
-          <h1 className="font-sans font-extrabold text-[1.85rem] sm:text-[2.4rem] md:text-[2.75rem] text-[var(--text)] tracking-tight leading-[1.1] mb-3">
+          <h1 className="home-display text-[#520f96] mb-3">
             {title}
           </h1>
           {description && (

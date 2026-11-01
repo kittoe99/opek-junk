@@ -5,14 +5,8 @@ import { CameraCaptureIcon, UploadPhotoIcon, DumpsterSizeIcon } from './icons/Se
 import { QuoteEstimate, LoadingState, DetectedItem, PriceEstimate, MovingLaborOptions } from '../types';
 import { getJunkQuoteFromPhoto } from '../services/openaiService';
 import { calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
-import { supabase } from '../lib/supabase';
-import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
-import { withSmsMarketingConsent } from '../lib/customerConsent';
-import { toStoredMovingOptions } from '../lib/bookingPayloads';
-import { sendQuoteSms, movingQuoteSmsFields } from '../lib/sendQuoteSms';
 import { BookingDetailsForm } from './BookingDetailsForm';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
-import { BookingSuccessView } from './shared/BookingSuccessView';
 import { JunkRemovalEstimateFlow, type EstimateMode, type JunkRemovalEstimateResult } from './shared/JunkRemovalEstimateFlow';
 import { MovingLaborEstimateFlow } from './shared/MovingLaborEstimateFlow';
 import {
@@ -28,7 +22,6 @@ import { FlowStickyNav } from './shared/flow/FlowStickyNav';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { ContinueFromQuote } from './shared/ContinueFromQuote';
 import type { HydratedQuoteResume } from '../lib/lookupQuoteByPhone';
-import { generateOrderNumber } from '../lib/orderNumber';
 
 // ── Address suggestion type ──
 interface AddressSuggestion {
@@ -58,9 +51,6 @@ export const BookingPage: React.FC = () => {
   const [junkEstimateMode, setJunkEstimateMode] = useState<EstimateMode>('method');
   const [junkManualStep, setJunkManualStep] = useState<'select' | 'review' | 'result'>('select');
   const [junkFlowKey, setJunkFlowKey] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // ZIP check state
@@ -259,89 +249,11 @@ export const BookingPage: React.FC = () => {
     est: QuoteEstimate,
     movingOpts?: MovingLaborOptions | null
   ) => {
-    setContactLoading(true);
-    try {
-      const detailsText = `Items: ${est.itemsDetected.join(', ')}\nEstimated Items: ${est.estimatedVolume}\nEstimated Price: $${est.price}`;
-
-      let partialId = `mock-lead-${Date.now()}`;
-      try {
-        const photos = await persistBookingPhotos(
-          estimateImages.length > 0 ? estimateImages : image ? [image] : [],
-          `lead_${Date.now()}`
-        );
-        if (photos.photo_urls.length > 0) {
-          setEstimateImages(photos.photo_urls);
-          setImage(photos.photo_url);
-        }
-
-        const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
-
-        const bookingDetails = withBookingPhotos(
-          {
-            service_type: formData.serviceType,
-            zip_code: zipValue || null,
-            details: detailsText,
-            estimated_items: est.itemsDetected,
-            estimated_volume: est.estimatedVolume,
-            price: est.price,
-            estimate_summary: est.summary,
-            subtotal: est.subtotal ?? est.price,
-            online_booking_discount: est.onlineBookingDiscount ?? null,
-            ...(movingOpts ? { moving_options: toStoredMovingOptions(movingOpts) } : {}),
-          },
-          photos
-        );
-
-        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
-          p_customer_info: customerInfo,
-          p_booking_details: bookingDetails,
-          p_status: 'partially_submitted'
-        });
-
-        if (dbError) {
-          console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', dbError);
-        } else if (data) {
-          partialId = data as string;
-        }
-      } catch (err) {
-        console.warn('Supabase lead capture failed in BookingPage, proceeding in mock mode:', err);
-      }
-
-      void sendQuoteSms({
-        name,
-        phone,
-        price: est.price,
-        serviceType: formData.serviceType || 'Junk Removal',
-        summary: est.summary,
-        volume: est.estimatedVolume,
-        ...(movingOpts
-          ? movingQuoteSmsFields({
-              helpers: movingOpts.helpers,
-              hours: movingOpts.hours,
-              needsTruck: movingOpts.needsTruck,
-              totalPrice: est.price,
-            })
-          : formData.serviceType === 'Moving Labor'
-            ? { serviceType: 'Local Moving' }
-            : {}),
-      });
-
-      setPartialBookingId(partialId);
-      setContactName(name);
-      setContactPhone(phone);
-      setSmsMarketingConsentAt(consentAt);
-      setFormData(prev => ({ ...prev, name, phone }));
-      setContactSubmitted(true);
-    } catch (err) {
-      console.error('Error in handleContactReveal in BookingPage:', err);
-      setContactName(name);
-      setContactPhone(phone);
-      setSmsMarketingConsentAt(consentAt);
-      setFormData(prev => ({ ...prev, name, phone }));
-      setContactSubmitted(true);
-    } finally {
-      setContactLoading(false);
-    }
+    setContactName(name);
+    setContactPhone(phone);
+    setSmsMarketingConsentAt(consentAt);
+    setFormData(prev => ({ ...prev, name, phone }));
+    setContactSubmitted(true);
   };
 
   const handleEstimateComplete = (result: JunkRemovalEstimateResult) => {
@@ -521,74 +433,6 @@ export const BookingPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const generatedOrderNumber = generateOrderNumber();
-      const photos = await persistBookingPhotos(
-        formData.photoUrl ? [formData.photoUrl] : estimateImages.length > 0 ? estimateImages : image ? [image] : [],
-        `booking_${generatedOrderNumber}`
-      );
-
-      const customerInfo = withSmsMarketingConsent(
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-        },
-        smsMarketingConsentAt
-      );
-
-      const locationInfo = {
-        address: formData.address,
-        unit_number: formData.unitNumber || null,
-        city: formData.city,
-        state: formData.state,
-        zip_code: formData.zipCode
-      };
-
-      const bookingDetails = withBookingPhotos(
-        {
-          service_type: formData.serviceType,
-          preferred_date: formData.date,
-          details: formData.details,
-          estimated_items: formData.estimatedItems,
-          estimated_volume: formData.estimatedVolume,
-          price: formData.price,
-          estimate_summary: formData.estimateSummary,
-        },
-        photos
-      );
-
-      const { error: insertError } = await supabase
-        .from('bookings')
-        .insert([
-          {
-            order_number: generatedOrderNumber,
-            customer_info: customerInfo,
-            location_info: locationInfo,
-            booking_details: bookingDetails,
-            status: 'pending'
-          }
-        ]);
-
-      if (insertError) throw insertError;
-      
-      setOrderNumber(generatedOrderNumber);
-
-      // Confirmation + admin emails are sent automatically by the
-      // send_notification_on_insert trigger on public.bookings.
-      setSubmitted(true);
-    } catch (err: any) {
-      console.error('Error submitting booking:', err);
-      setError(err.message || 'Failed to submit booking. Please try again.');
-      setSubmitting(false);
-    }
-  };
-
   const stepLabels = formData.serviceType === 'Junk Removal'
     ? ['ZIP Check', 'Service', 'Estimate', 'Booking']
     : [
@@ -597,31 +441,6 @@ export const BookingPage: React.FC = () => {
         formData.serviceType === 'Moving Labor' ? 'Options' : formData.serviceType === 'Dumpster Rental' ? 'Options' : 'Photo', 
         'Booking'
       ];
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-[var(--surface)] flex items-start justify-center px-4 py-16 md:py-24">
-        <BookingSuccessView
-          orderNumber={orderNumber}
-          serviceType={formData.serviceType}
-          name={formData.name}
-          phone={formData.phone}
-          email={formData.email}
-          address={formData.address}
-          unitNumber={formData.unitNumber}
-          city={formData.city}
-          state={formData.state}
-          zipCode={formData.zipCode}
-          date={formData.date}
-          details={formData.details}
-          price={formData.price}
-          itemsDetected={formData.estimatedItems}
-          estimatedVolume={formData.estimatedVolume}
-          fullScreen={false}
-        />
-      </div>
-    );
-  }
 
   const isJunkEstimateStep = currentStep === 2 && formData.serviceType === 'Junk Removal';
   const junkUsesWideLayout = isJunkEstimateStep && junkEstimateMode === 'manual' && junkManualStep === 'select';
@@ -718,6 +537,7 @@ export const BookingPage: React.FC = () => {
           {/* ═══ Step 2: Junk Removal — estimate flow (matches Quote page) ═══ */}
           {currentStep === 2 && formData.serviceType === 'Junk Removal' && (
             <JunkRemovalEstimateFlow
+              localEstimateOnly
               key={resumeEstimateFlow ? 'resume' : junkFlowKey}
               zipValue={zipValue}
               onContinue={handleEstimateComplete}
@@ -827,17 +647,7 @@ export const BookingPage: React.FC = () => {
                   )}
 
                   {loadingState === LoadingState.SUCCESS && estimate && (
-                    !contactSubmitted ? (
-                      <div className="max-w-md mx-auto">
-                        <ContactIntakeForm
-                          serviceType={formData.serviceType}
-                          isLoading={contactLoading}
-                          onReveal={async (name, phone, consentAt) => {
-                            await handleContactReveal(name, phone, consentAt, estimate);
-                          }}
-                        />
-                      </div>
-                    ) : (
+                    (
                       <div className="space-y-6">
                         <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
@@ -1038,17 +848,7 @@ export const BookingPage: React.FC = () => {
 
               {/* ESTIMATE RESULT */}
               {dumpsterStep === 'result' && estimate && (
-                !contactSubmitted ? (
-                  <div className="max-w-md mx-auto">
-                    <ContactIntakeForm
-                      serviceType={formData.serviceType}
-                      isLoading={contactLoading}
-                      onReveal={async (name, phone, consentAt) => {
-                        await handleContactReveal(name, phone, consentAt, estimate);
-                      }}
-                    />
-                  </div>
-                ) : (
+                (
                   <div className="space-y-6">
                     <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
@@ -1127,6 +927,7 @@ export const BookingPage: React.FC = () => {
           {/* ═══ Step 2: Moving Labor Flow ═══ */}
           {currentStep === 2 && formData.serviceType === 'Moving Labor' && (
             <MovingLaborEstimateFlow
+              localEstimateOnly
               onBack={handlePrevStep}
               onContactReveal={async (name, phone, consentAt, est, _price, opts) => {
                 setMovingOptions(opts);
@@ -1166,7 +967,7 @@ export const BookingPage: React.FC = () => {
             <>
               <FlowStepTitle
                 title={`Book your ${formData.serviceType === 'Moving Labor' ? 'service' : 'pickup'}`}
-                subtitle="Contact, schedule, address, review, and deposit."
+                subtitle="Contact, preferred schedule, address, and review. No deposit required."
               />
               <BookingDetailsForm
               estimate={estimate}

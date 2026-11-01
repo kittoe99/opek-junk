@@ -11,15 +11,11 @@ import { ItemIconRenderer } from './icons/JunkItemIcons';
 import { calculateStaticPrice, calculateDumpsterRentalPrice, DumpsterRentalOptions, calculateMovingLaborPrice } from '../services/pricingService';
 import { DetectedItem, PriceEstimate, QuoteEstimate, LoadingState, MovingLaborOptions } from '../types';
 import { BookingDetailsForm } from './BookingDetailsForm';
-import { supabase } from '../lib/supabase';
-import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
-import { withSmsMarketingConsent } from '../lib/customerConsent';
-import { toStoredMovingOptions } from '../lib/bookingPayloads';
+import { createQuoteSubmitter } from '../lib/crmQuote';
 import { ContactIntakeForm } from './shared/ContactIntakeForm';
 import { SubmissionSuccessView } from './shared/SubmissionSuccessView';
 import { JunkItemCatalogSelector, getCatalogItemImage } from './shared/JunkItemCatalogSelector';
-import { JunkRemovalPriceBreakdown } from './shared/JunkRemovalPriceBreakdown';
-import { sendQuoteSms, movingQuoteSmsFields } from '../lib/sendQuoteSms';
+import { JunkEstimateSummary } from './shared/JunkEstimateSummary';
 import {
   FLOW_PAGE_SHELL,
   FLOW_PAGE_CONTENT,
@@ -39,6 +35,7 @@ export { ITEM_CATALOG, type CatalogItem, type CatalogCategory };
 type ServedCity = { city: string; state: string };
 
 export const QuotePage: React.FC = () => {
+  const submitQuote = useRef(createQuoteSubmitter());
   const navigate = useNavigate();
   const location = useLocation();
   const incomingState = location.state as {
@@ -473,86 +470,22 @@ export const QuotePage: React.FC = () => {
     consentAt: string | null,
     items: DetectedItem[],
     price: PriceEstimate,
-    movingOpts?: MovingLaborOptions | null
+    movingOpts?: MovingLaborOptions | null,
+    email?: string
   ) => {
     setContactLoading(true);
     try {
-      const detailsText = `Items: ${items.map(i => `${i.quantity}x ${i.name}`).join(', ')}\nEstimated Items: ${price.estimatedVolume}\nEstimated Price: $${price.price}`;
-      
-      const serviceTypeLabel = 
-        selectedService === 'junk_removal' ? 'Junk Removal' :
-        selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-        selectedService === 'moving_labor' ? 'Moving Labor' :
-        selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
-        'Junk Removal';
-
-      let partialId = `mock-lead-${Date.now()}`;
-      try {
-        const photos = await persistBookingPhotos(images, `lead_${Date.now()}`);
-        if (photos.photo_urls.length > 0) {
-          setImages(photos.photo_urls);
-        }
-
-        const customerInfo = withSmsMarketingConsent({ name, phone, email: '' }, consentAt);
-
-        const bookingDetails = withBookingPhotos(
-          {
-            intake_source: 'quote',
-            service_type: serviceTypeLabel,
-            zip_code: zipValue || null,
-            details: detailsText,
-            estimated_items: items.map(i => `${i.quantity}x ${i.name}`),
-            estimated_volume: price.estimatedVolume,
-            price: price.price,
-            estimate_summary: price.summary,
-            subtotal: price.subtotal ?? price.price,
-            ...(price.onlineBookingDiscount && price.onlineBookingDiscount > 0
-              ? { online_booking_discount: price.onlineBookingDiscount }
-              : {}),
-            ...(movingOpts ? { moving_options: toStoredMovingOptions(movingOpts) } : {}),
-          },
-          photos
-        );
-
-        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
-          p_customer_info: customerInfo,
-          p_booking_details: bookingDetails,
-          p_status: 'partially_submitted'
-        });
-
-        if (dbError) {
-          console.warn('Supabase lead capture failed, proceeding in mock mode:', dbError);
-        } else if (data) {
-          partialId = data as string;
-        }
-      } catch (err) {
-        console.warn('Supabase lead capture failed, proceeding in mock mode:', err);
-      }
-
-      void sendQuoteSms({
-        name,
-        phone,
-        price: price.price,
-        serviceType: serviceTypeLabel,
-        summary: price.summary,
-        volume: price.estimatedVolume,
-        ...(movingOpts
-          ? movingQuoteSmsFields({
-              helpers: movingOpts.helpers,
-              hours: movingOpts.hours,
-              needsTruck: movingOpts.needsTruck,
-              totalPrice: price.price,
-            })
-          : {}),
-      });
-
-      setPartialBookingId(partialId);
-      setContactName(name);
-      setContactPhone(phone);
-      setSmsMarketingConsentAt(consentAt);
-      setContactSubmitted(true);
-    } catch (err) {
-      console.error('Error in handleContactReveal:', err);
+      const serviceType = selectedService === 'donation_pickup' ? 'Donation Pick Up'
+        : selectedService === 'moving_labor' ? 'Local Moving'
+        : selectedService === 'dumpster_rental' ? 'Dumpster Rental' : 'Junk Removal';
+      const movingDetails = movingOpts
+        ? `Crew: ${movingOpts.helpers}; hours: ${movingOpts.hours}; truck: ${movingOpts.needsTruck ? 'yes' : 'no'}` : '';
+      await submitQuote.current({ name, phone, email: email || '', serviceType, zipCode: zipValue,
+        items: items.map(i => `${i.quantity}x ${i.name}`), price: price.price,
+        summary: [price.summary, movingDetails].filter(Boolean).join('\n'), volume: price.estimatedVolume,
+        smsOptIn: Boolean(consentAt) });
+      // CRM intake IDs are not legacy booking IDs.
+      setPartialBookingId(null);
       setContactName(name);
       setContactPhone(phone);
       setSmsMarketingConsentAt(consentAt);
@@ -580,10 +513,11 @@ export const QuotePage: React.FC = () => {
       return (
         <div className="max-w-md mx-auto">
           <ContactIntakeForm
+            crmQuote
             serviceType={serviceTypeLabel}
             isLoading={contactLoading}
-            onReveal={async (name, phone, consentAt) => {
-              await handleContactReveal(name, phone, consentAt, items, price);
+            onReveal={async (name, phone, consentAt, email) => {
+              await handleContactReveal(name, phone, consentAt, items, price, undefined, email);
             }}
           />
         </div>
@@ -596,25 +530,23 @@ export const QuotePage: React.FC = () => {
       <div className="space-y-6">
         <FlowStepTitle title="Your estimate" subtitle="Review your price breakdown, then continue to book." />
 
-        <div className="soft-card">
-          <div className="soft-head">
-            <div>
-              <p className="soft-label">Your estimate</p>
-              <p className="soft-service">
-                {selectedService === 'donation_pickup' ? 'Donation Pick Up' :
-                 selectedService === 'moving_labor' ? 'Local Moving' :
-                 selectedService === 'dumpster_rental' ? 'Dumpster Rental' :
-                 'Junk Removal'}
-              </p>
+        {!isSpecialService ? (
+          <JunkEstimateSummary price={price} items={items} />
+        ) : (
+          <>
+            <div className="qsum-price">
+              <div>
+                <p className="qsum-price-label">Your estimate</p>
+                <p className="qsum-price-service">
+                  {selectedService === 'donation_pickup' ? 'Donation Pick Up' : 'Local Moving'}
+                </p>
+                {price.estimatedVolume && <p className="qest-volume">{price.estimatedVolume}</p>}
+              </div>
+              <p className="qsum-price-value">${price.price}</p>
             </div>
-            <span className="soft-badge">Online price</span>
-          </div>
-          <p className="soft-price-hero">${price.price}</p>
-          {price.estimatedVolume && <p className="soft-meta">{price.estimatedVolume}</p>}
-          {!isSpecialService ? <JunkRemovalPriceBreakdown price={price} embedded /> : null}
-        </div>
-
-        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{price.summary}</p>
+            <p className="text-sm text-[var(--text-muted)] leading-relaxed">{price.summary}</p>
+          </>
+        )}
 
         <FlowStickyNav
           showBack
@@ -713,8 +645,8 @@ export const QuotePage: React.FC = () => {
         <div className={FLOW_PAGE_CONTENT}>
           <FlowZipCheck
             title="Get a free quote"
-            subtitle="Free estimate by text in about a minute. No obligation to book."
-            steps={['Pick your items', 'Get your price by text', 'Book a time']}
+            subtitle="Get a free estimate in about a minute. No obligation to book."
+            steps={['Pick your items', 'View your estimate', 'Book a time']}
             variant="card"
             zipValue={zipValue}
             onZipChange={(v) => { setZipValue(v); setZipError(null); setZipResult(null); }}
@@ -764,6 +696,7 @@ export const QuotePage: React.FC = () => {
         <FlowChrome flowLabel="Get a quote" stepLabel="Estimate" progress={junkProgress} hasProgress />
         <div className={`${flowPageMaxWidth(junkWide)} transition-all duration-300`}>
           <JunkRemovalEstimateFlow
+            crmQuote
             zipValue={zipValue}
             preselectItems={incomingState?.preselectItems}
             initialMode={
@@ -806,11 +739,12 @@ export const QuotePage: React.FC = () => {
         <FlowChrome flowLabel="Get a quote" stepLabel="Moving options" progress={0.6} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <MovingLaborEstimateFlow
+            crmQuote
             onBack={() => {
               setSelectedService(null);
               setSelectedOption(null);
             }}
-            onContactReveal={async (name, phone, consentAt, est, price, opts) => {
+            onContactReveal={async (name, phone, consentAt, est, price, opts, email) => {
               setMovingOptions(opts);
               await handleContactReveal(
                 name,
@@ -818,7 +752,8 @@ export const QuotePage: React.FC = () => {
                 consentAt,
                 [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Local Moving', quantity: 1 }],
                 price,
-                opts
+                opts,
+                email
               );
             }}
             onComplete={(result) => {

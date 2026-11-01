@@ -17,7 +17,7 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
     name: `Opek Junk Removal - ${city.name}, ${city.stateAbbr}`,
     description: city.seo.description,
     url: `https://opekjunkremoval.com/locations/${city.slug}`,
-    telephone: '+18313187139',
+    telephone: '+18777574365',
     address: {
       '@type': 'PostalAddress',
       addressLocality: city.name,

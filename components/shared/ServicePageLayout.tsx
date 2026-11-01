@@ -5,6 +5,7 @@ import { ServiceFeatureItem } from './ServiceFeatureGrid';
 import { HomeHowItWorks, HomeWaysToBook, HomeReviews, HomeStep } from '../home/HomeSections';
 import { HomeCoverageSection } from '../home/HomeCoverageSection';
 import { HomeEditorialCards } from '../home/HomePagePatterns';
+import { HomeStartBar } from '../home/HomeStartBar';
 
 interface CtaProps {
   label: string;
@@ -71,7 +72,8 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
       image: moving ? '/optimized/service-scenes/local-moving.webp' : '/optimized/service-scenes/junk-truck-unbranded.webp', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
   ];
-  return <div className="home-light interior-home">
+  return <div className="home-light interior-home has-start-bar">
+    <HomeStartBar label={primaryCta.label} onGetQuote={primaryCta.onClick} href={primaryCta.href} />
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}
       variant={path.startsWith('/services/') ? 'banner' : 'full'}
       imagePosition={moving || cleanout || mattress ? 'center top' : undefined}

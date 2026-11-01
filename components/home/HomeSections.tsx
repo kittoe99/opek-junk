@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
 
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 const providerFinePrint =
   'Services are performed by independent local providers. Pricing and availability vary by area.';
@@ -19,7 +19,7 @@ export const HomeFeaturedServices: React.FC = () => {
   const cards = [
     {
       title: 'Junk removal',
-      body: 'Couches, appliances, mattresses, yard debris and full loads. Pick your items, see your price, and a crew hauls it all away.',
+      body: 'Couches, appliances, yard debris and full loads — priced online, hauled away.',
       image: '/optimized/service-scenes/junk-truck-unbranded.webp',
       alt: 'Purple dump truck loaded with furniture and household junk',
       cta: 'Get a price',
@@ -27,7 +27,7 @@ export const HomeFeaturedServices: React.FC = () => {
     },
     {
       title: 'Small local moves',
-      body: 'Truck and crew for apartments, studios and short-distance moves. Book helpers by the hour, with or without a truck.',
+      body: 'Truck and crew for apartments and short moves, booked by the hour.',
       image: '/optimized/service-scenes/local-moving.webp',
       alt: 'Two providers carrying a couch to a moving truck',
       cta: 'Book a move',
@@ -42,7 +42,7 @@ export const HomeFeaturedServices: React.FC = () => {
   ];
 
   return (
-    <section id="services" className="bg-[#f2f2f2] py-14 sm:py-16 md:py-20" aria-labelledby="home-services-heading">
+    <section id="services" className="bg-[#f7f6f9] py-14 sm:py-16 md:py-20" aria-labelledby="home-services-heading">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
           id="home-services-heading"
@@ -63,7 +63,7 @@ export const HomeFeaturedServices: React.FC = () => {
                 />
               </div>
               <h3 className="home-display mt-5 text-[1.4rem] sm:text-[1.6rem] leading-tight text-[#140a1f]">
-                {card.title}
+                {card.title}<sup className="tm-mark" aria-hidden>™</sup>
               </h3>
               <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-[#2b2236]">{card.body}</p>
               <button type="button" onClick={card.onClick} className="home-cta mt-5 min-w-[196px]">
@@ -291,21 +291,21 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
         </h2>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] gap-8 md:gap-10 items-center max-w-[860px] mx-auto">
-          <div className="home-booking-options md:bg-[#a020f0] md:rounded-lg md:px-8 md:py-4">
-            <ul className="grid grid-cols-2 gap-2.5 md:block md:divide-y md:divide-white/25">
+          <div className="home-booking-options md:bg-white md:border md:border-[#e9e3f0] md:px-8 md:py-2">
+            <ul className="grid grid-cols-2 gap-2.5 md:block md:divide-y md:divide-[#ece6f2]">
               {options.map(({ label, detail, href, to, icon: Icon }) => {
                 const inner = (
                   <>
-                    <Icon size={26} className="shrink-0" aria-hidden />
+                    <Icon size={26} className="shrink-0 text-[#520f96]" aria-hidden />
                     <span>
                       <span className="home-display block text-[1.2rem] md:inline md:text-[1.75rem] leading-none">{label}</span>
-                      <span className="md:hidden mt-1 block text-[12px] font-semibold text-white/85">{detail}</span>
+                      <span className="md:hidden mt-1 block text-[12px] font-semibold text-[#61536d]">{detail}</span>
                     </span>
-                    <span className="home-booking-detail hidden md:inline ml-auto text-[14px] font-semibold">{detail}</span>
+                    <span className="home-booking-detail hidden md:inline ml-auto text-[14px] font-semibold text-[#61536d]">{detail}</span>
                   </>
                 );
                 const cls =
-                  'flex h-full min-h-[118px] flex-col items-start justify-between gap-3 rounded-lg bg-[#8b16d4] p-4 text-white transition-opacity hover:opacity-85 md:min-h-0 md:flex-row md:items-center md:justify-start md:gap-4 md:rounded-none md:bg-transparent md:px-0 md:py-4';
+                  'flex h-full min-h-[118px] flex-col items-start justify-between gap-3 border border-[#e9e3f0] bg-white p-4 text-[#140a1f] transition-colors hover:border-[#520f96] md:min-h-0 md:flex-row md:items-center md:justify-start md:gap-4 md:border-0 md:bg-transparent md:px-0 md:py-4 md:hover:text-[#520f96]';
                 return (
                   <li key={label}>
                     {to ? (
@@ -328,8 +328,7 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
               Real people, ready to help
             </h3>
             <p className="mt-3 text-[15px] leading-relaxed text-[#2b2236]">
-              Not sure what it’ll cost or how big the job is? Call or text and we’ll walk you through it, or have a provider
-              stop by for a free in-home estimate.
+              Call or text and we’ll walk you through it, or book a free in-home estimate.
             </p>
             <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-[14px] font-semibold">
               {[
@@ -374,7 +373,7 @@ const reviews = [
 ];
 
 export const HomeReviews: React.FC = () => (
-  <section id="testimonials" className="home-soft-band py-14 sm:py-16 md:py-20" aria-labelledby="home-reviews-heading">
+  <section id="testimonials" className="bg-[#f7f6f9] py-14 sm:py-16 md:py-20" aria-labelledby="home-reviews-heading">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2
         id="home-reviews-heading"

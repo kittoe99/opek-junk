@@ -184,11 +184,12 @@ serve(async (req) => {
     
     else if (type === 'moving_labor') {
       const { helpers, hours, needsTruck = false } = payload
-      const resolvedHelpers = helpers === 1 ? 1 : 2
-      const pricePerHour = resolvedHelpers === 1 ? 69 : 99
+      // Keep in sync with lib/movingLaborPricing.ts
+      const resolvedHelpers = helpers === 3 ? 3 : 2
+      const pricePerHour = resolvedHelpers === 3 ? 149 : 119
       const truckFee = needsTruck ? 99 : 0
       const finalPrice = Math.round(pricePerHour * hours + truckFee)
-      const helperLabel = `${resolvedHelpers} helper${resolvedHelpers === 1 ? '' : 's'}`
+      const helperLabel = `${resolvedHelpers} helpers`
       const summary = `Moving Labor: ${helperLabel} for ${hours} hours at $${pricePerHour}/hour.${needsTruck ? ' Includes a one-time $99 truck fee.' : ''}`
 
       return new Response(

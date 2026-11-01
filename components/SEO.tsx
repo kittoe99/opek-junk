@@ -196,7 +196,7 @@ export const seoConfig = {
   },
   contact: {
     title: 'Contact Opek - Opek Junk Removal | Customer Support',
-    description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (831) 318-7139 or email Support@opekjunkremoval.com',
+    description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (877) 757-4365 or email Support@opekjunkremoval.com',
     keywords: 'contact junk removal, customer support, junk removal help, schedule pickup',
   },
   chat: {
@@ -222,8 +222,8 @@ export const seoConfig = {
     noindex: true,
   },
   localMovesAds: {
-    title: 'Local Movers From $99/Hour | Opek — 2 Helpers',
-    description: 'Local moves from $99/hour for 2 moving helpers. Studios, apartments, and short-distance jobs. Truck + crew or labor only. Book online.',
+    title: 'Local Movers From $119/Hour | Opek — 2 Helpers',
+    description: 'Local moves from $119/hour for 2 moving helpers. Studios, apartments, and short-distance jobs. Truck + crew or labor only. Book online.',
     keywords: 'local movers, apartment movers, small local moves, moving labor, hourly movers, short distance movers',
     noindex: true,
   },

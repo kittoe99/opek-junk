@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { HomeLogo } from '../../home/HomeLogo';
 import { FlowProgressBar } from './FlowProgressBar';
-
-const SUPPORT_PHONE_DISPLAY = '(831) 318-7139';
-const SUPPORT_PHONE_TEL = 'tel:8313187139';
 
 interface FlowChromeProps {
   /** Used in the leave-confirm copy */
@@ -68,14 +65,14 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
         ref={headerRef}
         className="site-flow-header sticky top-0 z-[70] bg-[var(--surface)] backdrop-blur-xl border-b border-[var(--border)]"
       >
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center gap-3">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 h-20 sm:h-24 flex items-center gap-3">
           <button
             type="button"
             onClick={requestLeave}
-            className="relative z-10 shrink-0 rounded-lg px-1 py-1 hover:bg-[var(--surface-2)] transition-colors"
+            className="relative z-10 shrink-0 rounded-none"
             aria-label="Opek home"
           >
-            <HomeLogo className="h-7 sm:h-8 w-auto" />
+            <HomeLogo className="h-12 sm:h-14 w-auto" />
           </button>
 
           <div className="pointer-events-none absolute inset-0 hidden sm:flex flex-col items-center justify-center px-24 sm:px-40 leading-tight">
@@ -85,23 +82,14 @@ export const FlowChrome: React.FC<FlowChromeProps> = ({
             )}
           </div>
 
-          <div className="relative z-10 ml-auto flex items-center gap-2 sm:gap-3">
-            <a
-              href={SUPPORT_PHONE_TEL}
-              className="inline-flex items-center gap-1.5 shrink-0 min-h-11 text-[13px] font-black whitespace-nowrap text-brand hover:opacity-80 transition-opacity"
-              aria-label={`Call ${SUPPORT_PHONE_DISPLAY}`}
-            >
-              <Phone size={15} strokeWidth={3} aria-hidden />
-              <span className="underline underline-offset-4">{SUPPORT_PHONE_DISPLAY}</span>
-            </a>
-
+          <div className="relative z-10 ml-auto -mr-2 flex items-center">
             <button
               type="button"
               onClick={requestLeave}
-              className="ui-icon-button shrink-0 h-9 w-9 rounded-full border border-[var(--border)] text-[var(--text)] hover:text-brand hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
+              className="mnav-icon"
               aria-label="Close and go home"
             >
-              <X size={16} />
+              <X size={26} strokeWidth={2.2} aria-hidden />
             </button>
           </div>
         </div>

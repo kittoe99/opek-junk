@@ -9,8 +9,8 @@ const approaches = [
     body: 'Book local movers online in minutes — truck + crew or labor only.',
   },
   {
-    title: 'From $99/Hour',
-    body: 'Starting at $99/hour for 2 moving helpers. Truck optional (+$99 one-time). Clear hourly rates before you confirm.',
+    title: 'From $119/Hour',
+    body: 'Starting at $119/hour for 2 moving helpers ($149/hour for 3). Truck optional (+$99 one-time). Clear hourly rates before you confirm.',
   },
   {
     title: 'Right-Sized Crews',
@@ -50,8 +50,8 @@ export const LocalMovesAdsLandingPage: React.FC = () => {
   };
 
   return <ServicePageLayout
-    path="/lp/local-moves" eyebrow="Local Movers Near You" title={<>Local moves.<br />From $99/hour.</>}
-    subtitle="2 moving helpers from $99/hour. Studios, apartments, and short-distance jobs — truck + crew or labor only." heroImage="/optimized/service-scenes/local-moving.webp" heroImageAlt="Two providers loading furniture into a moving truck" heroChip="Your next chapter"
+    path="/lp/local-moves" eyebrow="Local Movers Near You" title={<>Local moves.<br />From $119/hour.</>}
+    subtitle="2 moving helpers from $119/hour. Studios, apartments, and short-distance jobs — truck + crew or labor only." heroImage="/optimized/service-scenes/local-moving.webp" heroImageAlt="Two providers loading furniture into a moving truck" heroChip="Your next chapter"
     primaryCta={{ label: 'View Pricing', onClick: () => goToQuote() }}
     secondaryCta={{ label: 'Book a move', onClick: () => goToBooking() }}
     onZipCheck={goToBooking}

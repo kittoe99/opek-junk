@@ -1,17 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, Check, MapPinned, Loader2, CalendarCheck, PackageCheck, ClipboardList, MapPin, User, Mail, Phone, Building2, MessageSquare, Map, Trash2, Calendar as CalendarIcon, MapPin as MapPinIcon, Image as ImageIcon, Camera, Upload, X, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Check, CalendarCheck, PackageCheck, MapPin, User } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { MovingAccessType, MovingLaborOptions, QuoteEstimate } from '../types';
-import { supabase } from '../lib/supabase';
-import { persistBookingPhotos, withBookingPhotos } from '../lib/bookingPhotos';
-import { withSmsMarketingConsent, SMS_MARKETING_CONSENT_TEXT, SMS_TRANSACTIONAL_NOTICE } from '../lib/customerConsent';
+import { createBookingSubmitter, bookingLocalNow, BOOKING_SMS_CONSENT, BOOKING_TERMS } from '../lib/crmBooking';
 import {
-  buildLocationInfoPayload,
   toStoredMovingOptions,
 } from '../lib/bookingPayloads';
 import { BookingSuccessView } from './shared/BookingSuccessView';
-import { BookingDepositPayment, BOOKING_DEPOSIT_AMOUNT } from './shared/BookingDepositPayment';
-import { BookingDepositIntro } from './shared/BookingDepositIntro';
 import { ScheduleDatePicker, TimeSlot, formatTimeSlotLabel } from './shared/ScheduleDatePicker';
 import {
   ServiceAddressField,
@@ -22,7 +17,6 @@ import { FLOW_INPUT, FLOW_LABEL } from '../lib/flowPageLayout';
 import { FlowStepTitle } from './shared/flow/FlowStepTitle';
 import { FlowSelectionCard } from './shared/flow/FlowSelectionCard';
 import { FlowStickyNav } from './shared/flow/FlowStickyNav';
-import { generateOrderNumber } from '../lib/orderNumber';
 import { CheckboxCard } from './shared/CheckboxCard';
 
 const MOVING_ACCESS_CHOICES: { id: MovingAccessType; label: string }[] = [
@@ -37,6 +31,26 @@ const MOVING_SCOPE_LABELS: Record<MovingLaborOptions['serviceScope'], string> = 
   unloading: 'Unloading only',
   rearrange: 'In-home rearrange',
 };
+
+const SummarySection: React.FC<{
+  icon: LucideIcon;
+  title: string;
+  onEdit?: () => void;
+  children: React.ReactNode;
+}> = ({ icon: Icon, title, onEdit, children }) => (
+  <section className="qsum-row">
+    <span className="qsum-icon"><Icon size={18} aria-hidden /></span>
+    <div className="qsum-body">
+      <p className="qsum-title">{title}</p>
+      {children}
+    </div>
+    {onEdit && (
+      <button type="button" onClick={onEdit} className="qsum-edit" aria-label={`Edit ${title.toLowerCase()}`}>
+        Edit
+      </button>
+    )}
+  </section>
+);
 
 interface BookingDetailsFormProps {
   estimate: QuoteEstimate | null;
@@ -54,106 +68,43 @@ interface BookingDetailsFormProps {
   movingOptions?: MovingLaborOptions | null;
 }
 
-type DetailStep = 'contact' | 'schedule' | 'address' | 'photo' | 'review' | 'deposit' | 'payment';
+type DetailStep = 'contact' | 'schedule' | 'address' | 'review';
 
 export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
   estimate,
-  image,
-  images,
   serviceType,
   defaultZip,
   onBack,
   backLabel = 'Back',
   prefilledName,
   prefilledPhone,
-  partialBookingId,
-  smsMarketingConsentAt,
-  depositSource = 'booking',
   movingOptions = null,
 }) => {
-  const navigate = useNavigate();
   const [step, setStep] = useState<DetailStep>('contact');
+  // Set when a step is opened from the review summary's "Edit" link, so continuing returns straight to review.
+  const [editingFromReview, setEditingFromReview] = useState(false);
+  const advanceTo = (next: DetailStep) => {
+    if (editingFromReview) {
+      setEditingFromReview(false);
+      setStep('review');
+    } else {
+      setStep(next);
+    }
+  };
+  const editFromReview = (target: DetailStep) => {
+    if (submitting) return;
+    setEditingFromReview(true);
+    setStep(target);
+  };
   const [submitting, setSubmitting] = useState(false);
-  const [localSmsMarketingConsentAt, setLocalSmsMarketingConsentAt] = useState<string | null>(
-    smsMarketingConsentAt ?? null
-  );
-  const [localImage, setLocalImage] = useState<string | null>(image);
-  const estimateImages = images?.length ? images : image ? [image] : [];
-  const cameraInputRef = useRef<HTMLInputElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const getPhotosForPersistence = () => {
-    if (localImage) {
-      return [localImage, ...estimateImages.filter((img) => img !== localImage)];
-    }
-    return estimateImages;
-  };
-
-  useEffect(() => {
-    setLocalImage(image);
-  }, [image]);
-
-  const compressImage = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          const maxWidth = 1920;
-          const maxHeight = 1920;
-          if (width > height) {
-            if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
-          } else {
-            if (height > maxHeight) { width = (width * maxHeight) / height; height = maxHeight; }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', 0.8));
-        };
-        img.onerror = reject;
-        img.src = e.target?.result as string;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      try {
-        const compressedImage = await compressImage(file);
-        setLocalImage(compressedImage);
-        setError(null);
-      } catch (err) {
-        console.error('Error compressing image:', err);
-      }
-    }
-  };
+  const [smsOptIn, setSmsOptIn] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const submitBooking = useRef(createBookingSubmitter());
   const [submitted, setSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [partialId, setPartialId] = useState<string | null>(partialBookingId || null);
-  const [contactSubmitting, setContactSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (partialBookingId) {
-      setPartialId(partialBookingId);
-    }
-  }, [partialBookingId]);
-
-  useEffect(() => {
-    if (smsMarketingConsentAt) {
-      setLocalSmsMarketingConsentAt(smsMarketingConsentAt);
-    }
-  }, [smsMarketingConsentAt]);
-
+  const contactSubmitting = false;
   const isMovingLabor =
     serviceType.toLowerCase().includes('moving') || serviceType === 'Moving Labor';
 
@@ -236,9 +187,6 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const isJunkRemoval =
-    serviceType.toLowerCase().includes('junk') || serviceType === 'Junk Removal';
-
   const buildMovingOptionsPayload = () => {
     if (!isMovingLabor || !movingOptions) return undefined;
     if (!formData.pickupAccess) {
@@ -286,79 +234,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     pickupAccessComplete &&
     (!hasOptionalDropoff || (addressBValidated && dropoffAccessComplete));
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setContactSubmitting(true);
-    try {
-      const detailsText = estimate
-        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
-        : formData.details;
-
-      const normalizedServiceType = serviceType
-        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
-          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
-          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
-          : 'Junk Removal')
-        : 'Junk Removal';
-
-      let currentPartialId = partialId;
-
-      const photos = await persistBookingPhotos(
-        getPhotosForPersistence(),
-        `lead_${Date.now()}`
-      );
-      if (photos.photo_url && photos.photo_url !== localImage) {
-        setLocalImage(photos.photo_url);
-      }
-
-      const customerInfo = withSmsMarketingConsent(
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-        },
-        localSmsMarketingConsentAt
-      );
-
-      const bookingDetails = withBookingPhotos(
-        {
-          service_type: normalizedServiceType,
-          zip_code: defaultZip?.zipCode || formData.zipCode || null,
-          details: detailsText,
-          estimated_items: estimate?.itemsDetected || [],
-          estimated_volume: estimate?.estimatedVolume || '',
-          price: estimate?.price || 0,
-          estimate_summary: estimate?.summary || '',
-          ...(isMovingLabor ? { moving_options: buildMovingOptionsPayload() } : {}),
-        },
-        photos
-      );
-
-      if (currentPartialId && !currentPartialId.startsWith('mock-')) {
-        await supabase.rpc('update_prebooking', {
-          p_id: currentPartialId,
-          p_customer_info: customerInfo,
-          p_booking_details: bookingDetails,
-          p_status: 'partially_submitted'
-        });
-      } else {
-        const { data, error: dbError } = await supabase.rpc('create_prebooking', {
-          p_customer_info: customerInfo,
-          p_booking_details: bookingDetails,
-          p_status: 'partially_submitted'
-        });
-
-        if (!dbError && data) {
-          currentPartialId = data as string;
-          setPartialId(data as string);
-        }
-      }
-    } catch (err) {
-      console.warn('Failed to save partial booking lead on contact step:', err);
-    } finally {
-      setContactSubmitting(false);
-      setStep('schedule');
-    }
+    setError(null);
+    advanceTo('schedule');
   };
 
   const handleScheduleSubmit = (e: React.FormEvent) => {
@@ -368,7 +247,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       return;
     }
     setError(null);
-    setStep('address');
+    advanceTo('address');
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -402,216 +281,39 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     setAddressError(null);
     setAddressBError(null);
     setError(null);
-    setStep(isJunkRemoval ? 'photo' : 'review');
-  };
-
-  const handlePhotoSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!localImage) {
-      setError('Please upload or capture a photo of the items to be hauled away.');
-      return;
-    }
-    setError(null);
-
-    try {
-      const photos = await persistBookingPhotos(
-        getPhotosForPersistence(),
-        `prebooking_${partialId || Date.now()}`
-      );
-      if (photos.photo_url) {
-        setLocalImage(photos.photo_url);
-      }
-
-      if (partialId && !partialId.startsWith('mock-')) {
-        const detailsText = estimate
-          ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
-          : formData.details;
-
-        const normalizedServiceType = serviceType
-          ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
-            : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
-            : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
-            : 'Junk Removal')
-          : 'Junk Removal';
-
-        await supabase.rpc('update_prebooking', {
-          p_id: partialId,
-          p_booking_details: withBookingPhotos(
-            {
-              service_type: normalizedServiceType,
-              zip_code: defaultZip?.zipCode || formData.zipCode || null,
-              details: detailsText,
-              estimated_items: estimate?.itemsDetected || [],
-              estimated_volume: estimate?.estimatedVolume || '',
-              price: estimate?.price || 0,
-              estimate_summary: estimate?.summary || '',
-              ...(isMovingLabor ? { moving_options: buildMovingOptionsPayload() } : {}),
-            },
-            photos
-          ),
-        });
-      }
-    } catch (err) {
-      console.warn('Failed to persist booking photo on photo step:', err);
-      setError('We could not save your photo. Please try uploading again.');
-      return;
-    }
-
-    setStep('review');
+    advanceTo('review');
   };
 
   const handleBackStep = () => {
-    if (step === 'payment') setStep('deposit');
-    else if (step === 'deposit') setStep('review');
-    else if (step === 'review') setStep(isJunkRemoval ? 'photo' : 'address');
-    else if (step === 'photo') setStep('address');
+    if (submitting) return;
+    if (editingFromReview) { setEditingFromReview(false); setStep('review'); }
+    else if (step === 'review') setStep('address');
     else if (step === 'address') setStep('schedule');
     else if (step === 'schedule') setStep('contact');
-    else if (onBack) onBack();
+    else onBack?.();
   };
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setStep('deposit');
-  };
-
-  const handleSubmit = async (paymentIntentId: string) => {
+    if (submitting) return;
     setSubmitting(true);
     setError(null);
-
     try {
-      const detailsText = estimate
-        ? `Items: ${estimate.itemsDetected.join(', ')}\nEstimated Items: ${estimate.estimatedVolume}\nEstimated Price: $${estimate.price}${formData.details ? '\n\nNotes: ' + formData.details : ''}`
-        : formData.details;
-
-      const normalizedServiceType = serviceType
-        ? (serviceType.toLowerCase().includes('donation') ? 'Donation Pick Up'
-          : serviceType.toLowerCase().includes('moving') ? 'Moving Labor'
-          : serviceType.toLowerCase().includes('dumpster') ? 'Dumpster Rental'
-          : 'Junk Removal')
-        : 'Junk Removal';
-
-      const generatedOrderNumber = generateOrderNumber();
-      let resultData = null;
-      let dbError = null;
-
-      try {
-          const photos = await persistBookingPhotos(
-            getPhotosForPersistence(),
-            `booking_${generatedOrderNumber}`
-          );
-          if (photos.photo_url) {
-            setLocalImage(photos.photo_url);
-          }
-
-          if (isJunkRemoval && !photos.photo_url) {
-            throw new Error('A photo of your items is required to complete booking.');
-          }
-
-          const customerInfo = withSmsMarketingConsent(
-            {
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-            },
-            localSmsMarketingConsentAt
-          );
-
-          const locationInfo = buildLocationInfoPayload(
-            {
-              address: formData.address,
-              unitNumber: formData.unitNumber,
-              city: formData.city,
-              state: formData.state,
-              zipCode: formData.zipCode,
-              pickupAccess: formData.pickupAccess,
-              pickupFlights: formData.pickupFlights,
-              addressB: formData.addressB,
-              unitNumberB: formData.unitNumberB,
-              cityB: formData.cityB,
-              stateB: formData.stateB,
-              zipCodeB: formData.zipCodeB,
-              dropoffAccess: formData.dropoffAccess,
-              dropoffFlights: formData.dropoffFlights,
-              includeDropoff: showDualMovingAddresses && addressBValidated,
-            },
-            { isMoving: isMovingLabor }
-          );
-
-          const movingOptionsPayload = buildMovingOptionsPayload();
-
-          const bookingDetails = withBookingPhotos(
-            {
-              service_type: normalizedServiceType,
-              preferred_date: formData.date,
-              preferred_time: formatTimeSlotLabel(formData.timeSlot),
-              details: detailsText,
-              estimated_items: estimate?.itemsDetected || [],
-              estimated_volume: estimate?.estimatedVolume || '',
-              price: estimate?.price || 0,
-              estimate_summary: estimate?.summary || '',
-              subtotal: estimate?.subtotal ?? estimate?.price ?? 0,
-              online_booking_discount: estimate?.onlineBookingDiscount ?? null,
-              deposit_amount: BOOKING_DEPOSIT_AMOUNT,
-              deposit_paid: true,
-              stripe_payment_intent_id: paymentIntentId,
-              terms_accepted_at: new Date().toISOString(),
-              ...(movingOptionsPayload ? { moving_options: movingOptionsPayload } : {}),
-            },
-            photos
-          );
-
-          const res = await supabase
-            .from('bookings')
-            .insert([
-              {
-                order_number: generatedOrderNumber,
-                customer_info: customerInfo,
-                location_info: locationInfo,
-                booking_details: bookingDetails,
-                status: 'pending'
-              }
-            ]);
-          resultData = res.data;
-          dbError = res.error;
-          
-          if (dbError) {
-            console.warn('Supabase returned error:', dbError);
-          }
-
-          if (!dbError && partialId && !partialId.startsWith('mock-')) {
-            supabase
-              .rpc('update_prebooking', {
-                p_id: partialId,
-                p_customer_info: customerInfo,
-                p_booking_details: bookingDetails,
-                p_status: 'converted',
-              })
-              .then(({ error: updateErr }) => {
-                if (updateErr) {
-                  console.warn('Failed to mark prebooking as converted:', updateErr);
-                }
-              });
-          }
-        } catch (err) {
-          console.warn('Supabase insert/update failed, falling back to mock submission:', err);
-        }
-  
-        const finalOrderNumber = generatedOrderNumber;
-
-        // Confirmation + admin emails are sent automatically by the
-        // send_notification_on_insert trigger on public.bookings. The
-        // deposit payment receipt is sent separately by the payments trigger.
-        setOrderNumber(finalOrderNumber);
-        setSubmitted(true);
-      } catch (err: any) {
-        console.error('Error submitting booking:', err);
-        setSubmitting(false);
-        throw new Error(err.message || 'Failed to submit booking. Please try again.');
-      }
-    };
-
+      const moving = buildMovingOptionsPayload();
+      const dropoffAddress = showDualMovingAddresses && addressBValidated
+        ? [formData.addressB, formData.unitNumberB, formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ') : '';
+      const id = await submitBooking.current({
+        ...formData, serviceType, items: estimate?.itemsDetected?.length ? estimate.itemsDetected : [serviceType],
+        price: estimate?.price ?? 0, summary: estimate?.summary, volume: estimate?.estimatedVolume,
+        dropoffAddress, movingDetails: moving ? JSON.stringify(moving) : '', notes: formData.details,
+        smsOptIn, termsAccepted,
+      });
+      setOrderNumber(id);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to save your booking request. Please try again.');
+    } finally { setSubmitting(false); }
+  };
 
   // ── Success screen ──
   if (submitted) {
@@ -644,25 +346,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         price={estimate?.price}
         itemsDetected={estimate?.itemsDetected}
         estimatedVolume={estimate?.estimatedVolume}
+        requestOnly
+        arrivalWindow={formatTimeSlotLabel(formData.timeSlot)}
       />
     );
   }
 
-  // Step labels for indicator
-  const stepLabels = isJunkRemoval
-    ? ['Contact', 'Schedule', 'Address', 'Photo', 'Review', 'Deposit', 'Payment']
-    : ['Contact', 'Schedule', 'Address', 'Review', 'Deposit', 'Payment'];
-  const stepIndex =
-    step === 'contact' ? 0
-    : step === 'schedule' ? 1
-    : step === 'address' ? 2
-    : step === 'photo' ? 3
-    : step === 'review' ? (isJunkRemoval ? 4 : 3)
-    : step === 'deposit' ? (isJunkRemoval ? 5 : 4)
-    : isJunkRemoval ? 6 : 5;
-
   return (
-    <div className={`max-w-lg mx-auto space-y-6 pb-28${step === 'payment' ? '' : ' animate-fade-in'}`}>
+    <div className={`max-w-lg mx-auto space-y-6 pb-28 animate-fade-in`}>
 
       {/* ─── Contact step ─── */}
       {step === 'contact' && (
@@ -713,14 +404,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                 className={FLOW_INPUT}
               />
             <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">
-              {SMS_TRANSACTIONAL_NOTICE}
+              Booking texts are optional. We will contact you to confirm availability.
             </p>
           </div>
 
-          <CheckboxCard checked={Boolean(localSmsMarketingConsentAt)} onChange={(checked) => {
-                  setLocalSmsMarketingConsentAt(checked ? new Date().toISOString() : null);
+          <CheckboxCard checked={smsOptIn} onChange={(checked) => {
+                  setSmsOptIn(checked);
                 }} disabled={contactSubmitting}>
-            {SMS_MARKETING_CONSENT_TEXT}
+            {BOOKING_SMS_CONSENT}
           </CheckboxCard>
 
           {error && (
@@ -744,12 +435,12 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {step === 'schedule' && (
         <>
         <form id="booking-schedule-form" onSubmit={handleScheduleSubmit} className="space-y-4">
-          <FlowStepTitle title="Pick a date & time" subtitle="When works best for your service?" />
+          <FlowStepTitle title="Pick a date & time" subtitle="Request an arrival window in Mountain Time (America/Denver). Our team will confirm availability." />
 
           <ScheduleDatePicker
             date={formData.date}
             timeSlot={formData.timeSlot}
-            minDate={new Date().toISOString().split('T')[0]}
+            minDate={bookingLocalNow().slice(0, 10)}
             onDateChange={(nextDate) => setFormData((prev) => ({ ...prev, date: nextDate }))}
             onTimeSlotChange={(nextSlot) => setFormData((prev) => ({ ...prev, timeSlot: nextSlot }))}
           />
@@ -773,20 +464,14 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
       {step === 'address' && (
         <>
         <form id="booking-address-form" onSubmit={handleAddressSubmit}>
-          <div className="text-center mb-6">
-            <h1 className="text-xl md:text-2xl font-semibold text-[var(--text)] tracking-tight leading-snug">
-              {isMovingLabor
-                ? movingScope === 'rearrange'
-                  ? 'Service address'
-                  : movingScope === 'loading'
-                    ? 'Pickup address'
-                    : movingScope === 'unloading'
-                      ? 'Unload address'
-                      : 'Pickup address'
-                : 'Pickup address'}
-            </h1>
-            <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
-              {isMovingLabor
+          <FlowStepTitle
+            title={
+              isMovingLabor && movingScope === 'rearrange' ? 'Service address'
+              : isMovingLabor && movingScope === 'unloading' ? 'Unload address'
+              : 'Pickup address'
+            }
+            subtitle={
+              isMovingLabor
                 ? movingScope === 'rearrange'
                   ? 'Where should the crew meet you?'
                   : movingScope === 'loading'
@@ -794,21 +479,17 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
                     : movingScope === 'unloading'
                       ? 'Where should the crew unload?'
                       : 'Start with the pickup location. You can add a drop-off if needed.'
-                : 'Where should the provider come to collect?'}
-            </p>
-          </div>
+                : 'Where should the provider come to collect your items?'
+            }
+          />
 
           {(needsPickupAddress || unloadingUsesPrimaryAddress) && (
             <>
-              <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">
-                {unloadingUsesPrimaryAddress
-                  ? 'Unload location'
-                  : movingScope === 'rearrange'
-                    ? 'Address'
-                    : isMovingLabor
-                      ? 'Pickup location'
-                      : 'Address'}
-              </p>
+              {isMovingLabor && (
+                <p className="text-xs font-semibold text-[var(--text-muted)] mb-2">
+                  {unloadingUsesPrimaryAddress ? 'Unload location' : movingScope === 'rearrange' ? 'Address' : 'Pickup location'}
+                </p>
+              )}
               <ServiceAddressField
                 showLabel={false}
                 label="Service Address"
@@ -1010,193 +691,98 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
         </>
       )}
 
-      {/* ─── Photo step (junk removal only) ─── */}
-      {step === 'photo' && (
-        <>
-        <form id="booking-photo-form" onSubmit={handlePhotoSubmit} className="space-y-4">
-          <FlowStepTitle
-            title="Photo of items"
-            subtitle="Upload a photo so we can assess the load and match the right crew."
-          />
-
-          <div className="space-y-3">
-            {localImage ? (
-              <div className="ui-panel relative border border-[var(--border)] bg-[var(--surface)] p-3 rounded-xl flex items-center gap-4">
-                <div className="ui-image-frame w-20 h-16 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface-2)]">
-                  <img src={localImage} alt="Items preview" className="w-full h-full object-cover" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[var(--text)]">Photo uploaded</p>
-                  <p className="text-xs text-[var(--text-muted)] mt-0.5">Used to verify volume and service details.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setLocalImage(null)}
-                  className="bg-brand/10 hover:bg-red-100 text-brand p-2 rounded-lg transition-colors shrink-0"
-                  aria-label="Remove photo"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <FlowSelectionCard
-                  title="Take photo"
-                  description="Use your camera to capture the items"
-                  icon={<Camera className="w-full h-full" />}
-                  onClick={() => cameraInputRef.current?.click()}
-                />
-                <FlowSelectionCard
-                  title="Upload photo"
-                  description="Choose an existing photo from your device"
-                  icon={<Upload className="w-full h-full" />}
-                  onClick={() => fileInputRef.current?.click()}
-                />
-              </div>
-            )}
-
-            <input type="file" ref={cameraInputRef} className="hidden" accept="image/*" capture="environment" onChange={handleFileChange} />
-            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-          </div>
-
-          {error && (
-            <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
-              <p className="text-brand text-xs font-bold">{error}</p>
-            </div>
-          )}
-
-        </form>
-        <FlowStickyNav
-          onBack={handleBackStep}
-          continueType="submit"
-          continueForm="booking-photo-form"
-          continueDisabled={!localImage}
-        />
-        </>
-      )}
-
-      {/* ─── Review step ─── */}
       {step === 'review' && (
         <>
         <form id="booking-review-form" onSubmit={handleReviewSubmit} className="space-y-4">
-          <FlowStepTitle title="Review your booking" subtitle="Confirm details before your deposit." />
+          <FlowStepTitle title="Review your booking" subtitle="Send your request with no payment today. Our team will confirm availability and the final price." />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={FLOW_LABEL}>Service type</label>
-              <input aria-label="Service type"
-                readOnly
-                value={serviceType}
-                className={`${FLOW_INPUT} bg-[var(--surface-2)]`}
-              />
+          {estimate && (
+            <div className="qsum-price">
+              <div>
+                <p className="qsum-price-label">Estimated total</p>
+                <p className="qsum-price-service">{isMovingLabor ? 'Local Moving' : serviceType}</p>
+              </div>
+              <p className="qsum-price-value">${estimate.price}</p>
             </div>
-            <div>
-              <label className={FLOW_LABEL}>Preferred date</label>
-              <input aria-label="Preferred date"
-                readOnly
-                value={
-                  formData.date
-                    ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}`
-                    : ''
-                }
-                className={`${FLOW_INPUT} bg-[var(--surface-2)]`}
-              />
-            </div>
+          )}
+
+          <div className="qsum">
+            <SummarySection icon={CalendarCheck} title="When" onEdit={() => editFromReview('schedule')}>
+              <p className="qsum-main">
+                {formData.date
+                  ? new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+                  : 'No date picked'}
+              </p>
+              {formData.timeSlot && <p className="qsum-sub">Arrival window (Mountain Time): {formatTimeSlotLabel(formData.timeSlot)}</p>}
+            </SummarySection>
+
+            <SummarySection
+              icon={MapPin}
+              title={unloadingUsesPrimaryAddress ? 'Unload' : isMovingLabor && movingScope === 'rearrange' ? 'Address' : 'Pickup'}
+              onEdit={() => editFromReview('address')}
+            >
+              <p className="qsum-main">{formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}</p>
+              <p className="qsum-sub">{[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}</p>
+              {isMovingLabor && (
+                <p className="qsum-sub">Access: {formatAccessLabel(formData.pickupAccess, formData.pickupFlights)}</p>
+              )}
+              {showDualMovingAddresses && formData.addressB && (
+                <div className="qsum-extra">
+                  <p className="qsum-kicker">Drop-off</p>
+                  <p className="qsum-main">{formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}</p>
+                  <p className="qsum-sub">{[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}</p>
+                  <p className="qsum-sub">Access: {formatAccessLabel(formData.dropoffAccess, formData.dropoffFlights)}</p>
+                </div>
+              )}
+            </SummarySection>
+
+            {movingOptions && (
+              <SummarySection icon={PackageCheck} title="Your move">
+                <p className="qsum-main">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</p>
+                <p className="qsum-sub">
+                  {movingOptions.homeSize === 'studio' ? 'Studio' : movingOptions.homeSize === '1bed' ? '1-Bedroom' : movingOptions.homeSize === '2bed' ? '2-Bedroom' : '3+ Bedrooms'}
+                  {movingOptions.needsTruck ? ' · $99 truck' : ''}
+                </p>
+                {(movingOptions.heavyItems.length > 0 || movingOptions.needsPackingHelp || movingOptions.needsDisassembly) && (
+                  <p className="qsum-sub">
+                    {[
+                      movingOptions.heavyItems.length ? `${movingOptions.heavyItems.length} heavy item(s)` : null,
+                      movingOptions.needsPackingHelp ? 'Packing help' : null,
+                      movingOptions.needsDisassembly ? 'Disassembly' : null,
+                    ].filter(Boolean).join(' · ')}
+                  </p>
+                )}
+              </SummarySection>
+            )}
+
+
+
+            <SummarySection icon={User} title="Contact" onEdit={() => editFromReview('contact')}>
+              <p className="qsum-main">{formData.name}</p>
+              <p className="qsum-sub">{formData.phone}</p>
+              <p className="qsum-sub qsum-break">{formData.email}</p>
+            </SummarySection>
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-1.5">Additional Details</label>
-            <div className="relative group">
-              <textarea
-                name="details"
-                value={formData.details}
-                onChange={handleInputChange}
-                rows={3}
-                placeholder={isMovingLabor ? "Tell the crew about fragile items, parking, gate codes, etc." : "Tell the service provider about the items needing removal, access instructions, etc."}
-                className="opek-field w-full px-4 py-3"
-              />
-            </div>
+            <label htmlFor="booking-details" className={FLOW_LABEL}>
+              Notes for your provider <span className="font-normal text-[var(--text-muted)]">(optional)</span>
+            </label>
+            <textarea
+              id="booking-details"
+              name="details"
+              value={formData.details}
+              onChange={handleInputChange}
+              rows={3}
+              maxLength={2000}
+              disabled={submitting}
+              placeholder={isMovingLabor ? 'Fragile items, parking, gate codes…' : 'Where the items are, parking, gate codes…'}
+              className={FLOW_INPUT}
+            />
           </div>
-
-          {/* Review Section */}
-          <div className="soft-surface p-4 space-y-3 shadow-none">
-            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-              <p className="text-xs font-semibold text-[var(--text-muted)]">Summary</p>
-              {estimate && <p className="text-lg font-bold text-[var(--text)]">${estimate.price}</p>}
-            </div>
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Name</span><span className="font-semibold text-[var(--text)] text-right">{formData.name}</span></div>
-              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Email</span><span className="font-semibold text-[var(--text)] text-right">{formData.email}</span></div>
-              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Phone</span><span className="font-semibold text-[var(--text)] text-right">{formData.phone}</span></div>
-              <div className="flex justify-between gap-4">
-                <span className="text-[var(--text-muted)] shrink-0">
-                  {unloadingUsesPrimaryAddress ? 'Unload' : isMovingLabor && movingScope === 'rearrange' ? 'Address' : 'Pickup'}
-                </span>
-                <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
-                  {formData.address}{formData.unitNumber ? `, ${formData.unitNumber}` : ''}{formData.city ? `, ${[formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}` : ''}
-                </span>
-              </div>
-              {isMovingLabor && (
-                <div className="flex justify-between">
-                  <span className="text-[var(--text-muted)]">
-                    {unloadingUsesPrimaryAddress ? 'Unload access' : 'Pickup access'}
-                  </span>
-                  <span className="font-semibold text-[var(--text)] text-right">
-                    {formatAccessLabel(formData.pickupAccess, formData.pickupFlights)}
-                  </span>
-                </div>
-              )}
-              {showDualMovingAddresses && formData.addressB && (
-                <>
-                  <div className="flex justify-between gap-4">
-                    <span className="text-[var(--text-muted)] shrink-0">Drop-off</span>
-                    <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
-                      {formData.addressB}{formData.unitNumberB ? `, ${formData.unitNumberB}` : ''}{formData.cityB ? `, ${[formData.cityB, formData.stateB, formData.zipCodeB].filter(Boolean).join(', ')}` : ''}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--text-muted)]">Drop-off access</span>
-                    <span className="font-semibold text-[var(--text)] text-right">
-                      {formatAccessLabel(formData.dropoffAccess, formData.dropoffFlights)}
-                    </span>
-                  </div>
-                </>
-              )}
-              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Service</span><span className="font-semibold text-[var(--text)] text-right">{isMovingLabor ? 'Local Moving' : serviceType}</span></div>
-              {movingOptions && (
-                <>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--text-muted)]">Job type</span>
-                    <span className="font-semibold text-[var(--text)] text-right">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--text-muted)]">Move size</span>
-                    <span className="font-semibold text-[var(--text)] text-right">
-                      {movingOptions.homeSize === 'studio' ? 'Studio' : movingOptions.homeSize === '1bed' ? '1-Bedroom' : movingOptions.homeSize === '2bed' ? '2-Bedroom' : '3+ Bedrooms'}
-                      {movingOptions.needsTruck ? ' · $99 truck' : ''}
-                    </span>
-                  </div>
-                  {(movingOptions.heavyItems.length > 0 || movingOptions.needsPackingHelp || movingOptions.needsDisassembly) && (
-                    <div className="flex justify-between gap-4">
-                      <span className="text-[var(--text-muted)] shrink-0">Extras</span>
-                      <span className="font-semibold text-[var(--text)] text-right max-w-[60%]">
-                        {[
-                          movingOptions.heavyItems.length ? `${movingOptions.heavyItems.length} heavy item(s)` : null,
-                          movingOptions.needsPackingHelp ? 'Packing help' : null,
-                          movingOptions.needsDisassembly ? 'Disassembly' : null,
-                        ].filter(Boolean).join(' · ')}
-                      </span>
-                    </div>
-                  )}
-                </>
-              )}
-              <div className="flex justify-between"><span className="text-[var(--text-muted)]">Date</span><span className="font-semibold text-[var(--text)] text-right">{formData.date ? `${new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${formData.timeSlot ? ` · ${formatTimeSlotLabel(formData.timeSlot)}` : ''}` : '—'}</span></div>
-              {isJunkRemoval && localImage && (
-                <div className="flex justify-between"><span className="text-[var(--text-muted)]">Photo</span><span className="font-semibold text-[var(--text)] text-right">Attached</span></div>
-              )}
-            </div>
-          </div>
-
+          <CheckboxCard checked={termsAccepted} onChange={setTermsAccepted} disabled={submitting}>
+            {BOOKING_TERMS} <a href="/terms" className="underline">Read terms</a>
+          </CheckboxCard>
           {error && (
             <div className="ui-notice p-3 bg-brand/10 border border-brand/30 rounded-xl">
               <p className="text-brand text-xs font-bold">{error}</p>
@@ -1204,34 +790,10 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
           )}
 
         </form>
-        <FlowStickyNav onBack={handleBackStep} continueType="submit" continueForm="booking-review-form" />
+        <FlowStickyNav onBack={handleBackStep} continueType="submit" continueForm="booking-review-form" continueLabel="Request booking" continueLoading={submitting} continueDisabled={!termsAccepted} />
         </>
       )}
 
-      {step === 'deposit' && (
-        <BookingDepositIntro
-          onBack={() => setStep('review')}
-          onContinue={() => setStep('payment')}
-          serviceType={serviceType}
-          source={depositSource}
-        />
-      )}
-
-      {step === 'payment' && (
-        <BookingDepositPayment
-          appointmentDate={formData.date}
-          estimatedTotal={estimate?.price || 0}
-          customerEmail={formData.email}
-          customerName={formData.name}
-          customerPhone={formData.phone}
-          serviceType={serviceType}
-          isLoading={submitting}
-          smsMarketingConsentAt={localSmsMarketingConsentAt}
-          onSmsMarketingConsentChange={setLocalSmsMarketingConsentAt}
-          onBack={() => setStep('deposit')}
-          onPaymentSuccess={handleSubmit}
-        />
-      )}
     </div>
   );
 };

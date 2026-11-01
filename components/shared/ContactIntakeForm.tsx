@@ -6,13 +6,16 @@ import { InputUserIcon, InputPhoneIcon } from '../icons/ServiceIcons';
 import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 import { CheckboxCard } from './CheckboxCard';
+import { QUOTE_SMS_CONSENT } from '../../lib/crmQuote';
 
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 interface ContactIntakeFormProps {
   serviceType: string;
-  onReveal: (name: string, phone: string, smsMarketingConsentAt: string | null) => Promise<void>;
+  onReveal: (name: string, phone: string, smsMarketingConsentAt: string | null, email?: string) => Promise<void>;
+  crmQuote?: boolean;
+  bookingRequest?: boolean;
   isLoading?: boolean;
   onBack?: () => void;
   title?: string;
@@ -25,14 +28,16 @@ function ConsentCheckbox({
   checked,
   onChange,
   disabled,
+  crmQuote,
 }: {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
+  crmQuote?: boolean;
 }) {
   return (
     <CheckboxCard checked={checked} onChange={onChange} disabled={disabled}>
-      {SMS_MARKETING_CONSENT_TEXT}
+      {crmQuote ? QUOTE_SMS_CONSENT : SMS_MARKETING_CONSENT_TEXT}
     </CheckboxCard>
   );
 }
@@ -40,6 +45,8 @@ function ConsentCheckbox({
 export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
   serviceType,
   onReveal,
+  crmQuote = false,
+  bookingRequest = false,
   isLoading = false,
   onBack,
   title = 'Where should we send your quote?',
@@ -49,6 +56,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [smsConsent, setSmsConsent] = useState(false);
   const [showCallAlternative, setShowCallAlternative] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,8 +65,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
     const trimmedName = name.trim();
     const digitsOnly = phone.replace(/\D/g, '');
     const formattedPhone = `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(3, 6)}-${digitsOnly.slice(6, 10)}`;
-    const consentAt = new Date().toISOString();
-    await onReveal(trimmedName, formattedPhone, consentAt);
+    const consentAt = smsConsent ? new Date().toISOString() : null;
+    await onReveal(trimmedName, formattedPhone, consentAt, crmQuote || bookingRequest ? email.trim() : undefined);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +86,12 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
       return;
     }
 
-    if (!smsConsent) {
+    if ((crmQuote || bookingRequest) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!smsConsent && !crmQuote && !bookingRequest) {
       setShowCallAlternative(true);
       return;
     }
@@ -204,12 +217,12 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
       <form id="contact-intake-form" onSubmit={handleSubmit} className="space-y-5">
         <input type="hidden" name="serviceType" value={serviceType} />
 
-        <FlowStepTitle title={title} subtitle={subtitle} />
+        <FlowStepTitle title={crmQuote ? 'Where can we reach you?' : title} subtitle={crmQuote ? 'Save your quote request and view your estimate. Choose SMS below for an instant acknowledgment and follow-ups.' : subtitle} />
 
         <div className="soft-card space-y-4">
           <p className="flex items-center gap-2 text-[13px] font-bold text-[#520f96]">
             <MessageSquare size={16} aria-hidden />
-            Your quote arrives by text
+            {bookingRequest ? 'Your booking contact details' : crmQuote ? 'Your quote request' : 'Your quote arrives by text'}
           </p>
           <div>
             <label className={FLOW_LABEL}>Full name *</label>
@@ -220,6 +233,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
               <input
                 type="text"
                 name="name"
+                maxLength={200}
                 autoComplete="name"
                 required
                 disabled={isLoading}
@@ -252,14 +266,26 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
                 className={`${FLOW_INPUT} pl-11`}
               />
             </div>
-            <p className="field-hint">{phoneHint || SMS_TRANSACTIONAL_NOTICE}</p>
+            <p className="field-hint">{bookingRequest ? 'We will ask about optional booking texts when you review your request.' : crmQuote ? 'SMS is optional. You can view your estimate without opting in.' : phoneHint || SMS_TRANSACTIONAL_NOTICE}</p>
           </div>
 
-          <ConsentCheckbox
-            checked={smsConsent}
-            onChange={setSmsConsent}
-            disabled={isLoading}
-          />
+          {(crmQuote || bookingRequest) && (
+            <div>
+              <label className={FLOW_LABEL} htmlFor="quote-email">Email address *</label>
+              <input id="quote-email" type="email" name="email" autoComplete="email" required maxLength={320}
+                disabled={isLoading} value={email} onChange={(e) => { setEmail(e.target.value); setError(null); }}
+                placeholder="you@example.com" className={FLOW_INPUT} />
+            </div>
+          )}
+
+          {!bookingRequest && (
+            <ConsentCheckbox
+              crmQuote={crmQuote}
+              checked={smsConsent}
+              onChange={setSmsConsent}
+              disabled={isLoading}
+            />
+          )}
 
           {error && (
             <p className="soft-error" role="alert">
@@ -271,6 +297,7 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
 
         <p className="soft-help">
           Prefer to talk? Call or text <a href={`tel:${SITE_PHONE}`}>{SITE_PHONE_DISPLAY}</a>
+          {crmQuote && <> · <a href="/privacy">Privacy policy</a></>}
         </p>
       </form>
 
@@ -279,8 +306,8 @@ export const ContactIntakeForm: React.FC<ContactIntakeFormProps> = ({
         onBack={onBack}
         continueType="submit"
         continueForm="contact-intake-form"
-        continueLabel={continueLabel}
-        continueDisabled={isLoading || !name.trim() || phone.length < 10}
+        continueLabel={crmQuote ? 'View estimate' : continueLabel}
+        continueDisabled={isLoading || !name.trim() || phone.length < 10 || ((crmQuote || bookingRequest) && !email.trim())}
         continueLoading={isLoading}
       />
     </>

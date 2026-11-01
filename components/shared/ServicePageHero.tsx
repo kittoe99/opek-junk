@@ -1,81 +1,63 @@
 import React from 'react';
-import { MessageSquare, Phone } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 interface CtaProps { label: string; onClick?: () => void; href?: string; }
 export interface ServicePageHeroProps {
   eyebrow?: string; title: React.ReactNode; subtitle: string; image: string; imageAlt: string;
   primaryCta?: CtaProps; secondaryCta?: CtaProps;
+  /** Kept for compatibility; every page now uses the homepage hero layout. */
   variant?: 'full' | 'banner';
   imagePosition?: string;
-  /** Short label shown in the pill above the headline on phones. Falls back to the eyebrow. */
+  /** Kept for compatibility; no longer shown. */
   chip?: string;
   children?: React.ReactNode; finePrint?: string;
+  /** Show the customer rating under the headline (customer-facing pages). */
+  rating?: boolean;
 }
+
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 function Action({ cta, className }: { cta: CtaProps; className: string }) {
   return cta.href ? <a href={cta.href} className={className}>{cta.label}</a>
     : <button type="button" onClick={cta.onClick} className={className}>{cta.label}</button>;
 }
 
-/** Interior-page hero built on the same structure as the homepage hero (desktop split, phone promo block). */
+/** Page hero matching the homepage: headline and rating above a full-width photo, with an action card overlapping its bottom edge. */
 export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
-  eyebrow, title, subtitle, image, imageAlt, primaryCta, secondaryCta, chip, children, variant = 'full', imagePosition,
+  title, subtitle, image, imageAlt, primaryCta, secondaryCta, children, imagePosition, rating = true,
   finePrint = 'Services are performed by independent local providers. Pricing, availability and same-day service vary by area.',
-}) => {
-  const badge = chip || eyebrow;
-  if (variant === 'banner') {
-    return (
-      <section className="service-banner ui-image-frame">
-        <img className="service-banner-image" src={image} alt={imageAlt} style={{ objectPosition: imagePosition }} fetchPriority="high" />
-        <div className="service-banner-overlay" aria-hidden="true" />
-        <div className="service-banner-inner">
-          <h1 className="home-display service-banner-title">{title}</h1>
-          {primaryCta && (
-            <div className="mt-5">
-              <Action cta={primaryCta} className="ui-button ui-button--inverse" />
-            </div>
-          )}
-        </div>
-      </section>
-    );
-  }
-  return (
-    <section className={`home-hero interior-hero ${image.includes('dump') ? 'interior-hero-vehicle' : ''} relative overflow-hidden bg-[#f4eefc]`}>
-      <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,46%)]">
-        <div className="home-hero-copy relative flex md:justify-end px-5 sm:px-6 lg:px-8 pt-7 pb-8 sm:pt-14 md:py-16 lg:py-20">
-          <div className="w-full max-w-[600px] md:pr-6 lg:pr-12 self-center">
-            {badge && <span className="home-hero-badge home-hero-badge-text md:hidden">{badge}</span>}
-            {eyebrow && <p className="home-eyebrow mb-3 hidden md:block">{eyebrow}</p>}
-            <h1 className="home-display text-[2.2rem] leading-[0.95] sm:text-[3.2rem] md:text-[2.4rem] lg:text-[3.3rem] xl:text-[3.5rem] text-[#140a1f]">{title}</h1>
-            <p className="mt-4 sm:mt-5 text-[15px] sm:text-[17px] leading-relaxed text-[#2b2236] max-w-md">{subtitle}</p>
+}) => (
+  <section className="home-hero zip-hero page-hero" aria-labelledby="page-hero-heading">
+    <div className="zip-hero-head">
+      <h1 id="page-hero-heading" className="home-display zip-hero-title">{title}</h1>
+      <p className="zip-hero-sub">{subtitle}</p>
+      {rating && (
+        <p className="zip-hero-rating">
+          <span className="zip-hero-stars" aria-hidden>
+            {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={20} className="fill-current" />)}
+          </span>
+          <strong>4.8 average rating</strong>
+        </p>
+      )}
+    </div>
 
-            {/* Phone actions: one button, the second action as a quiet link */}
-            {(primaryCta || secondaryCta) && (
-              <div className="md:hidden mt-7 flex flex-col items-center gap-4">
-                {primaryCta && <Action cta={primaryCta} className="home-hero-mobile-cta" />}
-                {secondaryCta && <Action cta={secondaryCta} className="home-hero-mobile-link" />}
-              </div>
-            )}
+    <div className="zip-hero-media">
+      <img src={image} alt={imageAlt} style={imagePosition ? { objectPosition: imagePosition } : undefined} fetchPriority="high" />
+    </div>
 
-            {/* Desktop actions */}
-            <div className="hidden md:flex mt-7 items-center gap-6">
-              {primaryCta && <Action cta={primaryCta} className="home-cta min-w-[200px]" />}
-              {secondaryCta && <Action cta={secondaryCta} className="interior-hero-secondary" />}
-            </div>
-            <div className="hidden md:flex mt-6 flex-wrap gap-x-6 gap-y-2 text-[14px] font-semibold text-[#2b2236]">
-              <a href="tel:8313187139" className="inline-flex items-center gap-2 hover:text-[#520f96]"><Phone size={16} className="text-[#520f96]" aria-hidden />Call (831) 318-7139</a>
-              <a href="sms:8313187139" className="inline-flex items-center gap-2 hover:text-[#520f96]"><MessageSquare size={16} className="text-[#520f96]" aria-hidden />Text us</a>
-            </div>
-            {children && <div className="mt-5 text-sm">{children}</div>}
-          </div>
-        </div>
-        <div className="home-hero-visual home-hero-photo relative min-h-[340px] sm:min-h-[440px] md:min-h-[540px] overflow-hidden">
-          <img src={image} alt={imageAlt} className="absolute bottom-0 left-[48%] -translate-x-1/2 h-[92%] w-[96%] max-w-none object-contain object-bottom select-none" fetchPriority="high" />
-        </div>
+    <div className="zip-hero-card-wrap">
+      <div className="zip-hero-card">
+        {primaryCta && <Action cta={primaryCta} className="home-cta zip-hero-submit" />}
+        {secondaryCta && <Action cta={secondaryCta} className="page-hero-secondary" />}
+        {!secondaryCta?.href?.startsWith('tel:') && (
+          <p className="zip-hero-call">
+            Or call <a href={`tel:${SITE_PHONE}`}>{SITE_PHONE_DISPLAY}</a>
+          </p>
+        )}
+        {children && <div className="mt-4 text-sm">{children}</div>}
       </div>
-      <div className="home-hero-fine-print relative z-10 hidden md:block bg-[#3a3340] text-white">
-        <p className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-[11px] sm:text-[12px] leading-snug">{finePrint}</p>
-      </div>
-    </section>
-  );
-};
+      <p className="zip-hero-fine">{finePrint}</p>
+    </div>
+  </section>
+);

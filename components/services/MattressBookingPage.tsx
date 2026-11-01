@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Check, Minus, Package, Plus, ShieldCheck } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import { withSmsMarketingConsent } from '../../lib/customerConsent';
-import { sendQuoteSms } from '../../lib/sendQuoteSms';
 import { trackMattressConversion } from '../../lib/googleAds';
 import { resolveZipLocation } from '../../services/addressSearch';
 import {
@@ -31,16 +28,12 @@ import {
   ServiceAddressValue,
   isServiceAddressValidated,
 } from '../shared/ServiceAddressField';
-import { BookingDepositIntro } from '../shared/BookingDepositIntro';
-import {
-  MattressDepositPayment,
-  MATTRESS_DEPOSIT_AMOUNT,
-} from '../shared/MattressDepositPayment';
+import { createBookingSubmitter, bookingLocalNow, BOOKING_SMS_CONSENT, BOOKING_TERMS } from '../../lib/crmBooking';
+import { CheckboxCard } from '../shared/CheckboxCard';
 import { BookingSuccessView } from '../shared/BookingSuccessView';
 import { JunkItemCatalogSelector } from '../shared/JunkItemCatalogSelector';
-import { generateOrderNumber } from '../../lib/orderNumber';
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 9;
 
 interface BookingItem {
   id: string;
@@ -194,8 +187,9 @@ export const MattressBookingPage: React.FC = () => {
 
   const [contactLoading, setContactLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [smsMarketingConsentAt, setSmsMarketingConsentAt] = useState<string | null>(null);
-  const [partialBookingId, setPartialBookingId] = useState<string | null>(null);
+  const submitBooking = useRef(createBookingSubmitter());
+  const [smsOptIn, setSmsOptIn] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [addressValidated, setAddressValidated] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
@@ -213,7 +207,7 @@ export const MattressBookingPage: React.FC = () => {
 
   const pricing = getMattressPricingBreakdown(selectedItems);
   const activeItems = selectedItems.filter((i) => i.quantity > 0);
-  const progress = step === 9 ? 1 : Math.min(0.95, step / 9);
+  const progress = step === 9 ? 1 : Math.min(0.95, step / 8);
   const chromeStepLabel =
     step === 1 ? 'ZIP check'
     : step === 2 ? 'Items'
@@ -221,9 +215,8 @@ export const MattressBookingPage: React.FC = () => {
     : step === 4 ? 'Estimate'
     : step === 5 ? 'Schedule'
     : step === 6 ? 'Address'
-    : step === 7 ? 'Deposit'
-    : step === 8 ? 'Payment'
-    : 'Confirmed';
+    : step === 7 ? 'Review'
+    : 'Request received';
 
   const goTo = (next: Step) => {
     setFormError(null);
@@ -305,67 +298,10 @@ export const MattressBookingPage: React.FC = () => {
     .filter((i) => !CORE_OPTIONS.some((opt) => opt.id === i.id))
     .map((i) => ({ id: i.id, name: i.name, quantity: i.quantity }));
 
-  const buildPrebookingCustomerInfo = (
-    name: string,
-    phone: string,
-    email = formData.email,
-    consentAt: string | null = smsMarketingConsentAt
-  ) => withSmsMarketingConsent({ name, phone, email: email || '' }, consentAt);
-
-  const handleContactReveal = async (name: string, phone: string, consentAt: string | null) => {
-    setContactLoading(true);
-    try {
-      const itemsList = activeItems.map((i) => `${i.quantity}x ${i.name}`);
-      try {
-        const customerInfo = buildPrebookingCustomerInfo(name, phone, '', consentAt);
-        const bookingDetails = {
-          service_type: 'Mattress Disposal',
-          zip_code: zipCode || null,
-          details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Estimated Price: $${pricing.total}`,
-          estimated_items: itemsList,
-          items: activeItems.map((i) => ({ name: i.name, quantity: i.quantity, id: i.id })),
-          estimated_volume: `${activeItems.reduce((s, i) => s + i.quantity, 0)} items`,
-          price: pricing.total,
-          subtotal: pricing.subtotal,
-          estimate_summary: `Mattress disposal: ${itemsList.join(', ')}. Online total $${pricing.total}.`,
-          online_booking_discount: pricing.discount > 0 ? pricing.discount : null,
-        };
-
-        if (partialBookingId && !partialBookingId.startsWith('mock-')) {
-          await supabase.rpc('update_prebooking', {
-            p_id: partialBookingId,
-            p_customer_info: customerInfo,
-            p_booking_details: bookingDetails,
-            p_status: 'partially_submitted',
-          });
-        } else {
-          const { data } = await supabase.rpc('create_prebooking', {
-            p_customer_info: customerInfo,
-            p_booking_details: bookingDetails,
-            p_status: 'partially_submitted',
-          });
-          if (data) setPartialBookingId(data as string);
-        }
-      } catch (err) {
-        console.warn('Supabase mattress lead capture failed:', err);
-      }
-
-      void sendQuoteSms({
-        name,
-        phone,
-        price: pricing.total,
-        serviceType: 'Mattress Disposal',
-        summary: `Mattress disposal: ${itemsList.join(', ')}.`,
-        volume: `${activeItems.reduce((s, i) => s + i.quantity, 0)} items`,
-      });
-
-      setFormData((prev) => ({ ...prev, name, phone }));
-      setSmsMarketingConsentAt(consentAt);
-      trackMattressConversion('mattress_lead');
-      goTo(4);
-    } finally {
-      setContactLoading(false);
-    }
+  const handleContactReveal = async (name: string, phone: string, _consentAt: string | null, email?: string) => {
+    setFormData(prev => ({ ...prev, name, phone, email: email || prev.email }));
+    trackMattressConversion('mattress_lead');
+    goTo(4);
   };
 
   const handleScheduleContinue = async () => {
@@ -376,17 +312,6 @@ export const MattressBookingPage: React.FC = () => {
     if (!formData.email.trim() || !formData.email.includes('@')) {
       setFormError('Please enter a valid email.');
       return;
-    }
-    if (partialBookingId && !partialBookingId.startsWith('mock-')) {
-      await supabase.rpc('update_prebooking', {
-        p_id: partialBookingId,
-        p_customer_info: buildPrebookingCustomerInfo(
-          formData.name,
-          formData.phone,
-          formData.email,
-          smsMarketingConsentAt
-        ),
-      });
     }
     goTo(6);
   };
@@ -411,78 +336,20 @@ export const MattressBookingPage: React.FC = () => {
     if (addressValue.zipCode) setZipCode(addressValue.zipCode);
   };
 
-  const handleFinalSubmit = async (paymentIntentId: string) => {
+  const handleFinalSubmit = async () => {
+    if (submitLoading) return;
     setSubmitLoading(true);
+    setFormError(null);
     try {
-      const generatedOrderNumber = generateOrderNumber();
-      const itemsList = activeItems.map((i) => `${i.quantity}x ${i.name}`);
-      const customerInfo = buildPrebookingCustomerInfo(
-        formData.name,
-        formData.phone,
-        formData.email,
-        smsMarketingConsentAt
-      );
-      const bookingDetails = {
-        service_type: 'Mattress Disposal',
-        items: activeItems.map((i) => ({ name: i.name, quantity: i.quantity, id: i.id })),
-        estimated_items: itemsList,
-        estimated_volume: `${activeItems.reduce((s, i) => s + i.quantity, 0)} items`,
-        details: `Mattress Disposal service. Items: ${itemsList.join(', ')}. Total Price: $${pricing.total}`,
-        preferred_date: formData.date,
-        preferred_time: formatTimeSlotLabel(formData.timeSlot),
-        price: pricing.total,
-        subtotal: pricing.subtotal,
-        estimate_summary: `Mattress disposal: ${itemsList.join(', ')}. Online total $${pricing.total}.`,
-        online_booking_discount: pricing.discount > 0 ? pricing.discount : null,
-        deposit_amount: MATTRESS_DEPOSIT_AMOUNT,
-        deposit_paid: true,
-        stripe_payment_intent_id: paymentIntentId,
-        terms_accepted_at: new Date().toISOString(),
-      };
-      const locationInfo = {
-        address: formData.address,
-        unit_number: formData.unitNumber || null,
-        city: formData.city || null,
-        state: formData.state || null,
-        zip_code: formData.zipCode || zipCode,
-      };
-
-      const { error } = await supabase.from('bookings').insert([
-        {
-          order_number: generatedOrderNumber,
-          customer_info: customerInfo,
-          location_info: locationInfo,
-          booking_details: bookingDetails,
-          status: 'pending',
-        },
-      ]);
-
-      if (error) console.warn('Supabase booking error:', error);
-
-      if (!error && partialBookingId && !partialBookingId.startsWith('mock-')) {
-        supabase
-          .rpc('update_prebooking', {
-            p_id: partialBookingId,
-            p_customer_info: customerInfo,
-            p_status: 'converted',
-          })
-          .then(({ error: updateErr }) => {
-            if (updateErr) console.warn('Failed to mark mattress prebooking as converted:', updateErr);
-          });
-      }
-
-      setOrderNumber(generatedOrderNumber);
-      trackMattressConversion('mattress_purchase', {
-        value: MATTRESS_DEPOSIT_AMOUNT,
-        currency: 'USD',
-      });
+      const id = await submitBooking.current({ ...formData, serviceType: 'Mattress Disposal',
+        items: activeItems.map(i => `${i.quantity}x ${i.name}`), price: pricing.total,
+        summary: `Mattress disposal. Subtotal $${pricing.subtotal}; online discount $${pricing.discount}.`,
+        smsOptIn, termsAccepted });
+      setOrderNumber(id);
       goTo(9);
     } catch (err) {
-      console.error('Error submitting booking:', err);
-      throw err instanceof Error ? err : new Error('Failed to complete booking after payment.');
-    } finally {
-      setSubmitLoading(false);
-    }
+      setFormError(err instanceof Error ? err.message : 'Unable to save your booking request. Please try again.');
+    } finally { setSubmitLoading(false); }
   };
 
   return (
@@ -655,6 +522,10 @@ export const MattressBookingPage: React.FC = () => {
 
         {step === 3 && (
           <ContactIntakeForm
+            bookingRequest
+            title="Your contact details"
+            subtitle="We will contact you to confirm your booking request."
+            continueLabel="See estimate"
             serviceType="Mattress Disposal"
             isLoading={contactLoading}
             onReveal={handleContactReveal}
@@ -717,7 +588,7 @@ export const MattressBookingPage: React.FC = () => {
           <>
             <FlowStepTitle
               title="When should we come?"
-              subtitle="Pick a date, time window, and email for confirmation."
+              subtitle="Request an arrival window in Mountain Time (America/Denver). Our team will confirm availability."
             />
             <form
               id="mattress-schedule-form"
@@ -728,6 +599,7 @@ export const MattressBookingPage: React.FC = () => {
               className="space-y-4"
             >
               <ScheduleDatePicker
+                minDate={bookingLocalNow().slice(0, 10)}
                 date={formData.date}
                 timeSlot={formData.timeSlot}
                 onDateChange={(date) => setFormData((prev) => ({ ...prev, date }))}
@@ -807,28 +679,23 @@ export const MattressBookingPage: React.FC = () => {
         )}
 
         {step === 7 && (
-          <BookingDepositIntro
-            onBack={() => goTo(6)}
-            onContinue={() => goTo(8)}
-            serviceType="Mattress Disposal"
-            source="mattress"
-          />
-        )}
-
-        {step === 8 && (
-          <MattressDepositPayment
-            appointmentDate={formData.date}
-            estimatedTotal={pricing.total}
-            onBack={() => goTo(7)}
-            onPaymentSuccess={handleFinalSubmit}
-            isLoading={submitLoading}
-            customerEmail={formData.email}
-            customerName={formData.name}
-            customerPhone={formData.phone}
-            serviceType="Mattress Disposal"
-            smsMarketingConsentAt={smsMarketingConsentAt}
-            onSmsMarketingConsentChange={setSmsMarketingConsentAt}
-          />
+          <>
+            <FlowStepTitle title="Review your booking request" subtitle="Our team will confirm availability and final pricing. No deposit is required." />
+            <div className="flow-card p-4 space-y-2">
+              <p>{activeItems.map(i => `${i.quantity}x ${i.name}`).join(', ')}</p>
+              <p>Estimate: ${pricing.total}</p>
+              <p>{formData.name} · {formData.email} · {formData.phone}</p>
+              <p>{[formData.address, formData.unitNumber, formData.city, formData.state, formData.zipCode].filter(Boolean).join(', ')}</p>
+              <p>{formData.date} · {formatTimeSlotLabel(formData.timeSlot)} · Mountain Time</p>
+            </div>
+            <CheckboxCard checked={smsOptIn} onChange={setSmsOptIn} disabled={submitLoading}>{BOOKING_SMS_CONSENT}</CheckboxCard>
+            <CheckboxCard checked={termsAccepted} onChange={setTermsAccepted} disabled={submitLoading}>
+              {BOOKING_TERMS} <a href="/terms" className="underline">Read terms</a>
+            </CheckboxCard>
+            {formError && <p role="alert" className="text-red-700">{formError}</p>}
+            <FlowStickyNav onBack={() => { if (!submitLoading) goTo(6); }} onContinue={handleFinalSubmit}
+              continueLabel="Request booking" continueLoading={submitLoading} continueDisabled={!termsAccepted} />
+          </>
         )}
 
         {step === 9 && (
@@ -846,7 +713,8 @@ export const MattressBookingPage: React.FC = () => {
             date={formData.date}
             price={pricing.total}
             itemsDetected={activeItems.map((i) => `${i.quantity}x ${i.name}`)}
-            depositPaid={MATTRESS_DEPOSIT_AMOUNT}
+            requestOnly
+            arrivalWindow={formatTimeSlotLabel(formData.timeSlot)}
             fullScreen={false}
           />
         )}
