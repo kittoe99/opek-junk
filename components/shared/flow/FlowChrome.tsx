@@ -4,8 +4,8 @@ import { Phone, X } from 'lucide-react';
 import { HomeLogo } from '../../home/HomeLogo';
 import { FlowProgressBar } from './FlowProgressBar';
 
-const SUPPORT_PHONE_DISPLAY = '(831) 318-7139';
-const SUPPORT_PHONE_TEL = 'tel:8313187139';
+const SUPPORT_PHONE_DISPLAY = '(877) 757-4365';
+const SUPPORT_PHONE_TEL = 'tel:+18777574365';
 
 interface FlowChromeProps {
   /** Used in the leave-confirm copy */

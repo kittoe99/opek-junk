@@ -51,7 +51,7 @@ function buildQuoteMessage(payload: QuoteSmsPayload): string {
   }
 
   lines.push(
-    'Book online at https://opekjunkremoval.com/booking or call (831) 318-7139.',
+    'Book online at https://opekjunkremoval.com/booking or call (877) 757-4365.',
     'Msg & data rates may apply. Reply STOP to opt out, HELP for help.'
   );
 

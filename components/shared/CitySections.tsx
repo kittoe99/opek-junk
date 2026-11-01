@@ -128,9 +128,9 @@ export const CityLocalSection: React.FC<CityLocalSectionProps> = ({
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-secondary-100/60">
             <div>
               <p className="text-sm font-medium text-secondary-500 mb-1">Call or book online</p>
-              <a href="tel:8313187139" className="inline-flex items-center gap-2 text-secondary hover:text-brand transition-colors font-bold text-lg">
+              <a href="tel:+18777574365" className="inline-flex items-center gap-2 text-secondary hover:text-brand transition-colors font-bold text-lg">
                 <Phone size={16} />
-                <span>(831) 318-7139</span>
+                <span>(877) 757-4365</span>
               </a>
             </div>
             <div className="flex flex-wrap gap-2">

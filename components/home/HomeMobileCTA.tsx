@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Phone } from 'lucide-react';
 
-const SITE_PHONE = '8313187139';
+const SITE_PHONE = '+18777574365';
 
 /**
  * Phone-only sticky action bar for the homepage. It appears once the hero is

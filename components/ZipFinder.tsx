@@ -5,8 +5,8 @@ import { CoverageCheckIcon } from './icons/ServiceIcons';
 
 const CHECK_MS = 1500;
 const FOUND_MS = 500;
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 type Phase = 'idle' | 'checking' | 'found';
 

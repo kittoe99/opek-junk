@@ -274,7 +274,7 @@ export const TrackOrderPage: React.FC = () => {
           </div>
 
           <p className="soft-help">
-            Need to change something? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+            Need to change something? Call or text <a href="tel:+18777574365">(877) 757-4365</a>
           </p>
         </div>
       </div>
@@ -434,7 +434,7 @@ export const TrackOrderPage: React.FC = () => {
         )}
 
         <p className="soft-help">
-          Questions? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+          Questions? Call or text <a href="tel:+18777574365">(877) 757-4365</a>
         </p>
       </div>
     </div>

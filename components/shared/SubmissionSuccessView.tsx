@@ -56,7 +56,7 @@ export const SubmissionSuccessView: React.FC<SubmissionSuccessViewProps> = ({
       )}
 
       <p className="soft-help">
-        Questions? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+        Questions? Call or text <a href="tel:+18777574365">(877) 757-4365</a>
       </p>
     </div>
   );

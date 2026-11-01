@@ -7,8 +7,8 @@ import { FlowStepTitle } from './flow/FlowStepTitle';
 import { FlowStickyNav } from './flow/FlowStickyNav';
 import { CheckboxCard } from './CheckboxCard';
 
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 interface ContactIntakeFormProps {
   serviceType: string;

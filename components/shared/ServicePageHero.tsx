@@ -63,8 +63,8 @@ export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
               {secondaryCta && <Action cta={secondaryCta} className="interior-hero-secondary" />}
             </div>
             <div className="hidden md:flex mt-6 flex-wrap gap-x-6 gap-y-2 text-[14px] font-semibold text-[#2b2236]">
-              <a href="tel:8313187139" className="inline-flex items-center gap-2 hover:text-[#520f96]"><Phone size={16} className="text-[#520f96]" aria-hidden />Call (831) 318-7139</a>
-              <a href="sms:8313187139" className="inline-flex items-center gap-2 hover:text-[#520f96]"><MessageSquare size={16} className="text-[#520f96]" aria-hidden />Text us</a>
+              <a href="tel:+18777574365" className="inline-flex items-center gap-2 hover:text-[#520f96]"><Phone size={16} className="text-[#520f96]" aria-hidden />Call (877) 757-4365</a>
+              <a href="sms:+18777574365" className="inline-flex items-center gap-2 hover:text-[#520f96]"><MessageSquare size={16} className="text-[#520f96]" aria-hidden />Text us</a>
             </div>
             {children && <div className="mt-5 text-sm">{children}</div>}
           </div>

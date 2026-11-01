@@ -2,8 +2,8 @@ import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 const columns = [
   {

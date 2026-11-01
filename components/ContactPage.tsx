@@ -141,7 +141,7 @@ export const ContactPage: React.FC = () => {
             <MessageCircle size={14} /> Open live chat
           </button>
           <p className="mt-3 text-[11px] text-[var(--text-muted)]">
-            Prefer writing? Send a message below, or call (831) 318-7139.
+            Prefer writing? Send a message below, or call (877) 757-4365.
           </p>
         </section>
       }>
@@ -175,7 +175,7 @@ export const ContactPage: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  placeholder="(831) 318-7139"
+                  placeholder="(555) 123-4567"
                   className={UTILITY_INPUT}
                 />
               </div>
@@ -239,10 +239,10 @@ export const ContactPage: React.FC = () => {
 
             <div className="flex items-center justify-between pt-2">
               <a
-                href="tel:8313187139"
+                href="tel:+18777574365"
                 className="text-sm font-semibold text-[var(--text)] hover:text-brand transition-colors flex items-center gap-1.5"
               >
-                <Phone size={14} /> (831) 318-7139
+                <Phone size={14} /> (877) 757-4365
               </a>
               <button
                 type="button"

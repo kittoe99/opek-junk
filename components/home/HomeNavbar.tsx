@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../../lib/userLocation';
 import { HomeLogo } from './HomeLogo';
 
-const SITE_PHONE = '8313187139';
+const SITE_PHONE = '+18777574365';
 
 const serviceItems = [
   { name: 'Junk Removal', path: '/services/junk-removal' },
@@ -93,10 +93,10 @@ export const HomeNavbar: React.FC = () => {
               <a
                 href={`tel:${SITE_PHONE}`}
                 className="flex h-11 shrink-0 items-center gap-1.5 text-[13px] font-black whitespace-nowrap text-[#520f96] hover:text-[#751bb5]"
-                aria-label="Call Opek Junk Removal at (831) 318-7139"
+                aria-label="Call Opek Junk Removal at (877) 757-4365"
               >
                 <Phone size={15} strokeWidth={3} aria-hidden />
-                <span className="underline underline-offset-4">(831) 318-7139</span>
+                <span className="underline underline-offset-4">(877) 757-4365</span>
               </a>
               <button
                 type="button"

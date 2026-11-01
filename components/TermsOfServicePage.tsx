@@ -322,7 +322,7 @@ export const TermsOfServicePage: React.FC = () => {
           </p>
           <div className="bg-secondary-50 border border-secondary-100 rounded-xl p-6 space-y-2">
             <p className="text-sm text-[var(--text)]"><strong>Email:</strong> <a href="mailto:Support@opekjunkremoval.com" className="text-brand hover:underline font-semibold">Support@opekjunkremoval.com</a></p>
-            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:8313187139" className="text-brand hover:underline font-semibold">(831) 318-7139</a></p>
+            <p className="text-sm text-[var(--text)]"><strong>Phone:</strong> <a href="tel:+18777574365" className="text-brand hover:underline font-semibold">(877) 757-4365</a></p>
             <p className="text-sm text-[var(--text)]"><strong>Address:</strong> Nationwide Service, United States</p>
           </div>
         </>

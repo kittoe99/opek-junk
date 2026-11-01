@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
 
-const SITE_PHONE = '8313187139';
-const SITE_PHONE_DISPLAY = '(831) 318-7139';
+const SITE_PHONE = '+18777574365';
+const SITE_PHONE_DISPLAY = '(877) 757-4365';
 
 const providerFinePrint =
   'Services are performed by independent local providers. Pricing and availability vary by area.';

@@ -163,7 +163,7 @@ export const SmsConsentPage: React.FC = () => {
             >
               Support@opekjunkremoval.com
             </a>{' '}
-            · (831) 318-7139
+            · (877) 757-4365
           </p>
         </section>
       </div>

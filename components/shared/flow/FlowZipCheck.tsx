@@ -126,7 +126,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
           {trust}
         </div>
         <p className="soft-help">
-          Prefer to talk? Call or text <a href="tel:8313187139">(831) 318-7139</a>
+          Prefer to talk? Call or text <a href="tel:+18777574365">(877) 757-4365</a>
         </p>
       </div>
     );

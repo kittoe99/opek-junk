@@ -395,7 +395,7 @@ export const ProviderSignupPage: React.FC = () => {
         image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp"
         imageAlt="Two Opek providers ready for a hauling job"
         primaryCta={{ label: 'Start application', onClick: scrollToForm }}
-        secondaryCta={{ label: 'Questions? Call us', href: 'tel:8313187139' }}
+        secondaryCta={{ label: 'Questions? Call us', href: 'tel:+18777574365' }}
       />
       <HomeHowItWorks title="Your truck. Your hours. Your next job." description="Build your local hauling business with Opek." items={[
         { title: 'Tell us about yourself', body: 'Share your business details and choose the metros you want to serve.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'Phone for managing pickup schedules' },
@@ -445,7 +445,7 @@ export const ProviderSignupPage: React.FC = () => {
                   </div>
                   <div>
                     <label className={UTILITY_LABEL}>Phone Number *</label>
-                    <input aria-label="Phone Number" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(831) 318-7139" className={UTILITY_INPUT} />
+                    <input aria-label="Phone Number" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="(555) 123-4567" className={UTILITY_INPUT} />
                   </div>
                 </div>
                 <div>

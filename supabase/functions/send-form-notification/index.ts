@@ -7,8 +7,8 @@ const FROM_EMAIL = Deno.env.get('EMAIL_FROM') || 'Opek Junk Removal <notificatio
 const SITE_URL = 'https://opekjunkremoval.com';
 const LOGO_BLACK = `${SITE_URL}/logo1.png`;
 const LOGO_WHITE = `${SITE_URL}/opek-logo-plain.png`;
-const PHONE = '(831) 318-7139';
-const PHONE_LINK = 'tel:8313187139';
+const PHONE = '(877) 757-4365';
+const PHONE_LINK = 'tel:+18777574365';
 
 interface WebhookPayload {
   type: 'INSERT';

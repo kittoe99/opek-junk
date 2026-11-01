@@ -97,13 +97,13 @@ export const Footer: React.FC = () => {
             </p>
             <div className="space-y-3">
               <a
-                href="tel:8313187139"
+                href="tel:+18777574365"
                 className="flex items-center gap-3 text-neutral-200 hover:text-brand transition-colors group"
               >
                 <span className="w-9 h-9 rounded-xl bg-white/5 border border-white/[0.06] flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/30 transition-colors">
                   <Phone size={16} className="text-neutral-300 group-hover:text-brand transition-colors" />
                 </span>
-                <span className="text-sm font-semibold">(831) 318-7139</span>
+                <span className="text-sm font-semibold">(877) 757-4365</span>
               </a>
               <a
                 href="mailto:Support@opekjunkremoval.com"

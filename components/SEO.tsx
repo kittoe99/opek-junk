@@ -196,7 +196,7 @@ export const seoConfig = {
   },
   contact: {
     title: 'Contact Opek - Opek Junk Removal | Customer Support',
-    description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (831) 318-7139 or email Support@opekjunkremoval.com',
+    description: 'Contact Opek Junk Removal for questions, support, or to schedule a pickup. Available 7 days a week. Call (877) 757-4365 or email Support@opekjunkremoval.com',
     keywords: 'contact junk removal, customer support, junk removal help, schedule pickup',
   },
   chat: {
