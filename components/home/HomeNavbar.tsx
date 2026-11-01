@@ -112,7 +112,7 @@ export const HomeNavbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => go('/#service-area')}
-                className="rounded-none inline-flex items-center gap-0.5 text-[12px] font-semibold uppercase tracking-wide text-[#b0004f] hover:underline"
+                className="rounded-none inline-flex items-center gap-0.5 text-[12px] font-semibold uppercase tracking-wide text-[#520f96] hover:text-[#3d0a70] hover:underline"
               >
                 Check your service area
                 <ChevronRight size={13} aria-hidden />
