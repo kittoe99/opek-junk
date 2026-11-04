@@ -128,7 +128,7 @@ const ServiceSlider: React.FC = () => {
         ref={track}
         role="group"
         aria-label="Our services"
-        className="mt-10 md:mt-12 -mx-4 sm:-mx-6 lg:-mx-8 -my-3 flex snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-8 gap-3 md:gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 sm:-mx-6 lg:-mx-8 -mb-3 mt-3 md:mt-5 flex snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-8 gap-3 md:gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {services.map((service) => (
           <ServiceImageCard key={service.title} {...service} className="w-[46%] shrink-0 snap-start md:w-[31%]" />
@@ -155,6 +155,9 @@ export const HomeFeaturedServices: React.FC = () => (
       >
         Clear out your space
       </h2>
+      <p className="mt-3 text-center text-[15px] sm:text-base text-[#2b2236] [text-wrap:balance]">
+        One item, one room or a whole home. Pick what you need.
+      </p>
 
       <ServiceSlider />
 

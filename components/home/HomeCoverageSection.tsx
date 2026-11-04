@@ -154,25 +154,29 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
               </button>
             </div>
           ) : (
+            <>
+            <h3 className="home-display zip-hero-card-title">Start with your ZIP code</h3>
             <form onSubmit={handleSubmit} className="cov-form" noValidate>
               <label htmlFor="home-zip" className="sr-only">
                 ZIP code
               </label>
-              <MapPin size={20} className="cov-form-pin" aria-hidden />
-              <input
-                id="home-zip"
-                inputMode="numeric"
-                autoComplete="postal-code"
-                placeholder="Enter ZIP code"
-                value={zip}
-                onChange={(e) => {
-                  setZip(normalizePostalInput(e.target.value));
-                  if (error) setError('');
-                }}
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? 'home-zip-error' : undefined}
-                className="cov-form-input"
-              />
+              <span className="cov-form-field">
+                <MapPin size={20} className="cov-form-pin" aria-hidden />
+                <input
+                  id="home-zip"
+                  inputMode="numeric"
+                  autoComplete="postal-code"
+                  placeholder="Enter ZIP code"
+                  value={zip}
+                  onChange={(e) => {
+                    setZip(normalizePostalInput(e.target.value));
+                    if (error) setError('');
+                  }}
+                  aria-invalid={Boolean(error)}
+                  aria-describedby={error ? 'home-zip-error' : undefined}
+                  className="cov-form-input"
+                />
+              </span>
               <button type="submit" disabled={checking} aria-busy={checking} className="cov-form-btn">
                 {checking ? (
                   <><Loader2 size={18} className="animate-spin" aria-hidden /><span>Checking…</span></>
@@ -184,6 +188,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
                 )}
               </button>
             </form>
+            </>
           )}
           {error && (
             <p id="home-zip-error" role="alert" className="cov-error">

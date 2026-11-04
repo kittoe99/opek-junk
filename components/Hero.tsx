@@ -71,6 +71,7 @@ export const Hero: React.FC = () => {
 
       <div className="zip-hero-card-wrap">
         <div className="zip-hero-card">
+          <h2 className="home-display zip-hero-card-title">Start with your ZIP code</h2>
           <form onSubmit={handleSubmit} className="zip-hero-form" noValidate>
             <label htmlFor="hero-zip" className="sr-only">ZIP code</label>
             <div className={`zip-hero-field ${error ? 'has-error' : ''}`}>

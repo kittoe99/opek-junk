@@ -658,7 +658,7 @@ export const BookingPage: React.FC = () => {
                         <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
                         <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
-                          <div className="ui-image-frame w-20 h-16 shrink-0 flex items-end justify-center">
+                          <div className="ui-image-frame photo-overlay w-20 h-16 shrink-0 flex items-end justify-center">
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
@@ -859,7 +859,7 @@ export const BookingPage: React.FC = () => {
                     <FlowStepTitle title="Your estimate" subtitle="Review your price, then continue to book." />
 
                     <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
-                      <div className="ui-image-frame w-20 h-16 shrink-0 flex items-end justify-center">
+                      <div className="ui-image-frame photo-overlay w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
                           src="/optimized/service-scenes/dumpster-rental-unbranded.webp"
                           alt="Dumpster Rental"

@@ -133,6 +133,7 @@ export const FlowZipCheck: React.FC<FlowZipCheckProps> = ({
         </div>
         <div className="zip-hero-card-wrap">
           <div className="zip-hero-card">
+            <h2 className="home-display zip-hero-card-title">Start with your ZIP code</h2>
             {form}
             <p className="zip-hero-call">
               Or call <a href="tel:+18777574365">(877) 757-4365</a>

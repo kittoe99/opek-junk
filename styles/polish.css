@@ -93,16 +93,19 @@ body .site-root .home-start-bar-btn { display: flex; width: 100%; min-height: 46
 @media (min-width: 768px) { .home-start-bar { display: none; } }
 
 /* Service area map: solid states instead of the dot pattern */
-body .site-root .cov-land { fill: #dccbf0; stroke: #9f7fcf; stroke-width: 1.2; stroke-linejoin: round; }
+body .site-root .cov-land { fill: #3a0a6b; stroke: #7b4fb3; stroke-width: 1; stroke-linejoin: round; }
 body .site-root .cov-state { fill: transparent; }
-body .site-root .cov-state.is-on { fill: #520f96; stroke: #9f7fcf; stroke-width: 1.2; }
+body .site-root .cov-state.is-on { fill: #b48ee0; stroke: #fff; stroke-width: 1.5; }
+body .site-root .cov-dot { fill: #fff; stroke: #1a0730; stroke-width: 1.5; }
+body .site-root .cov-pulse { fill: #d9c2f5; }
+body .site-root .cov-map circle[fill^="url"] { opacity: .7; }
 
 /* Start bar call button: phones only; bar moves to the bottom of the screen */
 .home-start-bar-call { display: none; }
 @media (max-width: 767px) {
   .home-start-bar {
     position: fixed; top: auto; bottom: 0; left: 0; right: 0; z-index: 50;
-    display: flex; gap: 10px; padding: 10px 16px max(10px, env(safe-area-inset-bottom));
+    display: flex; gap: 10px; padding: 10px 16px;
     border-top: 1px solid var(--fn-line); border-bottom: 0;
   }
   body .site-root .home-start-bar-btn { flex: 1; max-width: none; margin: 0; }
@@ -112,7 +115,7 @@ body .site-root .cov-state.is-on { fill: #520f96; stroke: #9f7fcf; stroke-width:
   }
   .home-start-bar-call:hover { background: #f4eefc; }
   /* Reserve the fixed bar's height inside the purple footer so nothing ends up behind it. */
-  body .site-root:has(.home-start-bar) footer > div { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  body .site-root:has(.home-start-bar) footer > div { padding-bottom: 72px; }
 }
 
 /* ── Homepage hero: photo with overlapping ZIP card ── */
@@ -181,6 +184,33 @@ body .site-root .zip-hero-card { text-align: center; padding-top: 22px; }
   .zip-hero-fine { margin: 14px auto 0; text-align: center; }
 }
 
+/* ZIP fields: the pin and text read as one centered group, while the input stays full width so
+   the whole field is tappable. --zip-text is the text's measured width at that font size, and
+   --zip-pin is the icon plus its gap. The input's left padding shifts the text over by --zip-pin. */
+.zip-hero-field { --zip-pin: 30px; --zip-text: 126px; position: relative; }
+.cov-form-field { --zip-pin: 28px; --zip-text: 120px; position: relative; display: flex; flex: 1; min-width: 0; align-items: center; }
+.zip-hero-field:has(input:not(:placeholder-shown)) { --zip-text: 52px; }
+.cov-form-field:has(input:not(:placeholder-shown)) { --zip-text: 52px; }
+body .site-root :is(.zip-hero-field > svg:first-child, .cov-form-pin) {
+  position: absolute; top: 50%; left: calc(50% - (var(--zip-text) + var(--zip-pin)) / 2); transform: translateY(-50%);
+  transition: left .15s;
+}
+body .site-root .zip-hero-field :is(#hero-zip, #flow-zip) { padding: 0 0 0 var(--zip-pin); text-align: center; }
+#service-area .cov-form-input { padding: 0 0 0 var(--zip-pin); text-align: center; }
+body .site-root :is(#hero-zip, #flow-zip, #service-area .cov-form-input)::placeholder { text-align: center; }
+@media (prefers-reduced-motion: reduce) {
+  body .site-root :is(.zip-hero-field > svg:first-child, .cov-form-pin) { transition: none; }
+}
+
+/* Heading above every ZIP form (homepage card, quote and booking cards, map section) */
+body .site-root :is(h2, h3).home-display.zip-hero-card-title { margin-bottom: 12px; font-size: 20px !important; color: #140a1f; text-align: center; }
+.cov-copy .zip-hero-card-title { margin-top: 16px; }
+.cov-copy .zip-hero-card-title + .cov-form { margin-top: 0; }
+@media (min-width: 768px) {
+  body .site-root :is(h2, h3).home-display.zip-hero-card-title { margin-bottom: 16px; font-size: 26px !important; }
+  .cov-copy .zip-hero-card-title { margin-top: 20px; }
+}
+
 /* Decorative trademark mark on service titles */
 .tm-mark { margin-left: 2px; font-family: Arial, Helvetica, sans-serif; font-size: 1em; font-weight: 700; vertical-align: .18em; line-height: 0; letter-spacing: 0; }
 
@@ -237,7 +267,7 @@ body .site-root .mnav-actions-call {
 }
 
 /* Quote/booking ZIP step: homepage hero layout inside the flow column */
-body .site-root .flow-zip-hero { background: transparent; padding-bottom: 8px; margin: 0 -16px; }
+body .site-root .flow-zip-hero { background: transparent; padding-bottom: 8px; margin: 0 -1rem; }
 .flow-zip-hero .zip-hero-head { padding-top: 12px; }
 .flow-zip-hero .zip-hero-media { height: clamp(200px, 56vw, 300px); }
 body .site-root #flow-zip {
@@ -457,4 +487,108 @@ body .site-root .nav-loc:hover { background: #f4eefc; }
 }
 @media (prefers-reduced-motion: reduce) {
   .nav-loc-chev { transition: none; }
+}
+
+/* ── Photo overlay ──
+   The same dark purple tone as the service cards, on every photo frame. Logos, item icons,
+   customer uploads and the SMS consent screenshot use other containers and stay untinted.
+   ::before paints over the static image but under later positioned children (step badges). */
+body .site-root :is(.zip-hero-media, .home-photo-frame, .soft-card-media, .flow-option-media, .flow-zip-art, .photo-overlay) { position: relative; }
+body .site-root .photo-overlay { overflow: hidden; }
+body .site-root :is(.zip-hero-media, .home-photo-frame, .soft-card-media, .flow-option-media, .flow-zip-art, .photo-overlay)::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgb(26 7 48 / 55%), rgb(26 7 48 / 28%));
+}
+/* This frame's image is absolutely positioned, so the overlay has to be lifted above it. */
+body .site-root .flow-zip-art::before { z-index: 1; }
+
+/* ── Phone compact layer ──
+   Everything below is phone-only and loads last, so this is the one place to tune mobile
+   sizing. Tap targets stay at 44px+, and form inputs stay at 16px so iOS doesn't zoom on focus. */
+@media (max-width: 767px) {
+  :root { --button-height: 46px; --ui-card-padding: 14px; }
+
+  /* Type scale */
+  body .site-root h1.home-display,
+  body .site-root .zip-hero-title { font-size: 34px !important; }
+  body .site-root :is(h2.home-display, .cov-title) { font-size: 27px !important; }
+  body .site-root h3.home-display { font-size: 19px !important; }
+  body .site-root .site-flow-title :is(h1, h2).home-display { font-size: 25px !important; }
+  body .site-root :is(h1, h2).home-display + p { font-size: 14px; line-height: 1.45; }
+  body .site-root :is([class*="text-[17px]"], [class*="text-[16px]"]):not(input, select, textarea) { font-size: 14px; }
+  body .site-root [class*="text-[15px]"]:not(input, select, textarea) { font-size: 13.5px; }
+  body .site-root [class*="text-[14px]"]:not(input, select, textarea) { font-size: 13px; }
+  body .site-root :is(.flow-option-title, .contact-card-title) { font-size: 20px; }
+
+  /* Buttons */
+  body .site-root :is(.ui-button, .home-cta, .site-button, .flow-btn, .coverage-result-primary, .zip-hero-submit) { min-height: 44px; font-size: 13px; }
+  body .site-root .home-start-bar-btn { min-height: 44px; }
+  .home-start-bar-call { width: 44px; min-height: 44px; }
+  body .site-root .home-start-bar { padding-block: 8px; }
+
+  /* Header */
+  body .site-root .home-light .home-nav { height: 56px; }
+  body .site-root .home-light header[data-condensed] .home-nav { height: 52px; }
+  body .site-root header .opek-logo { height: 38px; }
+  .nav-loc-city { font-size: 13px; }
+
+  /* Hero */
+  .zip-hero-head { padding: 18px 16px 14px; }
+  .zip-hero-sub { margin-top: 6px; font-size: 14px; line-height: 1.4; }
+  .zip-hero-rating { margin-top: 10px; gap: 6px; font-size: 13.5px; }
+  .zip-hero-stars svg { width: 15px; height: 15px; }
+  .zip-hero-rating-note { margin-top: 2px; font-size: 12px; }
+  .zip-hero-media { height: clamp(180px, 50vw, 280px); }
+  .zip-hero-card-wrap { margin-top: -44px; }
+  body .site-root .zip-hero { padding-bottom: 24px; }
+  body .site-root .zip-hero-card { padding: 14px; }
+  .zip-hero-form { gap: 10px; }
+  .zip-hero-field { height: 46px; gap: 8px; padding: 0 12px; }
+  body .site-root :is(.zip-hero-field input, #hero-zip) { font-size: 16px; }
+  .zip-hero-field { --zip-text: 112px; }
+  .zip-hero-field:has(input:not(:placeholder-shown)) { --zip-text: 46px; }
+  .zip-hero-call { margin-top: 10px; font-size: 13.5px; }
+  .page-hero-secondary { min-height: 40px; margin-top: 4px; font-size: 13.5px; }
+  .zip-hero-fine { margin-top: 10px; font-size: 10.5px; }
+
+  /* Section rhythm */
+  body .site-root :is(#process, #services, .home-ways, #testimonials, .home-editorial) { padding-block: 30px; }
+
+  /* How it works */
+  body .site-root .home-process-track { margin-top: 18px; }
+  body .site-root .home-process-track > article { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding-block: 10px; }
+
+  /* Coverage */
+  .cov { padding: 32px 16px 18px; }
+  .cov-map { max-width: 280px; }
+  .cov-sub { margin-top: 8px; font-size: 13.5px; }
+  .cov-copy .coverage-result { margin-top: 14px; }
+  .coverage-result-line { font-size: 14px; }
+  .cov-note { margin-top: 16px; font-size: 10.5px; }
+
+  /* Booking options */
+  body .site-root .home-booking-options a { min-height: 90px; gap: 8px; padding: 12px; }
+  body .site-root .home-booking-options a svg { width: 22px; height: 22px; }
+
+  /* Quote and booking start screens */
+  .flow-zip-hero .zip-hero-media { height: clamp(170px, 46vw, 260px); }
+
+  /* Cards */
+  body .site-root .soft-card-media { margin-bottom: 12px; }
+  .home-light .home-service-media { aspect-ratio: 2 / 1; }
+  body .site-root #testimonials figure { padding: 14px; }
+
+  /* Utility pages */
+  .soft-wrap { padding: 24px 16px 40px; }
+
+  /* Footer */
+  body .site-root footer .opek-logo { height: 44px; }
+  body .site-root footer p.home-display { margin-top: 12px; font-size: 19px; }
+  body .site-root footer [class*="text-[1.25rem]"] { font-size: 16px; }
+  body .site-root footer summary { min-height: 46px; font-size: 13px; }
+
+  /* Mobile menu */
+  .mnav-row--service { min-height: 56px; }
+  .mnav-row-title { font-size: 20px; }
+  .mnav-row-label { font-size: 14px; }
 }
