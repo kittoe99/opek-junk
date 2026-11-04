@@ -63,10 +63,12 @@ export const BookingPage: React.FC = () => {
   // Auto-advance on served ZIP (only from the ZIP step — not resume hydration)
   useEffect(() => {
     if (zipResult?.served && currentStep === 0 && !showContinueFromQuote) {
-      const t = setTimeout(() => setCurrentStep(1), 2000);
+      // Coming from the dumpster page, skip the service picker.
+      const nextStep = initialServiceType === 'Dumpster Rental' ? 2 : 1;
+      const t = setTimeout(() => setCurrentStep(nextStep), 2000);
       return () => clearTimeout(t);
     }
-  }, [zipResult, currentStep, showContinueFromQuote]);
+  }, [zipResult, currentStep, showContinueFromQuote, initialServiceType]);
 
   const handleZipCheck = async () => {
     const zip = zipValue.trim();
@@ -473,6 +475,10 @@ export const BookingPage: React.FC = () => {
       setCurrentStep(2);
     } else if (id === 'moving_labor') {
       setFormData((prev) => ({ ...prev, serviceType: 'Moving Labor' }));
+      setCurrentStep(2);
+    } else if (id === 'dumpster_rental') {
+      setFormData((prev) => ({ ...prev, serviceType: 'Dumpster Rental' }));
+      setDumpsterStep('size');
       setCurrentStep(2);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });

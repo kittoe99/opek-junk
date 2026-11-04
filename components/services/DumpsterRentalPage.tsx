@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { CalendarClock, MapPin, Ruler, ShieldCheck } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
+const DUMPSTER_STATE = { serviceType: 'Dumpster Rental' };
+
 export const DumpsterRentalPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -15,8 +17,10 @@ export const DumpsterRentalPage: React.FC = () => {
       heroImage="/optimized/service-scenes/dumpster-rental-unbranded.webp"
       heroImageAlt="Roll-off dumpster ready for rental"
       heroChip="Flat-Rate Drop-Off"
-      primaryCta={{ label: 'Rent a Dumpster', onClick: () => navigate('/quote') }}
-      secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
+      primaryCta={{ label: 'Rent a Dumpster', onClick: () => navigate('/quote', { state: DUMPSTER_STATE }) }}
+      secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking', { state: DUMPSTER_STATE }) }}
+      onZipCheck={(zip, place) => navigate('/quote', { state: { ...DUMPSTER_STATE, zipValue: zip, zipResult: place } })}
+      bookingState={DUMPSTER_STATE}
       split={{
         eyebrow: 'Dumpster rental',
         title: 'Need a dumpster on site?',

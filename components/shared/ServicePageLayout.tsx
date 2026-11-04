@@ -15,7 +15,7 @@ interface CtaProps {
 
 interface ServicePageLayoutProps {
   path: string;
-  onZipCheck?: (zip: string) => void;
+  onZipCheck?: (zip: string, place: { city: string; state: string }) => void;
   bookingPath?: string;
   bookingState?: Record<string, unknown>;
   processTitle?: string;

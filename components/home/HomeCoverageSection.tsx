@@ -17,8 +17,8 @@ interface HomeCoverageSectionProps {
   subtitle?: string;
   /** Hide the "Same-day" badge for services that don't offer it. */
   showSameDay?: boolean;
-  /** Called with a valid ZIP instead of going to /quote. */
-  onCheck?: (zip: string) => void;
+  /** Called with a valid ZIP and its place instead of going to /quote. */
+  onCheck?: (zip: string, place: { city: string; state: string }) => void;
 }
 
 /** ZIP check paired with a nationwide coverage map (homepage and service pages). */
@@ -78,7 +78,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
 
   const continueWithZip = () => {
     if (!result) return;
-    if (onCheck) onCheck(result.zip);
+    if (onCheck) onCheck(result.zip, { city: result.city, state: result.state });
     else navigate(`/quote?${new URLSearchParams({ zip: result.zip }).toString()}`);
   };
 

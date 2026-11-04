@@ -60,8 +60,8 @@ export const ServiceTypePicker: React.FC<ServiceTypePickerProps> = ({
         description="Roll-off container delivered to your site"
         fromPrice="From $350"
         icon={<DumpsterIcon className={HERO_ICON_CLASS} />}
-        disabled
-        badge="Coming Soon"
+        selected={selectedId === 'dumpster_rental'}
+        onClick={() => onSelect('dumpster_rental')}
       />
     </div>
 
