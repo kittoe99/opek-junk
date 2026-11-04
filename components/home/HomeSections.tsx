@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
+import { ArrowRight, CalendarCheck, ChevronLeft, ChevronRight, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
 
 const SITE_PHONE = '+18777574365';
@@ -13,11 +13,10 @@ const providerFinePrint =
 /* Featured services                                                   */
 /* ------------------------------------------------------------------ */
 
-const featuredServices = [
+const services = [
   {
     title: 'Junk removal',
     trademark: true,
-    body: 'Couches, appliances, yard debris and full loads — priced online, hauled away.',
     image: '/optimized/service-scenes/junk-truck-unbranded.webp',
     imagePosition: 'center 40%',
     cta: 'Get a price',
@@ -26,33 +25,26 @@ const featuredServices = [
   {
     title: 'Small local moves',
     trademark: true,
-    body: 'Truck and crew for apartments and short moves, booked by the hour.',
     image: '/optimized/service-scenes/local-moving.webp',
     imagePosition: 'center 30%',
     cta: 'Book a move',
     to: '/booking',
     state: { serviceType: 'Moving Labor' },
   },
-];
-
-const moreServices = [
   {
     title: 'Dumpster rental',
-    body: 'Roll-off containers delivered to your site. Fill them at your pace.',
     image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
     imagePosition: 'center 45%',
     to: '/services/dumpster-rental',
   },
   {
     title: 'Property cleanouts',
-    body: 'Estates, rentals and whole homes, cleared with care.',
     image: '/optimized/service-scenes/property-cleanout.webp',
     imagePosition: 'center 25%',
     to: '/services/property-cleanout',
   },
   {
     title: 'Move-out cleaning',
-    body: 'A clean handoff after your move or relocation.',
     image: '/optimized/service-scenes/in-home-estimate.webp',
     imagePosition: 'center 20%',
     to: '/services/move-out-cleaning',
@@ -62,20 +54,18 @@ const moreServices = [
 /** Whole-card link: photo background, dark purple overlay, content anchored to the bottom. */
 const ServiceImageCard: React.FC<{
   title: string;
-  body: string;
   image: string;
   imagePosition: string;
   to: string;
   state?: Record<string, unknown>;
   trademark?: boolean;
-  /** Featured cards are larger and carry a solid button. */
   cta?: string;
   className?: string;
-}> = ({ title, body, image, imagePosition, to, state, trademark, cta, className = '' }) => (
+}> = ({ title, image, imagePosition, to, state, trademark, cta = 'Learn more', className = '' }) => (
   <Link
     to={to}
     state={state}
-    className={`svc-card group relative isolate flex flex-col justify-end overflow-hidden rounded-[6px] bg-[#1a0730] p-5 text-white shadow-[0_10px_30px_rgba(20,10,31,0.18)] transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(20,10,31,0.32)] md:p-7 ${cta ? 'svc-card-featured min-h-[340px] md:min-h-[440px]' : 'min-h-[230px] md:min-h-[300px]'} ${className}`}
+    className={`svc-card group relative isolate flex min-h-[200px] flex-col justify-end overflow-hidden rounded-[6px] bg-[#1a0730] p-3.5 text-white shadow-[0_10px_30px_rgba(20,10,31,0.18)] transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(20,10,31,0.32)] sm:p-5 md:min-h-[270px] md:p-7 ${className}`}
   >
     <img
       src={image}
@@ -89,20 +79,72 @@ const ServiceImageCard: React.FC<{
       {title}
       {trademark && <sup className="tm-mark" aria-hidden>™</sup>}
     </h3>
-    <p className="mt-2 max-w-md text-[14px] leading-snug text-white/90 md:text-[15px]">{body}</p>
-    {cta ? (
-      <span className="mt-4 inline-flex min-h-[46px] w-fit items-center gap-2 rounded-[4px] bg-white px-5 text-[14px] font-extrabold uppercase tracking-wide text-[#520f96] transition-colors group-hover:bg-[#eee5f8]">
-        {cta}
-        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
-      </span>
-    ) : (
-      <span className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-bold">
-        Learn more
-        <ArrowRight size={16} className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
-      </span>
-    )}
+    <span className="mt-2.5 inline-flex items-center gap-1.5 text-[13px] font-bold md:mt-3 md:text-[14px]">
+      {cta}
+      <ArrowRight size={16} className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
+    </span>
   </Link>
 );
+
+const sliderArrowClass =
+  'ui-icon-button border border-[#520f96] bg-white text-[#520f96] transition-colors hover:bg-[#f4eefc] disabled:hover:bg-white';
+
+/** Swipeable row of service cards with a peek of the next card; arrows appear from tablet up. */
+const ServiceSlider: React.FC = () => {
+  const track = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const update = () => {
+      setAtStart(el.scrollLeft <= 1);
+      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 1);
+    };
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  const slide = (direction: 1 | -1) => {
+    const el = track.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollBy({
+      left: direction * (card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')),
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
+  };
+
+  return (
+    <>
+      <div
+        ref={track}
+        role="group"
+        aria-label="Our services"
+        className="mt-10 md:mt-12 -mx-4 sm:-mx-6 lg:-mx-8 -my-3 flex snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-8 gap-3 md:gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {services.map((service) => (
+          <ServiceImageCard key={service.title} {...service} className="w-[46%] shrink-0 snap-start md:w-[31%]" />
+        ))}
+      </div>
+      <div className="mt-6 hidden items-center justify-center gap-3 md:flex">
+        <button type="button" onClick={() => slide(-1)} disabled={atStart} aria-label="Previous services" className={sliderArrowClass}>
+          <ChevronLeft size={22} aria-hidden />
+        </button>
+        <button type="button" onClick={() => slide(1)} disabled={atEnd} aria-label="More services" className={sliderArrowClass}>
+          <ChevronRight size={22} aria-hidden />
+        </button>
+      </div>
+    </>
+  );
+};
 
 export const HomeFeaturedServices: React.FC = () => (
   <section id="services" className="bg-[#f7f6f9] py-14 sm:py-16 md:py-20" aria-labelledby="home-services-heading">
@@ -114,14 +156,7 @@ export const HomeFeaturedServices: React.FC = () => (
         Clear out your space
       </h2>
 
-      <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
-        {featuredServices.map((service) => (
-          <ServiceImageCard key={service.title} {...service} className="md:col-span-3" />
-        ))}
-        {moreServices.map((service) => (
-          <ServiceImageCard key={service.title} {...service} className="md:col-span-2" />
-        ))}
-      </div>
+      <ServiceSlider />
 
       <p className="mt-6 text-center text-[12px] leading-snug text-[#5a5266]">{providerFinePrint}</p>
     </div>

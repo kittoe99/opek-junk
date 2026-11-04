@@ -82,11 +82,9 @@ body .site-root :is(h1, h2).home-display + p { font-size: 16px; line-height: 1.5
 
 /* Homepage service cards: titles sit on a photo, so they run larger than the level default */
 .svc-card .tm-mark { font-size: .36em; vertical-align: .95em; }
-body .site-root .home-light .svc-card h3.home-display { font-size: 26px !important; }
-body .site-root .home-light .svc-card-featured h3.home-display { font-size: 32px !important; }
+body .site-root .home-light .svc-card h3.home-display { font-size: 22px !important; }
 @media (min-width: 768px) {
   body .site-root .home-light .svc-card h3.home-display { font-size: 30px !important; }
-  body .site-root .home-light .svc-card-featured h3.home-display { font-size: 42px !important; }
 }
 
 /* Primary action bar: phones only (fixed to the bottom, see below); hidden on tablet and desktop */
