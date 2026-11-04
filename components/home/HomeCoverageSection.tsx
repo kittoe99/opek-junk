@@ -14,6 +14,9 @@ interface HomeCoverageSectionProps {
   /** Two-part heading: the second part is shown in lavender. */
   titleStart?: string;
   titleAccent?: string;
+  subtitle?: string;
+  /** Hide the "Same-day" badge for services that don't offer it. */
+  showSameDay?: boolean;
   /** Called with a valid ZIP instead of going to /quote. */
   onCheck?: (zip: string) => void;
 }
@@ -22,6 +25,8 @@ interface HomeCoverageSectionProps {
 export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
   titleStart = 'Providers in',
   titleAccent = 'all 50 states',
+  subtitle = 'Enter your ZIP to confirm coverage and see your price.',
+  showSameDay = true,
   onCheck,
 }) => {
   const navigate = useNavigate();
@@ -130,7 +135,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
           <h2 id="home-coverage-heading" className="home-display cov-title">
             {titleStart} <span>{titleAccent}</span>
           </h2>
-          <p className="cov-sub">Enter your ZIP to confirm coverage and see your price.</p>
+          <p className="cov-sub">{subtitle}</p>
 
           {result ? (
             <div className="coverage-result" role="status" aria-live="polite">
@@ -187,7 +192,7 @@ export const HomeCoverageSection: React.FC<HomeCoverageSectionProps> = ({
           )}
 
           <ul className="cov-trust">
-            <li><Clock size={15} aria-hidden />Same-day</li>
+            {showSameDay && <li><Clock size={15} aria-hidden />Same-day</li>}
             <li><ShieldCheck size={15} aria-hidden />Vetted providers</li>
             <li><Star size={15} aria-hidden />Rated 4.8</li>
           </ul>

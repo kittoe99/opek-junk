@@ -259,9 +259,9 @@ export const seoConfig = {
     keywords: 'sms consent, text message opt-in, opek sms, tcpa, a2p',
     noindex: true,
   },
-  mattressDisposal: {
-    title: 'Same-Day Mattress Disposal & Recycling Pickup | Opek',
-    description: 'Local providers pick up old mattresses, box springs, and frames from any room. Same-day windows available. Check your ZIP to schedule responsible recycling or disposal.',
-    keywords: 'mattress disposal, mattress recycling, remove old mattress, mattress pickup, get rid of mattress near me, box spring removal, same day mattress removal',
+  moveOutCleaning: {
+    title: 'Move-Out Cleaning Services | Opek',
+    description: 'Moving out or relocating? Local providers clean your home or apartment after the move. Check your ZIP and request a free, no-obligation estimate.',
+    keywords: 'move-out cleaning, move out cleaning service, end of lease cleaning, apartment move-out cleaning, cleaning after moving, relocation cleaning',
   },
 };

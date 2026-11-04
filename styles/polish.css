@@ -80,6 +80,15 @@ body .site-root .site-flow-title :is(h1, h2).home-display { font-size: 32px !imp
 /* Body copy: one size, comfortable measure */
 body .site-root :is(h1, h2).home-display + p { font-size: 16px; line-height: 1.55; }
 
+/* Homepage service cards: titles sit on a photo, so they run larger than the level default */
+.svc-card .tm-mark { font-size: .36em; vertical-align: .95em; }
+body .site-root .home-light .svc-card h3.home-display { font-size: 26px !important; }
+body .site-root .home-light .svc-card-featured h3.home-display { font-size: 32px !important; }
+@media (min-width: 768px) {
+  body .site-root .home-light .svc-card h3.home-display { font-size: 30px !important; }
+  body .site-root .home-light .svc-card-featured h3.home-display { font-size: 42px !important; }
+}
+
 /* Primary action bar: phones only (fixed to the bottom, see below); hidden on tablet and desktop */
 .home-start-bar { background: #fff; }
 body .site-root .home-start-bar-btn { display: flex; width: 100%; min-height: 46px; }
@@ -104,7 +113,8 @@ body .site-root .cov-state.is-on { fill: #520f96; stroke: #9f7fcf; stroke-width:
     border: 1.5px solid #520f96; border-radius: var(--fn-radius); color: #520f96; background: #fff;
   }
   .home-start-bar-call:hover { background: #f4eefc; }
-  body .site-root :is(.home-page, .has-start-bar) { padding-bottom: 72px; }
+  /* Reserve the fixed bar's height inside the purple footer so nothing ends up behind it. */
+  body .site-root:has(.home-start-bar) footer > div { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 
 /* ── Homepage hero: photo with overlapping ZIP card ── */

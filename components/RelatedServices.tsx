@@ -10,10 +10,10 @@ const allRelatedServices = [
     alt: 'Providers loading junk into a box truck',
   },
   {
-    title: 'Mattress Disposal',
-    path: '/services/mattress-disposal',
-    image: '/optimized/service-scenes/mattress-pickup.webp',
-    alt: 'Provider carrying a mattress for disposal',
+    title: 'Move-Out Cleaning',
+    path: '/services/move-out-cleaning',
+    image: '/optimized/service-scenes/in-home-estimate.webp',
+    alt: 'Provider with a clipboard talking through a job with a customer',
   },
   {
     title: 'Dumpster Rental',

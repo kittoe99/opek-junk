@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
+import { ArrowRight, CalendarCheck, ClipboardList, MessageSquare, Phone, Star } from 'lucide-react';
 import { normalizePostalInput, parsePostalCode } from '../../lib/postalCode';
 
 const SITE_PHONE = '+18777574365';
@@ -13,83 +13,120 @@ const providerFinePrint =
 /* Featured services                                                   */
 /* ------------------------------------------------------------------ */
 
-export const HomeFeaturedServices: React.FC = () => {
-  const navigate = useNavigate();
+const featuredServices = [
+  {
+    title: 'Junk removal',
+    trademark: true,
+    body: 'Couches, appliances, yard debris and full loads — priced online, hauled away.',
+    image: '/optimized/service-scenes/junk-truck-unbranded.webp',
+    imagePosition: 'center 40%',
+    cta: 'Get a price',
+    to: '/quote',
+  },
+  {
+    title: 'Small local moves',
+    trademark: true,
+    body: 'Truck and crew for apartments and short moves, booked by the hour.',
+    image: '/optimized/service-scenes/local-moving.webp',
+    imagePosition: 'center 30%',
+    cta: 'Book a move',
+    to: '/booking',
+    state: { serviceType: 'Moving Labor' },
+  },
+];
 
-  const cards = [
-    {
-      title: 'Junk removal',
-      body: 'Couches, appliances, yard debris and full loads — priced online, hauled away.',
-      image: '/optimized/service-scenes/junk-truck-unbranded.webp',
-      alt: 'Purple dump truck loaded with furniture and household junk',
-      cta: 'Get a price',
-      onClick: () => navigate('/quote'),
-    },
-    {
-      title: 'Small local moves',
-      body: 'Truck and crew for apartments and short moves, booked by the hour.',
-      image: '/optimized/service-scenes/local-moving.webp',
-      alt: 'Two providers carrying a couch to a moving truck',
-      cta: 'Book a move',
-      onClick: () => navigate('/booking', { state: { serviceType: 'Moving Labor' } }),
-    },
-  ];
+const moreServices = [
+  {
+    title: 'Dumpster rental',
+    body: 'Roll-off containers delivered to your site. Fill them at your pace.',
+    image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
+    imagePosition: 'center 45%',
+    to: '/services/dumpster-rental',
+  },
+  {
+    title: 'Property cleanouts',
+    body: 'Estates, rentals and whole homes, cleared with care.',
+    image: '/optimized/service-scenes/property-cleanout.webp',
+    imagePosition: 'center 25%',
+    to: '/services/property-cleanout',
+  },
+  {
+    title: 'Move-out cleaning',
+    body: 'A clean handoff after your move or relocation.',
+    image: '/optimized/service-scenes/in-home-estimate.webp',
+    imagePosition: 'center 20%',
+    to: '/services/move-out-cleaning',
+  },
+];
 
-  const moreServices = [
-    { label: 'Dumpster rental', to: '/services/dumpster-rental' },
-    { label: 'Mattress disposal', to: '/services/mattress-disposal' },
-    { label: 'Property cleanouts', to: '/services/property-cleanout' },
-  ];
+/** Whole-card link: photo background, dark purple overlay, content anchored to the bottom. */
+const ServiceImageCard: React.FC<{
+  title: string;
+  body: string;
+  image: string;
+  imagePosition: string;
+  to: string;
+  state?: Record<string, unknown>;
+  trademark?: boolean;
+  /** Featured cards are larger and carry a solid button. */
+  cta?: string;
+  className?: string;
+}> = ({ title, body, image, imagePosition, to, state, trademark, cta, className = '' }) => (
+  <Link
+    to={to}
+    state={state}
+    className={`svc-card group relative isolate flex flex-col justify-end overflow-hidden rounded-[6px] bg-[#1a0730] p-5 text-white shadow-[0_10px_30px_rgba(20,10,31,0.18)] transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(20,10,31,0.32)] md:p-7 ${cta ? 'svc-card-featured min-h-[340px] md:min-h-[440px]' : 'min-h-[230px] md:min-h-[300px]'} ${className}`}
+  >
+    <img
+      src={image}
+      alt=""
+      loading="lazy"
+      style={{ objectPosition: imagePosition }}
+      className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+    />
+    <span className="absolute inset-0 -z-10 bg-gradient-to-t from-[#1a0730]/95 via-[#1a0730]/70 to-[#1a0730]/25" aria-hidden />
+    <h3 className="home-display text-white">
+      {title}
+      {trademark && <sup className="tm-mark" aria-hidden>™</sup>}
+    </h3>
+    <p className="mt-2 max-w-md text-[14px] leading-snug text-white/90 md:text-[15px]">{body}</p>
+    {cta ? (
+      <span className="mt-4 inline-flex min-h-[46px] w-fit items-center gap-2 rounded-[4px] bg-white px-5 text-[14px] font-extrabold uppercase tracking-wide text-[#520f96] transition-colors group-hover:bg-[#eee5f8]">
+        {cta}
+        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
+      </span>
+    ) : (
+      <span className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-bold">
+        Learn more
+        <ArrowRight size={16} className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
+      </span>
+    )}
+  </Link>
+);
 
-  return (
-    <section id="services" className="bg-[#f7f6f9] py-14 sm:py-16 md:py-20" aria-labelledby="home-services-heading">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          id="home-services-heading"
-          className="home-display text-center text-[2rem] leading-none sm:text-[2.6rem] md:text-[3rem] text-[#140a1f]"
-        >
-          Clear out your space
-        </h2>
+export const HomeFeaturedServices: React.FC = () => (
+  <section id="services" className="bg-[#f7f6f9] py-14 sm:py-16 md:py-20" aria-labelledby="home-services-heading">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2
+        id="home-services-heading"
+        className="home-display text-center text-[2rem] leading-none sm:text-[2.6rem] md:text-[3rem] text-[#140a1f]"
+      >
+        Clear out your space
+      </h2>
 
-        <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-10 max-w-[860px] mx-auto">
-          {cards.map((card) => (
-            <article key={card.title} className="flex flex-col items-center text-center">
-              <div className="ui-image-frame home-photo-frame w-full aspect-[17/10] overflow-hidden rounded-lg">
-                <img
-                  src={card.image}
-                  alt={card.alt}
-                  loading="lazy"
-                  className="h-full w-full object-contain object-bottom pt-4"
-                />
-              </div>
-              <h3 className="home-display mt-5 text-[1.4rem] sm:text-[1.6rem] leading-tight text-[#140a1f]">
-                {card.title}<sup className="tm-mark" aria-hidden>™</sup>
-              </h3>
-              <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-[#2b2236]">{card.body}</p>
-              <button type="button" onClick={card.onClick} className="home-cta mt-5 min-w-[196px]">
-                {card.cta}
-              </button>
-              <p className="mt-4 max-w-sm text-[12px] leading-snug text-[#5a5266]">{providerFinePrint}</p>
-            </article>
-          ))}
-        </div>
-
-        <nav aria-label="More services" className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 md:gap-y-3">
-          <span className="text-[13px] font-bold uppercase tracking-wide text-[#4a4256]">More services:</span>
-          {moreServices.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="py-2.5 md:py-0 text-[14px] font-semibold text-[#520f96] underline underline-offset-4 hover:text-[#3a0a6b]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+      <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
+        {featuredServices.map((service) => (
+          <ServiceImageCard key={service.title} {...service} className="md:col-span-3" />
+        ))}
+        {moreServices.map((service) => (
+          <ServiceImageCard key={service.title} {...service} className="md:col-span-2" />
+        ))}
       </div>
-    </section>
-  );
-};
+
+      <p className="mt-6 text-center text-[12px] leading-snug text-[#5a5266]">{providerFinePrint}</p>
+    </div>
+  </section>
+);
 
 /* ------------------------------------------------------------------ */
 /* How it works                                                        */
@@ -291,25 +328,25 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
         </h2>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] gap-8 md:gap-10 items-center max-w-[860px] mx-auto">
-          <div className="home-booking-options md:bg-white md:border md:border-[#e9e3f0] md:px-8 md:py-2">
-            <ul className="grid grid-cols-2 gap-2.5 md:block md:divide-y md:divide-[#ece6f2]">
+          <div className="home-booking-options md:bg-[#520f96] md:border md:border-[#520f96] md:px-8 md:py-2">
+            <ul className="grid grid-cols-2 gap-2.5 md:block md:divide-y md:divide-white/20">
               {options.map(({ label, detail, href, to, icon: Icon }) => {
                 const inner = (
                   <>
-                    <Icon size={26} className="shrink-0 text-[#520f96]" aria-hidden />
+                    <Icon size={26} className="shrink-0 text-white" aria-hidden />
                     <span>
                       <span className="home-display block text-[1.2rem] md:inline md:text-[1.75rem] leading-none">{label}</span>
-                      <span className="md:hidden mt-1 block text-[12px] font-semibold text-[#61536d]">{detail}</span>
+                      <span className="md:hidden mt-1 block text-[12px] font-semibold text-[#e6daf5]">{detail}</span>
                     </span>
-                    <span className="home-booking-detail hidden md:inline ml-auto text-[14px] font-semibold text-[#61536d]">{detail}</span>
+                    <span className="home-booking-detail hidden md:inline ml-auto text-[14px] font-semibold text-[#e6daf5]">{detail}</span>
                   </>
                 );
                 const cls =
-                  'flex h-full min-h-[118px] flex-col items-start justify-between gap-3 border border-[#e9e3f0] bg-white p-4 text-[#140a1f] transition-colors hover:border-[#520f96] md:min-h-0 md:flex-row md:items-center md:justify-start md:gap-4 md:border-0 md:bg-transparent md:px-0 md:py-4 md:hover:text-[#520f96]';
+                  'flex h-full min-h-[118px] flex-col items-start justify-between gap-3 border border-[#520f96] bg-[#520f96] p-4 text-white transition-colors hover:border-[#3a0a6b] hover:bg-[#3a0a6b] md:min-h-0 md:flex-row md:items-center md:justify-start md:gap-4 md:border-0 md:bg-transparent md:px-0 md:py-4 md:hover:bg-transparent md:hover:text-[#e6daf5]';
                 return (
                   <li key={label}>
                     {to ? (
-                      <Link to={to} state={label === 'Book online' ? bookingState : undefined} className={cls}>
+                      <Link to={to} state={to === bookingPath ? bookingState : undefined} className={cls}>
                         {inner}
                       </Link>
                     ) : (
@@ -354,7 +391,7 @@ export const HomeWaysToBook: React.FC<{ bookingPath?: string; bookingState?: Rec
 };
 
 /* ------------------------------------------------------------------ */
-/* Reviews                                                             */
+/* Reviews                                                            */
 /* ------------------------------------------------------------------ */
 
 const reviews = [

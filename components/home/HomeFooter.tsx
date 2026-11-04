@@ -1,6 +1,7 @@
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { HomeLogo } from './HomeLogo';
 
 const SITE_PHONE = '+18777574365';
 const SITE_PHONE_DISPLAY = '(877) 757-4365';
@@ -13,7 +14,7 @@ const columns = [
       { label: 'Dumpster Rental', to: '/services/dumpster-rental' },
       { label: 'Property Cleanouts', to: '/services/property-cleanout' },
       { label: 'Small Local Moves', to: '/services/small-local-moves' },
-      { label: 'Mattress Disposal', to: '/services/mattress-disposal' },
+      { label: 'Move-Out Cleaning', to: '/services/move-out-cleaning' },
     ],
   },
   {
@@ -59,38 +60,51 @@ const socials = [
 const disclaimer =
   'Opek Junk Removal is a technology platform that connects customers with independent local service providers. Opek Junk Removal does not perform junk removal, hauling, or moving labor services itself; all services are performed by independent, third-party service providers who are responsible for their own operations, licensing, and insurance.';
 
-/** Deep-purple footer used on the homepage only. Other pages keep the dark Footer. */
+const contactIconClass =
+  'flex h-11 w-11 shrink-0 items-center justify-center rounded-[6px] bg-white/10 transition-colors group-hover:bg-white/20';
+
+/** Deep-purple site footer. The logo follows --home-purple, so it is set to white here. */
 export const HomeFooter: React.FC = () => (
   <footer className="home-light">
-    <div className="bg-[#520f96] text-white">
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-11 pb-10 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-9 md:gap-12 lg:gap-16">
+    <div className="bg-[#520f96] text-white" style={{ '--home-purple': '#fff' } as React.CSSProperties}>
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-12 pb-8 md:pt-16 md:pb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] gap-10 lg:gap-16">
         <div>
-          <p className="home-display text-[2.3rem] leading-[0.92] sm:text-[3.4rem] lg:text-[4rem]">
+          <Link to="/" className="inline-block transition-opacity hover:opacity-85" aria-label="Opek Junk Removal home">
+            <HomeLogo className="h-14 md:h-16 w-auto" alt="" />
+          </Link>
+          <p className="home-display mt-6 max-w-[420px] text-[1.6rem] leading-[1.05] sm:text-[2rem]">
             Clear the clutter. Book in minutes.
           </p>
-          <div className="mt-6 md:mt-8 flex items-center gap-4 md:gap-5">
-            <a
-              href={`tel:${SITE_PHONE}`}
-              className="flex h-16 w-12 md:h-20 md:w-16 shrink-0 items-center justify-center text-white hover:opacity-80"
-              aria-label={`Call ${SITE_PHONE_DISPLAY}`}
-            >
-              <svg viewBox="8 4 22 24" className="w-full h-auto" fill="currentColor" aria-hidden="true">
-                <polygon points="15.04,5.12 20.16,5.12 14.4,26.88 9.28,26.88" />
-                <polygon points="23.36,5.12 28.48,5.12 22.72,26.88 17.6,26.88" />
-              </svg>
+
+          <div className="mt-7 space-y-3">
+            <a href={`tel:${SITE_PHONE}`} className="group flex items-center gap-3.5">
+              <span className={contactIconClass}><Phone size={20} aria-hidden /></span>
+              <span className="min-w-0">
+                <span className="block text-[12px] font-bold uppercase tracking-wide text-white/80">Call or text any time</span>
+                <span className="block text-[1.25rem] font-extrabold leading-tight group-hover:underline underline-offset-2">{SITE_PHONE_DISPLAY}</span>
+              </span>
             </a>
-            <div className="min-w-0">
-              <p className="text-[12px] md:text-[15px] font-bold uppercase tracking-wide">Call or text any time</p>
-              <a href={`tel:${SITE_PHONE}`} className="home-display text-[1.45rem] md:text-[1.6rem] leading-tight hover:underline">
-                {SITE_PHONE_DISPLAY}
-              </a>
-              <p className="mt-1 [overflow-wrap:anywhere] text-[13px] md:text-[14px]">
-                <a href="mailto:Support@opekjunkremoval.com" className="underline underline-offset-2">
-                  Support@opekjunkremoval.com
-                </a>
-              </p>
-            </div>
+            <a href="mailto:Support@opekjunkremoval.com" className="group flex items-center gap-3.5">
+              <span className={contactIconClass}><Mail size={20} aria-hidden /></span>
+              <span className="min-w-0">
+                <span className="block text-[12px] font-bold uppercase tracking-wide text-white/80">Email us</span>
+                <span className="block [overflow-wrap:anywhere] text-[14px] font-semibold group-hover:underline underline-offset-2">Support@opekjunkremoval.com</span>
+              </span>
+            </a>
           </div>
+
+          <ul className="mt-6 flex items-center gap-2.5">
+            {socials.map((s) => (
+              <li key={s.href}>
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="ui-icon-button flex h-11 w-11 items-center justify-center bg-white/10 transition-colors hover:bg-white/20">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
+                    <path d={s.path} />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>
@@ -131,34 +145,22 @@ export const HomeFooter: React.FC = () => (
               </div>
             ))}
           </div>
-
-          <ul className="mt-8 md:mt-12 flex items-center gap-2 md:gap-6">
-            {socials.map((s) => (
-              <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="ui-icon-button flex h-11 w-11 items-center justify-center rounded-full bg-white/10 md:block md:h-auto md:w-auto md:rounded-none md:bg-transparent hover:opacity-80">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
-                    <path d={s.path} />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-6 md:mt-8 text-[12px] md:text-[13px] leading-relaxed text-white/80 md:text-white/90">{disclaimer}</p>
-
-          <div className="mt-8 border-t border-white/30 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <p className="text-[12px] font-semibold">
-              &copy; {new Date().getFullYear()} Opek Junk Removal. All rights reserved.
-            </p>
-            <p className="text-[12px] font-semibold">
-              <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
-              <span aria-hidden> | </span>
-              <Link to="/terms" className="hover:underline">Terms of Service</Link>
-              <span aria-hidden> | </span>
-              <Link to="/sms-consent" className="hover:underline">SMS Consent</Link>
-            </p>
-          </div>
         </div>
+      </div>
+
+      <div className="mt-7 sm:mt-10 md:mt-12 sm:border-t sm:border-white/25 sm:pt-6">
+        <p className="max-w-[900px] text-[12px] leading-relaxed text-white/80">{disclaimer}</p>
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[12px] font-semibold">
+            &copy; {new Date().getFullYear()} Opek Junk Removal. All rights reserved.
+          </p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] font-semibold">
+            <li><Link to="/privacy" className="hover:underline underline-offset-2">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:underline underline-offset-2">Terms of Service</Link></li>
+            <li><Link to="/sms-consent" className="hover:underline underline-offset-2">SMS Consent</Link></li>
+          </ul>
+        </div>
+      </div>
       </div>
     </div>
   </footer>

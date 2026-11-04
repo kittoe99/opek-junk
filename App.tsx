@@ -29,7 +29,7 @@ const JunkRemovalPage = React.lazy(() => import('./components/services/JunkRemov
 const DumpsterRentalPage = React.lazy(() => import('./components/services/DumpsterRentalPage').then((m) => ({ default: m.DumpsterRentalPage })));
 const PropertyCleanoutPage = React.lazy(() => import('./components/services/PropertyCleanoutPage').then((m) => ({ default: m.PropertyCleanoutPage })));
 const SmallLocalMovesPage = React.lazy(() => import('./components/services/SmallLocalMovesPage').then((m) => ({ default: m.SmallLocalMovesPage })));
-const MattressDisposalPage = React.lazy(() => import('./components/services/MattressDisposalPage').then((m) => ({ default: m.MattressDisposalPage })));
+const MoveOutCleaningPage = React.lazy(() => import('./components/services/MoveOutCleaningPage').then((m) => ({ default: m.MoveOutCleaningPage })));
 const JunkRemovalAdsLandingPage = React.lazy(() => import('./components/lp/JunkRemovalAdsLandingPage').then((m) => ({ default: m.JunkRemovalAdsLandingPage })));
 const LocalMovesAdsLandingPage = React.lazy(() => import('./components/lp/LocalMovesAdsLandingPage').then((m) => ({ default: m.LocalMovesAdsLandingPage })));
 const PrivacyPolicyPage = React.lazy(() => import('./components/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage })));
@@ -59,10 +59,6 @@ function GlobalQuickActionBar() {
   }
 
   const onBookOnline = () => {
-    if (pathname === '/services/mattress-disposal') {
-      navigate('/booking/mattress');
-      return;
-    }
     if (pathname === '/lp/junk-removal') {
       navigate('/booking', { state: { serviceType: 'Junk Removal' } });
       return;
@@ -247,11 +243,11 @@ function SmallLocalMovesPageWithSEO() {
   );
 }
 
-function MattressDisposalPageWithSEO() {
+function MoveOutCleaningPageWithSEO() {
   return (
     <>
-      <SEO {...seoConfig.mattressDisposal} />
-      <MattressDisposalPage />
+      <SEO {...seoConfig.moveOutCleaning} />
+      <MoveOutCleaningPage />
     </>
   );
 }
@@ -357,7 +353,8 @@ function App() {
             <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
             <Route path="/services/moving-labor" element={<Navigate to="/services/small-local-moves" replace />} />
             <Route path="/services/small-local-moves" element={<SmallLocalMovesPageWithSEO />} />
-            <Route path="/services/mattress-disposal" element={<MattressDisposalPageWithSEO />} />
+            <Route path="/services/move-out-cleaning" element={<MoveOutCleaningPageWithSEO />} />
+            <Route path="/services/mattress-disposal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />
             <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
             <Route path="/sign-up" element={<SignUpPageWithSEO />} />

@@ -30,7 +30,6 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isAdsLandingPage =
-    location.pathname === '/services/mattress-disposal' ||
     location.pathname === '/lp/junk-removal' ||
     location.pathname === '/lp/local-moves';
   const [isMenuOpen, setIsMenuOpen] = useState(false);

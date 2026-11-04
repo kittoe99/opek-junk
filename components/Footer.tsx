@@ -45,7 +45,6 @@ function FooterBottom() {
 export const Footer: React.FC = () => {
   const location = useLocation();
   const isAdsLandingPage =
-    location.pathname === '/services/mattress-disposal' ||
     location.pathname === '/lp/junk-removal' ||
     location.pathname === '/lp/local-moves';
 
@@ -148,8 +147,8 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services/mattress-disposal" className="text-neutral-400 hover:text-white text-sm transition-colors">
-                    Mattress Disposal
+                  <Link to="/services/move-out-cleaning" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                    Move-Out Cleaning
                   </Link>
                 </li>
               </ul>

@@ -1,6 +1,6 @@
 import { HomeReviews } from './home/HomeSections';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AlertCircle, Loader2, Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { ServicePageHero } from './shared/ServicePageHero';
@@ -15,6 +15,8 @@ import { UTILITY_INPUT, UTILITY_LABEL, UTILITY_PRIMARY_BUTTON } from '../lib/flo
 
 export const InHomeEstimatePage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const moveOutCleaning = (location.state as { serviceType?: string } | null)?.serviceType === 'Move-Out Cleaning';
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -88,7 +90,11 @@ export const InHomeEstimatePage: React.FC = () => {
           estimate_details: {
             preferred_date: formData.preferredDate,
             preferred_time: formData.preferredTime,
-            message: formData.message,
+            // Notification emails only print `message`, so the service is labelled there too.
+            message: moveOutCleaning
+              ? ['Service: Move-Out Cleaning', formData.message].filter(Boolean).join(' | ')
+              : formData.message,
+            ...(moveOutCleaning ? { service_type: 'Move-Out Cleaning' } : {}),
           },
         },
       ]);
@@ -117,6 +123,7 @@ export const InHomeEstimatePage: React.FC = () => {
         title="Request submitted"
         description="We received your in-home estimate request and will contact you to schedule."
         summary={[
+          ...(moveOutCleaning ? [{ label: 'Service', value: 'Move-Out Cleaning' }] : []),
           { label: 'Name', value: formData.name },
           { label: 'Email', value: formData.email },
           { label: 'Phone', value: formData.phone },
@@ -141,12 +148,12 @@ export const InHomeEstimatePage: React.FC = () => {
         image="/optimized/service-scenes/in-home-estimate.webp"
         imageAlt="Provider ready for an in-home estimate"
         primaryCta={{ label: 'Schedule my visit', href: '#estimate-details' }}
-        secondaryCta={{ label: 'Get an online quote instead', onClick: () => navigate('/quote') }}
+        secondaryCta={moveOutCleaning ? undefined : { label: 'Get an online quote instead', onClick: () => navigate('/quote') }}
       />
 
       <div id="estimate-details" className="soft-wrap contact-wrap scroll-mt-[var(--site-header-height)]">
         <div className="soft-card contact-card">
-          <h2 className="contact-card-title">Schedule your visit</h2>
+          <h2 className="contact-card-title">{moveOutCleaning ? 'Schedule your move-out cleaning estimate' : 'Schedule your visit'}</h2>
           <form onSubmit={handleSubmit}>
             <fieldset disabled={submitting} className="space-y-4 min-w-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -205,7 +212,7 @@ export const InHomeEstimatePage: React.FC = () => {
               <div>
                 <label htmlFor="estimate-message" className={UTILITY_LABEL}>Notes (optional)</label>
                 <textarea id="estimate-message" name="message" value={formData.message} onChange={handleInputChange}
-                  rows={3} placeholder="What needs to go, and anything about access or parking"
+                  rows={3} placeholder={moveOutCleaning ? 'Home size, move-out date, and anything about access or parking' : 'What needs to go, and anything about access or parking'}
                   className={`${UTILITY_INPUT} resize-none`} />
               </div>
 

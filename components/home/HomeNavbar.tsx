@@ -11,7 +11,7 @@ const serviceItems = [
   { name: 'Dumpster Rental', path: '/services/dumpster-rental' },
   { name: 'Property Cleanouts', path: '/services/property-cleanout' },
   { name: 'Small Local Moves', path: '/services/small-local-moves' },
-  { name: 'Mattress Disposal', path: '/services/mattress-disposal' },
+  { name: 'Move-Out Cleaning', path: '/services/move-out-cleaning' },
 ];
 
 const helpItems = [
