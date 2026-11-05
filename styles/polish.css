@@ -592,8 +592,13 @@ body .site-root .flow-zip-art::before { z-index: 1; }
   .mnav-row-label { font-size: 14px; }
 }
 
-/* How it works: no text sits on these photos, so they only need a light shade */
-body .site-root .home-process-track .home-photo-frame::before {
+/* No text sits on these photos, so they only need a light shade */
+body .site-root :is(
+  .home-process-track .home-photo-frame,
+  .home-hero:not(.page-hero) .zip-hero-media,
+  .flow-zip-hero .zip-hero-media,
+  .flow-option-media
+)::before {
   background: linear-gradient(to top, rgb(26 7 48 / 14%), rgb(26 7 48 / 5%));
 }
 
