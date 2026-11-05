@@ -39,7 +39,7 @@ export const JunkEstimateSummary: React.FC<JunkEstimateSummaryProps> = ({ price,
 
       <p className="qest-guarantee">
         <BadgeCheck size={18} aria-hidden />
-        <span><strong>Guaranteed for the items below.</strong> Your provider confirms the final price on-site before any work starts.</span>
+        <span><strong>Based on the items below.</strong> Your provider confirms the final price on-site before any work starts.</span>
       </p>
 
       <section className="qsum" aria-labelledby="qest-items-title">

@@ -592,6 +592,17 @@ body .site-root .flow-zip-art::before { z-index: 1; }
   .mnav-row-label { font-size: 14px; }
 }
 
+/* How it works: no text sits on these photos, so they only need a light shade */
+body .site-root .home-process-track .home-photo-frame::before {
+  background: linear-gradient(to top, rgb(26 7 48 / 14%), rgb(26 7 48 / 5%));
+}
+
+/* Homepage service slider: quieter arrows on phones */
+@media (max-width: 767px) {
+  body .site-root .svc-slider-arrow { width: 40px; min-width: 40px; height: 40px; min-height: 40px; border-color: #d9c9ec; background: transparent; }
+  body .site-root .svc-slider-arrow svg { width: 18px; height: 18px; }
+}
+
 /* Standalone form pages: the page title stays at section-heading size */
 body .site-root .home-form-section h1.home-display { font-size: 27px !important; }
 @media (min-width: 768px) {
@@ -616,6 +627,17 @@ body .site-root .editorial-copy h2 + .editorial-intro { margin-top: 10px; }
 .editorial-point:last-child { padding-bottom: 0; }
 .editorial-point dt { color: #140a1f; font: 800 20px/1.1 'Barlow Condensed', Archivo, 'Arial Narrow', sans-serif; text-transform: uppercase; }
 .editorial-point dd { margin: 4px 0 0; color: #4a4256; font-size: 14px; line-height: 1.5; }
+@media (max-width: 767px) {
+  .editorial-chapter.has-points .editorial-action { margin-top: 0; }
+  /* The fixed bottom bar already holds the main action, so the section adds only a text link */
+  .has-start-bar .editorial-chapter.has-photo .editorial-action { display: none; }
+  body .site-root .has-start-bar .editorial-chapter.has-points .editorial-action,
+  body .site-root .has-start-bar .editorial-chapter.has-points .editorial-action:hover:not(:disabled):not([aria-disabled=true]) {
+    justify-self: start; width: auto; padding-inline: 0;
+    border: 0; background: transparent; color: #520f96;
+    text-decoration: underline; text-underline-offset: 4px;
+  }
+}
 @media (min-width: 768px) {
   .editorial-inner { padding: 0 32px; }
   .editorial-intro,
@@ -626,7 +648,9 @@ body .site-root .editorial-copy h2 + .editorial-intro { margin-top: 10px; }
   .editorial-chapter.has-photo .editorial-copy { align-self: center; }
   /* A second photo chapter swaps sides */
   .editorial-chapter.has-photo + .editorial-chapter.has-photo .editorial-photo { order: 0; }
-  .editorial-chapter.has-points { grid-template-columns: 4fr 8fr; gap: 56px; align-items: start; }
+  .editorial-chapter.has-points { grid-template-columns: 4fr 8fr; grid-template-rows: auto 1fr; gap: 0 56px; align-items: start; }
+  .editorial-chapter.has-points .editorial-points { grid-column: 2; grid-row: 1 / span 2; }
+  .editorial-chapter.has-points .editorial-action { justify-self: start; }
   .editorial-action { width: auto; min-width: 220px; margin-top: 24px; }
   .editorial-points { grid-template-columns: 1fr 1fr; column-gap: 40px; }
   .editorial-point { padding: 18px 0; }

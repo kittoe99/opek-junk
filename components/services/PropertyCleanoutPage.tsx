@@ -61,7 +61,7 @@ export const PropertyCleanoutPage: React.FC = () => {
           },
           {
             title: 'Upfront Pricing',
-            body: 'Flat-rate quotes before work begins — no hidden fees mid-job.',
+            body: 'Flat-rate quotes before work begins. If the job changes or extra fees apply, you’ll be told before booking or on-site.',
           },
           {
             title: 'Nationwide Coverage',

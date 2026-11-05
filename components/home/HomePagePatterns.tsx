@@ -18,26 +18,30 @@ export function HomeEditorialContent({ title, description, chapters }: {
 }) {
   return <section className="home-editorial home-soft-band py-14 sm:py-16 md:py-20">
     <div className="editorial-inner">
-      {chapters.map((chapter, i) => <div key={chapter.title} className={`editorial-chapter ${chapter.image ? 'has-photo' : 'has-points'}`}>
-        {chapter.image && <div className="ui-image-frame home-photo-frame editorial-photo"><img src={chapter.image} alt={chapter.alt ?? ''} loading="lazy" /></div>}
-        <div className="editorial-copy">
-          {i === 0 && <>
-            <h2 className="home-display text-[#140a1f]">{title}</h2>
-            {description && <div className="editorial-intro">{description}</div>}
-          </>}
-          <h3 className="home-display text-[#520f96]">{chapter.title}</h3>
-          <div className="editorial-body">{chapter.body}</div>
-          {chapter.action && (chapter.action.to
-            ? <Link to={chapter.action.to} className="flow-btn flow-btn-primary editorial-action">{chapter.action.label}<ArrowRight size={18} aria-hidden /></Link>
-            : <button type="button" onClick={chapter.action.onClick} className="flow-btn flow-btn-primary editorial-action">{chapter.action.label}<ArrowRight size={18} aria-hidden /></button>)}
-        </div>
-        {chapter.points && chapter.points.length > 0 && <dl className="editorial-points">
-          {chapter.points.map(point => <div key={point.title} className="editorial-point">
-            <dt>{point.title}</dt>
-            <dd>{point.body}</dd>
-          </div>)}
-        </dl>}
-      </div>)}
+      {chapters.map((chapter, i) => {
+        const action = chapter.action && (chapter.action.to
+          ? <Link to={chapter.action.to} className="flow-btn flow-btn-primary editorial-action">{chapter.action.label}<ArrowRight size={18} aria-hidden /></Link>
+          : <button type="button" onClick={chapter.action.onClick} className="flow-btn flow-btn-primary editorial-action">{chapter.action.label}<ArrowRight size={18} aria-hidden /></button>);
+        return <div key={chapter.title} className={`editorial-chapter ${chapter.image ? 'has-photo' : 'has-points'}`}>
+          {chapter.image && <div className="ui-image-frame home-photo-frame editorial-photo"><img src={chapter.image} alt={chapter.alt ?? ''} loading="lazy" /></div>}
+          <div className="editorial-copy">
+            {i === 0 && <>
+              <h2 className="home-display text-[#140a1f]">{title}</h2>
+              {description && <div className="editorial-intro">{description}</div>}
+            </>}
+            <h3 className="home-display text-[#520f96]">{chapter.title}</h3>
+            <div className="editorial-body">{chapter.body}</div>
+            {chapter.image && action}
+          </div>
+          {chapter.points && chapter.points.length > 0 && <dl className="editorial-points">
+            {chapter.points.map(point => <div key={point.title} className="editorial-point">
+              <dt>{point.title}</dt>
+              <dd>{point.body}</dd>
+            </div>)}
+          </dl>}
+          {!chapter.image && action}
+        </div>;
+      })}
     </div>
   </section>;
 }

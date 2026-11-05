@@ -678,9 +678,6 @@ export const BookingPage: React.FC = () => {
                               <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                                 Instant Estimate
                               </span>
-                              <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
-                                Guaranteed
-                              </span>
                             </div>
                             <h3 className="text-sm font-semibold text-[var(--text)]">{formData.serviceType}</h3>
                             <p className="text-[var(--text-muted)] text-xs mt-0.5">{estimate.estimatedVolume}</p>
@@ -870,9 +867,6 @@ export const BookingPage: React.FC = () => {
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="px-2 py-0.5 bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-semibold uppercase tracking-wide rounded-full">
                             Instant Estimate
-                          </span>
-                          <span className="px-2 py-0.5 bg-emerald-400/10 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide rounded-full">
-                            Guaranteed
                           </span>
                         </div>
                         <h3 className="text-sm font-semibold text-[var(--text)]">Dumpster Rental</h3>

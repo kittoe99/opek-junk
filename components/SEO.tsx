@@ -191,7 +191,7 @@ export const seoConfig = {
   },
   quote: {
     title: 'Free Junk Removal Quote | Opek — Nationwide Instant Pricing',
-    description: 'Get an instant free quote for junk removal anywhere in the US. Transparent flat-rate pricing, no hidden fees. Same-day service in all 50 states.',
+    description: 'Get an instant free quote for junk removal anywhere in the US. Upfront flat-rate pricing. Same-day service in all 50 states.',
     keywords: 'junk removal quote, free estimate, nationwide junk removal pricing, instant quote, junk hauling cost, junk removal near me',
   },
   contact: {

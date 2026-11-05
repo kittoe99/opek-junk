@@ -54,7 +54,7 @@ export const SmallLocalMovesPage: React.FC = () => {
           },
           {
             title: 'Hourly & Transparent',
-            body: 'Pay for the time you need with upfront rates and no surprise add-ons.',
+            body: 'Pay for the time you need, with rates shown up front. Any extra fees are disclosed before booking or on-site.',
           },
           {
             title: 'Vetted Providers',

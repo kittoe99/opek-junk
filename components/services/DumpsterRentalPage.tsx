@@ -53,7 +53,7 @@ export const DumpsterRentalPage: React.FC = () => {
           },
           {
             title: 'Upfront Flat Rates',
-            body: 'Know your rental price before you book — no surprise tonnage games.',
+            body: 'See your rental price before you book. Any extra dump or disposal fees are disclosed before booking or on-site.',
           },
           {
             title: 'On-Schedule Drop-Off',

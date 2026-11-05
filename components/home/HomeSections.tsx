@@ -33,7 +33,7 @@ const services = [
   },
   {
     title: 'Dumpster rental',
-    image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
+    image: '/optimized/service-scenes/dumpster-rental-natural.webp',
     imagePosition: 'center 45%',
     to: '/services/dumpster-rental',
   },
@@ -87,9 +87,9 @@ const ServiceImageCard: React.FC<{
 );
 
 const sliderArrowClass =
-  'ui-icon-button border border-[#520f96] bg-white text-[#520f96] transition-colors hover:bg-[#f4eefc] disabled:hover:bg-white';
+  'ui-icon-button svc-slider-arrow border border-[#520f96] bg-white text-[#520f96] transition-colors hover:bg-[#f4eefc] disabled:hover:bg-white';
 
-/** Swipeable row of service cards with a peek of the next card; arrows appear from tablet up. */
+/** Swipeable row of service cards with a peek of the next card; arrows are smaller and lighter on phones. */
 const ServiceSlider: React.FC = () => {
   const track = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
@@ -134,7 +134,7 @@ const ServiceSlider: React.FC = () => {
           <ServiceImageCard key={service.title} {...service} className="w-[46%] shrink-0 snap-start md:w-[31%]" />
         ))}
       </div>
-      <div className="mt-6 hidden items-center justify-center gap-3 md:flex">
+      <div className="mt-4 flex items-center justify-center gap-2 md:mt-6 md:gap-3">
         <button type="button" onClick={() => slide(-1)} disabled={atStart} aria-label="Previous services" className={sliderArrowClass}>
           <ChevronLeft size={22} aria-hidden />
         </button>

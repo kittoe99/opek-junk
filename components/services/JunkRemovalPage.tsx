@@ -45,18 +45,18 @@ export const JunkRemovalPage: React.FC = () => {
         items: [
           {
             title: 'Easy Booking',
-            body: 'Book junk disposal online in minutes — no phone tag, no surprise quotes.',
+            body: 'Book junk disposal online in minutes, with no phone tag.',
           },
           {
             title: 'Upfront Pricing',
-            body: 'Get a real-time flat rate before you confirm. Guaranteed pricing, no hidden fees.',
+            body: 'See a flat rate before you confirm. If your items change or extra fees apply, you’ll be told before booking or on-site.',
           },
           {
             title: 'Same Day Pickup',
             body: 'Next-day or same-day junk pickup when you book before noon in most areas.',
           },
           {
-            title: '100% Transparent',
+            title: 'Straightforward Service',
             body: 'Honest haul-away from start to finish. You point — providers do the rest.',
           },
           {
