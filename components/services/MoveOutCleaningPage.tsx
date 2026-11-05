@@ -18,8 +18,8 @@ export const MoveOutCleaningPage: React.FC = () => {
       eyebrow="Move-Out Cleaning"
       title="Move-Out Cleaning"
       subtitle="Moving out or relocating? Local providers clean the place after the move, so you can hand over the keys and focus on what’s next."
-      heroImage="/optimized/service-scenes/in-home-estimate.webp"
-      heroImageAlt="Provider with a clipboard talking through a job with a customer"
+      heroImage="/optimized/service-scenes/move-out-cleaning-card-v3.webp"
+      heroImageAlt="Cleaners wiping cabinets and mopping an empty apartment"
       primaryCta={{ label: 'Get a Free Estimate', onClick: goToEstimate }}
       onZipCheck={goToEstimate}
       bookingPath={ESTIMATE_PATH}
@@ -30,20 +30,20 @@ export const MoveOutCleaningPage: React.FC = () => {
         {
           title: 'Request an estimate',
           body: 'Tell us where you’re moving out of. A local provider walks through the space and gives you a price.',
-          image: '/optimized/service-scenes/in-home-estimate.webp',
-          alt: 'Provider with a clipboard talking through a job with a customer',
+          image: '/optimized/service-scenes/estimate-natural.webp',
+          alt: 'Worker taking notes while a customer shows an empty kitchen',
         },
         {
           title: 'Choose a time',
           body: 'Pick a date that works around your move. We confirm your visit within 24 hours.',
-          image: '/optimized/service-scenes/pickup-scheduling.webp',
+          image: '/optimized/service-scenes/scheduling-natural.webp',
           alt: 'Hand holding a phone with appointment time choices',
         },
         {
           title: 'Move out. We clean.',
           body: 'Your provider cleans once the place is empty, so it’s ready for the landlord, buyer or next tenant.',
-          image: '/optimized/service-scenes/property-cleanout.webp',
-          alt: 'Two providers carrying a box and a side table out of a home',
+          image: '/optimized/service-scenes/move-out-cleaning-card-v3.webp',
+          alt: 'Cleaners wiping cabinets and mopping an empty apartment',
         },
       ]}
       split={{
@@ -70,8 +70,8 @@ export const MoveOutCleaningPage: React.FC = () => {
           { title: 'Floors', Icon: Brush },
           { title: 'Surfaces', Icon: SprayCan },
         ],
-        image: '/optimized/service-scenes/property-cleanout.webp',
-        imageAlt: 'Two providers carrying a box and a side table out of a home',
+        image: '/optimized/service-scenes/move-out-cleaning-card-v3.webp',
+        imageAlt: 'Cleaners wiping cabinets and mopping an empty apartment',
       }}
       features={{
         title: 'Move-out cleaning, handled',

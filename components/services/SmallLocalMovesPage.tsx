@@ -13,8 +13,8 @@ export const SmallLocalMovesPage: React.FC = () => {
       eyebrow="Small Local Moves"
       title="Local Moves"
       subtitle="A little help for your next move. Book a truck and crew, or just the muscle if you have your own truck."
-      heroImage="/optimized/service-scenes/local-moving.webp"
-      heroImageAlt="Moving providers carrying furniture for a local move"
+      heroImage="/optimized/service-scenes/local-movers-card-v5.webp"
+      heroImageAlt="Two young movers in clean purple shirts standing beside a moving truck"
       heroChip="Truck + Crew"
       primaryCta={{ label: 'Book a Move', onClick: () => navigate('/booking') }}
       secondaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
@@ -38,8 +38,8 @@ export const SmallLocalMovesPage: React.FC = () => {
           { title: 'Hourly Pricing', Icon: Clock },
           { title: 'Labor Only', Icon: Dumbbell },
         ],
-        image: '/optimized/service-scenes/local-moving.webp',
-        imageAlt: 'Two providers carrying a sofa up a ramp into a moving truck',
+        image: '/optimized/service-scenes/moving-help-natural.webp',
+        imageAlt: 'Movers protecting a wooden table with a moving blanket beside a van',
       }}
       features={{
         title: 'Local moves, no bloat',

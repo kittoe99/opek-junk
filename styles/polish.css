@@ -575,7 +575,6 @@ body .site-root .flow-zip-art::before { z-index: 1; }
 
   /* Cards */
   body .site-root .soft-card-media { margin-bottom: 12px; }
-  .home-light .home-service-media { aspect-ratio: 2 / 1; }
   body .site-root #testimonials figure { padding: 14px; }
 
   /* Utility pages */
@@ -591,6 +590,53 @@ body .site-root .flow-zip-art::before { z-index: 1; }
   .mnav-row--service { min-height: 56px; }
   .mnav-row-title { font-size: 20px; }
   .mnav-row-label { font-size: 14px; }
+}
+
+/* Standalone form pages: the page title stays at section-heading size */
+body .site-root .home-form-section h1.home-display { font-size: 27px !important; }
+@media (min-width: 768px) {
+  body .site-root .home-form-section h1.home-display { font-size: 44px !important; }
+}
+
+/* Editorial content: open text beside a photo, with no card boxes */
+.editorial-inner { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.editorial-chapter { display: grid; gap: 20px; }
+.editorial-chapter + .editorial-chapter { margin-top: 28px; padding-top: 28px; border-top: 1px solid #e3d8ef; }
+.editorial-photo { aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; }
+.editorial-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 65%; }
+body .site-root .editorial-copy h2 + .editorial-intro { margin-top: 10px; }
+.editorial-intro { color: #4a4256; font-size: 14px; line-height: 1.55; }
+.editorial-copy .editorial-intro + h3 { margin-top: 22px; }
+.editorial-copy h2 + h3 { margin-top: 12px; }
+.editorial-body { margin-top: 8px; color: #4a4256; font-size: 14px; line-height: 1.55; }
+.editorial-action { width: 100%; margin-top: 20px; }
+.editorial-points { display: grid; }
+.editorial-point { padding: 14px 0; border-top: 1px solid #e3d8ef; }
+.editorial-point:first-child { padding-top: 0; border-top: 0; }
+.editorial-point:last-child { padding-bottom: 0; }
+.editorial-point dt { color: #140a1f; font: 800 20px/1.1 'Barlow Condensed', Archivo, 'Arial Narrow', sans-serif; text-transform: uppercase; }
+.editorial-point dd { margin: 4px 0 0; color: #4a4256; font-size: 14px; line-height: 1.5; }
+@media (min-width: 768px) {
+  .editorial-inner { padding: 0 32px; }
+  .editorial-intro,
+  .editorial-body { font-size: 15px; line-height: 1.6; }
+  .editorial-chapter + .editorial-chapter { margin-top: 56px; padding-top: 56px; }
+  .editorial-chapter.has-photo { grid-template-columns: 1fr 1fr; gap: 56px; align-items: stretch; }
+  .editorial-chapter.has-photo .editorial-photo { order: 2; min-height: 460px; aspect-ratio: auto; }
+  .editorial-chapter.has-photo .editorial-copy { align-self: center; }
+  /* A second photo chapter swaps sides */
+  .editorial-chapter.has-photo + .editorial-chapter.has-photo .editorial-photo { order: 0; }
+  .editorial-chapter.has-points { grid-template-columns: 4fr 8fr; gap: 56px; align-items: start; }
+  .editorial-action { width: auto; min-width: 220px; margin-top: 24px; }
+  .editorial-points { grid-template-columns: 1fr 1fr; column-gap: 40px; }
+  .editorial-point { padding: 18px 0; }
+  .editorial-point:nth-child(-n+2) { padding-top: 0; border-top: 0; }
+  .editorial-point:last-child { padding-bottom: 18px; }
+  .editorial-point dt { font-size: 22px; }
+  .editorial-point dd { font-size: 15px; }
+  /* Three points sit in one row so none is left on its own */
+  .editorial-points:has(> :nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); column-gap: 28px; }
+  .editorial-points:has(> :nth-child(3):last-child) .editorial-point { padding-top: 0; border-top: 0; }
 }
 
 /* Contact page: Call, Text and Live chat buttons in the main purple */

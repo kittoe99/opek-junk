@@ -145,7 +145,7 @@ export const InHomeEstimatePage: React.FC = () => {
         rating={false}
         title={<>Providers come<br />to you</>}
         subtitle="Book a free, no-obligation visit. A vetted local provider walks through the job with you and gives you a price on the spot."
-        image="/optimized/service-scenes/in-home-estimate.webp"
+        image="/optimized/service-scenes/estimate-natural.webp"
         imageAlt="Provider ready for an in-home estimate"
         primaryCta={{ label: 'Schedule my visit', href: '#estimate-details' }}
         secondaryCta={moveOutCleaning ? undefined : { label: 'Get an online quote instead', onClick: () => navigate('/quote') }}

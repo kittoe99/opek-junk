@@ -14,7 +14,7 @@ export const DumpsterRentalPage: React.FC = () => {
       eyebrow="Roll-Off Dumpster Rental"
       title="Dumpster Rental"
       subtitle="The right container for your project, delivered to your door. Fill it at your pace, then schedule pickup."
-      heroImage="/optimized/service-scenes/dumpster-rental-unbranded.webp"
+      heroImage="/optimized/service-scenes/dumpster-rental-natural.webp"
       heroImageAlt="Roll-off dumpster ready for rental"
       heroChip="Flat-Rate Drop-Off"
       primaryCta={{ label: 'Rent a Dumpster', onClick: () => navigate('/quote', { state: DUMPSTER_STATE }) }}
@@ -41,7 +41,7 @@ export const DumpsterRentalPage: React.FC = () => {
           { title: 'Flexible Dates', Icon: CalendarClock },
           { title: 'Insured Pros', Icon: ShieldCheck },
         ],
-        image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
+        image: '/optimized/service-scenes/dumpster-rental-natural.webp',
         imageAlt: 'Roll-off dumpster for debris and renovation waste',
       }}
       features={{

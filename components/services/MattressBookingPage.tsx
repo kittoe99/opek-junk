@@ -370,7 +370,7 @@ export const MattressBookingPage: React.FC = () => {
             title="Where should we pick up?"
             subtitle="Enter your ZIP to confirm coverage for mattress disposal."
             variant="card"
-            image="/optimized/service-scenes/mattress-pickup.webp"
+            image="/optimized/service-scenes/mattress-pickup-natural.webp"
             zipValue={zipCode}
             onZipChange={(v) => {
               setZipCode(v);

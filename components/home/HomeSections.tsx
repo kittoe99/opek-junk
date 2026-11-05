@@ -25,7 +25,7 @@ const services = [
   {
     title: 'Small local moves',
     trademark: true,
-    image: '/optimized/service-scenes/local-moving.webp',
+    image: '/optimized/service-scenes/local-movers-card-v5.webp',
     imagePosition: 'center 30%',
     cta: 'Book a move',
     to: '/booking',
@@ -39,13 +39,13 @@ const services = [
   },
   {
     title: 'Property cleanouts',
-    image: '/optimized/service-scenes/property-cleanout.webp',
+    image: '/optimized/service-scenes/property-cleanouts-card-v3.webp',
     imagePosition: 'center 25%',
     to: '/services/property-cleanout',
   },
   {
     title: 'Move-out cleaning',
-    image: '/optimized/service-scenes/in-home-estimate.webp',
+    image: '/optimized/service-scenes/move-out-cleaning-card-v3.webp',
     imagePosition: 'center 20%',
     to: '/services/move-out-cleaning',
   },
@@ -174,14 +174,14 @@ const steps = [
   {
     title: 'Pick your items',
     body: 'Tell us what’s going — one couch or a whole garage — and see your upfront price online.',
-    image: '/optimized/service-scenes/mattress-pickup.webp',
-    alt: 'Provider carrying a mattress',
+    image: '/optimized/service-scenes/mattress-pickup-natural.webp',
+    alt: 'Two workers carrying a bagged mattress toward a van',
     fit: 'contain' as const,
   },
   {
     title: 'Choose a time',
     body: 'Book a pickup window that works for you, including same-day where providers are available.',
-    image: '/optimized/service-scenes/pickup-scheduling.webp',
+    image: '/optimized/service-scenes/scheduling-natural.webp',
     alt: 'Hand holding a phone with a pickup calendar and time-window choices',
     imageClassName: 'h-full w-full object-contain object-bottom pt-5',
     fit: 'contain' as const,
@@ -189,8 +189,8 @@ const steps = [
   {
     title: 'We haul it away',
     body: 'Your provider loads everything up and takes care of disposal, donation or recycling.',
-    image: '/optimized/service-scenes/junk-truck-unbranded.webp',
-    alt: 'Purple dump truck loaded with furniture and household junk',
+    image: '/optimized/service-scenes/junk-removal-natural.webp',
+    alt: 'Workers carrying an unwanted armchair toward a hauling truck',
     fit: 'contain' as const,
   },
 ];

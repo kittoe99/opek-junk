@@ -662,12 +662,12 @@ export const BookingPage: React.FC = () => {
                             <img
                               src={
                                 formData.serviceType === 'Donation Pick Up'
-                                  ? '/optimized/service-scenes/property-cleanout.webp'
+                                  ? '/optimized/service-scenes/property-cleanouts-card-v3.webp'
                                   : formData.serviceType === 'Moving Labor'
-                                    ? '/optimized/service-scenes/local-moving.webp'
+                                    ? '/optimized/service-scenes/moving-help-natural.webp'
                                     : formData.serviceType === 'Dumpster Rental'
-                                      ? '/optimized/service-scenes/dumpster-rental-unbranded.webp'
-                                      : '/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp'
+                                      ? '/optimized/service-scenes/dumpster-rental-natural.webp'
+                                      : '/optimized/service-scenes/local-movers-card-v5.webp'
                               }
                               alt="Service"
                               className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
@@ -861,7 +861,7 @@ export const BookingPage: React.FC = () => {
                     <div className="ui-panel bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-4">
                       <div className="ui-image-frame photo-overlay w-20 h-16 shrink-0 flex items-end justify-center">
                         <img
-                          src="/optimized/service-scenes/dumpster-rental-unbranded.webp"
+                          src="/optimized/service-scenes/dumpster-rental-natural.webp"
                           alt="Dumpster Rental"
                           className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]"
                         />

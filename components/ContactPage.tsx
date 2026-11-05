@@ -70,8 +70,8 @@ export const ContactPage: React.FC = () => {
         rating={false}
         title={<>Real people.<br />Quick answers.</>}
         subtitle="Questions about a quote, a booking or an order? Call, text or send a message. We usually reply within 30 minutes."
-        image="/optimized/hero-backgrounds/opek-crew-high-five-unbranded.webp"
-        imageAlt="Two Opek providers high-fiving beside their truck"
+        image="/optimized/service-scenes/local-movers-card-v5.webp"
+        imageAlt="Two young local providers standing beside a moving truck"
         photoLine="Call. Text. Chat."
         primaryCta={{ label: 'Send a message', href: '#contact-form' }}
         secondaryCta={{ label: 'Call (877) 757-4365', href: `tel:+${SITE_PHONE}` }}

@@ -242,6 +242,11 @@ export const seoConfig = {
     description: 'Join the Opek network of trusted junk removal providers. Grow your business with already booked jobs and nationwide exposure.',
     keywords: 'junk removal provider, partner program, junk removal business, provider signup',
   },
+  providerApplication: {
+    title: 'Provider Application | Opek Junk Removal',
+    description: 'Apply to join the Opek provider network. Share your business, service areas, vehicle and availability.',
+    keywords: 'provider application, junk removal contractor application, opek provider signup',
+  },
   privacy: {
     title: 'Privacy Policy | Opek Junk Removal',
     description: 'Learn how Opek Junk Removal collects, uses, protects, and handles your personal information. Read our complete privacy policy.',

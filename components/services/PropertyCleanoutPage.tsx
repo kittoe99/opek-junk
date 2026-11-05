@@ -12,8 +12,8 @@ export const PropertyCleanoutPage: React.FC = () => {
       eyebrow="Property Cleanouts"
       title="Property Cleanouts"
       subtitle="From move-outs to estate cleanouts, get thoughtful, thorough help clearing the space."
-      heroImage="/optimized/service-scenes/property-cleanout.webp"
-      heroImageAlt="Local providers carrying items out during a property cleanout"
+      heroImage="/optimized/service-scenes/property-cleanouts-card-v3.webp"
+      heroImageAlt="Workers clearing household items and wheeling a dresser out of a home"
       heroChip="Discreet & Thorough"
       primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
@@ -37,8 +37,8 @@ export const PropertyCleanoutPage: React.FC = () => {
           { title: 'Insured Providers', Icon: ShieldCheck },
           { title: 'Responsible Disposal', Icon: Recycle },
         ],
-        image: '/optimized/service-scenes/in-home-estimate.webp',
-        imageAlt: 'Provider with clipboard ready for a property estimate',
+        image: '/optimized/service-scenes/estimate-natural.webp',
+        imageAlt: 'Worker taking notes during a property walkthrough with a customer',
       }}
       features={{
         title: 'Cleanouts done right',

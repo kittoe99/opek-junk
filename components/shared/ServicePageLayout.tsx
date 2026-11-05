@@ -4,7 +4,7 @@ import { ServiceIncludeItem } from './ServiceSplitSection';
 import { ServiceFeatureItem } from './ServiceFeatureGrid';
 import { HomeHowItWorks, HomeWaysToBook, HomeReviews, HomeStep } from '../home/HomeSections';
 import { HomeCoverageSection } from '../home/HomeCoverageSection';
-import { HomeEditorialCards } from '../home/HomePagePatterns';
+import { HomeEditorialContent } from '../home/HomePagePatterns';
 import { HomeStartBar } from '../home/HomeStartBar';
 
 interface CtaProps {
@@ -74,11 +74,11 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   const steps: HomeStep[] = processSteps || [
     { title: moving ? 'Tell us about your move' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
       body: moving ? 'Choose truck and crew or labor only, then tell us what needs moving.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
-      image: !moving && !dumpster && !cleanout ? '/optimized/service-scenes/mattress-pickup.webp' : heroImage, alt: !moving && !dumpster && !cleanout ? 'Provider carrying a mattress' : heroImageAlt },
-    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/optimized/service-scenes/pickup-scheduling.webp', alt: 'Hand holding a phone with pickup time choices' },
+      image: heroImage, alt: heroImageAlt },
+    { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/optimized/service-scenes/scheduling-natural.webp', alt: 'Hand holding a phone with pickup time choices' },
     { title: moving ? 'Settle into your space' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
       body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
-      image: moving ? '/optimized/service-scenes/local-moving.webp' : '/optimized/service-scenes/junk-truck-unbranded.webp', alt: moving ? 'Moving providers loading a sofa' : 'Purple dump truck ready for hauling' },
+      image: cleanout || dumpster ? heroImage : split.image, alt: cleanout || dumpster ? heroImageAlt : split.imageAlt },
   ];
   return <div className="home-light interior-home has-start-bar">
     <HomeStartBar label={primaryCta.label} onGetQuote={primaryCta.onClick} href={primaryCta.href} />
@@ -91,14 +91,14 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
     <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
       description={processDescription || `Booking ${moving ? 'local moving help' : dumpster ? 'a dumpster' : 'your pickup'} online has never been easier.`} items={steps} />
     <HomeCoverageSection titleStart={serviceArea.titleStart} titleAccent={serviceArea.titleAccent} subtitle={serviceArea.subtitle} showSameDay={serviceArea.showSameDay} onCheck={onZipCheck} />
-    <HomeEditorialCards title={split.title} description={split.body} cards={[
+    <HomeEditorialContent title={split.title} description={split.body} chapters={[
       { title: split.eyebrow, image: split.image, alt: split.imageAlt,
         body: <><p className="font-semibold mb-4">{split.includesLabel || 'We take care of the whole job.'}</p><div className="grid grid-cols-2 gap-4 text-left">{split.includes.map(({ title: label, Icon }) => <div key={label} className="flex items-center gap-2 text-sm font-semibold"><Icon size={20} className="shrink-0 text-[#520f96]" />{label}</div>)}</div></>,
-        action: { label: primaryCta.label, onClick: primaryCta.onClick }, details: features.items.slice(0,3) },
-      { title: features.title || 'Make room for what matters', image: heroImage, alt: heroImageAlt,
+        action: { label: primaryCta.label, onClick: primaryCta.onClick } },
+      { title: features.title || 'Make room for what matters',
         body: 'Vetted local providers, clear pricing and convenient booking. Get the help you need, on your schedule.',
         action: secondaryCta ? { label: secondaryCta.label, onClick: secondaryCta.onClick } : undefined,
-        details: features.items.slice(3) },
+        points: features.items },
     ]} />
     {children}
     <HomeWaysToBook bookingPath={bookingPath} bookingState={bookingState} />

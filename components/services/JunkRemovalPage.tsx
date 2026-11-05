@@ -12,8 +12,8 @@ export const JunkRemovalPage: React.FC = () => {
       eyebrow="Nationwide Junk Removal"
       title="Junk Removal"
       subtitle="Furniture, appliances, and everyday clutter. Get an upfront price and let a local crew handle the lifting."
-      heroImage="/optimized/service-scenes/junk-truck-unbranded.webp"
-      heroImageAlt="A purple dump truck loaded for junk removal"
+      heroImage="/optimized/service-scenes/junk-removal-natural.webp"
+      heroImageAlt="Local workers carrying an unwanted armchair toward a hauling truck"
       heroChip="Heavy Lifting"
       primaryCta={{ label: 'Get Online Price', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
@@ -37,8 +37,8 @@ export const JunkRemovalPage: React.FC = () => {
           { title: 'Transport Valet', Icon: Truck },
           { title: 'Proper Disposal', Icon: Recycle },
         ],
-        image: '/optimized/service-scenes/local-moving.webp',
-        imageAlt: 'Providers loading a sofa and junk into a box truck',
+        image: '/optimized/service-scenes/junk-removal-natural.webp',
+        imageAlt: 'Workers removing an old armchair from a residential driveway',
       }}
       features={{
         title: 'Why book junk removal',

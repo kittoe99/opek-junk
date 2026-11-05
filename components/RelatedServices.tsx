@@ -6,32 +6,32 @@ const allRelatedServices = [
   {
     title: 'Junk Removal',
     path: '/services/junk-removal',
-    image: '/optimized/service-scenes/local-moving.webp',
-    alt: 'Providers loading junk into a box truck',
+    image: '/optimized/service-scenes/junk-removal-natural.webp',
+    alt: 'Workers carrying an old armchair toward a hauling truck',
   },
   {
     title: 'Move-Out Cleaning',
     path: '/services/move-out-cleaning',
-    image: '/optimized/service-scenes/in-home-estimate.webp',
-    alt: 'Provider with a clipboard talking through a job with a customer',
+    image: '/optimized/service-scenes/move-out-cleaning-card-v3.webp',
+    alt: 'Cleaners wiping cabinets and mopping an empty apartment',
   },
   {
     title: 'Dumpster Rental',
     path: '/services/dumpster-rental',
-    image: '/optimized/service-scenes/dumpster-rental-unbranded.webp',
+    image: '/optimized/service-scenes/dumpster-rental-natural.webp',
     alt: 'Roll-off dumpster for debris and renovation waste',
   },
   {
     title: 'Small Local Moves',
     path: '/services/small-local-moves',
-    image: '/optimized/service-scenes/local-moving.webp',
-    alt: 'Provider loading boxes into a cargo van',
+    image: '/optimized/service-scenes/local-movers-card-v5.webp',
+    alt: 'Two young movers standing beside a moving truck',
   },
   {
     title: 'Property Cleanouts',
     path: '/services/property-cleanout',
-    image: '/optimized/service-scenes/property-cleanout.webp',
-    alt: 'Provider helping a customer after a property cleanout',
+    image: '/optimized/service-scenes/property-cleanouts-card-v3.webp',
+    alt: 'Workers sorting household items during a property cleanout',
   },
 ];
 

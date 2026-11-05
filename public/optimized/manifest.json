@@ -166,5 +166,141 @@
     "width": 1536,
     "height": 1024,
     "hasAlpha": false
+  },
+  "/service-scenes/local-movers-card.png": {
+    "output": "/optimized/service-scenes/local-movers-card.webp",
+    "originalBytes": 2308399,
+    "optimizedBytes": 154906,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/move-out-cleaning-card.png": {
+    "output": "/optimized/service-scenes/move-out-cleaning-card.webp",
+    "originalBytes": 2309128,
+    "optimizedBytes": 145640,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/property-cleanouts-card.png": {
+    "output": "/optimized/service-scenes/property-cleanouts-card.webp",
+    "originalBytes": 2280307,
+    "optimizedBytes": 155342,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/property-cleanouts-card-v2.png": {
+    "output": "/optimized/service-scenes/property-cleanouts-card-v2.webp",
+    "originalBytes": 2464679,
+    "optimizedBytes": 205138,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/move-out-cleaning-card-v2.png": {
+    "output": "/optimized/service-scenes/move-out-cleaning-card-v2.webp",
+    "originalBytes": 2060339,
+    "optimizedBytes": 116926,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/property-cleanouts-card-v3.png": {
+    "output": "/optimized/service-scenes/property-cleanouts-card-v3.webp",
+    "originalBytes": 2301039,
+    "optimizedBytes": 150582,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/move-out-cleaning-card-v3.png": {
+    "output": "/optimized/service-scenes/move-out-cleaning-card-v3.webp",
+    "originalBytes": 2286801,
+    "optimizedBytes": 123940,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/local-movers-card-v2.png": {
+    "output": "/optimized/service-scenes/local-movers-card-v2.webp",
+    "originalBytes": 2755619,
+    "optimizedBytes": 223706,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/local-movers-card-v3.png": {
+    "output": "/optimized/service-scenes/local-movers-card-v3.webp",
+    "originalBytes": 2669209,
+    "optimizedBytes": 225418,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/local-movers-card-v4.png": {
+    "output": "/optimized/service-scenes/local-movers-card-v4.webp",
+    "originalBytes": 2546112,
+    "optimizedBytes": 207920,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/local-movers-card-v5.png": {
+    "output": "/optimized/service-scenes/local-movers-card-v5.webp",
+    "originalBytes": 2432623,
+    "optimizedBytes": 189838,
+    "width": 1402,
+    "height": 1122,
+    "hasAlpha": false
+  },
+  "/service-scenes/junk-removal-natural.png": {
+    "output": "/optimized/service-scenes/junk-removal-natural.webp",
+    "originalBytes": 2994447,
+    "optimizedBytes": 302094,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/dumpster-rental-natural.png": {
+    "output": "/optimized/service-scenes/dumpster-rental-natural.webp",
+    "originalBytes": 2959322,
+    "optimizedBytes": 315242,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/moving-help-natural.png": {
+    "output": "/optimized/service-scenes/moving-help-natural.webp",
+    "originalBytes": 2564144,
+    "optimizedBytes": 181490,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/estimate-natural.png": {
+    "output": "/optimized/service-scenes/estimate-natural.webp",
+    "originalBytes": 2333522,
+    "optimizedBytes": 119452,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/scheduling-natural.png": {
+    "output": "/optimized/service-scenes/scheduling-natural.webp",
+    "originalBytes": 2127097,
+    "optimizedBytes": 120896,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
+  },
+  "/service-scenes/mattress-pickup-natural.png": {
+    "output": "/optimized/service-scenes/mattress-pickup-natural.webp",
+    "originalBytes": 2912859,
+    "optimizedBytes": 250100,
+    "width": 1536,
+    "height": 1024,
+    "hasAlpha": false
   }
 }

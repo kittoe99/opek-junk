@@ -1,16 +1,16 @@
 import React from 'react';
 
 const haulJobs = [
-  { name: 'Furniture Haul-Away', image: '/optimized/card-junk-removal.webp', alt: 'Junk removal crew hauling furniture out of a home' },
-  { name: 'Appliance Removal', image: '/opek2.webp', alt: 'Providers loading bulky junk onto a truck' },
-  { name: 'Mattress Pickup', image: '/mattress-disposal.webp', alt: 'Mattress ready for junk removal pickup' },
-  { name: 'Garage Cleanouts', image: '/optimized/service-property-cleanout.webp', alt: 'Property and garage cleanout in progress' },
-  { name: 'Dumpster Loads', image: '/optimized/card-dumpster-rental.webp', alt: 'Roll-off dumpster for junk and debris' },
-  { name: 'Estate Cleanouts', image: '/junk-removal.webp', alt: 'Full home estate junk removal cleanout' },
-  { name: 'Truck & Hauling', image: '/optimized/hero-truck-loading.webp', alt: 'Junk removal truck being loaded' },
-  { name: 'Same-Day Crews', image: '/optimized/workers-opek.webp', alt: 'Junk removal providers ready for a haul' },
-  { name: 'Construction Debris', image: '/optimized/dumpster-rental.webp', alt: 'Dumpster filled with construction debris' },
-  { name: 'Move-Out Junk', image: '/optimized/card-moving-labor.webp', alt: 'Moving labor and leftover junk haul-away' },
+  { name: 'Furniture Haul-Away', image: '/optimized/service-scenes/junk-removal-natural.webp', alt: 'Junk removal crew hauling furniture out of a home' },
+  { name: 'Appliance Removal', image: '/optimized/service-scenes/junk-removal-natural.webp', alt: 'Providers loading bulky junk onto a truck' },
+  { name: 'Mattress Pickup', image: '/optimized/service-scenes/mattress-pickup-natural.webp', alt: 'Mattress ready for junk removal pickup' },
+  { name: 'Garage Cleanouts', image: '/optimized/service-scenes/property-cleanouts-card-v3.webp', alt: 'Property and garage cleanout in progress' },
+  { name: 'Dumpster Loads', image: '/optimized/service-scenes/dumpster-rental-natural.webp', alt: 'Roll-off dumpster for junk and debris' },
+  { name: 'Estate Cleanouts', image: '/optimized/service-scenes/property-cleanouts-card-v3.webp', alt: 'Full home estate junk removal cleanout' },
+  { name: 'Truck & Hauling', image: '/optimized/service-scenes/junk-removal-natural.webp', alt: 'Junk removal truck being loaded' },
+  { name: 'Same-Day Crews', image: '/optimized/service-scenes/local-movers-card-v5.webp', alt: 'Junk removal providers ready for a haul' },
+  { name: 'Construction Debris', image: '/optimized/service-scenes/dumpster-rental-natural.webp', alt: 'Dumpster filled with construction debris' },
+  { name: 'Move-Out Junk', image: '/optimized/service-scenes/moving-help-natural.webp', alt: 'Moving labor and leftover junk haul-away' },
 ];
 
 export const UseCases: React.FC = () => {

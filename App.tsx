@@ -21,6 +21,7 @@ const ContactPage = React.lazy(() => import('./components/ContactPage').then((m)
 const ChatPage = React.lazy(() => import('./components/ChatPage').then((m) => ({ default: m.ChatPage })));
 const BookingPage = React.lazy(() => import('./components/BookingPage').then((m) => ({ default: m.BookingPage })));
 const ProviderSignupPage = React.lazy(() => import('./components/ProviderSignupPage').then((m) => ({ default: m.ProviderSignupPage })));
+const ProviderApplicationPage = React.lazy(() => import('./components/ProviderApplicationPage').then((m) => ({ default: m.ProviderApplicationPage })));
 const SignUpPage = React.lazy(() => import('./components/SignUpPage').then((m) => ({ default: m.SignUpPage })));
 const TrackOrderPage = React.lazy(() => import('./components/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
 const InHomeEstimatePage = React.lazy(() => import('./components/InHomeEstimatePage').then((m) => ({ default: m.InHomeEstimatePage })));
@@ -261,6 +262,15 @@ function ProviderSignupPageWithSEO() {
   );
 }
 
+function ProviderApplicationPageWithSEO() {
+  return (
+    <>
+      <SEO {...seoConfig.providerApplication} />
+      <ProviderApplicationPage />
+    </>
+  );
+}
+
 function SignUpPageWithSEO() {
   return (
     <>
@@ -357,6 +367,7 @@ function App() {
             <Route path="/services/mattress-disposal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />
             <Route path="/provider-signup" element={<ProviderSignupPageWithSEO />} />
+            <Route path="/provider-signup/apply" element={<ProviderApplicationPageWithSEO />} />
             <Route path="/sign-up" element={<SignUpPageWithSEO />} />
             <Route path="/track-order" element={<TrackOrderPageWithSEO />} />
             <Route path="/in-home-estimate" element={<InHomeEstimatePageWithSEO />} />

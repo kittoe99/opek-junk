@@ -829,10 +829,6 @@ select.opek-field {
 
 /* Homepage: soft-card polish */
 .home-soft-band { background: linear-gradient(#f7f2fd, #fbf8fe 60%, #fff); }
-.home-service-card { display: flex; flex-direction: column; text-align: left; }
-.home-light .home-service-media { height: auto; aspect-ratio: 16 / 9; background: #f1e9fa; }
-.home-service-media img { object-fit: cover; object-position: center 65%; }
-.home-card-details { margin-top: 20px; border-top: 1.5px solid #f0eaf6; }
 .home-detail { border-bottom: 1.5px solid #f0eaf6; }
 .home-detail:last-child { border-bottom: 0; }
 .home-detail summary {
