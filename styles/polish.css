@@ -592,3 +592,52 @@ body .site-root .flow-zip-art::before { z-index: 1; }
   .mnav-row-title { font-size: 20px; }
   .mnav-row-label { font-size: 14px; }
 }
+
+/* Contact page: Call, Text and Live chat buttons in the main purple */
+body .site-root .contact-option.soft-surface { border-color: #520f96; background: #520f96; color: #fff; }
+body .site-root .contact-option.soft-surface svg { color: #fff; }
+body .site-root .contact-option.soft-surface:hover { border-color: #3f0a75; background: #3f0a75; }
+
+/* Service page heroes: one short line centered in the part of the photo above the action card */
+.zip-hero-photo-line {
+  position: absolute; inset: 0 0 44px; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 16px;
+  background: linear-gradient(to bottom, transparent, rgb(26 7 48 / 45%) 50%, transparent);
+  color: #fff;
+  font: 800 26px/1.05 'Barlow Condensed', Archivo, 'Arial Narrow', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .zip-hero-photo-line { inset: 0 0 110px; padding: 0 24px; font-size: 44px; }
+}
+
+/* How it works: step numbers in the headline type, joined by a line on desktop */
+.home-step-num {
+  display: block;
+  margin-bottom: 2px;
+  color: #520f96;
+  font: 800 24px/1 'Barlow Condensed', Archivo, 'Arial Narrow', sans-serif;
+}
+@media (min-width: 768px) {
+  .home-step-num {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0 8px;
+    font-size: 48px;
+  }
+  .home-step-num::before,
+  .home-step-num::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: #d9c9ec;
+  }
+  /* Run the line across the 2.5rem column gap so the steps read as one path */
+  .home-step-num::before { margin-left: -1.25rem; }
+  .home-step-num::after { margin-right: -1.25rem; }
+  .home-process-track > article:first-child .home-step-num::before,
+  .home-process-track > article:last-child .home-step-num::after { visibility: hidden; }
+}

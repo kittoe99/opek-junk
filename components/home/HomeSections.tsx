@@ -242,12 +242,12 @@ export const HomeHowItWorks: React.FC<{
                   loading="lazy"
                   className={step.imageClassName ?? 'h-full w-full object-contain object-bottom pt-2 md:pt-5'}
                 />
-                <span className="absolute left-1.5 top-1.5 md:left-3 md:top-3 flex h-7 w-7 md:h-9 md:w-9 items-center justify-center bg-[#520f96] md:bg-white font-['Archivo'] text-[13px] md:text-[15px] font-black text-white md:text-[#520f96]">
-                  {i + 1}
-                </span>
               </div>
               <div>
-                <h3 className="home-display md:mt-5 text-[1.2rem] sm:text-[1.5rem] leading-tight text-[#140a1f]">
+                <span className="home-step-num" aria-hidden>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="home-display text-[1.2rem] sm:text-[1.5rem] leading-tight text-[#140a1f]">
                   {step.title}
                 </h3>
                 <p className="mt-1 md:mt-2 text-[14px] md:text-[15px] leading-snug md:leading-relaxed text-[#2b2236]">

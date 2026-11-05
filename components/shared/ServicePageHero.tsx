@@ -13,6 +13,8 @@ export interface ServicePageHeroProps {
   children?: React.ReactNode; finePrint?: string;
   /** Show the customer rating under the headline (customer-facing pages). */
   rating?: boolean;
+  /** Short line set on the photo, near the top (the action card covers the bottom edge). */
+  photoLine?: string;
 }
 
 const SITE_PHONE = '+18777574365';
@@ -25,7 +27,7 @@ function Action({ cta, className }: { cta: CtaProps; className: string }) {
 
 /** Page hero matching the homepage: headline and rating above a full-width photo, with an action card overlapping its bottom edge. */
 export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
-  title, subtitle, image, imageAlt, primaryCta, secondaryCta, children, imagePosition, rating = true,
+  title, subtitle, image, imageAlt, primaryCta, secondaryCta, children, imagePosition, rating = true, photoLine,
   finePrint = 'Services are performed by independent local providers. Pricing, availability and same-day service vary by area.',
 }) => (
   <section className="home-hero zip-hero page-hero" aria-labelledby="page-hero-heading">
@@ -44,6 +46,7 @@ export const ServicePageHero: React.FC<ServicePageHeroProps> = ({
 
     <div className="zip-hero-media">
       <img src={image} alt={imageAlt} style={imagePosition ? { objectPosition: imagePosition } : undefined} fetchPriority="high" />
+      {photoLine && <p className="zip-hero-photo-line">{photoLine}</p>}
     </div>
 
     <div className="zip-hero-card-wrap">

@@ -65,6 +65,12 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   const moving = path.includes('local-moves');
   const dumpster = path.includes('dumpster');
   const cleanout = path.includes('cleanout');
+  const cleaning = path.includes('move-out');
+  const photoLine = moving ? 'Small move. Big help.'
+    : dumpster ? 'Load it at your own pace'
+    : cleanout ? 'Every room. Cleared out.'
+    : cleaning ? 'Move out. We’ll clean up.'
+    : 'We do the heavy lifting';
   const steps: HomeStep[] = processSteps || [
     { title: moving ? 'Tell us about your move' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
       body: moving ? 'Choose truck and crew or labor only, then tell us what needs moving.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
@@ -79,6 +85,7 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
     <ServicePageHero eyebrow={eyebrow} title={title} subtitle={subtitle} image={heroImage} imageAlt={heroImageAlt}
       variant={path.startsWith('/services/') ? 'banner' : 'full'}
       imagePosition={moving || cleanout ? 'center top' : undefined}
+      photoLine={photoLine}
       chip={heroChip} primaryCta={primaryCta} secondaryCta={secondaryCta}
     />
     <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
