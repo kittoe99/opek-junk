@@ -1,6 +1,6 @@
 import { DetectedItem, PriceEstimate } from '../types';
 import { calculateJunkRemovalEstimateLocally } from '../lib/junkRemovalPricing';
-import { getMovingHourlyRate, MOVING_TRUCK_FEE, resolveMovingCrewSize } from '../lib/movingLaborPricing';
+import { getMovingHourlyRate, resolveMovingCrewSize } from '../lib/movingLaborPricing';
 
 export interface DumpsterRentalOptions {
   size: '10-yard' | '15-yard' | '20-yard' | '30-yard';
@@ -20,17 +20,15 @@ const DUMPSTER_RULES = {
   discount_percent: 10,
 };
 
-export function calculateMovingLaborLocally(helpers: number, hours: number, needsTruck = false): PriceEstimate {
+export function calculateMovingLaborLocally(helpers: number, hours: number): PriceEstimate {
   const resolvedHelpers = resolveMovingCrewSize(helpers);
   const pricePerHour = getMovingHourlyRate(resolvedHelpers);
-  const truckFee = needsTruck ? MOVING_TRUCK_FEE : 0;
-  const finalPrice = Math.round(pricePerHour * hours + truckFee);
-  const truckSummary = needsTruck ? ` Includes a one-time $${truckFee} truck fee.` : '';
+  const finalPrice = Math.round(pricePerHour * hours);
 
   return {
     estimatedVolume: `${resolvedHelpers} helpers for ${hours} hours`,
     price: finalPrice,
-    summary: `Moving Labor: ${resolvedHelpers} helpers for ${hours} hours at $${pricePerHour}/hour.${truckSummary}`,
+    summary: `Moving Labor: ${resolvedHelpers} helpers for ${hours} hours at $${pricePerHour}/hour.`,
   };
 }
 
@@ -77,8 +75,7 @@ export function calculatePriceLocally(body: Record<string, unknown>): PriceEstim
   if (type === 'moving_labor') {
     return calculateMovingLaborLocally(
       Number(body.helpers) || 2,
-      Number(body.hours) || 2,
-      Boolean(body.needsTruck)
+      Number(body.hours) || 2
     );
   }
 

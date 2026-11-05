@@ -1,10 +1,7 @@
 import React from 'react';
 import { ServicePageHero } from './ServicePageHero';
-import { ServiceIncludeItem } from './ServiceSplitSection';
-import { ServiceFeatureItem } from './ServiceFeatureGrid';
 import { HomeHowItWorks, HomeWaysToBook, HomeReviews, HomeStep } from '../home/HomeSections';
 import { HomeCoverageSection } from '../home/HomeCoverageSection';
-import { HomeEditorialContent } from '../home/HomePagePatterns';
 import { HomeStartBar } from '../home/HomeStartBar';
 
 interface CtaProps {
@@ -29,18 +26,10 @@ interface ServicePageLayoutProps {
   heroChip?: string;
   primaryCta: CtaProps;
   secondaryCta?: CtaProps;
-  split: {
-    eyebrow: string;
+  /** Short plain-text section with in-text links, written for search. */
+  content: {
     title: string;
     body: React.ReactNode;
-    includesLabel?: string;
-    includes: ServiceIncludeItem[];
-    image: string;
-    imageAlt: string;
-  };
-  features: {
-    title?: string;
-    items: ServiceFeatureItem[];
   };
   serviceArea: {
     titleStart: string;
@@ -59,26 +48,26 @@ interface ServicePageLayoutProps {
 
 export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
   path, eyebrow, title, subtitle, heroImage, heroImageAlt, heroChip, primaryCta, secondaryCta,
-  split, features, serviceArea, children, afterTestimonials, onZipCheck, bookingPath, bookingState,
+  content, serviceArea, children, afterTestimonials, onZipCheck, bookingPath, bookingState,
   processTitle, processDescription, processSteps,
 }) => {
-  const moving = path.includes('local-moves');
+  const moving = path.includes('moving-labor');
   const dumpster = path.includes('dumpster');
   const cleanout = path.includes('cleanout');
   const cleaning = path.includes('move-out');
-  const photoLine = moving ? 'Small move. Big help.'
+  const photoLine = moving ? 'Muscle for your move'
     : dumpster ? 'Load it at your own pace'
     : cleanout ? 'Every room. Cleared out.'
     : cleaning ? 'Move out. We’ll clean up.'
     : 'We do the heavy lifting';
   const steps: HomeStep[] = processSteps || [
-    { title: moving ? 'Tell us about your move' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
-      body: moving ? 'Choose truck and crew or labor only, then tell us what needs moving.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
+    { title: moving ? 'Tell us what you need' : dumpster ? 'Choose your container' : cleanout ? 'Show us the space' : 'Pick your items',
+      body: moving ? 'Choose loading, unloading or rearranging, then tell us about the job.' : dumpster ? 'Choose a roll-off size for your project, from a garage cleanout to a renovation.' : cleanout ? 'Tell us about the property and what needs to go. Arrange an estimate for larger jobs.' : 'Tell us what is going — one couch or a whole garage — and see your upfront price.',
       image: heroImage, alt: heroImageAlt },
     { title: 'Choose a time', body: 'Book a window that works for you. Same-day options depend on local provider availability.', image: '/optimized/service-scenes/scheduling-natural.webp', alt: 'Hand holding a phone with pickup time choices' },
-    { title: moving ? 'Settle into your space' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
-      body: moving ? 'Your crew loads, transports and unloads, so you can focus on your new place.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
-      image: cleanout || dumpster ? heroImage : split.image, alt: cleanout || dumpster ? heroImageAlt : split.imageAlt },
+    { title: moving ? 'Helpers do the lifting' : dumpster ? 'Fill it. We collect it.' : 'Leave the lifting to us',
+      body: moving ? 'Helpers load and unload while you handle the truck, POD or storage.' : dumpster ? 'Load the container at your pace. Your provider returns for pickup and disposal.' : 'Your matched crew loads everything and handles disposal, donation or recycling.',
+      image: moving ? '/optimized/service-scenes/mattress-pickup-natural.webp' : cleanout || dumpster ? heroImage : '/optimized/service-scenes/junk-truck-unbranded.webp', alt: moving ? 'Two helpers carrying a mattress' : cleanout || dumpster ? heroImageAlt : 'Purple dump truck loaded with household junk' },
   ];
   return <div className="home-light interior-home has-start-bar">
     <HomeStartBar label={primaryCta.label} onGetQuote={primaryCta.onClick} href={primaryCta.href} />
@@ -88,18 +77,13 @@ export const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({
       photoLine={photoLine}
       chip={heroChip} primaryCta={primaryCta} secondaryCta={secondaryCta}
     />
-    <HomeHowItWorks title={processTitle || (moving ? 'A few taps. A fresh start.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
-      description={processDescription || `Booking ${moving ? 'local moving help' : dumpster ? 'a dumpster' : 'your pickup'} online has never been easier.`} items={steps} />
+    <HomeHowItWorks title={processTitle || (moving ? 'A few taps. Extra muscle.' : dumpster ? 'Your project. Three easy steps.' : 'Three steps. One clear space.')}
+      description={processDescription || `Booking ${moving ? 'moving labor' : dumpster ? 'a dumpster' : 'your pickup'} online has never been easier.`} items={steps} />
     <HomeCoverageSection titleStart={serviceArea.titleStart} titleAccent={serviceArea.titleAccent} subtitle={serviceArea.subtitle} showSameDay={serviceArea.showSameDay} onCheck={onZipCheck} />
-    <HomeEditorialContent title={split.title} description={split.body} chapters={[
-      { title: split.eyebrow, image: split.image, alt: split.imageAlt,
-        body: <><p className="font-semibold mb-4">{split.includesLabel || 'We take care of the whole job.'}</p><div className="grid grid-cols-2 gap-4 text-left">{split.includes.map(({ title: label, Icon }) => <div key={label} className="flex items-center gap-2 text-sm font-semibold"><Icon size={20} className="shrink-0 text-[#520f96]" />{label}</div>)}</div></>,
-        action: { label: primaryCta.label, onClick: primaryCta.onClick } },
-      { title: features.title || 'Make room for what matters',
-        body: 'Vetted local providers, clear pricing and convenient booking. Get the help you need, on your schedule.',
-        action: secondaryCta ? { label: secondaryCta.label, onClick: secondaryCta.onClick } : undefined,
-        points: features.items },
-    ]} />
+    <section className="service-copy home-soft-band">
+      <h2 className="home-display text-[#140a1f]">{content.title}</h2>
+      {content.body}
+    </section>
     {children}
     <HomeWaysToBook bookingPath={bookingPath} bookingState={bookingState} />
     <HomeReviews />

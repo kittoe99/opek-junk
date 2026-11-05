@@ -219,7 +219,7 @@ export const CityLinksSection: React.FC<CityLinksSectionProps> = ({ otherCities,
               { label: 'Junk removal', path: '/services/junk-removal' },
               { label: 'Dumpster rental', path: '/services/dumpster-rental' },
               { label: 'Property cleanouts', path: '/services/property-cleanout' },
-              { label: 'Small local moves', path: '/services/small-local-moves' },
+              { label: 'Moving labor', path: '/services/moving-labor' },
             ].map((s) => (
               <Link
                 key={s.path}

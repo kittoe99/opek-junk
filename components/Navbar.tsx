@@ -16,7 +16,7 @@ const serviceItems = [
   { name: 'Junk Removal', desc: 'Single items, mattresses, furniture & more', path: '/services/junk-removal', icon: JunkIcon },
   { name: 'Dumpster Rental', desc: 'Roll-off container drop-off & pickup', path: '/services/dumpster-rental', icon: DumpsterIcon },
   { name: 'Property Cleanouts', desc: 'Estate clearing, garage cleanouts & move-outs', path: '/services/property-cleanout', icon: PropertyCleanoutIcon },
-  { name: 'Small Local Moves', desc: 'Truck and crew for apartment & small home moves', path: '/services/small-local-moves', icon: MovingLaborIcon },
+  { name: 'Moving Labor', desc: 'Helpers to load, unload and rearrange', path: '/services/moving-labor', icon: MovingLaborIcon },
 ];
 
 const navLinks = [
@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const isAdsLandingPage =
     location.pathname === '/lp/junk-removal' ||
-    location.pathname === '/lp/local-moves';
+    location.pathname === '/lp/moving-labor';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showServicesMega, setShowServicesMega] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);

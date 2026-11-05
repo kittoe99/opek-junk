@@ -433,7 +433,7 @@ function userBooking(r: Record<string, any>): { subject: string; html: string } 
         isMattress
           ? 'Your mattress disposal booking is confirmed.'
           : isMoving
-            ? 'Your local moving booking is confirmed.'
+            ? 'Your moving labor booking is confirmed.'
             : 'Your junk removal booking is confirmed.'
       ) +
       detailsBlock(

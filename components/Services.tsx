@@ -146,11 +146,11 @@ const serviceGroups = [
   },
   {
     index: '04',
-    title: 'Small Local Moves',
-    tagline: 'Truck + crew by the hour',
+    title: 'Moving Labor',
+    tagline: 'Hourly helpers, labor only',
     description:
-      'Truck and crew for apartment and small home moves — or labor only if you already have a truck. Hourly rates matched to the size of your move.',
-    path: '/services/small-local-moves',
+      'Helpers to load, unload and rearrange. You arrange any truck, POD or storage. Hourly rates matched to the size of the job.',
+    path: '/services/moving-labor',
     Art: ArtMoving,
     Icon: MovingLaborIcon,
   },

@@ -13,7 +13,7 @@ const columns = [
       { label: 'Junk Removal', to: '/services/junk-removal' },
       { label: 'Dumpster Rental', to: '/services/dumpster-rental' },
       { label: 'Property Cleanouts', to: '/services/property-cleanout' },
-      { label: 'Small Local Moves', to: '/services/small-local-moves' },
+      { label: 'Moving Labor', to: '/services/moving-labor' },
       { label: 'Move-Out Cleaning', to: '/services/move-out-cleaning' },
     ],
   },

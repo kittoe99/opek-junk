@@ -1,7 +1,6 @@
 import { ServicePageLayout } from './shared/ServicePageLayout';
-import { Sofa, Refrigerator, Monitor, TreePine } from 'lucide-react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { SEO } from './SEO';
 import type { CityData } from '../lib/cityData';
 
@@ -60,20 +59,23 @@ export const CityPage: React.FC<CityPageProps> = ({ city }) => {
         primaryCta={{ label: 'Get my price', onClick: () => navigate('/quote') }}
         secondaryCta={{ label: 'Book a pickup', onClick: () => navigate('/booking') }}
         processTitle={`A few taps. A clear space in ${city.name}.`}
-        split={{
-          eyebrow: 'Almost anything goes', title: `Make room for more in ${city.name}`,
-          body: <p>Serving {city.metroArea} with vetted local providers. From one unwanted couch to a whole property, get a crew that handles the heavy lifting.</p>,
-          image: '/optimized/service-scenes/junk-removal-natural.webp', imageAlt: 'Workers carrying an unwanted armchair toward a hauling truck',
-          includes: [{ title: 'Furniture & mattresses', Icon: Sofa }, { title: 'Appliances', Icon: Refrigerator }, { title: 'Electronics', Icon: Monitor }, { title: 'Yard waste', Icon: TreePine }],
+        content={{
+          title: `Junk removal in ${city.name}, ${city.stateAbbr}`,
+          body: (
+            <>
+              <p>
+                Opek connects customers in {city.metroArea} with vetted local providers for furniture removal, appliance removal,
+                electronics and yard waste. Your {city.name} provider confirms the volume and price before work starts.
+                Same-day options depend on local availability.
+              </p>
+              <p>
+                <Link to="/quote">Get your price</Link> or <Link to="/booking">book a pickup</Link>. Also available:{' '}
+                <Link to="/services/dumpster-rental">dumpster rental</Link> and{' '}
+                <Link to="/services/property-cleanout">property cleanouts</Link>.
+              </p>
+            </>
+          ),
         }}
-        features={{ title: 'Your neighborhood. Your crew.', items: [
-          { title: 'Furniture & bedroom sets', body: 'Sofas, tables, dressers, bed frames, mattresses, headboards and full bedroom cleanups.' },
-          { title: 'Appliances & electronics', body: 'Fridges, washers, dryers, stoves, microwaves, TVs, computers, monitors, printers and e-waste.' },
-          { title: 'Garages, sheds & yards', body: 'Tools, exercise gear, boxes, yard storage, branches, leaves, light soil and general yard debris.' },
-          { title: 'An upfront price', body: `Your ${city.name} provider confirms the volume and price before work starts.` },
-          { title: 'Local coverage', body: `Serving ${city.name} and surrounding neighborhoods with vetted, insured crews. Same-day options depend on local availability.` },
-          { title: 'Thoughtful disposal', body: 'Sorting, donation when possible, and responsible disposal after every haul.' },
-        ]}}
         serviceArea={{ titleStart: `Ready to clear out, ${city.name}?`, titleAccent: 'Find your local crew.' }}
       />
     </>

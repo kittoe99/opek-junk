@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
   const location = useLocation();
   const isAdsLandingPage =
     location.pathname === '/lp/junk-removal' ||
-    location.pathname === '/lp/local-moves';
+    location.pathname === '/lp/moving-labor';
 
   if (isAdsLandingPage) {
     return (
@@ -142,8 +142,8 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services/small-local-moves" className="text-neutral-400 hover:text-white text-sm transition-colors">
-                    Small Local Moves
+                  <Link to="/services/moving-labor" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                    Moving Labor
                   </Link>
                 </li>
                 <li>

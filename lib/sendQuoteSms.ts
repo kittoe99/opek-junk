@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { getMovingHourlyRate, MOVING_TRUCK_FEE, resolveMovingCrewSize } from './movingLaborPricing';
+import { getMovingHourlyRate, resolveMovingCrewSize } from './movingLaborPricing';
 
 export interface SendQuoteSmsParams {
   name: string;
@@ -54,15 +54,13 @@ export async function sendQuoteSms(
 export function movingQuoteSmsFields(opts: {
   helpers: number;
   hours: number;
-  needsTruck?: boolean;
   totalPrice: number;
 }): { serviceType: string; priceLabel: string; volume: string } {
   const helpers = resolveMovingCrewSize(opts.helpers);
   const hourlyRate = getMovingHourlyRate(helpers);
-  const truckNote = opts.needsTruck ? ` · +$${MOVING_TRUCK_FEE} truck` : '';
   return {
-    serviceType: 'Local Moving',
+    serviceType: 'Moving Labor',
     priceLabel: `$${hourlyRate}/hour`,
-    volume: `${helpers} helpers · ~${opts.hours} hr${opts.hours === 1 ? '' : 's'} (est. $${Math.round(opts.totalPrice)})${truckNote}`,
+    volume: `${helpers} helpers · ~${opts.hours} hr${opts.hours === 1 ? '' : 's'} (est. $${Math.round(opts.totalPrice)})`,
   };
 }

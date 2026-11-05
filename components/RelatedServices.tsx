@@ -22,10 +22,10 @@ const allRelatedServices = [
     alt: 'Roll-off dumpster for debris and renovation waste',
   },
   {
-    title: 'Small Local Moves',
-    path: '/services/small-local-moves',
-    image: '/optimized/service-scenes/local-movers-card-v5.webp',
-    alt: 'Two young movers standing beside a moving truck',
+    title: 'Moving Labor',
+    path: '/services/moving-labor',
+    image: '/optimized/service-scenes/moving-help-natural.webp',
+    alt: 'Two moving helpers wrapping a wooden table in a protective blanket',
   },
   {
     title: 'Property Cleanouts',

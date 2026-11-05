@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Dumbbell, Package, Recycle, Truck } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 export const JunkRemovalPage: React.FC = () => {
@@ -17,57 +16,22 @@ export const JunkRemovalPage: React.FC = () => {
       heroChip="Heavy Lifting"
       primaryCta={{ label: 'Get Online Price', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking') }}
-      split={{
-        eyebrow: 'Junk haul away',
-        title: 'Looking to get rid of your bulky junk?',
+      content={{
+        title: 'Junk removal and haul away near you',
         body: (
-          <p>
-            Whether it&apos;s furniture, appliances, or general clutter, junk removal is simple with your team.
-            Local providers handle heavy lifting, quick pickup, reliable hauling, and full-service disposal.
-            Need a full clear-out? See{' '}
-            <Link to="/services/property-cleanout" className="text-brand hover:text-brand-400 font-semibold">
-              property cleanouts
-            </Link>
-            .
-          </p>
+          <>
+            <p>
+              Opek connects you with local junk removal providers for furniture removal, appliance removal, mattress
+              pickup, and garage or yard cleanups. Providers do the lifting, loading, hauling and disposal. Same-day
+              options depend on local availability.
+            </p>
+            <p>
+              <Link to="/quote">Get an online price</Link> or <Link to="/booking">book your pickup</Link>. Clearing a
+              whole home? See <Link to="/services/property-cleanout">property cleanouts</Link>. Prefer to load it
+              yourself? Try <Link to="/services/dumpster-rental">dumpster rental</Link>.
+            </p>
+          </>
         ),
-        includes: [
-          { title: 'Heavy Lifting', Icon: Dumbbell },
-          { title: 'Item Loading', Icon: Package },
-          { title: 'Transport Valet', Icon: Truck },
-          { title: 'Proper Disposal', Icon: Recycle },
-        ],
-        image: '/optimized/service-scenes/junk-removal-natural.webp',
-        imageAlt: 'Workers removing an old armchair from a residential driveway',
-      }}
-      features={{
-        title: 'Why book junk removal',
-        items: [
-          {
-            title: 'Easy Booking',
-            body: 'Book junk disposal online in minutes, with no phone tag.',
-          },
-          {
-            title: 'Upfront Pricing',
-            body: 'See a flat rate before you confirm. If your items change or extra fees apply, you’ll be told before booking or on-site.',
-          },
-          {
-            title: 'Same Day Pickup',
-            body: 'Next-day or same-day junk pickup when you book before noon in most areas.',
-          },
-          {
-            title: 'Straightforward Service',
-            body: 'Honest haul-away from start to finish. You point — providers do the rest.',
-          },
-          {
-            title: 'Order Tracking',
-            body: 'Check status, get an ETA, contact your provider, or reschedule with ease.',
-          },
-          {
-            title: 'Thoughtful Disposal',
-            body: 'Sustainable sorting, donation when possible, and responsible disposal.',
-          },
-        ],
       }}
       serviceArea={{
         titleStart: 'Schedule a pickup.',

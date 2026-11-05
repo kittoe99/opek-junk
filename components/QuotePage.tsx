@@ -479,7 +479,7 @@ export const QuotePage: React.FC = () => {
         : selectedService === 'moving_labor' ? 'Local Moving'
         : selectedService === 'dumpster_rental' ? 'Dumpster Rental' : 'Junk Removal';
       const movingDetails = movingOpts
-        ? `Crew: ${movingOpts.helpers}; hours: ${movingOpts.hours}; truck: ${movingOpts.needsTruck ? 'yes' : 'no'}` : '';
+        ? `Crew: ${movingOpts.helpers}; hours: ${movingOpts.hours}; labor only` : '';
       await submitQuote.current({ name, phone, email: email || '', serviceType, zipCode: zipValue,
         items: items.map(i => `${i.quantity}x ${i.name}`), price: price.price,
         summary: [price.summary, movingDetails].filter(Boolean).join('\n'), volume: price.estimatedVolume,
@@ -538,7 +538,7 @@ export const QuotePage: React.FC = () => {
               <div>
                 <p className="qsum-price-label">Your estimate</p>
                 <p className="qsum-price-service">
-                  {selectedService === 'donation_pickup' ? 'Donation Pick Up' : 'Local Moving'}
+                  {selectedService === 'donation_pickup' ? 'Donation Pick Up' : 'Moving Labor'}
                 </p>
                 {price.estimatedVolume && <p className="qest-volume">{price.estimatedVolume}</p>}
               </div>
@@ -736,7 +736,7 @@ export const QuotePage: React.FC = () => {
   if (selectedOption === 'moving_labor') {
     return (
       <div className={FLOW_PAGE_SHELL}>
-        <FlowChrome flowLabel="Get a quote" stepLabel="Moving options" progress={0.6} hasProgress />
+        <FlowChrome flowLabel="Get a quote" stepLabel="Labor options" progress={0.6} hasProgress />
         <div className={FLOW_PAGE_CONTENT}>
           <MovingLaborEstimateFlow
             crmQuote
@@ -750,7 +750,7 @@ export const QuotePage: React.FC = () => {
                 name,
                 phone,
                 consentAt,
-                [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Local Moving', quantity: 1 }],
+                [{ id: 'moving-labor', name: est.itemsDetected[0] ?? 'Moving Labor', quantity: 1 }],
                 price,
                 opts,
                 email

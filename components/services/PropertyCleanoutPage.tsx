@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { HeartHandshake, Home, Recycle, ShieldCheck } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 export const PropertyCleanoutPage: React.FC = () => {
@@ -17,57 +16,23 @@ export const PropertyCleanoutPage: React.FC = () => {
       heroChip="Discreet & Thorough"
       primaryCta={{ label: 'Get a Quote', onClick: () => navigate('/quote') }}
       secondaryCta={{ label: 'Schedule Visit', onClick: () => navigate('/in-home-estimate') }}
-      split={{
-        eyebrow: 'Property clearing',
-        title: 'Clear the whole property with care',
+      content={{
+        title: 'Property cleanouts for homes, estates and rentals',
         body: (
-          <p>
-            From estate cleanouts to tenant turnovers, matched crews work with families, agents, and
-            landlords at your pace. For single-item jobs, book{' '}
-            <Link to="/services/junk-removal" className="text-brand hover:text-brand-400 font-semibold">
-              junk removal
-            </Link>{' '}
-            instead.
-          </p>
+          <>
+            <p>
+              Local providers clear whole homes, garages and storage spaces for estate cleanouts, move-outs, tenant
+              turnovers and foreclosures. Set heirlooms and donations aside, and the rest gets hauled away. Families,
+              agents and landlords can book for residential and light commercial properties.
+            </p>
+            <p>
+              <Link to="/quote">Get a quote</Link> or{' '}
+              <Link to="/in-home-estimate">schedule an in-home estimate</Link>. Only a few items to go? Book{' '}
+              <Link to="/services/junk-removal">junk removal</Link>. Need it cleaned afterward? Add{' '}
+              <Link to="/services/move-out-cleaning">move-out cleaning</Link>.
+            </p>
+          </>
         ),
-        includesLabel: 'Cleanouts include:',
-        includes: [
-          { title: 'Full Home Clear', Icon: Home },
-          { title: 'Compassionate Crews', Icon: HeartHandshake },
-          { title: 'Insured Providers', Icon: ShieldCheck },
-          { title: 'Responsible Disposal', Icon: Recycle },
-        ],
-        image: '/optimized/service-scenes/estimate-natural.webp',
-        imageAlt: 'Worker taking notes during a property walkthrough with a customer',
-      }}
-      features={{
-        title: 'Cleanouts done right',
-        items: [
-          {
-            title: 'Estate & Move-Out',
-            body: 'Clear homes, garages, and storage with crews that respect your timeline and belongings.',
-          },
-          {
-            title: 'Foreclosure & REO',
-            body: 'Reliable clearing for agents and property managers — including multi-location coordination.',
-          },
-          {
-            title: 'Discretion First',
-            body: 'Background-checked providers. Unmarked vehicles available on request.',
-          },
-          {
-            title: 'Sort & Separate',
-            body: 'Keep heirlooms and donations aside while debris and junk are hauled away.',
-          },
-          {
-            title: 'Upfront Pricing',
-            body: 'Flat-rate quotes before work begins. If the job changes or extra fees apply, you’ll be told before booking or on-site.',
-          },
-          {
-            title: 'Nationwide Coverage',
-            body: 'Local pros across all 50 states for residential and light commercial cleanouts.',
-          },
-        ],
       }}
       serviceArea={{
         titleStart: 'Clear the property.',

@@ -63,8 +63,8 @@ export const BookingPage: React.FC = () => {
   // Auto-advance on served ZIP (only from the ZIP step — not resume hydration)
   useEffect(() => {
     if (zipResult?.served && currentStep === 0 && !showContinueFromQuote) {
-      // Coming from the dumpster page, skip the service picker.
-      const nextStep = initialServiceType === 'Dumpster Rental' ? 2 : 1;
+      // Coming from a dumpster or moving labor page, skip the service picker.
+      const nextStep = initialServiceType === 'Dumpster Rental' || initialServiceType === 'Moving Labor' ? 2 : 1;
       const t = setTimeout(() => setCurrentStep(nextStep), 2000);
       return () => clearTimeout(t);
     }
@@ -460,7 +460,7 @@ export const BookingPage: React.FC = () => {
       ? (formData.serviceType === 'Junk Removal'
           ? 'Estimate'
           : formData.serviceType === 'Moving Labor'
-            ? 'Moving options'
+            ? 'Labor options'
             : formData.serviceType === 'Dumpster Rental'
               ? 'Dumpster options'
               : 'Details')

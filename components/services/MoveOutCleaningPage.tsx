@@ -1,12 +1,9 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Bath, Brush, CookingPot, SprayCan } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 const ESTIMATE_PATH = '/in-home-estimate';
 const ESTIMATE_STATE = { serviceType: 'Move-Out Cleaning' };
-
-const linkClass = 'text-brand hover:text-brand-400 font-semibold';
 
 export const MoveOutCleaningPage: React.FC = () => {
   const navigate = useNavigate();
@@ -46,61 +43,22 @@ export const MoveOutCleaningPage: React.FC = () => {
           alt: 'Cleaners wiping cabinets and mopping an empty apartment',
         },
       ]}
-      split={{
-        eyebrow: 'After-move cleaning',
-        title: 'A clean handoff after your move',
+      content={{
+        title: 'Move-out cleaning for renters, owners and landlords',
         body: (
-          <p>
-            For renters, homeowners, landlords and property managers. Still have furniture or junk left
-            behind? Book a{' '}
-            <Link to="/services/property-cleanout" className={linkClass}>
-              property cleanout
-            </Link>{' '}
-            first. Still packing up? We can help with{' '}
-            <Link to="/services/small-local-moves" className={linkClass}>
-              small local moves
-            </Link>{' '}
-            too.
-          </p>
+          <>
+            <p>
+              Local providers clean kitchens, bathrooms, floors and surfaces once the home is empty, so it&apos;s ready
+              for your landlord, a buyer or the next tenant. Book around your move-out date or lease end. Availability
+              varies by location.
+            </p>
+            <p>
+              <Link to={ESTIMATE_PATH} state={ESTIMATE_STATE}>Request a free estimate</Link>. Still have furniture or
+              junk left behind? Book a <Link to="/services/property-cleanout">property cleanout</Link> first. Need help
+              with the heavy lifting? Add <Link to="/services/moving-labor">moving labor</Link>.
+            </p>
+          </>
         ),
-        includesLabel: 'Move-out cleaning includes:',
-        includes: [
-          { title: 'Kitchens', Icon: CookingPot },
-          { title: 'Bathrooms', Icon: Bath },
-          { title: 'Floors', Icon: Brush },
-          { title: 'Surfaces', Icon: SprayCan },
-        ],
-        image: '/optimized/service-scenes/move-out-cleaning-card-v3.webp',
-        imageAlt: 'Cleaners wiping cabinets and mopping an empty apartment',
-      }}
-      features={{
-        title: 'Move-out cleaning, handled',
-        items: [
-          {
-            title: 'Timed Around Your Move',
-            body: 'Request a date that fits your move-out or lease end, and we’ll confirm your visit.',
-          },
-          {
-            title: 'Free Estimate',
-            body: 'A no-obligation visit: your provider walks through the space and gives you a price.',
-          },
-          {
-            title: 'Room-by-Room Clean',
-            body: 'Kitchens, bathrooms, floors and surfaces, cleaned once the home is empty.',
-          },
-          {
-            title: 'Renters & Owners',
-            body: 'For tenants handing back keys, sellers getting ready for new owners, and landlords between tenants.',
-          },
-          {
-            title: 'Vetted Local Providers',
-            body: 'Your clean is handled by an independent local provider. Availability varies by location.',
-          },
-          {
-            title: 'Clearing Out First?',
-            body: 'Pair your clean with a property cleanout or a small local move to get the whole move-out done.',
-          },
-        ],
       }}
       serviceArea={{
         titleStart: 'Moving out?',

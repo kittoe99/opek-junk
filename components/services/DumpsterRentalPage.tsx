@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CalendarClock, MapPin, Ruler, ShieldCheck } from 'lucide-react';
 import { ServicePageLayout } from '../shared/ServicePageLayout';
 
 const DUMPSTER_STATE = { serviceType: 'Dumpster Rental' };
@@ -21,57 +20,23 @@ export const DumpsterRentalPage: React.FC = () => {
       secondaryCta={{ label: 'Book Online', onClick: () => navigate('/booking', { state: DUMPSTER_STATE }) }}
       onZipCheck={(zip, place) => navigate('/quote', { state: { ...DUMPSTER_STATE, zipValue: zip, zipResult: place } })}
       bookingState={DUMPSTER_STATE}
-      split={{
-        eyebrow: 'Dumpster rental',
-        title: 'Need a dumpster on site?',
+      content={{
+        title: 'Roll-off dumpster rental for home and job sites',
         body: (
-          <p>
-            Perfect for renovations, construction debris, yard waste, and whole-house decluttering.
-            Prefer full-service hauling instead? Book{' '}
-            <Link to="/services/junk-removal" className="text-brand hover:text-brand-400 font-semibold">
-              junk removal
-            </Link>{' '}
-            and leave the loading to your crew.
-          </p>
+          <>
+            <p>
+              Rent a 10, 15, 20 or 30-yard roll-off dumpster for renovations, construction debris, yard waste and
+              whole-house decluttering. Your provider delivers the container, you fill it at your pace, and it&apos;s
+              picked up for disposal. Any extra dump or disposal fees are disclosed before booking or on-site.
+            </p>
+            <p>
+              <Link to="/quote" state={DUMPSTER_STATE}>See your rental price</Link> or{' '}
+              <Link to="/booking" state={DUMPSTER_STATE}>book online</Link>. Don&apos;t want to load it yourself? Book{' '}
+              <Link to="/services/junk-removal">junk removal</Link> or a{' '}
+              <Link to="/services/property-cleanout">property cleanout</Link>.
+            </p>
+          </>
         ),
-        includesLabel: 'Rentals include:',
-        includes: [
-          { title: 'Size Options', Icon: Ruler },
-          { title: 'Site Delivery', Icon: MapPin },
-          { title: 'Flexible Dates', Icon: CalendarClock },
-          { title: 'Insured Pros', Icon: ShieldCheck },
-        ],
-        image: '/optimized/service-scenes/dumpster-rental-natural.webp',
-        imageAlt: 'Roll-off dumpster for debris and renovation waste',
-      }}
-      features={{
-        title: 'Dumpster rental, simplified',
-        items: [
-          {
-            title: 'Choose Your Size',
-            body: '10, 15, 20, and 30-yard roll-offs for garage clearouts to full construction loads.',
-          },
-          {
-            title: 'Upfront Flat Rates',
-            body: 'See your rental price before you book. Any extra dump or disposal fees are disclosed before booking or on-site.',
-          },
-          {
-            title: 'On-Schedule Drop-Off',
-            body: 'Containers delivered and picked up on your timeline, including job-site placements.',
-          },
-          {
-            title: 'Home & Commercial',
-            body: 'From driveway yard waste to contractor debris — sized for residential and commercial use.',
-          },
-          {
-            title: 'Protective Placement',
-            body: 'Providers take care with driveways and placements whenever site conditions allow.',
-          },
-          {
-            title: 'Need Loading Help?',
-            body: 'Pair with junk removal or property cleanouts if you want the heavy lifting handled too.',
-          },
-        ],
       }}
       serviceArea={{
         titleStart: 'Clear your site.',

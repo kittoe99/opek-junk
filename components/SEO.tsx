@@ -221,10 +221,10 @@ export const seoConfig = {
     keywords: 'junk removal, residential junk removal, furniture removal, appliance removal, same-day junk removal, junk hauling near me',
     noindex: true,
   },
-  localMovesAds: {
-    title: 'Local Movers From $119/Hour | Opek — 2 Helpers',
-    description: 'Local moves from $119/hour for 2 moving helpers. Studios, apartments, and short-distance jobs. Truck + crew or labor only. Book online.',
-    keywords: 'local movers, apartment movers, small local moves, moving labor, hourly movers, short distance movers',
+  movingLaborAds: {
+    title: 'Moving Labor From $119/Hour | Opek — 2 Helpers',
+    description: 'Hire 2 moving helpers from $119/hour to load, unload and rearrange. Labor only: you arrange the truck. Book online.',
+    keywords: 'moving labor, moving helpers, loading help, unloading help, hourly moving help, labor only movers',
     noindex: true,
   },
   dumpsterRental: {

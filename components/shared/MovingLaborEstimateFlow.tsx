@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Loader2, ShieldCheck, Check } from 'lucide-react';
 import { calculateMovingLaborPrice } from '../../services/pricingService';
-import { getMovingHourlyRate, MOVING_LABOR_HOURLY_RATES, MOVING_TRUCK_FEE } from '../../lib/movingLaborPricing';
+import { getMovingHourlyRate, MOVING_LABOR_HOURLY_RATES } from '../../lib/movingLaborPricing';
 import {
   MovingAccessType,
   MovingHomeSize,
@@ -15,8 +15,6 @@ import {
   LoadingIcon,
   UnloadingIcon,
   RearrangeIcon,
-  BringTruckIcon,
-  OwnTruckIcon,
   StudioHomeIcon,
   MultiHomeIcon,
   TwoHelpersIcon,
@@ -68,7 +66,7 @@ interface MovingLaborEstimateFlowProps {
   initialContact?: { name: string; phone: string; consentAt: string | null };
 }
 
-type FlowStep = 'scope' | 'truck' | 'size' | 'crew' | 'access' | 'extras' | 'result';
+type FlowStep = 'scope' | 'size' | 'crew' | 'access' | 'extras' | 'result';
 
 const SERVICE_SCOPES: {
   id: MovingServiceScope;
@@ -79,25 +77,25 @@ const SERVICE_SCOPES: {
   {
     id: 'both',
     label: 'Load & unload',
-    desc: 'Full local move — load at pickup and unload at drop-off',
+    desc: 'Helpers load at one place and unload at the other. You handle the truck.',
     icon: LoadingUnloadingIcon,
   },
   {
     id: 'loading',
     label: 'Loading only',
-    desc: 'Crew loads your truck, POD, or storage unit',
+    desc: 'Helpers load your rental truck, POD, or storage unit',
     icon: LoadingIcon,
   },
   {
     id: 'unloading',
     label: 'Unloading only',
-    desc: 'Crew unloads into your home, office, or storage',
+    desc: 'Helpers unload your truck or POD into your home, office, or storage',
     icon: UnloadingIcon,
   },
   {
     id: 'rearrange',
     label: 'In-home rearrange',
-    desc: 'Move furniture between rooms — no truck needed',
+    desc: 'Helpers move furniture between rooms',
     icon: RearrangeIcon,
   },
 ];
@@ -108,17 +106,17 @@ const HOME_SIZES: {
   desc: string;
   hours: number;
 }[] = [
-  { id: 'studio', label: 'Studio / Efficiency', desc: 'Fits in a small truck — minimal furniture', hours: 2 },
+  { id: 'studio', label: 'Studio / Efficiency', desc: 'Minimal furniture and boxes', hours: 2 },
   { id: '1bed', label: '1-Bedroom', desc: 'Apartment or small home — sofa, bed, boxes', hours: 3 },
   { id: '2bed', label: '2-Bedroom', desc: 'Medium home — multiple rooms of furniture', hours: 4 },
-  { id: '3plus', label: '3+ Bedrooms', desc: 'Large home or full house move', hours: 6 },
+  { id: '3plus', label: '3+ Bedrooms', desc: 'Large home with lots of furniture', hours: 6 },
 ];
 
 const CREW_OPTIONS = [
   {
     helpers: 2 as const,
     label: `2 helpers — $${MOVING_LABOR_HOURLY_RATES[2]}/hour`,
-    desc: 'A complete crew handles the lifting',
+    desc: 'A complete crew for the lifting',
     icon: TwoHelpersIcon,
   },
   {
@@ -190,7 +188,6 @@ const ACCESS_LABELS: Record<MovingAccessType, string> = {
 
 export function buildMovingServiceLabel(options: MovingLaborOptions): string {
   const parts: string[] = [SCOPE_LABELS[options.serviceScope]];
-  if (options.needsTruck) parts.unshift('Truck +');
   parts.push(HOME_SIZE_LABELS[options.homeSize]);
   if (options.accessType === 'stairs' && options.flightsOfStairs > 0) {
     parts.push(`${options.flightsOfStairs} flight(s) of stairs`);
@@ -241,7 +238,6 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   const [serviceScope, setServiceScope] = useState<MovingServiceScope | null>(null);
   const [homeSize, setHomeSize] = useState<MovingHomeSize | null>(null);
   const [helpers, setHelpers] = useState<2 | 3 | null>(null);
-  const [needsTruck, setNeedsTruck] = useState<boolean | null>(null);
   const [accessType, setAccessType] = useState<MovingAccessType | null>(null);
   const [flightsOfStairs, setFlightsOfStairs] = useState<number | null>(null);
   const [heavyItems, setHeavyItems] = useState<string[]>([]);
@@ -261,13 +257,13 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   const selectedSize = homeSize ? HOME_SIZES.find((s) => s.id === homeSize)! : null;
 
   const draftOptions: MovingLaborOptions | null =
-    serviceScope && homeSize && helpers && accessType && (serviceScope === 'rearrange' || needsTruck !== null) &&
+    serviceScope && homeSize && helpers && accessType &&
     (accessType !== 'stairs' || flightsOfStairs !== null)
       ? (() => {
           const resolvedFlights = accessType === 'stairs' ? (flightsOfStairs ?? 1) : 0;
           const { helpers: resolvedHelpers, hours } = computeMovingLaborHours({
             serviceScope,
-            needsTruck: serviceScope === 'rearrange' ? false : Boolean(needsTruck),
+            needsTruck: false,
             homeSize,
             accessType,
             flightsOfStairs: resolvedFlights,
@@ -278,7 +274,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
           });
           return {
             serviceScope,
-            needsTruck: serviceScope === 'rearrange' ? false : Boolean(needsTruck),
+            needsTruck: false,
             homeSize,
             accessType,
             flightsOfStairs: resolvedFlights,
@@ -293,7 +289,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
 
   const totalHelpers = draftOptions?.helpers ?? helpers ?? 2;
   const totalHours = draftOptions?.hours ?? selectedSize?.hours ?? 2;
-  const serviceLabel = draftOptions ? buildMovingServiceLabel(draftOptions) : 'Local Moving';
+  const serviceLabel = draftOptions ? buildMovingServiceLabel(draftOptions) : 'Moving Labor';
 
   const buildEstimate = (price: PriceEstimate, label: string): QuoteEstimate => ({
     itemsDetected: [label],
@@ -309,7 +305,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     setPricingLoading(true);
     setPricingError(null);
     try {
-      const price = await calculateMovingLaborPrice(draftOptions.helpers, draftOptions.hours, draftOptions.needsTruck);
+      const price = await calculateMovingLaborPrice(draftOptions.helpers, draftOptions.hours);
       const label = buildMovingServiceLabel(draftOptions);
       setPriceEstimate(price);
       setEstimate(buildEstimate(price, label));
@@ -342,22 +338,12 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
     setHeavyItems((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
   };
 
-  const continueAfterScope = () => {
-    if (!serviceScope) return;
-    if (serviceScope === 'rearrange') {
-      setNeedsTruck(null);
-      setStep('size');
-    } else {
-      setStep('truck');
-    }
-  };
-
   if (step === 'scope') {
     return (
       <>
         <FlowStepTitle
           title="What do you need help with?"
-          subtitle="Choose the option that best matches your local move."
+          subtitle="This is labor only: helpers do the lifting, and you arrange any truck, POD, or storage."
         />
         <div className="space-y-3">
           {SERVICE_SCOPES.map((scope) => {
@@ -377,38 +363,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <FlowStickyNav
           showBack
           onBack={onBack}
-          onContinue={continueAfterScope}
-          continueDisabled={!serviceScope}
-        />
-      </>
-    );
-  }
-
-  if (step === 'truck') {
-    return (
-      <>
-        <FlowStepTitle title="Do you need a truck?" subtitle="We can bring one or you can use your own." />
-        <div className="space-y-3">
-          <FlowSelectionCard
-            title="Yes, bring a truck"
-            description="Add a moving truck"
-            icon={<BringTruckIcon className={MOVING_ICON_CLASS} />}
-            selected={needsTruck === true}
-            onClick={() => setNeedsTruck(true)}
-          />
-          <FlowSelectionCard
-            title="No, I have a truck"
-            description="Just need a crew to help load and unload"
-            icon={<OwnTruckIcon className={MOVING_ICON_CLASS} />}
-            selected={needsTruck === false}
-            onClick={() => setNeedsTruck(false)}
-          />
-        </div>
-        <FlowStickyNav
-          showBack
-          onBack={() => setStep('scope')}
           onContinue={() => setStep('size')}
-          continueDisabled={needsTruck === null}
+          continueDisabled={!serviceScope}
         />
       </>
     );
@@ -417,7 +373,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   if (step === 'size') {
     return (
       <>
-        <FlowStepTitle title="What size is your move?" subtitle="Select the option that best describes your home." />
+        <FlowStepTitle title="How big is the job?" subtitle="Select the option that best describes the home." />
         <div className="space-y-3">
           {HOME_SIZES.map((size) => (
             <FlowSelectionCard
@@ -438,7 +394,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         </div>
         <FlowStickyNav
           showBack
-          onBack={() => setStep(serviceScope === 'rearrange' ? 'scope' : 'truck')}
+          onBack={() => setStep('scope')}
           onContinue={() => setStep('crew')}
           continueDisabled={!homeSize}
         />
@@ -636,9 +592,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
   }
 
   const hourlyRate = getMovingHourlyRate(draftOptions.helpers);
-  const truckFee = draftOptions.needsTruck ? MOVING_TRUCK_FEE : 0;
   const estimatedTotal = priceEstimate.price;
-  const laborTotal = Math.max(0, estimatedTotal - truckFee);
   const moveDetails = [
     HOME_SIZE_LABELS[draftOptions.homeSize],
     ACCESS_LABELS[draftOptions.accessType],
@@ -657,7 +611,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         {/* Total */}
         <div className="moving-est-head">
           <div className="flex items-center justify-between gap-2">
-            <span className="flow-option-title">Local moving</span>
+            <span className="flow-option-title">Moving labor</span>
             <span className="flow-option-badge">{SCOPE_LABELS[draftOptions.serviceScope]}</span>
           </div>
           <p className="moving-est-label">Estimated total</p>
@@ -673,14 +627,8 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
             <dt>
               Labor <span>({totalHelpers} helper{totalHelpers === 1 ? '' : 's'} × ~{totalHours} hr)</span>
             </dt>
-            <dd>${laborTotal}</dd>
+            <dd>${estimatedTotal}</dd>
           </div>
-          {truckFee > 0 && (
-            <div>
-              <dt>Moving truck <span>(one-time)</span></dt>
-              <dd>${truckFee}</dd>
-            </div>
-          )}
           <div className="moving-est-total">
             <dt>Estimated total</dt>
             <dd>${estimatedTotal}</dd>
@@ -689,7 +637,7 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
 
         {/* Move details */}
         <div className="moving-est-details">
-          <p className="flow-section-label !mb-2">Your move</p>
+          <p className="flow-section-label !mb-2">Your job</p>
           <ul className="flex flex-wrap gap-1.5">
             {moveDetails.map((d) => (
               <li key={d} className="moving-est-chip">{d}</li>
@@ -710,8 +658,9 @@ export const MovingLaborEstimateFlow: React.FC<MovingLaborEstimateFlowProps> = (
         <p className="flow-section-label">What happens next</p>
         <ol>
           <li><span>1</span>Pick a date and time that works for you.</li>
-          <li><span>2</span>We match you with a local moving crew.</li>
-          <li><span>3</span>Your final price is confirmed on-site, based on actual time.</li>
+          <li><span>2</span>You&apos;re matched with local moving helpers.</li>
+          <li><span>3</span>Have your truck, POD, or storage ready when they arrive.</li>
+          <li><span>4</span>Your final price is confirmed on-site, based on actual time.</li>
         </ol>
       </div>
 

@@ -29,10 +29,10 @@ const MattressBookingPage = React.lazy(() => import('./components/services/Mattr
 const JunkRemovalPage = React.lazy(() => import('./components/services/JunkRemovalPage').then((m) => ({ default: m.JunkRemovalPage })));
 const DumpsterRentalPage = React.lazy(() => import('./components/services/DumpsterRentalPage').then((m) => ({ default: m.DumpsterRentalPage })));
 const PropertyCleanoutPage = React.lazy(() => import('./components/services/PropertyCleanoutPage').then((m) => ({ default: m.PropertyCleanoutPage })));
-const SmallLocalMovesPage = React.lazy(() => import('./components/services/SmallLocalMovesPage').then((m) => ({ default: m.SmallLocalMovesPage })));
+const MovingLaborPage = React.lazy(() => import('./components/services/MovingLaborPage').then((m) => ({ default: m.MovingLaborPage })));
 const MoveOutCleaningPage = React.lazy(() => import('./components/services/MoveOutCleaningPage').then((m) => ({ default: m.MoveOutCleaningPage })));
 const JunkRemovalAdsLandingPage = React.lazy(() => import('./components/lp/JunkRemovalAdsLandingPage').then((m) => ({ default: m.JunkRemovalAdsLandingPage })));
-const LocalMovesAdsLandingPage = React.lazy(() => import('./components/lp/LocalMovesAdsLandingPage').then((m) => ({ default: m.LocalMovesAdsLandingPage })));
+const MovingLaborAdsLandingPage = React.lazy(() => import('./components/lp/MovingLaborAdsLandingPage').then((m) => ({ default: m.MovingLaborAdsLandingPage })));
 const PrivacyPolicyPage = React.lazy(() => import('./components/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage })));
 const TermsOfServicePage = React.lazy(() => import('./components/TermsOfServicePage').then((m) => ({ default: m.TermsOfServicePage })));
 const SmsConsentPage = React.lazy(() => import('./components/SmsConsentPage').then((m) => ({ default: m.SmsConsentPage })));
@@ -64,7 +64,7 @@ function GlobalQuickActionBar() {
       navigate('/booking', { state: { serviceType: 'Junk Removal' } });
       return;
     }
-    if (pathname === '/lp/local-moves') {
+    if (pathname === '/lp/moving-labor') {
       navigate('/booking', { state: { serviceType: 'Moving Labor' } });
       return;
     }
@@ -203,13 +203,19 @@ function JunkRemovalAdsLandingPageWithSEO() {
   );
 }
 
-function LocalMovesAdsLandingPageWithSEO() {
+function MovingLaborAdsLandingPageWithSEO() {
   return (
     <>
-      <SEO {...seoConfig.localMovesAds} />
-      <LocalMovesAdsLandingPage />
+      <SEO {...seoConfig.movingLaborAds} />
+      <MovingLaborAdsLandingPage />
     </>
   );
+}
+
+/** Old ad URL: keeps tracking parameters such as gclid when forwarding. */
+function LegacyLocalMovesRedirect() {
+  const { search } = useLocation();
+  return <Navigate to={`/lp/moving-labor${search}`} replace />;
 }
 
 function DumpsterRentalPageWithSEO() {
@@ -232,14 +238,14 @@ function PropertyCleanoutPageWithSEO() {
 
 
 
-function SmallLocalMovesPageWithSEO() {
+function MovingLaborPageWithSEO() {
   return (
     <>
       <SEO
-        title="Small Local Moves | Opek Junk Removal"
-        description="Affordable local moves for studios and small homes. Book truck and crew by the hour — or labor only if you already have a truck."
+        title="Moving Labor | Opek Junk Removal"
+        description="Hire moving helpers by the hour to load, unload and rearrange. Labor only: you arrange the truck, POD or storage."
       />
-      <SmallLocalMovesPage />
+      <MovingLaborPage />
     </>
   );
 }
@@ -355,14 +361,15 @@ function App() {
             <Route path="/booking" element={<BookingPageWithSEO />} />
             <Route path="/services/junk-removal" element={<JunkRemovalPageWithSEO />} />
             <Route path="/lp/junk-removal" element={<JunkRemovalAdsLandingPageWithSEO />} />
-            <Route path="/lp/local-moves" element={<LocalMovesAdsLandingPageWithSEO />} />
+            <Route path="/lp/moving-labor" element={<MovingLaborAdsLandingPageWithSEO />} />
+            <Route path="/lp/local-moves" element={<LegacyLocalMovesRedirect />} />
             <Route path="/services/dumpster-rental" element={<DumpsterRentalPageWithSEO />} />
             <Route path="/services/residential-junk-removal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/commercial" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/services/property-cleanout" element={<PropertyCleanoutPageWithSEO />} />
             <Route path="/services/donations-pickup" element={<Navigate to="/" replace />} />
-            <Route path="/services/moving-labor" element={<Navigate to="/services/small-local-moves" replace />} />
-            <Route path="/services/small-local-moves" element={<SmallLocalMovesPageWithSEO />} />
+            <Route path="/services/moving-labor" element={<MovingLaborPageWithSEO />} />
+            <Route path="/services/small-local-moves" element={<Navigate to="/services/moving-labor" replace />} />
             <Route path="/services/move-out-cleaning" element={<MoveOutCleaningPageWithSEO />} />
             <Route path="/services/mattress-disposal" element={<Navigate to="/services/junk-removal" replace />} />
             <Route path="/booking/mattress" element={<MattressBookingPage />} />

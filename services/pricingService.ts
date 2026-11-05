@@ -97,6 +97,6 @@ export async function calculateDumpsterRentalPrice(options: DumpsterRentalOption
   });
 }
 
-export async function calculateMovingLaborPrice(helpers: number, hours: number, needsTruck = false): Promise<PriceEstimate> {
-  return calculateMovingLaborLocally(helpers, hours, needsTruck);
+export async function calculateMovingLaborPrice(helpers: number, hours: number): Promise<PriceEstimate> {
+  return calculateMovingLaborLocally(helpers, hours);
 }

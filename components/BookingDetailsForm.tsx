@@ -327,7 +327,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
     return (
       <BookingSuccessView
         orderNumber={orderNumber}
-        serviceType={isMovingLabor ? 'Local Moving' : normalizedServiceType}
+        serviceType={isMovingLabor ? 'Moving Labor' : normalizedServiceType}
         name={formData.name}
         phone={formData.phone}
         email={formData.email}
@@ -700,7 +700,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             <div className="qsum-price">
               <div>
                 <p className="qsum-price-label">Estimated total</p>
-                <p className="qsum-price-service">{isMovingLabor ? 'Local Moving' : serviceType}</p>
+                <p className="qsum-price-service">{isMovingLabor ? 'Moving Labor' : serviceType}</p>
               </div>
               <p className="qsum-price-value">${estimate.price}</p>
             </div>
@@ -737,7 +737,7 @@ export const BookingDetailsForm: React.FC<BookingDetailsFormProps> = ({
             </SummarySection>
 
             {movingOptions && (
-              <SummarySection icon={PackageCheck} title="Your move">
+              <SummarySection icon={PackageCheck} title="Your job">
                 <p className="qsum-main">{MOVING_SCOPE_LABELS[movingOptions.serviceScope]}</p>
                 <p className="qsum-sub">
                   {movingOptions.homeSize === 'studio' ? 'Studio' : movingOptions.homeSize === '1bed' ? '1-Bedroom' : movingOptions.homeSize === '2bed' ? '2-Bedroom' : '3+ Bedrooms'}

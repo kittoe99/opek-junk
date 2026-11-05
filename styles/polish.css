@@ -614,6 +614,17 @@ body .site-root .home-form-section h1.home-display { font-size: 27px !important;
   body .site-root .home-form-section h1.home-display { font-size: 44px !important; }
 }
 
+/* Service pages: short plain text with in-text links */
+.service-copy { padding: 30px 16px; }
+.service-copy > * { max-width: 720px; margin-inline: auto; }
+body .site-root .service-copy p { margin-top: 12px; color: #2b2236; font-size: 15px; line-height: 1.6; }
+.service-copy a { color: #520f96; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.service-copy a:hover { color: #3f0a75; }
+@media (min-width: 768px) {
+  .service-copy { padding: 64px 32px; }
+  body .site-root .service-copy p { margin-top: 16px; font-size: 16px; }
+}
+
 /* Editorial content: open text beside a photo, with no card boxes */
 .editorial-inner { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
 .editorial-chapter { display: grid; gap: 20px; }
@@ -634,14 +645,6 @@ body .site-root .editorial-copy h2 + .editorial-intro { margin-top: 10px; }
 .editorial-point dd { margin: 4px 0 0; color: #4a4256; font-size: 14px; line-height: 1.5; }
 @media (max-width: 767px) {
   .editorial-chapter.has-points .editorial-action { margin-top: 0; }
-  /* The fixed bottom bar already holds the main action, so the section adds only a text link */
-  .has-start-bar .editorial-chapter.has-photo .editorial-action { display: none; }
-  body .site-root .has-start-bar .editorial-chapter.has-points .editorial-action,
-  body .site-root .has-start-bar .editorial-chapter.has-points .editorial-action:hover:not(:disabled):not([aria-disabled=true]) {
-    justify-self: start; width: auto; padding-inline: 0;
-    border: 0; background: transparent; color: #520f96;
-    text-decoration: underline; text-underline-offset: 4px;
-  }
 }
 @media (min-width: 768px) {
   .editorial-inner { padding: 0 32px; }
