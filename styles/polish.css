@@ -719,3 +719,23 @@ body .site-root .contact-option.soft-surface:hover { border-color: #3f0a75; back
   .home-process-track > article:first-child .home-step-num::before,
   .home-process-track > article:last-child .home-step-num::after { visibility: hidden; }
 }
+
+/* ── Field accent ─────────────────────────────────────────────
+   A thick colored left edge on text fields, selects, textareas and the
+   card field. Pale at rest, deepens on hover, full purple on focus, red on
+   error. ZIP bars, the catalog search pill and the chat box keep their own look. */
+:root {
+  --field-accent-width: 4px;
+  --field-accent: #cdb8e6;
+  --field-accent-hover: #a98bcf;
+}
+:root body .site-root :is(input:not([type=checkbox], [type=radio], [type=range], [type=file], [type=hidden], [type=submit], [type=button]), select, textarea):not(.cov-form-input, .flow-zip-field input, .zip-hero-field input, .cat-search input, .opek-chat-input),
+:root body .site-root .stripe-field {
+  border-left-width: var(--field-accent-width);
+  border-left-color: var(--field-accent);
+}
+:root body .site-root :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range], [type=file], [type=hidden], .cov-form-input, .flow-zip-field input, .zip-hero-field input, .cat-search input, .opek-chat-input):hover:not(:disabled),
+:root body .site-root .stripe-field:hover { border-left-color: var(--field-accent-hover); }
+:root body .site-root :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range], [type=file], [type=hidden], .cov-form-input, .flow-zip-field input, .zip-hero-field input, .cat-search input, .opek-chat-input):focus,
+:root body .site-root .stripe-field:focus-within { border-left-color: var(--button-purple); }
+:root body .site-root :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range], [type=file], [type=hidden], .cov-form-input, .flow-zip-field input, .zip-hero-field input, .cat-search input, .opek-chat-input):is([aria-invalid=true], :user-invalid) { border-left-color: var(--ui-error); }
